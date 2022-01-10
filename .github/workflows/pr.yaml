@@ -2,6 +2,7 @@ name: 'PR Title Checker'
 on:
   pull_request:
     types: [edited, opened, synchronize, reopened]
+    branches: [disabled]
 
 jobs:
   title-check:

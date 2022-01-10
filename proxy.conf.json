@@ -1,9 +1,0 @@
-[
-    {
-        "context": ["/v1", "/stat", "/fistful", "/papi", "/file_storage", "/deanonimus"],
-        "target": "https://iddqd.rbk.money",
-        "secure": false,
-        "logLevel": "debug",
-        "changeOrigin": true
-    }
-]
