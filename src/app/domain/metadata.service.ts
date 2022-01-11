@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Field, JsonAST } from 'thrift-ts';
+import { Field, JsonAST } from '@vality/thrift-ts';
 
 import { Reference } from '../thrift-services/damsel/gen-model/domain';
 

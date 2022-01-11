@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, ReplaySubject } from 'rxjs';
 import { catchError, filter, shareReplay, switchMap } from 'rxjs/operators';
-import Int64 from 'thrift-ts/lib/int64';
+import Int64 from '@vality/thrift-ts/lib/int64';
 
 import { progress } from '@cc/app/shared/custom-operators';
 

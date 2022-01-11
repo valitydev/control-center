@@ -1,5 +1,5 @@
 import isObject from 'lodash-es/isObject';
-import { ValueType } from 'thrift-ts';
+import { ValueType } from '@vality/thrift-ts';
 
 import { PrimitiveType } from '../model';
 

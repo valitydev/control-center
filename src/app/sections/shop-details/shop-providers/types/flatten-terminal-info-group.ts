@@ -1,4 +1,4 @@
-import Int64 from 'thrift-ts/lib/int64';
+import Int64 from '@vality/thrift-ts/lib/int64';
 
 import { TerminalID } from '../../../../thrift-services/fistful/gen-model/fistful';
 import { PredicateType } from './predicate-type';

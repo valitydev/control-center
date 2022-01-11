@@ -1,5 +1,5 @@
 import difference from 'lodash-es/difference';
-import { ValueType } from 'thrift-ts';
+import { ValueType } from '@vality/thrift-ts';
 
 import { createThriftInstance } from './create-thrift-instance';
 import { thriftInstanceToObject } from './thrift-instance-to-object';

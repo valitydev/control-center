@@ -1,4 +1,4 @@
-import { JsonAST } from 'thrift-ts';
+import { JsonAST } from '@vality/thrift-ts';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface ASTDefinition {

@@ -1,5 +1,5 @@
-import type { ValueType } from 'thrift-ts';
-import Int64 from 'thrift-ts/lib/int64';
+import type { ValueType } from '@vality/thrift-ts';
+import Int64 from '@vality/thrift-ts/lib/int64';
 
 import {
     isComplexType,
