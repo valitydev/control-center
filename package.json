@@ -7,7 +7,7 @@
   },
   "scripts": {
     "postinstall": "ngcc",
-    "start": "ng serve --proxy-config proxy.conf.js --port 7000",
+    "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
     "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 2070 --cache",
