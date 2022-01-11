@@ -1,4 +1,7 @@
 {
     "papiEndpoint": "",
-    "fileStorageEndpoint": ""
+    "fileStorageEndpoint": "",
+    "constants": {
+        "currencySources": []
+    }
 }
