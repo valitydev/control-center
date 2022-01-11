@@ -39,7 +39,7 @@ export class SearchFiltersComponent implements OnInit {
 
     depositStatuses = ['Pending', 'Succeeded', 'Failed'];
 
-    currencies = this.configService.config.constants.currencySources;
+    currencies = this.configService.config.constants.currencies;
 
     form = this.searchFiltersService.form;
 

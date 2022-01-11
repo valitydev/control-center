@@ -19,7 +19,7 @@ import { CreateDepositService } from './services/create-deposit/create-deposit.s
 export class CreateDepositDialogComponent implements OnInit {
     form: FormGroup;
 
-    currencies = this.configService.config.constants.currencySources;
+    currencies = this.configService.config.constants.currencies;
 
     depositCreated$ = this.createDepositService.depositCreated$;
     isLoading$ = this.createDepositService.isLoading$;

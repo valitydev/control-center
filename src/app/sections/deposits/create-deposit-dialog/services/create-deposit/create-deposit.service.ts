@@ -93,7 +93,7 @@ export class CreateDepositService {
         return this.fb.group({
             destination: ['', Validators.required],
             amount: ['', [Validators.required, Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
-            currency: [this.configService.config.constants.currencySources[0], Validators.required],
+            currency: [this.configService.config.constants.currencies[0], Validators.required],
         });
     }
 
