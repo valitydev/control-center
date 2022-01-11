@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Int64 from '@vality/thrift-ts/lib/int64';
 import { merge, of, Subject } from 'rxjs';
 import {
     catchError,
@@ -12,7 +13,6 @@ import {
     switchMap,
     tap,
 } from 'rxjs/operators';
-import Int64 from '@vality/thrift-ts/lib/int64';
 
 import { progress } from '@cc/app/shared/custom-operators';
 

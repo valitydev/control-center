@@ -1,5 +1,5 @@
-import get from 'lodash-es/get';
 import Int64 from '@vality/thrift-ts/lib/int64';
+import get from 'lodash-es/get';
 
 import { getUnionKey, getUnionValue } from '@cc/utils/get-union-key';
 
