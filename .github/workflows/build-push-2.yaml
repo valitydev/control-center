@@ -23,6 +23,11 @@ jobs:
         run: npm ci
       - name: Compile Thrift
         run: npm run compile
+      - uses: actions/cache@v2
+        id: restore-init
+        with:
+          path: ./*
+          key: ${{ github.sha }}
 
   build:
     name: Build
@@ -36,12 +41,11 @@ jobs:
         with:
           node-version: '16.4.2'
           cache: 'npm'
-      - name: Init Thrift
-        uses: valitydev/action-setup-thrift@v0.0.1
-      - name: Install Packages
-        run: npm ci
-      - name: Compile Thrift
-        run: npm run compile
+      - uses: actions/cache@v2
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
       - name: Build
         run: npm run build
 
@@ -57,11 +61,10 @@ jobs:
         with:
           node-version: '16.4.2'
           cache: 'npm'
-      - name: Init Thrift
-        uses: valitydev/action-setup-thrift@v0.0.1
-      - name: Install Packages
-        run: npm ci
-      - name: Compile Thrift
-        run: npm run compile
-      - name: Check & Build
+      - uses: actions/cache@v2
+        id: restore-build
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+      - name: Check
         run: concurrently --kill-others-on-fail --prefix-colors magenta,green --names PRETTIER,LINT "npm run prettier" "npm run lint-errors"
