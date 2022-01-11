@@ -22,8 +22,11 @@ jobs:
           node-version: '16.4.2'
           cache: 'npm'
 
-      - name: Install Packages & Compile Thrift
-        run: npx concurrently --kill-others-on-fail --prefix-colors magenta,green --names NPM_CI,THRIFT "npm ci" "npm run compile"
+      - name: Install Packages
+        run: npm ci
+
+      - name: Compile Thrift
+        run: npm run compile
 
       - name: Check & Build
         run: npm run ci:build
