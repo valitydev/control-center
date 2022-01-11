@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FetchResult, PartialFetcher } from '@rbkmoney/partial-fetcher';
+import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 import pickBy from 'lodash-es/pickBy';
 import moment from 'moment';
 import { Observable } from 'rxjs';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { progress } from '@rbkmoney/utils';
+import { progress } from '@cc/app/shared/custom-operators';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';

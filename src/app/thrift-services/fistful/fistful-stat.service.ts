@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { FetchResult } from '@rbkmoney/partial-fetcher';
+import { FetchResult } from '@cc/app/shared/services';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

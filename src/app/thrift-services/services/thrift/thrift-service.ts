@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import connectClient from '@rbkmoney/woody_js';
+import connectClient from '@vality/woody';
 import { Observable } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 

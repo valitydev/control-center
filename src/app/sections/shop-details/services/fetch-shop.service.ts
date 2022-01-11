@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@rbkmoney/utils';
+import { progress } from '@cc/app/shared/custom-operators';
 import { BehaviorSubject, merge, of, Subject } from 'rxjs';
 import { catchError, filter, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
