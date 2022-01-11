@@ -1,4 +1,4 @@
-import type { ValueType } from '@vality/thrift-ts';
+import type { Field, ValueType } from '@vality/thrift-ts';
 import Int64 from '@vality/thrift-ts/lib/int64';
 
 import {
@@ -9,20 +9,21 @@ import {
     StructureType,
     STRUCTURE_TYPES,
 } from './namespace-type';
+import { ThriftAstMetadata, ThriftNamespaceContext } from './types';
 
-export function createThriftInstance<T extends { [N in string]: any }, V extends any>(
-    metadata: any[],
-    namespaces: T,
+export function createThriftInstance<V extends any>(
+    metadata: ThriftAstMetadata[],
+    namespaceContext: ThriftNamespaceContext,
+    namespaceName: string,
     indefiniteType: ValueType,
-    value: V,
-    currentNamespace?: string
+    value: V
 ): V {
     if (isThriftObject(value)) {
         return value;
     }
-    const { namespace, type } = parseNamespaceType(indefiniteType, currentNamespace);
+    const { namespace, type } = parseNamespaceType(indefiniteType, namespaceName);
     const internalCreateThriftInstance = (t: ValueType, v: V) =>
-        createThriftInstance(metadata, namespaces, t, v, namespace);
+        createThriftInstance(metadata, namespaceContext, namespace, t, v);
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
@@ -61,15 +62,22 @@ export function createThriftInstance<T extends { [N in string]: any }, V extends
     switch (structureType) {
         case 'enum':
             return value;
+        case 'exception':
+            throw new Error('Unsupported structure type: exception');
         default: {
             const typeMeta = namespaceMeta.ast[structureType][type];
             try {
                 if (structureType === 'typedef') {
-                    return internalCreateThriftInstance(typeMeta.type, value);
+                    type TypedefType = {
+                        type: ValueType;
+                    };
+                    const typedefMeta = (typeMeta as TypedefType).type;
+                    return internalCreateThriftInstance(typedefMeta, value);
                 }
-                const instance = new namespaces[namespace][type]();
+                const instance = new namespaceContext[namespace][type]();
                 for (const [k, v] of Object.entries(value)) {
-                    const fieldTypeMeta = typeMeta.find((m) => m.name === k);
+                    type StructOrUnionType = Field[];
+                    const fieldTypeMeta = (typeMeta as StructOrUnionType).find((m) => m.name === k);
                     instance[k] = internalCreateThriftInstance(fieldTypeMeta.type, v);
                 }
                 return instance;

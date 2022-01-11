@@ -15,6 +15,20 @@ import {
 } from '../gen-model/dominant_cache';
 import * as DominantCache from './gen-nodejs/DominantCache';
 
+// class Thrift {
+//     constructor() {
+
+//     }
+
+//     toThriftInstance<V>(namespace: string, type: ValueType, plainObject: V): V {
+//         return null;
+//     }
+
+//     toPlainObject<V>(namespace: string, type: ValueType, thriftValue: V): V {
+//         return null;
+//     }
+// }
+
 @Injectable({ providedIn: 'root' })
 export class DominantCacheService extends ThriftConnector {
     constructor(protected keycloakTokenInfoService: KeycloakTokenInfoService) {
