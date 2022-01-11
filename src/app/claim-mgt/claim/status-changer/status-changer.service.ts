@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@rbkmoney/utils';
 import { ConnectableObservable, Observable, Subject } from 'rxjs';
 import {
     catchError,
@@ -13,6 +12,8 @@ import {
     shareReplay,
     switchMap,
 } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { ClaimManagementService } from '../../../thrift-services/damsel/claim-management.service';
 import { ClaimID } from '../../../thrift-services/damsel/gen-model/claim_management';

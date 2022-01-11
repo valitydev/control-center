@@ -29,7 +29,6 @@
                             "rxjs",
                             "thrift-ts",
                             "buffer",
-                            "@rbkmoney/partial-fetcher",
                             "humanize-duration"
                         ],
                         "outputPath": "dist",

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@rbkmoney/utils';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/internal/operators';
 import { filter } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyService } from '../../../../../papi/party.service';
 import { Modification } from '../../../../../thrift-services/damsel/gen-model/claim_management';

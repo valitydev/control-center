@@ -83,9 +83,7 @@ async function compileJsonMetadata(definitionsPath: string, outputFilePath: stri
 async function compileService(definitionFilePath: string, outputPath: string) {
     try {
         log(`Compiling service: ${definitionFilePath}`);
-        await execute(
-            `thrift -r -gen js:node,runtime_package=@rbkmoney/woody_js/dist/thrift -o ${outputPath} ${definitionFilePath};`
-        );
+        await execute(`thrift -r -gen js:node -o ${outputPath} ${definitionFilePath};`);
     } catch (err) {
         log(`Service: ${definitionFilePath} ${chalk.red('compilation failed')}`);
         throw err;

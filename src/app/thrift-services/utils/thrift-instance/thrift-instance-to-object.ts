@@ -1,5 +1,5 @@
+import type { Int64, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
-import type { Int64, ValueType } from 'thrift-ts';
 
 import {
     isComplexType,

@@ -6,7 +6,6 @@ import * as path from 'path';
 import * as config from '../thrift-config.json';
 
 const ROOT_DIR = path.join(__dirname, '..');
-const THRIFT_PATH = '@rbkmoney/woody_js/dist/thrift';
 
 const OUTPUT_PATH = './src/app/thrift-services';
 const GEN_MODEL_DIR = 'gen-model';
@@ -38,9 +37,7 @@ async function execWithLog(cmd: string) {
 async function genClient(name: string, thriftPath: string) {
     const out = path.join(OUTPUT_PATH, name);
     await del([path.join(OUTPUT_PATH, GEN_CLIENT_DIR)]);
-    return await execWithLog(
-        `thrift -r -gen js:node,runtime_package=${THRIFT_PATH} -o ${out} ${thriftPath};`
-    );
+    return await execWithLog(`thrift -r -gen js:node -o ${out} ${thriftPath};`);
 }
 
 async function genModel(name: string, protoPath: string) {

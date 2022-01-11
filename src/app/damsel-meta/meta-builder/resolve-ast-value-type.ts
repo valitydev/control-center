@@ -1,4 +1,4 @@
-import { ListType, MapType, SetType, ValueType } from 'thrift-ts';
+import { ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 
 import {
     CollectionType,

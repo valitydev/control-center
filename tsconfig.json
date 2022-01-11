@@ -21,7 +21,9 @@
             "@cc/components/*": ["src/components/*"],
             "@cc/utils/*": ["src/utils/*"],
             "@cc/app/shared/*": ["src/app/shared/*"],
-            "@cc/app/api/*": ["src/app/api/*"]
+            "@cc/app/api/*": ["src/app/api/*"],
+            "thrift": ["node_modules/@vality/woody/dist/thrift"],
+            "node-int64": ["node_modules/@vality/thrift-ts/lib/int64"]
         }
     },
     "angularCompilerOptions": {

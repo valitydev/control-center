@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@rbkmoney/utils';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyService } from '../../../../../papi/party.service';
 import { ChangesetInfo } from '../../../../../sections/party-claim/changeset/changeset-infos';

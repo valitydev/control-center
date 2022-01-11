@@ -13,8 +13,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { createSentryProviders } from '@rbkmoney/sentry';
 import * as moment from 'moment';
 
 import { KeycloakTokenInfoModule } from '@cc/app/shared/services';
@@ -92,7 +90,6 @@ moment.locale('en');
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
         { provide: DIALOG_CONFIG, useValue: DEFAULT_DIALOG_CONFIG },
-        ...createSentryProviders([Router], { logErrors: true }),
     ],
     bootstrap: [AppComponent],
 })

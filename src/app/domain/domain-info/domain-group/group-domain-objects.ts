@@ -1,4 +1,4 @@
-import { Field } from 'thrift-ts';
+import { Field } from '@vality/thrift-ts';
 
 import { clearNullFields } from '@cc/utils/thrift-utils';
 

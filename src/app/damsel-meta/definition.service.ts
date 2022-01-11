@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Field } from '@vality/thrift-ts';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { Field } from 'thrift-ts';
 
 import { Reference } from '../thrift-services/damsel/gen-model/domain';
 import { ASTDefinition } from './model';

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@rbkmoney/utils';
 import { BehaviorSubject, merge, of, Subject } from 'rxjs';
 import { catchError, filter, shareReplay, startWith, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyService } from '../../../papi/party.service';
 import { PartyID, ShopID } from '../../../thrift-services/damsel/gen-model/domain';

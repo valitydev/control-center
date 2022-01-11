@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FetchResult, PartialFetcher } from '@rbkmoney/partial-fetcher';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
 import { FistfulStatisticsService } from '../../../../../thrift-services/fistful/fistful-stat.service';
 import { StatDepositRevert } from '../../../../../thrift-services/fistful/gen-model/fistful_stat';

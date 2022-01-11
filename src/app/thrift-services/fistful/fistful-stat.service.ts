@@ -1,8 +1,8 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
-import { FetchResult } from '@rbkmoney/partial-fetcher';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { FetchResult } from '@cc/app/shared/services';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
 import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';

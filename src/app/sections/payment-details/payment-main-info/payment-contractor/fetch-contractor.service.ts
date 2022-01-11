@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { progress } from '@rbkmoney/utils';
 import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyService } from '../../../../papi/party.service';
 import { ContractID, PartyID } from '../../../../thrift-services/damsel/gen-model/domain';

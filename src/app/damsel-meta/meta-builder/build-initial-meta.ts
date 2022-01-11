@@ -1,4 +1,4 @@
-import { Enums, Field, JsonAST, Structs, TypeDefs, Unions } from 'thrift-ts';
+import { Enums, Field, JsonAST, Structs, TypeDefs, Unions } from '@vality/thrift-ts';
 
 import {
     ASTDefinition,

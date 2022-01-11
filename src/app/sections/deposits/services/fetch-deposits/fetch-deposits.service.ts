@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FetchResult, PartialFetcher } from '@rbkmoney/partial-fetcher';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
+import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 import { booleanDelay } from '@cc/utils/boolean-delay';
 
 import { FistfulStatisticsService } from '../../../../thrift-services/fistful/fistful-stat.service';

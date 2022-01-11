@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import Int64 from '@vality/thrift-ts/lib/int64';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import Int64 from 'thrift-ts/lib/int64';
 
 import { ClaimManagementService } from '../../../../thrift-services/damsel/claim-management.service';
 import { Modification } from '../../../../thrift-services/damsel/gen-model/claim_management';

@@ -1,4 +1,4 @@
-import type { ListType, MapType, SetType, ThriftType, ValueType } from 'thrift-ts';
+import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
 
 export const PRIMITIVE_TYPES = [
     'int',

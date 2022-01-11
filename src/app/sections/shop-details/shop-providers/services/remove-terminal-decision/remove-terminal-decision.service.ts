@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@rbkmoney/utils';
 import { combineLatest, EMPTY, merge, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
+import { progress } from '@cc/app/shared/custom-operators';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { ProviderService } from '../../../../../thrift-services/damsel';
