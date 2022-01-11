@@ -87,7 +87,7 @@
     "ank-proto": "github:valitydev/ank-proto#d638e44eb8632fd62f0d6730294e51637babcc78",
     "chalk": "^4.1.0",
     "codelyzer": "^6.0.0",
-    "concurrently": "^6.2.0",
+    "concurrently": "^6.5.1",
     "damsel": "github:valitydev/damsel#b7f092ef41db810b79c03ad4f1f229d79091e172",
     "deanonimus-proto": "github:valitydev/deanonimus-proto#b9fab4fd1c7690186efdc5974d113c82bd5765e9",
     "del": "^5.1.0",

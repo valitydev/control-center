@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { progress } from '@cc/app/shared/custom-operators';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
 import { PartyID, ShopID } from '../../../../../thrift-services/damsel/gen-model/domain';

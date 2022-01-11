@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { progress } from '@cc/app/shared/custom-operators';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators';
 import { map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 import Int64 from 'thrift-ts/lib/int64';
 
 import { DepositManagementService } from '@cc/app/api/fistful';
+import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { toMinor } from '@cc/utils/to-minor';
 

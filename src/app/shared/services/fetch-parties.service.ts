@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { progress } from '@cc/app/shared/custom-operators';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { DeanonimusService } from '../../thrift-services/deanonimus';
 import { Party } from '../../thrift-services/deanonimus/gen-model/deanonimus';

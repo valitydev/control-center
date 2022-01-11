@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@cc/app/shared/custom-operators';
 import { of, ReplaySubject } from 'rxjs';
 import { catchError, filter, shareReplay, switchMap } from 'rxjs/operators';
 import Int64 from 'thrift-ts/lib/int64';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
 import { PartyID } from '../../thrift-services/damsel/gen-model/domain';

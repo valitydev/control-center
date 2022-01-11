@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { progress } from '@cc/app/shared/custom-operators';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { AddDecisionToProvider, ProviderService } from '../../../../../../thrift-services/damsel';
 import { DomainCacheService } from '../../../../../../thrift-services/damsel/domain-cache.service';

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { progress } from '@cc/app/shared/custom-operators';
 import get from 'lodash-es/get';
 import { BehaviorSubject, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, pluck, switchMap, tap } from 'rxjs/operators';
 import * as uuid from 'uuid/v4';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { KeycloakTokenInfoService } from '../../../../keycloak-token-info.service';
 import { Modification } from '../../../../thrift-services/damsel/gen-model/claim_management';

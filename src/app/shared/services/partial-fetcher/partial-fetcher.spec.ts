@@ -14,7 +14,10 @@ function createScheduler() {
 
 describe('PartialFetch', () => {
     class PartialFetched extends PartialFetcher<any, any> {
-        constructor(private fetchFn: (params?: any, continuationToken?: string) => Observable<any>, debounce?: number) {
+        constructor(
+            private fetchFn: (params?: any, continuationToken?: string) => Observable<any>,
+            debounce?: number
+        ) {
             super(debounce);
         }
 
@@ -74,7 +77,10 @@ describe('PartialFetch', () => {
     it('should reload with old params', () => {
         createScheduler().run(({ cold, expectObservable }) => {
             const partialFetched = new PartialFetched(
-                (params) => cold('--x|', { x: { result: [params], continuationToken: 'token' } as FetchResult<any> }),
+                (params) =>
+                    cold('--x|', {
+                        x: { result: [params], continuationToken: 'token' } as FetchResult<any>,
+                    }),
                 0
             );
             partialFetched.search('params');

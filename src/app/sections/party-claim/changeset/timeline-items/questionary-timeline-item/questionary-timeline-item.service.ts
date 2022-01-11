@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { progress } from '@cc/app/shared/custom-operators';
 import { merge, Observable, of, Subject } from 'rxjs';
 import { catchError, pluck, shareReplay, switchMap } from 'rxjs/operators';
+
+import { progress } from '@cc/app/shared/custom-operators';
 
 import { AnkService } from '../../../../../thrift-services/ank/ank.service';
 import {

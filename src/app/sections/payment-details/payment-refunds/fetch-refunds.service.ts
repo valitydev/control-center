@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 import { booleanDelay } from '@cc/utils/boolean-delay';
 
 import { QueryDsl } from '../../../query-dsl';

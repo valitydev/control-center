@@ -32,7 +32,12 @@ module.exports = {
             'import/order': [
                 'error',
                 {
-                    groups: [['builtin', 'external'], 'internal', ['parent', 'sibling', 'index'], 'object'],
+                    groups: [
+                        ['builtin', 'external'],
+                        'internal',
+                        ['parent', 'sibling', 'index'],
+                        'object',
+                    ],
                     pathGroups: internalPathsPattern
                         ? [
                               {
