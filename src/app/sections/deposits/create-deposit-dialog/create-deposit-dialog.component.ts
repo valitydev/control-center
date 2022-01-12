@@ -6,7 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { AppAuthGuardService, DepositRole } from '@cc/app/shared/services';
 
-import { CURRENCIES } from '../constants/currencies';
+import { ConfigService } from '../../../core/config.service';
 import { CreateDepositService } from './services/create-deposit/create-deposit.service';
 
 @UntilDestroy()
@@ -19,7 +19,7 @@ import { CreateDepositService } from './services/create-deposit/create-deposit.s
 export class CreateDepositDialogComponent implements OnInit {
     form: FormGroup;
 
-    currencies = CURRENCIES;
+    currencies = this.configService.config.constants.currencies;
 
     depositCreated$ = this.createDepositService.depositCreated$;
     isLoading$ = this.createDepositService.isLoading$;
@@ -31,7 +31,8 @@ export class CreateDepositDialogComponent implements OnInit {
         private createDepositService: CreateDepositService,
         private snackBar: MatSnackBar,
         private dialogRef: MatDialogRef<CreateDepositDialogComponent>,
-        private authGuardService: AppAuthGuardService
+        private authGuardService: AppAuthGuardService,
+        private configService: ConfigService
     ) {}
 
     ngOnInit() {
