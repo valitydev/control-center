@@ -17,23 +17,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Init
-        uses: ./.github/actions/init
-
       - name: Checkout GitHub Action Deploy Docker Repo
         uses: actions/checkout@v2
         with:
           repository: valitydev/action-deploy-docker
-          ref: v1.0.14
+          ref: v1.0.16
           path: .github/actions/action-deploy-docker
 
-      - name: Deploy Image
+      - name: Init
+        uses: ./.github/actions/init
+
+      - name: Deploy image
         uses: ./.github/actions/action-deploy-docker
         with:
           registry-username: ${{ github.actor }}
           registry-access-token: ${{ secrets.GITHUB_TOKEN }}
-          aws-ecr-access-key: ${{ secrets.ECR_ACCESS_KEY }}
-          aws-ecr-secret-key: ${{ secrets.ECR_SECRET_KEYS }}
-          aws-region: ${{ secrets.AWS_REGION }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
