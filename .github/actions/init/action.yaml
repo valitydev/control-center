@@ -1,4 +1,5 @@
 name: Init
+description: Init
 runs:
   using: composite
   steps:
@@ -13,6 +14,8 @@ runs:
 
     - name: Install Packages
       run: npm ci
+      shell: bash
 
     - name: Compile Thrift
       run: npm run compile
+      shell: bash
