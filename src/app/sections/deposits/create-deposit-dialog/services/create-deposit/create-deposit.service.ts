@@ -13,11 +13,11 @@ import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
 import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
+import { ConfigService } from '../../../../../core/config.service';
 import { FistfulAdminService } from '../../../../../thrift-services/fistful/fistful-admin.service';
 import { FistfulStatisticsService } from '../../../../../thrift-services/fistful/fistful-stat.service';
 import { DepositParams } from '../../../../../thrift-services/fistful/gen-model/fistful_admin';
 import { StatDeposit } from '../../../../../thrift-services/fistful/gen-model/fistful_stat';
-import { CURRENCIES } from '../../../constants/currencies';
 import { SearchParams } from '../../../types/search-params';
 
 @Injectable()
@@ -81,7 +81,8 @@ export class CreateDepositService {
         private fistfulStatisticsService: FistfulStatisticsService,
         private keycloakService: KeycloakService,
         private fb: FormBuilder,
-        private idGenerator: UserInfoBasedIdGeneratorService
+        private idGenerator: UserInfoBasedIdGeneratorService,
+        private configService: ConfigService
     ) {}
 
     createDeposit() {
@@ -92,7 +93,7 @@ export class CreateDepositService {
         return this.fb.group({
             destination: ['', Validators.required],
             amount: ['', [Validators.required, Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
-            currency: [CURRENCIES[0], Validators.required],
+            currency: [this.configService.config.constants.currencies[0], Validators.required],
         });
     }
 
