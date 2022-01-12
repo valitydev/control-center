@@ -1,31 +1,31 @@
 name: Build & Push
 on:
-  push:
-    branches:
-      - 'master'
-      - 'main'
+    push:
+        branches:
+            - 'master'
+            - 'main'
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
 
-      - name: Init
-        uses: ./.github/actions/init
+            - name: Init
+              uses: ./.github/actions/init
 
-      - name: Check & Build
-        run: npm run ci:build
+            - name: Check & Build
+              run: npm run ci:build
 
-      - name: Deploy image
-        uses: valitydev/action-deploy-docker@v1.0.16
-        with:
-          registry-username: ${{ github.actor }}
-          registry-access-token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile-path: .
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            - name: Deploy image
+              uses: valitydev/action-deploy-docker@v1.0.16
+              with:
+                  registry-username: ${{ github.actor }}
+                  registry-access-token: ${{ secrets.GITHUB_TOKEN }}
+                  dockerfile-path: .
+              env:
+                  ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
