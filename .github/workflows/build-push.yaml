@@ -1,32 +1,36 @@
-name: Build
+name: Build & Push
 on:
   push:
-    branches: [master]
+    branches:
+      - 'master'
+      - 'main'
   pull_request:
     branches: ["*"]
-
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Init
+        uses: ./.github/actions/init
+
+      - name: Checkout GitHub Action Deploy Docker Repo
         uses: actions/checkout@v2
-
-      - name: Init Thrift
-        uses: valitydev/action-setup-thrift@v0.0.1
-
-      - name: Init NodeJS
-        uses: actions/setup-node@v2
         with:
-          node-version: '16.4.2'
-          cache: 'npm'
+          repository: valitydev/action-deploy-docker
+          ref: v1.0.14
+          path: .github/actions/action-deploy-docker
 
-      - name: Install Packages
-        run: npm ci
-
-      - name: Compile Thrift
-        run: npm run compile
-
-      - name: Check & Build
-        run: npm run ci:build
+      - name: Deploy Image
+        uses: ./.github/actions/action-deploy-docker
+        with:
+          registry-username: ${{ github.actor }}
+          registry-access-token: ${{ secrets.GITHUB_TOKEN }}
+          aws-ecr-access-key: ${{ secrets.ECR_ACCESS_KEY }}
+          aws-ecr-secret-key: ${{ secrets.ECR_SECRET_KEYS }}
+          aws-region: ${{ secrets.AWS_REGION }}
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}

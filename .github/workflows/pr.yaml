@@ -3,7 +3,6 @@ on:
   pull_request:
     types: [edited, opened, synchronize, reopened]
     branches: [disabled]
-
 jobs:
   title-check:
     runs-on: ubuntu-latest

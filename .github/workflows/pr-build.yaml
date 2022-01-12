@@ -1,0 +1,14 @@
+name: PR Build
+on:
+  pull_request:
+    branches: ["disabled"]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Init
+        uses: ./.github/actions/init
+
+      - name: Check & Build
+        run: npm run ci:build
