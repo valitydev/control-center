@@ -2,9 +2,6 @@ name: Init
 runs:
   using: composite
   steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
     - name: Init Thrift
       uses: valitydev/action-setup-thrift@v0.0.1
 
