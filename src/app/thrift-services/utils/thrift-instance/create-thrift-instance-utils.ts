@@ -26,6 +26,6 @@ export function createThriftInstanceUtils<T extends { [N in string]: any }>(
         createThriftInstance: <V>(namespace: keyof T, name: ValueType, value: V) =>
             createThriftInstance(metadata, namespaces, namespace as string, name, value),
         thriftInstanceToObject: <V>(namespace: keyof T, name: ValueType, value: V) =>
-            thriftInstanceToObject(metadata, namespaces, namespace as string, name, value),
+            thriftInstanceToObject(metadata, namespace as string, name, value),
     };
 }

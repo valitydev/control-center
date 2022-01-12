@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
@@ -13,33 +13,22 @@ import {
     Country,
     TradeBloc,
 } from '../gen-model/dominant_cache';
+import { ThriftInstanceProvider } from '../thrift-instance-provider';
 import * as DominantCache from './gen-nodejs/DominantCache';
-
-// class Thrift {
-//     constructor() {
-
-//     }
-
-//     toThriftInstance<V>(namespace: string, type: ValueType, plainObject: V): V {
-//         return null;
-//     }
-
-//     toPlainObject<V>(namespace: string, type: ValueType, thriftValue: V): V {
-//         return null;
-//     }
-// }
 
 @Injectable({ providedIn: 'root' })
 export class DominantCacheService extends ThriftConnector {
-    constructor(protected keycloakTokenInfoService: KeycloakTokenInfoService) {
+    constructor(
+        protected keycloakTokenInfoService: KeycloakTokenInfoService,
+        private thriftInstanceProvider: ThriftInstanceProvider
+    ) {
         super(keycloakTokenInfoService, DominantCache, '/v1/dominant/cache');
     }
 
     getCategories(): Observable<Category[]> {
         return this.callThriftServiceMethod<Category[]>('GetCategories').pipe(
-            map((v) =>
-                dominantCacheInstanceToObject(
-                    'dominant_cache',
+            switchMap((v) =>
+                this.thriftInstanceProvider.toPlainObject(
                     { name: 'list', valueType: 'Category' },
                     v
                 )

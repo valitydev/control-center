@@ -8,11 +8,10 @@ import {
     StructureType,
     STRUCTURE_TYPES,
 } from './namespace-type';
-import { ThriftAstMetadata, ThriftNamespaceContext } from './types';
+import { ThriftAstMetadata } from './types';
 
 export function thriftInstanceToObject<V extends any>(
     metadata: ThriftAstMetadata[],
-    namespaceContext: ThriftNamespaceContext,
     namespaceName: string,
     indefiniteType: ValueType,
     value: V
@@ -22,7 +21,7 @@ export function thriftInstanceToObject<V extends any>(
     }
     const { namespace, type } = parseNamespaceType(indefiniteType, namespaceName);
     const internalThriftInstanceToObject = (t: ValueType, v: V) =>
-        thriftInstanceToObject(metadata, namespaceContext, namespace, t, v);
+        thriftInstanceToObject(metadata, namespace, t, v);
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
