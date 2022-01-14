@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { createThriftInstance, thriftInstanceToObject } from '../../thrift-services';
-import { ThriftMetaLoader } from '../thrift-meta-loader';
+import { ThriftMetaLoader } from './thrift-meta-loader.service';
 import { ProviderMethods, ProviderSettings } from './types';
 
 @Injectable({ providedIn: 'root' })

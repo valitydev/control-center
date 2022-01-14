@@ -3,11 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
-import { ThriftAstMetadata } from '../thrift-services';
-
-interface ApiMetadata {
-    [name: string]: ThriftAstMetadata[];
-}
+import { ThriftAstMetadata } from '../../thrift-services';
+import { ApiMetadata } from './types/api-metadata';
 
 @Injectable({ providedIn: 'root' })
 export class ThriftMetaLoader {
