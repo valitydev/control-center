@@ -4,3 +4,4 @@ export * from './thrift-instance-to-object';
 export * from './namespace-type';
 export * from './object-to-json';
 export * from './types';
+export * from './to-list-value-type';

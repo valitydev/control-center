@@ -9,11 +9,11 @@ import {
     StructureType,
     STRUCTURE_TYPES,
 } from './namespace-type';
-import { ThriftAstMetadata, ThriftNamespaceContext } from './types';
+import { ThriftAstMetadata, ThriftInstanceContext } from './types';
 
 export function createThriftInstance<V extends any>(
     metadata: ThriftAstMetadata[],
-    namespaceContext: ThriftNamespaceContext,
+    instanceContext: ThriftInstanceContext,
     namespaceName: string,
     indefiniteType: ValueType,
     value: V
@@ -23,7 +23,7 @@ export function createThriftInstance<V extends any>(
     }
     const { namespace, type } = parseNamespaceType(indefiniteType, namespaceName);
     const internalCreateThriftInstance = (t: ValueType, v: V) =>
-        createThriftInstance(metadata, namespaceContext, namespace, t, v);
+        createThriftInstance(metadata, instanceContext, namespace, t, v);
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
@@ -74,7 +74,7 @@ export function createThriftInstance<V extends any>(
                     const typedefMeta = (typeMeta as TypedefType).type;
                     return internalCreateThriftInstance(typedefMeta, value);
                 }
-                const instance = new namespaceContext[namespace][type]();
+                const instance = new instanceContext[namespace][type]();
                 for (const [k, v] of Object.entries(value)) {
                     type StructOrUnionType = Field[];
                     const fieldTypeMeta = (typeMeta as StructOrUnionType).find((m) => m.name === k);
