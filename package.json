@@ -1,6 +1,7 @@
 {
   "name": "control-center",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
     "postinstall": "ngcc",
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
@@ -19,7 +20,6 @@
     "ci:build": "npm run parallel-cmd -- --names PRETTIER,LINT,BUILD \"npm run prettier\" \"npm run lint-errors\" \"npm run build\"",
     "parallel-cmd": "concurrently --kill-others-on-fail --prefix-colors magenta,green,red,yellow,blue"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~13.1.2",
     "@angular/cdk": "^13.1.2",
