@@ -34,7 +34,7 @@ import { InputMixinBase } from './input-base';
 @Directive({ selector: 'cc-custom-form-control' })
 /* eslint-disable @angular-eslint/no-conflicting-lifecycle */
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class CustomFormControl<I extends any = any, P extends any = I> extends InputMixinBase
+export class CustomFormControl<I = any, P = I> extends InputMixinBase
     implements
         AfterViewInit,
         ControlValueAccessor,

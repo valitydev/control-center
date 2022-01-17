@@ -10,7 +10,7 @@ import {
     STRUCTURE_TYPES,
 } from './namespace-type';
 
-export function createThriftInstance<T extends { [N in string]: any }, V extends any>(
+export function createThriftInstance<T extends { [N in string]: any }, V>(
     metadata: any[],
     namespaces: T,
     indefiniteType: ValueType,

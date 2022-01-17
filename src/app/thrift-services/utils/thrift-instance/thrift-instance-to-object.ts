@@ -9,7 +9,7 @@ import {
     STRUCTURE_TYPES,
 } from './namespace-type';
 
-export function thriftInstanceToObject<T extends { [N in string]: any }, V extends any>(
+export function thriftInstanceToObject<T extends { [N in string]: any }, V>(
     metadata: any[],
     namespaces: T,
     indefiniteType: ValueType,
