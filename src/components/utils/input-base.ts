@@ -1,9 +1,5 @@
 import { FormGroupDirective, NgControl, NgForm } from '@angular/forms';
-import {
-    CanUpdateErrorStateCtor,
-    ErrorStateMatcher,
-    mixinErrorState,
-} from '@angular/material/core';
+import { ErrorStateMatcher, mixinErrorState } from '@angular/material/core';
 
 export class InputBase {
     constructor(
@@ -14,7 +10,4 @@ export class InputBase {
     ) {}
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-export const InputMixinBase: CanUpdateErrorStateCtor & typeof InputBase = mixinErrorState(
-    InputBase
-);
+export const INPUT_MIXIN_BASE = mixinErrorState(InputBase);

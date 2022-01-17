@@ -26,20 +26,20 @@ export function createThriftInstance<T extends { [N in string]: any }, V>(
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
-                return new Map(
-                    Array.from(value as Map<any, any>).map(([k, v]) => [
+                return (new Map(
+                    Array.from((value as unknown) as Map<any, any>).map(([k, v]) => [
                         internalCreateThriftInstance(type.keyType, k),
                         internalCreateThriftInstance(type.valueType, v),
                     ])
-                ) as V;
+                ) as unknown) as V;
             case 'list':
-                return (value as any[]).map((v) =>
+                return (((value as unknown) as any[]).map((v) =>
                     internalCreateThriftInstance(type.valueType, v)
-                ) as V;
+                ) as unknown) as V;
             case 'set':
-                return Array.from(value as Set<any>).map((v) =>
+                return (Array.from((value as unknown) as Set<any>).map((v) =>
                     internalCreateThriftInstance(type.valueType, v)
-                ) as V;
+                ) as unknown) as V;
             default:
                 throw new Error('Unknown complex thrift type');
         }
