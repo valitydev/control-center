@@ -110,7 +110,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "machinegun_proto": "github:valitydev/machinegun_proto#d814d6948d4ff13f6f41d12c6613f59c805750b2",
     "messages-proto": "github:valitydev/messages-proto#a177efb574136961bcd0a8236b4bfc425264de29",
-    "ngx-build-plus": "^12.2.0",
+    "ngx-build-plus": "^13.0.1",
     "prettier": "~2.0.4",
     "skipper-proto": "github:valitydev/skipper-proto#d33d87cd9080925861f755b11ee1f16378076f74",
     "ts-mockito": "^2.6.1",
