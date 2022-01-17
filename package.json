@@ -7,9 +7,11 @@
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
-    "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1633 --cache",
-    "lint-errors": "npm run lint -- --quiet",
-    "lint-fix": "npm run lint -- --fix",
+    "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1364",
+    "lint-cache-cmd": "npm run lint-cmd -- --cache",
+    "lint": "npm run lint-cache-cmd",
+    "lint-fix": "npm run lint-cache-cmd -- --fix",
+    "lint-errors": "npm run lint-cache-cmd -- --quiet",
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier:fix": "npm run prettier-preset -- --write",
@@ -17,7 +19,7 @@
     "compile-thrift-deprecated": "ts-node --project tools/tsconfig.json tools/compile-thrift-deprecated",
     "compile-thrift": "ts-node --project tools/tsconfig.json tools/compile-thrift",
     "compile": "npm run parallel-cmd -- --names THRIFT,THRIFT_DEP \"npm run compile-thrift\" \"npm run compile-thrift-deprecated\"",
-    "ci:build": "npm run parallel-cmd -- --names PRETTIER,LINT,BUILD \"npm run prettier\" \"npm run lint-errors\" \"npm run build\"",
+    "ci:build": "npm run parallel-cmd -- --names PRETTIER,LINT,BUILD \"npm run prettier\" \"npm run lint-cmd -- --quiet\" \"npm run build\"",
     "parallel-cmd": "concurrently --kill-others-on-fail --prefix-colors magenta,green,red,yellow,blue"
   },
   "dependencies": {
