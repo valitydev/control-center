@@ -13,7 +13,7 @@
     "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 2070 --cache",
     "lint-errors": "npm run lint -- --quiet --format codeframe",
     "lint-fix": "npm run lint -- --fix",
-    "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc}\"",
+    "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier:fix": "npm run prettier-preset -- --write",
     "fix": "npm run lint-fix; npm run prettier:fix",
