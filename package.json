@@ -7,7 +7,7 @@
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
     "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1633 --cache",
-    "lint-errors": "npm run lint -- --quiet --format codeframe",
+    "lint-errors": "npm run lint -- --quiet",
     "lint-fix": "npm run lint -- --fix",
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
