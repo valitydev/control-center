@@ -9,3 +9,4 @@ src/**/gen-nodejs/
 src/**/meta-*.json
 src/assets/api-meta/
 src/assets/icons/
+.angular
