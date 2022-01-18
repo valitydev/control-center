@@ -9,7 +9,7 @@ import {
     STRUCTURE_TYPES,
 } from './namespace-type';
 
-export function thriftInstanceToObject<T extends { [N in string]: any }, V extends any>(
+export function thriftInstanceToObject<T extends { [N in string]: any }, V>(
     metadata: any[],
     namespaces: T,
     indefiniteType: ValueType,
@@ -25,29 +25,29 @@ export function thriftInstanceToObject<T extends { [N in string]: any }, V exten
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
-                return new Map(
-                    Array.from(value as Map<any, any>).map(([k, v]) => [
+                return (new Map(
+                    Array.from((value as unknown) as Map<any, any>).map(([k, v]) => [
                         internalThriftInstanceToObject(type.keyType, k),
                         internalThriftInstanceToObject(type.valueType, v),
                     ])
-                ) as V;
+                ) as unknown) as V;
             case 'list':
-                return (value as any[]).map((v) =>
+                return (((value as unknown) as any[]).map((v) =>
                     internalThriftInstanceToObject(type.valueType, v)
-                ) as V;
+                ) as unknown) as V;
             case 'set':
-                return new Set(
-                    Array.from(value as Set<any>).map((v) =>
+                return (new Set(
+                    Array.from((value as unknown) as Set<any>).map((v) =>
                         internalThriftInstanceToObject(type.valueType, v)
                     )
-                ) as V;
+                ) as unknown) as V;
             default:
                 throw new Error('Unknown complex thrift type');
         }
     } else if (isPrimitiveType(type)) {
         switch (type) {
             case 'i64':
-                return (value as Int64).toNumber() as V;
+                return (((value as unknown) as Int64).toNumber() as unknown) as V;
             default:
                 return value;
         }

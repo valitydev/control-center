@@ -22,6 +22,7 @@ const baseTsRules = {
         '@typescript-eslint/unbound-method': 'warn',
         '@typescript-eslint/restrict-plus-operands': 'warn',
         '@typescript-eslint/restrict-template-expressions': 'warn',
+        '@typescript-eslint/no-unsafe-argument': 'warn',
     },
 };
 
