@@ -3,7 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, switchMap, shareReplay, tap } from 'rxjs/operators';
 
-import { ManagementService as WalletManagementService } from '@cc/app/api/fistful';
+import { WalletManagementService } from '@cc/app/api/fistful';
 
 @UntilDestroy()
 @Injectable()
@@ -37,7 +37,7 @@ export class ReceiveWalletService {
 
     constructor(private walletManagementService: WalletManagementService) {}
 
-    receiveWallet(id: string) {
+    receiveWallet(id: string): void {
         this.receiveWallet$.next(id);
     }
 }

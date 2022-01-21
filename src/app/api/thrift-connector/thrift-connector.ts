@@ -32,9 +32,9 @@ export class ThriftConnector {
         );
     }
 
-    protected callThriftServiceMethod<T, P extends any[] = []>(
+    protected callThriftServiceMethod<T>(
         serviceMethodName: string,
-        ...args: P
+        ...args: unknown[]
     ): Observable<T> {
         return this.connection$.pipe(
             first(),

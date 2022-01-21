@@ -57,7 +57,7 @@ export function thriftInstanceToObject<V extends any>(
         (t) => namespaceMeta.ast[t][type]
     );
     if (!structureType || !STRUCTURE_TYPES.includes(structureType)) {
-        throw new Error('Unknown thrift structure type');
+        throw new Error(`Unknown thrift structure type: ${type}`);
     }
     const typeMeta = namespaceMeta.ast[structureType][type];
     switch (structureType) {
