@@ -28,13 +28,13 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import * as uuid from 'uuid';
 
-import { InputMixinBase } from './input-base';
+import { INPUT_MIXIN_BASE } from './input-base';
 
 // eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: 'cc-custom-form-control' })
 /* eslint-disable @angular-eslint/no-conflicting-lifecycle */
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class CustomFormControl<I extends any = any, P extends any = I> extends InputMixinBase
+export class CustomFormControl<I = any, P = I> extends INPUT_MIXIN_BASE
     implements
         AfterViewInit,
         ControlValueAccessor,

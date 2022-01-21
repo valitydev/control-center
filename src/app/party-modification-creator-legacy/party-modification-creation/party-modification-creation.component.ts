@@ -7,7 +7,7 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControlStatus, FormGroup, Validators } from '@angular/forms';
 
 import { ActionType, ModificationAction } from '../../claim/modification-action';
 import { ContractorModification } from '../../thrift-services/damsel/gen-model/claim_management';
@@ -45,7 +45,7 @@ export class PartyModificationCreationComponent implements OnInit, OnChanges {
     valueChanges: EventEmitter<PartyModification> = new EventEmitter();
 
     @Output()
-    statusChanges: EventEmitter<'VALID' | 'INVALID'> = new EventEmitter();
+    statusChanges: EventEmitter<FormControlStatus> = new EventEmitter();
 
     actionTypes = ActionType;
     shopModificationNames = ShopModificationName;
