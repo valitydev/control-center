@@ -10,7 +10,7 @@ import {
 } from './namespace-type';
 import { ThriftAstMetadata } from './types';
 
-export function thriftInstanceToObject<V extends any>(
+export function thriftInstanceToObject<V>(
     metadata: ThriftAstMetadata[],
     namespaceName: string,
     indefiniteType: ValueType,

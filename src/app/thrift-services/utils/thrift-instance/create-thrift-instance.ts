@@ -11,7 +11,7 @@ import {
 } from './namespace-type';
 import { ThriftAstMetadata, ThriftInstanceContext } from './types';
 
-export function createThriftInstance<V extends any>(
+export function createThriftInstance<V>(
     metadata: ThriftAstMetadata[],
     instanceContext: ThriftInstanceContext,
     namespaceName: string,
