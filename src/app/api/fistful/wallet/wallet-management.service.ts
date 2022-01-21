@@ -5,8 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
 import { ThriftConnector } from '../../thrift-connector';
-import { WalletState, EventRange as EventRangeModel } from '../gen-model/wallet';
-import { EventRange } from './gen-nodejs/base_types';
+import { WalletState, EventRange } from '../gen-model/wallet';
 import * as Management from './gen-nodejs/Management';
 import { WalletInstanceProvider } from './wallet-instance-provider.service';
 
@@ -21,7 +20,7 @@ export class WalletManagementService extends ThriftConnector {
         super(keycloakTokenInfoService, Management, '/v1/wallet');
     }
 
-    get(walletID: string, range: EventRangeModel = new EventRange()): Observable<WalletState> {
+    get(walletID: string, range: EventRange = {}): Observable<WalletState> {
         return this.instanceProvider.methods$.pipe(
             switchMap(({ toPlainObject, toThriftInstance }) =>
                 this.callThriftServiceMethod<WalletState>(
