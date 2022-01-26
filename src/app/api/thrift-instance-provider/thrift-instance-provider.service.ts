@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import partial from 'lodash-es/partial';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 import { createThriftInstance, thriftInstanceToObject } from '../../thrift-services';
 import { ThriftMetaLoader } from './thrift-meta-loader.service';
@@ -23,7 +23,7 @@ export abstract class ThriftInstanceProvider {
                     defaultNamespace
                 ),
             })),
-            shareReplay({ bufferSize: 1, refCount: true })
+            first()
         );
     }
 
