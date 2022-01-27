@@ -84,7 +84,7 @@
     "@types/uuid": "~3.4.3",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "~5.8.0",
-    "ank-proto": "github:valitydev/ank-proto#d638e44eb8632fd62f0d6730294e51637babcc78",
+    "ank-proto": "github:valitydev/ank-proto#912e47addef647b9bc532d44c79ce59fe9a78220",
     "chalk": "^4.1.0",
     "concurrently": "^6.5.1",
     "damsel": "github:valitydev/damsel#827f692653e8110b0280a4608ff540d2662842ce",
