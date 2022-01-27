@@ -7,11 +7,6 @@ export enum PaymentAdjustmentRole {
     Create = 'adjustment:create',
 }
 
-export enum ChargebackRole {
-    Manage = 'manage_chargebacks',
-    View = 'view_chargebacks',
-}
-
 export enum OperationRole {
     SearchOperations = 'search_ops',
     SearchPayments = 'search_payments',

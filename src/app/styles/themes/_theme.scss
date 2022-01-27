@@ -4,7 +4,6 @@
 @import '../../shared/components/shared-components-themes';
 
 @import '../../sections/party/party-theme';
-@import '../../sections/chargeback-details/chargeback-details-theme';
 @import '../../sections/payment-routing-rules/payment-routing-rules-theme';
 @import '../../sections/party-claim/party-claim-theme';
 
@@ -14,12 +13,10 @@
     body.#{map-get($theme, name)} {
         @include mat.all-component-themes($theme);
         @include cc-party-theme($theme);
-        @include cc-chargeback-details-theme($theme);
         @include cc-components-themes($theme);
         @include cc-shared-components-themes($theme);
         @include cc-payment-routing-rules-theme($theme);
         @include cc-party-claim-theme($theme);
-        @include cc-extract-party-modifications-theme($theme);
         @include cc-not-found-theme($theme);
     }
 }

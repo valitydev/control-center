@@ -18,24 +18,6 @@
                 ></cc-payment-refunds>
             </mat-card-content>
         </mat-card>
-        <mat-card *ngIf="userHasRole(chargebackRole.View)" fxLayout="column" fxLayoutGap="32px">
-            <div fxLayout fxLayoutAlign="space-between">
-                <h2 class="cc-headline">Chargebacks</h2>
-                <button
-                    *ngIf="userHasRole(chargebackRole.Manage)"
-                    mat-raised-button
-                    color="primary"
-                    (click)="createChargeback()"
-                >
-                    CREATE CHARGEBACK
-                </button>
-            </div>
-            <cc-chargebacks-table
-                [partyID]="partyID$ | async"
-                [searchParams]="chargebackSearchParams$ | async"
-                [displayedColumns]="['createdAt', 'status', 'stage', 'levyAmount', 'actions']"
-            ></cc-chargebacks-table>
-        </mat-card>
     </ng-container>
     <div *ngIf="isLoading$ | async" fxLayout fxLayoutAlign="center center">
         <mat-spinner diameter="64"></mat-spinner>

@@ -31,13 +31,6 @@
                 (menuItemSelected)="menuItemSelected($event, i)"
                 [menuConfig]="partyModMenuConfig"
             ></cc-party-modification-timeline-item>
-            <cc-questionary-timeline-item
-                *ngIf="info.type === changesetInfoTypes.documentModification"
-                [changesetInfo]="info"
-                [partyID]="partyID"
-                (menuItemSelected)="menuItemSelected($event, i)"
-                [menuConfig]="questionaryMenuConfig"
-            ></cc-questionary-timeline-item>
             <cc-status-timeline-item
                 *ngIf="info.type === changesetInfoTypes.statusModification"
                 [changesetInfo]="info"
