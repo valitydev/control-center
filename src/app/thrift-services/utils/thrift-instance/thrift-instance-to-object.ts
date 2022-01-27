@@ -1,4 +1,4 @@
-import type { Int64, ValueType } from '@vality/thrift-ts';
+import type { Field, Int64, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 
 import {
@@ -8,20 +8,20 @@ import {
     StructureType,
     STRUCTURE_TYPES,
 } from './namespace-type';
+import { ThriftAstMetadata } from './types';
 
-export function thriftInstanceToObject<T extends { [N in string]: any }, V>(
-    metadata: any[],
-    namespaces: T,
+export function thriftInstanceToObject<V>(
+    metadata: ThriftAstMetadata[],
+    namespaceName: string,
     indefiniteType: ValueType,
-    value: V,
-    currentNamespace?: string
+    value: V
 ): V {
     if (typeof value !== 'object' || isNil(value)) {
         return value;
     }
-    const { namespace, type } = parseNamespaceType(indefiniteType, currentNamespace);
+    const { namespace, type } = parseNamespaceType(indefiniteType, namespaceName);
     const internalThriftInstanceToObject = (t: ValueType, v: V) =>
-        thriftInstanceToObject(metadata, namespaces, t, v, namespace);
+        thriftInstanceToObject(metadata, namespace, t, v);
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
@@ -57,22 +57,29 @@ export function thriftInstanceToObject<T extends { [N in string]: any }, V>(
         (t) => namespaceMeta.ast[t][type]
     );
     if (!structureType || !STRUCTURE_TYPES.includes(structureType)) {
-        throw new Error('Unknown thrift structure type');
+        throw new Error(`Unknown thrift structure type: ${type}`);
     }
     const typeMeta = namespaceMeta.ast[structureType][type];
     switch (structureType) {
+        case 'exception':
+            throw new Error('Unsupported structure type: exception');
         case 'typedef': {
-            return internalThriftInstanceToObject(typeMeta.type, value);
+            type TypedefType = {
+                type: ValueType;
+            };
+            return internalThriftInstanceToObject((typeMeta as TypedefType).type, value);
         }
         case 'union': {
             const [key, val] = Object.entries(value).find(([, v]) => v !== null);
-            const fieldTypeMeta = typeMeta.find((m) => m.name === key);
+            type UnionType = Field[];
+            const fieldTypeMeta = (typeMeta as UnionType).find((m) => m.name === key);
             return { [key]: internalThriftInstanceToObject(fieldTypeMeta.type, val) } as any;
         }
         default: {
             const result = {} as V;
             for (const [k, v] of Object.entries(value)) {
-                const fieldTypeMeta = typeMeta.find((m) => m.name === k);
+                type StructType = Field[];
+                const fieldTypeMeta = (typeMeta as StructType).find((m) => m.name === k);
                 if (v !== null && v !== undefined) {
                     result[k] = internalThriftInstanceToObject(fieldTypeMeta.type, v);
                 }

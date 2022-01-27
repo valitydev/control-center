@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { DepositModule } from '@cc/app/api/fistful';
 import { UserInfoBasedIdGeneratorModule } from '@cc/app/shared/services/user-info-based-id-generator/user-info-based-id-generator.module';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog.component';
@@ -24,7 +23,6 @@ import { CreateRevertDialogComponent } from './create-revert-dialog.component';
         MatButtonModule,
         MatInputModule,
         UserInfoBasedIdGeneratorModule,
-        DepositModule,
     ],
     declarations: [CreateRevertDialogComponent],
 })

@@ -4,7 +4,10 @@ import difference from 'lodash-es/difference';
 import { createThriftInstance } from './create-thrift-instance';
 import { thriftInstanceToObject } from './thrift-instance-to-object';
 
-export function checkNamespaces(metadata: { name: string }[], namespaces: { [N in string]: any }) {
+export function checkNamespaces(
+    metadata: { name: string }[],
+    namespaces: { [N in string]: any }
+): void {
     const diff = difference(
         metadata.map(({ name }) => name),
         Object.keys(namespaces)
@@ -21,8 +24,8 @@ export function createThriftInstanceUtils<T extends { [N in string]: any }>(
     checkNamespaces(metadata, namespaces);
     return {
         createThriftInstance: <V>(namespace: keyof T, name: ValueType, value: V) =>
-            createThriftInstance(metadata, namespaces, name, value, namespace as string),
+            createThriftInstance(metadata, namespaces, namespace as string, name, value),
         thriftInstanceToObject: <V>(namespace: keyof T, name: ValueType, value: V) =>
-            thriftInstanceToObject(metadata, namespaces, name, value, namespace as string),
+            thriftInstanceToObject(metadata, namespace as string, name, value),
     };
 }
