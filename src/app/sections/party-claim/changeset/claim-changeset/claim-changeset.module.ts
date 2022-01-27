@@ -12,7 +12,6 @@ import { CommentTimelineItemModule } from '../timeline-items/comment-timeline-it
 import { CreatedTimelineItemModule } from '../timeline-items/created-timeline-item';
 import { FileTimelineItemModule } from '../timeline-items/file-timeline-item/file-timeline-item.module';
 import { PartyModificationTimelineItemModule } from '../timeline-items/party-modification-timeline-item/party-modification-timeline-item.module';
-import { QuestionaryTimelineItemModule } from '../timeline-items/questionary-timeline-item/questionary-timeline-item.module';
 import { StatusTimelineItemModule } from '../timeline-items/status-timeline-item/status-timeline-item.module';
 import { SaveClaimChangesetService } from '../unsaved-changeset/save-claim-changeset.service';
 import { ClaimChangesetComponent } from './claim-changeset.component';
@@ -30,7 +29,6 @@ import { ClaimChangesetComponent } from './claim-changeset.component';
         FileTimelineItemModule,
         CommentTimelineItemModule,
         PartyModificationTimelineItemModule,
-        QuestionaryTimelineItemModule,
         StatusTimelineItemModule,
     ],
     declarations: [ClaimChangesetComponent],

@@ -1,7 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
-import { PartyModificationsExtractorService } from '@cc/app/shared/components';
 
 import { ClaimChangeset } from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
@@ -15,7 +13,7 @@ import { ClaimChangesetService } from './claim-changeset.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ClaimChangesetService],
 })
-export class ClaimChangesetComponent implements OnInit, OnDestroy {
+export class ClaimChangesetComponent {
     @Input()
     createdAt: string;
 
@@ -34,29 +32,12 @@ export class ClaimChangesetComponent implements OnInit, OnDestroy {
         { action: MenuConfigAction.deleteComment, label: 'Delete comment' },
     ];
     partyModMenuConfig: MenuConfigItem[] = [];
-    questionaryMenuConfig: MenuConfigItem[] = [
-        {
-            action: MenuConfigAction.extractPartyModifications,
-            label: 'Extract party modifications',
-        },
-    ];
 
     changesetInfoType = ChangesetInfoType;
     changesetInfos$ = new BehaviorSubject<ChangesetInfo[]>([]);
     filteredChangesetInfos: ChangesetInfo[] = [];
 
-    constructor(
-        private claimChangesetService: ClaimChangesetService,
-        private partyModificationsExtractorService: PartyModificationsExtractorService
-    ) {}
-
-    ngOnInit(): void {
-        this.partyModificationsExtractorService.init();
-    }
-
-    ngOnDestroy(): void {
-        this.partyModificationsExtractorService.destroy();
-    }
+    constructor(private claimChangesetService: ClaimChangesetService) {}
 
     simpleTrackBy(index: number): number {
         return index;
@@ -67,11 +48,6 @@ export class ClaimChangesetComponent implements OnInit, OnDestroy {
     }
 
     menuItemSelected($event: MenuConfigItem, i: number) {
-        this.claimChangesetService.menuItemSelected(
-            $event,
-            this.changesetInfos$.getValue(),
-            i,
-            this.partyID
-        );
+        this.claimChangesetService.menuItemSelected($event, this.changesetInfos$.getValue(), i);
     }
 }

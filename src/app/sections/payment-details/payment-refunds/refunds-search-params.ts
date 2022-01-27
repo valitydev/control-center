@@ -1,4 +1,3 @@
-import { OwnerID } from '../../../thrift-services/ank/gen-model/questionary_manager';
 import {
     InvoiceID,
     InvoicePaymentID,
@@ -11,7 +10,7 @@ export interface RefundsSearchParams {
     invoiceID?: InvoiceID;
     id?: InvoicePaymentRefundID;
     paymentID?: InvoicePaymentID;
-    ownerID?: OwnerID;
+    ownerID?: string;
     shopID?: ShopID;
     status?: InvoicePaymentRefundStatus;
     createdAt?: string;
