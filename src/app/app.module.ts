@@ -22,7 +22,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClaimMgtModule } from './claim-mgt/claim-mgt.module';
 import { ClaimModule } from './claim/claim.module';
-import { ClaimsModule } from './claims/claims.module';
 import { CoreModule } from './core/core.module';
 import { DomainModule } from './domain';
 import icons from './icons.json';
@@ -64,7 +63,6 @@ moment.locale('en');
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        ClaimsModule,
         ClaimModule,
         PayoutsModule,
         PaymentAdjustmentModule,
