@@ -111,7 +111,6 @@
     "messages-proto": "github:valitydev/messages-proto#a177efb574136961bcd0a8236b4bfc425264de29",
     "ngx-build-plus": "^13.0.1",
     "prettier": "~2.0.4",
-    "skipper-proto": "github:valitydev/skipper-proto#d33d87cd9080925861f755b11ee1f16378076f74",
     "ts-mockito": "^2.6.1",
     "ts-node": "~8.8.2",
     "typescript": "~4.5.4"

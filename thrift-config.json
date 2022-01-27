@@ -5,7 +5,6 @@
         "fistful": "./node_modules/fistful-proto/proto",
         "messages": "./node_modules/messages-proto/proto",
         "file-storage": "./node_modules/file-storage-proto/proto",
-        "skipper": { "path": "./node_modules/skipper-proto/proto", "meta": true },
         "deanonimus": { "path": "./node_modules/deanonimus-proto/proto", "meta": true }
     },
     "config": [

@@ -7,8 +7,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { StatusModule } from '@cc/app/shared/components';
-import { ChargebacksTableModule } from '@cc/app/shared/components/chargebacks-table';
-import { CreateChargebackDialogModule } from '@cc/app/shared/components/create-chargeback-dialog';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
@@ -27,10 +25,8 @@ import { RevertsModule } from './reverts/reverts.module';
         DetailsItemModule,
         StatusModule,
         MatProgressSpinnerModule,
-        ChargebacksTableModule,
         MatButtonModule,
         MatDialogModule,
-        CreateChargebackDialogModule,
         DepositMainInfoModule,
         RevertsModule,
     ],

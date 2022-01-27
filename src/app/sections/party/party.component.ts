@@ -5,7 +5,6 @@ import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } fro
 
 import {
     AppAuthGuardService,
-    ChargebackRole,
     ClaimManagementRole,
     DomainConfigRole,
     OperationRole,
@@ -73,12 +72,6 @@ export class PartyComponent {
                 name: 'Payment Routing Rules',
                 url: 'payment-routing-rules',
                 activateRoles: [DomainConfigRole.Checkout],
-            },
-            {
-                name: 'Chargebacks',
-                url: 'chargebacks',
-                otherActiveUrlFragments: ['payment', 'invoice', 'chargeback'],
-                activateRoles: [ChargebackRole.View],
             },
         ];
         return links.filter((item) => this.appAuthGuardService.userHasRoles(item.activateRoles));

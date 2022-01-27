@@ -53,16 +53,6 @@ import { PartyComponent } from './party.component';
                                 (m) => m.PaymentRoutingRulesModule
                             ),
                     },
-                    {
-                        path: 'chargebacks',
-                        loadChildren: () =>
-                            import('../party-chargebacks').then((m) => m.PartyChargebacksModule),
-                    },
-                    {
-                        path: 'invoice/:invoiceID/payment/:paymentID/chargeback/:chargebackID',
-                        loadChildren: () =>
-                            import('../chargeback-details').then((m) => m.ChargebackDetailsModule),
-                    },
                     { path: '', redirectTo: 'payments', pathMatch: 'full' },
                 ],
             },
