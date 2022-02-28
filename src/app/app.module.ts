@@ -25,12 +25,13 @@ import { CoreModule } from './core/core.module';
 import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
-import { PayoutsModule } from './payouts/payouts.module';
+import { PayoutsModule as OldPayoutsModule } from './payouts/payouts.module';
 import { RepairingModule } from './repairing/repairing.module';
 import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
 import { PartyModule } from './sections/party/party.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
+import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SettingsModule } from './settings';
@@ -63,7 +64,7 @@ moment.locale('en');
         MatSidenavModule,
         MatListModule,
         ClaimModule,
-        PayoutsModule,
+        OldPayoutsModule,
         PaymentAdjustmentModule,
         DomainModule,
         RepairingModule,
@@ -75,6 +76,7 @@ moment.locale('en');
         OperationsModule,
         DomainConfigModule,
         KeycloakTokenInfoModule,
+        PayoutsModule,
         // It is important that NotFoundModule module should be last
         NotFoundModule,
     ],
