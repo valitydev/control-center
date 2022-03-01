@@ -1,0 +1,11 @@
+<div [formGroup]="form" gdGap="16px" gdColumns="1fr 1fr 1fr 1fr">
+    <mat-form-field>
+        <input matInput placeholder="Payout ID" formControlName="payoutId" autocomplete="off" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Payout Status">
+            <mat-option>Test</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <cc-merchant-field formControlName="merchant"></cc-merchant-field>
+</div>

@@ -1,31 +1,29 @@
-<div>
+<div fxLayout="column" fxLayoutGap="24px">
     <div fxLayout="row" fxLayoutAlign="space-between">
         <h1 class="cc-headline">Payouts</h1>
         <div><button mat-button>CREATE</button></div>
     </div>
-    <div fxLayout="column" fxLayoutGap="24px">
-        <mat-card>
-            <mat-card-content>
-                <cc-payouts-search-form></cc-payouts-search-form>
-            </mat-card-content>
-            <mat-card-footer *ngIf="progress$ | async">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </mat-card-footer>
+    <mat-card>
+        <mat-card-content>
+            <cc-payouts-search-form></cc-payouts-search-form>
+        </mat-card-content>
+        <mat-card-footer *ngIf="progress$ | async">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
+    </mat-card>
+    <ng-container *ngIf="payouts$ | async as payouts">
+        <cc-empty-search-result *ngIf="payouts.length === 0"></cc-empty-search-result>
+        <mat-card *ngIf="payouts.length > 0" fxLayout="column" fxLayoutGap="18px">
+            <cc-payouts-table [payouts]="payouts"></cc-payouts-table>
+            <button
+                fxFlex="100"
+                mat-button
+                *ngIf="hasMore$ | async"
+                (click)="fetchMore()"
+                [disabled]="progress$ | async"
+            >
+                {{ (progress$ | async) ? 'LOADING...' : 'SHOW MORE' }}
+            </button>
         </mat-card>
-        <ng-container *ngIf="payouts$ | async as payouts">
-            <cc-empty-search-result *ngIf="payouts.length === 0"></cc-empty-search-result>
-            <mat-card *ngIf="payouts.length > 0" fxLayout="column" fxLayoutGap="18px">
-                <cc-payouts-table [payouts]="payouts"></cc-payouts-table>
-                <button
-                    fxFlex="100"
-                    mat-button
-                    *ngIf="hasMore$ | async"
-                    (click)="fetchMore()"
-                    [disabled]="progress$ | async"
-                >
-                    {{ (progress$ | async) ? 'LOADING...' : 'SHOW MORE' }}
-                </button>
-            </mat-card>
-        </ng-container>
-    </div>
+    </ng-container>
 </div>
