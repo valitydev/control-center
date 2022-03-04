@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { Moment } from 'moment';
 import { of } from 'rxjs';
-import { share } from 'rxjs/internal/operators';
-import { startWith, switchMap } from 'rxjs/operators';
+import { share, startWith, switchMap } from 'rxjs/operators';
 
 import { Party, Shop } from '@cc/app/api/damsel/gen-model/domain';
 
