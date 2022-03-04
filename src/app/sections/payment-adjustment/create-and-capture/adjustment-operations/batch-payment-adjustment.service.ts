@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { mergeAll, share } from 'rxjs/internal/operators';
+import { mergeAll, share } from 'rxjs/operators';
 
 import { AdjustmentOperationEvent } from './adjustment-event';
 import {

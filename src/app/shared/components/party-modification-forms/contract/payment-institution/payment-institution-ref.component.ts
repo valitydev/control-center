@@ -4,8 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import get from 'lodash-es/get';
 import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/internal/operators';
-import { map } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
 import {

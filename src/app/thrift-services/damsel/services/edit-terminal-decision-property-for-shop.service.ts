@@ -15,7 +15,7 @@ export class EditTerminalDecisionPropertyForShopService {
     private editProperty$ = new Subject<EditTerminalDecisionPropertyParams>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    error$ = new Subject();
+    error$ = new Subject<void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     edited$ = this.editProperty$.pipe(

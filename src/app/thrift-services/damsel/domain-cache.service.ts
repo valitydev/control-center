@@ -25,7 +25,7 @@ export class DomainCacheService {
         return this._isLoading$.asObservable();
     }
 
-    private reload$ = new ReplaySubject(1);
+    private reload$ = new ReplaySubject<void>(1);
     private snapshot = this.reload$.pipe(
         startWith(undefined),
         tap(() => this._isLoading$.next(true)),

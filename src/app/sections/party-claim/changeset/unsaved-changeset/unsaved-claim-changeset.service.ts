@@ -24,7 +24,7 @@ export class UnsavedClaimChangesetService {
     private remove$: Subject<PartyModificationPosition> = new Subject();
     private edit$: Subject<PartyModificationPosition> = new Subject();
     private unsaved$ = new BehaviorSubject<Modification[]>([]);
-    private hasError$ = new Subject();
+    private hasError$ = new Subject<boolean | void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     changesetUpdated$ = new Subject<void>();

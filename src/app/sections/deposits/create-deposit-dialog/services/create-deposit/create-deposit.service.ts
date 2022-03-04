@@ -4,8 +4,7 @@ import Int64 from '@vality/thrift-ts/lib/int64';
 import { KeycloakService } from 'keycloak-angular';
 import * as moment from 'moment';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
-import { catchError } from 'rxjs/internal/operators';
-import { map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';

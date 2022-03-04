@@ -9,7 +9,7 @@ import { DomainCacheService } from '../../../../thrift-services/damsel/domain-ca
 @Injectable()
 export class FetchTerminalService {
     private getTerminal$ = new Subject<number>();
-    private hasError$ = new Subject();
+    private hasError$ = new Subject<void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     terminal$ = this.getTerminal$.pipe(

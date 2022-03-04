@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormControlSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { WrappedFormControlSuperclass, provideValueAccessor } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import {
@@ -27,7 +27,7 @@ import { Party } from '../../../thrift-services/deanonimus/gen-model/deanonimus'
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [provideValueAccessor(MerchantFieldComponent)],
 })
-export class MerchantFieldComponent extends FormControlSuperclass<Party> implements OnInit {
+export class MerchantFieldComponent extends WrappedFormControlSuperclass<Party> implements OnInit {
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
 

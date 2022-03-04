@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/internal/operators';
+import { tap } from 'rxjs/operators';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
 import { BusinessScheduleObject } from '../../../../../thrift-services/damsel/gen-model/domain';
