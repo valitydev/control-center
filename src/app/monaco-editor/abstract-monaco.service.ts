@@ -25,11 +25,11 @@ import { CompletionService } from './providers/completion.service';
 
 export abstract class AbstractMonacoService {
     protected _editor: monaco.editor.IEditor;
-    private editorInitialized$ = new Subject();
+    private editorInitialized$ = new Subject<void>();
     private fileChange$ = new Subject<MonacoFile>();
-    private resize$ = new Subject();
+    private resize$ = new Subject<void>();
     private nativeElement: any;
-    private destroy$ = new Subject();
+    private destroy$ = new Subject<void>();
 
     get fileChange(): Observable<MonacoFile> {
         return this.fileChange$.pipe(takeUntil(this.destroy$));

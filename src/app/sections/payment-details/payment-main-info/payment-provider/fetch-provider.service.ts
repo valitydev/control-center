@@ -9,7 +9,7 @@ import { DomainCacheService } from '../../../../thrift-services/damsel/domain-ca
 @Injectable()
 export class FetchProviderService {
     private getProvider$ = new Subject<number>();
-    private hasError$ = new Subject();
+    private hasError$ = new Subject<void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     provider$ = this.getProvider$.pipe(

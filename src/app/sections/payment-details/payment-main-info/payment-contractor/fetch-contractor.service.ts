@@ -10,7 +10,7 @@ import { ContractID, PartyID } from '../../../../thrift-services/damsel/gen-mode
 @Injectable()
 export class FetchContractorService {
     private getContractor$ = new Subject<{ partyID: PartyID; contractID: ContractID }>();
-    private hasError$ = new Subject();
+    private hasError$ = new Subject<void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     contractor$ = this.getContractor$.pipe(

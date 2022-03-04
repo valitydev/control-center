@@ -28,7 +28,7 @@ class UpdateClaim {
 @Injectable()
 export class StatusChangerDialogService {
     private updateClaim$ = new Subject<UpdateClaim>();
-    private hasError$ = new Subject();
+    private hasError$ = new Subject<boolean | void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     form = this.initForm();

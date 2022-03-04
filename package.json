@@ -55,7 +55,7 @@
     "moment": "~2.22.2",
     "monaco-editor": "^0.21.2",
     "ngx-mat-select-search": "^4.0.0",
-    "rxjs": "^6.6.3",
+    "rxjs": "^7.5.4",
     "short-uuid": "^4.1.0",
     "transliteration": "^2.1.8",
     "tslib": "^2.0.0",
