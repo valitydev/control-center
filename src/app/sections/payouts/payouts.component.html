@@ -7,7 +7,7 @@
         <mat-card-content>
             <cc-payouts-search-form></cc-payouts-search-form>
         </mat-card-content>
-        <mat-card-footer *ngIf="progress$ | async">
+        <mat-card-footer *ngIf="inProgress$ | async">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </mat-card-footer>
     </mat-card>
@@ -20,9 +20,9 @@
                 mat-button
                 *ngIf="hasMore$ | async"
                 (click)="fetchMore()"
-                [disabled]="progress$ | async"
+                [disabled]="inProgress$ | async"
             >
-                {{ (progress$ | async) ? 'LOADING...' : 'SHOW MORE' }}
+                {{ (inProgress$ | async) ? 'LOADING...' : 'SHOW MORE' }}
             </button>
         </mat-card>
     </ng-container>

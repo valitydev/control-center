@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "ngcc",
+    "postinstall": "ngcc & cp ./node_modules/@vality/magista-proto/lib/magista/metadata.json ./src/assets/api-meta/magista.json",
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
