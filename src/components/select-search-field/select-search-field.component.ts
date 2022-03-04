@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormControlSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -32,7 +32,7 @@ import { filterOptions } from './utils';
     providers: [provideValueAccessor(SelectSearchFieldComponent)],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectSearchFieldComponent<Value> extends FormControlSuperclass<Value>
+export class SelectSearchFieldComponent<Value> extends WrappedFormControlSuperclass<Value>
     implements OnInit, OnChanges {
     @Input() label: string;
     @Input() @coerceBoolean required = false;

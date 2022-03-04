@@ -2,15 +2,7 @@ import { Injectable } from '@angular/core';
 import isEqual from 'lodash-es/isEqual';
 import toNumber from 'lodash-es/toNumber';
 import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
-import {
-    delay,
-    map,
-    repeatWhen,
-    retryWhen,
-    switchMap,
-    takeWhile,
-    tap,
-} from 'rxjs/internal/operators';
+import { delay, map, repeatWhen, retryWhen, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 import { ClaimService as ClaimPapi } from '../papi/claim.service';
 import { ClaimInfo, ClaimStatus, PartyModificationUnit } from '../papi/model';

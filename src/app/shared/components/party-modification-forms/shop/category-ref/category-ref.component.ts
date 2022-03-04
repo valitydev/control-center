@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import isNil from 'lodash-es/isNil';
 import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/internal/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
 import { Category } from '@cc/app/api/dominant-cache/gen-model/dominant_cache';

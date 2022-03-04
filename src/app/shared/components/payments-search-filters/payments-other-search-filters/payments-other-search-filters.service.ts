@@ -13,7 +13,7 @@ import { toFiltersCount } from './to-filters-count';
 
 @Injectable()
 export class PaymentsOtherSearchFiltersService {
-    private openFiltersDialog$ = new Subject<Observable<SearchFiltersParams>>();
+    private openFiltersDialog$ = new Subject<Observable<SearchFiltersParams> | void>();
 
     private formParams = new ReplaySubject<SearchFiltersParams>();
 

@@ -380,7 +380,7 @@ export class RoutingRulesService {
     }: {
         mainRulesetRefID: number;
         delegateIdx: number;
-    }): Observable<Version> {
+    }) {
         return combineLatest([
             this.getRuleset(mainRulesetRefID),
             this.getRuleset(mainRulesetRefID).pipe(

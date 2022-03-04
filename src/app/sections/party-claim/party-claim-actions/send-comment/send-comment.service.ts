@@ -16,8 +16,8 @@ import { UnsavedClaimChangesetService } from '../../changeset/unsaved-changeset/
 
 @Injectable()
 export class SendCommentService {
-    private hasError$: Subject<any> = new Subject();
-    private sendComment$: Subject<null> = new Subject();
+    private hasError$ = new Subject<void>();
+    private sendComment$ = new Subject<void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     form = this.fb.group({

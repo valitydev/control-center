@@ -18,9 +18,9 @@ export class RemoveTerminalDecisionService {
     private remove$ = new Subject<ChangeProviderParams>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    error$ = new Subject();
+    error$ = new Subject<void>();
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    cancelled$ = new Subject();
+    cancelled$ = new Subject<void>();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     terminalRemoved$ = this.remove$.pipe(
