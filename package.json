@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "ngcc & cp ./node_modules/@vality/magista-proto/lib/magista/metadata.json ./src/assets/api-meta/magista.json",
+    "postinstall": "ngcc",
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
@@ -42,7 +42,7 @@
     "@s-libs/micro-dash": "^12.0.0",
     "@s-libs/ng-core": "^12.0.0",
     "@s-libs/rxjs-core": "^12.0.0",
-    "@vality/thrift-ts": "^2.2.0-alpha",
+    "@vality/thrift-ts": "2.2.0-alpha",
     "@vality/woody": "^0.1.0",
     "angular-file": "3.0.1",
     "angular2-prettyjson": "3.0.1",

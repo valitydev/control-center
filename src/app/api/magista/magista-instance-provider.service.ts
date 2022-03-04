@@ -8,7 +8,8 @@ export class MagistaInstanceProviderService extends ThriftInstanceProvider {
     protected getProviderSettings(): ProviderSettings {
         return {
             context,
-            metadataName: 'magista',
+            metadataLoad: () =>
+                import('@vality/magista-proto/lib/metadata.json').then((m) => m.default),
             defaultNamespace: 'magista',
         };
     }

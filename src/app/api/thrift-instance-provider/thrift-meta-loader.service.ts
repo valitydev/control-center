@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
+import { SubscribableOrPromise } from 'rxjs/src/internal/types';
 
 import { ThriftAstMetadata } from '../../thrift-services';
 
@@ -11,12 +12,13 @@ export class ThriftMetaLoader {
 
     constructor(private http: HttpClient) {}
 
-    get(name: string): Observable<ThriftAstMetadata[]> {
+    get(name: string, load?: () => SubscribableOrPromise<any>): Observable<ThriftAstMetadata[]> {
         const req = this.requests[name];
         return req
             ? req
-            : (this.requests[name] = this.http
-                  .get<ThriftAstMetadata[]>(`assets/api-meta/${name}.json`)
-                  .pipe(shareReplay(1)));
+            : (this.requests[name] = (load
+                  ? from(load())
+                  : this.http.get<ThriftAstMetadata[]>(`assets/api-meta/${name}.json`)
+              ).pipe(shareReplay(1)));
     }
 }

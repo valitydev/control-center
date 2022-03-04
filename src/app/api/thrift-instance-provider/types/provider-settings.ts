@@ -1,7 +1,10 @@
+import { SubscribableOrPromise } from 'rxjs/src/internal/types';
+
 import { ThriftInstanceContext } from '../../../thrift-services';
 
 export interface ProviderSettings {
     context: ThriftInstanceContext;
-    metadataName: string;
     defaultNamespace: string;
+    metadataName?: string;
+    metadataLoad?: () => SubscribableOrPromise<any>;
 }

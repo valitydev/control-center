@@ -12,19 +12,26 @@ export abstract class ThriftInstanceProvider {
     methods$: Observable<ProviderMethods>;
 
     constructor(private thriftMetaLoader: ThriftMetaLoader) {
-        const { metadataName, defaultNamespace, context } = this.getProviderSettings();
-        this.methods$ = this.thriftMetaLoader.get(metadataName).pipe(
-            map((metadata) => ({
-                toPlainObject: partial(thriftInstanceToObject, metadata, defaultNamespace),
-                toThriftInstance: partial(
-                    createThriftInstance,
-                    metadata,
-                    context,
-                    defaultNamespace
-                ),
-            })),
-            first()
-        );
+        const {
+            metadataName,
+            metadataLoad,
+            defaultNamespace,
+            context,
+        } = this.getProviderSettings();
+        this.methods$ = this.thriftMetaLoader
+            .get(metadataName || defaultNamespace, metadataLoad)
+            .pipe(
+                map((metadata) => ({
+                    toPlainObject: partial(thriftInstanceToObject, metadata, defaultNamespace),
+                    toThriftInstance: partial(
+                        createThriftInstance,
+                        metadata,
+                        context,
+                        defaultNamespace
+                    ),
+                })),
+                first()
+            );
     }
 
     protected abstract getProviderSettings(): ProviderSettings;
