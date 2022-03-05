@@ -1,4 +1,4 @@
-<div [formGroup]="form" gdGap="16px" gdColumns="1fr 1fr 1fr 1fr">
+<div [formGroup]="control" gdGap="16px" gdColumns="1fr 1fr 1fr 1fr">
     <mat-form-field>
         <mat-label>Date Range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -14,20 +14,25 @@
         <input matInput placeholder="Payout ID" formControlName="payoutId" autocomplete="off" />
     </mat-form-field>
     <mat-form-field>
-        <mat-select placeholder="Payout Status">
-            <mat-option>Test</mat-option>
+        <mat-select multiple formControlName="payoutStatuses" placeholder="Payout Status">
+            <mat-option *ngFor="let status of statuses" [value]="status">
+                {{ status }}
+            </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
-        <mat-select placeholder="Payout Tool Type">
-            <mat-option>Test</mat-option>
+        <mat-select formControlName="payoutType" placeholder="Payout Tool Type">
+            <mat-option [value]="null">any</mat-option>
+            <mat-option *ngFor="let type of types" [value]="payoutToolType[type]">
+                {{ type }}
+            </mat-option>
         </mat-select>
     </mat-form-field>
     <cc-merchant-field formControlName="merchant"></cc-merchant-field>
     <mat-form-field gdColumn="auto/span 3">
         <mat-label>Shops</mat-label>
-        <mat-select multiple formControlName="shops" [disabled]="!form.value.merchant">
-            <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
+        <mat-select multiple formControlName="shops" [disabled]="!control.value.merchant">
+            <mat-option *ngFor="let shop of shops$ | async" [value]="shop">
                 {{ shop.details.name }}
             </mat-option>
         </mat-select>

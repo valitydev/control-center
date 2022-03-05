@@ -5,7 +5,10 @@
     </div>
     <mat-card>
         <mat-card-content>
-            <cc-payouts-search-form></cc-payouts-search-form>
+            <cc-payouts-search-form
+                [formControl]="control"
+                (ngModelChange)="search($event)"
+            ></cc-payouts-search-form>
         </mat-card-content>
         <mat-card-footer *ngIf="inProgress$ | async">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>

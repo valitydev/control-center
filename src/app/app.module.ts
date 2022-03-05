@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import {
     MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-    MAT_MOMENT_DATE_FORMATS,
     MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import {
+    DateAdapter,
+    MAT_DATE_FORMATS,
+    MAT_DATE_LOCALE,
+    MatDateFormats,
+} from '@angular/material/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -82,7 +86,20 @@ moment.locale('en');
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
-        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: {
+                parse: {
+                    dateInput: ['l', 'LL'],
+                },
+                display: {
+                    dateInput: 'DD.MM.YYYY',
+                    monthYearLabel: 'DD.MM.YYYY',
+                    dateA11yLabel: 'DD.MM.YYYY',
+                    monthYearA11yLabel: 'DD.MM.YYYY',
+                },
+            } as MatDateFormats,
+        },
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_LOCALE, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
