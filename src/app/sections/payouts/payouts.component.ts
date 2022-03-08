@@ -4,7 +4,7 @@ import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 
 import { PayoutsSearchForm } from './components/payouts-search-form/payouts-search-form.component';
-import { FetchPayoutsService, SearchParams } from './fetch-payouts.service';
+import { FetchPayoutsService, SearchParams } from './services/fetch-payouts.service';
 
 @Component({
     selector: 'cc-payouts',
