@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     private getMenuItems() {
         const menuItems = [
             { name: 'Domain config', route: '/domain', activateRoles: [DomainConfigRole.Checkout] },
-            { name: 'Payouts', route: '/payouts', activateRoles: [PayoutRole.Read] },
+            { name: 'Payouts', route: '/old-payouts', activateRoles: [PayoutRole.Read] },
             { name: 'Claims', route: '/claims', activateRoles: [ClaimManagementRole.GetClaims] },
             {
                 name: 'Payment adjustment',

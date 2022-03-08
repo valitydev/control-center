@@ -8,10 +8,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
+import { ApiModelPipesModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { PayoutsSearchFormComponent } from './components/payouts-search-form/payouts-search-form.component';
@@ -37,6 +40,11 @@ import { PayoutsComponent } from './payouts.component';
         MatSelectModule,
         MatDatepickerModule,
         MatIconModule,
+        MatTableModule,
+        MatMenuModule,
+        ApiModelPipesModule,
+        CommonPipesModule,
+        ThriftPipesModule,
     ],
 })
 export class PayoutsModule {}
