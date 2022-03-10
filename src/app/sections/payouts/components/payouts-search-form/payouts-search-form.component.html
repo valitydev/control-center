@@ -28,10 +28,10 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <cc-merchant-field formControlName="merchant"></cc-merchant-field>
+    <cc-merchant-field formControlName="partyId"></cc-merchant-field>
     <mat-form-field gdColumn="auto/span 3">
         <mat-label>Shops</mat-label>
-        <mat-select multiple formControlName="shops" [disabled]="!control.value.merchant">
+        <mat-select multiple formControlName="shops" [disabled]="!control.value.partyId">
             <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
                 {{ shop.details.name }}
             </mat-option>

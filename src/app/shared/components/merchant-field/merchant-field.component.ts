@@ -15,10 +15,10 @@ import {
     withLatestFrom,
 } from 'rxjs/operators';
 
+import { PartyID } from '@cc/app/api/damsel/gen-model/domain';
 import { Option } from '@cc/components/select-search-field';
 
 import { DeanonimusService } from '../../../thrift-services/deanonimus';
-import { Party } from '../../../thrift-services/deanonimus/gen-model/deanonimus';
 
 @UntilDestroy()
 @Component({
@@ -27,13 +27,14 @@ import { Party } from '../../../thrift-services/deanonimus/gen-model/deanonimus'
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [provideValueAccessor(MerchantFieldComponent)],
 })
-export class MerchantFieldComponent extends WrappedFormControlSuperclass<Party> implements OnInit {
+export class MerchantFieldComponent extends WrappedFormControlSuperclass<PartyID>
+    implements OnInit {
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
 
-    formControl = new FormControl<Party>();
-    incomingValue$ = new Subject<Partial<Party>>();
-    options$ = new ReplaySubject<Option<Party>[]>(1);
+    control = new FormControl<PartyID>();
+    incomingValue$ = new Subject<Partial<PartyID>>();
+    options$ = new ReplaySubject<Option<PartyID>[]>(1);
     searchChange$ = new Subject<string>();
 
     constructor(
@@ -47,24 +48,23 @@ export class MerchantFieldComponent extends WrappedFormControlSuperclass<Party> 
     ngOnInit(): void {
         this.incomingValue$
             .pipe(
-                withLatestFrom(this.options$.pipe(startWith<Option<Party>[]>([]))),
+                withLatestFrom(this.options$.pipe(startWith<Option<PartyID>[]>([]))),
                 switchMap(([value, options]) => {
-                    if (!value?.id) return of<Party>(null);
-                    const v = options.find((o) => o.value.id === value.id);
+                    if (!value) return of<PartyID>(null);
+                    const v = options.find((o) => o.value === value);
                     if (v) return of(v.value);
-                    return this.searchOptions(value?.id).pipe(
+                    return this.searchOptions(value).pipe(
                         tap((options) => this.options$.next(options)),
                         map(
                             (options) =>
-                                options?.find((o) => o.value.id === this.formControl.value?.id)
-                                    ?.value || null
+                                options?.find((o) => o.value === this.control.value)?.value || null
                         )
                     );
                 }),
                 untilDestroyed(this)
             )
-            .subscribe((v) => this.formControl.setValue(v));
-        this.formControl.valueChanges.subscribe((v) => this.emitOutgoingValue(v));
+            .subscribe((v) => this.control.setValue(v));
+        this.control.valueChanges.subscribe((v) => this.emitOutgoingValue(v));
         this.searchChange$
             .pipe(
                 debounceTime(600),
@@ -74,14 +74,14 @@ export class MerchantFieldComponent extends WrappedFormControlSuperclass<Party> 
             .subscribe((options) => this.options$.next(options));
     }
 
-    handleIncomingValue(partyLike: Partial<Party>): void {
-        this.formControl.setValue(partyLike as Party);
-        this.incomingValue$.next(partyLike);
+    handleIncomingValue(partyId: PartyID): void {
+        this.control.setValue(partyId);
+        this.incomingValue$.next(partyId);
     }
 
-    private searchOptions(str: string): Observable<Option<Party>[]> {
+    private searchOptions(str: string): Observable<Option<PartyID>[]> {
         return this.deanonimusService.searchParty(str).pipe(
-            map((parties) => parties.map((p) => ({ label: p.party.email, value: p.party }))),
+            map((parties) => parties.map((p) => ({ label: p.party.email, value: p.party.id }))),
             catchError((err) => {
                 this.snackBar.open('Search error', 'OK', { duration: 2000 });
                 console.error(err);

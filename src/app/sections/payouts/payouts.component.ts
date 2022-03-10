@@ -40,7 +40,7 @@ export class PayoutsComponent {
                         {
                             from_time: value.fromTime?.utc()?.format(),
                             to_time: value.toTime?.utc()?.format(),
-                            party_id: value.merchant?.id,
+                            party_id: value.partyId,
                             shop_ids: value.shops,
                         },
                         isNil

@@ -22,8 +22,8 @@ export class SearchClaimsComponent implements OnInit {
         );
     }
 
-    search({ merchant, ...v }: ClaimSearchForm): void {
-        this.searchClaimService.search({ ...v, party_id: merchant?.id });
+    search(v: ClaimSearchForm): void {
+        this.searchClaimService.search(v);
     }
 
     fetchMore(): void {
