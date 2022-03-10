@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { PayoutID, StatPayout } from '@vality/magista-proto';
+import { PayoutID, PayoutStatus, StatPayout } from '@vality/magista-proto';
+
+import { StatusColor } from '@cc/app/shared/components/status/types/status-color';
 
 @Component({
     selector: 'cc-payouts-table',
@@ -26,5 +28,19 @@ export class PayoutsTableComponent {
 
     async navigateToPayout(id: PayoutID) {
         await this.router.navigate([`/payouts/${id}`]);
+    }
+
+    getColorByStatus(status: keyof PayoutStatus) {
+        switch (status) {
+            case 'confirmed':
+                return StatusColor.Success;
+            case 'paid':
+                return StatusColor.Pending;
+            case 'cancelled':
+            case 'unpaid':
+                return StatusColor.Warn;
+            default:
+                return StatusColor.Neutral;
+        }
     }
 }
