@@ -5,6 +5,9 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
+/**
+ * @deprecated use QueryParamsService
+ */
 export abstract class QueryParamsStore<D> {
     data$: Observable<Partial<D>> = this.route.queryParams.pipe(
         distinctUntilChanged(isEqual),

@@ -21,7 +21,7 @@ export interface PayoutsSearchForm {
     merchant: Party;
     fromTime: Moment;
     toTime: Moment;
-    shops: Shop[];
+    shops: Shop['id'][];
     payoutStatuses: (keyof PayoutStatus)[];
     payoutType: PayoutToolType;
 }

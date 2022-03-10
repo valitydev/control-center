@@ -3,3 +3,4 @@ export * from './component-changes';
 export * from './polling-conditions';
 export * from './sort-units';
 export * from './deposit-status';
+export * from './is-empty-value';

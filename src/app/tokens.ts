@@ -1,5 +1,10 @@
 import { InjectionToken } from '@angular/core';
+import { MatDateFormats } from '@angular/material/core';
 import { MatDialogConfig } from '@angular/material/dialog';
+import { Moment } from 'moment';
+import * as moment from 'moment';
+
+import { Serializer } from '@cc/app/shared/services/query-params/types/serializer';
 
 export const SEARCH_LIMIT = new InjectionToken<number>('searchLimit');
 export const DEFAULT_SEARCH_LIMIT = 10;
@@ -22,4 +27,25 @@ export const DEFAULT_DIALOG_CONFIG: DialogConfig = {
     small: { ...BASE_CONFIG, width: '360px' },
     medium: { ...BASE_CONFIG, width: '552px' },
     large: { ...BASE_CONFIG, width: '648px' },
+};
+
+export const DEFAULT_QUERY_PARAMS_SERIALIZERS: Serializer[] = [
+    {
+        id: 'moment',
+        serialize: (date: Moment) => date.utc().format(),
+        deserialize: (value) => moment(value),
+        recognize: (value) => moment.isMoment(value),
+    },
+];
+
+export const DEFAULT_MAT_DATE_FORMATS: MatDateFormats = {
+    parse: {
+        dateInput: ['l', 'LL'],
+    },
+    display: {
+        dateInput: 'DD.MM.YYYY',
+        monthYearLabel: 'DD.MM.YYYY',
+        dateA11yLabel: 'DD.MM.YYYY',
+        monthYearA11yLabel: 'DD.MM.YYYY',
+    },
 };

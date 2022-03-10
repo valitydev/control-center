@@ -1,0 +1,11 @@
+<mat-form-field [form]="control">
+    <mat-label>Date Range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate matInput formControlName="fromTime" placeholder="Start Date" />
+        <input matEndDate matInput formControlName="toTime" placeholder="End Date" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>

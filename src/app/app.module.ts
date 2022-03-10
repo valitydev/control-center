@@ -1,15 +1,7 @@
 import { NgModule } from '@angular/core';
-import {
-    MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-    MomentDateAdapter,
-} from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
-import {
-    DateAdapter,
-    MAT_DATE_FORMATS,
-    MAT_DATE_LOCALE,
-    MatDateFormats,
-} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,8 +11,13 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 
-import { KeycloakTokenInfoModule } from '@cc/app/shared/services';
 import 'moment/locale/ru';
+
+import {
+    KeycloakTokenInfoModule,
+    QUERY_PARAMS_SERIALIZERS,
+    MomentUtcDateAdapter,
+} from '@cc/app/shared/services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,6 +39,8 @@ import { SettingsModule } from './settings';
 import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
 import {
     DEFAULT_DIALOG_CONFIG,
+    DEFAULT_MAT_DATE_FORMATS,
+    DEFAULT_QUERY_PARAMS_SERIALIZERS,
     DEFAULT_SEARCH_LIMIT,
     DEFAULT_SMALL_SEARCH_LIMIT,
     DIALOG_CONFIG,
@@ -86,25 +85,13 @@ moment.locale('en');
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
-        {
-            provide: MAT_DATE_FORMATS,
-            useValue: {
-                parse: {
-                    dateInput: ['l', 'LL'],
-                },
-                display: {
-                    dateInput: 'DD.MM.YYYY',
-                    monthYearLabel: 'DD.MM.YYYY',
-                    dateA11yLabel: 'DD.MM.YYYY',
-                    monthYearA11yLabel: 'DD.MM.YYYY',
-                },
-            } as MatDateFormats,
-        },
-        { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+        { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
+        { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_LOCALE, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
         { provide: DIALOG_CONFIG, useValue: DEFAULT_DIALOG_CONFIG },
+        { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
     ],
     bootstrap: [AppComponent],
 })

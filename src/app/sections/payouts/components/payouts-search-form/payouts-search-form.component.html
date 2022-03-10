@@ -32,7 +32,7 @@
     <mat-form-field gdColumn="auto/span 3">
         <mat-label>Shops</mat-label>
         <mat-select multiple formControlName="shops" [disabled]="!control.value.merchant">
-            <mat-option *ngFor="let shop of shops$ | async" [value]="shop">
+            <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
                 {{ shop.details.name }}
             </mat-option>
         </mat-select>
