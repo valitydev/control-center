@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import isNil from 'lodash-es/isNil';
@@ -15,6 +15,7 @@ import { FetchPayoutsService, SearchParams } from './services/fetch-payouts.serv
     templateUrl: './payouts.component.html',
     styleUrls: ['./payouts.component.scss'],
     providers: [FetchPayoutsService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayoutsComponent {
     control = new FormControl<PayoutsSearchForm>(this.qp.params);
@@ -46,7 +47,8 @@ export class PayoutsComponent {
                         isNil
                     ),
                     payout_id: value.payoutId,
-                    payout_statuses: value.payoutStatuses,
+                    // TODO: Should be enum
+                    payout_statuses: value.payoutStatuses?.map((key) => ({ [key]: {} })),
                     payout_type: value.payoutType,
                 },
                 isNil
