@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import Int64 from '@vality/thrift-ts/lib/int64';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
@@ -70,7 +69,7 @@ export class CreateRevertService {
         return {
             id: this.idGenerator.getUsernameBasedId(),
             body: {
-                amount: new Int64(toMinor(amount)),
+                amount: toMinor(amount) as any,
                 currency: {
                     symbolic_code: currency,
                 },
