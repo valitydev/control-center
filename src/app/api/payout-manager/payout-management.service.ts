@@ -17,7 +17,7 @@ export class PayoutManagementService extends ThriftConnector {
         protected keycloakTokenInfoService: KeycloakTokenInfoService,
         private instanceProvider: PayoutManagerInstanceProviderService
     ) {
-        super(keycloakTokenInfoService, ThriftPayoutManagementService, '/v3'); // TODO
+        super(keycloakTokenInfoService, ThriftPayoutManagementService, '/payout/management');
     }
 
     createPayout(params: PayoutParams): Observable<Payout> {
