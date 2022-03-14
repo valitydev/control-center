@@ -22,7 +22,7 @@ async function execWithLog(cmd: string) {
             },
             (error, stdout, stderr) => {
                 if (error === null) {
-                    console.log(stderr);
+                    console.log(stdout);
                     res(stdout);
                 } else {
                     console.error(error);

@@ -2,7 +2,7 @@
     [label]="label || 'Merchant'"
     [required]="required"
     [options]="options$ | async"
-    [formControl]="formControl"
+    [formControl]="control"
     (searchChange)="this.searchChange$.next($event)"
     isExternalSearch
 ></cc-select-search-field>

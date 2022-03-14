@@ -1,1 +1,1 @@
-export type ThriftInstanceContext = { [N in string]: any };
+export type ThriftInstanceContext = { [N in string]: unknown };

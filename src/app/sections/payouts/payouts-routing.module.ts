@@ -9,7 +9,7 @@ import { PayoutsComponent } from './payouts.component';
     imports: [
         RouterModule.forChild([
             {
-                path: 'old-payouts',
+                path: 'payouts',
                 component: PayoutsComponent,
                 canActivate: [AppAuthGuardService],
                 data: {

@@ -82,5 +82,6 @@ import { SearchFormComponent } from './search-form/search-form.component';
         ConfirmPayoutsComponent,
     ],
     providers: [PayoutsService],
+    exports: [PayoutsTableComponent],
 })
 export class PayoutsModule {}

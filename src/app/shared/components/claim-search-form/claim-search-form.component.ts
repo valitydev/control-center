@@ -32,7 +32,7 @@ export class ClaimSearchFormComponent implements OnInit {
     form = this.fb.group<ClaimSearchForm>({
         statuses: null,
         claim_id: null,
-        merchant: null,
+        party_id: null,
     });
 
     claimStatuses: (keyof ClaimStatus)[] = [
@@ -50,20 +50,13 @@ export class ClaimSearchFormComponent implements OnInit {
         this.form.valueChanges
             .pipe(debounceTime(600), map(removeEmptyProperties), untilDestroyed(this))
             .subscribe((value) => {
-                const { merchant, ...v } = value;
-                void this.router.navigate([location.pathname], {
-                    queryParams: Object.assign(v, !!merchant?.id && { merchantId: merchant?.id }),
-                });
+                void this.router.navigate([location.pathname], { queryParams: value });
                 this.valueChanges.emit(formValueToSearchParams(value));
             });
         this.route.queryParams
             .pipe(
                 take(1),
                 map(queryParamsToFormValue),
-                map(({ merchantId, ...v }) => ({
-                    ...v,
-                    merchant: merchantId ? { id: merchantId } : null,
-                })),
                 map(removeEmptyProperties),
                 untilDestroyed(this)
             )

@@ -1,5 +1,8 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
+**/*
+
+!*.iml
+!jsLinters
+!inspectionProfiles
+!modules.xml
+!prettier.xml
+!vcs.xml
