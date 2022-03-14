@@ -9,5 +9,6 @@
     {{ paymentTool.mobile_commerce.phone }}
 </div>
 <div *ngIf="paymentTool.payment_terminal">
-    {{ paymentTool.payment_terminal.terminal_type | toPaymentTerminal }}
+    {{ paymentTool.payment_terminal?.terminal_type_deprecated | toPaymentTerminal }}
+    {{ paymentTool.payment_terminal?.payment_service }}
 </div>
