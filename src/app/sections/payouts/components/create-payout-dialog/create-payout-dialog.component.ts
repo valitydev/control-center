@@ -67,7 +67,7 @@ export class CreatePayoutDialogComponent {
                     this.dialogRef.close(true);
                 },
                 error: () => {
-                    this.notificationService.error('Error creating payout');
+                    this.notificationService.error('Payout creation error');
                 },
             });
     }

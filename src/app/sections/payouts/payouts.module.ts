@@ -19,6 +19,7 @@ import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
+import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchFormComponent } from './components/payouts-search-form/payouts-search-form.component';
 import { PayoutsTableComponent } from './components/payouts-table/payouts-table.component';
@@ -31,6 +32,7 @@ import { PayoutsComponent } from './payouts.component';
         PayoutsTableComponent,
         PayoutsSearchFormComponent,
         CreatePayoutDialogComponent,
+        CancelPayoutDialogComponent,
     ],
     imports: [
         CommonModule,

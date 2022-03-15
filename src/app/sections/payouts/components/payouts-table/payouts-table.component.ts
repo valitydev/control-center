@@ -11,6 +11,7 @@ import { StatusColor } from '@cc/app/shared/components/status/types/status-color
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { DIALOG_CONFIG, DialogConfig } from '../../../../tokens';
+import { CancelPayoutDialogComponent } from '../cancel-payout-dialog/cancel-payout-dialog.component';
 
 @UntilDestroy()
 @Component({
@@ -68,7 +69,7 @@ export class PayoutsTableComponent {
 
     cancel(id: PayoutID) {
         this.dialog
-            .open(ConfirmActionDialogComponent, {
+            .open(CancelPayoutDialogComponent, {
                 ...this.dialogConfig.medium,
                 data: { id },
             })
