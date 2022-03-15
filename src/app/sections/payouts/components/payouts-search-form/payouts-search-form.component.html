@@ -1,4 +1,10 @@
-<div [formGroup]="control" gdGap="16px" gdColumns="1fr 1fr 1fr 1fr">
+<div
+    [formGroup]="control"
+    gdGap="16px"
+    gdColumns="1fr 1fr 1fr 1fr"
+    gdColumns.lt-md="1fr 1fr"
+    gdColumns.lt-sm="1fr"
+>
     <mat-form-field>
         <mat-label>Date Range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -30,7 +36,7 @@
     </mat-form-field>
     <cc-merchant-field formControlName="partyId"></cc-merchant-field>
     <cc-shop-field
-        gdColumn="auto/span 3"
+        gdColumn.gt-sm="auto/span 3"
         multiple
         [partyId]="control.value.partyId"
         formControlName="shops"
