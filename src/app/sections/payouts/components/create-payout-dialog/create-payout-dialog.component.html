@@ -1,0 +1,41 @@
+<div class="mat-dialog-title">Create payout</div>
+<mat-dialog-content [formGroup]="control" gdGap="16px" gdColumns="1fr">
+    <cc-merchant-field formControlName="partyId" required></cc-merchant-field>
+    <cc-shop-field
+        [partyId]="this.control.value.partyId"
+        formControlName="shopId"
+        required
+    ></cc-shop-field>
+    <div fxLayout fxLayoutGap="24px">
+        <mat-form-field fxFlex>
+            <input matInput type="number" placeholder="Amount" formControlName="amount" required />
+        </mat-form-field>
+        <mat-form-field fxFlex>
+            <input
+                matInput
+                type="text"
+                placeholder="Currency"
+                formControlName="currency"
+                required
+            />
+        </mat-form-field>
+    </div>
+    <mat-form-field>
+        <mat-label>Payout Tool ID</mat-label>
+        <input matInput type="text" formControlName="payoutToolId" />
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout fxLayoutAlign="space-between">
+    <button mat-button [mat-dialog-close]="false" [disabled]="!!(progress$ | async)">
+        CANCEL
+    </button>
+    <button
+        mat-button
+        (click)="create()"
+        [disabled]="control.invalid || !!(progress$ | async)"
+        color="primary"
+    >
+        CREATE
+    </button>
+    <mat-progress-bar *ngIf="progress$ | async" mode="indeterminate"></mat-progress-bar>
+</mat-dialog-actions>

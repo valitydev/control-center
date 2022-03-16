@@ -1,4 +1,10 @@
-<div [formGroup]="control" gdGap="16px" gdColumns="1fr 1fr 1fr 1fr">
+<div
+    [formGroup]="control"
+    gdGap="16px"
+    gdColumns="1fr 1fr 1fr 1fr"
+    gdColumns.lt-md="1fr 1fr"
+    gdColumns.lt-sm="1fr"
+>
     <mat-form-field>
         <mat-label>Date Range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -29,12 +35,10 @@
         </mat-select>
     </mat-form-field>
     <cc-merchant-field formControlName="partyId"></cc-merchant-field>
-    <mat-form-field gdColumn="auto/span 3">
-        <mat-label>Shops</mat-label>
-        <mat-select multiple formControlName="shops" [disabled]="!control.value.partyId">
-            <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
-                {{ shop.details.name }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+    <cc-shop-field
+        gdColumn.gt-sm="auto/span 3"
+        multiple
+        [partyId]="control.value.partyId"
+        formControlName="shops"
+    ></cc-shop-field>
 </div>

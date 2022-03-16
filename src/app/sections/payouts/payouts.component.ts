@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@ngneat/reactive-forms';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 
 import { QueryParamsService } from '@cc/app/shared/services';
 
+import { DIALOG_CONFIG, DialogConfig } from '../../tokens';
+import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchForm } from './components/payouts-search-form/payouts-search-form.component';
 import { FetchPayoutsService, SearchParams } from './services/fetch-payouts.service';
 
@@ -25,7 +28,9 @@ export class PayoutsComponent {
 
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
-        private qp: QueryParamsService<PayoutsSearchForm>
+        private qp: QueryParamsService<PayoutsSearchForm>,
+        private dialog: MatDialog,
+        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
     ) {}
 
     fetchMore() {
@@ -54,5 +59,13 @@ export class PayoutsComponent {
                 isNil
             ) as SearchParams
         );
+    }
+
+    create() {
+        this.dialog
+            .open(CreatePayoutDialogComponent, this.dialogConfig.medium)
+            .afterClosed()
+            .pipe(untilDestroyed(this))
+            .subscribe();
     }
 }

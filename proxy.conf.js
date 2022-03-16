@@ -1,5 +1,14 @@
 const THRIFT_PROXY_CONFIG = {
-    context: ['/v1', '/v3', '/stat', '/fistful', '/papi', '/file_storage', '/deanonimus'],
+    context: [
+        '/v1',
+        '/v3',
+        '/stat',
+        '/fistful',
+        '/papi',
+        '/file_storage',
+        '/deanonimus',
+        '/payout/management',
+    ],
     target: '',
     secure: false,
     logLevel: 'debug',

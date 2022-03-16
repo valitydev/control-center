@@ -63,6 +63,20 @@
                 <button mat-menu-item (click)="navigateToPayout(payout.id)">
                     Details
                 </button>
+                <button
+                    *ngIf="canBeConfirmed(payout.status | ccUnionKey)"
+                    mat-menu-item
+                    (click)="confirm(payout.id)"
+                >
+                    Confirm
+                </button>
+                <button
+                    *ngIf="canBeCancelled(payout.status | ccUnionKey)"
+                    mat-menu-item
+                    (click)="cancel(payout.id)"
+                >
+                    Cancel
+                </button>
             </mat-menu>
         </td>
     </ng-container>

@@ -6,15 +6,11 @@ import { Party, Shop } from '@vality/magista-proto/lib/domain';
 import { PayoutStatus } from '@vality/magista-proto/lib/payout_manager';
 import { Moment } from 'moment';
 import * as moment from 'moment';
-import { of } from 'rxjs';
-import { share, startWith, switchMap } from 'rxjs/operators';
 
 import {
     createValidatedAbstractControlProviders,
     ValidatedWrappedAbstractControlSuperclass,
 } from '@cc/utils/forms';
-
-import { PartyService } from '../../../../papi/party.service';
 
 export interface PayoutsSearchForm {
     payoutId: string;
@@ -43,18 +39,13 @@ export class PayoutsSearchFormComponent extends ValidatedWrappedAbstractControlS
         payoutStatuses: null,
         payoutType: null,
     });
-    shops$ = this.control.controls.partyId.valueChanges.pipe(
-        startWith(this.control.value.partyId),
-        switchMap((partyId) => (partyId ? this.partyService.getShops(partyId) : of([]))),
-        share()
-    );
     statuses: PayoutsSearchForm['payoutStatuses'] = ['unpaid', 'paid', 'cancelled', 'confirmed'];
     types: string[] = Object.values(PayoutToolType).filter(
         (v) => typeof v === 'string'
     ) as string[];
     payoutToolType = PayoutToolType;
 
-    constructor(private fb: FormBuilder, private partyService: PartyService, injector: Injector) {
+    constructor(private fb: FormBuilder, injector: Injector) {
         super(injector);
     }
 }
