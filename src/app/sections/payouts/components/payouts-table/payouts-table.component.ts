@@ -8,6 +8,7 @@ import { filter } from 'rxjs/operators';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { StatusColor } from '@cc/app/shared/components/status/types/status-color';
+import { NotificationService } from '@cc/app/shared/services/notification';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { DIALOG_CONFIG, DialogConfig } from '../../../../tokens';
@@ -38,7 +39,8 @@ export class PayoutsTableComponent {
         private router: Router,
         private payoutManagementService: PayoutManagementService,
         private dialog: MatDialog,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
+        private notificationService: NotificationService
     ) {}
 
     async navigateToPayout(id: PayoutID) {
@@ -89,6 +91,11 @@ export class PayoutsTableComponent {
                 switchMap(() => this.payoutManagementService.confirmPayout(id)),
                 untilDestroyed(this)
             )
-            .subscribe();
+            .subscribe({
+                error: (err) => {
+                    this.notificationService.error('Payout confirmation error');
+                    console.error(err);
+                },
+            });
     }
 }

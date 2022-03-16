@@ -33,8 +33,9 @@ export class CancelPayoutDialogComponent {
                 next: () => {
                     this.dialogRef.close(true);
                 },
-                error: () => {
+                error: (err) => {
                     this.notificationService.error('Payout cancellation error');
+                    console.error(err);
                 },
             });
     }
