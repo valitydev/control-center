@@ -43,10 +43,6 @@ export class PayoutsTableComponent {
         private notificationService: NotificationService
     ) {}
 
-    async navigateToPayout(id: PayoutID) {
-        await this.router.navigate(['/payouts', id]);
-    }
-
     getColorByStatus(status: keyof PayoutStatus) {
         switch (status) {
             case 'paid':

@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
+import { debounceTime } from 'rxjs/operators';
 
 import { QueryParamsService } from '@cc/app/shared/services';
 
@@ -20,7 +21,7 @@ import { FetchPayoutsService, SearchParams } from './services/fetch-payouts.serv
     providers: [FetchPayoutsService],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PayoutsComponent {
+export class PayoutsComponent implements OnInit {
     control = new FormControl<PayoutsSearchForm>(this.qp.params);
     inProgress$ = this.fetchPayoutsService.doAction$;
     payouts$ = this.fetchPayoutsService.searchResult$;
@@ -32,6 +33,12 @@ export class PayoutsComponent {
         private dialog: MatDialog,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
     ) {}
+
+    ngOnInit() {
+        this.control.valueChanges
+            .pipe(debounceTime(250), untilDestroyed(this))
+            .subscribe((value) => this.search(value));
+    }
 
     fetchMore() {
         this.fetchPayoutsService.fetchMore();
