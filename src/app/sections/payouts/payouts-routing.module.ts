@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '@cc/app/shared/services';
-
-import { PayoutsComponent } from './payouts.component';
-
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: 'payouts',
-                component: PayoutsComponent,
-                canActivate: [AppAuthGuardService],
-                data: {
-                    roles: ['payout:read'],
-                },
+                loadChildren: () => import('./payouts/payouts.module').then((m) => m.PayoutsModule),
+            },
+            {
+                path: 'payouts/:payoutId',
+                loadChildren: () =>
+                    import('./payout-details/payout-details.module').then(
+                        (m) => m.PayoutDetailsModule
+                    ),
             },
         ]),
     ],
