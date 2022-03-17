@@ -4,10 +4,21 @@
         <mat-card-content gdGap="16px">
             <div gdGap="16px" gdColumns="1fr 1fr 1fr">
                 <cc-details-item title="Payout ID">{{ payout.payout_id }}</cc-details-item>
-                <cc-details-item title="Amount">{{ payout.amount }}</cc-details-item>
-                <cc-details-item title="Fee">{{ payout.fee }}</cc-details-item>
-                <cc-details-item title="Status">{{ payout.status }}</cc-details-item>
-                <cc-details-item title="Created At">{{ payout.created_at }}</cc-details-item>
+                <cc-details-item title="Amount">
+                    {{ payout.amount | ccFormatAmount }}
+                    {{ payout.currency.symbolic_code | ccCurrency }}
+                </cc-details-item>
+                <cc-details-item title="Fee">
+                    {{ payout.fee | ccFormatAmount }}
+                    {{ payout.currency.symbolic_code | ccCurrency }}
+                </cc-details-item>
+                <cc-details-item title="Status">{{ payout.status | ccUnionKey }}</cc-details-item>
+                <cc-details-item *ngIf="payout.status.cancelled" title="Status Details">{{
+                    payout.status.cancelled.details
+                }}</cc-details-item>
+                <cc-details-item title="Created At">{{
+                    payout.created_at | date: 'dd.MM.yyyy HH:mm:ss'
+                }}</cc-details-item>
             </div>
 
             <div><mat-divider></mat-divider></div>

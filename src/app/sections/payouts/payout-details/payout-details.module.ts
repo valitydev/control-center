@@ -4,6 +4,7 @@ import { FlexLayoutModule, FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 
+import { CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
@@ -21,6 +22,8 @@ import { PayoutDetailsComponent } from './payout-details.component';
         DetailsItemModule,
         MatDividerModule,
         FlexLayoutModule,
+        CommonPipesModule,
+        ThriftPipesModule,
     ],
 })
 export class PayoutDetailsModule {}
