@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 import { pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { PayoutTool } from '@cc/app/api/damsel/gen-model/domain';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 
 import { PartyService } from '../../../papi/party.service';
@@ -20,6 +22,18 @@ export class PayoutDetailsComponent {
     );
     shop$ = this.payout$.pipe(
         switchMap(({ party_id, shop_id }) => this.partyService.getShop(party_id, shop_id)),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    party$ = this.payout$.pipe(
+        switchMap(({ party_id }) => this.partyService.getParty(party_id)),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    payoutTool$ = this.payout$.pipe(
+        switchMap(({ payout_tool_id }) =>
+            of({
+                id: payout_tool_id,
+            } as PayoutTool)
+        ), // TODO
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 

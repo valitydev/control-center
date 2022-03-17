@@ -21,15 +21,26 @@
                 }}</cc-details-item>
             </div>
 
-            <div><mat-divider></mat-divider></div>
-            <h2 class="mat-title">Party</h2>
+            <ng-container *ngIf="party$ | async as party">
+                <div><mat-divider></mat-divider></div>
+                <h2 class="cc-title">Party</h2>
+                <div gdGap="16px" gdColumns="1fr 1fr 1fr">
+                    <cc-details-item title="ID">{{ payout.party_id }}</cc-details-item>
+                    <cc-details-item title="Email">
+                        {{ party.contact_info?.email }}
+                    </cc-details-item>
+                </div>
+            </ng-container>
 
             <div><mat-divider></mat-divider></div>
-            <h2 class="mat-title">Shop</h2>
+            <h2 class="cc-title">Shop</h2>
             <cc-shop-details [shop]="shop$ | async"></cc-shop-details>
 
-            <div><mat-divider></mat-divider></div>
-            <h2 class="mat-title">Payout Tool</h2>
+            <ng-container *ngIf="payoutTool$ | async as payoutTool">
+                <div><mat-divider></mat-divider></div>
+                <h2 class="cc-title">Payout Tool</h2>
+                <cc-payout-tool-details [payoutTool]="payoutTool"></cc-payout-tool-details>
+            </ng-container>
         </mat-card-content>
     </mat-card>
 
