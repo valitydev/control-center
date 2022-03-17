@@ -1,3 +1,29 @@
-<div fxLayout="column" fxLayoutGap="24px">
+<div fxLayout="column" fxLayoutGap="24px" *ngIf="payout$ | async as payout">
     <cc-headline>Payout details</cc-headline>
+    <mat-card>
+        <mat-card-content gdGap="16px">
+            <div gdGap="16px" gdColumns="1fr 1fr 1fr">
+                <cc-details-item title="Payout ID">{{ payout.payout_id }}</cc-details-item>
+                <cc-details-item title="Amount">{{ payout.amount }}</cc-details-item>
+                <cc-details-item title="Fee">{{ payout.fee }}</cc-details-item>
+                <cc-details-item title="Status">{{ payout.status }}</cc-details-item>
+                <cc-details-item title="Created At">{{ payout.created_at }}</cc-details-item>
+            </div>
+
+            <div><mat-divider></mat-divider></div>
+            <h2 class="mat-title">Party</h2>
+
+            <div><mat-divider></mat-divider></div>
+            <h2 class="mat-title">Shop</h2>
+
+            <div><mat-divider></mat-divider></div>
+            <h2 class="mat-title">Payout Tool</h2>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-content>
+            <h2 class="cc-headline">Cash Flow</h2>
+        </mat-card-content>
+    </mat-card>
 </div>
