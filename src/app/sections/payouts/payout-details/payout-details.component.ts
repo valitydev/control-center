@@ -32,10 +32,16 @@ export class PayoutDetailsComponent {
         switchMap(({ payout_tool_id }) =>
             of({
                 id: payout_tool_id,
+                payout_tool_info: {
+                    international_bank_account: {
+                        bank: {},
+                    },
+                },
             } as PayoutTool)
         ), // TODO
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+    displayedColumns = ['source', 'destination', 'volume', 'details'];
 
     constructor(
         private route: ActivatedRoute,
