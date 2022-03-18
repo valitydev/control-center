@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 
 import { ShopDetailsModule } from '@cc/app/shared/components';
@@ -31,6 +32,7 @@ import { PayoutDetailsComponent } from './payout-details.component';
         FlexLayoutModule,
         MatTableModule,
         EmptySearchResultModule,
+        MatPaginatorModule,
     ],
 })
 export class PayoutDetailsModule {}
