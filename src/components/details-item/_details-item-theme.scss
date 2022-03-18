@@ -3,7 +3,8 @@
 @mixin cc-details-item-theme($theme) {
     $foreground: map-get($theme, foreground);
 
-    .cc-details-item-title {
+    .cc-details-item-title,
+    .cc-details-item-content-empty {
         color: mat.get-color-from-palette($foreground, secondary-text);
     }
 }
