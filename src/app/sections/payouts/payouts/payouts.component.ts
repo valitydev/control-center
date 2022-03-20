@@ -59,9 +59,8 @@ export class PayoutsComponent implements OnInit {
                         isNil
                     ),
                     payout_id: value.payoutId,
-                    // TODO: Should be enum
-                    payout_statuses: value.payoutStatuses?.map((key) => ({ [key]: {} })),
-                    payout_type: value.payoutType,
+                    payout_status_types: value.payoutStatusTypes,
+                    payout_type: value.payoutToolType,
                 },
                 isNil
             ) as SearchParams

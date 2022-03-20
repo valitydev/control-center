@@ -1,9 +1,8 @@
 import { Component, Injector } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormBuilder } from '@ngneat/reactive-forms';
-import { PayoutToolType } from '@vality/magista-proto';
+import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
 import { Party, Shop } from '@vality/magista-proto/lib/domain';
-import { PayoutStatus } from '@vality/magista-proto/lib/payout_manager';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
@@ -11,6 +10,7 @@ import {
     createValidatedAbstractControlProviders,
     ValidatedWrappedAbstractControlSuperclass,
 } from '@cc/utils/forms';
+import { getEnumKeys } from '@cc/utils/get-enum-keys';
 
 export interface PayoutsSearchForm {
     payoutId: string;
@@ -18,8 +18,8 @@ export interface PayoutsSearchForm {
     fromTime: Moment;
     toTime: Moment;
     shops: Shop['id'][];
-    payoutStatuses: (keyof PayoutStatus)[];
-    payoutType: PayoutToolType;
+    payoutStatusTypes: PayoutStatusType[];
+    payoutToolType: PayoutToolType;
 }
 
 @Component({
@@ -36,14 +36,15 @@ export class PayoutsSearchFormComponent extends ValidatedWrappedAbstractControlS
         fromTime: [moment().subtract(1, 'year').startOf('d'), Validators.required],
         toTime: [moment().endOf('d'), Validators.required],
         shops: null,
-        payoutStatuses: null,
-        payoutType: null,
+        payoutStatusTypes: null,
+        payoutToolType: null,
     });
-    statuses: PayoutsSearchForm['payoutStatuses'] = ['unpaid', 'paid', 'cancelled', 'confirmed'];
-    types: string[] = Object.values(PayoutToolType).filter(
-        (v) => typeof v === 'string'
-    ) as string[];
+
+    statusType = PayoutStatusType;
+    statusTypes = getEnumKeys(PayoutStatusType);
+
     payoutToolType = PayoutToolType;
+    payoutToolTypes = getEnumKeys(PayoutToolType);
 
     constructor(private fb: FormBuilder, injector: Injector) {
         super(injector);

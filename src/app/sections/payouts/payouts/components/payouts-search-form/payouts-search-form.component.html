@@ -20,16 +20,16 @@
         <input matInput placeholder="Payout ID" formControlName="payoutId" autocomplete="off" />
     </mat-form-field>
     <mat-form-field>
-        <mat-select multiple formControlName="payoutStatuses" placeholder="Payout Status">
-            <mat-option *ngFor="let status of statuses" [value]="status">
-                {{ status }}
+        <mat-select multiple formControlName="payoutStatusTypes" placeholder="Payout Status Type">
+            <mat-option *ngFor="let type of statusTypes" [value]="statusType[type]">
+                {{ type }}
             </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
-        <mat-select formControlName="payoutType" placeholder="Payout Tool Type">
+        <mat-select formControlName="payoutToolType" placeholder="Payout Tool Type">
             <mat-option [value]="null">any</mat-option>
-            <mat-option *ngFor="let type of types" [value]="payoutToolType[type]">
+            <mat-option *ngFor="let type of payoutToolTypes" [value]="payoutToolType[type]">
                 {{ type }}
             </mat-option>
         </mat-select>
