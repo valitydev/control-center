@@ -20,10 +20,11 @@
             />
         </mat-form-field>
     </div>
-    <mat-form-field>
-        <mat-label>Payout Tool ID</mat-label>
-        <input matInput type="text" formControlName="payoutToolId" />
-    </mat-form-field>
+    <cc-payout-tool-field
+        [partyId]="this.control.value.partyId"
+        [shopId]="this.control.value.shopId"
+        formControlName="payoutToolId"
+    ></cc-payout-tool-field>
 </mat-dialog-content>
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
     <button mat-button [mat-dialog-close]="false" [disabled]="!!(progress$ | async)">
