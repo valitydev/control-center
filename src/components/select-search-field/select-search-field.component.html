@@ -5,6 +5,7 @@
         (selectionChange)="select($event.value)"
         [value]="selected$ | async"
         [required]="required"
+        [disabled]="disabled"
     >
         <mat-option>
             <ngx-mat-select-search

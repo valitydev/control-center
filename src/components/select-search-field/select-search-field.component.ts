@@ -36,6 +36,7 @@ export class SelectSearchFieldComponent<Value> extends WrappedFormControlSupercl
     implements OnInit, OnChanges {
     @Input() label: string;
     @Input() @coerceBoolean required = false;
+    @Input() @coerceBoolean disabled = false;
     @Input() options: Option<Value>[];
     @Input() svgIcon: string | null = this.fieldOptions?.svgIcon;
     @Input() hint: string | null;
