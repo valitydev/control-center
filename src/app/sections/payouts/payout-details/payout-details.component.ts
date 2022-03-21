@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-import { pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { PayoutTool } from '@cc/app/api/damsel/gen-model/domain';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-
-import { PartyService } from '../../../papi/party.service';
 
 @Component({
     selector: 'cc-payout-details',
@@ -21,24 +19,21 @@ export class PayoutDetailsComponent {
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     shop$ = this.payout$.pipe(
-        switchMap(({ party_id, shop_id }) => this.partyService.getShop(party_id, shop_id)),
+        switchMap(({ party_id, shop_id }) =>
+            this.partyManagementService.getShop(party_id, shop_id)
+        ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     party$ = this.payout$.pipe(
-        switchMap(({ party_id }) => this.partyService.getParty(party_id)),
+        switchMap(({ party_id }) => this.partyManagementService.get(party_id)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
-    payoutTool$ = this.payout$.pipe(
-        switchMap(({ payout_tool_id }) =>
-            of({
-                id: payout_tool_id,
-                payout_tool_info: {
-                    international_bank_account: {
-                        bank: {},
-                    },
-                },
-            } as PayoutTool)
-        ), // TODO
+    payoutTool$ = combineLatest([this.payout$, this.shop$]).pipe(
+        switchMap(([{ party_id, payout_tool_id }, { contract_id }]) =>
+            this.partyManagementService
+                .getContract(party_id, contract_id)
+                .pipe(map((contract) => contract.payout_tools.find((t) => t.id === payout_tool_id)))
+        ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     displayedColumns = ['source', 'destination', 'volume', 'details'];
@@ -46,6 +41,6 @@ export class PayoutDetailsComponent {
     constructor(
         private route: ActivatedRoute,
         private payoutManagementService: PayoutManagementService,
-        private partyService: PartyService
+        private partyManagementService: PartyManagementService
     ) {}
 }
