@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
@@ -20,6 +21,7 @@ import { SelectSearchFieldComponent } from './select-search-field.component';
         MatIconModule,
         MatSelectModule,
         NgxMatSelectSearchModule,
+        MatProgressBarModule,
     ],
     declarations: [SelectSearchFieldComponent],
     exports: [SelectSearchFieldComponent],

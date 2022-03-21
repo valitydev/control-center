@@ -4,7 +4,7 @@ import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { WrappedFormControlSuperclass, provideValueAccessor } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
-import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import {
     catchError,
     debounceTime,
@@ -18,6 +18,7 @@ import {
 
 import { PartyID } from '@cc/app/api/damsel/gen-model/domain';
 import { Option } from '@cc/components/select-search-field';
+import { progressTo } from '@cc/utils/operators';
 
 import { DeanonimusService } from '../../../thrift-services/deanonimus';
 
@@ -37,6 +38,7 @@ export class MerchantFieldComponent extends WrappedFormControlSuperclass<PartyID
     incomingValue$ = new Subject<Partial<PartyID>>();
     options$ = new ReplaySubject<Option<PartyID>[]>(1);
     searchChange$ = new Subject<string>();
+    progress$ = new BehaviorSubject(0);
 
     constructor(
         injector: Injector,
@@ -84,6 +86,7 @@ export class MerchantFieldComponent extends WrappedFormControlSuperclass<PartyID
     private searchOptions(str: string): Observable<Option<PartyID>[]> {
         return this.deanonimusService.searchParty(str).pipe(
             map((parties) => parties.map((p) => ({ label: p.party.email, value: p.party.id }))),
+            progressTo(this.progress$),
             catchError((err) => {
                 this.snackBar.open('Search error', 'OK', { duration: 2000 });
                 console.error(err);

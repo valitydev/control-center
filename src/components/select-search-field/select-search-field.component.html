@@ -16,23 +16,30 @@
                 <mat-icon *ngIf="svgIcon" [svgIcon]="svgIcon" ngxMatSelectSearchClear></mat-icon>
             </ngx-mat-select-search>
         </mat-option>
-        <mat-option
-            *ngFor="let option of isExternalSearch ? options : (filteredOptions$ | async)"
-            [value]="option.value"
-        >
-            {{ option.label }}
-        </mat-option>
-        <mat-option
-            *ngIf="
-                !(isExternalSearch ? options : (filteredOptions$ | async))?.length &&
-                !selectSearchControl.value &&
-                cachedOption?.value &&
-                (selected$ | async) === cachedOption?.value
-            "
-            [value]="cachedOption.value"
-        >
-            {{ cachedOption.label }}
-        </mat-option>
+        <ng-container *ngIf="!progress; else progressBar">
+            <mat-option
+                *ngFor="let option of isExternalSearch ? options : (filteredOptions$ | async)"
+                [value]="option.value"
+            >
+                {{ option.label }}
+            </mat-option>
+            <mat-option
+                *ngIf="
+                    !(isExternalSearch ? options : (filteredOptions$ | async))?.length &&
+                    !selectSearchControl.value &&
+                    cachedOption?.value &&
+                    (selected$ | async) === cachedOption?.value
+                "
+                [value]="cachedOption.value"
+            >
+                {{ cachedOption.label }}
+            </mat-option>
+        </ng-container>
+        <ng-template #progressBar>
+            <mat-option disabled>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </mat-option>
+        </ng-template>
     </mat-select>
     <button *ngIf="selected$ | async" mat-icon-button matSuffix (click)="clear($event)">
         <ng-container *ngIf="svgIcon; else defaultIcon">
