@@ -26,7 +26,7 @@
                 <mat-divider></mat-divider>
             </div>
             <div class="cc-title">Shop</div>
-            <cc-payment-shop [shop]="shop"></cc-payment-shop>
+            <cc-shop-details [shop]="shop"></cc-shop-details>
         </div>
         <div fxLayout="column" fxLayoutGap="16px" *ngIf="hasError(payment.status)">
             <div>

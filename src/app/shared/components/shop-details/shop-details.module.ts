@@ -3,11 +3,11 @@ import { FlexModule } from '@angular/flex-layout';
 
 import { DetailsItemModule } from '@cc/components/details-item';
 
-import { PaymentShopComponent } from './payment-shop.component';
+import { ShopDetailsComponent } from './shop-details.component';
 
 @NgModule({
-    declarations: [PaymentShopComponent],
+    declarations: [ShopDetailsComponent],
     imports: [FlexModule, DetailsItemModule],
-    exports: [PaymentShopComponent],
+    exports: [ShopDetailsComponent],
 })
-export class PaymentShopModule {}
+export class ShopDetailsModule {}
