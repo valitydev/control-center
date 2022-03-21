@@ -17,6 +17,9 @@ export class PartyService {
         this.papiEndpoint = configService.config.papiEndpoint;
     }
 
+    /**
+     * @deprecated use PartyManagementService
+     */
     getParty(partyId: string): Observable<Party> {
         return this.http
             .get<ContractTemplate[]>(`${this.papiEndpoint}/parties/${partyId}`)
@@ -26,6 +29,9 @@ export class PartyService {
     getShops = (partyID: string): Observable<Shop[]> =>
         this.getParty(partyID).pipe(map((party) => Array.from(party.shops.values())));
 
+    /**
+     * @deprecated use PartyManagementService
+     */
     getShop = (partyID: string, shopID: string): Observable<Shop> =>
         this.getShops(partyID).pipe(map((shops) => shops.find((shop) => shop.id === shopID)));
 }
