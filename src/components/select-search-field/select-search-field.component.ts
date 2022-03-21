@@ -15,7 +15,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { ComponentChanges } from '@cc/app/shared/utils';
 import { getFormValueChanges } from '@cc/utils/forms';
@@ -65,7 +65,7 @@ export class SelectSearchFieldComponent<Value> extends WrappedFormControlSupercl
 
     ngOnInit(): void {
         this.selectSearchControl.valueChanges
-            .pipe(filter<string>(Boolean), untilDestroyed(this))
+            .pipe(distinctUntilChanged(), untilDestroyed(this))
             .subscribe((v) => this.searchChange.emit(v));
     }
 
@@ -94,5 +94,6 @@ export class SelectSearchFieldComponent<Value> extends WrappedFormControlSupercl
     private cacheOption(): void {
         const option = this.options?.find((o) => o.value === this.selected$.value);
         if (option) this.cachedOption = option;
+        else if (this.selected$.value) this.select(null);
     }
 }

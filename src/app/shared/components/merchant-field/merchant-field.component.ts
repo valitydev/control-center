@@ -8,6 +8,7 @@ import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import {
     catchError,
     debounceTime,
+    filter,
     map,
     startWith,
     switchMap,
@@ -67,6 +68,7 @@ export class MerchantFieldComponent extends WrappedFormControlSuperclass<PartyID
         this.control.valueChanges.subscribe((v) => this.emitOutgoingValue(v));
         this.searchChange$
             .pipe(
+                filter(Boolean),
                 debounceTime(600),
                 switchMap((str) => this.searchOptions(str)),
                 untilDestroyed(this)

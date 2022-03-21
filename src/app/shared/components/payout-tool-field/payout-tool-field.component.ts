@@ -3,10 +3,11 @@ import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
-import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
+import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { PartyID } from '@cc/app/api/damsel/gen-model/domain';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
+import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
 import {
     createValidatedAbstractControlProviders,
@@ -51,18 +52,31 @@ export class PayoutToolFieldComponent extends ValidatedWrappedAbstractControlSup
     private payoutTools$ = combineLatest([this.partyId$, this.shopId$]).pipe(
         switchMap(([partyId, shopId]) =>
             partyId && shopId
-                ? this.partyManagementService.getShop(partyId, shopId).pipe(
-                      switchMap(({ contract_id }) =>
-                          this.partyManagementService.getContract(partyId, contract_id)
-                      ),
-                      pluck('payout_tools')
-                  )
+                ? this.partyManagementService
+                      .getShop(partyId, shopId)
+                      .pipe(
+                          switchMap(({ contract_id }) =>
+                              this.partyManagementService.getContract(partyId, contract_id)
+                          ),
+                          pluck('payout_tools')
+                      )
+                      .pipe(
+                          catchError((err) => {
+                              this.notificationService.error('Error when getting shop or contract');
+                              console.error(err);
+                              return of<PayoutTool[]>([]);
+                          })
+                      )
                 : of<PayoutTool[]>([])
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    constructor(injector: Injector, private partyManagementService: PartyManagementService) {
+    constructor(
+        injector: Injector,
+        private partyManagementService: PartyManagementService,
+        private notificationService: NotificationService
+    ) {
         super(injector);
     }
 }
