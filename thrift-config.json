@@ -19,6 +19,10 @@
                 {
                     "outputFolder": "deposit",
                     "definitionFile": "deposit.thrift"
+                },
+                {
+                    "outputFolder": "withdrawal-session",
+                    "definitionFile": "withdrawal_session.thrift"
                 }
             ]
         },
