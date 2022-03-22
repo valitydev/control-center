@@ -1,9 +1,9 @@
 <cc-select-search-field
-    [label]="label || 'Merchant'"
+    [label]="label || 'Payout Tool'"
     [required]="required"
     [options]="options$ | async"
     [formControl]="control"
-    [progress]="!!(progress$ | async)"
-    (searchChange)="this.searchChange$.next($event)"
+    [disabled]="!(partyId$ | async) || !(shopId$ | async)"
+    (searchChange)="searchChange$.next($event)"
     isExternalSearch
 ></cc-select-search-field>

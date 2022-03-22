@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
-import { ShopFieldModule, StatusModule } from '@cc/app/shared/components';
+import { PayoutToolFieldModule, ShopFieldModule, StatusModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
@@ -58,6 +58,7 @@ import { PayoutsComponent } from './payouts.component';
         StatusModule,
         MatDialogModule,
         ShopFieldModule,
+        PayoutToolFieldModule,
     ],
 })
 export class PayoutsModule {}
