@@ -7,16 +7,5 @@
         "file-storage": "./node_modules/file-storage-proto/proto",
         "deanonimus": { "path": "./node_modules/deanonimus-proto/proto", "meta": true }
     },
-    "config": [
-        {
-            "namespace": "fistful",
-            "baseUrl": "./node_modules/@vality/fistful-proto/proto",
-            "services": [
-                {
-                    "outputFolder": "wallet",
-                    "definitionFile": "wallet.thrift"
-                }
-            ]
-        }
-    ]
+    "config": []
 }
