@@ -35,16 +35,6 @@
                     "definitionFile": "domain_config.thrift"
                 }
             ]
-        },
-        {
-            "namespace": "dominant-cache",
-            "baseUrl": "./node_modules/dominant-cache-proto/proto",
-            "services": [
-                {
-                    "outputFolder": "dominant-cache",
-                    "definitionFile": "dominant_cache.thrift"
-                }
-            ]
         }
     ]
 }

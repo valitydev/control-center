@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
-import { ThriftConnector } from '../../thrift-connector';
+import { ThriftConnector } from '../../utils/thrift-connector';
 import { RevertParams, RevertState } from '../gen-model/deposit_revert';
 import { DepositInstanceProvider } from './deposit-instance-provider.service';
 import * as Management from './gen-nodejs/Management';

@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ContractTemplate } from '@vality/dominant-cache-proto';
 import isNil from 'lodash-es/isNil';
 import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
-import { ContractTemplate } from '@cc/app/api/dominant-cache/gen-model/dominant_cache';
 
 import { ContractTemplateRef } from '../../../../../thrift-services/damsel/gen-model/domain';
 
@@ -42,7 +42,7 @@ export class ContractTemplateRefComponent implements OnInit {
             )
         );
         this.form.updateValueAndValidity();
-        this.contracts$ = this.dominantCacheService.getContractTemplates().pipe(
+        this.contracts$ = this.dominantCacheService.GetContractTemplates().pipe(
             map((templates) => sortBy(templates, (o) => Number(o.ref))),
             tap(
                 () => {

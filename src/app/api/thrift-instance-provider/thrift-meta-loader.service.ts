@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { from, Observable, ObservableInput } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
-import { ThriftAstMetadata } from '../../thrift-services';
+import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 @Injectable({ providedIn: 'root' })
 export class ThriftMetaLoader {

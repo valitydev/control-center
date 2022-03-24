@@ -1,5 +1,6 @@
+import { createThriftInstanceUtils } from '@cc/app/api/utils';
+
 import metadata from '../../../../assets/meta-damsel.json';
-import { createThriftInstanceUtils } from '../../utils/thrift-instance';
 import * as base from '../gen-nodejs/base_types';
 import * as claim_management from '../gen-nodejs/claim_management_types';
 import * as domain_config from '../gen-nodejs/domain_config_types';

@@ -1,6 +1,6 @@
 import { ObservableInput } from 'rxjs';
 
-import { ThriftInstanceContext } from '../../../thrift-services';
+import { ThriftInstanceContext } from '@cc/app/api/utils';
 
 export interface ProviderSettings {
     context: ThriftInstanceContext;

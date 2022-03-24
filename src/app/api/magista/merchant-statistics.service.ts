@@ -4,7 +4,7 @@ import * as ThriftMerchantStatisticsService from '@vality/magista-proto/lib/magi
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { ThriftConnector } from '@cc/app/api/thrift-connector';
+import { ThriftConnector } from '@cc/app/api/utils/thrift-connector';
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
 import { MagistaInstanceProviderService } from './magista-instance-provider.service';

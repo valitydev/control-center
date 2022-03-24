@@ -4,9 +4,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
+import { objectToJSON } from '@cc/app/api/utils';
+
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
-import { damselInstanceToObject, objectToJSON } from '../../../thrift-services';
+import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
 import { Predicate, TerminalObject } from '../../../thrift-services/damsel/gen-model/domain';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog';
