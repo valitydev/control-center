@@ -3,7 +3,7 @@ import partial from 'lodash-es/partial';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
-import { createThriftInstance, thriftInstanceToObject } from '../../thrift-services';
+import { createThriftInstance, thriftInstanceToObject } from '../utils/thrift-instance';
 import { ThriftMetaLoader } from './thrift-meta-loader.service';
 import { ProviderMethods, ProviderSettings } from './types';
 

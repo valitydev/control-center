@@ -3,8 +3,8 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
-import { createThriftInstance, thriftInstanceToObject } from '../../../thrift-services';
 import { ThriftConnector } from '../thrift-connector';
+import { createThriftInstance, thriftInstanceToObject } from '../thrift-instance';
 import { ThriftApiArgs } from './types/thrift-api-args';
 
 export class ThriftApi extends ThriftConnector {
