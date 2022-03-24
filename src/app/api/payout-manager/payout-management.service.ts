@@ -4,7 +4,7 @@ import { Payout, PayoutID, PayoutParams } from '@vality/payout-manager-proto';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { ThriftConnector } from '@cc/app/api/thrift-connector';
+import { ThriftConnector } from '@cc/app/api/utils/thrift-connector';
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
 import { PayoutManagerInstanceProviderService } from './payout-manager-instance-provider.service';

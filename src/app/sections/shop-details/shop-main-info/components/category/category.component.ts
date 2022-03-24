@@ -15,7 +15,7 @@ export class CategoryComponent {
     @Input() set category(categoryID: number) {
         this.categoryID = categoryID;
         this.category$ = this.dominantCacheService
-            .getCategories()
+            .GetCategories()
             .pipe(
                 map((categories) =>
                     categories.find((category) => category.ref === String(categoryID))

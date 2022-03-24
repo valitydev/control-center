@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
-import { ThriftConnector } from '../../thrift-connector';
+import { ThriftConnector } from '../../utils/thrift-connector';
 import { WalletState, EventRange } from '../gen-model/wallet';
 import * as Management from './gen-nodejs/Management';
 import { WalletInstanceProvider } from './wallet-instance-provider.service';

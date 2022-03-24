@@ -1,1 +1,1 @@
-export * from './dominant-cache';
+export * from './dominant-cache.service';
