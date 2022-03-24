@@ -42,7 +42,7 @@
     "@s-libs/micro-dash": "^13.1.0",
     "@s-libs/ng-core": "^13.1.0",
     "@s-libs/rxjs-core": "^13.1.0",
-    "@vality/dominant-cache-proto": "^1.0.1-5b29d81.0",
+    "@vality/dominant-cache-proto": "1.0.1-5b29d81.0",
     "@vality/magista-proto": "1.0.1-f1a4bc0.0",
     "@vality/payout-manager-proto": "^1.0.1-cc9875f.0",
     "@vality/thrift-ts": "2.2.0-alpha",
