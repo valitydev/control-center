@@ -1,6 +1,9 @@
 {
     "proto": {
-        "damsel": { "path": "./node_modules/damsel/proto", "meta": true },
+        "damsel": {
+            "path": "./node_modules/@vality/domain-proto/proto",
+            "meta": true
+        },
         "machinegun": "./node_modules/machinegun-proto/proto",
         "fistful": "./node_modules/fistful-proto/proto",
         "messages": "./node_modules/messages-proto/proto",
@@ -28,7 +31,7 @@
         },
         {
             "namespace": "damsel",
-            "baseUrl": "./node_modules/damsel/proto",
+            "baseUrl": "./node_modules/@vality/domain-proto/proto",
             "services": [
                 {
                     "outputFolder": "domain-config",
