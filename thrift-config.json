@@ -15,10 +15,6 @@
                 {
                     "outputFolder": "wallet",
                     "definitionFile": "wallet.thrift"
-                },
-                {
-                    "outputFolder": "deposit",
-                    "definitionFile": "deposit.thrift"
                 }
             ]
         }
