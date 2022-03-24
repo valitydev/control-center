@@ -50,7 +50,13 @@ export class ThriftApi extends ThriftConnector {
             serviceName
         ].functions[methodName];
         const methodThriftArgs = methodArgs.map((arg, idx) =>
-            createThriftInstance(metadata, context, namespaceName, methodMetadata.args[idx], arg)
+            createThriftInstance(
+                metadata,
+                context,
+                namespaceName,
+                methodMetadata.args[idx].type,
+                arg
+            )
         );
         return this.callThriftServiceMethod(methodName, ...methodThriftArgs).pipe(
             map((v) => thriftInstanceToObject(metadata, namespaceName, methodMetadata.type, v))
