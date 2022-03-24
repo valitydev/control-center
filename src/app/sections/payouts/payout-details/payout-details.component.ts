@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { PartyManagementService } from '@cc/app/api/payment-processing';
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 
 @Component({
@@ -20,17 +20,17 @@ export class PayoutDetailsComponent {
     );
     shop$ = this.payout$.pipe(
         switchMap(({ party_id, shop_id }) =>
-            this.partyManagementService.getShop(party_id, shop_id)
+            this.partyManagementWithUserService.getShop(party_id, shop_id)
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     party$ = this.payout$.pipe(
-        switchMap(({ party_id }) => this.partyManagementService.get(party_id)),
+        switchMap(({ party_id }) => this.partyManagementWithUserService.getParty(party_id)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     payoutTool$ = combineLatest([this.payout$, this.shop$]).pipe(
         switchMap(([{ party_id, payout_tool_id }, { contract_id }]) =>
-            this.partyManagementService
+            this.partyManagementWithUserService
                 .getContract(party_id, contract_id)
                 .pipe(map((contract) => contract.payout_tools.find((t) => t.id === payout_tool_id)))
         ),
@@ -41,6 +41,6 @@ export class PayoutDetailsComponent {
     constructor(
         private route: ActivatedRoute,
         private payoutManagementService: PayoutManagementService,
-        private partyManagementService: PartyManagementService
+        private partyManagementWithUserService: PartyManagementWithUserService
     ) {}
 }
