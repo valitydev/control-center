@@ -11,8 +11,3 @@ jobs:
             - uses: ./.github/actions/init
             - name: Check & Build
               run: npm run ci:build
-            - name: Try deploy image
-              uses: valitydev/action-deploy-docker@v2
-              with:
-                  registry-username: ${{ github.actor }}
-                  registry-access-token: ${{ secrets.GITHUB_TOKEN }}
