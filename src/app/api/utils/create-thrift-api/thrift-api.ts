@@ -1,4 +1,4 @@
-import { from, Observable } from 'rxjs';
+import { from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
@@ -8,8 +8,6 @@ import { createThriftInstance, thriftInstanceToObject } from '../thrift-instance
 import { ThriftApiArgs } from './types/thrift-api-args';
 
 export class ThriftApi extends ThriftConnector {
-    private metadata$: Observable<any>;
-
     constructor(...[injector, options]: ThriftApiArgs) {
         super(
             injector.get(KeycloakTokenInfoService),
@@ -23,7 +21,7 @@ export class ThriftApi extends ThriftConnector {
                 options.functions.map((methodName) => [
                     methodName,
                     (...methodArgs) =>
-                        (this.metadata$ || (this.metadata$ = from(options.metadata()))).pipe(
+                        from(options.metadata()).pipe(
                             switchMap((metadata) =>
                                 this.callThriftServiceMethodWithConvert(
                                     options.name,
