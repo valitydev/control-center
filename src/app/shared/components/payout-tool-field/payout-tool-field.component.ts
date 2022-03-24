@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { PartyID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
 import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
-import { PartyID } from '@cc/app/api/damsel/gen-model/domain';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';

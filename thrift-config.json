@@ -28,16 +28,6 @@
                     "definitionFile": "withdrawal_session.thrift"
                 }
             ]
-        },
-        {
-            "namespace": "damsel",
-            "baseUrl": "./node_modules/@vality/domain-proto/proto",
-            "services": [
-                {
-                    "outputFolder": "domain-config",
-                    "definitionFile": "domain_config.thrift"
-                }
-            ]
         }
     ]
 }

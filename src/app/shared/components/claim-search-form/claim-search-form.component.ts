@@ -9,10 +9,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ClaimStatus } from '@vality/domain-proto/lib/claim_management';
 import { coerceBoolean } from 'coerce-property';
 import { debounceTime, map, take } from 'rxjs/operators';
 
-import { ClaimStatus } from '@cc/app/api/damsel/gen-model/claim_management';
 import { queryParamsToFormValue } from '@cc/app/shared/components/claim-search-form/query-params-to-form-value';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 

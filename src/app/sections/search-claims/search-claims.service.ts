@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { PartyID } from '@vality/domain-proto';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { PartyID } from '@cc/app/api/damsel/gen-model/domain';
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';

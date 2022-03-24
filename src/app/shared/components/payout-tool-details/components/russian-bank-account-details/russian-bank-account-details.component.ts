@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-import { RussianBankAccount } from '@cc/app/api/damsel/gen-model/domain';
+import { RussianBankAccount } from '@vality/domain-proto';
 
 @Component({
     selector: 'cc-russian-bank-account-details',

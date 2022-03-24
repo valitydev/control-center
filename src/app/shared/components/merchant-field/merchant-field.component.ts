@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { WrappedFormControlSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { PartyID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import {
@@ -16,7 +17,6 @@ import {
     withLatestFrom,
 } from 'rxjs/operators';
 
-import { PartyID } from '@cc/app/api/damsel/gen-model/domain';
 import { Option } from '@cc/components/select-search-field';
 import { progressTo } from '@cc/utils/operators';
 
