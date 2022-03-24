@@ -87,7 +87,7 @@
     "@typescript-eslint/parser": "~5.8.0",
     "chalk": "^4.1.0",
     "concurrently": "^6.5.1",
-    "damsel": "github:valitydev/damsel#318a7a6588c4813bd7d5c170af58fa9b6a80e401",
+    "damsel": "github:valitydev/damsel#3efe7dffaae0f40a77dead166a52f8c9108f2d8d",
     "deanonimus-proto": "github:valitydev/deanonimus-proto#b9fab4fd1c7690186efdc5974d113c82bd5765e9",
     "del": "^5.1.0",
     "eslint": "^8.5.0",
