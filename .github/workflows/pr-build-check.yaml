@@ -10,8 +10,11 @@ jobs:
         name: Build
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - name: Checkout
+              uses: actions/checkout@v2
+
             - name: Init
               uses: ./.github/actions/init
+
             - name: Check & Build
               run: npm run ci:build
