@@ -6,6 +6,5 @@
         "messages": "./node_modules/messages-proto/proto",
         "file-storage": "./node_modules/file-storage-proto/proto",
         "deanonimus": { "path": "./node_modules/deanonimus-proto/proto", "meta": true }
-    },
-    "config": []
+    }
 }
