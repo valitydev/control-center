@@ -9,13 +9,23 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - uses: ./.github/actions/init
-            - uses: ./.github/actions/cache-all
+            - name: Cache all
+              uses: actions/cache@v3
+              id: cache
+              with:
+                  path: ./*
+                  key: ${{ github.sha }}
     check:
         name: Check
         runs-on: ubuntu-latest
         needs: [init]
         steps:
-            - uses: ./.github/actions/cache-all
+            - name: Cache all
+              uses: actions/cache@v3
+              id: cache
+              with:
+                  path: ./*
+                  key: ${{ github.sha }}
             - name: Check
               run: npm run ci:check
     build:
@@ -23,6 +33,11 @@ jobs:
         runs-on: ubuntu-latest
         needs: [init]
         steps:
-            - uses: ./.github/actions/cache-all
+            - name: Cache all
+              uses: actions/cache@v3
+              id: cache
+              with:
+                  path: ./*
+                  key: ${{ github.sha }}
             - name: Build
               run: npm run build
