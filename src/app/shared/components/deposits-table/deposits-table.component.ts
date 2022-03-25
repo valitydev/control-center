@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { DepositID } from '@vality/fistful-proto/lib/deposit';
+import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 
-import { DepositID } from '../../../thrift-services/fistful/gen-model/deposit';
-import { StatDeposit } from '../../../thrift-services/fistful/gen-model/fistful_stat';
 import { DepositActions } from './deposit-actions';
 import { DepositMenuItemEvent } from './deposit-menu-item-event';
 

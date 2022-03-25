@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { TerminalID } from '@vality/fistful-proto';
 
-import { TerminalID } from '../../../../../thrift-services/fistful/gen-model/fistful';
 import { TerminalAction, TerminalActionTypes, TerminalInfo } from '../../types';
 
 @Component({

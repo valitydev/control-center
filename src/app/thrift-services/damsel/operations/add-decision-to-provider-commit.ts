@@ -1,4 +1,5 @@
-import { TerminalID } from '../../fistful/gen-model/fistful';
+import { TerminalID } from '@vality/fistful-proto';
+
 import { PartyID, ProviderObject, ShopID } from '../gen-model/domain';
 import { Commit } from '../gen-model/domain_config';
 import { createAddTerminalToProviderOperation } from './create-add-terminal-to-provider-operation';

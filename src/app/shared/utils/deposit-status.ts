@@ -1,6 +1,6 @@
-import { clearNullFields } from '@cc/utils/thrift-utils';
+import { DepositStatus } from '@vality/fistful-proto/lib/fistful_stat';
 
-import { DepositStatus } from '../../thrift-services/fistful/gen-model/fistful_stat';
+import { clearNullFields } from '@cc/utils/thrift-utils';
 
 export const getDepositStatus = (status: DepositStatus): string =>
     Object.keys(clearNullFields(status))[0];

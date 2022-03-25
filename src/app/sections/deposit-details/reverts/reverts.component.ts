@@ -1,14 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DepositStatus, StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import { filter } from 'rxjs/operators';
 
 import { AppAuthGuardService, DepositRole } from '@cc/app/shared/services';
 import { getDepositStatus } from '@cc/app/shared/utils';
 
-import {
-    DepositStatus,
-    StatDeposit,
-} from '../../../thrift-services/fistful/gen-model/fistful_stat';
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
 import { CreateRevertDialogConfig } from './create-revert-dialog/types/create-revert-dialog-config';
 import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.service';

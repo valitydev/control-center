@@ -1,6 +1,5 @@
 {
     "proto": {
-        "damsel": "./node_modules/@vality/domain-proto/proto",
-        "fistful": "./node_modules/@vality/fistful-proto/proto"
+        "damsel": "./node_modules/@vality/domain-proto/proto"
     }
 }
