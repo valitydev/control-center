@@ -1,33 +1,29 @@
 import { Injectable, NgZone } from '@angular/core';
+import {
+    InvoiceID,
+    InvoicePaymentChargeback,
+    InvoicePaymentChargebackID,
+    InvoicePaymentID,
+} from '@vality/domain-proto';
+import {
+    InvoicePaymentAdjustment,
+    InvoicePaymentAdjustmentParams,
+    InvoicePaymentChargebackParams,
+    InvoiceRepairScenario,
+    UserInfo,
+} from '@vality/domain-proto/lib/payment_processing';
+import * as Invoicing from '@vality/domain-proto/lib/payment_processing/gen-nodejs/Invoicing';
+import {
+    InvoicePaymentAdjustmentParams as InvoicePaymentAdjustmentParamsObject,
+    InvoiceRepairScenario as InvoiceRepairScenarioObject,
+    UserInfo as UserInfoObject,
+} from '@vality/domain-proto/lib/payment_processing/gen-nodejs/payment_processing_types';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, timer } from 'rxjs';
 import { first, map, share, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
-import {
-    InvoiceID,
-    InvoicePaymentChargeback,
-    InvoicePaymentChargebackID,
-    InvoicePaymentID,
-} from './gen-model/domain';
-import {
-    InvoicePaymentAdjustment,
-    InvoicePaymentAdjustmentParams,
-    InvoicePaymentChargebackAcceptParams,
-    InvoicePaymentChargebackCancelParams,
-    InvoicePaymentChargebackParams,
-    InvoicePaymentChargebackRejectParams,
-    InvoicePaymentChargebackReopenParams,
-    InvoiceRepairScenario,
-    UserInfo,
-} from './gen-model/payment_processing';
-import * as Invoicing from './gen-nodejs/Invoicing';
-import {
-    InvoicePaymentAdjustmentParams as InvoicePaymentAdjustmentParamsObject,
-    InvoiceRepairScenario as InvoiceRepairScenarioObject,
-    UserInfo as UserInfoObject,
-} from './gen-nodejs/payment_processing_types';
 import { createDamselInstance, damselInstanceToObject } from './utils/create-damsel-instance';
 
 @Injectable()
@@ -124,78 +120,6 @@ export class PaymentProcessingService extends ThriftService {
             createDamselInstance('domain', 'InvoicePaymentID', paymentID),
             createDamselInstance('payment_processing', 'InvoicePaymentChargebackParams', params)
         ).pipe(map((r) => damselInstanceToObject('domain', 'InvoicePaymentChargeback', r)));
-
-    acceptChargeback = (
-        invoiceID: InvoiceID,
-        paymentID: InvoicePaymentID,
-        chargebackID: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackAcceptParams = {}
-    ): Observable<void> =>
-        this.toObservableAction('AcceptChargeback')(
-            this.getUser(),
-            createDamselInstance('domain', 'InvoiceID', invoiceID),
-            createDamselInstance('domain', 'InvoicePaymentID', paymentID),
-            createDamselInstance('domain', 'InvoicePaymentChargebackID', chargebackID),
-            createDamselInstance(
-                'payment_processing',
-                'InvoicePaymentChargebackAcceptParams',
-                params
-            )
-        );
-
-    rejectChargeback = (
-        invoiceID: InvoiceID,
-        paymentID: InvoicePaymentID,
-        chargebackID: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackRejectParams = {}
-    ): Observable<void> =>
-        this.toObservableAction('RejectChargeback')(
-            this.getUser(),
-            createDamselInstance('domain', 'InvoiceID', invoiceID),
-            createDamselInstance('domain', 'InvoicePaymentID', paymentID),
-            createDamselInstance('domain', 'InvoicePaymentChargebackID', chargebackID),
-            createDamselInstance(
-                'payment_processing',
-                'InvoicePaymentChargebackRejectParams',
-                params
-            )
-        );
-
-    reopenChargeback = (
-        invoiceID: InvoiceID,
-        paymentID: InvoicePaymentID,
-        chargebackID: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackReopenParams = {}
-    ): Observable<void> =>
-        this.toObservableAction('ReopenChargeback')(
-            this.getUser(),
-            createDamselInstance('domain', 'InvoiceID', invoiceID),
-            createDamselInstance('domain', 'InvoicePaymentID', paymentID),
-            createDamselInstance('domain', 'InvoicePaymentChargebackID', chargebackID),
-            createDamselInstance(
-                'payment_processing',
-                'InvoicePaymentChargebackReopenParams',
-                params
-            )
-        );
-
-    cancelChargeback = (
-        invoiceID: InvoiceID,
-        paymentID: InvoicePaymentID,
-        chargebackID: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackCancelParams = {}
-    ): Observable<void> =>
-        this.toObservableAction('CancelChargeback')(
-            this.getUser(),
-            createDamselInstance('domain', 'InvoiceID', invoiceID),
-            createDamselInstance('domain', 'InvoicePaymentID', paymentID),
-            createDamselInstance('domain', 'InvoicePaymentChargebackID', chargebackID),
-            createDamselInstance(
-                'payment_processing',
-                'InvoicePaymentChargebackCancelParams',
-                params
-            )
-        );
 
     getChargeback = (
         invoiceID: InvoiceID,
