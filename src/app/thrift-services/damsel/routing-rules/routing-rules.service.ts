@@ -3,7 +3,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { createNextId } from '../../utils/create-next-id';
 import { DomainCacheService } from '../domain-cache.service';
 import {
     Predicate,
@@ -12,6 +11,7 @@ import {
     RoutingRulesObject,
 } from '../gen-model/domain';
 import { Version } from '../gen-model/domain_config';
+import { createNextId } from './utils/create-next-id';
 import { getDelegate } from './utils/get-delegate';
 
 @Injectable()
