@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { FileData } from '@vality/file-storage-proto';
 
 import { FileID } from '../../../../../../thrift-services/damsel/gen-model/claim_management';
-import { FileData } from '../../../../../../thrift-services/file-storage/gen-model/file_storage';
 import { FileTimelineItemService } from '../file-timeline-item.service';
 
 @Component({

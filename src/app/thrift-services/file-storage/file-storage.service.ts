@@ -1,9 +1,4 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs';
-
-import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
-import { ThriftService } from '../services/thrift/thrift-service';
-import { Timestamp } from './gen-model/base';
 import {
     FileData,
     FileDataID,
@@ -11,8 +6,13 @@ import {
     Metadata,
     NewFileResult,
     URL,
-} from './gen-model/file_storage';
-import * as FileStorage from './gen-nodejs/FileStorage';
+} from '@vality/file-storage-proto';
+import { Timestamp } from '@vality/file-storage-proto/lib/base';
+import * as FileStorage from '@vality/file-storage-proto/lib/file_storage/gen-nodejs/FileStorage';
+import { Observable } from 'rxjs';
+
+import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
+import { ThriftService } from '../services/thrift/thrift-service';
 
 @Injectable()
 export class FileStorageService extends ThriftService {
