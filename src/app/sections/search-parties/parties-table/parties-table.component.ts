@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Party, PartyID } from '@vality/domain-proto';
 
-import { PartyID } from '../../../thrift-services/damsel/gen-model/domain';
-import { Party } from '../../../thrift-services/deanonimus/gen-model/deanonimus';
 import { PartyActions } from './party-actions';
 import { PartyMenuItemEvent } from './party-menu-item-event';
 
