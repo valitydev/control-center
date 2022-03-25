@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-import { PayoutTool } from '@cc/app/api/damsel/gen-model/domain';
+import { PayoutTool } from '@vality/domain-proto';
 
 @Component({
     selector: 'cc-payout-tool-details',

@@ -1,7 +1,6 @@
+import { CountryCode } from '@vality/domain-proto';
+import { PartyModification } from '@vality/domain-proto/lib/claim_management';
 import cloneDeep from 'lodash-es/cloneDeep';
-
-import { PartyModification } from '@cc/app/api/damsel/gen-model/claim_management';
-import { CountryCode } from '@cc/app/api/damsel/gen-model/domain';
 
 export const prepareModificationsToBackend = (
     modification: PartyModification

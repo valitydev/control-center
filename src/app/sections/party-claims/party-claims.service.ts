@@ -3,13 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, pluck, switchMap } from 'rxjs/operators';
 
-import { ClaimSearchQuery } from '@cc/app/api/damsel/gen-model/claim_management';
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
 import {
     Claim,
     ClaimID,
+    ClaimSearchQuery,
     ClaimStatus,
 } from '../../thrift-services/damsel/gen-model/claim_management';
 

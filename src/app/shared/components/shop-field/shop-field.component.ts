@@ -12,7 +12,6 @@ import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
 import { filter, share, switchMap } from 'rxjs/operators';
 
-import { Party, Shop } from '@cc/app/api/damsel/gen-model/domain';
 import { ComponentChanges } from '@cc/app/shared/utils';
 import {
     createValidatedAbstractControlProviders,
@@ -21,6 +20,7 @@ import {
 import { RequiredSuper } from '@cc/utils/required-super';
 
 import { PartyService } from '../../../papi/party.service';
+import { Party, Shop } from '../../../thrift-services/damsel/gen-model/domain';
 
 @UntilDestroy()
 @Component({

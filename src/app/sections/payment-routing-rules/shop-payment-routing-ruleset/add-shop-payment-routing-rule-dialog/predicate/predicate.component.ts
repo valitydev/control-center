@@ -12,7 +12,6 @@ import pickBy from 'lodash-es/pickBy';
 import { merge, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, tap } from 'rxjs/operators';
 
-import { PaymentSystemObject } from '@cc/app/api/damsel/gen-model/domain';
 import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
@@ -65,9 +64,7 @@ export class PredicateComponent implements OnChanges {
     bankCardType = BankCardType;
 
     deprecatedPaymentSystems$: Observable<string[]>;
-    paymentSystems$: Observable<PaymentSystemObject[]> = this.domainService.getObjects(
-        'payment_system'
-    );
+    paymentSystems$ = this.domainService.getObjects('payment_system');
     tokenProviders$: Observable<string[]>;
     tokenizationMethods$: Observable<string[]>;
     residences$: Observable<string[]>;

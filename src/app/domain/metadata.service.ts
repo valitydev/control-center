@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Field, JsonAST } from '@vality/thrift-ts';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { Reference } from '../thrift-services/damsel/gen-model/domain';
@@ -14,11 +13,9 @@ export interface Metadata {
 
 @Injectable()
 export class MetadataService {
-    private metadata$: Observable<Metadata[]>;
-
-    constructor(private http: HttpClient) {
-        this.metadata$ = this.http.get<Metadata[]>('/assets/meta-damsel.json').pipe(shareReplay(1));
-    }
+    private metadata$: Observable<Metadata[]> = from(
+        import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
+    ).pipe(shareReplay(1)) as Observable<Metadata[]>;
 
     get metadata() {
         return this.metadata$;

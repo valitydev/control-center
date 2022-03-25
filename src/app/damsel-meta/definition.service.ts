@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Field } from '@vality/thrift-ts';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { Reference } from '../thrift-services/damsel/gen-model/domain';
@@ -9,11 +8,9 @@ import { ASTDefinition } from './model';
 
 @Injectable()
 export class DefinitionService {
-    private def$: Observable<ASTDefinition[]>;
-
-    constructor(private http: HttpClient) {
-        this.def$ = this.http.get<ASTDefinition[]>('/assets/meta-damsel.json').pipe(shareReplay(1));
-    }
+    private def$: Observable<ASTDefinition[]> = from(
+        import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
+    ).pipe(shareReplay(1)) as Observable<ASTDefinition[]>;
 
     get astDefinition(): Observable<ASTDefinition[]> {
         return this.def$;

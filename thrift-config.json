@@ -1,6 +1,6 @@
 {
     "proto": {
-        "damsel": { "path": "./node_modules/damsel/proto", "meta": true },
+        "damsel": "./node_modules/@vality/domain-proto/proto",
         "machinegun": "./node_modules/machinegun-proto/proto",
         "fistful": "./node_modules/fistful-proto/proto",
         "messages": "./node_modules/messages-proto/proto",
@@ -23,16 +23,6 @@
                 {
                     "outputFolder": "withdrawal-session",
                     "definitionFile": "withdrawal_session.thrift"
-                }
-            ]
-        },
-        {
-            "namespace": "damsel",
-            "baseUrl": "./node_modules/damsel/proto",
-            "services": [
-                {
-                    "outputFolder": "domain-config",
-                    "definitionFile": "domain_config.thrift"
                 }
             ]
         }
