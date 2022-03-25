@@ -1,15 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
+import { Machine, MachineDescriptor, Reference } from '@vality/machinegun-proto';
+import { Namespace } from '@vality/machinegun-proto/lib/base';
+import * as Automaton from '@vality/machinegun-proto/lib/state_processing/gen-nodejs/Automaton';
+import {
+    MachineDescriptor as MachineDescriptorObject,
+    Reference as ReferenceObject,
+} from '@vality/machinegun-proto/lib/state_processing/gen-nodejs/state_processing_types';
 import { Observable } from 'rxjs';
 
 import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
-import { Namespace } from './gen-model/base';
-import { Machine, MachineDescriptor, Reference } from './gen-model/state_processing';
-import * as Automaton from './gen-nodejs/Automaton';
-import {
-    MachineDescriptor as MachineDescriptorObject,
-    Reference as ReferenceObject,
-} from './gen-nodejs/state_processing_types';
 
 @Injectable()
 export class AutomatonService extends ThriftService {
