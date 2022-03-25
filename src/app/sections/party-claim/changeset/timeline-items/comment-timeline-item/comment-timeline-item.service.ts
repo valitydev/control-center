@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { ConversationId } from '@vality/messages-proto';
 import { merge, of, Subject } from 'rxjs';
 import { catchError, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { ConversationId } from '../../../../../thrift-services/messages/gen-model/messages';
 import { MessagesService } from '../../../../../thrift-services/messages/messages.service';
 
 @Injectable()

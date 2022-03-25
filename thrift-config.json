@@ -2,7 +2,6 @@
     "proto": {
         "damsel": "./node_modules/@vality/domain-proto/proto",
         "fistful": "./node_modules/@vality/fistful-proto/proto",
-        "messages": "./node_modules/messages-proto/proto",
         "file-storage": "./node_modules/file-storage-proto/proto"
     }
 }

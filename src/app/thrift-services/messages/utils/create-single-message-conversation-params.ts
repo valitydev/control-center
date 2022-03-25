@@ -1,7 +1,6 @@
+import { Conversation, ConversationStatus } from '@vality/messages-proto';
 import * as moment from 'moment';
 import * as uuid from 'uuid/v4';
-
-import { Conversation, ConversationStatus } from '../gen-model/messages';
 
 export const createSingleMessageConversationParams = (
     conversationId: string,

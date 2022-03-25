@@ -1,21 +1,21 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs';
-
-import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
-import { ThriftService } from '../services/thrift/thrift-service';
 import {
     Conversation,
     ConversationFilter,
     ConversationId,
     GetConversationResponse,
     User,
-} from './gen-model/messages';
+} from '@vality/messages-proto';
 import {
     Conversation as ConversationType,
     ConversationFilter as ConversationFilterType,
     User as UserType,
-} from './gen-nodejs/messages_types';
-import * as MessageServiceClient from './gen-nodejs/MessageService';
+} from '@vality/messages-proto/lib/messages/gen-nodejs/messages_types';
+import * as MessageServiceClient from '@vality/messages-proto/lib/messages/gen-nodejs/MessageService';
+import { Observable } from 'rxjs';
+
+import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
+import { ThriftService } from '../services/thrift/thrift-service';
 
 @Injectable()
 export class MessagesService extends ThriftService {
