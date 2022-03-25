@@ -15,7 +15,7 @@ export class PayoutDetailsComponent {
     payout$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         pluck('payoutId'),
-        switchMap((id: string) => this.payoutManagementService.getPayout(id)),
+        switchMap((id: string) => this.payoutManagementService.GetPayout(id)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     shop$ = this.payout$.pipe(

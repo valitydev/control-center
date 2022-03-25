@@ -45,7 +45,7 @@ export class CreatePayoutDialogComponent {
     create() {
         const { value } = this.control;
         this.payoutManagementService
-            .createPayout(
+            .CreatePayout(
                 omitBy(
                     {
                         shop_params: {

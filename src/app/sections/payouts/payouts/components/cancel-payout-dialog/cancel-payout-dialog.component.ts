@@ -27,7 +27,7 @@ export class CancelPayoutDialogComponent {
 
     accept() {
         this.payoutManagementService
-            .cancelPayout(this.data.id, this.detailsControl.value)
+            .CancelPayout(this.data.id, this.detailsControl.value)
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
