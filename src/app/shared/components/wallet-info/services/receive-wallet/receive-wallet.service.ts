@@ -3,7 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, switchMap, shareReplay, tap } from 'rxjs/operators';
 
-import { WalletManagementService } from '@cc/app/api/fistful';
+import { ManagementService } from '@cc/app/api/wallet';
 
 @UntilDestroy()
 @Injectable()
@@ -35,7 +35,7 @@ export class ReceiveWalletService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     hasError$ = this.error$.asObservable();
 
-    constructor(private walletManagementService: WalletManagementService) {}
+    constructor(private walletManagementService: ManagementService) {}
 
     receiveWallet(id: string): void {
         this.receiveWallet$.next(id);
