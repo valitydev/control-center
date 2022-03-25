@@ -8,19 +8,18 @@ import {
 } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { PartyID, Shop, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
-import { filter, share, switchMap } from 'rxjs/operators';
+import { filter, map, share, switchMap } from 'rxjs/operators';
 
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { ComponentChanges } from '@cc/app/shared/utils';
 import {
     createValidatedAbstractControlProviders,
     ValidatedWrappedAbstractControlSuperclass,
 } from '@cc/utils/forms';
 import { RequiredSuper } from '@cc/utils/required-super';
-
-import { PartyService } from '../../../papi/party.service';
-import { Party, Shop } from '../../../thrift-services/damsel/gen-model/domain';
 
 @UntilDestroy()
 @Component({
@@ -33,22 +32,31 @@ import { Party, Shop } from '../../../thrift-services/damsel/gen-model/domain';
 export class ShopFieldComponent<M extends boolean = boolean>
     extends ValidatedWrappedAbstractControlSuperclass<
         M extends true ? Shop[] : Shop,
-        M extends true ? Shop['id'][] : Shop['id']
+        M extends true ? ShopID[] : ShopID
     >
     implements OnChanges, OnInit {
-    @Input() partyId: Party['id'];
+    @Input() partyId: PartyID;
     @Input() @coerceBoolean multiple: M;
     @Input() @coerceBoolean required: boolean;
 
-    control = new FormControl<M extends true ? Shop['id'][] : Shop['id']>();
+    control = new FormControl<M extends true ? ShopID[] : ShopID>();
     shops$ = defer(() => this.partyId$).pipe(
-        switchMap((partyId) => (partyId ? this.partyService.getShops(partyId) : of([] as Shop[]))),
+        switchMap((partyId) =>
+            partyId
+                ? this.partyManagementWithUserService
+                      .getParty(partyId)
+                      .pipe(map(({ shops }) => Array.from(shops.values())))
+                : of<Shop[]>([])
+        ),
         share()
     );
 
-    private partyId$ = new BehaviorSubject<Party['id']>(null);
+    private partyId$ = new BehaviorSubject<PartyID>(null);
 
-    constructor(injector: Injector, private partyService: PartyService) {
+    constructor(
+        injector: Injector,
+        private partyManagementWithUserService: PartyManagementWithUserService
+    ) {
         super(injector);
     }
 
