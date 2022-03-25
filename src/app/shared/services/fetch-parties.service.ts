@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Party } from '@vality/deanonimus-proto';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { DeanonimusService } from '../../thrift-services/deanonimus';
-import { Party } from '../../thrift-services/deanonimus/gen-model/deanonimus';
 
 @Injectable()
 export class FetchPartiesService {
@@ -18,7 +18,7 @@ export class FetchPartiesService {
                 map((hits) => hits.map((hit) => hit.party)),
                 catchError((err) => {
                     console.error(err);
-                    return of([]);
+                    return of<Party[]>([]);
                 })
             )
         ),

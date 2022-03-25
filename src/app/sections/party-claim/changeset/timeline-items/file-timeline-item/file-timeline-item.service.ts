@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FileData } from '@vality/file-storage-proto';
 import * as moment from 'moment';
 import { merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -6,7 +7,6 @@ import { catchError, filter, map, shareReplay, switchMap } from 'rxjs/operators'
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { FileStorageService } from '../../../../../thrift-services/file-storage/file-storage.service';
-import { FileData } from '../../../../../thrift-services/file-storage/gen-model/file_storage';
 import { download } from './download';
 
 @Injectable()

@@ -37,8 +37,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-/src/assets/meta-*.json
-/src/assets/api-meta/
+# Thrift codegen
 /src/app/thrift-services/**/gen-*/
 /src/app/api/**/gen-*/
 

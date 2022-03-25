@@ -84,7 +84,7 @@ export class PayoutsTableComponent {
             .afterClosed()
             .pipe(
                 filter((res) => res === 'confirm'),
-                switchMap(() => this.payoutManagementService.confirmPayout(id)),
+                switchMap(() => this.payoutManagementService.ConfirmPayout(id)),
                 untilDestroyed(this)
             )
             .subscribe({
