@@ -1,20 +1,18 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { PartyID } from '@vality/domain-proto';
+import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
 import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
-import { PartyManagementService } from '@cc/app/api/payment-processing';
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
 import {
     createValidatedAbstractControlProviders,
     ValidatedWrappedAbstractControlSuperclass,
 } from '@cc/utils/forms';
-
-import { PayoutTool, ShopID } from '../../../thrift-services/damsel/gen-model/domain';
 
 @UntilDestroy()
 @Component({
@@ -52,11 +50,11 @@ export class PayoutToolFieldComponent extends ValidatedWrappedAbstractControlSup
     private payoutTools$ = combineLatest([this.partyId$, this.shopId$]).pipe(
         switchMap(([partyId, shopId]) =>
             partyId && shopId
-                ? this.partyManagementService
+                ? this.partyManagementWithUserService
                       .getShop(partyId, shopId)
                       .pipe(
                           switchMap(({ contract_id }) =>
-                              this.partyManagementService.getContract(partyId, contract_id)
+                              this.partyManagementWithUserService.getContract(partyId, contract_id)
                           ),
                           pluck('payout_tools')
                       )
@@ -74,7 +72,7 @@ export class PayoutToolFieldComponent extends ValidatedWrappedAbstractControlSup
 
     constructor(
         injector: Injector,
-        private partyManagementService: PartyManagementService,
+        private partyManagementWithUserService: PartyManagementWithUserService,
         private notificationService: NotificationService
     ) {
         super(injector);

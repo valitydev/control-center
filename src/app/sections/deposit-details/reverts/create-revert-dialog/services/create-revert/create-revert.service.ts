@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RevertParams } from '@vality/fistful-proto/lib/deposit_revert';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
@@ -8,7 +9,6 @@ import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { toMinor } from '@cc/utils/to-minor';
 
-import { RevertParams } from '../../../../../../thrift-services/fistful/gen-model/deposit_revert';
 import { CreateRevertDialogConfig } from '../../types/create-revert-dialog-config';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class CreateRevertService {
         map(() => this.getParams()),
         withLatestFrom(this.depositID$),
         switchMap(([params, depositID]) =>
-            this.depositManagementService.createRevert(depositID, params).pipe(
+            this.depositManagementService.CreateRevert(depositID, params).pipe(
                 catchError((e) => {
                     // eslint-disable-next-line no-console
                     console.log(e);
@@ -69,7 +69,7 @@ export class CreateRevertService {
         return {
             id: this.idGenerator.getUsernameBasedId(),
             body: {
-                amount: toMinor(amount) as any,
+                amount: toMinor(amount),
                 currency: {
                     symbolic_code: currency,
                 },

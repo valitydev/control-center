@@ -1,2 +1,2 @@
-export * from './wallet';
-export * from './deposit';
+export * from './wallet-management.service';
+export * from './deposit-management.service';

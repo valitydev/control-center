@@ -16,7 +16,7 @@ export class ReceiveWalletService {
     wallet$ = this.receiveWallet$.pipe(
         tap(() => this.loading$.next(true)),
         switchMap((id) =>
-            this.walletManagementService.get(id).pipe(
+            this.walletManagementService.Get(id, {}).pipe(
                 catchError((e) => {
                     console.error(e);
                     this.loading$.next(false);

@@ -2,29 +2,9 @@
     "proto": {
         "damsel": "./node_modules/@vality/domain-proto/proto",
         "machinegun": "./node_modules/machinegun-proto/proto",
-        "fistful": "./node_modules/fistful-proto/proto",
+        "fistful": "./node_modules/@vality/fistful-proto/proto",
         "messages": "./node_modules/messages-proto/proto",
         "file-storage": "./node_modules/file-storage-proto/proto",
         "deanonimus": { "path": "./node_modules/deanonimus-proto/proto", "meta": true }
-    },
-    "config": [
-        {
-            "namespace": "fistful",
-            "baseUrl": "./node_modules/fistful-proto/proto",
-            "services": [
-                {
-                    "outputFolder": "wallet",
-                    "definitionFile": "wallet.thrift"
-                },
-                {
-                    "outputFolder": "deposit",
-                    "definitionFile": "deposit.thrift"
-                },
-                {
-                    "outputFolder": "withdrawal-session",
-                    "definitionFile": "withdrawal_session.thrift"
-                }
-            ]
-        }
-    ]
+    }
 }
