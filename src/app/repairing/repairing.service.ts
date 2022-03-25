@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RepairScenario } from '@vality/fistful-proto/lib/withdrawal_session';
 import { KeycloakService } from 'keycloak-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -9,7 +10,6 @@ import {
     UserInfo,
 } from '../thrift-services/damsel/gen-model/payment_processing';
 import { PaymentProcessingService } from '../thrift-services/damsel/payment-processing.service';
-import { RepairScenario } from '../thrift-services/fistful/gen-model/withdrawal_session';
 import { RepairerService } from '../thrift-services/fistful/repairer.service';
 import { AutomatonService } from '../thrift-services/machinegun/automaton.service';
 import { execute } from './execute';
