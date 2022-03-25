@@ -86,7 +86,7 @@
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "~5.8.0",
     "concurrently": "^6.5.1",
-    "deanonimus-proto": "github:valitydev/deanonimus-proto#b9fab4fd1c7690186efdc5974d113c82bd5765e9",
+    "deanonimus-proto": "github:valitydev/deanonimus-proto#c9a6cae261539a09a253432ca1f368007faba395",
     "del": "^5.1.0",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
