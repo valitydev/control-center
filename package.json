@@ -99,7 +99,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.11.0",
     "file-storage-proto": "github:valitydev/file-storage-proto#281e1ca4cea9bf32229a6c389f0dcf5d49c05a0b",
-    "fistful-proto": "github:valitydev/fistful-proto#e340259cdd3add024f0139e21f0a2453312ef901",
+    "fistful-proto": "github:valitydev/fistful-proto#ea0fe7aa75644138ad0e16321269eda8761c7a1f",
     "glob": "^7.1.6",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
