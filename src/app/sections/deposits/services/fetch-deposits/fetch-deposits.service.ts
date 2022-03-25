@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
@@ -6,7 +7,6 @@ import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 import { booleanDelay } from '@cc/utils/boolean-delay';
 
 import { FistfulStatisticsService } from '../../../../thrift-services/fistful/fistful-stat.service';
-import { StatDeposit } from '../../../../thrift-services/fistful/gen-model/fistful_stat';
 import { SearchParams } from '../../types/search-params';
 
 @Injectable()
