@@ -28,7 +28,7 @@ export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams
         continuationToken: string
     ): Observable<FetchResult<StatPayout>> {
         return this.merchantStatisticsService
-            .searchPayouts({
+            .SearchPayouts({
                 ...params,
                 common_search_query_params: {
                     ...params.common_search_query_params,
