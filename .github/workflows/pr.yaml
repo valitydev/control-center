@@ -3,11 +3,26 @@ on:
     pull_request:
         branches: ['*']
 jobs:
-    check:
-        name: Check
+    init:
+        name: Init
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
             - uses: ./.github/actions/init
-            - name: Check & Build
-              run: npm run ci:build
+            - uses: ./.github/actions/cache-all
+    check:
+        name: Check
+        runs-on: ubuntu-latest
+        needs: [init]
+        steps:
+            - uses: ./.github/actions/cache-all
+            - name: Check
+              run: npm run ci:check
+    build:
+        name: Check
+        runs-on: ubuntu-latest
+        needs: [init]
+        steps:
+            - uses: ./.github/actions/cache-all
+            - name: Build
+              run: npm run build

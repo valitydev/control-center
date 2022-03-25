@@ -7,7 +7,7 @@
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
-    "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1328",
+    "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1329",
     "lint-cache-cmd": "npm run lint-cmd -- --cache",
     "lint": "npm run lint-cache-cmd",
     "lint-fix": "npm run lint-cache-cmd -- --fix",
@@ -17,7 +17,7 @@
     "prettier:fix": "npm run prettier-preset -- --write",
     "fix": "npm run lint-fix; npm run prettier:fix",
     "compile": "ts-node --project tools/tsconfig.json tools/compile-thrift-deprecated",
-    "ci:build": "npm run parallel-cmd -- --names PRETTIER,LINT,BUILD \"npm run prettier\" \"npm run lint-cmd -- --quiet\" \"npm run build\"",
+    "ci:check": "npm run parallel-cmd -- --names PRET,LINT \"npm run prettier\" \"npm run lint-cmd -- --quiet\"",
     "parallel-cmd": "concurrently --kill-others-on-fail --prefix-colors magenta,green,red,yellow,blue"
   },
   "dependencies": {
