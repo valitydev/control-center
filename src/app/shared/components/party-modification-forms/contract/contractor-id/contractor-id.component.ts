@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { ContractorID } from '../../../../../thrift-services/damsel/gen-model/domain';
+import { ContractorID } from '@vality/domain-proto';
 
 @Component({
     selector: 'cc-contractor-id',

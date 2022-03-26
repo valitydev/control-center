@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PayoutToolID } from '@vality/domain-proto';
 import get from 'lodash-es/get';
-
-import { PayoutToolID } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-shop-payout-tool-modification',

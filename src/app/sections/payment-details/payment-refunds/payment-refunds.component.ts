@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InvoiceID, InvoicePaymentID } from '@vality/domain-proto';
 
-import { InvoiceID, InvoicePaymentID } from '../../../thrift-services/damsel/gen-model/domain';
 import { FetchRefundsService } from './fetch-refunds.service';
 
 @Component({

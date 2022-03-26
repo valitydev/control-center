@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PartyID, ShopID } from '@vality/domain-proto';
 import { TerminalID } from '@vality/fistful-proto';
 
 import { EditTerminalDecisionPropertyForShopService } from '../../../../../thrift-services/damsel';
-import { PartyID, ShopID } from '../../../../../thrift-services/damsel/gen-model/domain';
 import { EditTerminalDialogResponse, TerminalActionTypes } from '../../types';
 
 @Component({

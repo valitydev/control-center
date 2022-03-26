@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { PartyID, ShopID } from '@vality/domain-proto';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
-import { PartyID, ShopID } from '../../../../../thrift-services/damsel/gen-model/domain';
 import { toProvidersInfo } from './to-providers-info';
 
 @Injectable()

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ContractID, PartyID } from '@vality/domain-proto';
 import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyService } from '../../../../papi/party.service';
-import { ContractID, PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
 
 @Injectable()
 export class FetchContractorService {

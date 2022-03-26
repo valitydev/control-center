@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PartyID, ShopID } from '@vality/domain-proto';
 
 import { DomainCacheService } from '../../../../thrift-services/damsel/domain-cache.service';
-import { PartyID, ShopID } from '../../../../thrift-services/damsel/gen-model/domain';
 import { AddTerminalDialogResponse } from '../types/add-terminal-dialog-response';
 import { AddTerminalDecisionService } from './services/add-terminal-decision';
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { PartyID, ShopID } from '@vality/domain-proto';
 import { merge } from 'rxjs';
 
-import { PartyID, ShopID } from '../../../thrift-services/damsel/gen-model/domain';
 import {
     AddProviderService,
     EditTerminalDecisionService,

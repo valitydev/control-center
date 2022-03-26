@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PartyID, ShopID } from '@vality/domain-proto';
 import { Subject } from 'rxjs';
 import { filter, shareReplay, switchMap } from 'rxjs/operators';
 
-import { PartyID, ShopID } from '../../../../../thrift-services/damsel/gen-model/domain';
 import { AddTerminalDialogComponent } from '../../add-terminal-dialog/add-terminal-dialog.component';
 import { AddTerminalDialogResponse } from '../../types/add-terminal-dialog-response';
 
