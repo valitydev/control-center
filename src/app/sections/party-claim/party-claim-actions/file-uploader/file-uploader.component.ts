@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Modification } from '@vality/domain-proto/lib/claim_management';
 
-import { Modification } from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { FileUploaderService } from './file-uploader.service';
 
 @Component({

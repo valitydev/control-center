@@ -10,8 +10,8 @@ import {
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Modification } from '@vality/domain-proto/lib/claim_management';
 
-import { Modification } from '../../../../../thrift-services/damsel/gen-model/claim_management';
 import { PartyTarget } from '../party-target';
 import { itemsFilterPredicate } from './items-filter-predicate';
 import { SelectableItem } from './selectable-item';

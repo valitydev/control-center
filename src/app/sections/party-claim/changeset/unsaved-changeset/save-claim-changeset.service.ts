@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartyID } from '@vality/domain-proto';
+import { Modification } from '@vality/domain-proto/lib/claim_management';
 import Int64 from '@vality/thrift-ts/lib/int64';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { ClaimManagementService } from '../../../../thrift-services/damsel/claim-management.service';
-import { Modification } from '../../../../thrift-services/damsel/gen-model/claim_management';
 
 @Injectable()
 export class SaveClaimChangesetService {

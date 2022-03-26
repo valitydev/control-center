@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Reference } from '@vality/domain-proto';
 import { Field } from '@vality/thrift-ts';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { Reference } from '../thrift-services/damsel/gen-model/domain';
 import { ASTDefinition } from './model';
 
 @Injectable()
