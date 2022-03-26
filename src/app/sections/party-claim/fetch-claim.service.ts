@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PartyID } from '@vality/domain-proto';
 import Int64 from '@vality/thrift-ts/lib/int64';
 import { of, ReplaySubject } from 'rxjs';
 import { catchError, filter, shareReplay, switchMap } from 'rxjs/operators';
@@ -7,7 +8,6 @@ import { catchError, filter, shareReplay, switchMap } from 'rxjs/operators';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
-import { PartyID } from '../../thrift-services/damsel/gen-model/domain';
 
 @Injectable()
 export class FetchClaimService {

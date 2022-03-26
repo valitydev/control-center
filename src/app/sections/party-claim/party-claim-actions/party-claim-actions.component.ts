@@ -7,6 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
+import { PartyID } from '@vality/domain-proto';
 import { map, take } from 'rxjs/operators';
 
 import { PartyModificationCreatorDialogService } from '@cc/app/shared/components';
@@ -15,7 +16,6 @@ import {
     ClaimChangeset,
     ClaimStatus,
 } from '../../../thrift-services/damsel/gen-model/claim_management';
-import { PartyID } from '../../../thrift-services/damsel/gen-model/domain';
 import { UnsavedClaimChangesetService } from '../changeset/unsaved-changeset/unsaved-claim-changeset.service';
 import { StatusChangerService } from './status-changer';
 import { getAvailableClaimStatuses } from './status-changer/get-available-claim-statuses';

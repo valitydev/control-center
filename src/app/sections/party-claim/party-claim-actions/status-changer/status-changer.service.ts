@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PartyID } from '@vality/domain-proto';
 import { Observable, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 
@@ -7,7 +8,6 @@ import {
     ClaimStatus,
     PartyModification,
 } from '../../../../thrift-services/damsel/gen-model/claim_management';
-import { PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
 import { StatusChangerDialogComponent } from './status-changer-dialog.component';
 
 @Injectable()

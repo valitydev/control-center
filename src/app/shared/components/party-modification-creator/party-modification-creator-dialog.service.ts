@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { PartyID } from '@vality/domain-proto';
 import { Observable, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Modification } from '../../../thrift-services/damsel/gen-model/claim_management';
-import { PartyID } from '../../../thrift-services/damsel/gen-model/domain';
 import { UnitActionType } from './model';
 import { UnitActionsNavListComponent } from './unit-actions-nav-list';
 

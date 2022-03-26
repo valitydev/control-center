@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { PartyID } from '@vality/domain-proto';
 
 import { Claim, ClaimID } from '../../../thrift-services/damsel/gen-model/claim_management';
-import { PartyID } from '../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-claims-table',

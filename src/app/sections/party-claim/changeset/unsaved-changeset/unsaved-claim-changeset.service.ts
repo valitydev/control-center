@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PartyID } from '@vality/domain-proto';
 import { BehaviorSubject, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
@@ -11,7 +12,6 @@ import {
     ModificationUnit,
     PartyModification,
 } from '../../../../thrift-services/damsel/gen-model/claim_management';
-import { PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
 import { ChangesetInfo, toChangesetInfos } from '../changeset-infos';
 import { EditClaimChangesetService } from './edit-claim-changeset.service';
 import { SaveClaimChangesetService } from './save-claim-changeset.service';

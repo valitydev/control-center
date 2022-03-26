@@ -1,4 +1,5 @@
-import { PartyID } from '../../../thrift-services/damsel/gen-model/domain';
+import { PartyID } from '@vality/domain-proto';
+
 import { PartyActions } from './party-actions';
 
 export interface PartyMenuItemEvent {

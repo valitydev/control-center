@@ -1,4 +1,4 @@
-import { PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
+import { PartyID } from '@vality/domain-proto';
 
 export enum MainSearchType {
     PartySearchFilter = 'PartySearchFilter',
