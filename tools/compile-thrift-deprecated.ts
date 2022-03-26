@@ -1,6 +1,5 @@
 import { exec } from 'child_process';
 import * as del from 'del';
-import { glob } from 'glob';
 import * as path from 'path';
 
 import * as config from '../thrift-config.json';
@@ -9,7 +8,6 @@ const ROOT_DIR = path.join(__dirname, '..');
 
 const OUTPUT_PATH = './src/app/thrift-services';
 const GEN_MODEL_DIR = 'gen-model';
-const GEN_CLIENT_DIR = 'gen-nodejs';
 const META_PATH = 'src/assets';
 
 async function execWithLog(cmd: string) {
@@ -34,12 +32,6 @@ async function execWithLog(cmd: string) {
     );
 }
 
-async function genClient(name: string, thriftPath: string) {
-    const out = path.join(OUTPUT_PATH, name);
-    await del([path.join(OUTPUT_PATH, GEN_CLIENT_DIR)]);
-    return await execWithLog(`thrift -r -gen js:node -o ${out} ${thriftPath};`);
-}
-
 async function genModel(name: string, protoPath: string) {
     const out = path.join(OUTPUT_PATH, name, GEN_MODEL_DIR);
     await del([path.join(OUTPUT_PATH, GEN_MODEL_DIR)]);
@@ -62,24 +54,11 @@ async function compileProto(protoName: string, proto: string | { path: string; m
         protoPath = proto;
     }
 
-    const globPattern = path.join(`${protoPath}/**/*.thrift`);
-    const thriftFiles = await new Promise<string[]>((res, rej) =>
-        glob(globPattern, {}, (err, files) => {
-            if (err) {
-                rej(err);
-            }
-            res(files);
-        })
-    );
-
     console.log(`Compile ${protoName}: ${protoPath}`);
     const genList: Promise<any>[] = [];
     genList.push(genModel(protoName, protoPath));
     if (withMeta) {
         genList.push(genMeta(protoName, protoPath));
-    }
-    for (const f of thriftFiles) {
-        genList.push(genClient(protoName, f));
     }
     await Promise.all(genList);
 }
