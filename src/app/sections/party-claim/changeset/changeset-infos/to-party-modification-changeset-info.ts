@@ -1,6 +1,7 @@
+import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+
 import { getUnionKey } from '@cc/utils/get-union-key';
 
-import { ModificationUnit } from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { ChangesetInfo, ChangesetInfoType } from './changeset-info';
 import { markOutdated } from './mark-outdated';
 

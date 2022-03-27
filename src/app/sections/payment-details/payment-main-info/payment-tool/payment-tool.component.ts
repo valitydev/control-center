@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
-import { PaymentTool } from '../../../../thrift-services/damsel/gen-model/merch_stat';
+import { PaymentTool } from '@vality/domain-proto/lib/merch_stat';
 
 @Component({
     selector: 'cc-payment-tool',

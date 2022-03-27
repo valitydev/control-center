@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { InvoiceRepairScenario } from '@vality/domain-proto/lib/payment_processing';
 import { Observable } from 'rxjs';
 
-import { InvoiceRepairScenario } from '../../thrift-services/damsel/gen-model/payment_processing';
 import { ExecStateType } from '../execute';
 import { RepairingStatusType } from '../repairing-status/repairing-status.component';
 import { RepairingService } from '../repairing.service';

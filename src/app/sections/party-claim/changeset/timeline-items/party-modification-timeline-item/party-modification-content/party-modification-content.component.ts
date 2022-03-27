@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-
-import { PartyModification } from '../../../../../../thrift-services/damsel/gen-model/claim_management';
+import { PartyModification } from '@vality/domain-proto/lib/claim_management';
 
 @Component({
     selector: 'cc-party-modification-content',

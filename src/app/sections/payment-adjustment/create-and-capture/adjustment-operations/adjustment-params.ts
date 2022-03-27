@@ -1,7 +1,7 @@
 import {
     InvoicePaymentAdjustmentParams,
     UserInfo,
-} from '../../../../thrift-services/damsel/gen-model/payment_processing';
+} from '@vality/domain-proto/lib/payment_processing';
 
 export interface PaymentAdjustmentCreationParams {
     user: UserInfo;

@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PartyID } from '@vality/domain-proto';
+import {
+    Modification,
+    ModificationUnit,
+    PartyModification,
+} from '@vality/domain-proto/lib/claim_management';
 import { BehaviorSubject, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
@@ -7,11 +12,6 @@ import { PartyModificationEmitter } from '@cc/app/shared/components';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { KeycloakTokenInfoService } from '../../../../keycloak-token-info.service';
-import {
-    Modification,
-    ModificationUnit,
-    PartyModification,
-} from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { ChangesetInfo, toChangesetInfos } from '../changeset-infos';
 import { EditClaimChangesetService } from './edit-claim-changeset.service';
 import { SaveClaimChangesetService } from './save-claim-changeset.service';

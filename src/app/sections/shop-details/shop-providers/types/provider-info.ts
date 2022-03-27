@@ -1,4 +1,5 @@
-import { ProviderObject } from '../../../../thrift-services/damsel/gen-model/domain';
+import { ProviderObject } from '@vality/domain-proto/lib/domain';
+
 import { TerminalInfo } from './terminal-info';
 
 export interface ProviderInfo {

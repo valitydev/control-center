@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { PartyID } from '@vality/domain-proto';
+import { ClaimChangeset } from '@vality/domain-proto/lib/claim_management';
 import { BehaviorSubject } from 'rxjs';
 
-import { ClaimChangeset } from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { ChangesetInfo, ChangesetInfoType, toChangesetInfos } from '../changeset-infos';
 import { MenuConfigAction, MenuConfigItem } from '../timeline-items/menu-config';
 import { ClaimChangesetService } from './claim-changeset.service';

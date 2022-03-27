@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Predicate } from '@vality/domain-proto/lib/domain';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesService, TerminalService } from '../../../../thrift-services';
-import { Predicate } from '../../../../thrift-services/damsel/gen-model/domain';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog.component';
 
 export enum TerminalType {

@@ -1,4 +1,4 @@
-import { RiskScore } from '../gen-model/domain';
+import { RiskScore } from '@vality/domain-proto/lib/domain';
 
 export class TerminalOption {
     key: string;

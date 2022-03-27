@@ -1,3 +1,10 @@
+import {
+    PartyID,
+    ProviderObject,
+    ShopID,
+    TerminalDecision,
+    TerminalRef,
+} from '@vality/domain-proto/lib/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 // eslint-disable-next-line you-dont-need-lodash-underscore/drop-right
 import dropRight from 'lodash-es/dropRight';
@@ -5,13 +12,6 @@ import dropRight from 'lodash-es/dropRight';
 import last from 'lodash-es/last';
 
 import { toGenTerminalDecision } from '../../converters';
-import {
-    PartyID,
-    ProviderObject,
-    ShopID,
-    TerminalDecision,
-    TerminalRef,
-} from '../gen-model/domain';
 import { checkSelector } from './utils';
 
 const createDecision = (

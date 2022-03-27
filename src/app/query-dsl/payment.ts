@@ -3,7 +3,7 @@ import {
     InvoicePaymentStatus,
     PaymentTool,
     TerminalPaymentProvider,
-} from '../thrift-services/damsel/gen-model/merch_stat';
+} from '@vality/domain-proto/lib/merch_stat';
 
 export interface Payment {
     payment_id?: string;

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Domain, DomainObject } from '@vality/domain-proto/lib/domain';
+import { Commit, Snapshot, Version } from '@vality/domain-proto/lib/domain_config';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { map, pluck, share, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
@@ -7,8 +9,6 @@ import { getUnionKey } from '@cc/utils/get-union-key';
 
 import { toGenReference } from '../converters';
 import { DomainService } from './domain.service';
-import { Domain, DomainObject } from './gen-model/domain';
-import { Commit, Snapshot, Version } from './gen-model/domain_config';
 import { createDamselInstance, damselInstanceToObject } from './utils/create-damsel-instance';
 
 @UntilDestroy()
@@ -65,7 +65,7 @@ export class DomainCacheService {
         return version$.pipe(
             switchMap((v) =>
                 this.dmtService.commit(
-                    createDamselInstance('domain_config', 'Version', v as Version),
+                    createDamselInstance('domain_config', 'Version', v),
                     createDamselInstance('domain_config', 'Commit', commit)
                 )
             ),

@@ -1,7 +1,4 @@
-import {
-    Modification,
-    UserInfo,
-} from '../../../../thrift-services/damsel/gen-model/claim_management';
+import { Modification, UserInfo } from '@vality/domain-proto/lib/claim_management';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum ChangesetInfoType {

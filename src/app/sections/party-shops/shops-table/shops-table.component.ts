@@ -2,9 +2,8 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Shop } from '@vality/domain-proto/lib/domain';
 import { pluck } from 'rxjs/operators';
-
-import { Shop } from '../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-shops-table',

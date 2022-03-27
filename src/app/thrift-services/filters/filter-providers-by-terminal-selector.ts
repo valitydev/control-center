@@ -1,4 +1,4 @@
-import { ProviderObject } from '../damsel/gen-model/domain';
+import { ProviderObject } from '@vality/domain-proto/lib/domain';
 
 export const filterProvidersByTerminalSelector = (
     objects: ProviderObject[],

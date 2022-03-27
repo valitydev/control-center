@@ -1,5 +1,0 @@
-{
-    "proto": {
-        "damsel": "./node_modules/@vality/domain-proto/proto"
-    }
-}

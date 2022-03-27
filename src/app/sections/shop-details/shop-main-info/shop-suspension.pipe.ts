@@ -1,8 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { Suspension } from '@vality/domain-proto/lib/domain';
 
 import { getUnionKey } from '@cc/utils/get-union-key';
-
-import { Suspension } from '../../../thrift-services/damsel/gen-model/domain';
 
 @Pipe({
     name: 'ccSuspensionPipe',

@@ -1,6 +1,6 @@
+import { PartyID, ProviderObject, ShopID, TerminalDecision } from '@vality/domain-proto/lib/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 
-import { PartyID, ProviderObject, ShopID, TerminalDecision } from '../gen-model/domain';
 import { checkSelector } from './utils';
 
 const checkCondition = (condition: any, partyID: PartyID, shopID: ShopID): boolean => {

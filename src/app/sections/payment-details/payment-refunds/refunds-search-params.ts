@@ -4,7 +4,7 @@ import {
     InvoicePaymentRefundID,
     InvoicePaymentRefundStatus,
     ShopID,
-} from '../../../thrift-services/damsel/gen-model/domain';
+} from '@vality/domain-proto/lib/domain';
 
 export interface RefundsSearchParams {
     invoiceID?: InvoiceID;

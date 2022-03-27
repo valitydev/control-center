@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -8,7 +9,6 @@ import { MetaBuilder } from '../../damsel-meta/meta-builder.service';
 import { ThriftType } from '../../damsel-meta/thrift-builder';
 import { ThriftBuilderService } from '../../damsel-meta/thrift-builder.service';
 import { getThriftInstance } from '../../thrift-services';
-import { DomainObject, Reference } from '../../thrift-services/damsel/gen-model/domain';
 import { DomainModificationModel, ModificationItem } from '../domain-modification-model';
 import { DomainReviewService } from '../domain-review.service';
 import { DomainService } from '../domain.service';

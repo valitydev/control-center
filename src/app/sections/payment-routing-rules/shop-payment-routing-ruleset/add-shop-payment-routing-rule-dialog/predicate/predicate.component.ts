@@ -7,6 +7,14 @@ import {
     ValidatorFn,
     Validators,
 } from '@angular/forms';
+import {
+    BankCardConditionDefinition,
+    LegacyBankCardPaymentSystem,
+    LegacyBankCardTokenProvider,
+    Predicate,
+    CountryCode,
+    TokenizationMethod,
+} from '@vality/domain-proto/lib/domain';
 import identity from 'lodash-es/identity';
 import pickBy from 'lodash-es/pickBy';
 import { merge, Observable, Subscription } from 'rxjs';
@@ -15,14 +23,6 @@ import { distinctUntilChanged, map, shareReplay, startWith, tap } from 'rxjs/ope
 import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
-import {
-    BankCardConditionDefinition,
-    LegacyBankCardPaymentSystem,
-    LegacyBankCardTokenProvider,
-    Predicate,
-    CountryCode,
-    TokenizationMethod,
-} from '../../../../../thrift-services/damsel/gen-model/domain';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 enum PredicateType {

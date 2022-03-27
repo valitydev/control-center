@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Predicate, TerminalObject } from '@vality/domain-proto/lib/domain';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
@@ -10,7 +11,6 @@ import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
-import { Predicate, TerminalObject } from '../../../thrift-services/damsel/gen-model/domain';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog';
 import { ShopPaymentRoutingRulesetService } from './shop-payment-routing-ruleset.service';
 

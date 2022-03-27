@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Snapshot } from '@vality/domain-proto/lib/domain_config';
 import { Field } from '@vality/thrift-ts';
 import { AsyncSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Snapshot } from '../../thrift-services/damsel/gen-model/domain_config';
 import { DomainService } from '../domain.service';
 import { MetadataService } from '../metadata.service';
 

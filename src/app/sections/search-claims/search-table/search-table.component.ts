@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { Claim } from '../../../thrift-services/damsel/gen-model/claim_management';
+import { Claim } from '@vality/domain-proto/lib/claim_management';
 
 @Component({
     selector: 'cc-search-table',

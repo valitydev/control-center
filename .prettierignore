@@ -2,6 +2,5 @@ package.json
 package-lock.json
 node_modules
 dist
-src/**/gen-model/
 src/assets/icons/
 .angular

@@ -1,10 +1,10 @@
+import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
 import * as uuid from 'uuid/v4';
 
 import { toJson } from '@cc/utils/thrift-json-converter';
 import { extract } from '@cc/utils/thrift-utils';
 
 import { MonacoFile } from '../monaco-editor';
-import { DomainObject, Reference } from '../thrift-services/damsel/gen-model/domain';
 
 export function parseRef(ref: string): Reference {
     try {

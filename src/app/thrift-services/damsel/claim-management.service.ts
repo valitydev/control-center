@@ -1,5 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import {
+    Claim,
+    ClaimID,
+    ClaimSearchQuery,
+    ClaimSearchResponse,
+    Modification,
+} from '@vality/domain-proto/lib/claim_management';
+import {
     ClaimSearchQuery as ClaimSearchQueryType,
     Modification as ModificationType,
 } from '@vality/domain-proto/lib/claim_management/gen-nodejs/claim_management_types';
@@ -9,13 +16,6 @@ import { switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
-import {
-    Claim,
-    ClaimID,
-    ClaimSearchQuery,
-    ClaimSearchResponse,
-    Modification,
-} from './gen-model/claim_management';
 
 @Injectable()
 export class ClaimManagementService extends ThriftService {

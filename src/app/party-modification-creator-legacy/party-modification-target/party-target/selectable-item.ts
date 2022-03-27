@@ -1,4 +1,4 @@
-import { Contract, Contractor, Shop } from '../../../thrift-services/damsel/gen-model/domain';
+import { Contract, Contractor, Shop } from '@vality/domain-proto/lib/domain';
 
 export class SelectableItem {
     id: string;
