@@ -4,8 +4,6 @@ import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import { delay, map, repeatWhen, retryWhen, switchMap, takeWhile, tap } from 'rxjs/operators';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
-
 import { ClaimService as ClaimPapi } from '../papi/claim.service';
 import { ClaimInfo, ClaimStatus, PartyModificationUnit } from '../papi/model';
 import { PartyModificationEmitter } from '../party-modification-creator-legacy';
@@ -39,8 +37,7 @@ export class ClaimService {
     constructor(
         private papiClaimService: ClaimPapi,
         private persistentContainerService: PersistentContainerService,
-        private partyModificationEmitter: PartyModificationEmitter,
-        private claimManagementService: ClaimManagementService
+        private partyModificationEmitter: PartyModificationEmitter
     ) {
         this.persistentContainerService.containers$.subscribe((containers) => {
             this.containers = containers;
