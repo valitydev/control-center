@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PartyModification } from '@vality/domain-proto/lib/claim_management';
 import isEqual from 'lodash-es/isEqual';
-import toNumber from 'lodash-es/toNumber';
 import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
 import { delay, map, repeatWhen, retryWhen, switchMap, takeWhile, tap } from 'rxjs/operators';
+
+import { ClaimManagementService } from '@cc/app/api/claim-management';
 
 import { ClaimService as ClaimPapi } from '../papi/claim.service';
 import { ClaimInfo, ClaimStatus, PartyModificationUnit } from '../papi/model';
@@ -38,7 +39,8 @@ export class ClaimService {
     constructor(
         private papiClaimService: ClaimPapi,
         private persistentContainerService: PersistentContainerService,
-        private partyModificationEmitter: PartyModificationEmitter
+        private partyModificationEmitter: PartyModificationEmitter,
+        private claimManagementService: ClaimManagementService
     ) {
         this.persistentContainerService.containers$.subscribe((containers) => {
             this.containers = containers;
@@ -209,7 +211,7 @@ export class ClaimService {
     }
 
     private getClaimInfo(partyId: string, claimId: string): Observable<ClaimInfo> {
-        return this.papiClaimService.getClaim(partyId, toNumber(claimId));
+        return this.papiClaimService.getClaim(partyId, Number(claimId));
     }
 
     private pollClaimChange(revision: string, delayMs = 2000, retryCount = 15): Observable<void> {
