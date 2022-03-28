@@ -1,24 +1,26 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/lib/domain';
-import { Observable } from 'rxjs';
+import { defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
-import { PartyService } from '../../papi/party.service';
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 
 @Injectable()
 export class PartyShopsService {
-    private party$: Observable<Party> = this.route.params.pipe(
-        pluck('partyID'),
-        switchMap((partyID) => this.partyService.getParty(partyID)),
-        shareReplay(1)
-    );
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    shops$ = this.party$.pipe(
+    shops$ = defer(() => this.party$).pipe(
         pluck('shops'),
         map((shops) => Array.from(shops.values()))
     );
 
-    constructor(private partyService: PartyService, private route: ActivatedRoute) {}
+    private party$: Observable<Party> = this.route.params.pipe(
+        pluck('partyID'),
+        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
+        shareReplay(1)
+    );
+
+    constructor(
+        private partyManagementWithUserService: PartyManagementWithUserService,
+        private route: ActivatedRoute
+    ) {}
 }
