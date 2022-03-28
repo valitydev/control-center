@@ -34,14 +34,16 @@ import { INPUT_MIXIN_BASE } from './input-base';
 @Directive({ selector: 'cc-custom-form-control' })
 /* eslint-disable @angular-eslint/no-conflicting-lifecycle */
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export class CustomFormControl<I = any, P = I> extends INPUT_MIXIN_BASE
+export class CustomFormControl<I = any, P = I>
+    extends INPUT_MIXIN_BASE
     implements
         AfterViewInit,
         ControlValueAccessor,
         MatFormFieldControl<I>,
         OnDestroy,
         DoCheck,
-        OnChanges {
+        OnChanges
+{
     /** The aria-describedby attribute on the input for improved a11y. */
     @HostBinding('attr.aria-describedby') _ariaDescribedby: string;
 

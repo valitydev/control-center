@@ -50,14 +50,12 @@ export class CreateActionsComponent implements OnInit {
                                 this.failedPending = this.failedPending.concat(payloads);
                                 break;
                             case CreatePaymentAdjustmentErrorCodes.InvalidPaymentStatus:
-                                this.failedInvalidPaymentStatus = this.failedInvalidPaymentStatus.concat(
-                                    payloads
-                                );
+                                this.failedInvalidPaymentStatus =
+                                    this.failedInvalidPaymentStatus.concat(payloads);
                                 break;
                             case CreatePaymentAdjustmentErrorCodes.InvoiceNotFound:
-                                this.failedInvoiceNotFound = this.failedInvoiceNotFound.concat(
-                                    payloads
-                                );
+                                this.failedInvoiceNotFound =
+                                    this.failedInvoiceNotFound.concat(payloads);
                                 break;
                             case CreatePaymentAdjustmentErrorCodes.InvalidUser:
                                 this.failedInvalidUser = this.failedInvalidUser.concat(payloads);

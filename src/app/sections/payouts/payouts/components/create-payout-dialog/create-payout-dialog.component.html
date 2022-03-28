@@ -27,9 +27,7 @@
     ></cc-payout-tool-field>
 </mat-dialog-content>
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-    <button mat-button [mat-dialog-close]="false" [disabled]="!!(progress$ | async)">
-        CANCEL
-    </button>
+    <button mat-button [mat-dialog-close]="false" [disabled]="!!(progress$ | async)">CANCEL</button>
     <button
         mat-button
         (click)="create()"

@@ -7,9 +7,11 @@ import { ChangesetInfoModificationType } from '../../changeset-infos';
 })
 export class FileActionIconPipe implements PipeTransform {
     transform(type: ChangesetInfoModificationType): string {
-        return ({
-            [ChangesetInfoModificationType.creation]: 'attach_file',
-            [ChangesetInfoModificationType.deletion]: 'clear',
-        } as const)[type];
+        return (
+            {
+                [ChangesetInfoModificationType.creation]: 'attach_file',
+                [ChangesetInfoModificationType.deletion]: 'clear',
+            } as const
+        )[type];
     }
 }

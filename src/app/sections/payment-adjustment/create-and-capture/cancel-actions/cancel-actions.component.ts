@@ -52,27 +52,23 @@ export class CancelActionsComponent implements OnInit {
                     forEach(infoGroup, (payloads, code) => {
                         switch (code) {
                             case CancelPaymentAdjustmentErrorCodes.InvalidPaymentAdjustmentStatus:
-                                this.failedInvalidStatus = this.failedInvalidStatus.concat(
-                                    payloads
-                                );
+                                this.failedInvalidStatus =
+                                    this.failedInvalidStatus.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvoicePaymentAdjustmentNotFound:
-                                this.failedAdjustmentNotFound = this.failedAdjustmentNotFound.concat(
-                                    payloads
-                                );
+                                this.failedAdjustmentNotFound =
+                                    this.failedAdjustmentNotFound.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvoiceNotFound:
-                                this.failedInvoiceNotFound = this.failedInvoiceNotFound.concat(
-                                    payloads
-                                );
+                                this.failedInvoiceNotFound =
+                                    this.failedInvoiceNotFound.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvalidUser:
                                 this.failedInvalidUser = this.failedInvalidUser.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvoicePaymentNotFound:
-                                this.failedInvoicePaymentNotFound = this.failedInvoicePaymentNotFound.concat(
-                                    payloads
-                                );
+                                this.failedInvoicePaymentNotFound =
+                                    this.failedInvoicePaymentNotFound.concat(payloads);
                                 break;
                             case 'InternalServer':
                                 this.failedInternal = this.failedInternal.concat(payloads);

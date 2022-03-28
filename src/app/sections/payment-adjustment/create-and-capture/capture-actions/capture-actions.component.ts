@@ -51,24 +51,20 @@ export class CaptureActionsComponent implements OnInit {
                                 this.failedInvalidUser = this.failedInvalidUser.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvoiceNotFound:
-                                this.failedInvoiceNotFound = this.failedInvoiceNotFound.concat(
-                                    payloads
-                                );
+                                this.failedInvoiceNotFound =
+                                    this.failedInvoiceNotFound.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvoicePaymentNotFound:
-                                this.failedPaymentNotFound = this.failedPaymentNotFound.concat(
-                                    payloads
-                                );
+                                this.failedPaymentNotFound =
+                                    this.failedPaymentNotFound.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvoicePaymentAdjustmentNotFound:
-                                this.failedAdjustmentNotFound = this.failedAdjustmentNotFound.concat(
-                                    payloads
-                                );
+                                this.failedAdjustmentNotFound =
+                                    this.failedAdjustmentNotFound.concat(payloads);
                                 break;
                             case CancelPaymentAdjustmentErrorCodes.InvalidPaymentAdjustmentStatus:
-                                this.failedAdjustmentStatus = this.failedAdjustmentStatus.concat(
-                                    payloads
-                                );
+                                this.failedAdjustmentStatus =
+                                    this.failedAdjustmentStatus.concat(payloads);
                                 break;
                             case 'InternalServer':
                                 this.failedInternal = this.failedInternal.concat(payloads);

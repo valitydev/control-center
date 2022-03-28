@@ -42,9 +42,7 @@
         </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-        <button [disabled]="isLoading$ | async" mat-button (click)="closeDialog()">
-            CANCEL
-        </button>
+        <button [disabled]="isLoading$ | async" mat-button (click)="closeDialog()">CANCEL</button>
         <button
             [disabled]="(isLoading$ | async) || form.invalid"
             mat-button

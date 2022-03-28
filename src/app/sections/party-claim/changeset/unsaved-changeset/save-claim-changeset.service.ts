@@ -21,7 +21,7 @@ export class SaveClaimChangesetService {
                 observer.error('error');
             }
             this.claimManagementService
-                .updateClaim(partyID, (new Int64(parseInt(claimID, 10)) as unknown) as number, mods)
+                .updateClaim(partyID, new Int64(parseInt(claimID, 10)) as unknown as number, mods)
                 .pipe(catchError(() => this.handleError()))
                 .subscribe((e) => {
                     if (e) {

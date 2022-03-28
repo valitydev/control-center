@@ -17,7 +17,7 @@ export class FetchClaimService {
     claim$ = this.getClaim$.pipe(
         switchMap(({ partyID, claimID }) =>
             this.claimManagementService
-                .getClaim(partyID, (new Int64(parseInt(claimID, 10)) as unknown) as number)
+                .getClaim(partyID, new Int64(parseInt(claimID, 10)) as unknown as number)
                 .pipe(
                     catchError((e) => {
                         console.error(e);

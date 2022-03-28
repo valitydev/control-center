@@ -32,8 +32,10 @@ import { filterOptions } from './utils';
     providers: [provideValueAccessor(SelectSearchFieldComponent)],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectSearchFieldComponent<Value> extends WrappedFormControlSuperclass<Value>
-    implements OnInit, OnChanges {
+export class SelectSearchFieldComponent<Value>
+    extends WrappedFormControlSuperclass<Value>
+    implements OnInit, OnChanges
+{
     @Input() label: string;
     @Input() @coerceBoolean required = false;
     @Input() @coerceBoolean disabled = false;

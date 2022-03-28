@@ -354,9 +354,8 @@ export class RoutingRulesService {
             take(1),
             switchMap((mainRuleset) => {
                 const newMainRuleset = cloneDeep(mainRuleset);
-                newMainRuleset.data.decisions.delegates[
-                    delegateIdx
-                ].ruleset.id = newDelegateRulesetRefID;
+                newMainRuleset.data.decisions.delegates[delegateIdx].ruleset.id =
+                    newDelegateRulesetRefID;
                 if (description !== undefined) {
                     newMainRuleset.data.decisions.delegates[delegateIdx].description = description;
                 }
