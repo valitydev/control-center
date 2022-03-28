@@ -1,4 +1,4 @@
-import * as base from '../thrift-services/damsel/gen-model/base';
+import * as base from '@vality/domain-proto/lib/base';
 import {
     Amount,
     InvoiceID,
@@ -6,8 +6,8 @@ import {
     InvoicePaymentRefundID,
     PartyID,
     ShopID,
-} from '../thrift-services/damsel/gen-model/domain';
-import { InvoicePaymentRefundStatus } from '../thrift-services/damsel/gen-model/merch_stat';
+} from '@vality/domain-proto/lib/domain';
+import { InvoicePaymentRefundStatus } from '@vality/domain-proto/lib/merch_stat';
 
 export interface Refund {
     id: InvoicePaymentRefundID;

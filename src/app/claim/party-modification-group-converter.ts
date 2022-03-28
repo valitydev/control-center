@@ -1,12 +1,12 @@
-import groupBy from 'lodash-es/groupBy';
-import map from 'lodash-es/map';
-
-import { UnitName } from '../party-modification-creator-legacy/party-modification-creation/unit-name';
 import {
     ContractModificationUnit,
     ContractorModificationUnit,
     ShopModificationUnit,
-} from '../thrift-services/damsel/gen-model/claim_management';
+} from '@vality/domain-proto/lib/claim_management';
+import groupBy from 'lodash-es/groupBy';
+import map from 'lodash-es/map';
+
+import { UnitName } from '../party-modification-creator-legacy/party-modification-creation/unit-name';
 import {
     ModificationGroup,
     ModificationGroupType,

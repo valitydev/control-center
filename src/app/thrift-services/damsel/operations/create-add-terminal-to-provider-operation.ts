@@ -1,5 +1,6 @@
-import { ProviderObject } from '../gen-model/domain';
-import { UpdateOp } from '../gen-model/domain_config';
+import { ProviderObject } from '@vality/domain-proto/lib/domain';
+import { UpdateOp } from '@vality/domain-proto/lib/domain_config';
+
 import { AddDecisionToProvider } from './add-decision-to-provider-commit';
 import { addTerminalDecision } from './add-terminal-decision';
 

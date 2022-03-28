@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { RepairScenario } from '@vality/fistful-proto/lib/withdrawal_session';
 import { Observable } from 'rxjs';
 
-import { RepairScenario } from '../../thrift-services/fistful/gen-model/withdrawal_session';
 import { ExecStateType } from '../execute';
 import { RepairingStatusType } from '../repairing-status/repairing-status.component';
 import { RepairingService } from '../repairing.service';

@@ -1,7 +1,8 @@
+import { Modification } from '@vality/domain-proto/lib/claim_management';
+
 import { getOr } from '@cc/utils/get-or';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
-import { Modification } from '../../../../../thrift-services/damsel/gen-model/claim_management';
 import { PartyTarget } from '../party-target';
 import { SelectableItem } from './selectable-item';
 

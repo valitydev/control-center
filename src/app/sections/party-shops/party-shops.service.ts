@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Party } from '@vality/domain-proto/lib/domain';
 import { Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyService } from '../../papi/party.service';
-import { Party } from '../../thrift-services/damsel/gen-model/domain';
 
 @Injectable()
 export class PartyShopsService {

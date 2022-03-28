@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Claim } from '@vality/domain-proto/lib/claim_management';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, pluck, switchMap } from 'rxjs/operators';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
-import { Claim } from '../../thrift-services/damsel/gen-model/claim_management';
 
 @Injectable()
 export class CreateClaimService {

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { RepresentativeDocument } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
-
-import { RepresentativeDocument } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 enum Type {
     ArticlesOfAssociation = 'articles_of_association',

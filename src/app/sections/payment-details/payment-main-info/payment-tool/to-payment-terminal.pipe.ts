@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
-import { TerminalPaymentProvider } from '../../../../thrift-services/damsel/gen-model/merch_stat';
+import { TerminalPaymentProvider } from '@vality/domain-proto/lib/merch_stat';
 
 @Pipe({
     name: 'toPaymentTerminal',

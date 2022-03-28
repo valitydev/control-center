@@ -6,8 +6,8 @@ import {
     TerminalDecision,
     TerminalRef,
     TerminalSelector,
-} from '../damsel/gen-model/domain';
-import * as DomainTypes from '../damsel/gen-nodejs/domain_types';
+} from '@vality/domain-proto/lib/domain';
+import * as DomainTypes from '@vality/domain-proto/lib/domain_config/gen-nodejs/domain_types';
 
 const toPartyConditionDefinitionGen = (definition: PartyConditionDefinition) => {
     const definitionGen = new DomainTypes.PartyConditionDefinition();

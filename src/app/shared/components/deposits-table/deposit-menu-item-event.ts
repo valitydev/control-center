@@ -1,4 +1,5 @@
-import { DepositID } from '../../../thrift-services/fistful/gen-model/deposit';
+import { DepositID } from '@vality/fistful-proto/lib/deposit';
+
 import { DepositActions } from './deposit-actions';
 
 export interface DepositMenuItemEvent {

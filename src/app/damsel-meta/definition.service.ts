@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Reference } from '@vality/domain-proto';
 import { Field } from '@vality/thrift-ts';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { Reference } from '../thrift-services/damsel/gen-model/domain';
 import { ASTDefinition } from './model';
 
 @Injectable()
 export class DefinitionService {
-    private def$: Observable<ASTDefinition[]> = from(
+    private def$ = from(
         import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
     ).pipe(shareReplay(1)) as Observable<ASTDefinition[]>;
 

@@ -1,7 +1,7 @@
 import { PartyID } from '@vality/domain-proto';
+import { ClaimID } from '@vality/domain-proto/lib/claim_management';
 
 import { ClaimStatus } from '../../../papi/model';
-import { ClaimID } from '../../../thrift-services/damsel/gen-model/claim_management';
 
 export interface ClaimSearchForm {
     claim_id: ClaimID;

@@ -1,4 +1,5 @@
-import { TerminalID } from '../../../../thrift-services/fistful/gen-model/fistful';
+import { TerminalID } from '@vality/fistful-proto';
+
 import { TerminalActionTypes } from './terminal-action-types';
 
 export interface TerminalAction {

@@ -1,14 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
-import { getUnionKey } from '@cc/utils/get-union-key';
-
-import { Shop } from '../../../thrift-services/damsel/gen-model/domain';
+import { Shop } from '@vality/domain-proto/lib/domain';
 import {
     InvoicePaymentStatus,
     Payer,
     PaymentTool,
     StatPayment,
-} from '../../../thrift-services/damsel/gen-model/merch_stat';
+} from '@vality/domain-proto/lib/merch_stat';
+
+import { getUnionKey } from '@cc/utils/get-union-key';
 
 @Component({
     selector: 'cc-payment-main-info',

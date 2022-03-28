@@ -12,8 +12,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { ProviderObject } from '../../../../../../thrift-services/damsel/gen-model/domain';
+import { ProviderObject } from '@vality/domain-proto';
 
 @Component({
     templateUrl: 'select-provider.component.html',

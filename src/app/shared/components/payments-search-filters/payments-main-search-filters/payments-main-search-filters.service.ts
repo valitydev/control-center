@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { PartyID } from '@vality/domain-proto';
 import * as moment from 'moment';
 import { ReplaySubject } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyService } from '../../../../papi/party.service';
-import { PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
 import { SearchFiltersParams } from '../search-filters-params';
 import { formValueToSearchParams } from './form-value-to-search-params';
 import { searchParamsToFormParams } from './search-params-to-form-params';

@@ -1,5 +1,6 @@
-import { PartyID, ShopID } from '../../../../thrift-services/damsel/gen-model/domain';
-import { TerminalID } from '../../../../thrift-services/fistful/gen-model/fistful';
+import { PartyID, ShopID } from '@vality/domain-proto';
+import { TerminalID } from '@vality/fistful-proto';
+
 import { TerminalActionTypes } from './terminal-action-types';
 
 export interface ChangeProviderParams {

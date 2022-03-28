@@ -6,9 +6,9 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
+import { PartyID } from '@vality/domain-proto';
+import { ClaimChangeset } from '@vality/domain-proto/lib/claim_management';
 
-import { ClaimChangeset } from '../../../../thrift-services/damsel/gen-model/claim_management';
-import { PartyID } from '../../../../thrift-services/damsel/gen-model/domain';
 import { ChangesetInfoType } from '../changeset-infos';
 import { MenuConfigAction, MenuConfigItem } from '../timeline-items/menu-config';
 import { UnsavedClaimChangesetService } from './unsaved-claim-changeset.service';

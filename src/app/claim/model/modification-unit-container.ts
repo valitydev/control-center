@@ -1,7 +1,7 @@
 import {
     ContractModificationUnit,
     ShopModificationUnit,
-} from '../../thrift-services/damsel/gen-model/payment_processing';
+} from '@vality/domain-proto/lib/payment_processing';
 
 export class ModificationUnitContainer {
     saved: boolean;

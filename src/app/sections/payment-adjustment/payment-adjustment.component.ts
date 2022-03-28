@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
 
-import { StatPayment } from '../../thrift-services/damsel/gen-model/merch_stat';
 import { CreateAndCaptureComponent } from './create-and-capture/create-and-capture.component';
 import { PaymentAdjustmentService } from './payment-adjustment.service';
 import { SearchFormParams } from './search-form/search-form-params';

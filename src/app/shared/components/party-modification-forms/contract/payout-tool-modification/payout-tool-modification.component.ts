@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { PayoutToolModification } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
-
-import { PayoutToolModification } from '../../../../../thrift-services/damsel/gen-model/payment_processing';
 
 enum Type {
     Creation = 'creation',

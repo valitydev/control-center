@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { StatPayment, StatResponse } from '@vality/domain-proto/lib/merch_stat';
 import { Observable, of, Subject } from 'rxjs';
 import { mergeMap, shareReplay } from 'rxjs/operators';
 
 import { DomainService } from '../../domain';
 import { QueryDsl } from '../../query-dsl';
-import { StatPayment, StatResponse } from '../../thrift-services/damsel/gen-model/merch_stat';
 import { MerchantStatisticsService } from '../../thrift-services/damsel/merchant-statistics.service';
 import { SearchFormParams } from './search-form/search-form-params';
 

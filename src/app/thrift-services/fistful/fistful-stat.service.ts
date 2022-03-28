@@ -1,4 +1,7 @@
 import { Inject, Injectable, NgZone } from '@angular/core';
+import { StatDeposit, StatRequest, StatResponse } from '@vality/fistful-proto/lib/fistful_stat';
+import { StatRequest as ThriftStatRequest } from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/fistful_stat_types';
+import * as FistfulStatistics from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/FistfulStatistics';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -11,9 +14,6 @@ import { DepositRevertParams } from '../../query-dsl/deposit-revert';
 import { SEARCH_LIMIT, SMALL_SEARCH_LIMIT } from '../../tokens';
 import { ThriftService } from '../services/thrift/thrift-service';
 import { DepositParams } from './deposit-params';
-import { StatDeposit, StatRequest, StatResponse } from './gen-model/fistful_stat';
-import { StatRequest as ThriftStatRequest } from './gen-nodejs/fistful_stat_types';
-import * as FistfulStatistics from './gen-nodejs/FistfulStatistics';
 
 @Injectable()
 export class FistfulStatisticsService extends ThriftService {

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Modification } from '@vality/domain-proto/lib/claim_management';
 import { NewFileResult } from '@vality/file-storage-proto';
 import { Value } from '@vality/file-storage-proto/lib/msgpack';
 import * as moment from 'moment';
@@ -9,7 +10,6 @@ import { catchError, filter, map, shareReplay, switchMap } from 'rxjs/operators'
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { Modification } from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { FileStorageService } from '../../../../thrift-services/file-storage/file-storage.service';
 import { UnsavedClaimChangesetService } from '../../changeset/unsaved-changeset/unsaved-claim-changeset.service';
 

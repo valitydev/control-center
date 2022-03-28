@@ -1,14 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/lib/domain';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { PartyService } from '../../../papi/party.service';
-import {
-    Contract,
-    Party,
-    PartyContractor,
-    Shop,
-} from '../../../thrift-services/damsel/gen-model/domain';
 import { PartyTarget } from '../party-target';
 import { SelectableItem } from './selectable-item';
 

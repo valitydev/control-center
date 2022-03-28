@@ -2,10 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Shop } from '@vality/domain-proto/lib/domain';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';
-import { Shop } from '../../../../thrift-services/damsel/gen-model/domain';
 
 @UntilDestroy()
 @Component({

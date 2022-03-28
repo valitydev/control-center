@@ -1,9 +1,7 @@
+import { CommentModification, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+
 import { getUnionKey } from '@cc/utils/get-union-key';
 
-import {
-    CommentModification,
-    ModificationUnit,
-} from '../../../../thrift-services/damsel/gen-model/claim_management';
 import { ChangesetInfo, ChangesetInfoModificationType, ChangesetInfoType } from './changeset-info';
 import { markRemoved } from './mark-removed';
 

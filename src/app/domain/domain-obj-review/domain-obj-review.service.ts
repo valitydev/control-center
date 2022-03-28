@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Version } from '@vality/domain-proto/lib/domain_config';
 import { combineLatest, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { Version } from '../../thrift-services/damsel/gen-model/domain_config';
 import { DomainModificationModel } from '../domain-modification-model';
 import { DomainReviewService } from '../domain-review.service';
 import { DomainService } from '../domain.service';

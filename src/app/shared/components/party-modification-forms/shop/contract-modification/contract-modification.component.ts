@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ShopContractModification } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
-
-import { ShopContractModification } from '../../../../../thrift-services/damsel/gen-model/payment_processing';
 
 @Component({
     selector: 'cc-shop-contract-modification',

@@ -1,4 +1,4 @@
-import { Modification } from '../../../../thrift-services/damsel/gen-model/claim_management';
+import { Modification } from '@vality/domain-proto/lib/claim_management';
 
 export enum UnitActionType {
     AllActions = 'allActions',

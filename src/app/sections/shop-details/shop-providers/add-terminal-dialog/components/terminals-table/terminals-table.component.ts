@@ -12,8 +12,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
-import { TerminalObject } from '../../../../../../thrift-services/damsel/gen-model/domain';
+import { TerminalObject } from '@vality/domain-proto/lib/domain';
 
 @Component({
     selector: 'cc-terminals-table',

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BusinessScheduleRef } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
-
-import { BusinessScheduleRef } from '../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-business-schedule-ref',

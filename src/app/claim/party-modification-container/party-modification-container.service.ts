@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
+import {
+    ContractModificationUnit,
+    ShopModificationUnit,
+} from '@vality/domain-proto/lib/payment_processing';
 
 import {
     ContractModificationName,
     ShopModificationName,
 } from '../../party-modification-creator-legacy';
-import {
-    ContractModificationUnit,
-    ShopModificationUnit,
-} from '../../thrift-services/damsel/gen-model/payment_processing';
 import { ModificationGroupType } from '../model';
 import { ActionType } from '../modification-action';
 

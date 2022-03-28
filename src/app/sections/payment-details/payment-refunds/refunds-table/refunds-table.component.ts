@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { InvoicePaymentRefundStatus } from '@vality/domain-proto/lib/merch_stat';
 
 import { Refund } from '../../../../query-dsl/refund';
-import { InvoicePaymentRefundStatus } from '../../../../thrift-services/damsel/gen-model/merch_stat';
 
 @Component({
     selector: 'cc-refunds-table',

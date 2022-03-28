@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
-import { ClaimStatus } from '../../../thrift-services/damsel/gen-model/claim_management';
+import { ClaimStatus } from '@vality/domain-proto/lib/claim_management';
 
 @Component({
     selector: 'cc-party-claim-title',

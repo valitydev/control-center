@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ContractTemplateRef } from '@vality/domain-proto/lib/domain';
 import { ContractTemplate } from '@vality/dominant-cache-proto';
 import isNil from 'lodash-es/isNil';
 import sortBy from 'lodash-es/sortBy';
@@ -8,8 +9,6 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
-
-import { ContractTemplateRef } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-contract-template-ref',

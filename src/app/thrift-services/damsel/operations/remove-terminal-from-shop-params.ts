@@ -1,5 +1,5 @@
-import { TerminalID } from '../../fistful/gen-model/fistful';
-import { PartyID, ShopID } from '../gen-model/domain';
+import { PartyID, ShopID } from '@vality/domain-proto';
+import { TerminalID } from '@vality/fistful-proto';
 
 export class RemoveTerminalFromShopParams {
     partyID: PartyID;

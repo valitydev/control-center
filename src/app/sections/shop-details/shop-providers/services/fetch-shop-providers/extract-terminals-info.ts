@@ -1,8 +1,3 @@
-import Int64 from '@vality/thrift-ts/lib/int64';
-import get from 'lodash-es/get';
-
-import { getUnionKey, getUnionValue } from '@cc/utils/get-union-key';
-
 import {
     Condition,
     PartyID,
@@ -12,7 +7,11 @@ import {
     TerminalObject,
     TerminalRef,
     TerminalSelector,
-} from '../../../../../thrift-services/damsel/gen-model/domain';
+} from '@vality/domain-proto/lib/domain';
+import get from 'lodash-es/get';
+
+import { getUnionKey, getUnionValue } from '@cc/utils/get-union-key';
+
 import { findDomainObject } from '../../../../../thrift-services/damsel/operations/utils';
 import {
     FlattenTerminalInfoGroup,
@@ -99,13 +98,13 @@ function extractIds({ decisions, value }: TerminalSelector): number[] {
     }
 }
 
-function extractWeights({ value }: TerminalSelector): Int64[] {
+function extractWeights({ value }: TerminalSelector): number[] {
     if (value) {
         return Array.from(value).map(({ weight }) => weight);
     }
 }
 
-function extractPriorities({ value }: TerminalSelector): Int64[] {
+function extractPriorities({ value }: TerminalSelector): number[] {
     if (value) {
         return Array.from(value).map(({ priority }) => priority);
     }

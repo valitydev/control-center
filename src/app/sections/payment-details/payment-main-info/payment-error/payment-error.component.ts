@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
-import { getUnionKey } from '@cc/utils/get-union-key';
-
 import {
     FailureCode,
     FailureReason,
     InvoicePaymentStatus,
     SubFailure,
-} from '../../../../thrift-services/damsel/gen-model/domain';
+} from '@vality/domain-proto/lib/domain';
+
+import { getUnionKey } from '@cc/utils/get-union-key';
 
 export interface PaymentError {
     code: FailureCode;

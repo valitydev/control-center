@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { PartyID } from '@vality/domain-proto';
+import {
+    Claim,
+    ClaimID,
+    ClaimSearchQuery,
+    ClaimStatus,
+} from '@vality/domain-proto/lib/claim_management';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
-import {
-    Claim,
-    ClaimID,
-    ClaimSearchQuery,
-    ClaimStatus,
-} from '../../thrift-services/damsel/gen-model/claim_management';
 
 type SearchClaimsParams = {
     claim_id?: ClaimID;

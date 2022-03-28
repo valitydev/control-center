@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { PayoutToolInfo } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
-
-import { PayoutToolInfo } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 enum Type {
     RussianBankAccount = 'russian_bank_account',

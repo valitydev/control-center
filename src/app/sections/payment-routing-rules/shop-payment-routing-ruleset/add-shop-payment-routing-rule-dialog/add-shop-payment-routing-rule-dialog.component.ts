@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Predicate, RiskScore } from '@vality/domain-proto/lib/domain';
 
 import { DomainCacheService } from '../../../../thrift-services/damsel/domain-cache.service';
-import { Predicate, RiskScore } from '../../../../thrift-services/damsel/gen-model/domain';
 import {
     AddShopPaymentRoutingRuleDialogService,
     TerminalType,

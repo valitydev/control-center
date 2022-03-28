@@ -1,9 +1,6 @@
+import { ProviderObject, TerminalObject } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
-import {
-    ProviderObject,
-    TerminalObject,
-} from '../../../../../thrift-services/damsel/gen-model/domain';
 import { ProviderInfo } from '../../types';
 import { extractTerminalsInfo } from './extract-terminals-info';
 

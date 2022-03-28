@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DepositParams } from '@vality/fistful-proto/lib/fistful_admin';
+import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import Int64 from '@vality/thrift-ts/lib/int64';
 import { KeycloakService } from 'keycloak-angular';
 import * as moment from 'moment';
@@ -15,8 +17,6 @@ import { toMinor } from '@cc/utils/to-minor';
 import { ConfigService } from '../../../../../core/config.service';
 import { FistfulAdminService } from '../../../../../thrift-services/fistful/fistful-admin.service';
 import { FistfulStatisticsService } from '../../../../../thrift-services/fistful/fistful-stat.service';
-import { DepositParams } from '../../../../../thrift-services/fistful/gen-model/fistful_admin';
-import { StatDeposit } from '../../../../../thrift-services/fistful/gen-model/fistful_stat';
 import { SearchParams } from '../../../types/search-params';
 
 @Injectable()
@@ -103,7 +103,7 @@ export class CreateDepositService {
             source: currency.source,
             destination,
             body: {
-                amount: new Int64(toMinor(amount)),
+                amount: new Int64(toMinor(amount)) as any,
                 currency: {
                     symbolic_code: currency.currency,
                 },

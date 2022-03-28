@@ -1,4 +1,4 @@
-import { RoutingDelegate, RoutingRulesObject } from '../../gen-model/domain';
+import { RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/lib/domain';
 
 export function getDelegate(
     ruleset: RoutingRulesObject,

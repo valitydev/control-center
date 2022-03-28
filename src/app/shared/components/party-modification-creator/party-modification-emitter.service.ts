@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
+import { PartyModification } from '@vality/domain-proto/lib/claim_management';
 import { Observable, Subject } from 'rxjs';
-
-import { PartyModification } from '../../../thrift-services/damsel/gen-model/claim_management';
 
 @Injectable()
 export class PartyModificationEmitter {

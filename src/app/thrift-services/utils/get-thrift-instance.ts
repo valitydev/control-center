@@ -1,6 +1,6 @@
-import * as BaseTypes from '../damsel/gen-nodejs/base_types';
-import * as DomainConfigTypes from '../damsel/gen-nodejs/domain_config_types';
-import * as DomainTypes from '../damsel/gen-nodejs/domain_types';
+import * as BaseTypes from '@vality/domain-proto/lib/domain_config/gen-nodejs/base_types';
+import * as DomainConfigTypes from '@vality/domain-proto/lib/domain_config/gen-nodejs/domain_config_types';
+import * as DomainTypes from '@vality/domain-proto/lib/domain_config/gen-nodejs/domain_types';
 
 export const SUPPORTED_NAMESPACES = {
     base: BaseTypes,

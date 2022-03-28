@@ -1,6 +1,7 @@
-import { TerminalID } from '../../fistful/gen-model/fistful';
-import { PartyID, ProviderObject, ShopID } from '../gen-model/domain';
-import { Commit } from '../gen-model/domain_config';
+import { PartyID, ProviderObject, ShopID } from '@vality/domain-proto/lib/domain';
+import { Commit } from '@vality/domain-proto/lib/domain_config';
+import { TerminalID } from '@vality/fistful-proto';
+
 import { createAddTerminalToProviderOperation } from './create-add-terminal-to-provider-operation';
 
 export class AddDecisionToProvider {

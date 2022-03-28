@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/lib/domain';
+import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
 
-import {
-    InvoiceID,
-    InvoicePaymentID,
-    PartyID,
-} from '../../../thrift-services/damsel/gen-model/domain';
-import { StatPayment } from '../../../thrift-services/damsel/gen-model/merch_stat';
 import { PaymentActions } from './payment-actions';
 import { PaymentMenuItemEvent } from './payment-menu-item-event';
 import { PaymentsTableType, TableType } from './payments-table';

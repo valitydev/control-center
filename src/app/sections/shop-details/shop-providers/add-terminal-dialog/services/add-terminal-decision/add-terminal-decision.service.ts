@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PartyID, ProviderObject, ShopID } from '@vality/domain-proto/lib/domain';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 
@@ -7,11 +8,6 @@ import { progress } from '@cc/app/shared/custom-operators';
 
 import { AddDecisionToProvider, ProviderService } from '../../../../../../thrift-services/damsel';
 import { DomainCacheService } from '../../../../../../thrift-services/damsel/domain-cache.service';
-import {
-    PartyID,
-    ProviderObject,
-    ShopID,
-} from '../../../../../../thrift-services/damsel/gen-model/domain';
 import { addDecisionToProviderCommit } from '../../../../../../thrift-services/damsel/operations';
 import {
     filterProvidersByCategoryId,

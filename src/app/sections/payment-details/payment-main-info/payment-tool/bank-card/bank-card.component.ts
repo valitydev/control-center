@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
 import {
     LegacyBankCardPaymentSystem,
     LegacyBankCardTokenProvider,
-} from '../../../../../thrift-services/damsel/gen-model/domain';
-import { BankCard } from '../../../../../thrift-services/damsel/gen-model/merch_stat';
+} from '@vality/domain-proto/lib/domain';
+import { BankCard } from '@vality/domain-proto/lib/merch_stat';
 
 @Component({
     selector: 'cc-bank-card',

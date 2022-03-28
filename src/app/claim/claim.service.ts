@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PartyModification } from '@vality/domain-proto/lib/claim_management';
 import isEqual from 'lodash-es/isEqual';
 import toNumber from 'lodash-es/toNumber';
 import { BehaviorSubject, Observable, of, Subject, throwError } from 'rxjs';
@@ -7,7 +8,6 @@ import { delay, map, repeatWhen, retryWhen, switchMap, takeWhile, tap } from 'rx
 import { ClaimService as ClaimPapi } from '../papi/claim.service';
 import { ClaimInfo, ClaimStatus, PartyModificationUnit } from '../papi/model';
 import { PartyModificationEmitter } from '../party-modification-creator-legacy';
-import { PartyModification } from '../thrift-services/damsel/gen-model/claim_management';
 import { ClaimActionType } from './claim-action-type';
 import { ClaimInfoContainer, ModificationGroup, PersistentContainer } from './model';
 import { convert } from './party-modification-group-converter';

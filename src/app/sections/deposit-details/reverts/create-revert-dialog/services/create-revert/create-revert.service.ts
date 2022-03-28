@@ -4,7 +4,7 @@ import { RevertParams } from '@vality/fistful-proto/lib/deposit_revert';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { DepositManagementService } from '@cc/app/api/fistful';
+import { ManagementService } from '@cc/app/api/deposit';
 import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { toMinor } from '@cc/utils/to-minor';
@@ -46,7 +46,7 @@ export class CreateRevertService {
     constructor(
         private fb: FormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
-        private depositManagementService: DepositManagementService
+        private depositManagementService: ManagementService
     ) {}
 
     createRevert() {
