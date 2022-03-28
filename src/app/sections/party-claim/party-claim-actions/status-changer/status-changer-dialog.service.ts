@@ -43,27 +43,27 @@ export class StatusChangerDialogService {
                     return this.claimManagementService
                         .denyClaim(
                             partyID,
-                            (intClaimID as unknown) as number,
+                            intClaimID as unknown as number,
                             this.form.getRawValue().reason
                         )
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Pending:
                     return this.claimManagementService
-                        .requestClaimChanges(partyID, (intClaimID as unknown) as number)
+                        .requestClaimChanges(partyID, intClaimID as unknown as number)
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Review:
                     return this.claimManagementService
-                        .requestClaimReview(partyID, (intClaimID as unknown) as number)
+                        .requestClaimReview(partyID, intClaimID as unknown as number)
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Accepted:
                     return this.claimManagementService
-                        .acceptClaim(partyID, (intClaimID as unknown) as number)
+                        .acceptClaim(partyID, intClaimID as unknown as number)
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Revoked:
                     return this.claimManagementService
                         .revokeClaim(
                             partyID,
-                            (intClaimID as unknown) as number,
+                            intClaimID as unknown as number,
                             this.form.getRawValue().reason
                         )
                         .pipe(catchError(() => this.handleError()));

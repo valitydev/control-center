@@ -27,9 +27,7 @@ export interface PayoutsSearchForm {
     templateUrl: './payouts-search-form.component.html',
     providers: createValidatedAbstractControlProviders(PayoutsSearchFormComponent),
 })
-export class PayoutsSearchFormComponent extends ValidatedWrappedAbstractControlSuperclass<
-    PayoutsSearchForm
-> {
+export class PayoutsSearchFormComponent extends ValidatedWrappedAbstractControlSuperclass<PayoutsSearchForm> {
     control = this.fb.group<PayoutsSearchForm>({
         payoutId: null,
         partyId: null,

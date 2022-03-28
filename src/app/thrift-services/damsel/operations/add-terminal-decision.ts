@@ -30,7 +30,7 @@ const createDecision = (
         },
     },
     then_: {
-        value: ([{ id: terminalID }] as unknown) as Set<TerminalRef>,
+        value: [{ id: terminalID }] as unknown as Set<TerminalRef>,
     },
 });
 

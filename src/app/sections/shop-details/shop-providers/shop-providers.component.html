@@ -1,7 +1,5 @@
 <div fxLayout fxLayoutAlign="end">
-    <button mat-raised-button color="primary" (click)="addTerminal()">
-        ADD TERMINAL
-    </button>
+    <button mat-raised-button color="primary" (click)="addTerminal()">ADD TERMINAL</button>
 </div>
 <div
     *ngIf="(providersInfo$ | async)?.length && !(fetchProgress$ | async)"

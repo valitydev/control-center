@@ -10,9 +10,10 @@ export const prepareModificationsToBackend = (
         prepared?.contractor_modification?.modification?.creation?.legal_entity
             ?.international_legal_entity?.country;
     if (countryCode && typeof countryCode === 'string') {
-        prepared.contractor_modification.modification.creation.legal_entity.international_legal_entity.country = {
-            id: CountryCode[countryCode] as any,
-        };
+        prepared.contractor_modification.modification.creation.legal_entity.international_legal_entity.country =
+            {
+                id: CountryCode[countryCode] as any,
+            };
     }
     return prepared;
 };

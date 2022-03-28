@@ -21,8 +21,10 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: createValidatedAbstractControlProviders(PayoutToolFieldComponent),
 })
-export class PayoutToolFieldComponent extends ValidatedWrappedAbstractControlSuperclass<PartyID>
-    implements OnInit {
+export class PayoutToolFieldComponent
+    extends ValidatedWrappedAbstractControlSuperclass<PartyID>
+    implements OnInit
+{
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
     @Input() set partyId(partyId: PartyID) {

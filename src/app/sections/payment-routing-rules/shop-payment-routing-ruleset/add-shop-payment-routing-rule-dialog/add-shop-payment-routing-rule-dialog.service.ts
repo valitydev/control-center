@@ -63,14 +63,8 @@ export class AddShopPaymentRoutingRuleDialogService {
     }
 
     add(predicate: Predicate) {
-        const {
-            description,
-            weight,
-            priority,
-            terminalType,
-            existentTerminalID,
-            newTerminal,
-        } = this.form.value;
+        const { description, weight, priority, terminalType, existentTerminalID, newTerminal } =
+            this.form.value;
         (terminalType === TerminalType.New
             ? this.terminalService.createTerminal({
                   terminalName: newTerminal.name,

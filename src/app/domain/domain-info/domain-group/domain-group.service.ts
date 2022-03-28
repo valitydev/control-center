@@ -19,7 +19,7 @@ export class DomainGroupService {
                 const domainGroup = group(domain, domainDef);
                 this.detectUndefGroup(domainGroup);
                 return {
-                    version: ((version as unknown) as Int64).toNumber(),
+                    version: (version as unknown as Int64).toNumber(),
                     group: this.filterUndef(domainGroup),
                 };
             })

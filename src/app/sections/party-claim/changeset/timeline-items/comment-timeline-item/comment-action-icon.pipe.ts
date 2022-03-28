@@ -7,9 +7,11 @@ import { ChangesetInfoModificationType } from '../../changeset-infos';
 })
 export class CommentActionIconPipe implements PipeTransform {
     transform(type: ChangesetInfoModificationType): string {
-        return ({
-            [ChangesetInfoModificationType.creation]: 'add_comment',
-            [ChangesetInfoModificationType.deletion]: 'clear',
-        } as const)[type];
+        return (
+            {
+                [ChangesetInfoModificationType.creation]: 'add_comment',
+                [ChangesetInfoModificationType.deletion]: 'clear',
+            } as const
+        )[type];
     }
 }

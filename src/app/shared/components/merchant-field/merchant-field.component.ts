@@ -29,8 +29,10 @@ import { DeanonimusService } from '../../../thrift-services/deanonimus';
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [provideValueAccessor(MerchantFieldComponent)],
 })
-export class MerchantFieldComponent extends WrappedFormControlSuperclass<PartyID>
-    implements OnInit {
+export class MerchantFieldComponent
+    extends WrappedFormControlSuperclass<PartyID>
+    implements OnInit
+{
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
 

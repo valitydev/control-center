@@ -50,8 +50,8 @@ export class TableComponent implements OnInit, OnChanges {
         this.selection.changed.subscribe((e) => this.changeSelected.emit(e.source.selected));
         this.dataSource.filterPredicate = ({ domain_revision }, filter) => {
             const num = i64ToNumber(
-                ((domain_revision as unknown) as Int64).buffer,
-                ((domain_revision as unknown) as Int64).offset
+                (domain_revision as unknown as Int64).buffer,
+                (domain_revision as unknown as Int64).offset
             );
             return filter === num.toString();
         };

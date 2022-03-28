@@ -11,27 +11,27 @@ export class PollingTimeoutError extends Error {
     }
 }
 
-export const poll = <T>(conditionFn: (value) => boolean) => (
-    source: Observable<T>
-): Observable<T> => {
-    let condition = false;
-    return source.pipe(
-        tap((value) => (condition = conditionFn(value))),
-        repeatWhen((notifications) =>
-            notifications.pipe(
-                delay(POLLING_INTERVAL),
-                takeUntil(
-                    merge(
-                        notifications.pipe(filter(() => condition)),
-                        timer(POLLING_TIMEOUT).pipe(
-                            tap(() => {
-                                throw new PollingTimeoutError('Polling timeout');
-                            })
+export const poll =
+    <T>(conditionFn: (value) => boolean) =>
+    (source: Observable<T>): Observable<T> => {
+        let condition = false;
+        return source.pipe(
+            tap((value) => (condition = conditionFn(value))),
+            repeatWhen((notifications) =>
+                notifications.pipe(
+                    delay(POLLING_INTERVAL),
+                    takeUntil(
+                        merge(
+                            notifications.pipe(filter(() => condition)),
+                            timer(POLLING_TIMEOUT).pipe(
+                                tap(() => {
+                                    throw new PollingTimeoutError('Polling timeout');
+                                })
+                            )
                         )
                     )
                 )
-            )
-        ),
-        takeLast(1)
-    );
-};
+            ),
+            takeLast(1)
+        );
+    };

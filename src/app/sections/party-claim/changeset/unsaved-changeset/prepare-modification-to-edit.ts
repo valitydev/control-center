@@ -8,9 +8,8 @@ export const prepareModificationToEdit = (modification: PartyModification): Part
         prepared?.contractor_modification?.modification?.creation?.legal_entity
             ?.international_legal_entity?.country;
     if (countryObject && typeof countryObject === 'object') {
-        prepared.contractor_modification.modification.creation.legal_entity.international_legal_entity.country = CountryCode[
-            countryObject.id
-        ] as any;
+        prepared.contractor_modification.modification.creation.legal_entity.international_legal_entity.country =
+            CountryCode[countryObject.id] as any;
     }
     return prepared;
 };

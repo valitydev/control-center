@@ -7,9 +7,11 @@ import { ChangesetInfoModificationType } from '../../changeset-infos';
 })
 export class FileHeaderPipe implements PipeTransform {
     transform(type: ChangesetInfoModificationType): string {
-        return ({
-            [ChangesetInfoModificationType.creation]: 'added files',
-            [ChangesetInfoModificationType.deletion]: 'removed files',
-        } as const)[type];
+        return (
+            {
+                [ChangesetInfoModificationType.creation]: 'added files',
+                [ChangesetInfoModificationType.deletion]: 'removed files',
+            } as const
+        )[type];
     }
 }

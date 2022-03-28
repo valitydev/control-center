@@ -7,9 +7,11 @@ import { ChangesetInfoModificationType } from '../../changeset-infos';
 })
 export class CommentHeaderPipe implements PipeTransform {
     transform(type: ChangesetInfoModificationType): string {
-        return ({
-            [ChangesetInfoModificationType.creation]: 'added message',
-            [ChangesetInfoModificationType.deletion]: 'removed message',
-        } as const)[type];
+        return (
+            {
+                [ChangesetInfoModificationType.creation]: 'added message',
+                [ChangesetInfoModificationType.deletion]: 'removed message',
+            } as const
+        )[type];
     }
 }

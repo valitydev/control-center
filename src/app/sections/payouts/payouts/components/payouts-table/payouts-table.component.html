@@ -60,9 +60,7 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item [routerLink]="payout.id">
-                    Details
-                </button>
+                <button mat-menu-item [routerLink]="payout.id">Details</button>
                 <button
                     *ngIf="canBeConfirmed(payout.status | ccUnionKey)"
                     mat-menu-item

@@ -33,7 +33,7 @@ export class DomainService {
      */
     get version$(): Observable<number> {
         return this.shapshot$.pipe(
-            map(({ version }) => (version ? ((version as unknown) as Int64).toNumber() : undefined))
+            map(({ version }) => (version ? (version as unknown as Int64).toNumber() : undefined))
         );
     }
 

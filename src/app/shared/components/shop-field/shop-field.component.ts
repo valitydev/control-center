@@ -34,7 +34,8 @@ export class ShopFieldComponent<M extends boolean = boolean>
         M extends true ? Shop[] : Shop,
         M extends true ? ShopID[] : ShopID
     >
-    implements OnChanges, OnInit {
+    implements OnChanges, OnInit
+{
     @Input() partyId: PartyID;
     @Input() @coerceBoolean multiple: M;
     @Input() @coerceBoolean required: boolean;

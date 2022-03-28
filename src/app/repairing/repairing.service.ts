@@ -78,12 +78,14 @@ export class RepairingService {
     executeGetMachine<E extends { id: string; ns: string }>(elements: E[]) {
         this._progress$.next(0);
         return execute(
-            elements.map(({ id, ns }) => () =>
-                this.automatonService.getMachine({
-                    ns,
-                    ref: { id },
-                    range: { limit: 0, direction: 1 },
-                })
+            elements.map(
+                ({ id, ns }) =>
+                    () =>
+                        this.automatonService.getMachine({
+                            ns,
+                            ref: { id },
+                            range: { limit: 0, direction: 1 },
+                        })
             )
         ).pipe(tap(({ progress }) => this._progress$.next(progress)));
     }
@@ -91,7 +93,11 @@ export class RepairingService {
     executeSimpleRepair<E extends { id: string; ns: string }>(elements: E[]) {
         this._progress$.next(0);
         return execute(
-            elements.map(({ id, ns }) => () => this.automatonService.simpleRepair(ns, { id }))
+            elements.map(
+                ({ id, ns }) =>
+                    () =>
+                        this.automatonService.simpleRepair(ns, { id })
+            )
         ).pipe(tap(({ progress }) => this._progress$.next(progress)));
     }
 
@@ -102,8 +108,10 @@ export class RepairingService {
         const user = this.getUser();
         this._progress$.next(0);
         return execute(
-            elements.map(({ id }) => () =>
-                this.paymentProcessingService.repairWithScenario(user, id, scenario)
+            elements.map(
+                ({ id }) =>
+                    () =>
+                        this.paymentProcessingService.repairWithScenario(user, id, scenario)
             )
         ).pipe(tap(({ progress }) => this._progress$.next(progress)));
     }
@@ -111,7 +119,11 @@ export class RepairingService {
     executeRepair<E extends { id: string }>(elements: E[], scenario: RepairScenario) {
         this._progress$.next(0);
         return execute(
-            elements.map(({ id }) => () => this.repairerService.repair(id, scenario))
+            elements.map(
+                ({ id }) =>
+                    () =>
+                        this.repairerService.repair(id, scenario)
+            )
         ).pipe(tap(({ progress }) => this._progress$.next(progress)));
     }
 }
