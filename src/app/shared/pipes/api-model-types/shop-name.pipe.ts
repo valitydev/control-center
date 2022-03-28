@@ -2,7 +2,7 @@ import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, map, pluck, switchMap, takeUntil } from 'rxjs/operators';
 
-import { PartyService } from '../../../papi/party.service';
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 
 @Pipe({
     name: 'shopName',
@@ -14,11 +14,15 @@ export class ShopNamePipe implements PipeTransform, OnDestroy {
     private partyIDChange$ = new Subject<string>();
     private destroy$ = new Subject<void>();
 
-    constructor(private partyService: PartyService, private ref: ChangeDetectorRef) {
+    constructor(
+        private partyManagementWithUserService: PartyManagementWithUserService,
+        private ref: ChangeDetectorRef
+    ) {
         combineLatest([
             this.partyIDChange$.pipe(
                 distinctUntilChanged(),
-                switchMap((id) => this.partyService.getShops(id))
+                switchMap((id) => this.partyManagementWithUserService.getParty(id)),
+                map(({ shops }) => Array.from(shops.values()))
             ),
             this.shopIDChange$.pipe(distinctUntilChanged()),
         ])
