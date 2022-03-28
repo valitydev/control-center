@@ -10,7 +10,7 @@ import { ASTDefinition } from './model';
 export class DefinitionService {
     private def$: Observable<ASTDefinition[]> = from(
         import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
-    ).pipe(shareReplay(1)) as Observable<ASTDefinition[]>;
+    ).pipe(shareReplay(1));
 
     get astDefinition(): Observable<ASTDefinition[]> {
         return this.def$;

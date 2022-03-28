@@ -15,7 +15,7 @@ export interface Metadata {
 export class MetadataService {
     private metadata$: Observable<Metadata[]> = from(
         import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
-    ).pipe(shareReplay(1)) as Observable<Metadata[]>;
+    ).pipe(shareReplay(1));
 
     get metadata() {
         return this.metadata$;
