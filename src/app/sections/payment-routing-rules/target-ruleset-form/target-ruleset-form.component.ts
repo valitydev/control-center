@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { PaymentInstitutionObject } from '@vality/domain-proto/lib/domain';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
@@ -15,7 +16,6 @@ import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
-import { PaymentInstitutionObject } from '../../../thrift-services/damsel/gen-model/domain';
 import { Target } from './types/target';
 import { TargetRuleset } from './types/target-ruleset';
 

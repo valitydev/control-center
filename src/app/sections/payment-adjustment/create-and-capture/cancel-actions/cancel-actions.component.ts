@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/lib/payment_processing';
 import forEach from 'lodash-es/forEach';
 import groupBy from 'lodash-es/groupBy';
 
-import { InvoicePaymentAdjustmentParams } from '../../../../thrift-services/damsel/gen-model/payment_processing';
 import {
     AdjustmentOperationEvent,
     BatchPaymentAdjustmentService,

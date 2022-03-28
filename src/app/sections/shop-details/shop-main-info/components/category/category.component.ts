@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Category } from '@vality/domain-proto/lib/domain';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
-
-import { Category } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     templateUrl: 'category.component.html',

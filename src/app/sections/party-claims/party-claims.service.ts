@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {
+    Claim,
+    ClaimID,
+    ClaimSearchQuery,
+    ClaimStatus,
+} from '@vality/domain-proto/lib/claim_management';
 import { Observable } from 'rxjs';
 import { map, pluck, switchMap } from 'rxjs/operators';
 
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
-import {
-    Claim,
-    ClaimID,
-    ClaimSearchQuery,
-    ClaimStatus,
-} from '../../thrift-services/damsel/gen-model/claim_management';
 
 const SEARCH_LIMIT = 10;
 

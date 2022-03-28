@@ -1,4 +1,4 @@
-import { TerminalSelector } from '../gen-model/domain';
+import { TerminalSelector } from '@vality/domain-proto/lib/domain';
 
 export const generateId = (objectsWithRefId: { ref: { id: number } }[]): number => {
     const ids = objectsWithRefId.map(({ ref }) => ref.id);

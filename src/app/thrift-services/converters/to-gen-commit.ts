@@ -1,6 +1,11 @@
+import {
+    Commit,
+    InsertOp,
+    Operation,
+    RemoveOp,
+    UpdateOp,
+} from '@vality/domain-proto/lib/domain_config';
 import * as DomainConfigTypes from '@vality/domain-proto/lib/domain_config/gen-nodejs/domain_config_types';
-
-import { Commit, InsertOp, Operation, RemoveOp, UpdateOp } from '../damsel/gen-model/domain_config';
 
 /**
  * @deprecated use createDamselInstance

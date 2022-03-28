@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
+import { Commit, Snapshot } from '@vality/domain-proto/lib/domain_config';
+import { Int64 } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -6,8 +9,6 @@ import { toJson } from '@cc/utils/thrift-json-converter';
 
 import { toGenCommit, toGenReference } from '../thrift-services/converters';
 import { DomainService as ThriftDomainService } from '../thrift-services/damsel/domain.service';
-import { DomainObject, Reference } from '../thrift-services/damsel/gen-model/domain';
-import { Commit, Snapshot } from '../thrift-services/damsel/gen-model/domain_config';
 
 /**
  * @deprecated duplicates thrift-services/damsel/domain-cache.service
@@ -32,7 +33,7 @@ export class DomainService {
      */
     get version$(): Observable<number> {
         return this.shapshot$.pipe(
-            map(({ version }) => (version ? version.toNumber() : undefined))
+            map(({ version }) => (version ? ((version as unknown) as Int64).toNumber() : undefined))
         );
     }
 

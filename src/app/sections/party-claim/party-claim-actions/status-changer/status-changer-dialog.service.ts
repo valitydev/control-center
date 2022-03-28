@@ -41,23 +41,31 @@ export class StatusChangerDialogService {
             switch (action) {
                 case ClaimStatus.Denied:
                     return this.claimManagementService
-                        .denyClaim(partyID, intClaimID, this.form.getRawValue().reason)
+                        .denyClaim(
+                            partyID,
+                            (intClaimID as unknown) as number,
+                            this.form.getRawValue().reason
+                        )
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Pending:
                     return this.claimManagementService
-                        .requestClaimChanges(partyID, intClaimID)
+                        .requestClaimChanges(partyID, (intClaimID as unknown) as number)
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Review:
                     return this.claimManagementService
-                        .requestClaimReview(partyID, intClaimID)
+                        .requestClaimReview(partyID, (intClaimID as unknown) as number)
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Accepted:
                     return this.claimManagementService
-                        .acceptClaim(partyID, intClaimID)
+                        .acceptClaim(partyID, (intClaimID as unknown) as number)
                         .pipe(catchError(() => this.handleError()));
                 case ClaimStatus.Revoked:
                     return this.claimManagementService
-                        .revokeClaim(partyID, intClaimID, this.form.getRawValue().reason)
+                        .revokeClaim(
+                            partyID,
+                            (intClaimID as unknown) as number,
+                            this.form.getRawValue().reason
+                        )
                         .pipe(catchError(() => this.handleError()));
                 default:
                     throw new Error('Wrong action type!');

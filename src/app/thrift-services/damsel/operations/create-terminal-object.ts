@@ -1,4 +1,5 @@
-import { TerminalObject } from '../gen-model/domain';
+import { TerminalObject } from '@vality/domain-proto/lib/domain';
+
 import { CreateTerminalParams } from './create-terminal-params';
 import { generateId, toMap } from './utils';
 

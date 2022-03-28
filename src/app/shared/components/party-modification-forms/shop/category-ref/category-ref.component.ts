@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CategoryRef } from '@vality/domain-proto/lib/domain';
 import { Category } from '@vality/dominant-cache-proto';
 import isNil from 'lodash-es/isNil';
 import sortBy from 'lodash-es/sortBy';
@@ -8,8 +9,6 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
-
-import { CategoryRef } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-category-ref',

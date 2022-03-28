@@ -6,6 +6,3 @@ runs:
         - uses: valitydev/action-frontend/setup@v0.1
         - run: npm ci
           shell: bash
-        - name: Compile Thrift
-          run: npm run compile
-          shell: bash

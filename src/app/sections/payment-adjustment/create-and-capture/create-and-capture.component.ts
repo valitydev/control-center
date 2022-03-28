@@ -3,18 +3,18 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { InvoicePaymentStatus } from '@vality/domain-proto/lib/domain';
+import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
+import {
+    InvoicePaymentAdjustmentParams,
+    InvoicePaymentAdjustmentScenario,
+    UserInfo,
+} from '@vality/domain-proto/lib/payment_processing';
 import { KeycloakService } from 'keycloak-angular';
 import isEqual from 'lodash-es/isEqual';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { InvoicePaymentStatus } from '../../../thrift-services/damsel/gen-model/domain';
-import { StatPayment } from '../../../thrift-services/damsel/gen-model/merch_stat';
-import {
-    InvoicePaymentAdjustmentParams,
-    InvoicePaymentAdjustmentScenario,
-    UserInfo,
-} from '../../../thrift-services/damsel/gen-model/payment_processing';
 import {
     BatchPaymentAdjustmentService,
     CancelAdjustmentService,

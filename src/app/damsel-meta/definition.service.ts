@@ -8,9 +8,9 @@ import { ASTDefinition } from './model';
 
 @Injectable()
 export class DefinitionService {
-    private def$: Observable<ASTDefinition[]> = from(
+    private def$ = from(
         import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
-    ).pipe(shareReplay(1));
+    ).pipe(shareReplay(1)) as Observable<ASTDefinition[]>;
 
     get astDefinition(): Observable<ASTDefinition[]> {
         return this.def$;

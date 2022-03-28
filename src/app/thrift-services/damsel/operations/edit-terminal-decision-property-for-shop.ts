@@ -1,7 +1,7 @@
+import { PartyID, ProviderObject, ShopID, TerminalDecision } from '@vality/domain-proto/lib/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 
-import { PartyID, ProviderObject, ShopID, TerminalDecision } from '../gen-model/domain';
 import { EditTerminalDecisionPropertyParams } from './edit-terminal-decision-property-params';
 import { checkSelector } from './utils';
 

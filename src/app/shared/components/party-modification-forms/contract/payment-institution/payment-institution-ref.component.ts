@@ -1,16 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PaymentInstitutionObject, PaymentInstitutionRef } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
 import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
-import {
-    PaymentInstitutionObject,
-    PaymentInstitutionRef,
-} from '../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-payment-institution-ref',

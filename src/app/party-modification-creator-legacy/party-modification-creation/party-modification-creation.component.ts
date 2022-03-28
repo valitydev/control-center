@@ -8,14 +8,14 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormControlStatus, FormGroup, Validators } from '@angular/forms';
-
-import { ActionType, ModificationAction } from '../../claim/modification-action';
-import { ContractorModification } from '../../thrift-services/damsel/gen-model/claim_management';
+import { ContractorModification } from '@vality/domain-proto/lib/claim_management';
 import {
     ContractModification,
     PartyModification,
     ShopModification,
-} from '../../thrift-services/damsel/gen-model/payment_processing';
+} from '@vality/domain-proto/lib/payment_processing';
+
+import { ActionType, ModificationAction } from '../../claim/modification-action';
 import {
     ContractModificationName,
     ContractorModificationName,

@@ -1,6 +1,5 @@
+import { Reference, Version } from '@vality/domain-proto/lib/domain_config';
 import * as DomainConfigTypes from '@vality/domain-proto/lib/domain_config/gen-nodejs/domain_config_types';
-
-import { Reference, Version } from '../damsel/gen-model/domain_config';
 
 const toGenHead = () => {
     const reference = new DomainConfigTypes.Reference();

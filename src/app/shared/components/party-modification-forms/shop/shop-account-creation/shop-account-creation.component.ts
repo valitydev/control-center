@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ShopAccountParams } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
-
-import { ShopAccountParams } from '../../../../../thrift-services/damsel/gen-model/payment_processing';
 
 @Component({
     selector: 'cc-shop-account-creation',

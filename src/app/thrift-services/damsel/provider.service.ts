@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { ProviderObject } from '@vality/domain-proto/lib/domain';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { DomainCacheService } from './domain-cache.service';
-import { ProviderObject } from './gen-model/domain';
 import { findDomainObject } from './operations/utils';
 
 @Injectable()

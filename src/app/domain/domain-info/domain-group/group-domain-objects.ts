@@ -1,8 +1,8 @@
+import { Domain } from '@vality/domain-proto/lib/domain';
 import { Field } from '@vality/thrift-ts';
 
 import { clearNullFields } from '@cc/utils/thrift-utils';
 
-import { Domain } from '../../../thrift-services/damsel/gen-model/domain';
 import { DomainGroup } from './domain-group';
 
 function getTypeDef(domainObjDef: Field[]) {

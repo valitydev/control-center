@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
-import { Shop } from '../../../thrift-services/damsel/gen-model/domain';
+import { Shop } from '@vality/domain-proto/lib/domain';
 
 @Component({
     selector: 'cc-shop-main-info',

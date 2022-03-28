@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LegalAgreement } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
-
-import { LegalAgreement } from '../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-legal-agreement-binding',

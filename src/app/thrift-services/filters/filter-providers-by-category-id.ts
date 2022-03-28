@@ -1,6 +1,5 @@
+import { ProviderObject } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
-
-import { ProviderObject } from '../damsel/gen-model/domain';
 
 export const filterProvidersByCategoryId = (
     objects: ProviderObject[],

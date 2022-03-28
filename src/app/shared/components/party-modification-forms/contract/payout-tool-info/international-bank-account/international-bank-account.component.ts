@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { InternationalBankAccount } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
-
-import { InternationalBankAccount } from '../../../../../../thrift-services/damsel/gen-model/domain';
 
 @Component({
     selector: 'cc-international-bank-account',

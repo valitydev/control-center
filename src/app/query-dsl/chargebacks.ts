@@ -2,7 +2,7 @@ import {
     InvoicePaymentChargebackCategory,
     InvoicePaymentChargebackStage,
     InvoicePaymentChargebackStatus,
-} from '../thrift-services/damsel/gen-model/domain';
+} from '@vality/domain-proto/lib/domain';
 
 export const CHARGEBACK_STATUSES: (keyof InvoicePaymentChargebackStatus)[] = [
     'accepted',

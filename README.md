@@ -4,7 +4,6 @@
 
 ```sh
 npm ci
-npm run compile
 ```
 
 ## Usage

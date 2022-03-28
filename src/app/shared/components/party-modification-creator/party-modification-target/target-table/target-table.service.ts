@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Modification } from '@vality/domain-proto/lib/claim_management';
+import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/lib/domain';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, tap, filter } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyService } from '../../../../../papi/party.service';
-import {
-    Contract,
-    Party,
-    PartyContractor,
-    Shop,
-} from '../../../../../thrift-services/damsel/gen-model/domain';
 import { PartyTarget } from '../party-target';
 import { modificationsToSelectableItems } from './modifications-to-selectable-items';
 import { SelectableItem } from './selectable-item';

@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Party, Shop } from '@vality/domain-proto/lib/domain';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { decode } from '@cc/utils/java-thrift-formatter';
 
 import { ConfigService } from '../core/config.service';
-import { Party, Shop } from '../thrift-services/damsel/gen-model/domain';
 import { ContractTemplate } from './model';
 
 @Injectable()

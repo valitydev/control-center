@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Int64 } from '@vality/thrift-ts';
 import { AsyncSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,7 +19,7 @@ export class DomainGroupService {
                 const domainGroup = group(domain, domainDef);
                 this.detectUndefGroup(domainGroup);
                 return {
-                    version: version.toNumber(),
+                    version: ((version as unknown) as Int64).toNumber(),
                     group: this.filterUndef(domainGroup),
                 };
             })

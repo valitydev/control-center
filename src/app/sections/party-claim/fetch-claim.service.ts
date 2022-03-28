@@ -16,13 +16,15 @@ export class FetchClaimService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     claim$ = this.getClaim$.pipe(
         switchMap(({ partyID, claimID }) =>
-            this.claimManagementService.getClaim(partyID, new Int64(parseInt(claimID, 10))).pipe(
-                catchError((e) => {
-                    console.error(e);
-                    this.snackBar.open('An error occurred while fetching claim', 'OK');
-                    return of('error');
-                })
-            )
+            this.claimManagementService
+                .getClaim(partyID, (new Int64(parseInt(claimID, 10)) as unknown) as number)
+                .pipe(
+                    catchError((e) => {
+                        console.error(e);
+                        this.snackBar.open('An error occurred while fetching claim', 'OK');
+                        return of('error');
+                    })
+                )
         ),
         filter((result) => result !== 'error'),
         shareReplay(1)

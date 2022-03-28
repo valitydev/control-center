@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PayoutToolModificationUnit } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 import * as uuid from 'uuid/v4';
-
-import { PayoutToolModificationUnit } from '../../../../../thrift-services/damsel/gen-model/payment_processing';
 
 @Component({
     selector: 'cc-contract-payout-tool-modification-unit',
