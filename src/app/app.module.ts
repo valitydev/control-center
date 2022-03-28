@@ -21,7 +21,6 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ClaimModule } from './claim/claim.module';
 import { CoreModule } from './core/core.module';
 import { DomainModule } from './domain';
 import icons from './icons.json';
@@ -66,7 +65,6 @@ moment.locale('en');
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        ClaimModule,
         OldPayoutsModule,
         PaymentAdjustmentModule,
         DomainModule,
