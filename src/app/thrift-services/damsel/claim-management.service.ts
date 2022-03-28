@@ -17,6 +17,9 @@ import { switchMap } from 'rxjs/operators';
 import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
 
+/**
+ * @deprecated use api/ClaimManagement service
+ */
 @Injectable()
 export class ClaimManagementService extends ThriftService {
     constructor(zone: NgZone, keycloakTokenInfoService: KeycloakTokenInfoService) {
