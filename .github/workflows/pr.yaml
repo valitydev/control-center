@@ -15,8 +15,8 @@ jobs:
               with:
                   path: ./*
                   key: ${{ github.sha }}
-    check:
-        name: Check
+    eslint:
+        name: ESLint
         runs-on: ubuntu-latest
         needs: [init]
         steps:
@@ -27,7 +27,20 @@ jobs:
                   path: ./*
                   key: ${{ github.sha }}
             - name: Check
-              run: npm run ci:check
+              run: npm run lint-cmd -- --quiet
+    prettier:
+        name: Prettier
+        runs-on: ubuntu-latest
+        needs: [init]
+        steps:
+            - name: Cache all
+              uses: actions/cache@v3
+              id: cache
+              with:
+                  path: ./*
+                  key: ${{ github.sha }}
+            - name: Check
+              run: npm run prettier
     build:
         name: Build
         runs-on: ubuntu-latest
