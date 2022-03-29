@@ -4,18 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
 @NgModule({
-    imports: [
-        RouterModule.forRoot(
-            [
-                {
-                    path: '',
-                    redirectTo: '/old-payouts',
-                    pathMatch: 'full',
-                },
-            ],
-            { paramsInheritanceStrategy: 'always', relativeLinkResolution: 'legacy' }
-        ),
-    ],
+    imports: [RouterModule.forRoot([])],
     providers: [AppAuthGuardService],
     exports: [RouterModule],
 })

@@ -11,7 +11,7 @@ export class PayoutsService {
     private readonly papiEndpoint: string;
 
     constructor(private http: HttpClient, configService: ConfigService) {
-        this.papiEndpoint = configService.config.papiEndpoint;
+        this.papiEndpoint = '';
     }
 
     getPayouts(params?: PayoutSearchParams): Observable<PayoutsResponse> {
