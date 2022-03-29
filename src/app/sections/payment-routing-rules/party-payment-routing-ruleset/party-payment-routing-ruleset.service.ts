@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
-import { PartyService } from '../../../papi/party.service';
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+
 import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class PartyPaymentRoutingRulesetService {
     );
 
     private party$ = this.partyID$.pipe(
-        switchMap((partyID) => this.partyService.getParty(partyID)),
+        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
         shareReplay(1)
     );
 
@@ -37,7 +38,7 @@ export class PartyPaymentRoutingRulesetService {
 
     constructor(
         private route: ActivatedRoute,
-        private partyService: PartyService,
+        private partyManagementWithUserService: PartyManagementWithUserService,
         private domainService: DomainCacheService
     ) {}
 }

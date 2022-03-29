@@ -21,12 +21,10 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ClaimModule } from './claim/claim.module';
 import { CoreModule } from './core/core.module';
 import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
-import { PayoutsModule as OldPayoutsModule } from './payouts/payouts.module';
 import { RepairingModule } from './repairing/repairing.module';
 import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
@@ -66,8 +64,6 @@ moment.locale('en');
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        ClaimModule,
-        OldPayoutsModule,
         PaymentAdjustmentModule,
         DomainModule,
         RepairingModule,

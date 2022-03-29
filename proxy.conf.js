@@ -4,7 +4,6 @@ const THRIFT_PROXY_CONFIG = {
         '/v3',
         '/stat',
         '/fistful',
-        '/papi',
         '/file_storage',
         '/deanonimus',
         '/payout/management',

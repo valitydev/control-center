@@ -14,9 +14,9 @@ import {
     tap,
 } from 'rxjs/operators';
 
+import { ClaimStatus } from '@cc/app/api/claim-management';
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { ClaimStatus } from '../../../../papi/model';
 import { ClaimManagementService } from '../../../../thrift-services/damsel/claim-management.service';
 
 class UpdateClaim {

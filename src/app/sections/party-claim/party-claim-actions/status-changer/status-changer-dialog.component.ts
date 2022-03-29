@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ClaimStatus as CMClaimStatus } from '@vality/domain-proto/lib/claim_management';
 
+import { ClaimStatus } from '@cc/app/api/claim-management';
 import { AppAuthGuardService, ClaimManagementRole } from '@cc/app/shared/services';
 
-import { ClaimStatus } from '../../../../papi/model';
 import { getAvailableClaimStatuses } from './get-available-claim-statuses';
 import { StatusChangerDialogService } from './status-changer-dialog.service';
 

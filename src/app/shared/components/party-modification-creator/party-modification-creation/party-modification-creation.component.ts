@@ -15,10 +15,11 @@ import {
     ShopModification,
 } from '@vality/domain-proto/lib/payment_processing';
 
-import { ActionType, ModificationAction } from '../../../../claim/modification-action';
 import {
+    ActionType,
     ContractModificationName,
     ContractorModificationName,
+    ModificationAction,
     ShopModificationName,
 } from '../model';
 import { filterEmptyStringValues } from './filter-empty-string-value';

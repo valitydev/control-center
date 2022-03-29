@@ -1,8 +1,7 @@
 import { ClaimStatus as UnionClaimStatus } from '@vality/domain-proto/lib/claim_management';
 
+import { ClaimStatus } from '@cc/app/api/claim-management';
 import { getUnionKey } from '@cc/utils/get-union-key';
-
-import { ClaimStatus } from '../../papi/model';
 
 export const CLAIM_STATUS_BY_UNION_CLAIM_STATUS: {
     [name in keyof UnionClaimStatus]-?: ClaimStatus;

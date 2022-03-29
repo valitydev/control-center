@@ -5,9 +5,9 @@ import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/lib
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, tap, filter } from 'rxjs/operators';
 
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { PartyService } from '../../../../../papi/party.service';
 import { PartyTarget } from '../party-target';
 import { modificationsToSelectableItems } from './modifications-to-selectable-items';
 import { SelectableItem } from './selectable-item';
@@ -26,7 +26,7 @@ export class TargetTableService {
         tap(() => this.hasError$.next()),
         switchMap(({ partyID, targetName, fromClaim }) =>
             combineLatest([
-                this.partyService.getParty(partyID).pipe(
+                this.partyManagementWithUserService.getParty(partyID).pipe(
                     map((party) => {
                         const result = [];
                         const target = this.getTarget(party, targetName);
@@ -51,7 +51,10 @@ export class TargetTableService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     inProgress$ = progress(this.getSelectableItems$, merge(this.selectableItems$, this.hasError$));
 
-    constructor(private partyService: PartyService, private snackBar: MatSnackBar) {}
+    constructor(
+        private partyManagementWithUserService: PartyManagementWithUserService,
+        private snackBar: MatSnackBar
+    ) {}
 
     getSelectableItems(partyID: string, targetName: PartyTarget, fromClaim: Modification[]) {
         this.getSelectableItems$.next({ partyID, targetName, fromClaim });

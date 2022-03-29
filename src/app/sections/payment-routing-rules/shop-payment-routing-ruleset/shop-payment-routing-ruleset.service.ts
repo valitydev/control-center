@@ -3,8 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+
 import { handleError } from '../../../../utils/operators/handle-error';
-import { PartyService } from '../../../papi/party.service';
 import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService as PaymentRoutingRulesDamselService } from '../../../thrift-services';
 
@@ -26,7 +27,7 @@ export class ShopPaymentRoutingRulesetService {
         shareReplay(1)
     );
     private party$ = this.partyID$.pipe(
-        switchMap((partyID) => this.partyService.getParty(partyID)),
+        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
         shareReplay(1)
     );
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -44,7 +45,7 @@ export class ShopPaymentRoutingRulesetService {
     constructor(
         private paymentRoutingRulesService: PaymentRoutingRulesDamselService,
         private route: ActivatedRoute,
-        private partyService: PartyService,
+        private partyManagementWithUserService: PartyManagementWithUserService,
         private errorService: ErrorService
     ) {}
 
