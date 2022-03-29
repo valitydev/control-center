@@ -1,6 +1,7 @@
 import { ClaimStatus as CMClaimStatus } from '@vality/domain-proto/lib/claim_management';
 
-import { ClaimStatus } from '../../../../papi/model';
+import { ClaimStatus } from '@cc/app/api/claim-management';
+
 import { extractClaimStatus } from '../../../../shared/utils';
 
 export const getAvailableClaimStatuses = (status: CMClaimStatus): ClaimStatus[] => {
