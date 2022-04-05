@@ -2,7 +2,7 @@
     <div gdGap="16px" gdColumns="1fr 1fr 1fr">
         <cc-details-item title="ID">{{ payoutTool.id }}</cc-details-item>
         <cc-details-item title="Created At">{{ payoutTool.created_at }}</cc-details-item>
-        <cc-details-item title="Currency">{{ payoutTool.currency }}</cc-details-item>
+        <cc-details-item title="Currency">{{ payoutTool.currency?.symbolic_code }}</cc-details-item>
     </div>
 
     <ng-container
