@@ -5,10 +5,19 @@ import { AppAuthGuardService } from '@cc/app/shared/services';
 
 @NgModule({
     imports: [
-        RouterModule.forRoot([], {
-            paramsInheritanceStrategy: 'always',
-            relativeLinkResolution: 'legacy',
-        }),
+        RouterModule.forRoot(
+            [
+                {
+                    path: '',
+                    redirectTo: '/payouts',
+                    pathMatch: 'full',
+                },
+            ],
+            {
+                paramsInheritanceStrategy: 'always',
+                relativeLinkResolution: 'legacy',
+            }
+        ),
     ],
     providers: [AppAuthGuardService],
     exports: [RouterModule],
