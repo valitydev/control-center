@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils/operators';
+import { toMinor } from '@cc/utils/to-minor';
 
 interface CreatePayoutDialogForm {
     partyId: string;
@@ -53,7 +54,7 @@ export class CreatePayoutDialogComponent {
                             party_id: value.partyId,
                         },
                         cash: {
-                            amount: value.amount as never,
+                            amount: toMinor(value.amount),
                             currency: { symbolic_code: value.currency },
                         },
                         payout_tool_id: value.payoutToolId,
