@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { debounceTime } from 'rxjs/operators';
 
 import { QueryParamsService } from '@cc/app/shared/services';
+import { isNilOrEmptyString } from '@cc/utils/is-nil-or-empty-string';
 
 import { DIALOG_CONFIG, DialogConfig } from '../../../tokens';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
@@ -45,7 +45,7 @@ export class PayoutsComponent implements OnInit {
     }
 
     search(value: PayoutsSearchForm) {
-        void this.qp.set(value);
+        void this.qp.set(omitBy(value, isNilOrEmptyString) as PayoutsSearchForm);
         this.fetchPayoutsService.search(
             omitBy(
                 {
@@ -56,13 +56,13 @@ export class PayoutsComponent implements OnInit {
                             party_id: value.partyId,
                             shop_ids: value.shops,
                         },
-                        isNil
+                        isNilOrEmptyString
                     ),
                     payout_id: value.payoutId,
                     payout_status_types: value.payoutStatusTypes,
                     payout_type: value.payoutToolType,
                 },
-                isNil
+                isNilOrEmptyString
             ) as SearchParams
         );
     }

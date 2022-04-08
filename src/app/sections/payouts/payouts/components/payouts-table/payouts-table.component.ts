@@ -62,7 +62,7 @@ export class PayoutsTableComponent {
     }
 
     canBeCancelled(status: keyof PayoutStatus) {
-        return (['paid', 'confirmed'] as (keyof PayoutStatus)[]).includes(status);
+        return (['paid', 'confirmed', 'unpaid'] as (keyof PayoutStatus)[]).includes(status);
     }
 
     cancel(id: PayoutID) {
