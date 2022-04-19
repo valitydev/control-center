@@ -27,7 +27,7 @@ import { PartyComponent } from './party.component';
                             import('../party-claims').then((m) => m.PartyClaimsModule),
                     },
                     {
-                        path: 'claim/:claimID',
+                        path: 'old-claim/:claimID',
                         loadChildren: () =>
                             import('../party-claim').then((m) => m.PartyClaimModule),
                     },
