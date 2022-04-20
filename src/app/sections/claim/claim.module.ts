@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 
+import { StatusModule } from '@cc/app/shared/components';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
@@ -32,6 +34,8 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         ThriftPipesModule,
         MatExpansionModule,
         JsonViewerModule,
+        MatCardModule,
+        StatusModule,
     ],
 })
 export class ClaimModule {}

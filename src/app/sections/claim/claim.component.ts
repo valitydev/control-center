@@ -6,6 +6,8 @@ import { shareReplay } from 'rxjs/operators';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 
+import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
+
 @Component({
     selector: 'cc-claim',
     templateUrl: './claim.component.html',
@@ -22,6 +24,7 @@ export class ClaimComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+    statusColor = CLAIM_STATUS_COLOR;
 
     constructor(
         private route: ActivatedRoute,

@@ -11,6 +11,15 @@
 
 @mixin cc-theme($theme) {
     body.#{map-get($theme, name)} {
+        $foreground: map-get($theme, foreground);
+
+        .cc-primary-text {
+            color: mat.get-color-from-palette($foreground, primary-text);
+        }
+        .cc-secondary-text {
+            color: mat.get-color-from-palette($foreground, secondary-text) !important;
+        }
+
         @include mat.all-component-themes($theme);
         @include cc-party-theme($theme);
         @include cc-components-themes($theme);

@@ -1,14 +1,14 @@
 import { ClaimStatus } from '@vality/domain-proto/lib/claim_management';
 
-import { StatusColor } from './status-color';
+import { StatusColor } from '@cc/app/styles';
 
 export const CLAIM_STATUS_COLOR: Record<keyof ClaimStatus, StatusColor> = {
     pending_acceptance: StatusColor.Success,
     accepted: StatusColor.Success,
 
-    pending: StatusColor.Warn,
-    review: StatusColor.Warn,
+    pending: StatusColor.Pending,
+    review: StatusColor.Pending,
 
-    revoked: StatusColor.Error,
-    denied: StatusColor.Error,
+    revoked: StatusColor.Warn,
+    denied: StatusColor.Warn,
 };

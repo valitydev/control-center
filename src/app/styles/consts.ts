@@ -4,3 +4,7 @@ export enum StatusColor {
     Pending = 'pending',
     Warn = 'warn',
 }
+
+export enum Color {
+    Primary = 'primary',
+}

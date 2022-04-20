@@ -6,6 +6,9 @@
     </cc-status-modification-timeline-item>
 
     <cc-timeline-item *ngSwitchDefault>
+        <cc-timeline-item-badge>
+            <mat-icon>create</mat-icon>
+        </cc-timeline-item-badge>
         <cc-timeline-item-title>
             <cc-timeline-item-header
                 [text]=""
@@ -22,8 +25,5 @@
                 <cc-json-viewer [json]="modificationA"></cc-json-viewer>
             </mat-expansion-panel>
         </cc-timeline-item-content>
-        <cc-timeline-item-badge>
-            <mat-icon>create</mat-icon>
-        </cc-timeline-item-badge>
     </cc-timeline-item>
 </ng-container>

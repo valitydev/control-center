@@ -1,4 +1,9 @@
 <cc-timeline-item>
+    <cc-timeline-item-badge [color]="claimStatusColor[statusModification.status | ccUnionKey]">
+        <mat-icon>
+            {{ claimStatusIconName[statusModification.status | ccUnionKey] }}
+        </mat-icon>
+    </cc-timeline-item-badge>
     <cc-timeline-item-title>
         <cc-timeline-item-header
             [text]="'changed claim status to ' + (statusModification.status | ccUnionKey)"
@@ -7,9 +12,13 @@
             [removed]="!!modificationUnit.removed_at"
         ></cc-timeline-item-header>
     </cc-timeline-item-title>
-    <cc-timeline-item-badge [color]="claimStatusColor[statusModification.status | ccUnionKey]">
-        <mat-icon>
-            {{ claimStatusIconName[statusModification.status | ccUnionKey] }}
-        </mat-icon>
-    </cc-timeline-item-badge>
+    <cc-timeline-item-content
+        *ngIf="statusModification.status[statusModification.status | ccUnionKey]?.reason"
+    >
+        <mat-card>
+            <mat-card-content>
+                {{ statusModification.status[statusModification.status | ccUnionKey].reason }}
+            </mat-card-content>
+        </mat-card>
+    </cc-timeline-item-content>
 </cc-timeline-item>

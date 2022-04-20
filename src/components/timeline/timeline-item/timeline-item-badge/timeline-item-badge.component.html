@@ -1,10 +1,10 @@
 <div
     [ngClass]="{
         'cc-timeline-item-badge': true,
-        primary: color === 'primary',
-        warn: color === 'warn',
-        error: color === 'error',
-        success: color === 'success'
+        primary: color === colorEnum.Primary,
+        warn: color === statusColorEnum.Pending,
+        error: color === statusColorEnum.Warn,
+        success: color === statusColorEnum.Success
     }"
 >
     <ng-content></ng-content>

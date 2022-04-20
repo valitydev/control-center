@@ -2,13 +2,21 @@
     <div gdGap="16px" gdColumns="1fr">
         <div fxLayoutAlign="space-between center">
             <h1 class="cc-display-1">
-                Claim <span class="cc-claim-id">#{{ claim.id }}</span>
+                Claim <span class="cc-secondary-text">#{{ claim.id }}</span>
             </h1>
-            <h1 class="cc-display-1">{{ claim.status | ccUnionKey | titlecase }}</h1>
+            <h1 class="cc-display-1">
+                <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
+                    claim.status | ccUnionKey | titlecase
+                }}</cc-status>
+            </h1>
         </div>
         <div fxLayoutAlign="space-between center" *ngIf="party$ | async as party">
-            <span class="cc-subheading-2"><a routerLink="/claims">Claims</a> / Claim details</span>
-            <span class="cc-subheading-2">{{ party.contact_info.email }} (#{{ party.id }})</span>
+            <span class="cc-subheading-2 cc-secondary-text"
+                ><a class="cc-secondary-text" routerLink="/claims">Claims</a> / Claim details</span
+            >
+            <span class="cc-subheading-2 cc-secondary-text"
+                >{{ party.contact_info.email }} (#{{ party.id }})</span
+            >
         </div>
     </div>
     <div gdGap="24px" gdColumns="1fr">

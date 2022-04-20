@@ -7,8 +7,8 @@ import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { StatusColor } from '@cc/app/shared/components/status/types/status-color';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { StatusColor } from '@cc/app/styles';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { DIALOG_CONFIG, DialogConfig } from '../../../../../tokens';
