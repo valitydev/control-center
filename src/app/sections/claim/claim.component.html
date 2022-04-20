@@ -6,22 +6,33 @@
             </h1>
             <h1 class="cc-display-1">
                 <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
-                    claim.status | ccUnionKey | titlecase
+                    claim.status | ccUnionKey | keyTitle | titlecase
                 }}</cc-status>
             </h1>
         </div>
         <div fxLayoutAlign="space-between center" *ngIf="party$ | async as party">
-            <span class="cc-subheading-2 cc-secondary-text"
-                ><a class="cc-secondary-text" routerLink="/claims">Claims</a> / Claim details</span
-            >
-            <span class="cc-subheading-2 cc-secondary-text"
-                >{{ party.contact_info.email }} (#{{ party.id }})</span
-            >
+            <span class="cc-subheading-2 cc-secondary-text">
+                <a class="cc-secondary-text" routerLink="/claims">Claims</a> / Claim details
+            </span>
+            <span class="cc-subheading-2 cc-secondary-text">
+                {{ party.contact_info.email }} (#{{ party.id }})
+            </span>
         </div>
     </div>
     <div gdGap="24px" gdColumns="1fr">
         <h2 class="cc-headline">Changeset</h2>
         <cc-timeline>
+            <cc-timeline-item>
+                <cc-timeline-item-badge>
+                    <mat-icon>create</mat-icon>
+                </cc-timeline-item-badge>
+                <cc-timeline-item-title>
+                    <cc-timeline-item-header
+                        text="Claim created"
+                        [createdAt]="claim.created_at"
+                    ></cc-timeline-item-header>
+                </cc-timeline-item-title>
+            </cc-timeline-item>
             <cc-modification-unit-timeline-item
                 *ngFor="let modificationUnit of claim.changeset"
                 [modificationUnit]="modificationUnit"
