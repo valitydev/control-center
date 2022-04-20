@@ -1,0 +1,29 @@
+<ng-container [ngSwitch]="group">
+    <cc-status-modification-timeline-item
+        *ngSwitchCase="'status_modification'"
+        [modificationUnit]="modificationUnit"
+    >
+    </cc-status-modification-timeline-item>
+
+    <cc-timeline-item *ngSwitchDefault>
+        <cc-timeline-item-title>
+            <cc-timeline-item-header
+                [text]=""
+                [username]="modificationUnit.user_info.username"
+                [createdAt]="modificationUnit.changed_at"
+                [removed]="!!modificationUnit.removed_at"
+            ></cc-timeline-item-header>
+        </cc-timeline-item-title>
+        <cc-timeline-item-content>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title> {{ group }} {{ type }} </mat-panel-title>
+                </mat-expansion-panel-header>
+                <cc-json-viewer [json]="modificationA"></cc-json-viewer>
+            </mat-expansion-panel>
+        </cc-timeline-item-content>
+        <cc-timeline-item-badge>
+            <mat-icon>create</mat-icon>
+        </cc-timeline-item-badge>
+    </cc-timeline-item>
+</ng-container>

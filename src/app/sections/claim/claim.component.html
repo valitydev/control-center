@@ -1,1 +1,23 @@
-<div></div>
+<div class="content" gdGap="32px" gdColumns="1fr" *ngIf="claim$ | async as claim">
+    <div gdGap="16px" gdColumns="1fr">
+        <div fxLayoutAlign="space-between center">
+            <h1 class="cc-display-1">
+                Claim <span class="cc-claim-id">#{{ claim.id }}</span>
+            </h1>
+            <h1 class="cc-display-1">{{ claim.status | ccUnionKey | titlecase }}</h1>
+        </div>
+        <div fxLayoutAlign="space-between center" *ngIf="party$ | async as party">
+            <span class="cc-subheading-2"><a routerLink="/claims">Claims</a> / Claim details</span>
+            <span class="cc-subheading-2">{{ party.contact_info.email }} (#{{ party.id }})</span>
+        </div>
+    </div>
+    <div gdGap="24px" gdColumns="1fr">
+        <h2 class="cc-headline">Changeset</h2>
+        <cc-timeline>
+            <cc-modification-unit-timeline-item
+                *ngFor="let modificationUnit of claim.changeset"
+                [modificationUnit]="modificationUnit"
+            ></cc-modification-unit-timeline-item>
+        </cc-timeline>
+    </div>
+</div>
