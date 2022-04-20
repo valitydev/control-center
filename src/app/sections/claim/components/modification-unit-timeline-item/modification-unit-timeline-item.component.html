@@ -11,18 +11,20 @@
         </cc-timeline-item-badge>
         <cc-timeline-item-title>
             <cc-timeline-item-header
-                [text]=""
+                [text]="'added ' + (group | keyTitle) + ' - ' + (type | keyTitle)"
                 [username]="modificationUnit.user_info.username"
                 [createdAt]="modificationUnit.created_at"
                 [removed]="!!modificationUnit.removed_at"
             ></cc-timeline-item-header>
         </cc-timeline-item-title>
-        <cc-timeline-item-content>
+        <cc-timeline-item-content *ngIf="hasModificationContent">
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <mat-panel-title> {{ group }} {{ type }} </mat-panel-title>
+                    <mat-panel-title>
+                        {{ group | keyTitle | titlecase }} / {{ type | keyTitle | titlecase }}
+                    </mat-panel-title>
                 </mat-expansion-panel-header>
-                <cc-json-viewer [json]="modificationA"></cc-json-viewer>
+                <cc-json-viewer [json]="internalModification"></cc-json-viewer>
             </mat-expansion-panel>
         </cc-timeline-item-content>
     </cc-timeline-item>

@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'keyTitle',
 })
 export class KeyTitlePipe implements PipeTransform {
-    transform(value: string): string {
-        return value.replaceAll('_', ' ');
+    transform(value: unknown): string {
+        return String(value).replaceAll('_', ' ');
     }
 }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import isEmpty from 'lodash-es/isEmpty';
 
 import { getUnionKey } from '@cc/utils/get-union-key';
 
@@ -24,13 +25,13 @@ export class ModificationUnitTimelineItemComponent {
         );
     }
 
-    get modificationA() {
-        return this.modificationUnit.modification[this.name][this.group] as any;
-    }
-
-    get modification() {
+    get internalModification() {
         return (this.modificationUnit.modification[this.name][this.group] as any).modification[
             this.type
         ];
+    }
+
+    get hasModificationContent() {
+        return !isEmpty(this.internalModification);
     }
 }

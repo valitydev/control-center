@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import isEmpty from 'lodash-es/isEmpty';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 
@@ -14,8 +15,9 @@ export class JsonViewerComponent {
 
     get inline() {
         return Object.entries(this.json)
-            .map(([k, v]) => this.getInline(k, v))
-            .filter(([, v]) => !isNil(v))
+            .map(([k, v]) => this.getInline([k], v))
+            .filter((v) => !isNil(v))
+            .map(([k, v]) => [k.join(' / '), v])
             .sort(([a], [b]) => a.localeCompare(b));
     }
 
@@ -50,20 +52,20 @@ export class JsonViewerComponent {
         }
     }
 
-    private getInline(key: string, value: any) {
+    isEmpty(v) {
+        return isEmpty(v);
+    }
+
+    private getInline(keys: string[], value: any) {
+        if (isNil(value)) {
+            return null;
+        }
         if (isObject(value)) {
             const entries = Object.entries(value).filter(([, v]) => !isNil(v));
             if (entries.length === 1) {
-                return this.getInline(key + ' / ' + entries[0][0], entries[0][1]);
+                return this.getInline([...keys, entries[0][0]], entries[0][1]);
             }
         }
-        return [
-            key
-                .replaceAll('_', ' ')
-                .split(' ')
-                .map((v) => v.charAt(0).toUpperCase() + v.slice(1))
-                .join(' '),
-            value,
-        ];
+        return [keys, value];
     }
 }
