@@ -18,6 +18,9 @@ import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
 
 @Injectable()
+/**
+ * @deprecated
+ */
 export class MessagesService extends ThriftService {
     constructor(zone: NgZone, keycloakTokenInfoService: KeycloakTokenInfoService) {
         super(zone, keycloakTokenInfoService, '/v1/messages', MessageServiceClient);

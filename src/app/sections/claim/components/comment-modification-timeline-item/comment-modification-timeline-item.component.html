@@ -1,0 +1,20 @@
+<cc-timeline-item>
+    <cc-timeline-item-badge>
+        <mat-icon>{{ iconMap[modification.modification | ccUnionKey] }}</mat-icon>
+    </cc-timeline-item-badge>
+    <cc-timeline-item-title>
+        <cc-timeline-item-header
+            [text]="messageMap[modification.modification | ccUnionKey] + ' comment'"
+            [username]="modificationUnit.user_info.username"
+            [createdAt]="modificationUnit.created_at"
+            [removed]="!!modificationUnit.removed_at"
+        ></cc-timeline-item-header>
+    </cc-timeline-item-title>
+    <cc-timeline-item-content *ngIf="messages$ | async as messages">
+        <mat-card>
+            <mat-card-content>
+                {{ messages[0].text }}
+            </mat-card-content>
+        </mat-card>
+    </cc-timeline-item-content>
+</cc-timeline-item>

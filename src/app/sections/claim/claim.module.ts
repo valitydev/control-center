@@ -14,6 +14,7 @@ import { TimelineModule } from '@cc/components/timeline';
 import { TimelineComponentsModule } from '../party-claim/changeset/timeline-components';
 import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';
+import { CommentModificationTimelineItemComponent } from './components/comment-modification-timeline-item/comment-modification-timeline-item.component';
 import { ModificationUnitTimelineItemComponent } from './components/modification-unit-timeline-item/modification-unit-timeline-item.component';
 import { StatusModificationTimelineItemComponent } from './components/status-modification-timeline-item/status-modification-timeline-item.component';
 
@@ -22,6 +23,7 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         ClaimComponent,
         ModificationUnitTimelineItemComponent,
         StatusModificationTimelineItemComponent,
+        CommentModificationTimelineItemComponent,
     ],
     imports: [
         CommonModule,

@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { ClaimStatus, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 
 import { getUnionKey } from '@cc/utils';
 
 import { CLAIM_STATUS_COLOR } from '../../types/claim-status-color';
-import { CLAIM_STATUS_ICON_NAME } from '../../types/claim-status-icon-name';
 
 @Component({
     selector: 'cc-status-modification-timeline-item',
@@ -27,5 +26,12 @@ export class StatusModificationTimelineItemComponent {
     }
 
     claimStatusColor = CLAIM_STATUS_COLOR;
-    claimStatusIconName = CLAIM_STATUS_ICON_NAME;
+    claimStatusIconName: Record<keyof ClaimStatus, string> = {
+        pending_acceptance: 'check',
+        accepted: 'check',
+        pending: 'double_arrow',
+        review: 'double_arrow',
+        revoked: 'block',
+        denied: 'block',
+    };
 }

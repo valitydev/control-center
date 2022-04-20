@@ -4,6 +4,11 @@
         [modificationUnit]="modificationUnit"
     >
     </cc-status-modification-timeline-item>
+    <cc-comment-modification-timeline-item
+        *ngSwitchCase="'comment_modification'"
+        [modificationUnit]="modificationUnit"
+    >
+    </cc-comment-modification-timeline-item>
 
     <cc-timeline-item *ngSwitchDefault>
         <cc-timeline-item-badge>
@@ -21,7 +26,7 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{ group | keyTitle | titlecase }} / {{ type | keyTitle | titlecase }}
+                        {{ group | keyTitle | titlecase }}
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <cc-json-viewer [json]="internalModification"></cc-json-viewer>
