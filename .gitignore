@@ -45,3 +45,8 @@ Thumbs.db
 
 # Angular
 .angular
+
+# Env and configs
+.env
+/src/assets/appConfig.json
+/src/assets/authConfig.json
