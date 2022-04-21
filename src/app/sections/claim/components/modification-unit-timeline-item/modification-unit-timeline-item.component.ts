@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 
 import { getModificationNameParts } from '@cc/app/sections/claim/components/modification-unit-timeline-item/utils/get-modification-name';
@@ -14,6 +15,7 @@ import { getUnionValue } from '@cc/utils/get-union-key';
 export class ModificationUnitTimelineItemComponent {
     @Input() modificationUnit: ModificationUnit;
 
+    @Input() @coerceBoolean isLoading: boolean;
     @Input() title?: string;
     @Input() icon?: string;
     @Input() color?: StatusColor | Color;

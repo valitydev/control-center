@@ -11,6 +11,7 @@
         ></cc-timeline-item-header>
     </cc-timeline-item-title>
     <cc-timeline-item-content *ngIf="hasModificationContent">
+        <cc-timeline-item-loading *ngIf="isLoading"></cc-timeline-item-loading>
         <div #content><ng-content></ng-content></div>
         <mat-expansion-panel *ngIf="!content.innerHTML.trim().length">
             <mat-expansion-panel-header>
