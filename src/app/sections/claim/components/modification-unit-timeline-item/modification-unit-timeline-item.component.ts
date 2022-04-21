@@ -15,7 +15,7 @@ import { getUnionValue } from '@cc/utils/get-union-key';
 export class ModificationUnitTimelineItemComponent {
     @Input() modificationUnit: ModificationUnit;
 
-    @Input() @coerceBoolean isLoading: boolean;
+    @Input() @coerceBoolean isLoading: boolean = false;
     @Input() title?: string;
     @Input() icon?: string;
     @Input() color?: StatusColor | Color;

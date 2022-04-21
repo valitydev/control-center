@@ -11,13 +11,15 @@
         ></cc-timeline-item-header>
     </cc-timeline-item-title>
     <cc-timeline-item-content *ngIf="hasModificationContent">
-        <cc-timeline-item-loading *ngIf="isLoading"></cc-timeline-item-loading>
-        <div #content><ng-content></ng-content></div>
-        <mat-expansion-panel *ngIf="!content.innerHTML.trim().length">
-            <mat-expansion-panel-header>
-                {{ name | keyTitle | titlecase }}
-            </mat-expansion-panel-header>
-            <cc-json-viewer [json]="modification" [patches]="patches"></cc-json-viewer>
-        </mat-expansion-panel>
+        <cc-timeline-item-loading *ngIf="isLoading; else loaded"></cc-timeline-item-loading>
+        <ng-template #loaded>
+            <div #content><ng-content></ng-content></div>
+            <mat-expansion-panel *ngIf="!content.innerHTML.trim().length">
+                <mat-expansion-panel-header>
+                    {{ name | keyTitle | titlecase }}
+                </mat-expansion-panel-header>
+                <cc-json-viewer [json]="modification" [patches]="patches"></cc-json-viewer>
+            </mat-expansion-panel>
+        </ng-template>
     </cc-timeline-item-content>
 </cc-timeline-item>
