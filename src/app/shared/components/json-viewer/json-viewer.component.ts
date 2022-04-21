@@ -1,7 +1,20 @@
 import { Component, Input } from '@angular/core';
 import isEmpty from 'lodash-es/isEmpty';
+import isEqual from 'lodash-es/isEqual';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
+
+export interface Patch {
+    path: string[];
+    value?: unknown;
+    key?: string;
+    tooltip?: string;
+    // link: string;
+}
+
+interface Item extends Patch {
+    isPatched: boolean;
+}
 
 @Component({
     selector: 'cc-json-viewer',
@@ -9,38 +22,39 @@ import isObject from 'lodash-es/isObject';
     styleUrls: ['./json-viewer.component.scss'],
 })
 export class JsonViewerComponent {
-    @Input() json: any;
-    @Input() nesting = 0;
-    @Input() parentsCount = 0;
+    @Input() json: unknown;
+    @Input() path: string[] = [];
 
-    get inline() {
+    @Input() patches: Patch[] = [];
+
+    get inline(): Item[] {
         return Object.entries(this.json)
             .map(([k, v]) => this.getInline([k], v))
             .filter((v) => !isNil(v))
-            .map(([k, v]) => [k.join(' / '), v])
-            .sort(([a], [b]) => a.localeCompare(b));
+            .map(([path, value]): Item => {
+                const patch = this.patches?.find((p) => isEqual(p.path, path));
+                return {
+                    isPatched: !!patch,
+                    key: path.join(' / '),
+                    path,
+                    value,
+                    tooltip: patch ? JSON.stringify(value, null, 2) : undefined,
+                    ...(patch || {}),
+                };
+            })
+            .sort(({ key: a }, { key: b }) => a.localeCompare(b));
     }
 
     get objects() {
-        return this.inline
-            .filter(([, v]) => isObject(v))
-            .map(([k, v]) => ({
-                key: k,
-                value: v,
-            }));
+        return this.inline.filter(({ value }) => isObject(value));
     }
 
     get items() {
-        return this.inline
-            .filter(([, v]) => !isObject(v))
-            .map(([k, v]) => ({
-                key: k,
-                value: v,
-            }));
+        return this.inline.filter(({ value }) => !isObject(value));
     }
 
     get className() {
-        switch (this.nesting) {
+        switch (this.path.length) {
             case 0:
                 return 'cc-title';
             case 1:
@@ -56,16 +70,20 @@ export class JsonViewerComponent {
         return isEmpty(v);
     }
 
-    private getInline(keys: string[], value: any) {
+    trackByFn(idx: number, item: Item) {
+        return item.path.join(';');
+    }
+
+    private getInline(path: string[], value: unknown): [string[], unknown] {
         if (isNil(value)) {
             return null;
         }
         if (isObject(value)) {
             const entries = Object.entries(value).filter(([, v]) => !isNil(v));
             if (entries.length === 1) {
-                return this.getInline([...keys, entries[0][0]], entries[0][1]);
+                return this.getInline([...path, entries[0][0]], entries[0][1]);
             }
         }
-        return [keys, value];
+        return [path, value];
     }
 }

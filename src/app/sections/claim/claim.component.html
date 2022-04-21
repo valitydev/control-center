@@ -33,10 +33,48 @@
                     ></cc-timeline-item-header>
                 </cc-timeline-item-title>
             </cc-timeline-item>
-            <cc-modification-unit-timeline-item
+            <ng-container
                 *ngFor="let modificationUnit of claim.changeset"
-                [modificationUnit]="modificationUnit"
-            ></cc-modification-unit-timeline-item>
+                [ngSwitch]="modificationUnit.modification | ccUnionKey"
+            >
+                <ng-container
+                    *ngSwitchCase="'party_modification'"
+                    [ngSwitch]="modificationUnit.modification | ccUnionValue | ccUnionKey"
+                >
+                    <cc-shop-modification-timeline-item
+                        *ngSwitchCase="'shop_modification'"
+                        [modificationUnit]="modificationUnit"
+                    >
+                    </cc-shop-modification-timeline-item>
+                    <cc-modification-unit-timeline-item
+                        *ngSwitchDefault
+                        [modificationUnit]="modificationUnit"
+                    ></cc-modification-unit-timeline-item>
+                </ng-container>
+                <ng-container
+                    *ngSwitchCase="'claim_modification'"
+                    [ngSwitch]="modificationUnit.modification | ccUnionValue | ccUnionKey"
+                >
+                    <cc-status-modification-timeline-item
+                        *ngSwitchCase="'status_modification'"
+                        [modificationUnit]="modificationUnit"
+                    >
+                    </cc-status-modification-timeline-item>
+                    <cc-comment-modification-timeline-item
+                        *ngSwitchCase="'comment_modification'"
+                        [modificationUnit]="modificationUnit"
+                    >
+                    </cc-comment-modification-timeline-item>
+                    <cc-modification-unit-timeline-item
+                        *ngSwitchDefault
+                        [modificationUnit]="modificationUnit"
+                    ></cc-modification-unit-timeline-item>
+                </ng-container>
+                <cc-modification-unit-timeline-item
+                    *ngSwitchDefault
+                    [modificationUnit]="modificationUnit"
+                ></cc-modification-unit-timeline-item>
+            </ng-container>
         </cc-timeline>
     </div>
 </div>

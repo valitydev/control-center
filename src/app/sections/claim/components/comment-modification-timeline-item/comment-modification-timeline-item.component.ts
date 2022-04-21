@@ -25,12 +25,12 @@ export class CommentModificationTimelineItemComponent implements OnChanges {
         deletion: 'clear',
     };
 
-    get modification() {
+    get commentModification() {
         return this.modificationUnit.modification.claim_modification.comment_modification;
     }
 
     private conversations$ = defer(() => this.modificationUnit$).pipe(
-        switchMap(() => this.messageService.GetConversations([this.modification.id], {})),
+        switchMap(() => this.messageService.GetConversations([this.commentModification.id], {})),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     private modificationUnit$ = new ReplaySubject<ModificationUnit>(1);

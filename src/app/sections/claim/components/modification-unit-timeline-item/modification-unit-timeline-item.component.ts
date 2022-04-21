@@ -2,7 +2,10 @@ import { Component, Input } from '@angular/core';
 import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import isEmpty from 'lodash-es/isEmpty';
 
-import { getUnionKey } from '@cc/utils/get-union-key';
+import { getModificationNameParts } from '@cc/app/sections/claim/components/modification-unit-timeline-item/utils/get-modification-name';
+import { Patch } from '@cc/app/shared/components/json-viewer/json-viewer.component';
+import { Color, StatusColor } from '@cc/app/styles';
+import { getUnionValue } from '@cc/utils/get-union-key';
 
 @Component({
     selector: 'cc-modification-unit-timeline-item',
@@ -11,27 +14,22 @@ import { getUnionKey } from '@cc/utils/get-union-key';
 export class ModificationUnitTimelineItemComponent {
     @Input() modificationUnit: ModificationUnit;
 
+    @Input() title?: string;
+    @Input() icon?: string;
+    @Input() color?: StatusColor | Color;
+    @Input() patches?: Patch[];
+
     get name() {
-        return getUnionKey(this.modificationUnit.modification);
-    }
-
-    get group() {
-        return getUnionKey(this.modificationUnit.modification[this.name]);
-    }
-
-    get type() {
-        return getUnionKey(
-            (this.modificationUnit.modification[this.name][this.group] as any).modification
+        return getModificationNameParts(getUnionValue(this.modificationUnit.modification)).join(
+            ': '
         );
     }
 
-    get internalModification() {
-        return (this.modificationUnit.modification[this.name][this.group] as any).modification[
-            this.type
-        ];
+    get modification() {
+        return getUnionValue(getUnionValue(this.modificationUnit?.modification));
     }
 
     get hasModificationContent() {
-        return !isEmpty(this.internalModification);
+        return !isEmpty(this.modification);
     }
 }

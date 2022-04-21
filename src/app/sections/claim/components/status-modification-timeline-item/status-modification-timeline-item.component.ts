@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ClaimStatus, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 
-import { getUnionKey } from '@cc/utils';
+import { getUnionKey, getUnionValue } from '@cc/utils';
 
 import { CLAIM_STATUS_COLOR } from '../../types/claim-status-color';
 
@@ -21,8 +21,8 @@ export class StatusModificationTimelineItemComponent {
     }
 
     get reason() {
-        return (this.statusModification.status[this.status] as Record<'reason', string | undefined>)
-            ?.reason;
+        const statusValue = getUnionValue(this.statusModification.status);
+        return 'reason' in statusValue ? statusValue.reason : null;
     }
 
     claimStatusColor = CLAIM_STATUS_COLOR;
