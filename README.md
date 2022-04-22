@@ -35,6 +35,8 @@
 
 ## Usage
 
-```sh
-npm start
-```
+1. Start
+   ```sh
+   npm start
+   ```
+2. Open [localhost:4200](http://localhost:4200/)
