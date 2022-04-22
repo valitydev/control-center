@@ -1,16 +1,14 @@
 import { Component, Input } from '@angular/core';
-import isEmpty from 'lodash-es/isEmpty';
 import isEqual from 'lodash-es/isEqual';
-import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 
-import { Item } from './types/item';
+import { InlineItem } from './types/inline-item';
 import { Patch } from './types/patch';
+import { getInline } from './utils/get-inline';
 
 @Component({
     selector: 'cc-json-viewer',
     templateUrl: './json-viewer.component.html',
-    styleUrls: ['./json-viewer.component.scss'],
 })
 export class JsonViewerComponent {
     @Input() json: unknown;
@@ -18,21 +16,18 @@ export class JsonViewerComponent {
 
     @Input() patches: Patch[] = [];
 
-    get inline(): Item[] {
+    get inline(): InlineItem[] {
         return Object.entries(this.json)
-            .map(([k, v]) => this.getInline([k], v))
-            .filter((v) => !isNil(v))
-            .map(([path, value]): Item => {
-                const patch = this.patches?.find((p) => isEqual(p.path, path));
-                return {
-                    isPatched: !!patch,
-                    key: path.join(' / '),
-                    path,
-                    value,
-                    tooltip: patch ? JSON.stringify(value, null, 2) : undefined,
-                    ...(patch || {}),
-                };
-            })
+            .map(([k, v]) => getInline([k], v))
+            .filter(Boolean)
+            .map(
+                ([path, value]): InlineItem =>
+                    new InlineItem(
+                        path,
+                        value,
+                        this.patches?.find((p) => isEqual(p.path, path))
+                    )
+            )
             .sort(({ key: a }, { key: b }) => a.localeCompare(b));
     }
 
@@ -57,24 +52,7 @@ export class JsonViewerComponent {
         }
     }
 
-    isEmpty(v) {
-        return isEmpty(v);
-    }
-
-    trackByFn(idx: number, item: Item) {
+    trackByFn(idx: number, item: InlineItem) {
         return item.path.join(';');
-    }
-
-    private getInline(path: string[], value: unknown): [string[], unknown] {
-        if (isNil(value)) {
-            return null;
-        }
-        if (isObject(value)) {
-            const entries = Object.entries(value).filter(([, v]) => !isNil(v));
-            if (entries.length === 1) {
-                return this.getInline([...path, entries[0][0]], entries[0][1]);
-            }
-        }
-        return [path, value];
     }
 }
