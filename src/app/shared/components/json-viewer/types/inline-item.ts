@@ -4,11 +4,15 @@ import { Patch } from '../types/patch';
 
 export class InlineItem {
     get key() {
-        return this.patch.key ?? this.path.join(' / ');
+        return this.patch?.key ?? this.path.join(' / ');
+    }
+
+    get value() {
+        return this.patch?.value ?? this.sourceValue;
     }
 
     get tooltip() {
-        return this.isPatched ? JSON.stringify(this.value, null, 2) : undefined;
+        return this.isPatched ? JSON.stringify(this.sourceValue, null, 2) : undefined;
     }
 
     get isPatched() {
@@ -16,11 +20,10 @@ export class InlineItem {
     }
 
     get isEmpty() {
-        return isEmpty(this.value);
+        return isEmpty(this.sourceValue);
     }
 
-    constructor(public path: string[], public value: unknown, private patch: Patch) {
-        this.path = this.patch.path ?? this.path;
-        this.value = this.patch.value ?? this.value;
+    constructor(public path: string[], public sourceValue: unknown, private patch?: Patch) {
+        this.path = this.patch?.path ?? this.path;
     }
 }
