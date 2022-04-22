@@ -14,8 +14,7 @@
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier:fix": "npm run prettier-preset -- --write",
-    "fix": "npm run lint-fix; npm run prettier:fix",
-    "parallel-cmd": "concurrently --kill-others-on-fail --prefix-colors magenta,green,red,yellow,blue"
+    "fix": "npm run lint-fix; npm run prettier:fix"
   },
   "dependencies": {
     "@angular/animations": "~13.1.2",
@@ -85,7 +84,6 @@
     "@types/uuid": "~3.4.3",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "~5.8.0",
-    "concurrently": "^6.5.1",
     "del": "^5.1.0",
     "dotenv": "16.0.0",
     "eslint": "^8.5.0",
