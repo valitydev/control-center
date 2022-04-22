@@ -4,17 +4,8 @@ import isEqual from 'lodash-es/isEqual';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 
-export interface Patch {
-    path: string[];
-    value?: unknown;
-    key?: string;
-    tooltip?: string;
-    // link: string;
-}
-
-interface Item extends Patch {
-    isPatched: boolean;
-}
+import { Item } from './types/item';
+import { Patch } from './types/patch';
 
 @Component({
     selector: 'cc-json-viewer',

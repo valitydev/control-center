@@ -3,10 +3,11 @@ import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 
-import { getModificationNameParts } from '@cc/app/sections/claim/components/modification-unit-timeline-item/utils/get-modification-name';
-import { Patch } from '@cc/app/shared/components/json-viewer/json-viewer.component';
+import { Patch } from '@cc/app/shared/components/json-viewer';
 import { Color, StatusColor } from '@cc/app/styles';
 import { getUnionValue } from '@cc/utils/get-union-key';
+
+import { getModificationNameParts } from './utils/get-modification-name';
 
 @Component({
     selector: 'cc-modification-unit-timeline-item',
