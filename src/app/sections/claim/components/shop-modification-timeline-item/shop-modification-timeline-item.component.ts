@@ -1,10 +1,12 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
-import { combineLatest, defer, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Category } from '@vality/dominant-cache-proto';
+import { combineLatest, defer, of, ReplaySubject } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
 import { ComponentChanges } from '@cc/app/shared';
+import { NotificationService } from '@cc/app/shared/services/notification';
 import { getUnionKey } from '@cc/utils';
 
 @Component({
@@ -16,7 +18,13 @@ export class ShopModificationTimelineItemComponent implements OnChanges {
 
     extended$ = combineLatest([
         defer(() => this.modificationUnit$),
-        this.dominantCacheService.GetCategories(),
+        this.dominantCacheService.GetCategories().pipe(
+            catchError((err) => {
+                this.notificationService.error('Categories were not loaded');
+                console.error(err);
+                return of([] as Category[]);
+            })
+        ),
     ]).pipe(
         map(([modificationUnit, categories]) => {
             const modification =
@@ -36,7 +44,10 @@ export class ShopModificationTimelineItemComponent implements OnChanges {
 
     private modificationUnit$ = new ReplaySubject<ModificationUnit>(1);
 
-    constructor(private dominantCacheService: DominantCacheService) {}
+    constructor(
+        private dominantCacheService: DominantCacheService,
+        private notificationService: NotificationService
+    ) {}
 
     ngOnChanges({ modificationUnit }: ComponentChanges<ShopModificationTimelineItemComponent>) {
         if (modificationUnit) {

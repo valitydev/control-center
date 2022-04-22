@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommentModification, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
-import { defer, ReplaySubject, switchMap, BehaviorSubject } from 'rxjs';
-import { pluck, shareReplay } from 'rxjs/operators';
+import { defer, ReplaySubject, switchMap, BehaviorSubject, EMPTY } from 'rxjs';
+import { catchError, pluck, shareReplay } from 'rxjs/operators';
 
 import { MessageService } from '@cc/app/api/messages';
 import { ComponentChanges } from '@cc/app/shared';
+import { NotificationService } from '@cc/app/shared/services/notification';
 import { inProgressFrom, progressTo } from '@cc/utils/operators';
 
 @Component({
@@ -34,16 +35,24 @@ export class CommentModificationTimelineItemComponent implements OnChanges {
 
     private conversations$ = defer(() => this.modificationUnit$).pipe(
         switchMap(() =>
-            this.messageService
-                .GetConversations([this.commentModification.id], {})
-                .pipe(progressTo(this.progress$))
+            this.messageService.GetConversations([this.commentModification.id], {}).pipe(
+                catchError((err) => {
+                    this.notificationService.error('Conversations were not loaded');
+                    console.error(err);
+                    return EMPTY;
+                }),
+                progressTo(this.progress$)
+            )
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     private modificationUnit$ = new ReplaySubject<ModificationUnit>(1);
     private progress$ = new BehaviorSubject(0);
 
-    constructor(private messageService: MessageService) {}
+    constructor(
+        private messageService: MessageService,
+        private notificationService: NotificationService
+    ) {}
 
     ngOnChanges({ modificationUnit }: ComponentChanges<CommentModificationTimelineItemComponent>) {
         if (modificationUnit) {

@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 
 import { ShopModificationTimelineItemComponent } from '@cc/app/sections/claim/components/shop-modification-timeline-item/shop-modification-timeline-item.component';
@@ -42,6 +43,7 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         MatCardModule,
         StatusModule,
         MatDividerModule,
+        MatProgressSpinnerModule,
     ],
 })
 export class ClaimModule {}
