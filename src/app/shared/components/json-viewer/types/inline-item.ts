@@ -1,4 +1,6 @@
 import isEmpty from 'lodash-es/isEmpty';
+import isNil from 'lodash-es/isNil';
+import isObject from 'lodash-es/isObject';
 
 import { Patch } from '../types/patch';
 
@@ -20,7 +22,7 @@ export class InlineItem {
     }
 
     get isEmpty() {
-        return isEmpty(this.sourceValue);
+        return isObject(this.sourceValue) ? isEmpty(this.sourceValue) : isNil(this.sourceValue);
     }
 
     constructor(public path: string[], public sourceValue: unknown, private patch?: Patch) {

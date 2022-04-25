@@ -5,7 +5,7 @@
             [title]="item.key | keyTitle | titlecase"
         >
             <span
-                style="cursor: default"
+                *ngIf="!!item.value"
                 [matTooltip]="item.tooltip"
                 fxLayoutGap="4px"
                 fxLayoutAlign=" center"
