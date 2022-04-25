@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const THRIFT_PROXY_CONFIG = {
     context: [
         '/v1',
@@ -8,7 +10,7 @@ const THRIFT_PROXY_CONFIG = {
         '/deanonimus',
         '/payout/management',
     ],
-    target: '',
+    target: process.env.PROXY_TARGET,
     secure: false,
     logLevel: 'debug',
     changeOrigin: true,

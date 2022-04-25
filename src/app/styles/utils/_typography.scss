@@ -111,25 +111,22 @@
         @include mat.typography-level($config, caption);
     }
 
-    .cc-display-4,
-    #{$selector} .cc-display-4 {
+    .cc-display-4 {
         @include mat.typography-level($config, display-4);
         margin: 0;
     }
 
-    #{$selector} .cc-display-3 {
+    .cc-display-3 {
         @include mat.typography-level($config, display-3);
         margin: 0;
     }
 
-    .cc-display-2,
-    #{$selector} .cc-display-2 {
+    .cc-display-2 {
         @include mat.typography-level($config, display-2);
         margin: 0;
     }
 
-    .cc-display-1,
-    #{$selector} .cc-display-1 {
+    .cc-display-1 {
         @include mat.typography-level($config, display-1);
         margin: 0;
     }

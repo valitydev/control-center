@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { StatusColor } from '../../types/status-color';
+import { StatusColor } from '@cc/app/styles';
 
 @Pipe({
     name: 'toDepositColor',

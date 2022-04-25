@@ -1,7 +1,0 @@
-{
-    "realm": "internal",
-    "auth-server-url": "",
-    "ssl-required": "external",
-    "resource": "control-center",
-    "public-client": true
-}

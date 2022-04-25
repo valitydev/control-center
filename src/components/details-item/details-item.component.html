@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="8px">
     <div class="cc-details-item-title mat-caption">{{ title }}</div>
     <div class="mat-body-1">
-        <div #content><ng-content></ng-content></div>
+        <div #content class="cc-details-item-content"><ng-content></ng-content></div>
         <div class="cc-details-item-content-empty" *ngIf="!content.innerHTML.length">-</div>
     </div>
 </div>

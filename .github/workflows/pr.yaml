@@ -27,7 +27,7 @@ jobs:
                   path: ./*
                   key: ${{ github.sha }}
             - name: Check
-              run: npm run lint-cmd -- --quiet
+              run: npm run lint-cmd
     prettier:
         name: Prettier
         runs-on: ubuntu-latest

@@ -1,0 +1,97 @@
+<div class="content" gdGap="32px" gdColumns="1fr">
+    <div gdGap="16px" gdColumns="1fr">
+        <div fxLayoutAlign="space-between center">
+            <h1 class="cc-display-1">
+                Claim
+                <span class="cc-secondary-text" *ngIf="claim$ | async as claim"
+                    >#{{ claim.id }}</span
+                >
+            </h1>
+            <h1 class="cc-display-1" *ngIf="claim$ | async as claim">
+                <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
+                    claim.status | ccUnionKey | keyTitle | titlecase
+                }}</cc-status>
+            </h1>
+        </div>
+        <div fxLayoutAlign="space-between center" *ngIf="party$ | async as party">
+            <span class="cc-subheading-2 cc-secondary-text">
+                <a class="cc-secondary-text" routerLink="/claims">Claims</a> / Claim details
+            </span>
+            <span class="cc-subheading-2 cc-secondary-text">
+                {{ party.contact_info.email }} (#{{ party.id }})
+            </span>
+        </div>
+    </div>
+    <div gdGap="24px" gdColumns="1fr" *ngIf="claim$ | async as claim">
+        <h2 class="cc-headline">Changeset</h2>
+        <div *ngIf="isLoading$ | async; else timeline" fxLayoutAlign="center">
+            <mat-progress-spinner
+                color="primary"
+                mode="indeterminate"
+                diameter="128"
+            ></mat-progress-spinner>
+        </div>
+        <ng-template #timeline>
+            <cc-timeline>
+                <cc-timeline-item>
+                    <cc-timeline-item-badge>
+                        <mat-icon>create</mat-icon>
+                    </cc-timeline-item-badge>
+                    <cc-timeline-item-title>
+                        <cc-timeline-item-header
+                            text="Claim created"
+                            [createdAt]="claim.created_at"
+                        ></cc-timeline-item-header>
+                    </cc-timeline-item-title>
+                </cc-timeline-item>
+                <ng-container
+                    *ngFor="let modificationUnit of claim.changeset"
+                    [ngSwitch]="modificationUnit.modification | ccUnionKey"
+                >
+                    <ng-container
+                        *ngSwitchCase="'party_modification'"
+                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ccUnionKey"
+                    >
+                        <cc-shop-modification-timeline-item
+                            *ngSwitchCase="'shop_modification'"
+                            [modificationUnit]="modificationUnit"
+                        >
+                        </cc-shop-modification-timeline-item>
+                        <ng-container
+                            *ngSwitchDefault
+                            [ngTemplateOutlet]="defaultTimelineItem"
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container
+                        *ngSwitchCase="'claim_modification'"
+                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ccUnionKey"
+                    >
+                        <cc-status-modification-timeline-item
+                            *ngSwitchCase="'status_modification'"
+                            [modificationUnit]="modificationUnit"
+                        >
+                        </cc-status-modification-timeline-item>
+                        <cc-comment-modification-timeline-item
+                            *ngSwitchCase="'comment_modification'"
+                            [modificationUnit]="modificationUnit"
+                        >
+                        </cc-comment-modification-timeline-item>
+                        <ng-container
+                            *ngSwitchDefault
+                            [ngTemplateOutlet]="defaultTimelineItem"
+                        ></ng-container>
+                    </ng-container>
+                    <ng-container
+                        *ngSwitchDefault
+                        [ngTemplateOutlet]="defaultTimelineItem"
+                    ></ng-container>
+                    <ng-template #defaultTimelineItem>
+                        <cc-modification-unit-timeline-item
+                            [modificationUnit]="modificationUnit"
+                        ></cc-modification-unit-timeline-item>
+                    </ng-template>
+                </ng-container>
+            </cc-timeline>
+        </ng-template>
+    </div>
+</div>
