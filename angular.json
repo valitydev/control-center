@@ -31,6 +31,7 @@
                             "thrift-ts",
                             "buffer",
                             "humanize-duration",
+                            "node-int64",
                             "@vality/deanonimus-proto",
                             "@vality/domain-proto",
                             "@vality/dominant-cache-proto",
