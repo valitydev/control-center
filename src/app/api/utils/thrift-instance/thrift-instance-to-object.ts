@@ -5,8 +5,7 @@ import {
     isComplexType,
     isPrimitiveType,
     parseNamespaceType,
-    StructureType,
-    STRUCTURE_TYPES,
+    parseNamespaceObjectType,
 } from './namespace-type';
 import { ThriftAstMetadata } from './types';
 
@@ -52,15 +51,9 @@ export function thriftInstanceToObject<V>(
                 return value;
         }
     }
-    const namespaceMeta = metadata.find((m) => m.name === namespace);
-    const structureType = (Object.keys(namespaceMeta.ast) as StructureType[]).find(
-        (t) => namespaceMeta.ast[t][type]
-    );
-    if (!structureType || !STRUCTURE_TYPES.includes(structureType)) {
-        throw new Error(`Unknown thrift structure type: ${structureType}`);
-    }
-    const typeMeta = namespaceMeta.ast[structureType][type];
-    switch (structureType) {
+    const { namespaceMetadata, objectType } = parseNamespaceObjectType(metadata, namespace, type);
+    const typeMeta = namespaceMetadata.ast[objectType][type];
+    switch (objectType) {
         case 'exception':
             throw new Error('Unsupported structure type: exception');
         case 'typedef': {

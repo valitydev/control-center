@@ -1,5 +1,7 @@
 import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
 
+import { ThriftAstMetadata } from '@cc/app/api/utils';
+
 export const PRIMITIVE_TYPES = [
     'int',
     'bool',
@@ -27,9 +29,27 @@ export function isPrimitiveType(type: ValueType): type is ThriftType {
 export const STRUCTURE_TYPES = ['typedef', 'struct', 'union', 'exception', 'enum'] as const;
 export type StructureType = typeof STRUCTURE_TYPES[number];
 
-export function parseNamespaceType(type: ValueType, currentNamespace?: string) {
-    if (!isComplexType(type) && !isPrimitiveType(type) && type.includes('.')) {
-        [currentNamespace, type] = type.split('.');
+export function parseNamespaceObjectType(
+    metadata: ThriftAstMetadata[],
+    namespace: string,
+    type: string
+) {
+    const namespaceMetadata = metadata.find((m) => m.name === namespace);
+    const objectType = (Object.keys(namespaceMetadata.ast) as StructureType[]).find(
+        (t) => namespaceMetadata.ast[t][type]
+    );
+    if (!objectType || !STRUCTURE_TYPES.includes(objectType)) {
+        throw new Error(`Unknown thrift structure type: ${objectType}`);
     }
-    return { namespace: currentNamespace, type };
+    return { namespaceMetadata, objectType };
+}
+
+export function parseNamespaceType(
+    type: ValueType,
+    namespace?: string
+): { namespace: string; type: ValueType } {
+    if (!isPrimitiveType(type) && !isComplexType(type) && type.includes('.')) {
+        [namespace, type] = type.split('.');
+    }
+    return { namespace, type };
 }

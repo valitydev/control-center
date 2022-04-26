@@ -6,8 +6,7 @@ import {
     isPrimitiveType,
     isThriftObject,
     parseNamespaceType,
-    StructureType,
-    STRUCTURE_TYPES,
+    parseNamespaceObjectType,
 } from './namespace-type';
 import { ThriftAstMetadata, ThriftInstanceContext } from './types';
 
@@ -52,26 +51,17 @@ export function createThriftInstance<V>(
                 return value;
         }
     }
-    const namespaceMeta = metadata.find((m) => m.name === namespace);
-    const structureType = (Object.keys(namespaceMeta.ast) as StructureType[]).find(
-        (t) => namespaceMeta.ast[t][type]
-    );
-    if (!structureType || !STRUCTURE_TYPES.includes(structureType)) {
-        throw new Error('Unknown thrift structure type');
-    }
-    switch (structureType) {
+    const { namespaceMetadata, objectType } = parseNamespaceObjectType(metadata, namespace, type);
+    switch (objectType) {
         case 'enum':
             return value;
         case 'exception':
             throw new Error('Unsupported structure type: exception');
         default: {
-            const typeMeta = namespaceMeta.ast[structureType][type];
+            const typeMeta = namespaceMetadata.ast[objectType][type];
             try {
-                if (structureType === 'typedef') {
-                    type TypedefType = {
-                        type: ValueType;
-                    };
-                    const typedefMeta = (typeMeta as TypedefType).type;
+                if (objectType === 'typedef') {
+                    const typedefMeta = (typeMeta as { type: ValueType }).type;
                     return internalCreateThriftInstance(typedefMeta, value);
                 }
                 const instance = new instanceContext[namespace][type]();
@@ -84,7 +74,7 @@ export function createThriftInstance<V>(
             } catch (error) {
                 console.error(
                     'Thrift structure',
-                    structureType,
+                    objectType,
                     'creation error:',
                     namespace,
                     type,
