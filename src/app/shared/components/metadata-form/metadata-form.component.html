@@ -4,6 +4,7 @@
     <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
         <cc-struct-form *ngSwitchCase="'struct'" [data]="data"></cc-struct-form>
         <cc-union-field *ngSwitchCase="'union'" [data]="data"></cc-union-field>
+        <cc-enum-field *ngSwitchCase="'enum'" [data]="data"></cc-enum-field>
         <cc-typedef-form *ngSwitchCase="'typedef'" [data]="data"></cc-typedef-form>
     </ng-container>
 </ng-container>

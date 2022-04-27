@@ -1,7 +1,7 @@
-<span *ngIf="data.parent?.objectType !== 'union' && data.field" class="cc-body-1">{{
-    data.field?.name | keyTitle | titlecase
-}}</span>
-<div gdColumns="1fr" gdGap="16px">
+<div gdColumns="1fr" gdGap="16px" style="padding-left: 16px">
+    <div *ngIf="hasLabel" class="cc-body-1">
+        {{ data.field?.name | keyTitle | titlecase }}
+    </div>
     <cc-metadata-form
         *ngFor="let field of data.ast"
         [metadata]="data.metadata"
