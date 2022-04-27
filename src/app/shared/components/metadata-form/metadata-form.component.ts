@@ -1,14 +1,9 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Field, ValueType } from '@vality/thrift-ts';
 
-import {
-    isComplexType,
-    isPrimitiveType,
-    NamespaceType,
-    parseNamespaceType,
-    ThriftAstMetadata,
-} from '@cc/app/api/utils';
-import { ComponentChanges } from '@cc/app/shared';
+import { ThriftAstMetadata } from '@cc/app/api/utils';
+
+import { MetadataFormData } from './types/metadata-form-data';
 
 @Component({
     selector: 'cc-metadata-form',
@@ -19,16 +14,19 @@ export class MetadataFormComponent implements OnChanges {
     @Input() namespace: string;
     @Input() type: ValueType;
     @Input() field?: Field;
+    @Input() parent?: MetadataFormData;
 
-    namespaceType: NamespaceType;
-    isComplexType: boolean = false;
-    isPrimitiveType: boolean = false;
+    data: MetadataFormData;
 
-    ngOnChanges({ namespace, type }: ComponentChanges<MetadataFormComponent>) {
-        if (namespace || type) {
-            this.namespaceType = parseNamespaceType(this.type, this.namespace);
-            this.isComplexType = isComplexType(this.namespaceType.type);
-            this.isPrimitiveType = isPrimitiveType(this.namespaceType.type);
+    ngOnChanges() {
+        if (this.metadata && this.namespace && this.type) {
+            this.data = new MetadataFormData(
+                this.metadata,
+                this.namespace,
+                this.type,
+                this.field,
+                this.parent
+            );
         }
     }
 }

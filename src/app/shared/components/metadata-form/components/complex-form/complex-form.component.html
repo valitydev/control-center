@@ -1,0 +1,10 @@
+<span>{{ data.field?.name }}</span>
+<ng-container>
+    <cc-metadata-form
+        [metadata]="data.metadata"
+        [namespace]="data.namespace"
+        [type]="data.type.valueType"
+        [parent]="data"
+    ></cc-metadata-form>
+</ng-container>
+<button mat-button>Add</button>

@@ -6,12 +6,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { ThriftPipesModule } from '@cc/app/shared';
-import { ComplexFieldComponent } from '@cc/app/shared/components/metadata-form/components/complex-field/complex-field.component';
-import { ObjectFormComponent } from '@cc/app/shared/components/metadata-form/components/object-form/object-form.component';
-import { PrimitiveFieldComponent } from '@cc/app/shared/components/metadata-form/components/primitive-field/primitive-field.component';
-import { StructFieldComponent } from '@cc/app/shared/components/metadata-form/components/struct-field/struct-field.component';
-import { UnionFieldComponent } from '@cc/app/shared/components/metadata-form/components/union-field/union-field.component';
 
+import { ComplexFormComponent } from './components/complex-form/complex-form.component';
+import { PrimitiveFieldComponent } from './components/primitive-field/primitive-field.component';
+import { StructFormComponent } from './components/struct-form/struct-form.component';
+import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
+import { UnionFieldComponent } from './components/union-field/union-field.component';
 import { MetadataFormComponent } from './metadata-form.component';
 
 @NgModule({
@@ -26,10 +26,10 @@ import { MetadataFormComponent } from './metadata-form.component';
     declarations: [
         MetadataFormComponent,
         PrimitiveFieldComponent,
-        ComplexFieldComponent,
-        StructFieldComponent,
+        ComplexFormComponent,
+        StructFormComponent,
         UnionFieldComponent,
-        ObjectFormComponent,
+        TypedefFormComponent,
     ],
     exports: [MetadataFormComponent],
 })

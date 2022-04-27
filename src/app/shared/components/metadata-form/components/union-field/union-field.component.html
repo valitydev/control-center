@@ -1,16 +1,15 @@
-<ng-container *ngIf="metadata && namespace && type">
-    <mat-form-field style="width: 100%">
-        <mat-label *ngIf="field">{{ field?.name | keyTitle | titlecase }}</mat-label>
-        <mat-select [(value)]="selected">
-            <mat-option *ngIf="field?.option === 'optional'">None</mat-option>
-            <mat-option *ngFor="let field of fields" [value]="field">{{ field.name }}</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <cc-metadata-form
-        *ngIf="selected"
-        [metadata]="metadata"
-        [namespace]="namespace"
-        [type]="selected.type"
-        [field]="selected"
-    ></cc-metadata-form>
-</ng-container>
+<mat-form-field style="width: 100%">
+    <mat-label>{{ data.field?.name || data.type | keyTitle | titlecase }}</mat-label>
+    <mat-select [(value)]="selected" [required]="data.field?.option === 'required'">
+        <mat-option *ngIf="data.field?.option === 'optional'">None</mat-option>
+        <mat-option *ngFor="let field of data.ast" [value]="field">{{ field.name }}</mat-option>
+    </mat-select>
+</mat-form-field>
+<cc-metadata-form
+    *ngIf="selected"
+    [metadata]="data.metadata"
+    [namespace]="data.namespace"
+    [type]="selected.type"
+    [field]="selected"
+    [parent]="data"
+></cc-metadata-form>

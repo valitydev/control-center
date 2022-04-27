@@ -4,11 +4,9 @@ import { Field } from '@vality/thrift-ts';
 import { MetadataFormData } from '../../types/metadata-form-data';
 
 @Component({
-    selector: 'cc-union-field',
-    templateUrl: './union-field.component.html',
+    selector: 'cc-struct-form',
+    templateUrl: './struct-form.component.html',
 })
-export class UnionFieldComponent {
+export class StructFormComponent {
     @Input() data: MetadataFormData<string, Field[]>;
-
-    selected: any;
 }

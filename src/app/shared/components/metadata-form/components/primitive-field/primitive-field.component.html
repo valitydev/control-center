@@ -1,9 +1,7 @@
-<ng-container *ngIf="metadata">
-    <mat-form-field style="width: 100%">
-        <input
-            matInput
-            [placeholder]="field?.name | keyTitle | titlecase"
-            [required]="field?.option === 'required'"
-        />
-    </mat-form-field>
-</ng-container>
+<mat-form-field style="width: 100%">
+    <input
+        matInput
+        [placeholder]="data.field?.name | keyTitle | titlecase"
+        [required]="data.field?.option === 'required'"
+    />
+</mat-form-field>

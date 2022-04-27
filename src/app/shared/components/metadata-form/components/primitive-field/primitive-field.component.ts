@@ -1,16 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { Field } from '@vality/thrift-ts';
-import { ThriftType } from '@vality/thrift-ts/src/thrift-parser';
+import { ThriftType } from '@vality/thrift-ts';
 
-import { ThriftAstMetadata } from '@cc/app/api/utils';
+import { MetadataFormData } from '../../types/metadata-form-data';
 
 @Component({
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
 })
 export class PrimitiveFieldComponent {
-    @Input() metadata: ThriftAstMetadata[];
-    @Input() namespace: string;
-    @Input() type: ThriftType;
-    @Input() field?: Field;
+    @Input() data: MetadataFormData<ThriftType>;
 }

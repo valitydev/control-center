@@ -1,29 +1,9 @@
-<ng-container *ngIf="metadata && namespace && type">
-    <ng-container
-        [ngTemplateOutlet]="isPrimitiveType ? primitive : isComplexType ? complex : object"
-    ></ng-container>
-    <ng-template #primitive>
-        <cc-primitive-field
-            [metadata]="metadata"
-            [namespace]="namespaceType.namespace"
-            [type]="namespaceType.type"
-            [field]="field"
-        ></cc-primitive-field>
-    </ng-template>
-    <ng-template #complex>
-        <cc-complex-field
-            [metadata]="metadata"
-            [namespace]="namespaceType.namespace"
-            [type]="namespaceType.type"
-            [field]="field"
-        ></cc-complex-field>
-    </ng-template>
-    <ng-template #object>
-        <cc-object-form
-            [metadata]="metadata"
-            [namespace]="namespaceType.namespace"
-            [type]="namespaceType.type"
-            [field]="field"
-        ></cc-object-form>
-    </ng-template>
+<ng-container [ngSwitch]="data?.typeGroup">
+    <cc-primitive-field *ngSwitchCase="'primitive'" [data]="data"></cc-primitive-field>
+    <cc-complex-form *ngSwitchCase="'complex'" [data]="data"></cc-complex-form>
+    <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
+        <cc-struct-form *ngSwitchCase="'struct'" [data]="data"></cc-struct-form>
+        <cc-union-field *ngSwitchCase="'union'" [data]="data"></cc-union-field>
+        <cc-typedef-form *ngSwitchCase="'typedef'" [data]="data"></cc-typedef-form>
+    </ng-container>
 </ng-container>
