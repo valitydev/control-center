@@ -1,0 +1,25 @@
+<ng-container *ngIf="metadata && namespace && type">
+    <ng-container [ngSwitch]="parsedNamespaceObjectType.objectType">
+        <cc-struct-field
+            *ngSwitchCase="'struct'"
+            [metadata]="metadata"
+            [namespace]="namespace"
+            [type]="type"
+            [field]="field"
+        ></cc-struct-field>
+        <cc-union-field
+            *ngSwitchCase="'union'"
+            [metadata]="metadata"
+            [namespace]="namespace"
+            [type]="type"
+            [field]="field"
+        ></cc-union-field>
+        <cc-metadata-form
+            *ngSwitchCase="'typedef'"
+            [metadata]="metadata"
+            [namespace]="namespace"
+            [type]="typedefType"
+            [field]="field"
+        ></cc-metadata-form>
+    </ng-container>
+</ng-container>

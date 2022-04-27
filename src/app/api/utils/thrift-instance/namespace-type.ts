@@ -23,7 +23,7 @@ export function isComplexType(type: ValueType): type is SetType | ListType | Map
 }
 
 export function isPrimitiveType(type: ValueType): type is ThriftType {
-    return PRIMITIVE_TYPES.includes(type as any);
+    return PRIMITIVE_TYPES.includes(type as never);
 }
 
 export const STRUCTURE_TYPES = ['typedef', 'struct', 'union', 'exception', 'enum'] as const;
@@ -44,10 +44,12 @@ export function parseNamespaceObjectType(
     return { namespaceMetadata, objectType };
 }
 
-export function parseNamespaceType(
-    type: ValueType,
-    namespace?: string
-): { namespace: string; type: ValueType } {
+export interface NamespaceType {
+    namespace: string;
+    type: ValueType;
+}
+
+export function parseNamespaceType(type: ValueType, namespace?: string): NamespaceType {
     if (!isPrimitiveType(type) && !isComplexType(type) && type.includes('.')) {
         [namespace, type] = type.split('.');
     }

@@ -1,0 +1,12 @@
+<ng-container *ngIf="metadata && namespace && type">
+    <span *ngIf="field" class="cc-body-1">{{ field?.name | keyTitle | titlecase }}</span>
+    <div gdColumns="1fr" gdGap="16px">
+        <cc-metadata-form
+            *ngFor="let field of fields"
+            [metadata]="metadata"
+            [namespace]="namespace"
+            [type]="field.type"
+            [field]="field"
+        ></cc-metadata-form>
+    </div>
+</ng-container>

@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap, EMPTY, BehaviorSubject, merge } from 'rxjs';
 import { shareReplay, catchError } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { AddModificationDialogComponent } from '@cc/app/sections/claim/components/add-modification-dialog/add-modification-dialog.component';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
@@ -51,6 +54,14 @@ export class ClaimComponent {
         private route: ActivatedRoute,
         private claimManagementService: ClaimManagementService,
         private partyManagementWithUserService: PartyManagementWithUserService,
-        private notificationService: NotificationService
-    ) {}
+        private notificationService: NotificationService,
+        private dialog: MatDialog,
+        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+    ) {
+        this.addModification();
+    }
+
+    addModification() {
+        this.dialog.open(AddModificationDialogComponent, this.dialogConfig.medium);
+    }
 }

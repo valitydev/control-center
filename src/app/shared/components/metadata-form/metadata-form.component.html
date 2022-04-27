@@ -1,0 +1,29 @@
+<ng-container *ngIf="metadata && namespace && type">
+    <ng-container
+        [ngTemplateOutlet]="isPrimitiveType ? primitive : isComplexType ? complex : object"
+    ></ng-container>
+    <ng-template #primitive>
+        <cc-primitive-field
+            [metadata]="metadata"
+            [namespace]="namespaceType.namespace"
+            [type]="namespaceType.type"
+            [field]="field"
+        ></cc-primitive-field>
+    </ng-template>
+    <ng-template #complex>
+        <cc-complex-field
+            [metadata]="metadata"
+            [namespace]="namespaceType.namespace"
+            [type]="namespaceType.type"
+            [field]="field"
+        ></cc-complex-field>
+    </ng-template>
+    <ng-template #object>
+        <cc-object-form
+            [metadata]="metadata"
+            [namespace]="namespaceType.namespace"
+            [type]="namespaceType.type"
+            [field]="field"
+        ></cc-object-form>
+    </ng-template>
+</ng-container>

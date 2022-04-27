@@ -1,0 +1,11 @@
+<ng-container *ngIf="metadata">
+    <span>{{ field?.name }}</span>
+    <ng-container>
+        <cc-metadata-form
+            [metadata]="metadata"
+            [namespace]="namespace"
+            [type]="type.valueType"
+        ></cc-metadata-form>
+    </ng-container>
+    <button mat-button>Add</button>
+</ng-container>
