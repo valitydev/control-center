@@ -1,8 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder } from '@ngneat/reactive-forms';
 import { PartyID } from '@vality/domain-proto';
 import { ClaimID, ClaimRevision } from '@vality/domain-proto/lib/base';
+import { Modification } from '@vality/domain-proto/lib/claim_management';
 import { from } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
@@ -12,7 +13,7 @@ import { ClaimManagementService } from '@cc/app/api/claim-management';
     templateUrl: './add-modification-dialog.component.html',
 })
 export class AddModificationDialogComponent {
-    form = this.fb.group({});
+    control = this.fb.control<Modification>(null);
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
 
     constructor(
@@ -24,6 +25,7 @@ export class AddModificationDialogComponent {
     ) {}
 
     add() {
+        console.log(this.control.value);
         // this.claimManagementService.UpdateClaim(
         //     this.dialogData.party_id,
         //     this.dialogData.id,

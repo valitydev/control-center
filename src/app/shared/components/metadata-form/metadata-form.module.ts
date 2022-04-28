@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { GridModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,6 +24,7 @@ import { MetadataFormComponent } from './metadata-form.component';
         ThriftPipesModule,
         MatSelectModule,
         MatButtonModule,
+        ReactiveFormsModule,
     ],
     declarations: [
         MetadataFormComponent,

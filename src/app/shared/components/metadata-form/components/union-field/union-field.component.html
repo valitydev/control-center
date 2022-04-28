@@ -1,7 +1,7 @@
 <div gdColumns="1fr" gdGap="16px">
     <mat-form-field style="width: 100%">
         <mat-label>{{ data.field?.name || data.type | keyTitle | titlecase }}</mat-label>
-        <mat-select [(value)]="selected" [required]="data.field?.option === 'required'">
+        <mat-select [formControl]="fieldControl" [required]="data.field?.option === 'required'">
             <mat-option *ngIf="data.field?.option === 'optional'">None</mat-option>
             <mat-option *ngFor="let field of data.ast" [value]="field">{{
                 field.name | keyTitle | titlecase
@@ -9,11 +9,12 @@
         </mat-select>
     </mat-form-field>
     <cc-metadata-form
-        *ngIf="selected"
+        *ngIf="fieldControl.value"
+        [formControl]="internalControl"
         [metadata]="data.metadata"
         [namespace]="data.namespace"
-        [type]="selected.type"
-        [field]="selected"
+        [type]="fieldControl.value.type"
+        [field]="fieldControl.value"
         [parent]="data"
     ></cc-metadata-form>
 </div>

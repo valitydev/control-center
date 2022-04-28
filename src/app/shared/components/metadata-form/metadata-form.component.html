@@ -1,10 +1,30 @@
 <ng-container [ngSwitch]="data?.typeGroup">
-    <cc-primitive-field *ngSwitchCase="'primitive'" [data]="data"></cc-primitive-field>
-    <cc-complex-form *ngSwitchCase="'complex'" [data]="data"></cc-complex-form>
+    <cc-primitive-field
+        *ngSwitchCase="'primitive'"
+        [formControl]="control"
+        [data]="data"
+    ></cc-primitive-field>
+    <cc-complex-form
+        *ngSwitchCase="'complex'"
+        [formControl]="control"
+        [data]="data"
+    ></cc-complex-form>
     <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
-        <cc-struct-form *ngSwitchCase="'struct'" [data]="data"></cc-struct-form>
-        <cc-union-field *ngSwitchCase="'union'" [data]="data"></cc-union-field>
-        <cc-enum-field *ngSwitchCase="'enum'" [data]="data"></cc-enum-field>
-        <cc-typedef-form *ngSwitchCase="'typedef'" [data]="data"></cc-typedef-form>
+        <cc-struct-form
+            *ngSwitchCase="'struct'"
+            [formControl]="control"
+            [data]="data"
+        ></cc-struct-form>
+        <cc-union-field
+            *ngSwitchCase="'union'"
+            [formControl]="control"
+            [data]="data"
+        ></cc-union-field>
+        <cc-enum-field *ngSwitchCase="'enum'" [formControl]="control" [data]="data"></cc-enum-field>
+        <cc-typedef-form
+            *ngSwitchCase="'typedef'"
+            [formControl]="control"
+            [data]="data"
+        ></cc-typedef-form>
     </ng-container>
 </ng-container>

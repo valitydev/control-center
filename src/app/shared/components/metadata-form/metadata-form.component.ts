@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
@@ -8,8 +9,12 @@ import { MetadataFormData } from './types/metadata-form-data';
 @Component({
     selector: 'cc-metadata-form',
     templateUrl: './metadata-form.component.html',
+    providers: [provideValueAccessor(MetadataFormComponent)],
 })
-export class MetadataFormComponent implements OnChanges {
+export class MetadataFormComponent
+    extends WrappedFormControlSuperclass<unknown>
+    implements OnChanges
+{
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;
     @Input() type: ValueType;

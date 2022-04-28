@@ -4,6 +4,7 @@
     </div>
     <cc-metadata-form
         *ngFor="let field of data.ast"
+        [formControl]="control.get(field.name)"
         [metadata]="data.metadata"
         [namespace]="data.namespace"
         [type]="field.type"

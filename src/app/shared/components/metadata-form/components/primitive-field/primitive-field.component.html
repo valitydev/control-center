@@ -1,6 +1,7 @@
 <mat-form-field style="width: 100%">
     <input
         matInput
+        [formControl]="control"
         [placeholder]="data.field?.name | keyTitle | titlecase"
         [required]="data.field?.option === 'required'"
     />

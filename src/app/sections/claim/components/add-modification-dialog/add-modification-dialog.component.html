@@ -1,7 +1,8 @@
-<form [formGroup]="form" fxLayout="column" fxLayoutGap="32px">
+<div fxLayout="column" fxLayoutGap="32px">
     <div class="cc-headline">Add modification unit</div>
 
     <cc-metadata-form
+        [formControl]="control"
         [metadata]="metadata$ | async"
         namespace="claim_management"
         type="Modification"
@@ -9,6 +10,6 @@
 
     <div fxLayout fxLayoutAlign="space-between">
         <button mat-button (click)="cancel()">CANCEL</button>
-        <button mat-button color="primary" (click)="add()" [disabled]="form.invalid">ADD</button>
+        <button mat-button color="primary" (click)="add()" [disabled]="control.invalid">ADD</button>
     </div>
-</form>
+</div>
