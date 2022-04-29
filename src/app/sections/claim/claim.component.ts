@@ -1,16 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap, EMPTY, BehaviorSubject, merge } from 'rxjs';
+import { Observable, switchMap, EMPTY, BehaviorSubject, merge, combineLatest } from 'rxjs';
 import { shareReplay, catchError } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
-import { AddModificationDialogComponent } from '@cc/app/sections/claim/components/add-modification-dialog/add-modification-dialog.component';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
+import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 
 @Component({
@@ -62,6 +62,17 @@ export class ClaimComponent {
     }
 
     addModification() {
-        this.dialog.open(AddModificationDialogComponent, this.dialogConfig.medium);
+        combineLatest([this.party$, this.claim$])
+            .pipe(
+                switchMap(([party, claim]) =>
+                    this.dialog
+                        .open(AddModificationDialogComponent, {
+                            ...this.dialogConfig.large,
+                            data: { party, claim },
+                        })
+                        .afterClosed()
+                )
+            )
+            .subscribe();
     }
 }

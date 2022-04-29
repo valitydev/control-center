@@ -4,7 +4,7 @@ import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
-import { MetadataFormData } from './types/metadata-form-data';
+import { MetadataFormData, MetadataFormExtension } from './types/metadata-form-data';
 
 @Component({
     selector: 'cc-metadata-form',
@@ -20,6 +20,7 @@ export class MetadataFormComponent
     @Input() type: ValueType;
     @Input() field?: Field;
     @Input() parent?: MetadataFormData;
+    @Input() extensions?: MetadataFormExtension[];
 
     data: MetadataFormData;
 
@@ -30,7 +31,8 @@ export class MetadataFormComponent
                 this.namespace,
                 this.type,
                 this.field,
-                this.parent
+                this.parent,
+                this.extensions
             );
         }
     }
