@@ -32,6 +32,18 @@ export enum TypeGroup {
     Object = 'object',
 }
 
+export function getAliases(data: MetadataFormData) {
+    const path: MetadataFormData[] = data.parent ? [data.parent] : [];
+    while (path[path.length - 1]?.objectType === 'typedef') {
+        path.push(path[path.length - 1].parent);
+    }
+    return path;
+}
+
+export function getByType(data: MetadataFormData, type: string, namespace: string) {
+    return [data, ...getAliases(data)].find((d) => d.type === type && d.namespace === namespace);
+}
+
 type ObjectAst = JsonAST[keyof JsonAST][keyof JsonAST[keyof JsonAST]];
 
 export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectAst = ObjectAst> {
@@ -47,14 +59,6 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
      * The first one identified is used
      */
     extensionResult$: Observable<MetadataFormExtensionResult>;
-
-    get path(): MetadataFormData[] {
-        const path: MetadataFormData[] = this.parent ? [this.parent] : [];
-        while (path[path.length - 1]?.objectType === 'typedef') {
-            path.push(path[path.length - 1].parent);
-        }
-        return path;
-    }
 
     constructor(
         public metadata: ThriftAstMetadata[],

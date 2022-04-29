@@ -8,7 +8,27 @@ import uuid from 'uuid';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
-import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form/types/metadata-form-data';
+import { getByType, MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
+
+function createPartyOptions(values: IterableIterator<{ id: string }>) {
+    return Array.from(values).map((value) => ({
+        label: `${value.id} (from party)`,
+        details: value,
+        value: value.id,
+    }));
+}
+
+function createClaimOptions(modificationUnits: { id: string; modification: unknown }[]) {
+    return modificationUnits.filter(Boolean).map((unit) => ({
+        label: `${unit.id} (from claim)`,
+        details: unit.modification,
+        value: unit.id,
+    }));
+}
+
+function generate() {
+    return of(uuid());
+}
 
 @Component({
     selector: 'cc-add-modification-dialog',
@@ -19,34 +39,70 @@ export class AddModificationDialogComponent {
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[] = [
         {
-            determinant: (data) =>
-                of(
-                    !![data, ...data.path].find(
-                        (d) => d.type === 'ContractorID' && d.namespace === 'domain'
-                    )
-                ),
+            determinant: (data) => of(!!getByType(data, 'ContractorID', 'domain')),
             extension: () =>
                 of({
                     options: [
-                        ...Array.from(this.dialogData.party.contractors).map(([, contractor]) => ({
-                            label: contractor.id + ` (from party)`,
-                            details: contractor,
-                            value: contractor.id,
-                        })),
-                        ...this.dialogData.claim.changeset
-                            .map(
+                        ...createPartyOptions(this.dialogData.party.contractors.values()),
+                        ...createClaimOptions(
+                            this.dialogData.claim.changeset.map(
                                 (unit) =>
                                     unit.modification.party_modification?.contractor_modification
                             )
-                            .filter((unit) => !!unit)
-                            .map((unit) => ({
-                                label: unit.id + ` (from claim)`,
-                                details: unit.modification,
-                                value: unit.id,
-                            })),
+                        ),
                     ],
-                    generate: () => of(uuid()),
+                    generate,
                 }),
+        },
+        {
+            determinant: (data) => of(!!getByType(data, 'ContractID', 'domain')),
+            extension: () =>
+                of({
+                    options: [
+                        ...createPartyOptions(this.dialogData.party.contracts.values()),
+                        ...createClaimOptions(
+                            this.dialogData.claim.changeset.map(
+                                (unit) =>
+                                    unit.modification.party_modification?.contract_modification
+                            )
+                        ),
+                    ],
+                    generate,
+                }),
+        },
+        {
+            determinant: (data) => of(!!getByType(data, 'ShopID', 'domain')),
+            extension: () =>
+                of({
+                    options: [
+                        ...createPartyOptions(this.dialogData.party.shops.values()),
+                        ...createClaimOptions(
+                            this.dialogData.claim.changeset.map(
+                                (unit) => unit.modification.party_modification?.shop_modification
+                            )
+                        ),
+                    ],
+                    generate,
+                }),
+        },
+        {
+            determinant: (data) => of(!!getByType(data, 'WalletID', 'domain')),
+            extension: () =>
+                of({
+                    options: [
+                        ...createPartyOptions(this.dialogData.party.wallets.values()),
+                        ...createClaimOptions(
+                            this.dialogData.claim.changeset.map(
+                                (unit) => unit.modification.party_modification?.wallet_modification
+                            )
+                        ),
+                    ],
+                    generate,
+                }),
+        },
+        {
+            determinant: (data) => of(!!getByType(data, 'ID', 'base')),
+            extension: () => of({ generate }),
         },
     ];
 
