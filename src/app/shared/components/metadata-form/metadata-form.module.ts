@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { ThriftPipesModule } from '@cc/app/shared';
+import { ThriftPipesModule, ValueTypeTitleModule } from '@cc/app/shared';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
@@ -40,6 +40,7 @@ import { MetadataFormComponent } from './metadata-form.component';
         MatCardModule,
         MatExpansionModule,
         FlexModule,
+        ValueTypeTitleModule,
     ],
     declarations: [
         MetadataFormComponent,

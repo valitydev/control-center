@@ -55,6 +55,14 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
     objectType?: StructureType;
     ast?: M;
 
+    get typedefData() {
+        let data: MetadataFormData = this as MetadataFormData;
+        while (data.parent?.objectType === 'typedef') {
+            data = data.parent;
+        }
+        return data;
+    }
+
     /**
      * The first one identified is used
      */

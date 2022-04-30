@@ -1,7 +1,11 @@
 <div gdColumns="1fr" gdGap="16px">
     <div fxLayoutGap="4px">
         <mat-form-field fxFlex>
-            <mat-label>{{ data.field?.name | keyTitle | titlecase }}</mat-label>
+            <mat-label>{{
+                data.field
+                    ? (data.field.name | keyTitle | titlecase)
+                    : (data.typedefData.type | valueTypeTitle | titlecase)
+            }}</mat-label>
             <input
                 matInput
                 [matAutocomplete]="auto"
