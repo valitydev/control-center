@@ -1,10 +1,9 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
-import { FormControl, FormGroup } from '@ngneat/reactive-forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormComponentSuperclass } from '@s-libs/ng-core';
+import { FormBuilder, FormControl } from '@ngneat/reactive-forms';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
-import { Subscription } from 'rxjs';
 
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
@@ -17,31 +16,29 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     providers: createValidatedAbstractControlProviders(StructFormComponent),
 })
 export class StructFormComponent
-    extends FormComponentSuperclass<{ [N in string]: unknown }>
+    extends WrappedControlSuperclass<{ [N in string]: unknown }>
     implements OnChanges, Validator
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
-    control: FormGroup<{ [N in string]: unknown }>;
+    control = this.fb.group<{ [N in string]: unknown }>({});
 
-    private controlSub: Subscription;
+    constructor(injector: Injector, private fb: FormBuilder) {
+        super(injector);
+    }
 
-    ngOnChanges() {
-        this.control = new FormGroup(
-            Object.fromEntries(this.data.ast.map(({ name }) => [name, new FormControl()]))
-        );
-        this.controlSub?.unsubscribe();
-        this.control.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => {
-            this.emitOutgoingValue(value);
+    ngOnChanges(changes: SimpleChanges) {
+        super.ngOnChanges(changes);
+        const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
+        Object.keys(this.control.controls).forEach((name) => {
+            if (newControlsNames.has(name)) newControlsNames.delete(name);
+            else this.control.removeControl(name);
         });
+        newControlsNames.forEach((name) => this.control.addControl(name, new FormControl()));
     }
 
     validate(): ValidationErrors | null {
         return this.control.invalid ? { invalid: true } : null;
-    }
-
-    handleIncomingValue(value: { [N in string]: unknown }) {
-        this.control.patchValue(value);
     }
 
     get hasLabel() {
