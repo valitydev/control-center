@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ValidationErrors, Validator } from '@angular/forms';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+
+import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -12,11 +15,11 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 @Component({
     selector: 'cc-union-field',
     templateUrl: './union-field.component.html',
-    providers: [provideValueAccessor(UnionFieldComponent)],
+    providers: createValidatedAbstractControlProviders(UnionFieldComponent),
 })
 export class UnionFieldComponent
     extends FormComponentSuperclass<{ [N in string]: unknown }>
-    implements OnInit
+    implements OnInit, Validator
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
@@ -39,6 +42,10 @@ export class UnionFieldComponent
             .subscribe((value) => {
                 this.emitOutgoingValue(value);
             });
+    }
+
+    validate(): ValidationErrors | null {
+        return this.fieldControl.invalid || this.internalControl.invalid ? { invalid: true } : null;
     }
 
     handleIncomingValue(value: { [N in string]: unknown }) {

@@ -1,7 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { ValidationErrors, Validator } from '@angular/forms';
 import { FormArray, FormControl } from '@ngneat/reactive-forms';
-import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
+import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
+
+import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -9,9 +12,12 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     selector: 'cc-complex-form',
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
-    providers: [provideValueAccessor(ComplexFormComponent)],
+    providers: createValidatedAbstractControlProviders(ComplexFormComponent),
 })
-export class ComplexFormComponent extends WrappedFormControlSuperclass<unknown> {
+export class ComplexFormComponent
+    extends WrappedFormControlSuperclass<unknown>
+    implements Validator
+{
     @Input() data: MetadataFormData<SetType | MapType | ListType>;
 
     controls = new FormArray([]);
@@ -22,5 +28,9 @@ export class ComplexFormComponent extends WrappedFormControlSuperclass<unknown> 
 
     delete(idx: number) {
         this.controls.removeAt(idx);
+    }
+
+    validate(): ValidationErrors | null {
+        return this.control.invalid || this.controls.invalid ? { invalid: true } : null;
     }
 }

@@ -1,7 +1,14 @@
 <mat-form-field style="width: 100%">
     <mat-label>{{ data.field?.name || data.type | keyTitle | titlecase }}</mat-label>
-    <mat-select [(value)]="selected" [required]="data.field?.option === 'required'">
-        <mat-option *ngIf="data.field?.option === 'optional'">None</mat-option>
+    <mat-select [formControl]="control" [required]="data.field?.option === 'required'">
         <mat-option *ngFor="let item of data.ast.items" [value]="item">{{ item.name }}</mat-option>
     </mat-select>
+    <button
+        matSuffix
+        mat-icon-button
+        *ngIf="control.value && data.field?.option !== 'required'"
+        (click)="control.reset(); $event.stopPropagation()"
+    >
+        <mat-icon>clear</mat-icon>
+    </button>
 </mat-form-field>

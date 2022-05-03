@@ -1,11 +1,13 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { ValidationErrors, Validator } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
+import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay } from 'rxjs/operators';
 
 import { ComponentChanges } from '@cc/app/shared';
+import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -14,11 +16,11 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
     styleUrls: ['primitive-field.component.scss'],
-    providers: [provideValueAccessor(PrimitiveFieldComponent)],
+    providers: createValidatedAbstractControlProviders(PrimitiveFieldComponent),
 })
 export class PrimitiveFieldComponent
     extends WrappedFormControlSuperclass<unknown>
-    implements OnChanges
+    implements OnChanges, Validator
 {
     @Input() data: MetadataFormData<ThriftType>;
 
@@ -36,6 +38,10 @@ export class PrimitiveFieldComponent
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent>) {
         super.ngOnChanges(changes);
         if (changes.data) this.data$.next(this.data);
+    }
+
+    validate(): ValidationErrors | null {
+        return this.control.invalid ? { invalid: true } : null;
     }
 
     generate(event: MouseEvent) {
