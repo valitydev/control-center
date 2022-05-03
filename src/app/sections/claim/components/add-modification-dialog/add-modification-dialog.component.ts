@@ -1,14 +1,16 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, Modification } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
-import { from, of } from 'rxjs';
+import { BehaviorSubject, from, of } from 'rxjs';
 import uuid from 'uuid';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { getByType, MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
+import { NotificationService } from '@cc/app/shared/services/notification';
+import { progressTo } from '@cc/utils';
 
 function createPartyOptions(values: IterableIterator<{ id: string }>) {
     return Array.from(values).map((value) => ({
@@ -30,6 +32,7 @@ function generate() {
     return of(uuid());
 }
 
+@UntilDestroy()
 @Component({
     selector: 'cc-add-modification-dialog',
     templateUrl: './add-modification-dialog.component.html',
@@ -105,6 +108,7 @@ export class AddModificationDialogComponent {
             extension: () => of({ generate }),
         },
     ];
+    progress$ = new BehaviorSubject(0);
 
     constructor(
         private fb: FormBuilder,
@@ -112,20 +116,28 @@ export class AddModificationDialogComponent {
         @Inject(MAT_DIALOG_DATA)
         private dialogData: { party: Party; claim: Claim },
         private claimManagementService: ClaimManagementService,
-        private partyManagementWithUserService: PartyManagementWithUserService
-    ) {
-        console.log(dialogData);
-    }
+        private notificationService: NotificationService
+    ) {}
 
     add() {
-        console.log(this.control.value);
-        // this.claimManagementService.UpdateClaim(
-        //     this.dialogData.party_id,
-        //     this.dialogData.id,
-        //     this.dialogData.revision,
-        //     {}
-        // );
-        this.dialogRef.close();
+        this.claimManagementService
+            .UpdateClaim(
+                this.dialogData.party.id,
+                this.dialogData.claim.id,
+                this.dialogData.claim.revision,
+                [this.control.value]
+            )
+            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success('Modification added successfully');
+                    this.dialogRef.close('success');
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.notificationService.error('Error adding modification');
+                },
+            });
     }
 
     cancel() {
