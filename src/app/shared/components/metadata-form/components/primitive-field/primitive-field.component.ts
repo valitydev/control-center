@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
@@ -37,7 +36,6 @@ export class PrimitiveFieldComponent
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
 
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent>) {
-        this.control = new FormControl(); // TODO: fixes validation issue
         super.ngOnChanges(changes);
         if (changes.data) this.data$.next(this.data);
     }

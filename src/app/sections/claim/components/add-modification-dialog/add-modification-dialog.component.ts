@@ -4,6 +4,7 @@ import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, Modification } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
+import uniqBy from 'lodash-es/uniqBy';
 import { BehaviorSubject, from, of } from 'rxjs';
 import uuid from 'uuid';
 
@@ -21,11 +22,14 @@ function createPartyOptions(values: IterableIterator<{ id: string }>) {
 }
 
 function createClaimOptions(modificationUnits: { id: string; modification: unknown }[]) {
-    return modificationUnits.filter(Boolean).map((unit) => ({
-        label: `${unit.id} (from claim)`,
-        details: unit.modification,
-        value: unit.id,
-    }));
+    return uniqBy(
+        modificationUnits.filter(Boolean).map((unit) => ({
+            label: `${unit.id} (from claim)`,
+            details: unit.modification,
+            value: unit.id,
+        })),
+        'value'
+    );
 }
 
 function generate() {
