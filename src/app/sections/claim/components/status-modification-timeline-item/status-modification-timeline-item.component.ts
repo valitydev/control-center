@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ClaimStatus, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { Claim, ClaimStatus, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 
 import { getUnionKey, getUnionValue } from '@cc/utils';
 
@@ -11,6 +11,7 @@ import { CLAIM_STATUS_COLOR } from '../../types/claim-status-color';
 })
 export class StatusModificationTimelineItemComponent {
     @Input() modificationUnit: ModificationUnit;
+    @Input() claim: Claim;
 
     get statusModification() {
         return this.modificationUnit.modification.claim_modification.status_modification;

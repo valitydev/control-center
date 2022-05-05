@@ -1,19 +1,31 @@
-import { Component, Input } from '@angular/core';
-import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
+import { BehaviorSubject, switchMap } from 'rxjs';
+import { first } from 'rxjs/operators';
 
+import { ClaimManagementService } from '@cc/app/api/claim-management';
+import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { Patch } from '@cc/app/shared/components/json-viewer';
+import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
+import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
+import { progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
+import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
 import { getModificationNameParts } from './utils/get-modification-name';
 
+@UntilDestroy()
 @Component({
     selector: 'cc-modification-unit-timeline-item',
     templateUrl: './modification-unit-timeline-item.component.html',
 })
 export class ModificationUnitTimelineItemComponent {
+    @Input() claim: Claim;
     @Input() modificationUnit: ModificationUnit;
 
     @Input() @coerceBoolean isLoading: boolean = false;
@@ -21,6 +33,18 @@ export class ModificationUnitTimelineItemComponent {
     @Input() icon?: string;
     @Input() color?: StatusColor | Color;
     @Input() patches?: Patch[];
+
+    @Output() claimChanged = new EventEmitter<void>();
+
+    private progress$ = new BehaviorSubject(0);
+
+    constructor(
+        private partyManagementWithUserService: PartyManagementWithUserService,
+        private dialog: MatDialog,
+        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
+        private claimManagementService: ClaimManagementService,
+        private notificationService: NotificationService
+    ) {}
 
     get name() {
         return getModificationNameParts(getUnionValue(this.modificationUnit.modification)).join(
@@ -36,7 +60,48 @@ export class ModificationUnitTimelineItemComponent {
         return !isEmpty(this.modification);
     }
 
-    update() {}
+    update() {
+        this.partyManagementWithUserService
+            .getParty(this.claim.party_id)
+            .pipe(
+                first(),
+                switchMap((party) =>
+                    this.dialog
+                        .open(AddModificationDialogComponent, {
+                            ...this.dialogConfig.large,
+                            data: { party, claim: this.claim },
+                        })
+                        .afterClosed()
+                ),
+                untilDestroyed(this)
+            )
+            .subscribe((result) => {
+                if (result === 'success') this.claimChanged.emit();
+            });
+    }
 
-    remove() {}
+    remove() {
+        this.partyManagementWithUserService
+            .getParty(this.claim.party_id)
+            .pipe(
+                switchMap((party) =>
+                    this.claimManagementService.RemoveModification(
+                        party.id,
+                        this.claim.id,
+                        this.claim.revision,
+                        this.modificationUnit.modification_id
+                    )
+                )
+            )
+
+            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success();
+                },
+                error: () => {
+                    this.notificationService.error();
+                },
+            });
+    }
 }

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { Category } from '@vality/dominant-cache-proto';
 import { combineLatest, defer, of, ReplaySubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { getUnionKey } from '@cc/utils';
 })
 export class ShopModificationTimelineItemComponent implements OnChanges {
     @Input() modificationUnit: ModificationUnit;
+    @Input() claim: Claim;
 
     extended$ = combineLatest([
         defer(() => this.modificationUnit$),
