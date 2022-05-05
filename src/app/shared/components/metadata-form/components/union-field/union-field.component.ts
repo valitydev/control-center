@@ -10,6 +10,7 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
+import { getDefaultValue } from '../../utils/get-default-value';
 
 @UntilDestroy()
 @Component({
@@ -28,7 +29,7 @@ export class UnionFieldComponent
 
     ngOnInit() {
         this.fieldControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
-            this.internalControl.reset(null, { emitEvent: false });
+            this.cleanInternal();
         });
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)
             .pipe(
@@ -58,7 +59,20 @@ export class UnionFieldComponent
             this.internalControl.setValue(value[name], { emitEvent: false });
         } else {
             this.fieldControl.reset(null, { emitEvent: false });
-            this.internalControl.reset(null, { emitEvent: false });
+            this.cleanInternal();
         }
+    }
+
+    private cleanInternal() {
+        this.internalControl.reset(
+            this.fieldControl.value
+                ? getDefaultValue(
+                      this.data.metadata,
+                      this.data.namespace,
+                      this.fieldControl.value.type
+                  )
+                : null,
+            { emitEvent: false }
+        );
     }
 }
