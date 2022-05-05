@@ -1,5 +1,6 @@
 <cc-modification-unit-timeline-item
     [claim]="claim"
+    (claimChanged)="claimChanged.emit()"
     [modificationUnit]="modificationUnit"
     [icon]="iconMap[commentModification.modification | ccUnionKey]"
     [title]="messageMap[commentModification.modification | ccUnionKey] + ' comment'"

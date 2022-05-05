@@ -55,6 +55,7 @@
                         <cc-shop-modification-timeline-item
                             *ngSwitchCase="'shop_modification'"
                             [claim]="claim"
+                            (claimChanged)="reloadClaim()"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-shop-modification-timeline-item>
@@ -70,12 +71,14 @@
                         <cc-status-modification-timeline-item
                             *ngSwitchCase="'status_modification'"
                             [claim]="claim"
+                            (claimChanged)="reloadClaim()"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-status-modification-timeline-item>
                         <cc-comment-modification-timeline-item
                             *ngSwitchCase="'comment_modification'"
                             [claim]="claim"
+                            (claimChanged)="reloadClaim()"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-comment-modification-timeline-item>
@@ -92,6 +95,7 @@
                         <cc-modification-unit-timeline-item
                             [claim]="claim"
                             [modificationUnit]="modificationUnit"
+                            (claimChanged)="reloadClaim()"
                         ></cc-modification-unit-timeline-item>
                     </ng-template>
                 </ng-container>

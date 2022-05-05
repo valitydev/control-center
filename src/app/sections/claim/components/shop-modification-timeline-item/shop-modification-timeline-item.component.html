@@ -1,5 +1,6 @@
 <cc-modification-unit-timeline-item
     [claim]="claim"
+    (claimChanged)="claimChanged.emit()"
     [modificationUnit]="modificationUnit"
     [patches]="extended$ | async"
 ></cc-modification-unit-timeline-item>

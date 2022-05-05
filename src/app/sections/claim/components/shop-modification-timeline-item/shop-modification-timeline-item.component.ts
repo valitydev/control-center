@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { Category } from '@vality/dominant-cache-proto';
 import { combineLatest, defer, of, ReplaySubject } from 'rxjs';
@@ -16,6 +16,7 @@ import { getUnionKey } from '@cc/utils';
 export class ShopModificationTimelineItemComponent implements OnChanges {
     @Input() modificationUnit: ModificationUnit;
     @Input() claim: Claim;
+    @Output() claimChanged = new EventEmitter<void>();
 
     extended$ = combineLatest([
         defer(() => this.modificationUnit$),

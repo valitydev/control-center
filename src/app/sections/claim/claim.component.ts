@@ -90,7 +90,11 @@ export class ClaimComponent {
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result === 'success') this.loadClaim$.next();
+                if (result === 'success') this.reloadClaim();
             });
+    }
+
+    reloadClaim() {
+        this.loadClaim$.next();
     }
 }

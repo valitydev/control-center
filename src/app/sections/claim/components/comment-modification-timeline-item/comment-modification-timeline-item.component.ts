@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import {
     Claim,
     CommentModification,
@@ -19,6 +19,7 @@ import { inProgressFrom, progressTo } from '@cc/utils/operators';
 export class CommentModificationTimelineItemComponent implements OnChanges {
     @Input() modificationUnit: ModificationUnit;
     @Input() claim: Claim;
+    @Output() claimChanged = new EventEmitter<void>();
 
     messages$ = defer(() => this.conversations$).pipe(pluck('conversations', 0, 'messages'));
     isLoading$ = inProgressFrom(() => this.progress$);

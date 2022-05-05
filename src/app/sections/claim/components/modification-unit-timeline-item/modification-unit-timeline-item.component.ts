@@ -5,7 +5,7 @@ import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_manageme
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
@@ -13,7 +13,8 @@ import { Patch } from '@cc/app/shared/components/json-viewer';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
 import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
-import { progressTo } from '@cc/utils';
+import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
+import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
@@ -35,6 +36,8 @@ export class ModificationUnitTimelineItemComponent {
     @Input() patches?: Patch[];
 
     @Output() claimChanged = new EventEmitter<void>();
+
+    isLoading$ = inProgressFrom(() => this.progress$);
 
     private progress$ = new BehaviorSubject(0);
 
@@ -91,13 +94,23 @@ export class ModificationUnitTimelineItemComponent {
                         this.claim.revision,
                         this.modificationUnit.modification_id
                     )
-                )
+                ),
+                switchMap(() =>
+                    this.dialog
+                        .open(ConfirmActionDialogComponent, {
+                            ...this.dialogConfig.medium,
+                            data: { title: 'Confirm deletion' },
+                        })
+                        .afterClosed()
+                ),
+                filter((result) => result === 'confirm'),
+                progressTo(this.progress$),
+                untilDestroyed(this)
             )
-
-            .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
                     this.notificationService.success();
+                    this.claimChanged.emit();
                 },
                 error: () => {
                     this.notificationService.error();
