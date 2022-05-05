@@ -35,4 +35,8 @@ export class ModificationUnitTimelineItemComponent {
     get hasModificationContent() {
         return !isEmpty(this.modification);
     }
+
+    update() {}
+
+    remove() {}
 }
