@@ -5,18 +5,18 @@
         [formControl]="control"
         [metadata]="metadata$ | async"
         [extensions]="extensions"
-        [disabled]="!!(progress$ | async)"
+        [disabled]="isLoading$ | async"
         namespace="claim_management"
         type="Modification"
     ></cc-metadata-form>
 
     <div fxLayout fxLayoutAlign="space-between">
-        <button mat-button (click)="cancel()" [disabled]="!!(progress$ | async)">CANCEL</button>
+        <button mat-button (click)="cancel()" [disabled]="isLoading$ | async">CANCEL</button>
         <button
             mat-button
             color="primary"
             (click)="add()"
-            [disabled]="control.invalid || !!(progress$ | async)"
+            [disabled]="control.invalid || (isLoading$ | async)"
         >
             ADD
         </button>

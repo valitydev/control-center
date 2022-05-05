@@ -11,7 +11,7 @@ import uuid from 'uuid';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { getByType, MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { progressTo } from '@cc/utils';
+import { inProgressFrom, progressTo } from '@cc/utils';
 
 function createPartyOptions(values: IterableIterator<{ id: string }>) {
     return Array.from(values).map((value) => ({
@@ -112,7 +112,9 @@ export class AddModificationDialogComponent {
             extension: () => of({ generate }),
         },
     ];
-    progress$ = new BehaviorSubject(0);
+    isLoading$ = inProgressFrom(() => this.progress$);
+
+    private progress$ = new BehaviorSubject(0);
 
     constructor(
         private fb: FormBuilder,
