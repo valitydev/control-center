@@ -28,9 +28,6 @@ export class UnionFieldComponent
     internalControl = new FormControl<unknown>();
 
     ngOnInit() {
-        this.fieldControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
-            this.cleanInternal();
-        });
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)
             .pipe(
                 map(() => {
@@ -63,7 +60,7 @@ export class UnionFieldComponent
         }
     }
 
-    private cleanInternal() {
+    cleanInternal() {
         this.internalControl.reset(
             this.fieldControl.value
                 ? getDefaultValue(

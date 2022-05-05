@@ -59,8 +59,8 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
      * Parent who is not typedef
      */
     get trueParent() {
-        let data: MetadataFormData = this as MetadataFormData;
-        while (data.parent?.objectType === 'typedef') {
+        let data: MetadataFormData = this.parent;
+        while (data.objectType === 'typedef') {
             data = data.parent;
         }
         return data;

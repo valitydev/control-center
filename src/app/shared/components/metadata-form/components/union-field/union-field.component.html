@@ -1,7 +1,11 @@
 <div gdColumns="1fr" gdGap="16px">
     <mat-form-field style="width: 100%">
         <mat-label>{{ data.field?.name || data.type | keyTitle | titlecase }}</mat-label>
-        <mat-select [formControl]="fieldControl" [required]="data.field?.option === 'required'">
+        <mat-select
+            [formControl]="fieldControl"
+            (ngModelChange)="cleanInternal()"
+            [required]="data.field?.option === 'required'"
+        >
             <mat-option *ngFor="let field of data.ast" [value]="field">{{
                 field.name | keyTitle | titlecase
             }}</mat-option>

@@ -1,8 +1,8 @@
-import { Component, Injector, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
 import { FormBuilder, FormControl } from '@ngneat/reactive-forms';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { WrappedControlSuperclass } from '@s-libs/ng-core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
 
 import { createValidatedAbstractControlProviders } from '@cc/utils';
@@ -16,29 +16,58 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     providers: createValidatedAbstractControlProviders(StructFormComponent),
 })
 export class StructFormComponent
-    extends WrappedControlSuperclass<{ [N in string]: unknown }>
-    implements OnChanges, Validator
+    extends FormComponentSuperclass<{ [N in string]: unknown }>
+    implements OnChanges, Validator, OnInit
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
     control = this.fb.group<{ [N in string]: unknown }>({});
+    labelControl = this.fb.control(false);
 
     get hasLabel() {
-        return this.data.trueParent?.objectType !== 'union' && this.data.field;
+        return (
+            (this.data.trueParent?.objectType !== 'union' && this.data.field) ||
+            this.data.field?.option !== 'required'
+        );
     }
 
     constructor(injector: Injector, private fb: FormBuilder) {
         super(injector);
     }
 
+    ngOnInit() {
+        this.control.valueChanges
+            .pipe(untilDestroyed(this))
+            .subscribe((value) => this.emitOutgoingValue(value));
+        this.labelControl.valueChanges
+            .pipe(untilDestroyed(this))
+            .subscribe((value) => this.emitOutgoingValue(value ? this.control.value : {}));
+    }
+
     ngOnChanges(changes: SimpleChanges) {
-        super.ngOnChanges(changes);
         const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
         Object.keys(this.control.controls).forEach((name) => {
             if (newControlsNames.has(name)) newControlsNames.delete(name);
             else this.control.removeControl(name);
         });
         newControlsNames.forEach((name) => this.control.addControl(name, new FormControl()));
+
+        if (this.data.field?.option === 'required') {
+            this.labelControl.setValue(true);
+            this.labelControl.disable();
+        } else {
+            this.labelControl.setValue(false);
+            this.labelControl.enable();
+        }
+
+        super.ngOnChanges(changes);
+    }
+
+    handleIncomingValue(value: { [N in string]: unknown }) {
+        this.control.patchValue(value, { emitEvent: false });
+        if (Object.keys(value)) {
+            this.labelControl.setValue(true);
+        }
     }
 
     validate(): ValidationErrors | null {

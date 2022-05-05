@@ -72,7 +72,11 @@ export class ModificationUnitTimelineItemComponent {
                     this.dialog
                         .open(AddModificationDialogComponent, {
                             ...this.dialogConfig.large,
-                            data: { party, claim: this.claim },
+                            data: {
+                                party,
+                                claim: this.claim,
+                                modificationUnit: this.modificationUnit,
+                            },
                         })
                         .afterClosed()
                 ),
@@ -84,9 +88,15 @@ export class ModificationUnitTimelineItemComponent {
     }
 
     remove() {
-        this.partyManagementWithUserService
-            .getParty(this.claim.party_id)
+        this.dialog
+            .open(ConfirmActionDialogComponent, {
+                ...this.dialogConfig.medium,
+                data: { title: 'Confirm deletion' },
+            })
+            .afterClosed()
             .pipe(
+                filter((result) => result === 'confirm'),
+                switchMap(() => this.partyManagementWithUserService.getParty(this.claim.party_id)),
                 switchMap((party) =>
                     this.claimManagementService.RemoveModification(
                         party.id,
@@ -95,15 +105,6 @@ export class ModificationUnitTimelineItemComponent {
                         this.modificationUnit.modification_id
                     )
                 ),
-                switchMap(() =>
-                    this.dialog
-                        .open(ConfirmActionDialogComponent, {
-                            ...this.dialogConfig.medium,
-                            data: { title: 'Confirm deletion' },
-                        })
-                        .afterClosed()
-                ),
-                filter((result) => result === 'confirm'),
                 progressTo(this.progress$),
                 untilDestroyed(this)
             )

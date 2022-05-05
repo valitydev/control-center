@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Claim, Modification } from '@vality/domain-proto/lib/claim_management';
+import { Claim, Modification, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
 import uniqBy from 'lodash-es/uniqBy';
 import { BehaviorSubject, from, of } from 'rxjs';
@@ -42,7 +42,7 @@ function generate() {
     templateUrl: './add-modification-dialog.component.html',
 })
 export class AddModificationDialogComponent {
-    control = this.fb.control<Modification>(null);
+    control = this.fb.control<Modification>(this.dialogData.modificationUnit?.modification || null);
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[] = [
         {
@@ -114,13 +114,17 @@ export class AddModificationDialogComponent {
     ];
     isLoading$ = inProgressFrom(() => this.progress$);
 
+    get isUpdate() {
+        return !!this.dialogData.modificationUnit;
+    }
+
     private progress$ = new BehaviorSubject(0);
 
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddModificationDialogComponent>,
         @Inject(MAT_DIALOG_DATA)
-        private dialogData: { party: Party; claim: Claim },
+        private dialogData: { party: Party; claim: Claim; modificationUnit?: ModificationUnit },
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService
     ) {}
@@ -132,6 +136,28 @@ export class AddModificationDialogComponent {
                 this.dialogData.claim.id,
                 this.dialogData.claim.revision,
                 [this.control.value]
+            )
+            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success('Modification added successfully');
+                    this.dialogRef.close('success');
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.notificationService.error('Error adding modification');
+                },
+            });
+    }
+
+    update() {
+        this.claimManagementService
+            .UpdateModification(
+                this.dialogData.party.id,
+                this.dialogData.claim.id,
+                this.dialogData.claim.revision,
+                this.dialogData.modificationUnit.modification_id,
+                this.control.value
             )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
