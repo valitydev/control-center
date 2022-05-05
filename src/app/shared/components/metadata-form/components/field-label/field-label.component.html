@@ -1,0 +1,7 @@
+<ng-container *ngIf="data">
+    {{
+        data.field
+            ? (data.field.name | keyTitle | titlecase)
+            : (data.trueParent.type | valueTypeTitle | titlecase)
+    }}
+</ng-container>

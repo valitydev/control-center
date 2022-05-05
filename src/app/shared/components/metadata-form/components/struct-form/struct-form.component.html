@@ -1,7 +1,5 @@
-<div gdColumns="1fr" gdGap="16px" style="padding-left: 16px">
-    <div *ngIf="hasLabel" class="cc-body-1">
-        {{ data.field?.name | keyTitle | titlecase }}
-    </div>
+<div *ngIf="hasLabel && data.ast.length" gdColumns="1fr" gdGap="16px" style="padding-left: 16px">
+    <cc-field-label *ngIf="hasLabel" class="cc-body-1" [data]="data"></cc-field-label>
     <cc-metadata-form
         *ngFor="let field of data.ast"
         [formControl]="control.get(field.name)"

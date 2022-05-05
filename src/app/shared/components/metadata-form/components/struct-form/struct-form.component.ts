@@ -23,6 +23,10 @@ export class StructFormComponent
 
     control = this.fb.group<{ [N in string]: unknown }>({});
 
+    get hasLabel() {
+        return this.data.trueParent?.objectType !== 'union' && this.data.field;
+    }
+
     constructor(injector: Injector, private fb: FormBuilder) {
         super(injector);
     }
@@ -39,13 +43,5 @@ export class StructFormComponent
 
     validate(): ValidationErrors | null {
         return this.control.invalid ? { invalid: true } : null;
-    }
-
-    get hasLabel() {
-        let parent: MetadataFormData = this.data.parent;
-        while (parent?.objectType === 'typedef') {
-            parent = parent?.parent;
-        }
-        return parent?.objectType !== 'union' && this.data.field;
     }
 }
