@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutGap="32px">
+    <div class="cc-headline">Add modification unit</div>
+
+    <cc-metadata-form
+        [formControl]="control"
+        [metadata]="metadata$ | async"
+        [extensions]="extensions"
+        [disabled]="!!(progress$ | async)"
+        namespace="claim_management"
+        type="Modification"
+    ></cc-metadata-form>
+
+    <div fxLayout fxLayoutAlign="space-between">
+        <button mat-button (click)="cancel()" [disabled]="!!(progress$ | async)">CANCEL</button>
+        <button
+            mat-button
+            color="primary"
+            (click)="add()"
+            [disabled]="control.invalid || !!(progress$ | async)"
+        >
+            ADD
+        </button>
+    </div>
+</div>

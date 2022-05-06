@@ -1,0 +1,51 @@
+<div gdColumns="1fr" gdGap="16px">
+    <span class="cc-body-2"
+        >{{ data.field?.name | keyTitle | titlecase }} ({{ data.type.name | titlecase }})</span
+    >
+    <mat-accordion>
+        <mat-expansion-panel
+            class="mat-elevation-z0"
+            *ngFor="let control of controls.controls; let i = index"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title fxLayoutAlign=" center">
+                    {{ i + 1 }}.
+                    {{
+                        data.type.name === 'map'
+                            ? (data.type.keyType | valueTypeTitle | titlecase) + ' - '
+                            : ''
+                    }}
+                    {{ data.type.valueType | valueTypeTitle | titlecase }}
+                </mat-panel-title>
+                <mat-panel-description fxLayoutAlign="end">
+                    <button mat-icon-button (click)="delete(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div gdColumns="1fr" gdGap="16px">
+                <ng-container *ngIf="data.type.name === 'map'">
+                    <span class="cc-body-2">Key</span>
+                    <cc-metadata-form
+                        [metadata]="data.metadata"
+                        [namespace]="data.namespace"
+                        [type]="data.type.keyType"
+                        [parent]="data"
+                        [extensions]="data.extensions"
+                    ></cc-metadata-form>
+                </ng-container>
+                <span class="cc-body-2" *ngIf="data.type.name === 'map'">Value</span>
+                <cc-metadata-form
+                    [metadata]="data.metadata"
+                    [namespace]="data.namespace"
+                    [type]="data.type.valueType"
+                    [parent]="data"
+                    [extensions]="data.extensions"
+                ></cc-metadata-form>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <button mat-button (click)="add()">
+        ADD {{ data.type.valueType | valueTypeTitle | uppercase }}
+    </button>
+</div>

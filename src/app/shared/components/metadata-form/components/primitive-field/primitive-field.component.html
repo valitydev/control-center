@@ -1,0 +1,54 @@
+<div gdColumns="1fr" gdGap="16px">
+    <div fxLayoutGap="4px">
+        <mat-form-field fxFlex>
+            <mat-label>{{
+                data.field
+                    ? (data.field.name | keyTitle | titlecase)
+                    : (data.typedefData.type | valueTypeTitle | titlecase)
+            }}</mat-label>
+            <input
+                matInput
+                [matAutocomplete]="auto"
+                #trigger="matAutocompleteTrigger"
+                [formControl]="control"
+                [required]="data.field?.option === 'required'"
+            />
+            <div matSuffix fxLayoutGap="4px">
+                <button mat-icon-button *ngIf="control.value" (click)="clear($event)">
+                    <mat-icon>clear</mat-icon>
+                </button>
+                <button
+                    *ngIf="(extensionResult$ | async)?.options?.length"
+                    mat-icon-button
+                    (click)="
+                        auto.isOpen ? trigger.closePanel() : trigger.openPanel();
+                        $event.stopPropagation()
+                    "
+                >
+                    <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+                </button>
+            </div>
+            <mat-autocomplete #auto="matAutocomplete">
+                <ng-container *ngIf="data.extensionResult$ | async as extensionResult">
+                    <mat-option
+                        *ngFor="let option of extensionResult.options"
+                        [value]="option.value"
+                    >
+                        {{ option.label || option.value }}
+                    </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+        </mat-form-field>
+        <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
+            <mat-icon>loop</mat-icon>
+        </button>
+    </div>
+    <ng-container *ngIf="selected$ | async as selected">
+        <mat-expansion-panel *ngIf="selected.details">
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{ selected.label }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <cc-json-viewer [json]="selected.details"></cc-json-viewer>
+        </mat-expansion-panel>
+    </ng-container>
+</div>

@@ -1,7 +1,11 @@
 <div fxLayout="column" fxLayoutGap="8px">
     <div class="cc-details-item-title mat-caption">{{ title }}</div>
-    <div class="mat-body-1">
-        <div #content class="cc-details-item-content"><ng-content></ng-content></div>
-        <div class="cc-details-item-content-empty" *ngIf="!content.innerHTML.length">-</div>
+    <div class="mat-body-1 cc-details-item-content">
+        <div #content>
+            <ng-content></ng-content>
+        </div>
+        <div class="cc-details-item-content-empty" *ngIf="isEmpty$ | async">
+            <mat-icon inline>hide_source</mat-icon>
+        </div>
     </div>
 </div>
