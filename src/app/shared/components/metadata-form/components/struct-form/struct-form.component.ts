@@ -4,6 +4,9 @@ import { FormBuilder, FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
+import isNil from 'lodash-es/isNil';
+import omitBy from 'lodash-es/omitBy';
+import { merge } from 'rxjs';
 
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
@@ -24,24 +27,14 @@ export class StructFormComponent
     control = this.fb.group<{ [N in string]: unknown }>({});
     labelControl = this.fb.control(false);
 
-    get hasLabel() {
-        return (
-            (this.data.trueParent?.objectType !== 'union' && this.data.field) ||
-            this.data.field?.option !== 'required'
-        );
-    }
-
     constructor(injector: Injector, private fb: FormBuilder) {
         super(injector);
     }
 
     ngOnInit() {
-        this.control.valueChanges
+        merge(this.control.valueChanges, this.labelControl.valueChanges)
             .pipe(untilDestroyed(this))
-            .subscribe((value) => this.emitOutgoingValue(value));
-        this.labelControl.valueChanges
-            .pipe(untilDestroyed(this))
-            .subscribe((value) => this.emitOutgoingValue(value ? this.control.value : {}));
+            .subscribe(() => this.update());
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -72,5 +65,9 @@ export class StructFormComponent
 
     validate(): ValidationErrors | null {
         return this.control.invalid ? { invalid: true } : null;
+    }
+
+    private update(value = this.control.value) {
+        return this.emitOutgoingValue(value && this.labelControl.value ? omitBy(value, isNil) : {});
     }
 }

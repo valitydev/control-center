@@ -130,13 +130,9 @@ export class AddModificationDialogComponent {
     ) {}
 
     add() {
+        const { party, claim } = this.dialogData;
         this.claimManagementService
-            .UpdateClaim(
-                this.dialogData.party.id,
-                this.dialogData.claim.id,
-                this.dialogData.claim.revision,
-                [this.control.value]
-            )
+            .UpdateClaim(party.id, claim.id, claim.revision, [this.control.value])
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
@@ -151,23 +147,24 @@ export class AddModificationDialogComponent {
     }
 
     update() {
+        const { party, claim, modificationUnit } = this.dialogData;
         this.claimManagementService
             .UpdateModification(
-                this.dialogData.party.id,
-                this.dialogData.claim.id,
-                this.dialogData.claim.revision,
-                this.dialogData.modificationUnit.modification_id,
+                party.id,
+                claim.id,
+                claim.revision,
+                modificationUnit.modification_id,
                 this.control.value
             )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
-                    this.notificationService.success('Modification added successfully');
+                    this.notificationService.success('Modification updated successfully');
                     this.dialogRef.close('success');
                 },
                 error: (err) => {
                     console.error(err);
-                    this.notificationService.error('Error adding modification');
+                    this.notificationService.error('Error updating modification');
                 },
             });
     }

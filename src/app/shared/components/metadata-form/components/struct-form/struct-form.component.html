@@ -1,5 +1,5 @@
-<div *ngIf="hasLabel || data.ast.length" gdColumns="1fr" gdGap="16px" style="padding-left: 16px">
-    <mat-checkbox *ngIf="hasLabel" [formControl]="labelControl">
+<div gdColumns="1fr" gdGap="16px" style="padding-left: 16px">
+    <mat-checkbox [formControl]="labelControl">
         <cc-field-label class="cc-body-1" [data]="data"></cc-field-label>
     </mat-checkbox>
     <ng-container *ngIf="labelControl.value">
