@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -48,7 +49,8 @@ function generate() {
 })
 export class AddModificationDialogComponent {
     control = this.fb.control<PartyModification | PartyModificationChange>(
-        this.dialogData.modificationUnit?.modification?.party_modification || null
+        this.dialogData.modificationUnit?.modification?.party_modification || null,
+        Validators.required
     );
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[] = [

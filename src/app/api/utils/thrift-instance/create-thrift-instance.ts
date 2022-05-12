@@ -24,7 +24,6 @@ export function createThriftInstance<V>(
     const internalCreateThriftInstance = (t: ValueType, v: V) =>
         createThriftInstance(metadata, instanceContext, namespace, t, v);
     if (isComplexType(type)) {
-        console.log(type.name, value);
         switch (type.name) {
             case 'map':
                 return new Map(

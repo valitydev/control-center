@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
+import { ValidationErrors, Validator, Validators } from '@angular/forms';
 import { FormBuilder, FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
@@ -43,7 +43,17 @@ export class StructFormComponent
             if (newControlsNames.has(name)) newControlsNames.delete(name);
             else this.control.removeControl(name);
         });
-        newControlsNames.forEach((name) => this.control.addControl(name, new FormControl()));
+        newControlsNames.forEach((name) =>
+            this.control.addControl(
+                name,
+                new FormControl(null, {
+                    validators:
+                        this.data.ast.find((f) => f.name === name)?.option === 'required'
+                            ? [Validators.required]
+                            : [],
+                })
+            )
+        );
 
         if (this.data.field?.option === 'required') {
             this.labelControl.setValue(true);
