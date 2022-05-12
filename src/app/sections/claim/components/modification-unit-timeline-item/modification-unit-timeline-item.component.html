@@ -14,7 +14,12 @@
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="update()" [disabled]="isLoading$ | async">
+                <button
+                    mat-menu-item
+                    (click)="update()"
+                    [disabled]="isLoading$ | async"
+                    *ngIf="isChangeable"
+                >
                     Update
                 </button>
                 <button mat-menu-item (click)="remove()" [disabled]="isLoading$ | async">

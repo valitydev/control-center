@@ -59,10 +59,13 @@
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-shop-modification-timeline-item>
-                        <ng-container
+                        <cc-modification-unit-timeline-item
                             *ngSwitchDefault
-                            [ngTemplateOutlet]="defaultTimelineItem"
-                        ></ng-container>
+                            [claim]="claim"
+                            [modificationUnit]="modificationUnit"
+                            (claimChanged)="reloadClaim()"
+                            isChangeable
+                        ></cc-modification-unit-timeline-item>
                     </ng-container>
                     <ng-container
                         *ngSwitchCase="'claim_modification'"
@@ -82,22 +85,13 @@
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-comment-modification-timeline-item>
-                        <ng-container
-                            *ngSwitchDefault
-                            [ngTemplateOutlet]="defaultTimelineItem"
-                        ></ng-container>
-                    </ng-container>
-                    <ng-container
-                        *ngSwitchDefault
-                        [ngTemplateOutlet]="defaultTimelineItem"
-                    ></ng-container>
-                    <ng-template #defaultTimelineItem>
                         <cc-modification-unit-timeline-item
+                            *ngSwitchDefault
                             [claim]="claim"
                             [modificationUnit]="modificationUnit"
                             (claimChanged)="reloadClaim()"
                         ></cc-modification-unit-timeline-item>
-                    </ng-template>
+                    </ng-container>
                 </ng-container>
             </cc-timeline>
         </ng-template>

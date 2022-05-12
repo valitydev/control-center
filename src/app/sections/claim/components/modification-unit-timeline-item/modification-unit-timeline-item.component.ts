@@ -30,6 +30,7 @@ export class ModificationUnitTimelineItemComponent {
     @Input() modificationUnit: ModificationUnit;
 
     @Input() @coerceBoolean isLoading: boolean = false;
+    @Input() @coerceBoolean isChangeable: boolean = false;
     @Input() title?: string;
     @Input() icon?: string;
     @Input() color?: StatusColor | Color;
