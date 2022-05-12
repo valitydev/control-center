@@ -13,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import { ngfModule } from 'angular-file';
 
 import { MetadataFormModule, StatusModule } from '@cc/app/shared/components';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
@@ -59,6 +60,7 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         MatInputModule,
         MetadataFormModule,
         MatMenuModule,
+        ngfModule,
     ],
 })
 export class ClaimModule {}

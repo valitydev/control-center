@@ -13,7 +13,7 @@ export class MessageService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            endpoint: '/v1/messages',
+            path: '/v1/messages',
             metadata: () =>
                 import('@vality/messages-proto/lib/metadata.json').then((m) => m.default),
             context,

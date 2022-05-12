@@ -1,20 +1,13 @@
 import { from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { KeycloakTokenInfoService } from '@cc/app/shared/services';
-
 import { ThriftConnector } from '../thrift-connector';
 import { createThriftInstance, thriftInstanceToObject } from '../thrift-instance';
 import { ThriftApiArgs } from './types/thrift-api-args';
 
 export class ThriftApi extends ThriftConnector {
     constructor(...[injector, options]: ThriftApiArgs) {
-        super(
-            injector.get(KeycloakTokenInfoService),
-            options.service,
-            options.endpoint,
-            options.deprecatedHeaders
-        );
+        super(injector, options);
         Object.assign(
             this,
             Object.fromEntries(

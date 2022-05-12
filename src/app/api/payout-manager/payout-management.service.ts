@@ -13,7 +13,7 @@ export class PayoutManagementService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service: PayoutManagement,
-            endpoint: '/payout/management',
+            path: '/payout/management',
             metadata: () =>
                 import('@vality/payout-manager-proto/lib/metadata.json').then((m) => m.default),
             context,

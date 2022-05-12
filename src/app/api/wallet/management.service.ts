@@ -10,7 +10,7 @@ export class ManagementService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service: Management,
-            endpoint: '/v1/wallet',
+            path: '/v1/wallet',
             metadata: () =>
                 import('@vality/fistful-proto/lib/metadata.json').then((m) => m.default),
             context,

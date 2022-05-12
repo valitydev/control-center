@@ -102,11 +102,13 @@
             </cc-timeline>
         </ng-template>
         <mat-card>
-            <mat-card-content fxLayoutGap="24px">
+            <mat-card-content fxLayout="row" fxLayoutGap="24px">
                 <button mat-button color="primary" (click)="addModification()">
-                    ADD MODIFICATION
+                    ADD PARTY MODIFICATION
                 </button>
-                <!--                <button mat-button>ATTACH FILE</button>-->
+                <div ngfSelect (filesChange)="attachFile($event)">
+                    <button mat-button color="primary">ATTACH FILE</button>
+                </div>
                 <!--                <button mat-button>CHANGE STATUS</button>-->
             </mat-card-content>
         </mat-card>

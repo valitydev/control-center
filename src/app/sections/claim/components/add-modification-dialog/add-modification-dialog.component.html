@@ -9,7 +9,7 @@
         [extensions]="extensions"
         [disabled]="isLoading$ | async"
         namespace="claim_management"
-        [type]="isUpdate ? 'ModificationChange' : 'Modification'"
+        [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
     ></cc-metadata-form>
 
     <div fxLayout fxLayoutAlign="space-between">

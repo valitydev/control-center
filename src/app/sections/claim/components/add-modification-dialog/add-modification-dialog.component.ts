@@ -2,7 +2,12 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Claim, Modification, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import {
+    Claim,
+    ModificationUnit,
+    PartyModification,
+    PartyModificationChange,
+} from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
 import uniqBy from 'lodash-es/uniqBy';
 import { BehaviorSubject, from, of } from 'rxjs';
@@ -42,7 +47,9 @@ function generate() {
     templateUrl: './add-modification-dialog.component.html',
 })
 export class AddModificationDialogComponent {
-    control = this.fb.control<Modification>(this.dialogData.modificationUnit?.modification || null);
+    control = this.fb.control<PartyModification | PartyModificationChange>(
+        this.dialogData.modificationUnit?.modification?.party_modification || null
+    );
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[] = [
         {
@@ -132,7 +139,9 @@ export class AddModificationDialogComponent {
     add() {
         const { party, claim } = this.dialogData;
         this.claimManagementService
-            .UpdateClaim(party.id, claim.id, claim.revision, [this.control.value])
+            .UpdateClaim(party.id, claim.id, claim.revision, [
+                { party_modification: this.control.value },
+            ])
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
@@ -154,7 +163,7 @@ export class AddModificationDialogComponent {
                 claim.id,
                 claim.revision,
                 modificationUnit.modification_id,
-                this.control.value
+                { party_modification: this.control.value }
             )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({

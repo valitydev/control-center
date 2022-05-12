@@ -16,6 +16,7 @@ import { shareReplay, catchError, map, first } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { UploadFileService } from '@cc/app/sections/claim/services/upload-file.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
 import { inProgressFrom, progressTo } from '@cc/utils';
@@ -28,6 +29,7 @@ import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
     selector: 'cc-claim',
     templateUrl: './claim.component.html',
     styleUrls: ['claim.component.scss'],
+    providers: [UploadFileService],
 })
 export class ClaimComponent {
     party$ = (this.route.params as Observable<Record<string, string>>).pipe(
@@ -72,7 +74,8 @@ export class ClaimComponent {
         private partyManagementWithUserService: PartyManagementWithUserService,
         private notificationService: NotificationService,
         private dialog: MatDialog,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
+        private uploadFileService: UploadFileService
     ) {}
 
     addModification() {
@@ -96,5 +99,26 @@ export class ClaimComponent {
 
     reloadClaim() {
         this.loadClaim$.next();
+    }
+
+    attachFile([file]: File[]) {
+        combineLatest([this.party$, this.claim$])
+            .pipe(
+                first(),
+                switchMap(([party, { id, revision }]) =>
+                    this.uploadFileService.upload(file, party.id, id, revision)
+                ),
+                untilDestroyed(this)
+            )
+            .subscribe({
+                next: () => {
+                    this.reloadClaim();
+                    this.notificationService.success('Uploaded successfully');
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.notificationService.error('Uploading error');
+                },
+            });
     }
 }
