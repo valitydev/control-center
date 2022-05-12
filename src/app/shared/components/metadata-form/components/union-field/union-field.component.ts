@@ -5,7 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
@@ -35,6 +35,7 @@ export class UnionFieldComponent
                     return field ? { [field.name]: this.internalControl.value } : null;
                 }),
                 distinctUntilChanged(),
+                delay(0),
                 untilDestroyed(this)
             )
             .subscribe((value) => {

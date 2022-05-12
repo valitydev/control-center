@@ -7,6 +7,7 @@ import { Field } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
@@ -33,7 +34,7 @@ export class StructFormComponent
 
     ngOnInit() {
         merge(this.control.valueChanges, this.labelControl.valueChanges)
-            .pipe(untilDestroyed(this))
+            .pipe(delay(0), untilDestroyed(this))
             .subscribe(() => this.update());
     }
 

@@ -7,7 +7,6 @@
         [formControl]="control"
         [metadata]="metadata$ | async"
         [extensions]="extensions"
-        [disabled]="isLoading$ | async"
         namespace="claim_management"
         [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
     ></cc-metadata-form>
