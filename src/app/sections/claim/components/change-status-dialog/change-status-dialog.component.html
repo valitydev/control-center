@@ -16,7 +16,7 @@
             <input
                 aria-label="reason"
                 matInput
-                required="true"
+                required
                 formControlName="denyReason"
                 placeholder="Reason"
                 [disabled]="inProgress$ | async"
@@ -24,7 +24,7 @@
         </mat-form-field>
         <mat-form-field *ngIf="form.value.status === 'revoked'">
             <mat-label>Reason</mat-label>
-            <mat-select formControlName="revokeReason" [disabled]="inProgress$ | async">
+            <mat-select formControlName="revokeReason" [disabled]="inProgress$ | async" required>
                 <!-- TODO: It's necessary to hardcode reasons (backend issue) -->
                 <mat-option
                     *ngFor="

@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -18,7 +19,7 @@ import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 export class ChangeStatusDialogComponent {
     form = this.fb.group<{ status: keyof ClaimStatus; revokeReason?: string; denyReason?: string }>(
         {
-            status: null,
+            status: [null, Validators.required],
             revokeReason: null,
             denyReason: null,
         }
