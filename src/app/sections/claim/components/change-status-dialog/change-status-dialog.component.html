@@ -1,0 +1,58 @@
+<div class="mat-dialog-title">Change claim status</div>
+<mat-dialog-content>
+    <div gdColumns="1fr" gdGap="16px" [formGroup]="form">
+        <mat-form-field>
+            <mat-select
+                placeholder="Status"
+                formControlName="status"
+                [disabled]="inProgress$ | async"
+            >
+                <mat-option *ngFor="let status of statuses" [value]="status">{{
+                    status | keyTitle | titlecase
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="form.value.status === 'denied'">
+            <input
+                aria-label="reason"
+                matInput
+                required="true"
+                formControlName="denyReason"
+                placeholder="Reason"
+                [disabled]="inProgress$ | async"
+            />
+        </mat-form-field>
+        <mat-form-field *ngIf="form.value.status === 'revoked'">
+            <mat-label>Reason</mat-label>
+            <mat-select formControlName="revokeReason" [disabled]="inProgress$ | async">
+                <!-- TODO: It's necessary to hardcode reasons (backend issue) -->
+                <mat-option
+                    *ngFor="
+                        let reason of [
+                            'Длительное ожидание подключения',
+                            'Не устраивает комиссия',
+                            'Большой пакет документов',
+                            'Не подходит продукт',
+                            'Нет сплитов'
+                        ]
+                    "
+                    [value]="reason"
+                >
+                    {{ reason }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout fxLayoutAlign="space-between">
+    <button [disabled]="inProgress$ | async" mat-button [mat-dialog-close]="false">CANCEL</button>
+    <button
+        mat-button
+        [disabled]="form.invalid || (inProgress$ | async)"
+        color="primary"
+        (click)="confirm()"
+    >
+        CONFIRM
+    </button>
+    <mat-progress-bar *ngIf="inProgress$ | async" mode="indeterminate"></mat-progress-bar>
+</mat-dialog-actions>

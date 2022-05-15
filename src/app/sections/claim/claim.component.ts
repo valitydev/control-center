@@ -16,10 +16,12 @@ import { shareReplay, catchError, map, first } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { ChangeStatusDialogComponent } from '@cc/app/sections/claim/components/change-status-dialog/change-status-dialog.component';
+import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
 import { UploadFileService } from '@cc/app/sections/claim/services/upload-file.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
-import { inProgressFrom, progressTo } from '@cc/utils';
+import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
@@ -62,6 +64,14 @@ export class ClaimComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+    isAllowedChangeStatus$ = this.claim$.pipe(
+        map(
+            (claim) =>
+                !!this.allowedClaimStatusesService.getAllowedStatuses(getUnionKey(claim.status))
+                    .length
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
     isLoading$ = inProgressFrom(() => this.progress$, merge(this.claim$, this.party$));
     statusColor = CLAIM_STATUS_COLOR;
 
@@ -75,8 +85,13 @@ export class ClaimComponent {
         private notificationService: NotificationService,
         private dialog: MatDialog,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
-        private uploadFileService: UploadFileService
+        private uploadFileService: UploadFileService,
+        private allowedClaimStatusesService: AllowedClaimStatusesService
     ) {}
+
+    reloadClaim() {
+        this.loadClaim$.next();
+    }
 
     addModification() {
         combineLatest([this.party$, this.claim$])
@@ -96,11 +111,6 @@ export class ClaimComponent {
                 if (result === 'success') this.reloadClaim();
             });
     }
-
-    reloadClaim() {
-        this.loadClaim$.next();
-    }
-
     attachFile([file]: File[]) {
         combineLatest([this.party$, this.claim$])
             .pipe(
@@ -119,6 +129,25 @@ export class ClaimComponent {
                     console.error(err);
                     this.notificationService.error('Uploading error');
                 },
+            });
+    }
+
+    changeStatus() {
+        combineLatest([this.party$, this.claim$])
+            .pipe(
+                first(),
+                switchMap(([party, claim]) =>
+                    this.dialog
+                        .open(ChangeStatusDialogComponent, {
+                            ...this.dialogConfig.medium,
+                            data: { partyID: party.id, claim },
+                        })
+                        .afterClosed()
+                ),
+                untilDestroyed(this)
+            )
+            .subscribe((result) => {
+                if (result === 'success') this.reloadClaim();
             });
     }
 }

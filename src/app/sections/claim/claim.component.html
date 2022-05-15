@@ -100,10 +100,18 @@
                 <button mat-button color="primary" (click)="addModification()">
                     ADD PARTY MODIFICATION
                 </button>
-                <div ngfSelect (filesChange)="attachFile($event)">
-                    <button mat-button color="primary">ATTACH FILE</button>
-                </div>
-                <!--                <button mat-button>CHANGE STATUS</button>-->
+                <!--                TODO fix uploading-->
+                <!--                <div ngfSelect (filesChange)="attachFile($event)">-->
+                <!--                    <button mat-button color="primary">ATTACH FILE</button>-->
+                <!--                </div>-->
+                <button
+                    mat-button
+                    color="primary"
+                    (click)="changeStatus()"
+                    [disabled]="(isAllowedChangeStatus$ | async) === false"
+                >
+                    CHANGE STATUS
+                </button>
             </mat-card-content>
         </mat-card>
     </div>
