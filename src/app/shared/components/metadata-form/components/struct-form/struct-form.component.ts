@@ -69,7 +69,7 @@ export class StructFormComponent
 
     handleIncomingValue(value: { [N in string]: unknown }) {
         this.control.patchValue(value, { emitEvent: false });
-        if (Object.keys(value)) {
+        if (value && Object.keys(value).length) {
             this.labelControl.setValue(true);
         }
     }
