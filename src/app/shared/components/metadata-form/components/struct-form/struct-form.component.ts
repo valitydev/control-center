@@ -75,7 +75,7 @@ export class StructFormComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.labelControl.value && this.control.invalid ? { invalid: true } : null;
     }
 
     private update(value = this.control.value) {
