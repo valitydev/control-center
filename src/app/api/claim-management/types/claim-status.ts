@@ -1,15 +1,15 @@
 import { ClaimStatus as ClaimStatusUnion } from '@vality/domain-proto/lib/claim_management';
 
-import { TuplifyUnion } from '@cc/utils';
+import { enumerate } from '@cc/utils';
 
-export const CLAIM_STATUSES: TuplifyUnion<keyof ClaimStatusUnion> = [
+export const CLAIM_STATUSES = enumerate<keyof ClaimStatusUnion>()(
     'pending',
     'review',
     'pending_acceptance',
     'accepted',
     'denied',
-    'revoked',
-];
+    'revoked'
+);
 
 /** @deprecated use CLAIM_STATUS - it checks for the occurrence of all elements */
 export enum ClaimStatus {
