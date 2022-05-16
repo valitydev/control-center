@@ -1,7 +1,1 @@
-<ng-container *ngIf="data">
-    {{
-        data.field
-            ? (data.field.name | keyTitle | titlecase)
-            : (data.type | valueTypeTitle | titlecase)
-    }}
-</ng-container>
+{{ field ? (field.name | keyTitle | titlecase) : (type | valueTypeTitle | titlecase) }}

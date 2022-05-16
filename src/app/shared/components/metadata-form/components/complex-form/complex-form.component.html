@@ -1,6 +1,8 @@
 <div gdColumns="1fr" gdGap="16px">
-    <span class="cc-body-2"
-        >{{ data.field?.name | keyTitle | titlecase }} ({{ data.type.name | titlecase }})</span
+    <span>
+        <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label> ({{
+            data.type.name | titlecase
+        }})</span
     >
     <mat-accordion>
         <mat-expansion-panel

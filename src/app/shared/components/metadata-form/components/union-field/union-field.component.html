@@ -1,14 +1,16 @@
 <div gdColumns="1fr" gdGap="16px">
     <mat-form-field style="width: 100%">
-        <mat-label><cc-field-label [data]="data"></cc-field-label></mat-label>
+        <mat-label>
+            <cc-field-label [field]="data.field" [type]="data.type"> </cc-field-label>
+        </mat-label>
         <mat-select
             [formControl]="fieldControl"
             (ngModelChange)="cleanInternal()"
             [required]="data.field?.option === 'required'"
         >
-            <mat-option *ngFor="let field of data.ast" [value]="field">{{
-                field.name | keyTitle | titlecase
-            }}</mat-option>
+            <mat-option *ngFor="let field of data.ast" [value]="field">
+                <cc-field-label [field]="field" [type]="field.type"></cc-field-label>
+            </mat-option>
         </mat-select>
         <button
             matSuffix

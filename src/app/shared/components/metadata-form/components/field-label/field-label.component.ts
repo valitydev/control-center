@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-
-import { MetadataFormData } from '@cc/app/shared';
+import { Field, ValueType } from '@vality/thrift-ts';
 
 @Component({
     selector: 'cc-field-label',
     templateUrl: './field-label.component.html',
 })
 export class FieldLabelComponent {
-    @Input() data: MetadataFormData;
+    @Input() type: ValueType;
+    @Input() field?: Field;
 }

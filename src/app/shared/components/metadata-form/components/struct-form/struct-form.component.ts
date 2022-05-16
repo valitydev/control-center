@@ -35,7 +35,13 @@ export class StructFormComponent
     ngOnInit() {
         merge(this.control.valueChanges, this.labelControl.valueChanges)
             .pipe(delay(0), untilDestroyed(this))
-            .subscribe(() => this.update());
+            .subscribe(() => {
+                this.emitOutgoingValue(
+                    this.control.value && this.labelControl.value
+                        ? omitBy(this.control.value, isNil)
+                        : {}
+                );
+            });
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -56,7 +62,10 @@ export class StructFormComponent
             )
         );
 
-        if (this.data.field?.option === 'required') {
+        if (
+            this.data.field?.option === 'required' ||
+            this.data.trueParent?.objectType === 'union'
+        ) {
             this.labelControl.setValue(true);
             this.labelControl.disable();
         } else {
@@ -69,16 +78,13 @@ export class StructFormComponent
 
     handleIncomingValue(value: { [N in string]: unknown }) {
         this.control.patchValue(value, { emitEvent: false });
-        if (value && Object.keys(value).length) {
-            this.labelControl.setValue(true);
+        const newValue = this.labelControl.disabled || !!(value && Object.keys(value).length);
+        if (this.labelControl.value !== newValue) {
+            this.labelControl.setValue(newValue);
         }
     }
 
     validate(): ValidationErrors | null {
         return this.labelControl.value && this.control.invalid ? { invalid: true } : null;
-    }
-
-    private update(value = this.control.value) {
-        return this.emitOutgoingValue(value && this.labelControl.value ? omitBy(value, isNil) : {});
     }
 }
