@@ -8,6 +8,7 @@ import { filter, first } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
 import { Patch } from '@cc/app/shared/components/json-viewer';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
@@ -18,7 +19,6 @@ import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
-import { getModificationNameParts } from './utils/get-modification-name';
 
 @UntilDestroy()
 @Component({
@@ -50,9 +50,7 @@ export class ModificationUnitTimelineItemComponent {
     ) {}
 
     get name() {
-        return getModificationNameParts(getUnionValue(this.modificationUnit.modification)).join(
-            ': '
-        );
+        return getModificationName(this.modificationUnit.modification);
     }
 
     get modification() {

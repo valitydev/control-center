@@ -4,7 +4,7 @@
     </cc-timeline-item-badge>
     <cc-timeline-item-title>
         <cc-timeline-item-header
-            [text]="title ?? 'added ' + (name | keyTitle)"
+            [text]="title ?? 'added ' + (modificationUnit.modification | ccUnionKey | keyTitle)"
             [username]="modificationUnit.user_info.username"
             [createdAt]="modificationUnit.created_at"
             [removed]="!!modificationUnit.removed_at"
