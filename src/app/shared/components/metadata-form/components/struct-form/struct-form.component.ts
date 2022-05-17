@@ -39,7 +39,7 @@ export class StructFormComponent
                 this.emitOutgoingValue(
                     this.control.value && this.labelControl.value
                         ? omitBy(this.control.value, isNil)
-                        : {}
+                        : null
                 );
             });
     }
