@@ -10,10 +10,14 @@ import { BaseDialogResponseStatus } from './types/base-dialog-response-status';
 })
 export class BaseDialogComponent {
     @Input() title: string;
+
     @coerceBoolean @Input() disabled = false;
-    @coerceBoolean @Input() hasDivider = true;
-    @coerceBoolean @Input() noActions = false;
     @coerceBoolean @Input() inProgress = false;
+
+    @coerceBoolean @Input() hasDivider = true;
+
+    @coerceBoolean @Input() noContent = false;
+    @coerceBoolean @Input() noActions = false;
 
     @Output() cancel = new EventEmitter<void>();
 

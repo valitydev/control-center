@@ -1,13 +1,6 @@
-<h2 class="mat-headline">{{ title }}</h2>
-<div
-    mat-dialog-actions
-    class="dialog-actions"
-    fxLayout="row"
-    fxLayout.xs="column"
-    fxLayoutAlign="space-between stretch"
-    fxLayoutGap="20px"
-    fxLayoutGap.xs="10px"
->
-    <button mat-button fxFlex fxFlex.xs="none" (click)="cancel()">CANCEL</button>
-    <button mat-button fxFlex fxFlex.xs="none" (click)="confirm()">CONFIRM</button>
-</div>
+<cc-base-dialog [title]="dialogData.title || 'Confirm this action'" noContent>
+    <cc-base-dialog-actions>
+        <button mat-button (click)="cancel()">CANCEL</button>
+        <button mat-raised-button color="primary" (click)="confirm()">CONFIRM</button>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

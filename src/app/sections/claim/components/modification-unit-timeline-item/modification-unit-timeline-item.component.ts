@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { coerceBoolean } from 'coerce-property';
@@ -13,6 +12,8 @@ import { Patch } from '@cc/app/shared/components/json-viewer';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
 import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
@@ -44,7 +45,7 @@ export class ModificationUnitTimelineItemComponent {
 
     constructor(
         private partyManagementWithUserService: PartyManagementWithUserService,
-        private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService
@@ -70,33 +71,27 @@ export class ModificationUnitTimelineItemComponent {
             .pipe(
                 first(),
                 switchMap((party) =>
-                    this.dialog
+                    this.baseDialogService
                         .open(AddModificationDialogComponent, {
-                            ...this.dialogConfig.large,
-                            data: {
-                                party,
-                                claim: this.claim,
-                                modificationUnit: this.modificationUnit,
-                            },
+                            party,
+                            claim: this.claim,
+                            modificationUnit: this.modificationUnit,
                         })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result === 'success') this.claimChanged.emit();
+                if (result.status === BaseDialogResponseStatus.Success) this.claimChanged.emit();
             });
     }
 
     remove() {
-        this.dialog
-            .open(ConfirmActionDialogComponent, {
-                ...this.dialogConfig.medium,
-                data: { title: 'Confirm deletion' },
-            })
+        this.baseDialogService
+            .open(ConfirmActionDialogComponent, { title: 'Confirm deletion' })
             .afterClosed()
             .pipe(
-                filter((result) => result === 'confirm'),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() => this.partyManagementWithUserService.getParty(this.claim.party_id)),
                 switchMap((party) =>
                     this.claimManagementService.RemoveModification(

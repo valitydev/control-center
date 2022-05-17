@@ -16,7 +16,7 @@ export class BaseDialogService {
 
     open<C, D, R, S>(
         dialogComponent: ComponentType<BaseDialogSuperclass<C, D, R, S>>,
-        data: D,
+        data: D = null,
         configOrConfigName: Omit<MatDialogConfig<D>, 'data'> | keyof DialogConfig = {}
     ): MatDialogRef<C, BaseDialogResponse<R, S>> {
         return this.dialog.open(dialogComponent as never, {

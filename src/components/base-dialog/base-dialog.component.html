@@ -10,14 +10,17 @@
         >
     </div>
 
-    <mat-divider *ngIf="hasDivider"></mat-divider>
-    <div class="base-dialog-content">
-        <ng-content></ng-content>
-    </div>
+    <ng-container *ngIf="!noContent">
+        <mat-divider *ngIf="hasDivider"></mat-divider>
+        <div class="base-dialog-content">
+            <ng-content></ng-content>
+        </div>
+    </ng-container>
+
     <mat-progress-bar *ngIf="inProgress" mode="indeterminate"></mat-progress-bar>
 
-    <mat-divider *ngIf="hasDivider"></mat-divider>
-    <cc-actions>
+    <ng-container *ngIf="!noActions">
+        <mat-divider *ngIf="hasDivider"></mat-divider>
         <ng-content select="cc-base-dialog-actions"></ng-content>
-    </cc-actions>
+    </ng-container>
 </div>

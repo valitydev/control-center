@@ -10,9 +10,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActionsModule } from '@cc/components/actions';
 
 import { BaseDialogComponent } from './base-dialog.component';
-import { BaseDialogActionsDirective } from './directives/base-dialog-actions/base-dialog-actions.directive';
+import { BaseDialogActionsComponent } from './components/base-dialog-actions/base-dialog-actions.component';
 
-const SHARED_DECLARATIONS = [BaseDialogComponent, BaseDialogActionsDirective];
+const SHARED_DECLARATIONS = [BaseDialogComponent, BaseDialogActionsComponent];
 
 @NgModule({
     imports: [

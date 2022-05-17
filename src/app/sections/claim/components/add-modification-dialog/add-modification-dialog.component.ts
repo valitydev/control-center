@@ -154,7 +154,7 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification added successfully');
-                    this.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
                 error: (err) => {
                     console.error(err);
@@ -177,7 +177,7 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification updated successfully');
-                    this.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
                 error: (err) => {
                     console.error(err);
@@ -187,6 +187,6 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
     }
 
     cancel() {
-        this.close({ status: BaseDialogResponseStatus.Cancelled });
+        this.dialogRef.close({ status: BaseDialogResponseStatus.Cancelled });
     }
 }

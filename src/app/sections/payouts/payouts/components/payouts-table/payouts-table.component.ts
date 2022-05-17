@@ -9,6 +9,8 @@ import { filter } from 'rxjs/operators';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { StatusColor } from '@cc/app/styles';
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { DIALOG_CONFIG, DialogConfig } from '../../../../../tokens';
@@ -39,6 +41,7 @@ export class PayoutsTableComponent {
         private router: Router,
         private payoutManagementService: PayoutManagementService,
         private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
         private notificationService: NotificationService
     ) {}
@@ -76,14 +79,11 @@ export class PayoutsTableComponent {
     }
 
     confirm(id: PayoutID) {
-        this.dialog
-            .open(ConfirmActionDialogComponent, {
-                ...this.dialogConfig.medium,
-                data: { title: 'Confirm payout' },
-            })
+        this.baseDialogService
+            .open(ConfirmActionDialogComponent, { title: 'Confirm payout' })
             .afterClosed()
             .pipe(
-                filter((res) => res === 'confirm'),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() => this.payoutManagementService.ConfirmPayout(id)),
                 untilDestroyed(this)
             )
