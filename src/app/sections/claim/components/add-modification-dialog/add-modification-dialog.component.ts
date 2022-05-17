@@ -1,8 +1,14 @@
 import { Component, Inject } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Claim, Modification } from '@vality/domain-proto/lib/claim_management';
+import {
+    Claim,
+    ModificationUnit,
+    PartyModification,
+    PartyModificationChange,
+} from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
 import uniqBy from 'lodash-es/uniqBy';
 import { BehaviorSubject, from, of } from 'rxjs';
@@ -11,7 +17,7 @@ import uuid from 'uuid';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { getByType, MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { progressTo } from '@cc/utils';
+import { inProgressFrom, progressTo } from '@cc/utils';
 
 function createPartyOptions(values: IterableIterator<{ id: string }>) {
     return Array.from(values).map((value) => ({
@@ -42,7 +48,10 @@ function generate() {
     templateUrl: './add-modification-dialog.component.html',
 })
 export class AddModificationDialogComponent {
-    control = this.fb.control<Modification>(null);
+    control = this.fb.control<PartyModification | PartyModificationChange>(
+        this.dialogData.modificationUnit?.modification?.party_modification || null,
+        Validators.required
+    );
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[] = [
         {
@@ -112,25 +121,29 @@ export class AddModificationDialogComponent {
             extension: () => of({ generate }),
         },
     ];
-    progress$ = new BehaviorSubject(0);
+    isLoading$ = inProgressFrom(() => this.progress$);
+
+    get isUpdate() {
+        return !!this.dialogData.modificationUnit;
+    }
+
+    private progress$ = new BehaviorSubject(0);
 
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddModificationDialogComponent>,
         @Inject(MAT_DIALOG_DATA)
-        private dialogData: { party: Party; claim: Claim },
+        private dialogData: { party: Party; claim: Claim; modificationUnit?: ModificationUnit },
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService
     ) {}
 
     add() {
+        const { party, claim } = this.dialogData;
         this.claimManagementService
-            .UpdateClaim(
-                this.dialogData.party.id,
-                this.dialogData.claim.id,
-                this.dialogData.claim.revision,
-                [this.control.value]
-            )
+            .UpdateClaim(party.id, claim.id, claim.revision, [
+                { party_modification: this.control.value },
+            ])
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
@@ -140,6 +153,29 @@ export class AddModificationDialogComponent {
                 error: (err) => {
                     console.error(err);
                     this.notificationService.error('Error adding modification');
+                },
+            });
+    }
+
+    update() {
+        const { party, claim, modificationUnit } = this.dialogData;
+        this.claimManagementService
+            .UpdateModification(
+                party.id,
+                claim.id,
+                claim.revision,
+                modificationUnit.modification_id,
+                { party_modification: this.control.value }
+            )
+            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .subscribe({
+                next: () => {
+                    this.notificationService.success('Modification updated successfully');
+                    this.dialogRef.close('success');
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.notificationService.error('Error updating modification');
                 },
             });
     }

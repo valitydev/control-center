@@ -13,7 +13,7 @@ export class MerchantStatisticsService extends createThriftApi<CodegenClient>() 
     constructor(injector: Injector) {
         super(injector, {
             service: ThriftMerchantStatisticsService,
-            endpoint: '/v3/stat',
+            path: '/v3/stat',
             metadata: () =>
                 import('@vality/magista-proto/lib/metadata.json').then((m) => m.default),
             context,

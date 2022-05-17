@@ -13,7 +13,7 @@ export class DominantCacheService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service: DominantCache,
-            endpoint: '/v1/dominant/cache',
+            path: '/v1/dominant/cache',
             metadata: () =>
                 import('@vality/dominant-cache-proto/lib/metadata.json').then((m) => m.default),
             context,

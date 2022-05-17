@@ -5,11 +5,12 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
+import { getDefaultValue } from '../../utils/get-default-value';
 
 @UntilDestroy()
 @Component({
@@ -27,9 +28,6 @@ export class UnionFieldComponent
     internalControl = new FormControl<unknown>();
 
     ngOnInit() {
-        this.fieldControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
-            this.internalControl.reset(null, { emitEvent: false });
-        });
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)
             .pipe(
                 map(() => {
@@ -37,6 +35,7 @@ export class UnionFieldComponent
                     return field ? { [field.name]: this.internalControl.value } : null;
                 }),
                 distinctUntilChanged(),
+                delay(0),
                 untilDestroyed(this)
             )
             .subscribe((value) => {
@@ -58,7 +57,20 @@ export class UnionFieldComponent
             this.internalControl.setValue(value[name], { emitEvent: false });
         } else {
             this.fieldControl.reset(null, { emitEvent: false });
-            this.internalControl.reset(null, { emitEvent: false });
+            this.cleanInternal();
         }
+    }
+
+    cleanInternal() {
+        this.internalControl.reset(
+            this.fieldControl.value
+                ? getDefaultValue(
+                      this.data.metadata,
+                      this.data.namespace,
+                      this.fieldControl.value.type
+                  )
+                : null,
+            { emitEvent: false }
+        );
     }
 }

@@ -1,24 +1,24 @@
-<div fxLayout="column" fxLayoutGap="32px">
-    <div class="cc-headline">Add modification unit</div>
-
+<div class="mat-dialog-title">
+    {{ isUpdate ? 'Update modification unit' : 'Add party modification unit ' }}
+</div>
+<mat-dialog-content>
     <cc-metadata-form
         [formControl]="control"
         [metadata]="metadata$ | async"
         [extensions]="extensions"
-        [disabled]="!!(progress$ | async)"
         namespace="claim_management"
-        type="Modification"
+        [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
     ></cc-metadata-form>
-
-    <div fxLayout fxLayoutAlign="space-between">
-        <button mat-button (click)="cancel()" [disabled]="!!(progress$ | async)">CANCEL</button>
-        <button
-            mat-button
-            color="primary"
-            (click)="add()"
-            [disabled]="control.invalid || !!(progress$ | async)"
-        >
-            ADD
-        </button>
-    </div>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout fxLayoutAlign="space-between">
+    <button mat-button (click)="cancel()" [disabled]="isLoading$ | async">CANCEL</button>
+    <button
+        mat-button
+        color="primary"
+        (click)="isUpdate ? update() : add()"
+        [disabled]="control.invalid || (isLoading$ | async)"
+    >
+        {{ isUpdate ? 'UPDATE' : 'ADD' }}
+    </button>
+    <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+</mat-dialog-actions>

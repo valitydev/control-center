@@ -9,6 +9,24 @@
             [createdAt]="modificationUnit.created_at"
             [removed]="!!modificationUnit.removed_at"
         ></cc-timeline-item-header>
+        <div>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button
+                    mat-menu-item
+                    (click)="update()"
+                    [disabled]="isLoading$ | async"
+                    *ngIf="isChangeable"
+                >
+                    Update
+                </button>
+                <button mat-menu-item (click)="remove()" [disabled]="isLoading$ | async">
+                    Remove
+                </button>
+            </mat-menu>
+        </div>
     </cc-timeline-item-title>
     <cc-timeline-item-content *ngIf="hasModificationContent">
         <cc-timeline-item-loading *ngIf="isLoading; else loaded"></cc-timeline-item-loading>

@@ -5,15 +5,18 @@ import { switchMap, first } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
 
-import { toConnectOptions, ThriftService } from './utils';
+import { ThriftApiArgs } from '../create-thrift-api/types/thrift-api-args';
+import { ThriftApiOptions } from '../create-thrift-api/types/thrift-api-options';
+import { toConnectOptions } from './utils';
 
 export class ThriftConnector {
-    constructor(
-        protected keycloakTokenInfoService: KeycloakTokenInfoService,
-        protected service: ThriftService,
-        protected endpoint: string,
-        protected deprecatedHeaders = false
-    ) {}
+    keycloakTokenInfoService: KeycloakTokenInfoService;
+    options: ThriftApiOptions;
+
+    constructor(...[injector, options]: ThriftApiArgs) {
+        this.keycloakTokenInfoService = injector.get(KeycloakTokenInfoService);
+        this.options = options;
+    }
 
     protected callThriftServiceMethod<T>(
         serviceMethodName: string,
@@ -31,11 +34,11 @@ export class ThriftConnector {
                              * TODO: Optimization option: add a connection pool.
                              */
                             const connection = connectClient(
-                                location.hostname,
-                                location.port,
-                                this.endpoint,
-                                this.service,
-                                toConnectOptions(token, this.deprecatedHeaders),
+                                this.options.hostname || location.hostname,
+                                this.options.port || location.port,
+                                this.options.path,
+                                this.options.service,
+                                toConnectOptions(token, this.options.deprecatedHeaders),
                                 (err) => {
                                     observer.error(err);
                                     observer.complete();

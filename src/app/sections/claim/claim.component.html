@@ -54,13 +54,18 @@
                     >
                         <cc-shop-modification-timeline-item
                             *ngSwitchCase="'shop_modification'"
+                            [claim]="claim"
+                            (claimChanged)="reloadClaim()"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-shop-modification-timeline-item>
-                        <ng-container
+                        <cc-modification-unit-timeline-item
                             *ngSwitchDefault
-                            [ngTemplateOutlet]="defaultTimelineItem"
-                        ></ng-container>
+                            [claim]="claim"
+                            [modificationUnit]="modificationUnit"
+                            (claimChanged)="reloadClaim()"
+                            isChangeable
+                        ></cc-modification-unit-timeline-item>
                     </ng-container>
                     <ng-container
                         *ngSwitchCase="'claim_modification'"
@@ -68,38 +73,45 @@
                     >
                         <cc-status-modification-timeline-item
                             *ngSwitchCase="'status_modification'"
+                            [claim]="claim"
+                            (claimChanged)="reloadClaim()"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-status-modification-timeline-item>
                         <cc-comment-modification-timeline-item
                             *ngSwitchCase="'comment_modification'"
+                            [claim]="claim"
+                            (claimChanged)="reloadClaim()"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-comment-modification-timeline-item>
-                        <ng-container
-                            *ngSwitchDefault
-                            [ngTemplateOutlet]="defaultTimelineItem"
-                        ></ng-container>
-                    </ng-container>
-                    <ng-container
-                        *ngSwitchDefault
-                        [ngTemplateOutlet]="defaultTimelineItem"
-                    ></ng-container>
-                    <ng-template #defaultTimelineItem>
                         <cc-modification-unit-timeline-item
+                            *ngSwitchDefault
+                            [claim]="claim"
                             [modificationUnit]="modificationUnit"
+                            (claimChanged)="reloadClaim()"
                         ></cc-modification-unit-timeline-item>
-                    </ng-template>
+                    </ng-container>
                 </ng-container>
             </cc-timeline>
         </ng-template>
         <mat-card>
-            <mat-card-content fxLayoutGap="24px">
+            <mat-card-content fxLayout="row" fxLayoutGap="24px">
                 <button mat-button color="primary" (click)="addModification()">
-                    ADD MODIFICATION
+                    ADD PARTY MODIFICATION
                 </button>
-                <!--                <button mat-button>ATTACH FILE</button>-->
-                <!--                <button mat-button>CHANGE STATUS</button>-->
+                <!--                TODO fix uploading-->
+                <!--                <div ngfSelect (filesChange)="attachFile($event)">-->
+                <!--                    <button mat-button color="primary">ATTACH FILE</button>-->
+                <!--                </div>-->
+                <button
+                    mat-button
+                    color="primary"
+                    (click)="changeStatus()"
+                    [disabled]="(isAllowedChangeStatus$ | async) === false"
+                >
+                    CHANGE STATUS
+                </button>
             </mat-card-content>
         </mat-card>
     </div>
