@@ -44,6 +44,9 @@
                 <button mat-menu-item (click)="navigateToClaim(claim.party_id, claim.id)">
                     Details
                 </button>
+                <button mat-menu-item (click)="navigateToNewClaim(claim.party_id, claim.id)">
+                    New details
+                </button>
                 <!-- FR-688 
                     <button mat-menu-item (click)="navigateToClaimDeprecated(claim.party_id, claim.id)">
                     Deprecated details

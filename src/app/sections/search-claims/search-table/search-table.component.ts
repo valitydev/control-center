@@ -30,4 +30,8 @@ export class SearchTableComponent {
     navigateToClaim(partyId: string, claimID: number) {
         this.router.navigate([`/party/${partyId}/claim/${claimID}`]);
     }
+
+    navigateToNewClaim(partyId: string, claimID: number) {
+        this.router.navigate([`/party/${partyId}/claim/${claimID}/new`]);
+    }
 }
