@@ -2,13 +2,12 @@
     [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
     [inProgress]="isLoading$ | async"
 >
-    <cc-metadata-form
+    <cc-modification-form
         [formControl]="control"
-        [metadata]="metadata$ | async"
-        [extensions]="extensions"
-        namespace="claim_management"
+        [party]="dialogData.party"
+        [claim]="dialogData.claim"
         [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
-    ></cc-metadata-form>
+    ></cc-modification-form>
     <cc-base-dialog-actions>
         <button
             mat-raised-button

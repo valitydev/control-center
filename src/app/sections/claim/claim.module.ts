@@ -33,6 +33,7 @@ import { CommentModificationTimelineItemComponent } from './components/comment-m
 import { ModificationUnitTimelineItemComponent } from './components/modification-unit-timeline-item/modification-unit-timeline-item.component';
 import { ShopModificationTimelineItemComponent } from './components/shop-modification-timeline-item/shop-modification-timeline-item.component';
 import { StatusModificationTimelineItemComponent } from './components/status-modification-timeline-item/status-modification-timeline-item.component';
+import { ModificationFormComponent } from './components/modification-form/modification-form.component';
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         ShopModificationTimelineItemComponent,
         AddModificationDialogComponent,
         ChangeStatusDialogComponent,
+        ModificationFormComponent,
     ],
     imports: [
         CommonModule,
