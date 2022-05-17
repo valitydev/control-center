@@ -20,6 +20,8 @@ import { ngfModule } from 'angular-file';
 import { MetadataFormModule, StatusModule } from '@cc/app/shared/components';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
+import { ActionsModule } from '@cc/components/actions';
+import { BaseDialogModule } from '@cc/components/base-dialog';
 import { TimelineModule } from '@cc/components/timeline';
 
 import { TimelineComponentsModule } from '../party-claim/changeset/timeline-components';
@@ -67,6 +69,8 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         ngfModule,
         MatDialogModule,
         MatProgressBarModule,
+        BaseDialogModule,
+        ActionsModule,
     ],
 })
 export class ClaimModule {}

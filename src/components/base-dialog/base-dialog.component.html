@@ -1,0 +1,23 @@
+<div class="base-dialog" fxLayout="column" fxLayoutGap="24px" fxFlex="grow">
+    <div class="base-dialog-title" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="cc-headline">{{ title }}</div>
+        <mat-icon
+            class="base-dialog-title-close"
+            inline
+            (click)="cancelDialog()"
+            [matDialogClose]="cancelData"
+            >clear</mat-icon
+        >
+    </div>
+
+    <mat-divider *ngIf="hasDivider"></mat-divider>
+    <div class="base-dialog-content">
+        <ng-content></ng-content>
+    </div>
+    <mat-progress-bar *ngIf="inProgress" mode="indeterminate"></mat-progress-bar>
+
+    <mat-divider *ngIf="hasDivider"></mat-divider>
+    <cc-actions>
+        <ng-content select="cc-base-dialog-actions"></ng-content>
+    </cc-actions>
+</div>

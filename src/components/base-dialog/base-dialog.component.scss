@@ -1,0 +1,45 @@
+$base-padding: 24px;
+$max-height-mobile: 100vh;
+$max-height-desktop: 90vh;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.base-dialog {
+    max-height: calc(#{$max-height-desktop} - #{$base-padding * 2}) !important;
+
+    @media screen and (max-width: 959px) {
+        max-height: calc(#{$max-height-mobile} - #{$base-padding * 2}) !important;
+    }
+
+    mat-divider {
+        // to remove visually padding
+        margin-left: -24px;
+        margin-right: -24px;
+    }
+
+    &-title {
+        &-close {
+            cursor: pointer;
+            font-size: 24px;
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &-content {
+        // instead of flex="grow". Don't need wrong rule "max-height": 100% to support scroll content
+        flex: 1 1 100%;
+        box-sizing: border-box;
+        // to make right visual padding
+        margin: 0 -24px;
+        padding: 0 24px;
+        overflow: auto;
+    }
+}

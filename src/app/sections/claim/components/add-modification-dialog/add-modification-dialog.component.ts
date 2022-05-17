@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
@@ -17,6 +16,8 @@ import uuid from 'uuid';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { getByType, MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { DEFAULT_DIALOG_CONFIG } from '@cc/app/tokens';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
 function createPartyOptions(values: IterableIterator<{ id: string }>) {
@@ -47,7 +48,12 @@ function generate() {
     selector: 'cc-add-modification-dialog',
     templateUrl: './add-modification-dialog.component.html',
 })
-export class AddModificationDialogComponent {
+export class AddModificationDialogComponent extends BaseDialogSuperclass<
+    AddModificationDialogComponent,
+    { party: Party; claim: Claim; modificationUnit?: ModificationUnit }
+> {
+    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+
     control = this.fb.control<PartyModification | PartyModificationChange>(
         this.dialogData.modificationUnit?.modification?.party_modification || null,
         Validators.required
@@ -130,13 +136,13 @@ export class AddModificationDialogComponent {
     private progress$ = new BehaviorSubject(0);
 
     constructor(
+        injector: Injector,
         private fb: FormBuilder,
-        private dialogRef: MatDialogRef<AddModificationDialogComponent>,
-        @Inject(MAT_DIALOG_DATA)
-        private dialogData: { party: Party; claim: Claim; modificationUnit?: ModificationUnit },
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService
-    ) {}
+    ) {
+        super(injector);
+    }
 
     add() {
         const { party, claim } = this.dialogData;
@@ -148,7 +154,7 @@ export class AddModificationDialogComponent {
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification added successfully');
-                    this.dialogRef.close('success');
+                    this.close({ status: BaseDialogResponseStatus.Success });
                 },
                 error: (err) => {
                     console.error(err);
@@ -171,7 +177,7 @@ export class AddModificationDialogComponent {
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification updated successfully');
-                    this.dialogRef.close('success');
+                    this.close({ status: BaseDialogResponseStatus.Success });
                 },
                 error: (err) => {
                     console.error(err);
@@ -181,6 +187,6 @@ export class AddModificationDialogComponent {
     }
 
     cancel() {
-        this.dialogRef.close();
+        this.close({ status: BaseDialogResponseStatus.Cancelled });
     }
 }
