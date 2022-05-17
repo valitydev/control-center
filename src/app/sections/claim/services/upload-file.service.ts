@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import moment from 'moment';
 import { switchMap } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -7,7 +7,6 @@ import { filter, map } from 'rxjs/operators';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { FileStorageService } from '@cc/app/api/file-storage';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
 import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
@@ -17,7 +16,6 @@ export class UploadFileService {
     constructor(
         private notificationService: NotificationService,
         private baseDialogService: BaseDialogService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
         private fileStorageService: FileStorageService,
         private http: HttpClient,
         private claimManagementService: ClaimManagementService

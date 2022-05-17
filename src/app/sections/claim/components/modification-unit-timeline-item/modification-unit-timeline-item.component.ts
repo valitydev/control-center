@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
 import { coerceBoolean } from 'coerce-property';
@@ -11,7 +11,6 @@ import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { Patch } from '@cc/app/shared/components/json-viewer';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
-import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
 import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
@@ -46,7 +45,6 @@ export class ModificationUnitTimelineItemComponent {
     constructor(
         private partyManagementWithUserService: PartyManagementWithUserService,
         private baseDialogService: BaseDialogService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService
     ) {}
