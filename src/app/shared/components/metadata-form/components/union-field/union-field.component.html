@@ -6,7 +6,7 @@
         <mat-select
             [formControl]="fieldControl"
             (ngModelChange)="cleanInternal()"
-            [required]="data.field?.option === 'required'"
+            [required]="data.isRequired"
         >
             <mat-option *ngFor="let field of data.ast" [value]="field">
                 <cc-field-label [field]="field" [type]="field.type"></cc-field-label>
@@ -15,7 +15,7 @@
         <button
             matSuffix
             mat-icon-button
-            *ngIf="fieldControl.value && data.field?.option !== 'required'"
+            *ngIf="fieldControl.value && data.isRequired"
             (click)="fieldControl.reset(); $event.stopPropagation()"
         >
             <mat-icon>clear</mat-icon>

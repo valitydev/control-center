@@ -66,6 +66,10 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
         return data;
     }
 
+    get isRequired() {
+        return this.field?.option === 'required' || this.trueParent?.objectType === 'union';
+    }
+
     /**
      * The first one identified is used
      */
