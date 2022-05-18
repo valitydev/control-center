@@ -33,6 +33,21 @@ export class PrimitiveFieldComponent
         map(([extensionResult, value]) => extensionResult.options.find((o) => o.value === value))
     );
 
+    get inputType(): string {
+        switch (this.data.type) {
+            case 'double':
+            case 'int':
+            case 'i8':
+            case 'i16':
+            case 'i32':
+            case 'i64':
+                return 'number';
+            case 'string':
+            default:
+                return 'string';
+        }
+    }
+
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
 
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent>) {

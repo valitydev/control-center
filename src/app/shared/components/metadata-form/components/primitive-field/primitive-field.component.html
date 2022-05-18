@@ -9,7 +9,8 @@
                 [matAutocomplete]="auto"
                 #trigger="matAutocompleteTrigger"
                 [formControl]="control"
-                [required]="data.field?.option === 'required'"
+                [required]="data.isRequired"
+                [type]="inputType"
             />
             <div matSuffix fxLayoutGap="4px">
                 <button mat-icon-button *ngIf="control.value" (click)="clear($event)">

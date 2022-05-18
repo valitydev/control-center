@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Injectable } from '@angular/core';
 import moment from 'moment';
 import { switchMap } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -8,29 +7,26 @@ import { filter, map } from 'rxjs/operators';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { FileStorageService } from '@cc/app/api/file-storage';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 @Injectable()
 export class UploadFileService {
     constructor(
         private notificationService: NotificationService,
-        private dialog: MatDialog,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
+        private baseDialogService: BaseDialogService,
         private fileStorageService: FileStorageService,
         private http: HttpClient,
         private claimManagementService: ClaimManagementService
     ) {}
 
     upload(file: File, partyId: string, claimId: number, revision: number) {
-        return this.dialog
-            .open(ConfirmActionDialogComponent, {
-                ...this.dialogConfig.medium,
-                data: { title: 'Upload file' },
-            })
+        return this.baseDialogService
+            .open(ConfirmActionDialogComponent, { title: 'Upload file' })
             .afterClosed()
             .pipe(
-                filter((r) => r === 'confirm'),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() =>
                     this.fileStorageService.CreateNewFile(
                         new Map(),

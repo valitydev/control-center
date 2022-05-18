@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ClaimStatus } from '@vality/domain-proto/lib/claim_management';
@@ -9,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 @UntilDestroy()
@@ -16,7 +16,10 @@ import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
     selector: 'cc-change-status-dialog',
     templateUrl: './change-status-dialog.component.html',
 })
-export class ChangeStatusDialogComponent {
+export class ChangeStatusDialogComponent extends BaseDialogSuperclass<
+    ChangeStatusDialogComponent,
+    { partyID: string; claim: Claim }
+> {
     form = this.fb.group<{ status: keyof ClaimStatus; revokeReason?: string; denyReason?: string }>(
         {
             status: [null, Validators.required],
@@ -25,26 +28,27 @@ export class ChangeStatusDialogComponent {
         }
     );
     statuses = this.allowedClaimStatusesService.getAllowedStatuses(
-        getUnionKey(this.data.claim.status)
+        getUnionKey(this.dialogData.claim.status)
     );
     inProgress$ = inProgressFrom(() => this.progress$);
 
     private progress$ = new BehaviorSubject(0);
 
     constructor(
-        private dialogRef: MatDialogRef<ChangeStatusDialogComponent>,
-        @Inject(MAT_DIALOG_DATA)
-        private data: { partyID: string; claim: Claim },
+        injector: Injector,
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService
-    ) {}
+    ) {
+        super(injector);
+    }
 
     confirm(): void {
         let result$: Observable<void>;
         const { value } = this.form;
-        const params = [this.data.partyID, this.data.claim.id, this.data.claim.revision] as const;
+        const { partyID, claim } = this.dialogData;
+        const params = [partyID, claim.id, claim.revision] as const;
         switch (value.status) {
             case 'accepted':
                 result$ = this.claimManagementService.AcceptClaim(...params);
@@ -64,7 +68,7 @@ export class ChangeStatusDialogComponent {
         }
         result$.pipe(progressTo(this.progress$), untilDestroyed(this)).subscribe({
             next: () => {
-                this.dialogRef.close('success');
+                this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 this.notificationService.error('Status successfully changed');
             },
             error: (err) => {

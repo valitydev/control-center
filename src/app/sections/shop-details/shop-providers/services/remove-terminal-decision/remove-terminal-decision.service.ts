@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { combineLatest, EMPTY, merge, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { ProviderService } from '../../../../../thrift-services/damsel';
@@ -27,17 +28,17 @@ export class RemoveTerminalDecisionService {
         switchMap((params) =>
             combineLatest([
                 of(params),
-                this.dialog
+                this.baseDialogService
                     .open(ConfirmActionDialogComponent, {
-                        data: { title: `Remove this terminal from shop?` },
+                        title: `Remove this terminal from shop?`,
                     })
                     .afterClosed()
                     .pipe(
-                        filter((r) => {
-                            if (r === 'cancel') {
+                        filter(({ status }) => {
+                            if (status === BaseDialogResponseStatus.Cancelled) {
                                 this.cancelled$.next();
                             }
-                            return r === 'confirm';
+                            return status === BaseDialogResponseStatus.Success;
                         })
                     ),
             ])
@@ -66,7 +67,7 @@ export class RemoveTerminalDecisionService {
     );
 
     constructor(
-        private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         private snackBar: MatSnackBar,
         private domainCacheService: DomainCacheService,
         private providerService: ProviderService

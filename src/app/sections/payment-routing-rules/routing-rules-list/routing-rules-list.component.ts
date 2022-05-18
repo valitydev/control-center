@@ -14,11 +14,14 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
+
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../../../thrift-services';
-import { DialogConfig, DIALOG_CONFIG } from '../../../tokens';
+import { DIALOG_CONFIG, DialogConfig } from '../../../tokens';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 
@@ -79,6 +82,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
 
     constructor(
         private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         private errorService: ErrorService,
         private routingRulesService: RoutingRulesService,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
@@ -117,11 +121,11 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     cloneDelegateRuleset(delegateId: DelegateId) {
-        this.dialog
-            .open(ConfirmActionDialogComponent, { data: { title: 'Clone delegate ruleset' } })
+        this.baseDialogService
+            .open(ConfirmActionDialogComponent, { title: 'Clone delegate ruleset' })
             .afterClosed()
             .pipe(
-                filter((r) => r === 'confirm'),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() =>
                     this.routingRulesService.cloneDelegateRuleset({
                         mainRulesetRefID: delegateId.parentRefId,
@@ -134,11 +138,11 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     delete(delegateId: DelegateId) {
-        this.dialog
-            .open(ConfirmActionDialogComponent, { data: { title: 'Delete delegate' } })
+        this.baseDialogService
+            .open(ConfirmActionDialogComponent, { title: 'Delete delegate' })
             .afterClosed()
             .pipe(
-                filter((r) => r === 'confirm'),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() =>
                     this.routingRulesService.deleteDelegate({
                         mainRulesetRefID: delegateId.parentRefId,

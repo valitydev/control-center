@@ -39,7 +39,7 @@ export class StructFormComponent
                 this.emitOutgoingValue(
                     this.control.value && this.labelControl.value
                         ? omitBy(this.control.value, isNil)
-                        : {}
+                        : null
                 );
             });
     }
@@ -62,10 +62,7 @@ export class StructFormComponent
             )
         );
 
-        if (
-            this.data.field?.option === 'required' ||
-            this.data.trueParent?.objectType === 'union'
-        ) {
+        if (this.data.isRequired) {
             this.labelControl.setValue(true);
             this.labelControl.disable();
         } else {

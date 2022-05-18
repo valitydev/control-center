@@ -1,18 +1,17 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
-    Observable,
-    switchMap,
-    EMPTY,
     BehaviorSubject,
-    merge,
     combineLatest,
-    Subject,
     defer,
+    EMPTY,
+    merge,
+    Observable,
+    Subject,
+    switchMap,
 } from 'rxjs';
-import { shareReplay, catchError, map, first } from 'rxjs/operators';
+import { catchError, first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
@@ -20,7 +19,8 @@ import { ChangeStatusDialogComponent } from '@cc/app/sections/claim/components/c
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
 import { UploadFileService } from '@cc/app/sections/claim/services/upload-file.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
@@ -83,10 +83,9 @@ export class ClaimComponent {
         private claimManagementService: ClaimManagementService,
         private partyManagementWithUserService: PartyManagementWithUserService,
         private notificationService: NotificationService,
-        private dialog: MatDialog,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
         private uploadFileService: UploadFileService,
-        private allowedClaimStatusesService: AllowedClaimStatusesService
+        private allowedClaimStatusesService: AllowedClaimStatusesService,
+        private baseDialogService: BaseDialogService
     ) {}
 
     reloadClaim() {
@@ -98,19 +97,17 @@ export class ClaimComponent {
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
-                    this.dialog
-                        .open(AddModificationDialogComponent, {
-                            ...this.dialogConfig.large,
-                            data: { party, claim },
-                        })
+                    this.baseDialogService
+                        .open(AddModificationDialogComponent, { party, claim })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result === 'success') this.reloadClaim();
+                if (result.status === BaseDialogResponseStatus.Success) this.reloadClaim();
             });
     }
+
     attachFile([file]: File[]) {
         combineLatest([this.party$, this.claim$])
             .pipe(
@@ -137,17 +134,14 @@ export class ClaimComponent {
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
-                    this.dialog
-                        .open(ChangeStatusDialogComponent, {
-                            ...this.dialogConfig.medium,
-                            data: { partyID: party.id, claim },
-                        })
+                    this.baseDialogService
+                        .open(ChangeStatusDialogComponent, { partyID: party.id, claim })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result === 'success') this.reloadClaim();
+                if (result.status === BaseDialogResponseStatus.Success) this.reloadClaim();
             });
     }
 }
