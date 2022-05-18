@@ -1,6 +1,6 @@
 import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ValidationErrors, Validator, Validators } from '@angular/forms';
-import { FormBuilder, FormControl } from '@ngneat/reactive-forms';
+import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
@@ -53,7 +53,7 @@ export class StructFormComponent
         newControlsNames.forEach((name) =>
             this.control.addControl(
                 name,
-                new FormControl(null, {
+                this.fb.control(null, {
                     validators:
                         this.data.ast.find((f) => f.name === name)?.option === 'required'
                             ? [Validators.required]
