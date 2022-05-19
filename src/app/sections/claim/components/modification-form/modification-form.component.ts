@@ -3,13 +3,13 @@ import { ValidationErrors, Validator } from '@angular/forms';
 import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Claim } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
-import { from, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
 
-import { ComponentChanges, isTypeWithAliases, MetadataFormExtension } from '@cc/app/shared';
+import { ComponentChanges, MetadataFormExtension } from '@cc/app/shared';
 import { DomainCacheService } from '@cc/app/thrift-services/damsel/domain-cache.service';
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
+import { createDomainObjectMetadataFormExtension } from './utils/create-domain-object-metadata-form.extension';
 import { createMetadataFormExtensions } from './utils/create-metadata-form-extensions';
 
 @Component({
@@ -48,40 +48,16 @@ export class ModificationFormComponent
 
     private createDomainMetadataFormExtensions(): MetadataFormExtension[] {
         return [
-            {
-                determinant: (data) =>
-                    of(
-                        isTypeWithAliases(data?.trueParent, 'ContractTemplateRef', 'domain') &&
-                            isTypeWithAliases(data, 'ObjectID', 'domain')
-                    ),
-                extension: () =>
-                    this.domainCacheService.getObjects('contract_template').pipe(
-                        map((objects) => ({
-                            options: objects.map((o) => ({
-                                label: `#${o.ref.id} ${o.data.name}`,
-                                value: o.ref.id,
-                                details: o,
-                            })),
-                        }))
-                    ),
-            },
-            {
-                determinant: (data) =>
-                    of(
-                        isTypeWithAliases(data?.trueParent, 'PaymentInstitutionRef', 'domain') &&
-                            isTypeWithAliases(data, 'ObjectID', 'domain')
-                    ),
-                extension: () =>
-                    this.domainCacheService.getObjects('contract_template').pipe(
-                        map((objects) => ({
-                            options: objects.map((o) => ({
-                                label: `#${o.ref.id} ${o.data.name}`,
-                                value: o.ref.id,
-                                details: o,
-                            })),
-                        }))
-                    ),
-            },
+            ...createMetadataFormExtensions(this.party, this.claim),
+            createDomainObjectMetadataFormExtension('ContractTemplateRef', () =>
+                this.domainCacheService.getObjects('contract_template')
+            ),
+            createDomainObjectMetadataFormExtension('PaymentInstitutionRef', () =>
+                this.domainCacheService.getObjects('payment_institution')
+            ),
+            createDomainObjectMetadataFormExtension('CategoryRef', () =>
+                this.domainCacheService.getObjects('category')
+            ),
         ];
     }
 }
