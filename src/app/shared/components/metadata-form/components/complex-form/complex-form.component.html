@@ -1,8 +1,7 @@
 <div gdColumns="1fr" gdGap="16px">
     <span>
-        <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label> ({{
-            data.type.name | titlecase
-        }})</span
+        <cc-field-label class="cc-body-1" [field]="data.field" [type]="data.type"></cc-field-label>
+        ({{ data.type.name | titlecase }})</span
     >
     <mat-accordion>
         <mat-expansion-panel
@@ -10,7 +9,7 @@
             *ngFor="let control of controls.controls; let i = index"
         >
             <mat-expansion-panel-header>
-                <mat-panel-title fxLayoutAlign=" center" class="cc-body-1">
+                <mat-panel-title fxLayoutAlign=" center">
                     {{ i + 1 }}.
                     {{
                         data.type.name === 'map'

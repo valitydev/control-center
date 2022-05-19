@@ -29,7 +29,10 @@ function generate() {
     return of(uuid());
 }
 
-export function createMetadataFormExtensions(party: Party, claim: Claim): MetadataFormExtension[] {
+export function createPartyClaimMetadataFormExtensions(
+    party: Party,
+    claim: Claim
+): MetadataFormExtension[] {
     return [
         {
             determinant: (data) => of(isTypeWithAliases(data, 'ContractorID', 'domain')),

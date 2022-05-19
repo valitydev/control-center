@@ -10,7 +10,7 @@ import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 import { createDomainObjectMetadataFormExtension } from './utils/create-domain-object-metadata-form.extension';
-import { createMetadataFormExtensions } from './utils/create-metadata-form-extensions';
+import { createPartyClaimMetadataFormExtensions } from './utils/create-party-claim-metadata-form-extensions';
 
 @Component({
     selector: 'cc-modification-form',
@@ -36,7 +36,7 @@ export class ModificationFormComponent
         super.ngOnChanges(changes);
         if (changes.party || changes.claim) {
             this.extensions = [
-                ...createMetadataFormExtensions(this.party, this.claim),
+                ...createPartyClaimMetadataFormExtensions(this.party, this.claim),
                 ...this.createDomainMetadataFormExtensions(),
             ];
         }
@@ -48,7 +48,6 @@ export class ModificationFormComponent
 
     private createDomainMetadataFormExtensions(): MetadataFormExtension[] {
         return [
-            ...createMetadataFormExtensions(this.party, this.claim),
             createDomainObjectMetadataFormExtension('ContractTemplateRef', () =>
                 this.domainStoreService.getObjects('contract_template')
             ),
