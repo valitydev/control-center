@@ -5,7 +5,7 @@ import { BusinessScheduleObject } from '@vality/domain-proto/lib/domain';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 
 @Component({
     selector: 'cc-business-schedule-selector',
@@ -24,14 +24,14 @@ export class BusinessScheduleSelectorComponent implements OnInit {
 
     hasError = false;
 
-    constructor(private domainCacheService: DomainCacheService, private snackBar: MatSnackBar) {}
+    constructor(private domainStoreService: DomainStoreService, private snackBar: MatSnackBar) {}
 
     selectionChange(change: MatSelectChange) {
         this.idChange.emit(change.value);
     }
 
     ngOnInit() {
-        this.schedules$ = this.domainCacheService.getObjects('business_schedule').pipe(
+        this.schedules$ = this.domainStoreService.getObjects('business_schedule').pipe(
             tap(
                 () => {
                     this.isLoading = false;

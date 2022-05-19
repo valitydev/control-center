@@ -10,13 +10,13 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { DomainCacheService } from '../domain-cache.service';
+import { DomainStoreService } from '../domain-store.service';
 import { createNextId } from './utils/create-next-id';
 import { getDelegate } from './utils/get-delegate';
 
 @Injectable()
 export class RoutingRulesService {
-    rulesets$: Observable<RoutingRulesObject[]> = this.domainService
+    rulesets$: Observable<RoutingRulesObject[]> = this.domainStoreService
         .getObjects('routing_rules')
         .pipe(
             map((r) => r.sort((a, b) => a.ref.id - b.ref.id)),
@@ -28,7 +28,7 @@ export class RoutingRulesService {
         map(createNextId)
     );
 
-    constructor(private domainService: DomainCacheService) {}
+    constructor(private domainStoreService: DomainStoreService) {}
 
     getRuleset(refID: number): Observable<RoutingRulesObject> {
         return this.rulesets$.pipe(map((rulesets) => rulesets.find((r) => r?.ref?.id === refID)));
@@ -71,7 +71,7 @@ export class RoutingRulesService {
                         },
                     },
                 });
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             insert: {
@@ -129,7 +129,7 @@ export class RoutingRulesService {
                         },
                     },
                 });
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             insert: {
@@ -175,7 +175,7 @@ export class RoutingRulesService {
                     weight,
                     priority,
                 });
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             update: {
@@ -220,7 +220,7 @@ export class RoutingRulesService {
                         decisions: { delegates: [] },
                     },
                 };
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             insert: { object: { routing_rules: ruleset } },
@@ -249,7 +249,7 @@ export class RoutingRulesService {
             switchMap((shopRuleset) => {
                 const newShopRule = cloneDeep(shopRuleset);
                 newShopRule.data.decisions.candidates.splice(candidateIdx, 1);
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             update: {
@@ -275,7 +275,7 @@ export class RoutingRulesService {
             switchMap((mainRuleset) => {
                 const newMainPaymentRoutingRuleset = cloneDeep(mainRuleset);
                 newMainPaymentRoutingRuleset.data.decisions.delegates.splice(delegateIdx, 1);
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             update: {
@@ -319,7 +319,7 @@ export class RoutingRulesService {
                     ...delegate,
                     description: mainDelegateDescription,
                 });
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             update: {
@@ -359,7 +359,7 @@ export class RoutingRulesService {
                 if (description !== undefined) {
                     newMainRuleset.data.decisions.delegates[delegateIdx].description = description;
                 }
-                return this.domainService.commit({
+                return this.domainStoreService.commit({
                     ops: [
                         {
                             update: {
@@ -393,7 +393,7 @@ export class RoutingRulesService {
                 getDelegate(newMainRuleset, delegateIdx).ruleset.id = nextRefID;
                 const newDelegateRuleset = cloneDeep(delegateRuleset);
                 newDelegateRuleset.ref.id = nextRefID;
-                return this.domainService.sequenseCommits([
+                return this.domainStoreService.sequenceCommits([
                     {
                         ops: [
                             {

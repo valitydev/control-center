@@ -10,7 +10,7 @@ import { objectToJSON } from '@cc/app/api/utils';
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';
-import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog';
 import { ShopPaymentRoutingRulesetService } from './shop-payment-routing-ruleset.service';
 
@@ -31,7 +31,7 @@ export class ShopPaymentRoutingRulesetComponent {
         map((r) => r.data.decisions.candidates),
         shareReplay(1)
     );
-    terminalsMapID$ = this.domainService
+    terminalsMapID$ = this.domainStoreService
         .getObjects('terminal')
         .pipe(
             map((terminals) =>
@@ -41,12 +41,12 @@ export class ShopPaymentRoutingRulesetComponent {
                 )
             )
         );
-    isLoading$ = this.domainService.isLoading$;
+    isLoading$ = this.domainStoreService.isLoading$;
 
     constructor(
         private dialog: MatDialog,
         private shopPaymentRoutingRulesetService: ShopPaymentRoutingRulesetService,
-        private domainService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private errorService: ErrorService
     ) {}
 

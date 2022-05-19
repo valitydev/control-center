@@ -4,7 +4,7 @@ import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { DomainCacheService } from '../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 
 @Injectable()
 export class FetchTerminalService {
@@ -14,7 +14,7 @@ export class FetchTerminalService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     terminal$ = this.getTerminal$.pipe(
         switchMap((terminalID) =>
-            this.domainCacheService.getObjects('terminal').pipe(
+            this.domainStoreService.getObjects('terminal').pipe(
                 map((terminalObject) => terminalObject.find((obj) => obj.ref.id === terminalID)),
                 catchError(() => {
                     this.hasError$.next();
@@ -31,7 +31,7 @@ export class FetchTerminalService {
         startWith(true)
     );
 
-    constructor(private domainCacheService: DomainCacheService) {
+    constructor(private domainStoreService: DomainStoreService) {
         this.terminal$.subscribe();
     }
 

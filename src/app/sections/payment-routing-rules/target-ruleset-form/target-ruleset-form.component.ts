@@ -15,7 +15,7 @@ import { map, startWith } from 'rxjs/operators';
 import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { RoutingRulesService } from '../../../thrift-services';
-import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { Target } from './types/target';
 import { TargetRuleset } from './types/target-ruleset';
 
@@ -39,14 +39,14 @@ export class TargetRulesetFormComponent implements OnChanges {
 
     target = Target;
 
-    paymentInstitutions$ = this.domainService
+    paymentInstitutions$ = this.domainStoreService
         .getObjects('payment_institution')
         .pipe(map((r) => sortBy(r, ['ref.id'])));
     rulesets$ = this.paymentRoutingRulesService.rulesets$;
 
     constructor(
         private fb: FormBuilder,
-        private domainService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private paymentRoutingRulesService: RoutingRulesService
     ) {
         this.form.controls.target.valueChanges

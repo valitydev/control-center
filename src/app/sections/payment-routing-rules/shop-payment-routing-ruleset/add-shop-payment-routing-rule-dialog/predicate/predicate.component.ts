@@ -22,7 +22,7 @@ import { distinctUntilChanged, map, shareReplay, startWith, tap } from 'rxjs/ope
 
 import { ComponentChanges } from '@cc/app/shared/utils';
 
-import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 enum PredicateType {
@@ -64,7 +64,7 @@ export class PredicateComponent implements OnChanges {
     bankCardType = BankCardType;
 
     deprecatedPaymentSystems$: Observable<string[]>;
-    paymentSystems$ = this.domainService.getObjects('payment_system');
+    paymentSystems$ = this.domainStoreService.getObjects('payment_system');
     tokenProviders$: Observable<string[]>;
     tokenizationMethods$: Observable<string[]>;
     residences$: Observable<string[]>;
@@ -75,7 +75,7 @@ export class PredicateComponent implements OnChanges {
         return this.form?.controls?.children as FormArray;
     }
 
-    constructor(private fb: FormBuilder, private domainService: DomainCacheService) {
+    constructor(private fb: FormBuilder, private domainStoreService: DomainStoreService) {
         this.init();
     }
 

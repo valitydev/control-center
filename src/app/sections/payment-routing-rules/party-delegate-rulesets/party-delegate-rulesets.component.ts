@@ -8,7 +8,7 @@ import { first, map, switchMap, take } from 'rxjs/operators';
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../../../thrift-services';
-import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { DialogConfig, DIALOG_CONFIG } from '../../../tokens';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
@@ -26,7 +26,7 @@ export class PartyDelegateRulesetsComponent {
         { key: 'mainRuleset', name: 'Main ruleset' },
         { key: 'partyDelegate', name: 'Party delegate' },
     ];
-    isLoading$ = this.domainService.isLoading$;
+    isLoading$ = this.domainStoreService.isLoading$;
     data$ = this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution().pipe(
         map((rules) =>
             rules.map(({ mainRoutingRule, partyDelegate, paymentInstitution }) => ({
@@ -55,7 +55,7 @@ export class PartyDelegateRulesetsComponent {
         private paymentRoutingRulesService: RoutingRulesService,
         private router: Router,
         private dialog: MatDialog,
-        private domainService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private errorService: ErrorService,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
     ) {}

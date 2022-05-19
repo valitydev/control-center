@@ -4,7 +4,7 @@ import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { DomainCacheService } from '../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 
 @Injectable()
 export class FetchProviderService {
@@ -14,7 +14,7 @@ export class FetchProviderService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     provider$ = this.getProvider$.pipe(
         switchMap((providerID) =>
-            this.domainCacheService.getObjects('provider').pipe(
+            this.domainStoreService.getObjects('provider').pipe(
                 map((providerObject) => providerObject.find((obj) => obj.ref.id === providerID)),
                 catchError(() => {
                     this.hasError$.next();
@@ -31,7 +31,7 @@ export class FetchProviderService {
         startWith(true)
     );
 
-    constructor(private domainCacheService: DomainCacheService) {
+    constructor(private domainStoreService: DomainStoreService) {
         this.provider$.subscribe();
     }
 

@@ -13,10 +13,7 @@ import { createDamselInstance, damselInstanceToObject } from './utils/create-dam
 
 @UntilDestroy()
 @Injectable()
-/**
- * TODO: rename - name overlaps with an existing thrift service
- */
-export class DomainCacheService {
+export class DomainStoreService {
     /**
      * @deprecated use domain$
      */
@@ -78,10 +75,10 @@ export class DomainCacheService {
         );
     };
 
-    sequenseCommits([commit, ...otherCommits]: Commit[], version?: Version | number) {
+    sequenceCommits([commit, ...otherCommits]: Commit[], version?: Version | number) {
         return otherCommits.length
             ? this.commit(commit, version, false).pipe(
-                  switchMap((v) => this.sequenseCommits(otherCommits, v))
+                  switchMap((v) => this.sequenceCommits(otherCommits, v))
               )
             : this.commit(commit, version);
     }

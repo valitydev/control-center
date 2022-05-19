@@ -5,7 +5,7 @@ import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 import { toProvidersInfo } from './to-providers-info';
 
 @Injectable()
@@ -13,8 +13,8 @@ export class FetchShopProvidersService {
     providersInfo$ = defer(() => this.getProvidersInfo$).pipe(
         switchMap(({ partyID, shopID }) =>
             combineLatest([
-                this.domainCacheService.getObjects('provider'),
-                this.domainCacheService.getObjects('terminal'),
+                this.domainStoreService.getObjects('provider'),
+                this.domainStoreService.getObjects('terminal'),
             ]).pipe(
                 map(([providerObjects, terminalObjects]) =>
                     toProvidersInfo(providerObjects, terminalObjects, partyID, shopID)
@@ -31,7 +31,7 @@ export class FetchShopProvidersService {
 
     private getProvidersInfo$ = new ReplaySubject<{ partyID: PartyID; shopID: ShopID }>(1);
 
-    constructor(private domainCacheService: DomainCacheService) {
+    constructor(private domainStoreService: DomainStoreService) {
         this.providersInfo$.subscribe();
     }
 

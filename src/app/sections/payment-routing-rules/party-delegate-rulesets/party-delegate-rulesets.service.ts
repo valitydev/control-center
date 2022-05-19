@@ -9,14 +9,14 @@ import { combineLatest } from 'rxjs';
 import { map, pluck, startWith, switchMap } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../../../thrift-services';
-import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 
 @Injectable()
 export class PartyDelegateRulesetsService {
     partyID$ = this.route.params.pipe(startWith(this.route.snapshot.params), pluck('partyID'));
 
     constructor(
-        private domainService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private route: ActivatedRoute,
         private paymentRoutingRulesService: RoutingRulesService
     ) {}
@@ -53,7 +53,7 @@ export class PartyDelegateRulesetsService {
     }
 
     private getPaymentInstitutionsWithRoutingRule() {
-        return this.domainService.getObjects('payment_institution').pipe(
+        return this.domainStoreService.getObjects('payment_institution').pipe(
             switchMap((paymentInstitutions) =>
                 combineLatest(
                     paymentInstitutions.map((paymentInstitution) =>

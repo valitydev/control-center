@@ -6,9 +6,9 @@ import { Party } from '@vality/domain-proto/lib/domain';
 import { from } from 'rxjs';
 
 import { ComponentChanges, MetadataFormExtension } from '@cc/app/shared';
-import { DomainCacheService } from '@cc/app/thrift-services/damsel/domain-cache.service';
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
+import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 import { createDomainObjectMetadataFormExtension } from './utils/create-domain-object-metadata-form.extension';
 import { createMetadataFormExtensions } from './utils/create-metadata-form-extensions';
 
@@ -28,7 +28,7 @@ export class ModificationFormComponent
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[];
 
-    constructor(injector: Injector, private domainCacheService: DomainCacheService) {
+    constructor(injector: Injector, private domainStoreService: DomainStoreService) {
         super(injector);
     }
 
@@ -50,13 +50,13 @@ export class ModificationFormComponent
         return [
             ...createMetadataFormExtensions(this.party, this.claim),
             createDomainObjectMetadataFormExtension('ContractTemplateRef', () =>
-                this.domainCacheService.getObjects('contract_template')
+                this.domainStoreService.getObjects('contract_template')
             ),
             createDomainObjectMetadataFormExtension('PaymentInstitutionRef', () =>
-                this.domainCacheService.getObjects('payment_institution')
+                this.domainStoreService.getObjects('payment_institution')
             ),
             createDomainObjectMetadataFormExtension('CategoryRef', () =>
-                this.domainCacheService.getObjects('category')
+                this.domainStoreService.getObjects('category')
             ),
         ];
     }
