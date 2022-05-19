@@ -27,6 +27,7 @@
                     <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
                 </button>
             </div>
+            <mat-hint>{{ aliases }}</mat-hint>
             <mat-autocomplete #auto="matAutocomplete">
                 <ng-container *ngIf="data.extensionResult$ | async as extensionResult">
                     <mat-option

@@ -4,7 +4,7 @@ import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
 import uuid from 'uuid';
 
-import { getByType, MetadataFormExtension } from '@cc/app/shared';
+import { isTypeWithAliases, MetadataFormExtension } from '@cc/app/shared';
 
 function createPartyOptions(values: IterableIterator<{ id: string }>) {
     return Array.from(values).map((value) => ({
@@ -32,7 +32,7 @@ function generate() {
 export function createMetadataFormExtensions(party: Party, claim: Claim): MetadataFormExtension[] {
     return [
         {
-            determinant: (data) => of(!!getByType(data, 'ContractorID', 'domain')),
+            determinant: (data) => of(isTypeWithAliases(data, 'ContractorID', 'domain')),
             extension: () =>
                 of({
                     options: [
@@ -48,7 +48,7 @@ export function createMetadataFormExtensions(party: Party, claim: Claim): Metada
                 }),
         },
         {
-            determinant: (data) => of(!!getByType(data, 'ContractID', 'domain')),
+            determinant: (data) => of(isTypeWithAliases(data, 'ContractID', 'domain')),
             extension: () =>
                 of({
                     options: [
@@ -64,7 +64,7 @@ export function createMetadataFormExtensions(party: Party, claim: Claim): Metada
                 }),
         },
         {
-            determinant: (data) => of(!!getByType(data, 'ShopID', 'domain')),
+            determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
             extension: () =>
                 of({
                     options: [
@@ -79,7 +79,7 @@ export function createMetadataFormExtensions(party: Party, claim: Claim): Metada
                 }),
         },
         {
-            determinant: (data) => of(!!getByType(data, 'WalletID', 'domain')),
+            determinant: (data) => of(isTypeWithAliases(data, 'WalletID', 'domain')),
             extension: () =>
                 of({
                     options: [
@@ -94,7 +94,7 @@ export function createMetadataFormExtensions(party: Party, claim: Claim): Metada
                 }),
         },
         {
-            determinant: (data) => of(!!getByType(data, 'ID', 'base')),
+            determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
             extension: () => of({ generate }),
         },
     ];

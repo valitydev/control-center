@@ -13,6 +13,9 @@ import { createDamselInstance, damselInstanceToObject } from './utils/create-dam
 
 @UntilDestroy()
 @Injectable()
+/**
+ * TODO: rename - name overlaps with an existing thrift service
+ */
 export class DomainCacheService {
     /**
      * @deprecated use domain$

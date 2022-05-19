@@ -6,7 +6,7 @@ import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay } from 'rxjs/operators';
 
-import { ComponentChanges } from '@cc/app/shared';
+import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
@@ -30,7 +30,7 @@ export class PrimitiveFieldComponent
     );
     generate$ = this.extensionResult$.pipe(pluck('generate'));
     selected$ = combineLatest([this.extensionResult$, this.control.valueChanges]).pipe(
-        map(([extensionResult, value]) => extensionResult.options.find((o) => o.value === value))
+        map(([extensionResult, value]) => extensionResult?.options?.find((o) => o.value === value))
     );
 
     get inputType(): string {
@@ -46,6 +46,14 @@ export class PrimitiveFieldComponent
             default:
                 return 'string';
         }
+    }
+
+    get aliases() {
+        return [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
+            .filter((d) => d.typeGroup !== 'primitive')
+            .map((d) => getValueTypeTitle(d.type))
+            .filter((t) => t !== this.data.field?.name)
+            .join(', ');
     }
 
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
