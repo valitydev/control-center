@@ -19,7 +19,7 @@ export abstract class ValidatedWrappedAbstractControlSuperclass<OuterType, Inner
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.control.errors;
     }
 
     protected outerToInner(outer: OuterType): InnerType {

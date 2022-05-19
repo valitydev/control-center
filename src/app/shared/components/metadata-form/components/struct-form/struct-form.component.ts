@@ -82,6 +82,8 @@ export class StructFormComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.labelControl.value && this.control.invalid ? { invalid: true } : null;
+        return this.labelControl.value && this.control.invalid
+            ? this.control.errors || { structInvalid: true }
+            : null;
     }
 }

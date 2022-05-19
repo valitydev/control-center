@@ -31,6 +31,8 @@ export class ComplexFormComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid || this.controls.invalid ? { invalid: true } : null;
+        return this.control.invalid || this.controls.invalid
+            ? { [this.data.type.name + 'Invalid']: true }
+            : null;
     }
 }

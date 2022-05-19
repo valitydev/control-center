@@ -64,7 +64,7 @@ export class PrimitiveFieldComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.control.errors;
     }
 
     generate(event: MouseEvent) {

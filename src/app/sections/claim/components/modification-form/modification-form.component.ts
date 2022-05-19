@@ -43,7 +43,7 @@ export class ModificationFormComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.control.errors;
     }
 
     private createDomainMetadataFormExtensions(): MetadataFormExtension[] {

@@ -19,6 +19,6 @@ export class TypedefFormComponent
     @Input() data: MetadataFormData<string, TypeDefs[string]>;
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.control.errors;
     }
 }
