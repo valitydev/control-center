@@ -16,6 +16,6 @@ export class EnumFieldComponent extends WrappedFormControlSuperclass<unknown> im
     @Input() data: MetadataFormData<string, Enums[string]>;
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.control.errors;
     }
 }

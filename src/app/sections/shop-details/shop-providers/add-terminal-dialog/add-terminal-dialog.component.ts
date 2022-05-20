@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PartyID, ShopID } from '@vality/domain-proto';
 
-import { DomainCacheService } from '../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 import { AddTerminalDialogResponse } from '../types/add-terminal-dialog-response';
 import { AddTerminalDecisionService } from './services/add-terminal-decision';
 
@@ -13,14 +13,14 @@ import { AddTerminalDecisionService } from './services/add-terminal-decision';
 })
 export class AddTerminalDialogComponent {
     providers$ = this.addTerminalDecisionService.getProviders(this.data.categoryID);
-    terminals$ = this.domainCacheService.getObjects('terminal');
+    terminals$ = this.domainStoreService.getObjects('terminal');
     inProgress$ = this.addTerminalDecisionService.inProgress$;
 
     providerForm = this.addTerminalDecisionService.providerForm;
     terminalForm = this.addTerminalDecisionService.terminalForm;
 
     constructor(
-        private domainCacheService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private addTerminalDecisionService: AddTerminalDecisionService,
         public dialogRef: MatDialogRef<AddTerminalDialogComponent, AddTerminalDialogResponse>,
         @Inject(MAT_DIALOG_DATA)

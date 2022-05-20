@@ -7,7 +7,7 @@ import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
-import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 
 @Component({
     selector: 'cc-payment-institution-ref',
@@ -29,12 +29,12 @@ export class PaymentInstitutionRefComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private dtm: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private snackBar: MatSnackBar
     ) {}
 
     ngOnInit() {
-        this.paymentInstitutions$ = this.dtm.getObjects('payment_institution').pipe(
+        this.paymentInstitutions$ = this.domainStoreService.getObjects('payment_institution').pipe(
             map((paymentInstitutions) =>
                 sortBy(paymentInstitutions, (paymentInstitution) => paymentInstitution.ref.id)
             ),

@@ -106,6 +106,6 @@
     "prettier": "2.6.1",
     "ts-mockito": "^2.6.1",
     "ts-node": "~8.8.2",
-    "typescript": "~4.5.4"
+    "typescript": "4.5.5"
   }
 }

@@ -32,16 +32,32 @@ export enum TypeGroup {
     Object = 'object',
 }
 
-export function getAliases(data: MetadataFormData) {
-    const path: MetadataFormData[] = data.parent ? [data.parent] : [];
-    while (path[path.length - 1]?.objectType === 'typedef') {
-        path.push(path[path.length - 1].parent);
+export function getAliases(data: MetadataFormData): MetadataFormData[] {
+    let alias: MetadataFormData = data?.parent;
+    const path: MetadataFormData[] = [];
+    while (alias && alias.objectType === 'typedef' && alias.parent) {
+        path.push(alias);
+        alias = alias?.parent;
     }
     return path;
 }
 
-export function getByType(data: MetadataFormData, type: string, namespace: string) {
-    return [data, ...getAliases(data)].find((d) => d.type === type && d.namespace === namespace);
+export function getByType(
+    data: MetadataFormData,
+    type: string,
+    namespace: string
+): MetadataFormData {
+    return data
+        ? [data, ...getAliases(data)].find((d) => d.type === type && d.namespace === namespace)
+        : null;
+}
+
+export function isTypeWithAliases(
+    data: MetadataFormData,
+    type: string,
+    namespace: string
+): boolean {
+    return Boolean(getByType(data, type, namespace));
 }
 
 type ObjectAst = JsonAST[keyof JsonAST][keyof JsonAST[keyof JsonAST]];

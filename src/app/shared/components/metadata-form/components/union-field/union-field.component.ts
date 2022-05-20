@@ -44,7 +44,9 @@ export class UnionFieldComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.fieldControl.invalid || this.internalControl.invalid ? { invalid: true } : null;
+        return this.fieldControl.invalid || this.internalControl.invalid
+            ? { unionInvalid: true }
+            : null;
     }
 
     handleIncomingValue(value: { [N in string]: unknown }) {

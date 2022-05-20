@@ -13,6 +13,7 @@ import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
 
 @Injectable()
+/** @deprecated use thrift service from api dir */
 export class DomainService extends ThriftService {
     checkout: (reference: Reference) => Observable<Snapshot> = this.toObservableAction(
         'Checkout',

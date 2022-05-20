@@ -7,7 +7,7 @@ import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { AddDecisionToProvider, ProviderService } from '../../../../../../thrift-services/damsel';
-import { DomainCacheService } from '../../../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../../../thrift-services/damsel/domain-store.service';
 import { addDecisionToProviderCommit } from '../../../../../../thrift-services/damsel/operations';
 import {
     filterProvidersByCategoryId,
@@ -36,7 +36,7 @@ export class AddTerminalDecisionService {
             this.providerService.getProviderFromParams<AddDecisionToProvider>(params)
         ),
         switchMap(([params, providerObject]) =>
-            this.domainCacheService.commit(addDecisionToProviderCommit(providerObject, params))
+            this.domainStoreService.commit(addDecisionToProviderCommit(providerObject, params))
         ),
         shareReplay(1)
     );
@@ -45,7 +45,7 @@ export class AddTerminalDecisionService {
     inProgress$ = progress(this.add$, merge(this.terminalAdded$, this.error$));
 
     constructor(
-        private domainCacheService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private providerService: ProviderService,
         private fb: FormBuilder
     ) {
@@ -57,7 +57,7 @@ export class AddTerminalDecisionService {
     }
 
     getProviders(categoryID: number): Observable<ProviderObject[]> {
-        return this.domainCacheService.getObjects('provider').pipe(
+        return this.domainStoreService.getObjects('provider').pipe(
             map((objects) => filterProvidersByTerminalSelector(objects, 'decisions')),
             map((objects) => filterProvidersByCategoryId(objects, categoryID))
         );

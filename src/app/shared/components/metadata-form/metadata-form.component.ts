@@ -40,6 +40,6 @@ export class MetadataFormComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid ? { invalid: true } : null;
+        return this.control.errors;
     }
 }

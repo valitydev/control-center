@@ -5,7 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { DomainCacheService } from '../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { DialogConfig, DIALOG_CONFIG } from '../../../tokens';
 import { AddPartyPaymentRoutingRuleDialogComponent } from './add-party-payment-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payment-routing-rules-dialog';
@@ -21,7 +21,7 @@ import { PartyPaymentRoutingRulesetService } from './party-payment-routing-rules
 export class PaymentRoutingRulesComponent {
     partyRuleset$ = this.partyPaymentRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyPaymentRoutingRulesetService.partyID$;
-    isLoading$ = this.domainService.isLoading$;
+    isLoading$ = this.domainStoreService.isLoading$;
 
     displayedColumns = [
         { key: 'shop', name: 'Shop' },
@@ -57,7 +57,7 @@ export class PaymentRoutingRulesComponent {
         private dialog: MatDialog,
         private partyPaymentRoutingRulesetService: PartyPaymentRoutingRulesetService,
         private router: Router,
-        private domainService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
     ) {}
 

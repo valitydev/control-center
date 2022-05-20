@@ -9,7 +9,7 @@ import { BaseDialogService } from '@cc/components/base-dialog/services/base-dial
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { ProviderService } from '../../../../../thrift-services/damsel';
-import { DomainCacheService } from '../../../../../thrift-services/damsel/domain-cache.service';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 import { createRemoveTerminalFromShopCommit } from '../../../../../thrift-services/damsel/operations/create-remove-terminal-from-shop-commit';
 import { RemoveTerminalFromShopParams } from '../../../../../thrift-services/damsel/operations/remove-terminal-from-shop-params';
 import { ChangeProviderParams } from '../../types';
@@ -50,7 +50,7 @@ export class RemoveTerminalDecisionService {
             createRemoveTerminalFromShopCommit(providerObject, params)
         ),
         switchMap((commit) =>
-            this.domainCacheService.commit(commit).pipe(
+            this.domainStoreService.commit(commit).pipe(
                 catchError(() => {
                     this.error$.next();
                     return EMPTY;
@@ -69,7 +69,7 @@ export class RemoveTerminalDecisionService {
     constructor(
         private baseDialogService: BaseDialogService,
         private snackBar: MatSnackBar,
-        private domainCacheService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private providerService: ProviderService
     ) {
         this.terminalRemoved$.subscribe();

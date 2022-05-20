@@ -5,7 +5,7 @@ import { catchError, shareReplay, switchMap } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { DomainCacheService } from '../domain-cache.service';
+import { DomainStoreService } from '../domain-store.service';
 import { editTerminalDecisionPropertyForShopCommit } from '../operations/edit-terminal-decision-property-for-shop-commit';
 import { EditTerminalDecisionPropertyParams } from '../operations/edit-terminal-decision-property-params';
 import { ProviderService } from '../provider.service';
@@ -23,7 +23,7 @@ export class EditTerminalDecisionPropertyForShopService {
             this.providerService.getProviderFromParams<EditTerminalDecisionPropertyParams>(params)
         ),
         switchMap(([params, provider]) =>
-            this.domainCacheService
+            this.domainStoreService
                 .commit(editTerminalDecisionPropertyForShopCommit(provider, params))
                 .pipe(
                     catchError(() => {
@@ -39,7 +39,7 @@ export class EditTerminalDecisionPropertyForShopService {
     inProgress$ = progress(this.editProperty$, merge(this.edited$, this.error$));
 
     constructor(
-        private domainCacheService: DomainCacheService,
+        private domainStoreService: DomainStoreService,
         private snackBar: MatSnackBar,
         private providerService: ProviderService
     ) {
