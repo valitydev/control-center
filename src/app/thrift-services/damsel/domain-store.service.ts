@@ -3,7 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DomainObject } from '@vality/domain-proto/lib/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/lib/domain_config';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
-import { map, pluck, share, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { map, pluck, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { RepositoryService } from '@cc/app/api/domain-config';
 import { inProgressFrom, progressTo } from '@cc/utils';
@@ -20,8 +20,8 @@ export class DomainStoreService {
         untilDestroyed(this),
         shareReplay(1)
     );
-    domain$ = this.snapshot$.pipe(pluck('domain'), share());
-    version$ = this.snapshot$.pipe(pluck('version'), share());
+    domain$ = this.snapshot$.pipe(pluck('domain'));
+    version$ = this.snapshot$.pipe(pluck('version'));
     isLoading$ = inProgressFrom(() => this.progress$, this.snapshot$);
 
     private reload$ = new ReplaySubject<void>(1);
