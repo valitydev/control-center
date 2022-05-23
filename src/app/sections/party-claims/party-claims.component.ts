@@ -42,8 +42,8 @@ export class PartyClaimsComponent implements OnInit {
     }
 
     createClaim() {
-        const dialog = this.baseDialogService.open(ConfirmActionDialogComponent);
-        dialog
+        this.baseDialogService
+            .open(ConfirmActionDialogComponent)
             .afterClosed()
             .pipe(filter(({ status }) => status === BaseDialogResponseStatus.Success))
             .subscribe(() => {
