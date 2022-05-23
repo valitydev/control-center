@@ -14,33 +14,42 @@ const baseTsRules = {
     rules: {
         ...rules.createImportOrderRule({ internalPathsPattern: '@cc/**' }),
         '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
-        // TODO: pretenders for error
-        '@typescript-eslint/no-unsafe-call': 'warn',
-        '@typescript-eslint/no-unsafe-member-access': 'warn',
-        '@typescript-eslint/no-unsafe-assignment': 'warn',
-        '@typescript-eslint/no-unsafe-return': 'warn',
-        '@typescript-eslint/no-misused-promises': 'warn',
-        '@typescript-eslint/no-unsafe-argument': 'warn',
+        ...rules.createAngularSelectorRules({ prefix: 'cc' }),
     },
+};
+
+// TODO: pretenders for error
+const lenientTsRules = {
+    '@typescript-eslint/no-unsafe-call': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-unsafe-assignment': 'warn',
+    '@typescript-eslint/no-unsafe-return': 'warn',
+    '@typescript-eslint/no-misused-promises': 'warn',
+    '@typescript-eslint/no-unsafe-argument': 'warn',
 };
 
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
-    ignorePatterns: ['**/gen-*/**/*'],
     overrides: [
         {
             ...baseTsRules,
             files: ['*.ts'],
             rules: {
                 ...baseTsRules.rules,
-                ...rules.createAngularSelectorRules({ prefix: 'cc' }),
+                ...lenientTsRules,
             },
+        },
+        {
+            ...baseTsRules,
+            // TODO: add fixed directories
+            files: ['**/src/app/core/**/*.ts'],
         },
         {
             ...baseTsRules,
             files: ['*.spec.ts'],
             extends: [...baseTsRules.extends, './tools/eslint-config/jasmine'],
+            rules: lenientTsRules,
         },
         {
             files: ['*.html'],
