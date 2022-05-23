@@ -33,7 +33,7 @@ export class SearchPaymentsComponent {
         const { partyID, invoiceID, paymentID } = $event;
         switch ($event.action) {
             case PaymentActions.NavigateToPayment:
-                this.router.navigate([
+                void this.router.navigate([
                     `/party/${partyID}/invoice/${invoiceID}/payment/${paymentID}`,
                 ]);
         }

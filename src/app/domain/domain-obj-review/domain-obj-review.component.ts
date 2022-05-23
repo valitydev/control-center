@@ -50,7 +50,7 @@ export class DomainObjReviewComponent implements OnInit, OnDestroy {
     }
 
     back() {
-        this.router.navigate(['domain', this.ref]);
+        void this.router.navigate(['domain', this.ref]);
     }
 
     commit() {
@@ -61,7 +61,7 @@ export class DomainObjReviewComponent implements OnInit, OnDestroy {
                 this.snackBar.open('Commit successful', 'OK', {
                     duration: 2000,
                 });
-                this.router.navigate(['domain', this.ref]);
+                void this.router.navigate(['domain', this.ref]);
             },
             (ex) => {
                 this.isLoading = false;

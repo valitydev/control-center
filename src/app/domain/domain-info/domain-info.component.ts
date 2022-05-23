@@ -41,7 +41,7 @@ export class DomainInfoComponent implements OnInit {
     }
 
     editDomainObj() {
-        this.router.navigate(['domain', JSON.stringify(this.detailedObjRef)]);
+        void this.router.navigate(['domain', JSON.stringify(this.detailedObjRef)]);
     }
 
     private initialize() {

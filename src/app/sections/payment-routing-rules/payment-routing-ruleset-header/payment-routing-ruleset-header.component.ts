@@ -16,6 +16,6 @@ export class PaymentRoutingRulesetHeaderComponent {
     constructor(private router: Router) {}
 
     navigateBack() {
-        this.router.navigate([this.backTo]);
+        void this.router.navigate([this.backTo]);
     }
 }

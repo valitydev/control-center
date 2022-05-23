@@ -23,6 +23,6 @@ export abstract class QueryParamsStore<D> {
 
     preserve(data: D) {
         const queryParams = removeEmptyProperties(this.mapToParams(data));
-        this.router.navigate([], { queryParams, preserveFragment: true });
+        void this.router.navigate([], { queryParams, preserveFragment: true });
     }
 }

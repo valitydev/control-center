@@ -29,7 +29,7 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
 
                 const result = await this.isAccessAllowed(route);
                 if (!result) {
-                    this.router.navigate(['404']);
+                    void this.router.navigate(['404']);
                 }
                 resolve(result);
             } catch (error) {

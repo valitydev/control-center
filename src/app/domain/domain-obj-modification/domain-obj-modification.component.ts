@@ -57,7 +57,7 @@ export class DomainObjModificationComponent implements OnInit, OnDestroy {
 
     reviewChanges() {
         this.domainReviewService.addReviewModel(this.model);
-        this.router.navigate(['domain', JSON.stringify(this.model.ref), 'review']);
+        void this.router.navigate(['domain', JSON.stringify(this.model.ref), 'review']);
     }
 
     resetChanges() {

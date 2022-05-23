@@ -35,8 +35,6 @@ module.exports = {
             rules: {
                 ...baseTsRules.rules,
                 ...rules.createAngularSelectorRules({ prefix: 'cc' }),
-                // TODO: pretenders for error
-                '@typescript-eslint/no-floating-promises': 'warn',
             },
         },
         {

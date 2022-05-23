@@ -32,7 +32,7 @@ export class CreateClaimService {
         private snackBar: MatSnackBar
     ) {
         this.claim$.subscribe(({ id, party_id }) => {
-            this.router.navigate([`party/${party_id}/claim/${id}`]);
+            void this.router.navigate([`party/${party_id}/claim/${id}`]);
         });
     }
 
