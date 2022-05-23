@@ -91,7 +91,7 @@ export class DomainObjModificationComponent implements OnInit, OnDestroy {
             (err) => {
                 console.error(err);
                 this.isLoading = false;
-                this.snackBar.open(`An error occurred while initializing: ${err}`, 'OK');
+                this.snackBar.open(`An error occurred while initializing: ${String(err)}`, 'OK');
             }
         );
     }

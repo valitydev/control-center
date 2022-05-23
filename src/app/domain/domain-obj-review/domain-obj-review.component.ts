@@ -66,7 +66,7 @@ export class DomainObjReviewComponent implements OnInit, OnDestroy {
             (ex) => {
                 this.isLoading = false;
                 console.error(ex);
-                this.snackBar.open(`An error occured while commit: ${ex}`, 'OK');
+                this.snackBar.open(`An error occured while commit: ${String(ex)}`, 'OK');
             }
         );
     }

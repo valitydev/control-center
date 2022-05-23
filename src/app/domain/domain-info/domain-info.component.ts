@@ -54,7 +54,7 @@ export class DomainInfoComponent implements OnInit {
             (err) => {
                 this.isLoading = false;
                 this.snackBar
-                    .open(`An error occurred while initializing: ${err}`, 'RETRY')
+                    .open(`An error occurred while initializing: ${String(err)}`, 'RETRY')
                     .onAction()
                     .subscribe(() => this.initialize());
             }

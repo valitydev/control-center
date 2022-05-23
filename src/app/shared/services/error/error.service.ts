@@ -12,7 +12,7 @@ export class ErrorService {
         if (!message) {
             message = error.name || error.message;
             if (message && message !== error.message) {
-                message += ` (${error.message})`;
+                message += ` (${String(error.message)})`;
             }
         }
         return this.notificationService.error('Error' + (message ? `: ${message}` : ''));

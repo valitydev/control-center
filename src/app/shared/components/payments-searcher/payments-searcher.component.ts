@@ -99,7 +99,7 @@ export class PaymentsSearcherComponent implements OnInit {
 
     ngOnInit() {
         this.fetchPaymentsService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search payments (${e})`, 'OK')
+            this.snackBar.open(`An error occurred while search payments (${String(e)})`, 'OK')
         );
     }
 

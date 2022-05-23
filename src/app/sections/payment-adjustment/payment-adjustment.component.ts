@@ -73,7 +73,7 @@ export class PaymentAdjustmentComponent implements OnInit {
                     this.isLoading = false;
                 },
                 (e) => {
-                    this.snackBar.open(`${e.message || 'Error'}`, 'OK');
+                    this.snackBar.open(`${String(e.message || 'Error')}`, 'OK');
                     this.isLoading = false;
                     console.error(e);
                 }
