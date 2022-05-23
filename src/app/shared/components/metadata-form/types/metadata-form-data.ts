@@ -1,6 +1,6 @@
 import { Field, ValueType } from '@vality/thrift-ts';
 import { JsonAST } from '@vality/thrift-ts/src/thrift-parser';
-import { Observable, combineLatest, switchMap } from 'rxjs';
+import { combineLatest, Observable, switchMap } from 'rxjs';
 import { map, pluck, shareReplay } from 'rxjs/operators';
 
 import {
@@ -12,19 +12,7 @@ import {
     ThriftAstMetadata,
 } from '@cc/app/api/utils';
 
-export interface MetadataFormExtensionResult {
-    options?: {
-        value: unknown;
-        label?: string;
-        details?: string | object;
-    }[];
-    generate?: () => Observable<unknown>;
-}
-
-export type MetadataFormExtension = {
-    determinant: (data: MetadataFormData) => Observable<boolean>;
-    extension: (data: MetadataFormData) => Observable<MetadataFormExtensionResult>;
-};
+import { MetadataFormExtension, MetadataFormExtensionResult } from './metadata-form-extension';
 
 export enum TypeGroup {
     Complex = 'complex',

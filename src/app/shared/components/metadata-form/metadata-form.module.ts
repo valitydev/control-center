@@ -7,6 +7,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +25,7 @@ import { StructFormComponent } from './components/struct-form/struct-form.compon
 import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
 import { UnionFieldComponent } from './components/union-field/union-field.component';
 import { MetadataFormComponent } from './metadata-form.component';
+import { LabelComponent } from './components/label/label.component';
 
 @NgModule({
     imports: [
@@ -44,6 +46,7 @@ import { MetadataFormComponent } from './metadata-form.component';
         FlexModule,
         ValueTypeTitleModule,
         MatCheckboxModule,
+        MatChipsModule,
     ],
     declarations: [
         MetadataFormComponent,
@@ -54,6 +57,7 @@ import { MetadataFormComponent } from './metadata-form.component';
         TypedefFormComponent,
         EnumFieldComponent,
         FieldLabelComponent,
+        LabelComponent,
     ],
     exports: [MetadataFormComponent],
 })

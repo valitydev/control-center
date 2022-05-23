@@ -4,9 +4,10 @@ import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
+import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
 import { createValidatedAbstractControlProviders } from '@cc/utils';
 
-import { MetadataFormData, MetadataFormExtension } from './types/metadata-form-data';
+import { MetadataFormData } from './types/metadata-form-data';
 
 @Component({
     selector: 'cc-metadata-form',
