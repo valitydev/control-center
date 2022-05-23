@@ -19,7 +19,7 @@ function format(
     decimalDelimiter: string
 ) {
     const exp =
-        '\\d(?=(\\d{' + (wholeLength || 3) + '})+' + (decimalLength > 0 ? '\\D' : '$') + ')';
+        '\\d(?=(\\d{' + String(wholeLength || 3) + '})+' + (decimalLength > 0 ? '\\D' : '$') + ')';
     // eslint-disable-next-line no-bitwise
     const num = value.toFixed(Math.max(0, ~~decimalLength));
     return (decimalDelimiter ? num.replace('.', decimalDelimiter) : num).replace(

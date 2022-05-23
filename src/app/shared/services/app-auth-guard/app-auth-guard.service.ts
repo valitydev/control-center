@@ -33,7 +33,7 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
                 }
                 resolve(result);
             } catch (error) {
-                reject('An error happened during access validation. Details:' + error);
+                reject('An error happened during access validation. Details:' + String(error));
             }
         });
     }
