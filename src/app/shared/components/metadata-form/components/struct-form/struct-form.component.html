@@ -5,12 +5,11 @@
         </mat-checkbox>
         <ng-template #label>
             <cc-field-label
-                *ngIf="!labelControl.disabled"
                 class="cc-body-1"
                 [field]="data.field"
                 [type]="data.type"
-            ></cc-field-label
-        ></ng-template>
+            ></cc-field-label>
+        </ng-template>
     </ng-container>
     <ng-container *ngIf="labelControl.value">
         <cc-metadata-form
