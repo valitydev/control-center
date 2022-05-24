@@ -6,6 +6,9 @@ import { RequiredSuper, REQUIRED_SUPER } from '../../required-super';
 import { getValue } from '../get-value';
 
 @Directive()
+/**
+ * TODO: select for form group
+ */
 export abstract class ValidatedWrappedAbstractControlSuperclass<OuterType, InnerType = OuterType>
     extends WrappedControlSuperclass<OuterType, InnerType>
     implements OnInit, Validator

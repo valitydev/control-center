@@ -1,5 +1,5 @@
 <div gdColumns="1fr" gdGap="16px">
-    <ng-container *ngIf="data.trueParent?.objectType !== 'union'">
+    <ng-container *ngIf="hasLabel">
         <mat-checkbox *ngIf="!labelControl.disabled; else label" [formControl]="labelControl">
             <ng-container [ngTemplateOutlet]="label"></ng-container>
         </mat-checkbox>

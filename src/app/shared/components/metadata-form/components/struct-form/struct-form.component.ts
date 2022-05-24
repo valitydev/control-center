@@ -28,6 +28,10 @@ export class StructFormComponent
     control = this.fb.group<{ [N in string]: unknown }>({});
     labelControl = this.fb.control(false);
 
+    get hasLabel() {
+        return !!this.data.trueParent && this.data.trueParent.objectType !== 'union';
+    }
+
     constructor(injector: Injector, private fb: FormBuilder) {
         super(injector);
     }
@@ -61,29 +65,28 @@ export class StructFormComponent
                 })
             )
         );
-
-        if (this.data.isRequired) {
-            this.labelControl.setValue(true);
-            this.labelControl.disable();
-        } else {
-            this.labelControl.setValue(false);
-            this.labelControl.enable();
-        }
-
+        this.setLabelControl();
         super.ngOnChanges(changes);
     }
 
     handleIncomingValue(value: { [N in string]: unknown }) {
         this.control.patchValue(value, { emitEvent: false });
-        const newValue = this.labelControl.disabled || !!(value && Object.keys(value).length);
-        if (this.labelControl.value !== newValue) {
-            this.labelControl.setValue(newValue);
-        }
+        this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
     validate(): ValidationErrors | null {
         return this.labelControl.value && this.control.invalid
             ? this.control.errors || { structInvalid: true }
             : null;
+    }
+
+    private setLabelControl(value: boolean = false) {
+        if (!this.hasLabel || this.data.isRequired) {
+            if (!this.labelControl.value) this.labelControl.setValue(true);
+            if (this.labelControl.enabled) this.labelControl.disable();
+        } else {
+            if (this.labelControl.value !== value) this.labelControl.setValue(value);
+            if (this.labelControl.disabled) this.labelControl.enable();
+        }
     }
 }
