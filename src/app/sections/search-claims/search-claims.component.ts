@@ -18,7 +18,7 @@ export class SearchClaimsComponent implements OnInit {
 
     ngOnInit(): void {
         this.searchClaimService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search claims (${e})`, 'OK')
+            this.snackBar.open(`An error occurred while search claims (${String(e)})`, 'OK')
         );
     }
 

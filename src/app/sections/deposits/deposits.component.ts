@@ -35,7 +35,7 @@ export class DepositsComponent implements OnInit {
 
     ngOnInit() {
         this.fetchDepositsService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search deposits (${e})`, 'OK')
+            this.snackBar.open(`An error occurred while search deposits (${String(e)})`, 'OK')
         );
     }
 
@@ -68,7 +68,7 @@ export class DepositsComponent implements OnInit {
     depositMenuItemSelected(depositMenuItemEvent: DepositMenuItemEvent) {
         switch (depositMenuItemEvent.action) {
             case DepositActions.NavigateToDeposit:
-                this.router.navigate([`operations/deposit/${depositMenuItemEvent.depositID}`]);
+                void this.router.navigate([`operations/deposit/${depositMenuItemEvent.depositID}`]);
                 break;
         }
     }

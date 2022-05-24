@@ -25,7 +25,7 @@ export class PaymentRefundsComponent implements OnInit {
             invoiceID: this.invoiceID,
         });
         this.fetchRefundsService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search refunds (${e})`, 'OK')
+            this.snackBar.open(`An error occurred while search refunds (${String(e)})`, 'OK')
         );
     }
 

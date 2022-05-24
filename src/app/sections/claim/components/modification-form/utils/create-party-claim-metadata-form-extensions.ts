@@ -4,22 +4,31 @@ import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
 import uuid from 'uuid';
 
-import { isTypeWithAliases, MetadataFormExtension } from '@cc/app/shared';
+import {
+    isTypeWithAliases,
+    MetadataFormExtension,
+    MetadataFormExtensionOption,
+} from '@cc/app/shared';
 
-function createPartyOptions(values: IterableIterator<{ id: string }>) {
+function createPartyOptions(
+    values: IterableIterator<{ id: string }>
+): MetadataFormExtensionOption[] {
     return Array.from(values).map((value) => ({
-        label: `${value.id} (from party)`,
+        label: 'from party',
         details: value,
         value: value.id,
     }));
 }
 
-function createClaimOptions(modificationUnits: { id: string; modification: unknown }[]) {
+function createClaimOptions(
+    modificationUnits: { id: string; modification: unknown }[]
+): MetadataFormExtensionOption[] {
     return uniqBy(
         modificationUnits.filter(Boolean).map((unit) => ({
-            label: `${unit.id} (from claim)`,
-            details: unit.modification,
+            label: 'from claim',
+            details: unit.modification as object,
             value: unit.id,
+            color: 'primary',
         })),
         'value'
     );
@@ -39,15 +48,16 @@ export function createPartyClaimMetadataFormExtensions(
             extension: () =>
                 of({
                     options: [
-                        ...createPartyOptions(party.contractors.values()),
                         ...createClaimOptions(
                             claim.changeset.map(
                                 (unit) =>
                                     unit.modification.party_modification?.contractor_modification
                             )
                         ),
+                        ...createPartyOptions(party.contractors.values()),
                     ],
                     generate,
+                    isIdentifier: true,
                 }),
         },
         {
@@ -55,15 +65,16 @@ export function createPartyClaimMetadataFormExtensions(
             extension: () =>
                 of({
                     options: [
-                        ...createPartyOptions(party.contracts.values()),
                         ...createClaimOptions(
                             claim.changeset.map(
                                 (unit) =>
                                     unit.modification.party_modification?.contract_modification
                             )
                         ),
+                        ...createPartyOptions(party.contracts.values()),
                     ],
                     generate,
+                    isIdentifier: true,
                 }),
         },
         {
@@ -71,14 +82,15 @@ export function createPartyClaimMetadataFormExtensions(
             extension: () =>
                 of({
                     options: [
-                        ...createPartyOptions(party.shops.values()),
                         ...createClaimOptions(
                             claim.changeset.map(
                                 (unit) => unit.modification.party_modification?.shop_modification
                             )
                         ),
+                        ...createPartyOptions(party.shops.values()),
                     ],
                     generate,
+                    isIdentifier: true,
                 }),
         },
         {
@@ -86,19 +98,20 @@ export function createPartyClaimMetadataFormExtensions(
             extension: () =>
                 of({
                     options: [
-                        ...createPartyOptions(party.wallets.values()),
                         ...createClaimOptions(
                             claim.changeset.map(
                                 (unit) => unit.modification.party_modification?.wallet_modification
                             )
                         ),
+                        ...createPartyOptions(party.wallets.values()),
                     ],
                     generate,
+                    isIdentifier: true,
                 }),
         },
         {
             determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
-            extension: () => of({ generate }),
+            extension: () => of({ generate, isIdentifier: true }),
         },
     ];
 }

@@ -14,10 +14,10 @@ export class DetailsContainerService {
     }
 
     open() {
-        this.detailsContainer.open();
+        void this.detailsContainer.open();
     }
 
     close() {
-        this.detailsContainer.close();
+        void this.detailsContainer.close();
     }
 }

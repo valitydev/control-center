@@ -6,7 +6,7 @@ import { TargetType } from './targe-type';
     name: 'ccPartyItemName',
 })
 export class PartyItemNamePipe implements PipeTransform {
-    transform(value: TargetType, ...args: any[]): any {
+    transform(value: TargetType, ...args: string[]): any {
         switch (value) {
             case TargetType.partyItem: {
                 const name = args.length > 0 ? args[0] : 'item';

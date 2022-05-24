@@ -32,7 +32,7 @@ export class SearchPartiesComponent {
     partyMenuItemSelected(event: PartyMenuItemEvent) {
         switch (event.action) {
             case PartyActions.NavigateToParty:
-                this.router.navigate([`/party/${event.partyID}`]);
+                void this.router.navigate([`/party/${event.partyID}`]);
         }
     }
 }

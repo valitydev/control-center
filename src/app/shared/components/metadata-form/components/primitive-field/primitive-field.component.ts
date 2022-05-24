@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
-import { map, pluck, shareReplay } from 'rxjs/operators';
+import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
 import { createValidatedAbstractControlProviders } from '@cc/utils';
@@ -15,7 +15,6 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 @Component({
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
-    styleUrls: ['primitive-field.component.scss'],
     providers: createValidatedAbstractControlProviders(PrimitiveFieldComponent),
 })
 export class PrimitiveFieldComponent
@@ -31,6 +30,20 @@ export class PrimitiveFieldComponent
     generate$ = this.extensionResult$.pipe(pluck('generate'));
     selected$ = combineLatest([this.extensionResult$, this.control.valueChanges]).pipe(
         map(([extensionResult, value]) => extensionResult?.options?.find((o) => o.value === value))
+    );
+    filteredOptions$ = combineLatest([
+        this.control.valueChanges.pipe(startWith('')),
+        this.extensionResult$,
+    ]).pipe(
+        map(([value, extensionResult]) => {
+            const filterValue = String(value ?? '').toLowerCase();
+            return extensionResult.options.filter(
+                (option) =>
+                    String(option.value).toLowerCase().includes(filterValue) ||
+                    option.label.toLowerCase().includes(filterValue)
+            );
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
 
     get inputType(): string {

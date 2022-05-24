@@ -130,4 +130,8 @@
         @include mat.typography-level($config, display-1);
         margin: 0;
     }
+
+    .cc-code.cc-code {
+        font-family: 'Roboto Mono', monospace;
+    }
 }

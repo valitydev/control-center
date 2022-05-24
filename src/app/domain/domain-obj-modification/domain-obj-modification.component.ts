@@ -57,7 +57,7 @@ export class DomainObjModificationComponent implements OnInit, OnDestroy {
 
     reviewChanges() {
         this.domainReviewService.addReviewModel(this.model);
-        this.router.navigate(['domain', JSON.stringify(this.model.ref), 'review']);
+        void this.router.navigate(['domain', JSON.stringify(this.model.ref), 'review']);
     }
 
     resetChanges() {
@@ -91,7 +91,7 @@ export class DomainObjModificationComponent implements OnInit, OnDestroy {
             (err) => {
                 console.error(err);
                 this.isLoading = false;
-                this.snackBar.open(`An error occurred while initializing: ${err}`, 'OK');
+                this.snackBar.open(`An error occurred while initializing: ${String(err)}`, 'OK');
             }
         );
     }

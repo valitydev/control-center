@@ -33,8 +33,8 @@ export class ShopsTableComponent implements OnChanges {
     }
 
     navigateToShop(shopID: string) {
-        this.route.params.pipe(pluck('partyID')).subscribe((partyID) => {
-            this.router.navigate([`/party/${partyID}/shop/${shopID}`]);
+        this.route.params.pipe(pluck('partyID')).subscribe((partyID: string) => {
+            void this.router.navigate([`/party/${partyID}/shop/${shopID}`]);
         });
     }
 }

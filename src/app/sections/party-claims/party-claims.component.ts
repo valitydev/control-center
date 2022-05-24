@@ -29,7 +29,7 @@ export class PartyClaimsComponent implements OnInit {
 
     ngOnInit() {
         this.partyClaimsService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search claim (${e})`, 'OK')
+            this.snackBar.open(`An error occurred while search claim (${String(e)})`, 'OK')
         );
     }
 

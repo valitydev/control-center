@@ -85,7 +85,7 @@ export class MetaEnricher {
             case MetaType.enum:
                 return meta;
         }
-        this.registerError(`Unsupported enrichment MetaType: ${meta.type}`);
+        this.registerError(`Unsupported enrichment MetaType: ${String(meta.type)}`);
     }
 
     private enrichTypedef({ meta }: MetaTypedef): MetaTypedef {

@@ -7,7 +7,7 @@
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
-    "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1387",
+    "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1273",
     "lint": "npm run lint-cmd -- --cache",
     "lint-fix": "npm run lint -- --fix",
     "lint-errors": "npm run lint -- --quiet",

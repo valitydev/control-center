@@ -11,6 +11,7 @@
                 [formControl]="control"
                 [required]="data.isRequired"
                 [type]="inputType"
+                [ngClass]="{ 'cc-code': (data.extensionResult$ | async)?.isIdentifier }"
             />
             <div matSuffix fxLayoutGap="4px">
                 <button mat-icon-button *ngIf="control.value" (click)="clear($event)">
@@ -31,10 +32,15 @@
             <mat-autocomplete #auto="matAutocomplete">
                 <ng-container *ngIf="data.extensionResult$ | async as extensionResult">
                     <mat-option
-                        *ngFor="let option of extensionResult.options"
+                        *ngFor="let option of filteredOptions$ | async"
                         [value]="option.value"
                     >
-                        {{ option.label || option.value }}
+                        <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign=" center">
+                            <div [ngClass]="{ 'cc-code': extensionResult.isIdentifier }">
+                                {{ option.value }}
+                            </div>
+                            <cc-label [label]="option.label" [color]="option.color"></cc-label>
+                        </div>
                     </mat-option>
                 </ng-container>
             </mat-autocomplete>
@@ -46,7 +52,10 @@
     <ng-container *ngIf="selected$ | async as selected">
         <mat-expansion-panel *ngIf="selected.details">
             <mat-expansion-panel-header>
-                <mat-panel-title>{{ selected.label }}</mat-panel-title>
+                <mat-panel-title fxLayout="row" fxLayoutGap="8px" fxLayoutAlign=" center">
+                    <div>Details</div>
+                    <cc-label [label]="selected.label" [color]="selected.color"></cc-label>
+                </mat-panel-title>
             </mat-expansion-panel-header>
             <cc-json-viewer [json]="selected.details"></cc-json-viewer>
         </mat-expansion-panel>

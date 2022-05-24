@@ -27,14 +27,14 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.keycloakService.loadUserProfile().then(() => {
+        void this.keycloakService.loadUserProfile().then(() => {
             this.username = this.keycloakService.getUsername();
             this.menuItems = this.getMenuItems();
         });
     }
 
     logout() {
-        this.keycloakService.logout();
+        void this.keycloakService.logout();
     }
 
     private getMenuItems() {
