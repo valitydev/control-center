@@ -32,10 +32,7 @@
         <mat-divider></mat-divider>
 
         <div class="cc-title">Predicate</div>
-        <cc-predicate
-            (validationChange)="predicateValid = $event"
-            (predicateChange)="predicate = $event"
-        ></cc-predicate>
+        <cc-predicate [formControl]="predicateControl"></cc-predicate>
 
         <mat-divider></mat-divider>
 
@@ -121,7 +118,7 @@
             mat-button
             color="primary"
             (click)="add()"
-            [disabled]="form.invalid || !predicateValid"
+            [disabled]="form.invalid || predicateControl.invalid"
         >
             ADD
         </button>

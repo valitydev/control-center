@@ -1,9 +1,9 @@
 <div gdColumns="1fr" gdGap="16px">
-    <span class="cc-body-1">
+    <span class="cc-body-1" *ngIf="hasLabel">
         <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label>
         ({{ data.type.name | titlecase }})
     </span>
-    <mat-accordion>
+    <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px' }">
         <mat-expansion-panel
             class="mat-elevation-z0"
             *ngFor="let control of controls.controls; let i = index"

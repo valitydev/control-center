@@ -15,6 +15,11 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 export class EnumFieldComponent extends WrappedFormControlSuperclass<unknown> implements Validator {
     @Input() data: MetadataFormData<string, Enums[string]>;
 
+    ngOnInit() {
+        super.ngOnInit();
+        console.log(this.data);
+    }
+
     validate(): ValidationErrors | null {
         return this.control.errors;
     }

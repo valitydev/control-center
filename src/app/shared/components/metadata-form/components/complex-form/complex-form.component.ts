@@ -22,6 +22,10 @@ export class ComplexFormComponent
 
     controls = new FormArray([]);
 
+    get hasLabel() {
+        return !!this.data.trueParent;
+    }
+
     add() {
         this.controls.push(new FormControl());
     }
