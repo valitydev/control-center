@@ -1,13 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
-import { createControlProviders } from '@cc/utils';
+import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -17,9 +15,9 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(PrimitiveFieldComponent),
 })
-export class PrimitiveFieldComponent
-    extends WrappedFormControlSuperclass<unknown>
-    implements OnChanges, Validator
+export class PrimitiveFieldComponent<T>
+    extends ValidatedFormControlSuperclass<T>
+    implements OnChanges
 {
     @Input() data: MetadataFormData<ThriftType>;
 
@@ -71,13 +69,9 @@ export class PrimitiveFieldComponent
 
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
 
-    ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent>) {
+    ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.data) this.data$.next(this.data);
-    }
-
-    validate(): ValidationErrors | null {
-        return this.control.errors;
     }
 
     generate(event: MouseEvent) {
@@ -86,7 +80,7 @@ export class PrimitiveFieldComponent
                 switchMap((generate) => generate()),
                 untilDestroyed(this)
             )
-            .subscribe((value) => this.control.setValue(value));
+            .subscribe((value) => this.control.setValue(value as T));
         event.stopPropagation();
     }
 

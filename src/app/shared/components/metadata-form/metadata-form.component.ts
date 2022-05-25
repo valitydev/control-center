@@ -1,11 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
-import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
+import { Validator } from '@angular/forms';
 import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
-import { createControlProviders } from '@cc/utils';
+import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from './types/metadata-form-data';
 
@@ -14,8 +13,8 @@ import { MetadataFormData } from './types/metadata-form-data';
     templateUrl: './metadata-form.component.html',
     providers: createControlProviders(MetadataFormComponent),
 })
-export class MetadataFormComponent
-    extends WrappedFormControlSuperclass<unknown>
+export class MetadataFormComponent<T>
+    extends ValidatedFormControlSuperclass<T>
     implements OnChanges, Validator
 {
     @Input() metadata: ThriftAstMetadata[];
@@ -38,9 +37,5 @@ export class MetadataFormComponent
                 this.extensions
             );
         }
-    }
-
-    validate(): ValidationErrors | null {
-        return this.control.errors;
     }
 }

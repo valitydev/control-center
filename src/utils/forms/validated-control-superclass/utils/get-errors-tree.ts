@@ -2,6 +2,10 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 import { hasControls } from '../../has-controls';
 
+/**
+ * FormGroup/FormArray don't return internal control errors,
+ * so you need to get internal errors manually
+ */
 export function getErrorsTree(control: AbstractControl): ValidationErrors | null {
     if (control.valid) {
         return null;

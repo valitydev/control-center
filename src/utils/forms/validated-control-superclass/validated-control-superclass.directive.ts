@@ -1,6 +1,6 @@
 import { Directive, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
-import { FormArray, FormControl, FormGroup } from '@ngneat/reactive-forms';
+import { FormControl } from '@ngneat/reactive-forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 
 import { REQUIRED_SUPER, RequiredSuper } from '../../required-super';
@@ -12,9 +12,6 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
     extends WrappedControlSuperclass<OuterType, InnerType>
     implements OnInit, Validator
 {
-    control: FormControl<InnerType> | FormArray<InnerType> | FormGroup<InnerType> =
-        new FormControl<InnerType>();
-
     protected emptyValue: InnerType;
 
     ngOnInit(): RequiredSuper {
@@ -33,4 +30,12 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
         }
         return outer as never;
     }
+}
+
+@Directive()
+export class ValidatedFormControlSuperclass<
+    OuterType,
+    InnerType = OuterType
+> extends ValidatedControlSuperclass<OuterType, InnerType> {
+    control = new FormControl<InnerType>();
 }

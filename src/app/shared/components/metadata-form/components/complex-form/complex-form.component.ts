@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
 import { FormArray, FormControl } from '@ngneat/reactive-forms';
-import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 
-import { createControlProviders } from '@cc/utils';
+import { createControlProviders, getErrorsTree, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -15,7 +14,7 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     providers: createControlProviders(ComplexFormComponent),
 })
 export class ComplexFormComponent
-    extends WrappedFormControlSuperclass<unknown>
+    extends ValidatedFormControlSuperclass<unknown>
     implements Validator
 {
     @Input() data: MetadataFormData<SetType | MapType | ListType>;
@@ -35,8 +34,6 @@ export class ComplexFormComponent
     }
 
     validate(): ValidationErrors | null {
-        return this.control.invalid || this.controls.invalid
-            ? { [this.data.type.name + 'Invalid']: true }
-            : null;
+        return (this.control.errors as ValidationErrors) || getErrorsTree(this.controls);
     }
 }
