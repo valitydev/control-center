@@ -34,7 +34,6 @@ import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-a
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
-import { SettingsModule } from './settings';
 import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
 import {
     DEFAULT_DIALOG_CONFIG,
@@ -69,7 +68,6 @@ moment.locale('en');
         DomainModule,
         RepairingModule,
         ThemeManagerModule,
-        SettingsModule,
         PartyModule,
         SearchPartiesModule,
         SearchClaimsModule,
