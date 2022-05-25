@@ -1,5 +1,5 @@
-mat-expansion-panel-body {
-    padding: 0;
+::ng-deep .mat-expansion-panel-body {
+    padding: 0 !important;
 }
 
 mat-expansion-panel-header {

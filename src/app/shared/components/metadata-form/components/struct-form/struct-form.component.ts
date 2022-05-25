@@ -29,7 +29,11 @@ export class StructFormComponent
     labelControl = this.fb.control(false);
 
     get hasLabel() {
-        return !!this.data.trueParent && this.data.trueParent.objectType !== 'union';
+        return (
+            !!this.data.trueParent &&
+            this.data.trueParent.objectType !== 'union' &&
+            this.data.trueParent.typeGroup !== 'complex'
+        );
     }
 
     constructor(injector: Injector, private fb: FormBuilder) {

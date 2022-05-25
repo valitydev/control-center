@@ -14,6 +14,7 @@
     <ng-container *ngIf="labelControl.value">
         <cc-metadata-form
             *ngFor="let field of data.ast"
+            [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
             [formControl]="control.get(field.name)"
             [metadata]="data.metadata"
             [namespace]="data.namespace"
