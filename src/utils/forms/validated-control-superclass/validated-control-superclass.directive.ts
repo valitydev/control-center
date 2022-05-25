@@ -1,18 +1,20 @@
 import { Directive, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@ngneat/reactive-forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 
-import { RequiredSuper, REQUIRED_SUPER } from '../../required-super';
+import { REQUIRED_SUPER, RequiredSuper } from '../../required-super';
 import { getValue } from '../get-value';
+import { getErrorsTree } from './utils/get-errors-tree';
 
 @Directive()
-/**
- * TODO: select for form group
- */
-export abstract class ValidatedWrappedAbstractControlSuperclass<OuterType, InnerType = OuterType>
+export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterType>
     extends WrappedControlSuperclass<OuterType, InnerType>
     implements OnInit, Validator
 {
+    control: FormControl<InnerType> | FormArray<InnerType> | FormGroup<InnerType> =
+        new FormControl<InnerType>();
+
     protected emptyValue: InnerType;
 
     ngOnInit(): RequiredSuper {
@@ -22,14 +24,13 @@ export abstract class ValidatedWrappedAbstractControlSuperclass<OuterType, Inner
     }
 
     validate(): ValidationErrors | null {
-        return this.control.errors;
+        return getErrorsTree(this.control);
     }
 
     protected outerToInner(outer: OuterType): InnerType {
-        if (typeof this.emptyValue === 'object') {
-            if (!outer) return this.emptyValue;
-            return { ...this.emptyValue, ...outer };
+        if (!outer && 'controls' in this.control) {
+            return this.emptyValue;
         }
-        return outer as unknown as InnerType;
+        return outer as never;
     }
 }

@@ -9,7 +9,7 @@ import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
-import { createControlProviders, ValidatedWrappedAbstractControlSuperclass } from '@cc/utils/forms';
+import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 
 @UntilDestroy()
 @Component({
@@ -19,7 +19,7 @@ import { createControlProviders, ValidatedWrappedAbstractControlSuperclass } fro
     providers: createControlProviders(PayoutToolFieldComponent),
 })
 export class PayoutToolFieldComponent
-    extends ValidatedWrappedAbstractControlSuperclass<PartyID>
+    extends ValidatedControlSuperclass<PartyID>
     implements OnInit
 {
     @Input() label: string;

@@ -15,7 +15,7 @@ import { filter, map, share, switchMap } from 'rxjs/operators';
 
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { ComponentChanges } from '@cc/app/shared/utils';
-import { createControlProviders, ValidatedWrappedAbstractControlSuperclass } from '@cc/utils/forms';
+import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 import { RequiredSuper } from '@cc/utils/required-super';
 
 @UntilDestroy()
@@ -27,7 +27,7 @@ import { RequiredSuper } from '@cc/utils/required-super';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFieldComponent<M extends boolean = boolean>
-    extends ValidatedWrappedAbstractControlSuperclass<
+    extends ValidatedControlSuperclass<
         M extends true ? Shop[] : Shop,
         M extends true ? ShopID[] : ShopID
     >
