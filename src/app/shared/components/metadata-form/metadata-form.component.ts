@@ -5,14 +5,14 @@ import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from './types/metadata-form-data';
 
 @Component({
     selector: 'cc-metadata-form',
     templateUrl: './metadata-form.component.html',
-    providers: createValidatedAbstractControlProviders(MetadataFormComponent),
+    providers: createControlProviders(MetadataFormComponent),
 })
 export class MetadataFormComponent
     extends WrappedFormControlSuperclass<unknown>

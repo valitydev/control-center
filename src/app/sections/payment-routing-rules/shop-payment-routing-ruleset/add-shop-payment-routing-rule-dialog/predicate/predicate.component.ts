@@ -4,12 +4,12 @@ import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Predicate } from '@vality/domain-proto/lib/domain';
 import { from } from 'rxjs';
 
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 @Component({
     selector: 'cc-predicate',
     templateUrl: 'predicate.component.html',
-    providers: createValidatedAbstractControlProviders(PredicateComponent),
+    providers: createControlProviders(PredicateComponent),
 })
 export class PredicateComponent
     extends WrappedFormControlSuperclass<Predicate>

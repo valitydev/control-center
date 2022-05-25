@@ -9,7 +9,7 @@ import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -17,7 +17,7 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 @Component({
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
-    providers: createValidatedAbstractControlProviders(StructFormComponent),
+    providers: createControlProviders(StructFormComponent),
 })
 export class StructFormComponent
     extends FormComponentSuperclass<{ [N in string]: unknown }>

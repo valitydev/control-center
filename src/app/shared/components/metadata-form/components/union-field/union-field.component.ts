@@ -7,7 +7,7 @@ import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { getDefaultValue } from '../../utils/get-default-value';
@@ -16,7 +16,7 @@ import { getDefaultValue } from '../../utils/get-default-value';
 @Component({
     selector: 'cc-union-field',
     templateUrl: './union-field.component.html',
-    providers: createValidatedAbstractControlProviders(UnionFieldComponent),
+    providers: createControlProviders(UnionFieldComponent),
 })
 export class UnionFieldComponent
     extends FormComponentSuperclass<{ [N in string]: unknown }>

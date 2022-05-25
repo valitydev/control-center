@@ -6,10 +6,7 @@ import { Party, Shop } from '@vality/magista-proto/lib/domain';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
-import {
-    createValidatedAbstractControlProviders,
-    ValidatedWrappedAbstractControlSuperclass,
-} from '@cc/utils/forms';
+import { createControlProviders, ValidatedWrappedAbstractControlSuperclass } from '@cc/utils/forms';
 import { getEnumKeys } from '@cc/utils/get-enum-keys';
 
 export interface PayoutsSearchForm {
@@ -25,7 +22,7 @@ export interface PayoutsSearchForm {
 @Component({
     selector: 'cc-payouts-search-form',
     templateUrl: './payouts-search-form.component.html',
-    providers: createValidatedAbstractControlProviders(PayoutsSearchFormComponent),
+    providers: createControlProviders(PayoutsSearchFormComponent),
 })
 export class PayoutsSearchFormComponent extends ValidatedWrappedAbstractControlSuperclass<PayoutsSearchForm> {
     control = this.fb.group<PayoutsSearchForm>({

@@ -4,7 +4,7 @@ import { FormArray, FormControl } from '@ngneat/reactive-forms';
 import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -12,7 +12,7 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     selector: 'cc-complex-form',
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
-    providers: createValidatedAbstractControlProviders(ComplexFormComponent),
+    providers: createControlProviders(ComplexFormComponent),
 })
 export class ComplexFormComponent
     extends WrappedFormControlSuperclass<unknown>

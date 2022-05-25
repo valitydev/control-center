@@ -6,7 +6,7 @@ import { Party } from '@vality/domain-proto/lib/domain';
 import { from } from 'rxjs';
 
 import { ComponentChanges, MetadataFormExtension } from '@cc/app/shared';
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 import { createDomainObjectMetadataFormExtension } from './utils/create-domain-object-metadata-form.extension';
@@ -15,7 +15,7 @@ import { createPartyClaimMetadataFormExtensions } from './utils/create-party-cla
 @Component({
     selector: 'cc-modification-form',
     templateUrl: './modification-form.component.html',
-    providers: createValidatedAbstractControlProviders(ModificationFormComponent),
+    providers: createControlProviders(ModificationFormComponent),
 })
 export class ModificationFormComponent
     extends WrappedFormControlSuperclass<unknown>
