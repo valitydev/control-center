@@ -17,7 +17,7 @@ export class PredicateComponent
     implements Validator, OnChanges
 {
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
-    extensions$ = this.domainMetadataFormExtensionsService.metadataFormExtensions$;
+    extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     constructor(
         injector: Injector,

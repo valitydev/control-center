@@ -7,7 +7,7 @@ import {
     MetadataFormExtensionOption,
 } from '../../../components';
 
-export function createDomainObjectMetadataFormExtension(
+export function createDomainObjectExtension(
     refType: string,
     options: () => Observable<MetadataFormExtensionOption[]>
 ): MetadataFormExtension {

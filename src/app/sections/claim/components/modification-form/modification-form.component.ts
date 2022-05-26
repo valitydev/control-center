@@ -38,13 +38,12 @@ export class ModificationFormComponent
     ngOnChanges(changes: ComponentChanges<ModificationFormComponent>) {
         super.ngOnChanges(changes);
         if (changes.party || changes.claim) {
-            this.extensions$ =
-                this.domainMetadataFormExtensionsService.metadataFormExtensions$.pipe(
-                    map((e) => [
-                        ...createPartyClaimMetadataFormExtensions(this.party, this.claim),
-                        ...e,
-                    ])
-                );
+            this.extensions$ = this.domainMetadataFormExtensionsService.extensions$.pipe(
+                map((e) => [
+                    ...createPartyClaimMetadataFormExtensions(this.party, this.claim),
+                    ...e,
+                ])
+            );
         }
     }
 
