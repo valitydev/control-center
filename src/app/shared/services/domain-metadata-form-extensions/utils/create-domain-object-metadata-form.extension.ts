@@ -1,11 +1,15 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { isTypeWithAliases, MetadataFormExtension } from '@cc/app/shared';
+import {
+    isTypeWithAliases,
+    MetadataFormExtension,
+    MetadataFormExtensionOption,
+} from '../../../components';
 
 export function createDomainObjectMetadataFormExtension(
     refType: string,
-    getObjects: () => Observable<{ ref: { id: number }; data: { name?: string } }[]>
+    options: () => Observable<MetadataFormExtensionOption[]>
 ): MetadataFormExtension {
     return {
         determinant: (data) =>
@@ -14,14 +18,17 @@ export function createDomainObjectMetadataFormExtension(
                     isTypeWithAliases(data, 'ObjectID', 'domain')
             ),
         extension: () =>
-            getObjects().pipe(
+            options().pipe(
                 map((objects) => ({
                     options: objects
-                        .sort((a, b) => a.ref.id - b.ref.id)
+                        .sort((a, b) =>
+                            typeof a.value === 'number' && typeof b.value === 'number'
+                                ? a.value - b.value
+                                : 0
+                        )
                         .map((o) => ({
-                            label: o.data.name,
-                            value: o.ref.id,
                             details: o,
+                            ...o,
                         })),
                     isIdentifier: true,
                 }))
