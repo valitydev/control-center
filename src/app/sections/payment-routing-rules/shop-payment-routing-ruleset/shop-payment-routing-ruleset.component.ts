@@ -4,9 +4,10 @@ import { Predicate, TerminalObject } from '@vality/domain-proto/lib/domain';
 import { first, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { objectToJSON } from '@cc/app/api/utils';
+import { NotificationService } from '@cc/app/shared/services/notification';
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
-import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
@@ -44,7 +45,8 @@ export class ShopPaymentRoutingRulesetComponent {
         private baseDialogService: BaseDialogService,
         private shopPaymentRoutingRulesetService: ShopPaymentRoutingRulesetService,
         private domainStoreService: DomainStoreService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private notificationService: NotificationService
     ) {}
 
     addShopRule() {
@@ -57,9 +59,23 @@ export class ShopPaymentRoutingRulesetComponent {
                         .afterClosed()
                 )
             )
-
-            .pipe(handleError(this.errorService.error), untilDestroyed(this))
-            .subscribe();
+            .pipe(untilDestroyed(this))
+            .subscribe({
+                next: (res) => {
+                    if (res.status === BaseDialogResponseStatus.Success) {
+                        this.domainStoreService.forceReload();
+                        this.notificationService.success(
+                            'Shop payment routing ruleset successfully added'
+                        );
+                    }
+                },
+                error: (err) => {
+                    this.errorService.error(err);
+                    this.notificationService.success(
+                        'Error while adding shop payment routing ruleset'
+                    );
+                },
+            });
     }
 
     removeShopRule(idx: number) {
