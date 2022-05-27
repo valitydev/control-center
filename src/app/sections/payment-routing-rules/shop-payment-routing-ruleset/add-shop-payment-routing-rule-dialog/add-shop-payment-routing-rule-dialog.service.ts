@@ -5,6 +5,8 @@ import { Predicate } from '@vality/domain-proto/lib/domain';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
 
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+
 import { RoutingRulesService, TerminalService } from '../../../../thrift-services';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog.component';
 
@@ -86,7 +88,7 @@ export class AddShopPaymentRoutingRuleDialogService {
                     })
                 )
             )
-            .subscribe(() => this.dialogRef.close());
+            .subscribe(() => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }));
     }
 
     addOption() {
