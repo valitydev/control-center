@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomainObject } from '@vality/domain-proto';
+import { DomainObject } from '@vality/domain-proto/lib/domain';
 import { Field } from '@vality/thrift-ts';
 import { from, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -30,7 +30,7 @@ export class DomainMetadataFormExtensionsService {
 
     constructor(private domainStoreService: DomainStoreService) {}
 
-    private createDomainObjectsOptions(metadata: ThriftAstMetadata[]) {
+    private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
         const domainFields = new MetadataFormData<string, Field[]>(
             metadata,
             'domain',
@@ -40,19 +40,25 @@ export class DomainMetadataFormExtensionsService {
             .filter(
                 (f) => !(f.name in DOMAIN_OBJECTS_TO_OPTIONS) || DOMAIN_OBJECTS_TO_OPTIONS[f.name]
             )
-            .map((f) => this.createFieldOptions(metadata, f.name as keyof DomainObject));
+            .map((f) =>
+                this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject)
+            );
     }
 
-    private createFieldOptions(metadata: ThriftAstMetadata[], fieldKey: keyof DomainObject) {
-        const objectFields = new MetadataFormData<string, Field[]>(metadata, 'domain', fieldKey)
+    private createFieldOptions(
+        metadata: ThriftAstMetadata[],
+        objectType: string,
+        objectKey: keyof DomainObject
+    ): MetadataFormExtension {
+        const objectFields = new MetadataFormData<string, Field[]>(metadata, 'domain', objectType)
             .ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
-            this.domainStoreService.getObjects(fieldKey).pipe(
+            this.domainStoreService.getObjects(objectKey).pipe(
                 map((objects) => {
                     const domainObjectToOption =
-                        fieldKey in DOMAIN_OBJECTS_TO_OPTIONS
-                            ? DOMAIN_OBJECTS_TO_OPTIONS[fieldKey as keyof OtherDomainObjects]
+                        objectKey in DOMAIN_OBJECTS_TO_OPTIONS
+                            ? DOMAIN_OBJECTS_TO_OPTIONS[objectKey as keyof OtherDomainObjects]
                             : defaultDomainObjectToOption;
                     return objects.map(domainObjectToOption);
                 })
