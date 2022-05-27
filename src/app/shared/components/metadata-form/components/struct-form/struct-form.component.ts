@@ -74,7 +74,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     }
 
     handleIncomingValue(value: T) {
-        this.control.setValue(value as never, { emitEvent: false });
+        this.control.patchValue(value as never, { emitEvent: false });
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 

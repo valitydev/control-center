@@ -56,7 +56,7 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
     }
 
     handleIncomingValue(value: T) {
-        this.valueControls.setValue(value as never);
+        this.valueControls.patchValue(value as never, { emitEvent: false });
     }
 
     validate(): ValidationErrors | null {
