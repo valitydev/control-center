@@ -4,6 +4,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { BaseDialogModule } from '@cc/components/base-dialog';
+
 import { ErrorModule } from '../../../shared/services/error';
 import { TargetRulesetFormModule } from '../target-ruleset-form';
 import { ChangeTargetDialogComponent } from './change-target-dialog.component';
@@ -16,6 +18,7 @@ import { ChangeTargetDialogComponent } from './change-target-dialog.component';
         FlexLayoutModule,
         MatDialogModule,
         MatButtonModule,
+        BaseDialogModule,
     ],
     declarations: [ChangeTargetDialogComponent],
     exports: [ChangeTargetDialogComponent],

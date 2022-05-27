@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
+import { BaseDialogModule } from '@cc/components/base-dialog';
+
 import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-dialog.component';
 
 @NgModule({
@@ -17,6 +19,7 @@ import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-
         MatInputModule,
         MatButtonModule,
         MatSelectModule,
+        BaseDialogModule,
     ],
     declarations: [ChangeDelegateRulesetDialogComponent],
     exports: [ChangeDelegateRulesetDialogComponent],

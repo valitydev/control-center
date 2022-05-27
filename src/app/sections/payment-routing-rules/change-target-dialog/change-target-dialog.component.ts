@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject } from 'rxjs';
+
+import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../../../thrift-services';
@@ -12,32 +13,36 @@ import { TargetRuleset } from '../target-ruleset-form';
     templateUrl: 'change-target-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangeTargetDialogComponent {
+export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
+    ChangeTargetDialogComponent,
+    { mainRulesetRefID: number; delegateIdx: number }
+> {
     targetRuleset$ = new BehaviorSubject<TargetRuleset>(undefined);
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);
     initValue: Partial<TargetRuleset> = {};
 
     constructor(
-        private dialogRef: MatDialogRef<ChangeTargetDialogComponent>,
+        injector: Injector,
         private routingRulesService: RoutingRulesService,
-        @Inject(MAT_DIALOG_DATA) public data: { mainRulesetRefID: number; delegateIdx: number },
         private errorService: ErrorService
     ) {
+        super(injector);
         this.routingRulesService
-            .getRuleset(data?.mainRulesetRefID)
+            .getRuleset(this.dialogData?.mainRulesetRefID)
             .pipe(untilDestroyed(this))
             .subscribe((ruleset) => {
                 this.initValue = {
                     mainRulesetRefID: ruleset.ref.id,
                     mainDelegateDescription:
-                        ruleset?.data?.decisions?.delegates?.[data?.delegateIdx]?.description,
+                        ruleset?.data?.decisions?.delegates?.[this.dialogData?.delegateIdx]
+                            ?.description,
                 };
             });
     }
 
     changeTarget() {
         const { mainRulesetRefID, mainDelegateDescription } = this.targetRuleset$.value;
-        const { mainRulesetRefID: previousMainRulesetRefID, delegateIdx } = this.data;
+        const { mainRulesetRefID: previousMainRulesetRefID, delegateIdx } = this.dialogData;
         this.routingRulesService
             .changeMainRuleset({
                 previousMainRulesetRefID,
@@ -47,9 +52,5 @@ export class ChangeTargetDialogComponent {
             })
             .pipe(untilDestroyed(this))
             .subscribe(() => this.dialogRef.close(), this.errorService.error);
-    }
-
-    cancel() {
-        this.dialogRef.close();
     }
 }

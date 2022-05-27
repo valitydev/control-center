@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject } from 'rxjs';
+
+import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';
@@ -13,7 +14,10 @@ import { TargetRuleset } from '../../target-ruleset-form';
     templateUrl: 'attach-new-ruleset-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AttachNewRulesetDialogComponent {
+export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
+    AttachNewRulesetDialogComponent,
+    { partyID: string }
+> {
     form = this.fb.group({
         ruleset: this.fb.group({
             name: 'submain ruleset[by shop id]',
@@ -25,27 +29,24 @@ export class AttachNewRulesetDialogComponent {
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);
 
     constructor(
+        injector: Injector,
         private fb: FormBuilder,
-        private dialogRef: MatDialogRef<AttachNewRulesetDialogComponent>,
         private paymentRoutingRulesService: RoutingRulesService,
-        @Inject(MAT_DIALOG_DATA) public data: { partyID: string },
         private errorService: ErrorService
-    ) {}
+    ) {
+        super(injector);
+    }
 
     attach() {
         const { mainRulesetRefID, mainDelegateDescription } = this.targetRuleset$.value;
         this.paymentRoutingRulesService
             .attachPartyDelegateRuleset({
-                partyID: this.data.partyID,
+                partyID: this.dialogData.partyID,
                 mainRulesetRefID,
                 mainDelegateDescription,
                 ruleset: this.form.value.ruleset,
             })
             .pipe(untilDestroyed(this))
             .subscribe(() => this.dialogRef.close(), this.errorService.error);
-    }
-
-    cancel() {
-        this.dialogRef.close();
     }
 }

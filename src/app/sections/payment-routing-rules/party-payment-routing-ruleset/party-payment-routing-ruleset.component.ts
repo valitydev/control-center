@@ -1,12 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
+
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
-import { DialogConfig, DIALOG_CONFIG } from '../../../tokens';
 import { AddPartyPaymentRoutingRuleDialogComponent } from './add-party-payment-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payment-routing-rules-dialog';
 import { PartyPaymentRoutingRulesetService } from './party-payment-routing-ruleset.service';
@@ -54,11 +54,10 @@ export class PaymentRoutingRulesComponent {
     );
 
     constructor(
-        private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         private partyPaymentRoutingRulesetService: PartyPaymentRoutingRulesetService,
         private router: Router,
-        private domainStoreService: DomainStoreService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+        private domainStoreService: DomainStoreService
     ) {}
 
     initialize() {
@@ -69,11 +68,8 @@ export class PaymentRoutingRulesComponent {
             .pipe(
                 take(1),
                 switchMap(([partyID, refID]) =>
-                    this.dialog
-                        .open(InitializePaymentRoutingRulesDialogComponent, {
-                            ...this.dialogConfig.medium,
-                            data: { partyID, refID },
-                        })
+                    this.baseDialogService
+                        .open(InitializePaymentRoutingRulesDialogComponent, { partyID, refID })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
@@ -90,11 +86,8 @@ export class PaymentRoutingRulesComponent {
             .pipe(
                 take(1),
                 switchMap(([refID, shops, partyID]) =>
-                    this.dialog
-                        .open(AddPartyPaymentRoutingRuleDialogComponent, {
-                            ...this.dialogConfig.medium,
-                            data: { refID, shops, partyID },
-                        })
+                    this.baseDialogService
+                        .open(AddPartyPaymentRoutingRuleDialogComponent, { refID, shops, partyID })
                         .afterClosed()
                 ),
                 untilDestroyed(this)

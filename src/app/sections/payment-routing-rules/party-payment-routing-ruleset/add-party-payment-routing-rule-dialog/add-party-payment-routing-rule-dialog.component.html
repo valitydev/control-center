@@ -1,11 +1,9 @@
-<form [formGroup]="form" fxLayout="column" fxLayoutGap="32px">
-    <div class="cc-headline">Party payment routing rule params</div>
-
-    <div fxLayout="column" fxLayoutGap="24px">
+<cc-base-dialog title="Party payment routing rule params">
+    <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <mat-form-field>
             <mat-label>Shop</mat-label>
             <mat-select formControlName="shopID" required>
-                <mat-option *ngFor="let shop of data.shops" [value]="shop.id">
+                <mat-option *ngFor="let shop of dialogData.shops" [value]="shop.id">
                     {{ shop.details.name }}
                 </mat-option>
             </mat-select>
@@ -26,8 +24,7 @@
         </div>
     </div>
 
-    <div fxLayout fxLayoutAlign="space-between">
-        <button mat-button (click)="cancel()">CANCEL</button>
+    <cc-base-dialog-actions>
         <button mat-button color="primary" (click)="add()" [disabled]="form.invalid">ADD</button>
-    </div>
-</form>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

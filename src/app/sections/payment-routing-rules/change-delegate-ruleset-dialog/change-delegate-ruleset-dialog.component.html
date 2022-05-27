@@ -1,6 +1,4 @@
-<div fxLayout="column" fxLayoutGap="32px">
-    <div class="cc-headline">Change Delegate Ruleset</div>
-
+<cc-base-dialog title="Change Delegate Ruleset">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <mat-form-field>
             <mat-label>Delegate Ruleset</mat-label>
@@ -16,10 +14,9 @@
         </mat-form-field>
     </div>
 
-    <div fxLayout fxLayoutAlign="space-between">
-        <button mat-button (click)="cancel()">CANCEL</button>
+    <cc-base-dialog-actions>
         <button mat-button color="primary" (click)="changeRuleset()" [disabled]="form.invalid">
             CHANGE RULESET
         </button>
-    </div>
-</div>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

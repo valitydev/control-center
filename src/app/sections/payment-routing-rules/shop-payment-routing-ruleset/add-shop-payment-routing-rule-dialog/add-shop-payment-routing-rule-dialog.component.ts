@@ -41,10 +41,6 @@ export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSupercla
         this.addShopPaymentRoutingRuleDialogService.add(this.predicateControl.value);
     }
 
-    cancel() {
-        this.dialogRef.close();
-    }
-
     addOption() {
         this.addShopPaymentRoutingRuleDialogService.addOption();
     }

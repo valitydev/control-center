@@ -15,6 +15,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
+import { BaseDialogModule } from '@cc/components/base-dialog';
 import { DetailsItemModule } from '@cc/components/details-item';
 
 import { ErrorModule } from '../../../shared/services/error';
@@ -52,6 +53,7 @@ const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetD
         ChangeTargetDialogModule,
         TargetRulesetFormModule,
         RoutingRulesListModule,
+        BaseDialogModule,
     ],
     declarations: EXPORTED_DECLARATIONS,
     exports: EXPORTED_DECLARATIONS,

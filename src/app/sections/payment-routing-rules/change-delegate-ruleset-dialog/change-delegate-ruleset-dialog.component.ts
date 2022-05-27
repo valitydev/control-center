@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { map } from 'rxjs/operators';
+
+import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { RoutingRulesService } from '../../../thrift-services';
 
@@ -12,7 +13,13 @@ import { RoutingRulesService } from '../../../thrift-services';
     templateUrl: 'change-delegate-ruleset-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangeDelegateRulesetDialogComponent implements OnInit {
+export class ChangeDelegateRulesetDialogComponent
+    extends BaseDialogSuperclass<
+        ChangeDelegateRulesetDialogComponent,
+        { mainRulesetRefID: number; delegateIdx: number }
+    >
+    implements OnInit
+{
     form = this.fb.group({
         rulesetRefId: [],
         description: '',
@@ -21,17 +28,18 @@ export class ChangeDelegateRulesetDialogComponent implements OnInit {
     rulesets$ = this.routingRulesService.rulesets$;
 
     constructor(
+        injector: Injector,
         private fb: FormBuilder,
-        private dialogRef: MatDialogRef<ChangeDelegateRulesetDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { mainRulesetRefID: number; delegateIdx: number },
         private routingRulesService: RoutingRulesService
-    ) {}
+    ) {
+        super(injector);
+    }
 
     ngOnInit() {
         this.routingRulesService
-            .getRuleset(this.data.mainRulesetRefID)
+            .getRuleset(this.dialogData.mainRulesetRefID)
             .pipe(
-                map((r) => r?.data?.decisions?.delegates?.[this.data?.delegateIdx]),
+                map((r) => r?.data?.decisions?.delegates?.[this.dialogData?.delegateIdx]),
                 untilDestroyed(this)
             )
             .subscribe((delegate) => {
@@ -42,15 +50,11 @@ export class ChangeDelegateRulesetDialogComponent implements OnInit {
             });
     }
 
-    cancel() {
-        this.dialogRef.close();
-    }
-
     changeRuleset() {
         this.routingRulesService
             .changeDelegateRuleset({
-                mainRulesetRefID: this.data.mainRulesetRefID,
-                delegateIdx: this.data.delegateIdx,
+                mainRulesetRefID: this.dialogData.mainRulesetRefID,
+                delegateIdx: this.dialogData.delegateIdx,
                 newDelegateRulesetRefID: this.form.value.rulesetRefId,
                 description: this.form.value.description,
             })

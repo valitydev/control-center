@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
 import { first, map, switchMap, take } from 'rxjs/operators';
 
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
+
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
-import { DialogConfig, DIALOG_CONFIG } from '../../../tokens';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
 
@@ -54,10 +54,9 @@ export class PartyDelegateRulesetsComponent {
         private partyDelegateRulesetsService: PartyDelegateRulesetsService,
         private paymentRoutingRulesService: RoutingRulesService,
         private router: Router,
-        private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         private domainStoreService: DomainStoreService,
-        private errorService: ErrorService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+        private errorService: ErrorService
     ) {}
 
     attachNewRuleset() {
@@ -65,11 +64,8 @@ export class PartyDelegateRulesetsComponent {
             .pipe(
                 take(1),
                 switchMap((partyID) =>
-                    this.dialog
-                        .open(AttachNewRulesetDialogComponent, {
-                            ...this.dialogConfig.medium,
-                            data: { partyID },
-                        })
+                    this.baseDialogService
+                        .open(AttachNewRulesetDialogComponent, { partyID })
                         .afterClosed()
                 ),
                 handleError(this.errorService.error),

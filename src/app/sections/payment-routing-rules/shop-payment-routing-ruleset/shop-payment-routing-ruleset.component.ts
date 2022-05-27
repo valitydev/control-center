@@ -49,7 +49,7 @@ export class ShopPaymentRoutingRulesetComponent {
 
     addShopRule() {
         this.baseDialogService
-            .open(AddShopPaymentRoutingRuleDialogComponent, null, 'large')
+            .open(AddShopPaymentRoutingRuleDialogComponent)
             .afterClosed()
             .pipe(handleError(this.errorService.error), untilDestroyed(this))
             .subscribe();
