@@ -1,6 +1,6 @@
 <div gdColumns="1fr" gdGap="16px">
     <ng-container *ngIf="data.type === 'bool'; else input">
-        <label fxFlex gdColumns="1fr" gdGap="16px">
+        <div gdColumns="1fr" gdGap="16px">
             <cc-field-label
                 class="cc-body-1"
                 [field]="data.field"
@@ -24,7 +24,7 @@
                     <mat-icon>loop</mat-icon>
                 </button>
             </div>
-        </label>
+        </div>
     </ng-container>
     <ng-template #input>
         <div fxLayoutGap="4px">

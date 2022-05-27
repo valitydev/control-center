@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Predicate, TerminalObject } from '@vality/domain-proto/lib/domain';
-import { combineLatest } from 'rxjs';
-import { map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { objectToJSON } from '@cc/app/api/utils';
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
@@ -13,8 +12,6 @@ import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog';
 import { ShopPaymentRoutingRulesetService } from './shop-payment-routing-ruleset.service';
-
-const DIALOG_WIDTH = '548px';
 
 @UntilDestroy()
 @Component({
@@ -44,29 +41,17 @@ export class ShopPaymentRoutingRulesetComponent {
     isLoading$ = this.domainStoreService.isLoading$;
 
     constructor(
-        private dialog: MatDialog,
+        private baseDialogService: BaseDialogService,
         private shopPaymentRoutingRulesetService: ShopPaymentRoutingRulesetService,
         private domainStoreService: DomainStoreService,
         private errorService: ErrorService
     ) {}
 
     addShopRule() {
-        combineLatest([this.partyID$, this.shopPaymentRoutingRulesetService.refID$])
-            .pipe(
-                take(1),
-                switchMap(([partyID, refID]) =>
-                    this.dialog
-                        .open(AddShopPaymentRoutingRuleDialogComponent, {
-                            disableClose: true,
-                            width: DIALOG_WIDTH,
-                            maxHeight: '90vh',
-                            data: { partyID, refID },
-                        })
-                        .afterClosed()
-                ),
-                handleError(this.errorService.error),
-                untilDestroyed(this)
-            )
+        this.baseDialogService
+            .open(AddShopPaymentRoutingRuleDialogComponent, null, 'large')
+            .afterClosed()
+            .pipe(handleError(this.errorService.error), untilDestroyed(this))
             .subscribe();
     }
 
