@@ -16,8 +16,14 @@ export class BaseDialogService {
 
     open<C, D, R, S>(
         dialogComponent: ComponentType<BaseDialogSuperclass<C, D, R, S>>,
-        data: D = null,
-        configOrConfigName: Omit<MatDialogConfig<D>, 'data'> | keyof DialogConfig = {}
+        /**
+         *  Workaround when both conditions for the 'data' argument must be true:
+         *  - typing did not require passing when it is optional (for example: {param: number} | void)
+         *  - typing required to pass when it is required (for example: {param: number})
+         */
+        ...[data, configOrConfigName]: D extends void
+            ? []
+            : [data: D, configOrConfigName?: Omit<MatDialogConfig<D>, 'data'> | keyof DialogConfig]
     ): MatDialogRef<C, BaseDialogResponse<R, S>> {
         return this.dialog.open(dialogComponent as never, {
             data,

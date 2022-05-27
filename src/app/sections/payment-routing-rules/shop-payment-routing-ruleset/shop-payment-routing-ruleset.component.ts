@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Predicate, TerminalObject } from '@vality/domain-proto/lib/domain';
-import { map, shareReplay } from 'rxjs/operators';
+import { first, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { objectToJSON } from '@cc/app/api/utils';
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
@@ -48,9 +48,16 @@ export class ShopPaymentRoutingRulesetComponent {
     ) {}
 
     addShopRule() {
-        this.baseDialogService
-            .open(AddShopPaymentRoutingRuleDialogComponent)
-            .afterClosed()
+        this.shopPaymentRoutingRulesetService.refID$
+            .pipe(
+                first(),
+                switchMap((refID) =>
+                    this.baseDialogService
+                        .open(AddShopPaymentRoutingRuleDialogComponent, { refID })
+                        .afterClosed()
+                )
+            )
+
             .pipe(handleError(this.errorService.error), untilDestroyed(this))
             .subscribe();
     }

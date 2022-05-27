@@ -1,4 +1,4 @@
-<cc-base-dialog [title]="dialogData?.title || 'Confirm this action'" noContent>
+<cc-base-dialog [title]="title || 'Confirm this action'" noContent>
     <cc-base-dialog-actions>
         <button mat-button (click)="cancel()">CANCEL</button>
         <button mat-raised-button color="primary" (click)="confirm()">CONFIRM</button>

@@ -19,7 +19,10 @@ import {
     styleUrls: ['add-shop-payment-routing-rule-dialog.component.scss'],
     providers: [AddShopPaymentRoutingRuleDialogService],
 })
-export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSuperclass<AddShopPaymentRoutingRuleDialogComponent> {
+export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSuperclass<
+    AddShopPaymentRoutingRuleDialogComponent,
+    { refID: number }
+> {
     form = this.addShopPaymentRoutingRuleDialogService.form;
     newTerminalOptionsForm = this.addShopPaymentRoutingRuleDialogService.newTerminalOptionsForm;
     predicateControl = this.fb.control<Predicate>(null, Validators.required);
@@ -38,7 +41,10 @@ export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSupercla
     }
 
     add() {
-        this.addShopPaymentRoutingRuleDialogService.add(this.predicateControl.value);
+        this.addShopPaymentRoutingRuleDialogService.add(
+            this.predicateControl.value,
+            this.dialogData.refID
+        );
     }
 
     addOption() {
