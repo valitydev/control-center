@@ -47,6 +47,9 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
                 ruleset: this.form.value.ruleset,
             })
             .pipe(untilDestroyed(this))
-            .subscribe(() => this.dialogRef.close(), this.errorService.error);
+            .subscribe({
+                next: () => this.dialogRef.close(),
+                error: (err) => this.errorService.error(err),
+            });
     }
 }

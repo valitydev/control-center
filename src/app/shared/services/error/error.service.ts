@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from '../notification';
 
 // TODO: collect error information
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ErrorService {
     constructor(private notificationService: NotificationService) {}
 

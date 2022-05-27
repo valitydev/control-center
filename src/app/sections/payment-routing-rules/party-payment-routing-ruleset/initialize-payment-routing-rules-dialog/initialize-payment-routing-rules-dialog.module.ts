@@ -14,7 +14,6 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { BaseDialogModule } from '@cc/components/base-dialog';
 
-import { ErrorModule } from '../../../../shared/services/error';
 import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payment-routing-rules-dialog.component';
 
 @NgModule({
@@ -31,7 +30,6 @@ import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payme
         MatSelectModule,
         MatRadioModule,
         MatAutocompleteModule,
-        ErrorModule,
         BaseDialogModule,
     ],
     declarations: [InitializePaymentRoutingRulesDialogComponent],

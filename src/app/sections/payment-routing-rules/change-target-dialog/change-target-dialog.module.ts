@@ -6,14 +6,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 import { BaseDialogModule } from '@cc/components/base-dialog';
 
-import { ErrorModule } from '../../../shared/services/error';
 import { TargetRulesetFormModule } from '../target-ruleset-form';
 import { ChangeTargetDialogComponent } from './change-target-dialog.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        ErrorModule,
         TargetRulesetFormModule,
         FlexLayoutModule,
         MatDialogModule,
