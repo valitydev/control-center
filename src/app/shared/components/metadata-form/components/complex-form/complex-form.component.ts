@@ -1,15 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
 import { FormArray, FormControl } from '@ngneat/reactive-forms';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
-import { delay } from 'rxjs/operators';
 
 import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
+@UntilDestroy()
 @Component({
     selector: 'cc-complex-form',
     templateUrl: './complex-form.component.html',
@@ -38,7 +38,7 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
     }
 
     ngOnInit() {
-        this.valueControls.valueChanges.pipe(delay(0), untilDestroyed(this)).subscribe((value) => {
+        this.valueControls.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => {
             switch (this.data.type.name) {
                 case 'list':
                     this.emitOutgoingValue(value as never);
