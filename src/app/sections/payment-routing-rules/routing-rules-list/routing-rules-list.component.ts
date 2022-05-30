@@ -2,12 +2,10 @@ import {
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
-    Inject,
     Input,
     Output,
     ViewChild,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -21,7 +19,6 @@ import { ConfirmActionDialogComponent } from '../../../../components/confirm-act
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../../../thrift-services';
-import { DIALOG_CONFIG, DialogConfig } from '../../../tokens';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 
@@ -54,10 +51,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     private paginator$ = new ReplaySubject<MatPaginator>(1);
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    dataSource$ = combineLatest([
-        this.data$,
-        this.paginator$.pipe(startWith<any, null>(null)),
-    ]).pipe(
+    dataSource$ = combineLatest([this.data$, this.paginator$.pipe(startWith(null))]).pipe(
         map(([d, paginator]) => {
             const data = new MatTableDataSource(d);
             data.paginator = paginator;
@@ -81,25 +75,16 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     constructor(
-        private dialog: MatDialog,
         private baseDialogService: BaseDialogService,
         private errorService: ErrorService,
-        private routingRulesService: RoutingRulesService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+        private routingRulesService: RoutingRulesService
     ) {}
 
-    getColumnsKeys(col) {
-        return col.key;
-    }
-
     changeDelegateRuleset(delegateId: DelegateId) {
-        this.dialog
+        this.baseDialogService
             .open(ChangeDelegateRulesetDialogComponent, {
-                ...this.dialogConfig.medium,
-                data: {
-                    mainRulesetRefID: delegateId.parentRefId,
-                    delegateIdx: delegateId.delegateIdx,
-                },
+                mainRulesetRefID: delegateId.parentRefId,
+                delegateIdx: delegateId.delegateIdx,
             })
             .afterClosed()
             .pipe(handleError(this.errorService.error), untilDestroyed(this))
@@ -107,13 +92,10 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     changeTarget(delegateId: DelegateId) {
-        this.dialog
+        this.baseDialogService
             .open(ChangeTargetDialogComponent, {
-                ...this.dialogConfig.medium,
-                data: {
-                    mainRulesetRefID: delegateId.parentRefId,
-                    delegateIdx: delegateId.delegateIdx,
-                },
+                mainRulesetRefID: delegateId.parentRefId,
+                delegateIdx: delegateId.delegateIdx,
             })
             .afterClosed()
             .pipe(untilDestroyed(this))

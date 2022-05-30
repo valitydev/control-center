@@ -3,19 +3,19 @@ import { ValidationErrors, Validator } from '@angular/forms';
 import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Claim } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ComponentChanges, MetadataFormExtension } from '@cc/app/shared';
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services/domain-metadata-form-extensions';
+import { createControlProviders } from '@cc/utils';
 
-import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
-import { createDomainObjectMetadataFormExtension } from './utils/create-domain-object-metadata-form.extension';
 import { createPartyClaimMetadataFormExtensions } from './utils/create-party-claim-metadata-form-extensions';
 
 @Component({
     selector: 'cc-modification-form',
     templateUrl: './modification-form.component.html',
-    providers: createValidatedAbstractControlProviders(ModificationFormComponent),
+    providers: createControlProviders(ModificationFormComponent),
 })
 export class ModificationFormComponent
     extends WrappedFormControlSuperclass<unknown>
@@ -26,37 +26,28 @@ export class ModificationFormComponent
     @Input() type: string;
 
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
-    extensions: MetadataFormExtension[];
+    extensions$: Observable<MetadataFormExtension[]>;
 
-    constructor(injector: Injector, private domainStoreService: DomainStoreService) {
+    constructor(
+        injector: Injector,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
+    ) {
         super(injector);
     }
 
     ngOnChanges(changes: ComponentChanges<ModificationFormComponent>) {
         super.ngOnChanges(changes);
         if (changes.party || changes.claim) {
-            this.extensions = [
-                ...createPartyClaimMetadataFormExtensions(this.party, this.claim),
-                ...this.createDomainMetadataFormExtensions(),
-            ];
+            this.extensions$ = this.domainMetadataFormExtensionsService.extensions$.pipe(
+                map((e) => [
+                    ...createPartyClaimMetadataFormExtensions(this.party, this.claim),
+                    ...e,
+                ])
+            );
         }
     }
 
     validate(): ValidationErrors | null {
         return this.control.errors;
-    }
-
-    private createDomainMetadataFormExtensions(): MetadataFormExtension[] {
-        return [
-            createDomainObjectMetadataFormExtension('ContractTemplateRef', () =>
-                this.domainStoreService.getObjects('contract_template')
-            ),
-            createDomainObjectMetadataFormExtension('PaymentInstitutionRef', () =>
-                this.domainStoreService.getObjects('payment_institution')
-            ),
-            createDomainObjectMetadataFormExtension('CategoryRef', () =>
-                this.domainStoreService.getObjects('category')
-            ),
-        ];
     }
 }

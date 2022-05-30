@@ -11,6 +11,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -47,6 +48,7 @@ import { MetadataFormComponent } from './metadata-form.component';
         ValueTypeTitleModule,
         MatCheckboxModule,
         MatChipsModule,
+        MatRadioModule,
     ],
     declarations: [
         MetadataFormComponent,

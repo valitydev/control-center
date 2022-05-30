@@ -1,5 +1,5 @@
 <div gdColumns="1fr" gdGap="16px">
-    <ng-container *ngIf="data.trueParent?.objectType !== 'union'">
+    <ng-container *ngIf="hasLabel">
         <mat-checkbox *ngIf="!labelControl.disabled; else label" [formControl]="labelControl">
             <ng-container [ngTemplateOutlet]="label"></ng-container>
         </mat-checkbox>
@@ -14,6 +14,7 @@
     <ng-container *ngIf="labelControl.value">
         <cc-metadata-form
             *ngFor="let field of data.ast"
+            [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
             [formControl]="control.get(field.name)"
             [metadata]="data.metadata"
             [namespace]="data.namespace"

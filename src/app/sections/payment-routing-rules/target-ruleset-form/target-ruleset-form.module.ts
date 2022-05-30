@@ -10,13 +10,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
 import { DetailsItemModule } from '../../../../components/details-item';
-import { ErrorModule } from '../../../shared/services/error';
 import { TargetRulesetFormComponent } from './target-ruleset-form.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        ErrorModule,
         FlexLayoutModule,
         ReactiveFormsModule,
         MatRadioModule,

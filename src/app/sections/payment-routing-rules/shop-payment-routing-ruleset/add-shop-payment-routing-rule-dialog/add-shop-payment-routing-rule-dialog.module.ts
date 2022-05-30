@@ -12,6 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
+import { MetadataFormModule } from '@cc/app/shared';
+import { BaseDialogModule } from '@cc/components/base-dialog';
+
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog.component';
 import { ExpanderComponent } from './expander';
 import { PredicateComponent } from './predicate';
@@ -30,6 +33,8 @@ import { PredicateComponent } from './predicate';
         MatSelectModule,
         MatRadioModule,
         MatAutocompleteModule,
+        MetadataFormModule,
+        BaseDialogModule,
     ],
     declarations: [AddShopPaymentRoutingRuleDialogComponent, PredicateComponent, ExpanderComponent],
     exports: [AddShopPaymentRoutingRuleDialogComponent],

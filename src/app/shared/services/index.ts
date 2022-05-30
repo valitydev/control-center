@@ -6,3 +6,4 @@ export * from './user-info-based-id-generator';
 export * from './partial-fetcher';
 export * from './query-params';
 export * from './moment-utc-date-adapter';
+export * from './domain-metadata-form-extensions';

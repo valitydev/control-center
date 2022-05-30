@@ -1,7 +1,5 @@
-<form [formGroup]="form" fxLayout="column" fxLayoutGap="32px">
-    <div class="cc-headline">Attach party delegate ruleset</div>
-
-    <div fxLayout="column" fxLayoutGap="24px">
+<cc-base-dialog title="Attach party delegate ruleset">
+    <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <cc-target-ruleset-form
             (valueChanges)="targetRuleset$.next($event)"
             (valid)="targetRulesetValid$.next($event)"
@@ -25,8 +23,7 @@
         </ng-container>
     </div>
 
-    <div fxLayout fxLayoutAlign="space-between">
-        <button mat-button (click)="cancel()">CANCEL</button>
+    <cc-base-dialog-actions>
         <button
             mat-button
             color="primary"
@@ -35,5 +32,5 @@
         >
             ATTACH
         </button>
-    </div>
-</form>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

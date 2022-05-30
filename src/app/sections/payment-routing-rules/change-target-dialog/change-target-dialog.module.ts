@@ -4,18 +4,19 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { ErrorModule } from '../../../shared/services/error';
+import { BaseDialogModule } from '@cc/components/base-dialog';
+
 import { TargetRulesetFormModule } from '../target-ruleset-form';
 import { ChangeTargetDialogComponent } from './change-target-dialog.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        ErrorModule,
         TargetRulesetFormModule,
         FlexLayoutModule,
         MatDialogModule,
         MatButtonModule,
+        BaseDialogModule,
     ],
     declarations: [ChangeTargetDialogComponent],
     exports: [ChangeTargetDialogComponent],

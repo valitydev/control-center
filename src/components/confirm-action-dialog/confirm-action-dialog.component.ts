@@ -9,8 +9,12 @@ import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/b
 })
 export class ConfirmActionDialogComponent extends BaseDialogSuperclass<
     ConfirmActionDialogComponent,
-    { title?: string }
+    { title?: string } | void
 > {
+    get title() {
+        return typeof this.dialogData === 'object' ? this.dialogData.title : '';
+    }
+
     cancel() {
         this.dialogRef.close({ status: BaseDialogResponseStatus.Cancelled });
     }

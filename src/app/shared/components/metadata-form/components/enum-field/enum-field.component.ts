@@ -1,21 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
-import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Enums } from '@vality/thrift-ts/src/thrift-parser';
 
-import { createValidatedAbstractControlProviders } from '@cc/utils';
+import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
 @Component({
     selector: 'cc-enum-field',
     templateUrl: './enum-field.component.html',
-    providers: createValidatedAbstractControlProviders(EnumFieldComponent),
+    providers: createControlProviders(EnumFieldComponent),
 })
-export class EnumFieldComponent extends WrappedFormControlSuperclass<unknown> implements Validator {
+export class EnumFieldComponent<T> extends ValidatedFormControlSuperclass<T> {
     @Input() data: MetadataFormData<string, Enums[string]>;
-
-    validate(): ValidationErrors | null {
-        return this.control.errors;
-    }
 }

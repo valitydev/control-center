@@ -1,6 +1,10 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Injector } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { FormBuilder } from '@ngneat/reactive-forms';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { Predicate, RiskScore } from '@vality/domain-proto/lib/domain';
+
+import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 import {
@@ -8,36 +12,39 @@ import {
     TerminalType,
 } from './add-shop-payment-routing-rule-dialog.service';
 
+@UntilDestroy()
 @Component({
     selector: 'cc-add-shop-payment-routing-rule-dialog',
     templateUrl: 'add-shop-payment-routing-rule-dialog.component.html',
     styleUrls: ['add-shop-payment-routing-rule-dialog.component.scss'],
     providers: [AddShopPaymentRoutingRuleDialogService],
 })
-export class AddShopPaymentRoutingRuleDialogComponent {
+export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSuperclass<
+    AddShopPaymentRoutingRuleDialogComponent,
+    { refID: number }
+> {
     form = this.addShopPaymentRoutingRuleDialogService.form;
     newTerminalOptionsForm = this.addShopPaymentRoutingRuleDialogService.newTerminalOptionsForm;
+    predicateControl = this.fb.control<Predicate>(null, Validators.required);
 
     terminalType = TerminalType;
     riskScore = RiskScore;
     terminals$ = this.domainStoreService.getObjects('terminal');
 
-    predicate: Predicate;
-    predicateValid: boolean;
-
     constructor(
+        injector: Injector,
         private addShopPaymentRoutingRuleDialogService: AddShopPaymentRoutingRuleDialogService,
-        private dialogRef: MatDialogRef<AddShopPaymentRoutingRuleDialogComponent>,
         private domainStoreService: DomainStoreService,
-        @Inject(MAT_DIALOG_DATA) public data: { partyID: string; refID: number }
-    ) {}
-
-    add() {
-        this.addShopPaymentRoutingRuleDialogService.add(this.predicate);
+        private fb: FormBuilder
+    ) {
+        super(injector);
     }
 
-    cancel() {
-        this.dialogRef.close();
+    add() {
+        this.addShopPaymentRoutingRuleDialogService.add(
+            this.predicateControl.value,
+            this.dialogData.refID
+        );
     }
 
     addOption() {

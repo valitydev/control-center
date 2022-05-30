@@ -1,9 +1,11 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '@vality/domain-proto/lib/domain';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
+
+import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
 
 import { RoutingRulesService, TerminalService } from '../../../../thrift-services';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog.component';
@@ -37,8 +39,7 @@ export class AddShopPaymentRoutingRuleDialogService {
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddShopPaymentRoutingRuleDialogComponent>,
         private paymentRoutingRulesService: RoutingRulesService,
-        private terminalService: TerminalService,
-        @Inject(MAT_DIALOG_DATA) public data: { partyID: string; refID: number }
+        private terminalService: TerminalService
     ) {
         this.form
             .get('terminalType')
@@ -62,7 +63,7 @@ export class AddShopPaymentRoutingRuleDialogService {
             });
     }
 
-    add(predicate: Predicate) {
+    add(predicate: Predicate, refID: number) {
         const { description, weight, priority, terminalType, existentTerminalID, newTerminal } =
             this.form.value;
         (terminalType === TerminalType.New
@@ -82,12 +83,12 @@ export class AddShopPaymentRoutingRuleDialogService {
                         weight,
                         priority,
                         terminalID,
-                        refID: this.data.refID,
+                        refID,
                         predicate,
                     })
                 )
             )
-            .subscribe(() => this.dialogRef.close());
+            .subscribe(() => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }));
     }
 
     addOption() {

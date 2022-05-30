@@ -9,20 +9,17 @@ import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
-import {
-    createValidatedAbstractControlProviders,
-    ValidatedWrappedAbstractControlSuperclass,
-} from '@cc/utils/forms';
+import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-payout-tool-field',
     templateUrl: 'payout-tool-field.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: createValidatedAbstractControlProviders(PayoutToolFieldComponent),
+    providers: createControlProviders(PayoutToolFieldComponent),
 })
 export class PayoutToolFieldComponent
-    extends ValidatedWrappedAbstractControlSuperclass<PartyID>
+    extends ValidatedControlSuperclass<PartyID>
     implements OnInit
 {
     @Input() label: string;

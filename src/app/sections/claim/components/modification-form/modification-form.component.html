@@ -1,7 +1,7 @@
 <cc-metadata-form
     [formControl]="control"
     [metadata]="metadata$ | async"
-    [extensions]="extensions"
+    [extensions]="extensions$ | async"
     namespace="claim_management"
     [type]="type"
 ></cc-metadata-form>

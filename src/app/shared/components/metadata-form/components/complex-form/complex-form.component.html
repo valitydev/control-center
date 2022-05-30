@@ -1,21 +1,17 @@
 <div gdColumns="1fr" gdGap="16px">
-    <span class="cc-body-1">
+    <span class="cc-body-1" *ngIf="hasLabel">
         <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label>
         ({{ data.type.name | titlecase }})
     </span>
-    <mat-accordion>
+    <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px' }">
         <mat-expansion-panel
             class="mat-elevation-z0"
-            *ngFor="let control of controls.controls; let i = index"
+            *ngFor="let valueControl of valueControls.controls; let i = index"
         >
             <mat-expansion-panel-header>
                 <mat-panel-title fxLayoutAlign=" center">
                     {{ i + 1 }}.
-                    {{
-                        data.type.name === 'map'
-                            ? (data.type.keyType | valueTypeTitle | titlecase) + ' - '
-                            : ''
-                    }}
+                    {{ hasKeys ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
                     {{ data.type.valueType | valueTypeTitle | titlecase }}
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
@@ -25,18 +21,20 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div gdColumns="1fr" gdGap="16px">
-                <ng-container *ngIf="data.type.name === 'map'">
+                <ng-container *ngIf="hasKeys">
                     <span class="cc-body-2">Key</span>
                     <cc-metadata-form
+                        [formControl]="keyControls.controls[i]"
                         [metadata]="data.metadata"
                         [namespace]="data.namespace"
-                        [type]="data.type.keyType"
+                        [type]="keyType"
                         [parent]="data"
                         [extensions]="data.extensions"
                     ></cc-metadata-form>
                 </ng-container>
                 <span class="cc-body-2" *ngIf="data.type.name === 'map'">Value</span>
                 <cc-metadata-form
+                    [formControl]="valueControl"
                     [metadata]="data.metadata"
                     [namespace]="data.namespace"
                     [type]="data.type.valueType"

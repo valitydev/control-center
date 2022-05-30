@@ -1,7 +1,4 @@
-<div
-    [ngSwitch]="data?.typeGroup"
-    [style]="data?.parent?.objectType === 'struct' ? 'padding-left: 16px' : ''"
->
+<div [ngSwitch]="data?.typeGroup">
     <cc-primitive-field
         *ngSwitchCase="'primitive'"
         [formControl]="control"
