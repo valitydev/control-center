@@ -34,6 +34,7 @@ import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-a
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
+import { SectionsModule } from './sections/sections.module';
 import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
 import {
     DEFAULT_DIALOG_CONFIG,
@@ -76,6 +77,7 @@ moment.locale('en');
         KeycloakTokenInfoModule,
         PayoutsModule,
         ClaimModule,
+        SectionsModule,
         // It is important that NotFoundModule module should be last
         NotFoundModule,
     ],
