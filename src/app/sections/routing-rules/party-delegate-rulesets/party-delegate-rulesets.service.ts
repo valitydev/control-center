@@ -9,11 +9,10 @@ import {
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, startWith, switchMap } from 'rxjs/operators';
 
-import { getPoliciesIdByType } from '@cc/app/sections/payment-routing-rules/utils/get-policies-id-by-type';
-
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { RoutingRulesType } from '../types/routing-rules-type';
+import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 
 @Injectable()
 export class PartyDelegateRulesetsService {

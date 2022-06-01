@@ -13,12 +13,12 @@ import { PaymentInstitutionObject } from '@vality/domain-proto/lib/domain';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
-import { RoutingRulesType } from '@cc/app/sections/payment-routing-rules/types/routing-rules-type';
-import { getPoliciesIdByType } from '@cc/app/sections/payment-routing-rules/utils/get-policies-id-by-type';
 import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { RoutingRulesType } from '../types/routing-rules-type';
+import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 import { Target } from './types/target';
 import { TargetRuleset } from './types/target-ruleset';
 

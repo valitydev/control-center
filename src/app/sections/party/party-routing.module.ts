@@ -49,9 +49,7 @@ import { PartyComponent } from './party.component';
                     {
                         path: 'routing-rules',
                         loadChildren: () =>
-                            import('../payment-routing-rules').then(
-                                (m) => m.PaymentRoutingRulesModule
-                            ),
+                            import('../routing-rules').then((m) => m.PaymentRoutingRulesModule),
                     },
                     { path: '', redirectTo: 'payments', pathMatch: 'full' },
                 ],
