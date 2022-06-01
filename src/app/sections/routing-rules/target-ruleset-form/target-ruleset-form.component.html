@@ -23,7 +23,8 @@
                 </mat-select>
             </mat-form-field>
             <ng-container *ngIf="form.value.paymentInstitution as paymentInstitution">
-                <cc-details-item title="Payment Routing Ruleset (policies)">
+                <cc-details-item title="Routing Ruleset (policies)">
+                    <!--                    TODO: fix  paymentInstitution?.data?.payment_routing?.policies -->
                     <ng-container
                         *ngIf="
                             paymentInstitution?.data?.payment_routing?.policies?.id as policiesID;
