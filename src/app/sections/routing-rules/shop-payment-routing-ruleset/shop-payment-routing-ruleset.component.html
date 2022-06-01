@@ -9,7 +9,9 @@
             [backTo]="
                 'party/' +
                 (partyID$ | async) +
-                '/payment-routing-rules/' +
+                '/routing-rules/' +
+                (routingRulesType$ | async) +
+                '/' +
                 (partyRulesetRefID$ | async)
             "
             (add)="addShopRule()"
