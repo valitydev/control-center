@@ -24,7 +24,7 @@
         @include cc-party-theme($theme);
         @include cc-components-themes($theme);
         @include cc-shared-components-themes($theme);
-        @include cc-payment-routing-rules-theme($theme);
+        @include cc-routing-rules-theme($theme);
         @include cc-party-claim-theme($theme);
         @include cc-not-found-theme($theme);
     }

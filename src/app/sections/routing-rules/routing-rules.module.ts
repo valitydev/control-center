@@ -11,4 +11,4 @@ import { ShopPaymentRoutingRulesetModule } from './shop-payment-routing-ruleset'
         ShopPaymentRoutingRulesetModule,
     ],
 })
-export class PaymentRoutingRulesModule {}
+export class RoutingRulesModule {}

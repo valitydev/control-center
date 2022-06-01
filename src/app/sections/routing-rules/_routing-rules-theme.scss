@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-@mixin cc-payment-routing-rules-theme($theme) {
+@mixin cc-routing-rules-theme($theme) {
     $foreground: map-get($theme, foreground);
 
     .cc-payment-routing-rules-caption {

@@ -1,1 +1,1 @@
-export * from './payment-routing-rules.module';
+export * from './routing-rules.module';
