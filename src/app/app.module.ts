@@ -29,7 +29,6 @@ import { RepairingModule } from './repairing/repairing.module';
 import { ClaimModule } from './sections/claim';
 import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
-import { PartyModule } from './sections/party/party.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
@@ -69,7 +68,6 @@ moment.locale('en');
         DomainModule,
         RepairingModule,
         ThemeManagerModule,
-        PartyModule,
         SearchPartiesModule,
         SearchClaimsModule,
         OperationsModule,

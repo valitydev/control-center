@@ -9,7 +9,7 @@ import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.compon
     imports: [
         RouterModule.forChild([
             {
-                path: '',
+                path: ':type',
                 component: PartyDelegateRulesetsComponent,
                 canActivate: [AppAuthGuardService],
                 data: {

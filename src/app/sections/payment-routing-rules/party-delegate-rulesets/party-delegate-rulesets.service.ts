@@ -1,19 +1,30 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
+    PartyID,
     PaymentInstitutionObject,
     RoutingDelegate,
     RoutingRulesObject,
-} from '@vality/domain-proto/lib/domain';
-import { combineLatest } from 'rxjs';
+} from '@vality/domain-proto';
+import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, startWith, switchMap } from 'rxjs/operators';
+
+import { getPoliciesIdByType } from '@cc/app/sections/payment-routing-rules/utils/get-policies-id-by-type';
 
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { RoutingRulesType } from '../types/routing-rules-type';
 
 @Injectable()
 export class PartyDelegateRulesetsService {
-    partyID$ = this.route.params.pipe(startWith(this.route.snapshot.params), pluck('partyID'));
+    private partyID$ = this.route.params.pipe(
+        startWith(this.route.snapshot.params),
+        pluck('partyID')
+    ) as Observable<PartyID>;
+    private routingRulesType$ = this.route.params.pipe(
+        startWith(this.route.snapshot.params),
+        pluck('type')
+    ) as Observable<RoutingRulesType>;
 
     constructor(
         private domainStoreService: DomainStoreService,
@@ -53,13 +64,16 @@ export class PartyDelegateRulesetsService {
     }
 
     private getPaymentInstitutionsWithRoutingRule() {
-        return this.domainStoreService.getObjects('payment_institution').pipe(
-            switchMap((paymentInstitutions) =>
-                combineLatest(
+        return combineLatest([
+            this.domainStoreService.getObjects('payment_institution'),
+            this.routingRulesType$,
+        ]).pipe(
+            switchMap(([paymentInstitutions, routingRulesType]) => {
+                return combineLatest(
                     paymentInstitutions.map((paymentInstitution) =>
                         this.paymentRoutingRulesService
                             .getRuleset(
-                                paymentInstitution?.data?.payment_routing_rules?.policies?.id
+                                getPoliciesIdByType(paymentInstitution?.data, routingRulesType)
                             )
                             .pipe(
                                 map((routingRule) => ({
@@ -68,8 +82,8 @@ export class PartyDelegateRulesetsService {
                                 }))
                             )
                     )
-                )
-            )
+                );
+            })
         );
     }
 }

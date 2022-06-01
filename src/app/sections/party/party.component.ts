@@ -70,7 +70,12 @@ export class PartyComponent {
             },
             {
                 name: 'Payment Routing Rules',
-                url: 'payment-routing-rules',
+                url: 'routing-rules/payment',
+                activateRoles: [DomainConfigRole.Checkout],
+            },
+            {
+                name: 'Withdrawal Routing Rules',
+                url: 'routing-rules/withdrawal',
                 activateRoles: [DomainConfigRole.Checkout],
             },
         ];

@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { combineLatest } from 'rxjs';
-import { first, map, switchMap, take } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
@@ -50,43 +49,39 @@ export class PartyDelegateRulesetsComponent {
         )
     );
 
+    private get partyID() {
+        return this.route.snapshot.params.partyID as string;
+    }
+
     constructor(
         private partyDelegateRulesetsService: PartyDelegateRulesetsService,
         private paymentRoutingRulesService: RoutingRulesService,
         private router: Router,
         private baseDialogService: BaseDialogService,
         private domainStoreService: DomainStoreService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private route: ActivatedRoute
     ) {}
 
     attachNewRuleset() {
-        this.partyDelegateRulesetsService.partyID$
-            .pipe(
-                take(1),
-                switchMap((partyID) =>
-                    this.baseDialogService
-                        .open(AttachNewRulesetDialogComponent, { partyID })
-                        .afterClosed()
-                ),
-                handleError(this.errorService.error),
-                untilDestroyed(this)
-            )
+        this.baseDialogService
+            .open(AttachNewRulesetDialogComponent, { partyID: this.partyID })
+            .afterClosed()
+            .pipe(handleError(this.errorService.error), untilDestroyed(this))
             .subscribe();
     }
 
     navigateToPartyRuleset(parentRefId: number, delegateIdx: number) {
-        combineLatest([
-            this.partyDelegateRulesetsService.partyID$,
-            this.paymentRoutingRulesService.getRuleset(parentRefId),
-        ])
+        this.paymentRoutingRulesService
+            .getRuleset(parentRefId)
             .pipe(first(), untilDestroyed(this))
-            .subscribe(([partyID, parent]) =>
-                this.router.navigate([
+            .subscribe((parent) => {
+                void this.router.navigate([
                     'party',
-                    partyID,
+                    this.partyID,
                     'payment-routing-rules',
                     parent.data.decisions.delegates[delegateIdx].ruleset.id,
-                ])
-            );
+                ]);
+            });
     }
 }

@@ -7,11 +7,14 @@ import {
     Output,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PaymentInstitutionObject } from '@vality/domain-proto/lib/domain';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
+import { RoutingRulesType } from '@cc/app/sections/payment-routing-rules/types/routing-rules-type';
+import { getPoliciesIdByType } from '@cc/app/sections/payment-routing-rules/utils/get-policies-id-by-type';
 import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { RoutingRulesService } from '../../../thrift-services';
@@ -47,7 +50,8 @@ export class TargetRulesetFormComponent implements OnChanges {
     constructor(
         private fb: FormBuilder,
         private domainStoreService: DomainStoreService,
-        private paymentRoutingRulesService: RoutingRulesService
+        private paymentRoutingRulesService: RoutingRulesService,
+        private route: ActivatedRoute
     ) {
         this.form.controls.target.valueChanges
             .pipe(startWith(this.form.value.target), untilDestroyed(this))
@@ -75,8 +79,10 @@ export class TargetRulesetFormComponent implements OnChanges {
                     }) => ({
                         mainRulesetRefID:
                             target === Target.PaymentInstitution
-                                ? (paymentInstitution as PaymentInstitutionObject)?.data
-                                      ?.payment_routing_rules?.policies?.id
+                                ? getPoliciesIdByType(
+                                      (paymentInstitution as PaymentInstitutionObject)?.data,
+                                      this.route.snapshot.params.type as RoutingRulesType
+                                  )
                                 : mainRulesetRefID,
                         paymentInstitutionRefID:
                             target === Target.PaymentInstitution
