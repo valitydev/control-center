@@ -2,6 +2,7 @@
     <cc-target-ruleset-form
         (valueChanges)="targetRuleset$.next($event)"
         [value]="initValue"
+        [type]="dialogData.type"
         (valid)="targetRulesetValid$.next($event)"
     ></cc-target-ruleset-form>
 

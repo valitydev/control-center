@@ -66,7 +66,10 @@ export class PartyDelegateRulesetsComponent {
 
     attachNewRuleset() {
         this.baseDialogService
-            .open(AttachNewRulesetDialogComponent, { partyID: this.partyID })
+            .open(AttachNewRulesetDialogComponent, {
+                partyID: this.partyID,
+                type: this.route.snapshot.params.type,
+            })
             .afterClosed()
             .pipe(handleError(this.errorService.error), untilDestroyed(this))
             .subscribe();

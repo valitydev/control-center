@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
@@ -78,7 +79,8 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     constructor(
         private baseDialogService: BaseDialogService,
         private errorService: ErrorService,
-        private routingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService,
+        private route: ActivatedRoute
     ) {}
 
     changeDelegateRuleset(delegateId: DelegateId) {
@@ -97,6 +99,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
             .open(ChangeTargetDialogComponent, {
                 mainRulesetRefID: delegateId.parentRefId,
                 delegateIdx: delegateId.delegateIdx,
+                type: this.route.snapshot.params.type,
             })
             .afterClosed()
             .pipe(untilDestroyed(this))

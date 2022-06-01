@@ -14,5 +14,5 @@ export function getPoliciesIdByType(
     paymentInstitution: PaymentInstitution,
     type: RoutingRulesType
 ) {
-    return paymentInstitution[TYPE_TO_PAYMENT_INSTITUTION_KEY[type]].policies.id;
+    return paymentInstitution?.[TYPE_TO_PAYMENT_INSTITUTION_KEY[type]]?.policies?.id;
 }

@@ -9,7 +9,7 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PaymentInstitutionObject } from '@vality/domain-proto/lib/domain';
+import { PaymentInstitutionObject } from '@vality/domain-proto';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
@@ -32,6 +32,7 @@ export class TargetRulesetFormComponent implements OnChanges {
     @Output() valid = new EventEmitter<boolean>();
     @Output() valueChanges = new EventEmitter<TargetRuleset>();
     @Input() value: TargetRuleset;
+    @Input() type: RoutingRulesType;
 
     form = this.fb.group({
         target: Target.PaymentInstitution,
@@ -46,6 +47,13 @@ export class TargetRulesetFormComponent implements OnChanges {
         .getObjects('payment_institution')
         .pipe(map((r) => sortBy(r, ['ref.id'])));
     rulesets$ = this.paymentRoutingRulesService.rulesets$;
+
+    get policiesId() {
+        return getPoliciesIdByType(
+            (this.form.value.paymentInstitution as PaymentInstitutionObject)?.data,
+            this.type
+        );
+    }
 
     constructor(
         private fb: FormBuilder,

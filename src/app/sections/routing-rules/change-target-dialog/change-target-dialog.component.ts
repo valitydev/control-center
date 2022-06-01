@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject } from 'rxjs';
 
+import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../shared/services/error';
@@ -15,7 +16,7 @@ import { TargetRuleset } from '../target-ruleset-form';
 })
 export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
     ChangeTargetDialogComponent,
-    { mainRulesetRefID: number; delegateIdx: number }
+    { mainRulesetRefID: number; delegateIdx: number; type: RoutingRulesType }
 > {
     targetRuleset$ = new BehaviorSubject<TargetRuleset>(undefined);
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);

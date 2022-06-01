@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BehaviorSubject } from 'rxjs';
 
+import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../../shared/services/error';
@@ -16,7 +17,7 @@ import { TargetRuleset } from '../../target-ruleset-form';
 })
 export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
     AttachNewRulesetDialogComponent,
-    { partyID: string }
+    { partyID: string; type: RoutingRulesType }
 > {
     form = this.fb.group({
         ruleset: this.fb.group({

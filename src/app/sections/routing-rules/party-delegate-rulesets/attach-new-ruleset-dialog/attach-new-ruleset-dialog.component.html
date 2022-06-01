@@ -1,6 +1,7 @@
 <cc-base-dialog title="Attach party delegate ruleset">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <cc-target-ruleset-form
+            [type]="dialogData.type"
             (valueChanges)="targetRuleset$.next($event)"
             (valid)="targetRulesetValid$.next($event)"
         ></cc-target-ruleset-form>
