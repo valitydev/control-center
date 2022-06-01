@@ -9,7 +9,7 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { combineLatest, ReplaySubject } from 'rxjs';
+import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
@@ -39,19 +39,17 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     @Input() set data(data: T[]) {
         this.data$.next(data);
     }
-    private data$ = new ReplaySubject<T[]>(1);
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    @Output()
-    toDetails = new EventEmitter<DelegateId>();
+    @Output() toDetails = new EventEmitter<DelegateId>();
 
     @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
         this.paginator$.next(paginator);
     }
-    private paginator$ = new ReplaySubject<MatPaginator>(1);
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    dataSource$ = combineLatest([this.data$, this.paginator$.pipe(startWith(null))]).pipe(
+    dataSource$ = combineLatest([
+        defer(() => this.data$),
+        defer(() => this.paginator$).pipe(startWith(null)),
+    ]).pipe(
         map(([d, paginator]) => {
             const data = new MatTableDataSource(d);
             data.paginator = paginator;
@@ -73,6 +71,9 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
             ])
             .map(({ key }) => key);
     }
+
+    private data$ = new ReplaySubject<T[]>(1);
+    private paginator$ = new ReplaySubject<MatPaginator>(1);
 
     constructor(
         private baseDialogService: BaseDialogService,
