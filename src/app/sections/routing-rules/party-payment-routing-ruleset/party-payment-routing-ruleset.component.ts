@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest } from 'rxjs';
-import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { filter, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
@@ -21,6 +21,7 @@ import { PartyPaymentRoutingRulesetService } from './party-payment-routing-rules
 export class PaymentRoutingRulesComponent {
     partyRuleset$ = this.partyPaymentRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyPaymentRoutingRulesetService.partyID$;
+    routingRulesType$ = this.route.params.pipe(pluck('type'));
     isLoading$ = this.domainStoreService.isLoading$;
 
     displayedColumns = [
@@ -57,6 +58,7 @@ export class PaymentRoutingRulesComponent {
         private baseDialogService: BaseDialogService,
         private partyPaymentRoutingRulesetService: PartyPaymentRoutingRulesetService,
         private router: Router,
+        private route: ActivatedRoute,
         private domainStoreService: DomainStoreService
     ) {}
 
@@ -96,16 +98,14 @@ export class PaymentRoutingRulesComponent {
     }
 
     navigateToShopRuleset(parentRefId: number, delegateIdx: number) {
-        combineLatest([
-            this.partyPaymentRoutingRulesetService.partyID$,
-            this.partyPaymentRoutingRulesetService.partyRuleset$,
-        ])
+        this.partyPaymentRoutingRulesetService.partyRuleset$
             .pipe(take(1), untilDestroyed(this))
-            .subscribe(([partyID, ruleset]) =>
+            .subscribe((ruleset) =>
                 this.router.navigate([
                     'party',
-                    partyID,
-                    'payment-routing-rules',
+                    this.route.snapshot.params.partyID,
+                    'routing-rules',
+                    this.route.snapshot.params.type,
                     parentRefId,
                     'shop-ruleset',
                     ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,

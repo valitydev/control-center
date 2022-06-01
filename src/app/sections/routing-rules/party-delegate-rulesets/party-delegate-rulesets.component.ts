@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { first, map } from 'rxjs/operators';
 
+import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { handleError } from '../../../../utils/operators/handle-error';
@@ -79,7 +80,8 @@ export class PartyDelegateRulesetsComponent {
                 void this.router.navigate([
                     'party',
                     this.partyID,
-                    'payment-routing-rules',
+                    'routing-rules',
+                    this.route.snapshot.params.type as RoutingRulesType,
                     parent.data.decisions.delegates[delegateIdx].ruleset.id,
                 ]);
             });
