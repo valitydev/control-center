@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
@@ -10,27 +10,25 @@ import { DomainStoreService } from '../../../thrift-services/damsel/domain-store
 
 @Injectable()
 export class PartyRoutingRulesetService {
-    partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
+    partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1)) as Observable<string>;
     refID$ = this.route.params.pipe(
         pluck('partyRefID'),
         map((r) => +r),
         shareReplay(1)
     );
 
-    private party$ = this.partyID$.pipe(
-        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
-        shareReplay(1)
-    );
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    shops$ = this.party$.pipe(
+    shops$ = defer(() => this.party$).pipe(
         pluck('shops'),
         map((shops) => Array.from(shops.values()))
     );
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
     partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),
+        shareReplay(1)
+    );
+
+    private party$ = this.partyID$.pipe(
+        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
         shareReplay(1)
     );
 
@@ -40,4 +38,8 @@ export class PartyRoutingRulesetService {
         private domainStoreService: DomainStoreService,
         private routingRulesService: RoutingRulesService
     ) {}
+
+    reload() {
+        this.routingRulesService.reload();
+    }
 }

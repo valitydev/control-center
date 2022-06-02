@@ -6,6 +6,7 @@ import { filter, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators
 
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
+import { BaseDialogResponseStatus } from '../../../../components/base-dialog';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
@@ -94,7 +95,13 @@ export class PartyRoutingRulesetComponent {
                 ),
                 untilDestroyed(this)
             )
-            .subscribe();
+            .subscribe({
+                next: (res) => {
+                    if (res.status === BaseDialogResponseStatus.Success) {
+                        this.partyRoutingRulesetService.reload();
+                    }
+                },
+            });
     }
 
     navigateToShopRuleset(parentRefId: number, delegateIdx: number) {

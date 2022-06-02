@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/lib/domain';
 
-import { BaseDialogSuperclass } from '@cc/components/base-dialog';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';
@@ -42,6 +42,9 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
                 shopID,
             })
             .pipe(untilDestroyed(this))
-            .subscribe(() => this.dialogRef.close(), this.errorService.error);
+            .subscribe(
+                () => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }),
+                this.errorService.error
+            );
     }
 }
