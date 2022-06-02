@@ -1,1 +1,1 @@
-export * from './party-payment-routing-ruleset.module';
+export * from './party-routing-ruleset.module';

@@ -23,7 +23,7 @@ import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.compon
                         path: '',
                         loadChildren: () =>
                             import('../party-routing-ruleset').then(
-                                (m) => m.PartyPaymentRoutingRulesetModule
+                                (m) => m.PartyRoutingRulesetModule
                             ),
                     },
                     {

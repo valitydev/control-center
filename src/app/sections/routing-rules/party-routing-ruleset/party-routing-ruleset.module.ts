@@ -57,4 +57,4 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
     ],
     declarations: [PartyRoutingRulesetComponent],
 })
-export class PartyPaymentRoutingRulesetModule {}
+export class PartyRoutingRulesetModule {}
