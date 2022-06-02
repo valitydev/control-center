@@ -20,8 +20,8 @@ import { RouterModule } from '@angular/router';
 
 import { DamselModule } from '../../../thrift-services';
 import { ChangeTargetDialogModule } from '../change-target-dialog';
-import { PaymentRoutingRulesetHeaderModule } from '../payment-routing-ruleset-header';
 import { RoutingRulesListModule } from '../routing-rules-list';
+import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { AddPartyPaymentRoutingRuleDialogModule } from './add-party-payment-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogModule } from './initialize-payment-routing-rules-dialog';
 import { PartyRoutingRulesetRoutingModule } from './party-routing-ruleset-routing.module';
@@ -48,7 +48,7 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
         MatSelectModule,
         MatRadioModule,
         MatExpansionModule,
-        PaymentRoutingRulesetHeaderModule,
+        RoutingRulesetHeaderModule,
         AddPartyPaymentRoutingRuleDialogModule,
         InitializePaymentRoutingRulesDialogModule,
         MatProgressBarModule,

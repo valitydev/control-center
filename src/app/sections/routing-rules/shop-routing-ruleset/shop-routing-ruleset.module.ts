@@ -22,7 +22,7 @@ import { RouterModule } from '@angular/router';
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
 import { DamselModule } from '../../../thrift-services';
-import { PaymentRoutingRulesetHeaderModule } from '../payment-routing-ruleset-header';
+import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { AddShopRoutingRuleDialogModule } from './add-shop-routing-rule-dialog';
 import { ShopRoutingRulesetRoutingModule } from './shop-routing-ruleset-routing.module';
 import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
@@ -48,7 +48,7 @@ import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
         MatSelectModule,
         MatRadioModule,
         MatExpansionModule,
-        PaymentRoutingRulesetHeaderModule,
+        RoutingRulesetHeaderModule,
         MatAutocompleteModule,
         AddShopRoutingRuleDialogModule,
         PrettyJsonModule,

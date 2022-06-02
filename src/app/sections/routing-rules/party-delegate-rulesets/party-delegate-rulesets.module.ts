@@ -19,8 +19,8 @@ import { BaseDialogModule } from '@cc/components/base-dialog';
 import { DetailsItemModule } from '@cc/components/details-item';
 
 import { ChangeTargetDialogModule } from '../change-target-dialog';
-import { PaymentRoutingRulesetHeaderModule } from '../payment-routing-ruleset-header';
 import { RoutingRulesListModule } from '../routing-rules-list';
+import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { TargetRulesetFormModule } from '../target-ruleset-form';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsRoutingModule } from './party-delegate-rulesets-routing.module';
@@ -31,7 +31,7 @@ const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetD
 @NgModule({
     imports: [
         PartyDelegateRulesetsRoutingModule,
-        PaymentRoutingRulesetHeaderModule,
+        RoutingRulesetHeaderModule,
         MatButtonModule,
         FlexLayoutModule,
         CommonModule,

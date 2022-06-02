@@ -3,7 +3,7 @@
 </ng-container>
 <ng-template #loaded>
     <div fxLayout="column" fxLayoutGap="64px">
-        <cc-payment-routing-ruleset-header
+        <cc-routing-ruleset-header
             [refID]="(shopRuleset$ | async)?.ref?.id"
             [description]="(shop$ | async)?.details?.name"
             [backTo]="
@@ -17,7 +17,7 @@
             (add)="addShopRule()"
         >
             Shop routing rules
-        </cc-payment-routing-ruleset-header>
+        </cc-routing-ruleset-header>
 
         <mat-accordion *ngIf="(candidates$ | async)?.length; else emptyShopRules">
             <mat-expansion-panel *ngFor="let candidate of candidates$ | async; let idx = index">

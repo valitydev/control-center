@@ -7,7 +7,7 @@
         fxLayout="column"
         fxLayoutGap="64px"
     >
-        <cc-payment-routing-ruleset-header
+        <cc-routing-ruleset-header
             [refID]="partyRuleset.ref.id"
             (add)="addPartyRule()"
             [backTo]="
@@ -15,7 +15,7 @@
             "
         >
             Party routing rules
-        </cc-payment-routing-ruleset-header>
+        </cc-routing-ruleset-header>
 
         <cc-routing-rules-list
             [data]="data$ | async"

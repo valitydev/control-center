@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'cc-payment-routing-ruleset-header',
-    templateUrl: 'payment-routing-ruleset-header.component.html',
-    styleUrls: ['payment-routing-ruleset-header.component.scss'],
+    selector: 'cc-routing-ruleset-header',
+    templateUrl: 'routing-ruleset-header.component.html',
+    styleUrls: ['routing-ruleset-header.component.scss'],
 })
-export class PaymentRoutingRulesetHeaderComponent {
+export class RoutingRulesetHeaderComponent {
     @Input() refID: string;
     @Input() description?: string;
     @Input() backTo?: string;
