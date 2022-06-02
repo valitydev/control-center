@@ -3,7 +3,7 @@
 @mixin cc-routing-rules-theme($theme) {
     $foreground: map-get($theme, foreground);
 
-    .cc-payment-routing-rules-caption {
+    .cc-routing-rules-caption {
         color: mat.get-color-from-palette($foreground, secondary-text);
     }
 }
