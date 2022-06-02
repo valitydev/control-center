@@ -9,11 +9,11 @@ import { RoutingRulesService } from '../../../../thrift-services';
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-initialize-payment-routing-rules-dialog',
-    templateUrl: 'initialize-payment-routing-rules-dialog.component.html',
+    selector: 'cc-initialize-routing-rules-dialog',
+    templateUrl: 'initialize-routing-rules-dialog.component.html',
 })
-export class InitializePaymentRoutingRulesDialogComponent extends BaseDialogSuperclass<
-    InitializePaymentRoutingRulesDialogComponent,
+export class InitializeRoutingRulesDialogComponent extends BaseDialogSuperclass<
+    InitializeRoutingRulesDialogComponent,
     { partyID: string; refID: number }
 > {
     form = this.fb.group({

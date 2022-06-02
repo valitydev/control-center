@@ -8,7 +8,7 @@ import { BaseDialogService } from '@cc/components/base-dialog/services/base-dial
 
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
-import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payment-routing-rules-dialog';
+import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 
 @UntilDestroy()
@@ -71,7 +71,7 @@ export class PartyRoutingRulesetComponent {
                 take(1),
                 switchMap(([partyID, refID]) =>
                     this.baseDialogService
-                        .open(InitializePaymentRoutingRulesDialogComponent, { partyID, refID })
+                        .open(InitializeRoutingRulesDialogComponent, { partyID, refID })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
