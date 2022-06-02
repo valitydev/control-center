@@ -5,6 +5,7 @@ import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 
+import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 
 @Injectable()
@@ -28,10 +29,7 @@ export class PartyRoutingRulesetService {
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    partyRuleset$ = combineLatest([
-        this.domainStoreService.getObjects('routing_rules'),
-        this.refID$,
-    ]).pipe(
+    partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),
         shareReplay(1)
     );
@@ -39,6 +37,7 @@ export class PartyRoutingRulesetService {
     constructor(
         private route: ActivatedRoute,
         private partyManagementWithUserService: PartyManagementWithUserService,
-        private domainStoreService: DomainStoreService
+        private domainStoreService: DomainStoreService,
+        private routingRulesService: RoutingRulesService
     ) {}
 }
