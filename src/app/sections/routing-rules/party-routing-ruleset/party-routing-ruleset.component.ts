@@ -19,8 +19,8 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     providers: [PartyRoutingRulesetService],
 })
 export class PartyRoutingRulesetComponent {
-    partyRuleset$ = this.partyPaymentRoutingRulesetService.partyRuleset$;
-    partyID$ = this.partyPaymentRoutingRulesetService.partyID$;
+    partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
+    partyID$ = this.partyRoutingRulesetService.partyID$;
     routingRulesType$ = this.route.params.pipe(pluck('type'));
     isLoading$ = this.domainStoreService.isLoading$;
 
@@ -28,7 +28,7 @@ export class PartyRoutingRulesetComponent {
         { key: 'shop', name: 'Shop' },
         { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
     ];
-    data$ = combineLatest([this.partyRuleset$, this.partyPaymentRoutingRulesetService.shops$]).pipe(
+    data$ = combineLatest([this.partyRuleset$, this.partyRoutingRulesetService.shops$]).pipe(
         filter(([r]) => !!r),
         map(([ruleset, shops]) =>
             ruleset.data.decisions.delegates
@@ -56,7 +56,7 @@ export class PartyRoutingRulesetComponent {
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private partyPaymentRoutingRulesetService: PartyRoutingRulesetService,
+        private partyRoutingRulesetService: PartyRoutingRulesetService,
         private router: Router,
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService
@@ -64,8 +64,8 @@ export class PartyRoutingRulesetComponent {
 
     initialize() {
         combineLatest([
-            this.partyPaymentRoutingRulesetService.partyID$,
-            this.partyPaymentRoutingRulesetService.refID$,
+            this.partyRoutingRulesetService.partyID$,
+            this.partyRoutingRulesetService.refID$,
         ])
             .pipe(
                 take(1),
@@ -81,9 +81,9 @@ export class PartyRoutingRulesetComponent {
 
     addPartyRule() {
         combineLatest([
-            this.partyPaymentRoutingRulesetService.refID$,
-            this.partyPaymentRoutingRulesetService.shops$,
-            this.partyPaymentRoutingRulesetService.partyID$,
+            this.partyRoutingRulesetService.refID$,
+            this.partyRoutingRulesetService.shops$,
+            this.partyRoutingRulesetService.partyID$,
         ])
             .pipe(
                 take(1),
@@ -98,7 +98,7 @@ export class PartyRoutingRulesetComponent {
     }
 
     navigateToShopRuleset(parentRefId: number, delegateIdx: number) {
-        this.partyPaymentRoutingRulesetService.partyRuleset$
+        this.partyRoutingRulesetService.partyRuleset$
             .pipe(take(1), untilDestroyed(this))
             .subscribe((ruleset) =>
                 this.router.navigate([

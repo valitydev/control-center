@@ -7,7 +7,7 @@ import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
-import { RoutingRulesService as PaymentRoutingRulesDamselService } from '../../../thrift-services';
+import { RoutingRulesService as RoutingRulesDamselService } from '../../../thrift-services';
 
 @Injectable()
 export class ShopRoutingRulesetService {
@@ -43,7 +43,7 @@ export class ShopRoutingRulesetService {
     );
 
     constructor(
-        private routingRulesService: PaymentRoutingRulesDamselService,
+        private routingRulesService: RoutingRulesDamselService,
         private route: ActivatedRoute,
         private partyManagementWithUserService: PartyManagementWithUserService,
         private errorService: ErrorService
