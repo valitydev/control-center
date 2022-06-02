@@ -10,11 +10,30 @@ import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.compon
         RouterModule.forChild([
             {
                 path: ':type',
-                component: PartyDelegateRulesetsComponent,
-                canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [DomainConfigRole.Checkout],
-                },
+                children: [
+                    {
+                        path: '',
+                        component: PartyDelegateRulesetsComponent,
+                        canActivate: [AppAuthGuardService],
+                        data: {
+                            roles: [DomainConfigRole.Checkout],
+                        },
+                    },
+                    {
+                        path: '',
+                        loadChildren: () =>
+                            import('../party-payment-routing-ruleset').then(
+                                (m) => m.PartyPaymentRoutingRulesetModule
+                            ),
+                    },
+                    {
+                        path: '',
+                        loadChildren: () =>
+                            import('../shop-payment-routing-ruleset').then(
+                                (m) => m.ShopPaymentRoutingRulesetModule
+                            ),
+                    },
+                ],
             },
         ]),
     ],
