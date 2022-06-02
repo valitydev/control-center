@@ -1,0 +1,122 @@
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { combineLatest } from 'rxjs';
+import { filter, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+
+import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
+
+import { BaseDialogResponseStatus } from '../../../../components/base-dialog';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
+import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
+import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
+
+@UntilDestroy()
+@Component({
+    selector: 'cc-party-routing-ruleset',
+    templateUrl: 'party-routing-ruleset.component.html',
+    styleUrls: ['party-routing-ruleset.component.scss'],
+    providers: [PartyRoutingRulesetService],
+})
+export class PartyRoutingRulesetComponent {
+    partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
+    partyID$ = this.partyRoutingRulesetService.partyID$;
+    routingRulesType$ = this.route.params.pipe(pluck('type'));
+    isLoading$ = this.domainStoreService.isLoading$;
+
+    displayedColumns = [
+        { key: 'shop', name: 'Shop' },
+        { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
+    ];
+    data$ = combineLatest([this.partyRuleset$, this.partyRoutingRulesetService.shops$]).pipe(
+        filter(([r]) => !!r),
+        map(([ruleset, shops]) =>
+            ruleset.data.decisions.delegates
+                .filter((d) => d?.allowed?.condition?.party?.definition?.shop_is)
+                .map((delegate) => {
+                    const shopId = delegate.allowed.condition.party.definition.shop_is;
+                    return {
+                        parentRefId: ruleset.ref.id,
+                        delegateIdx: ruleset.data.decisions.delegates.findIndex(
+                            (d) => d === delegate
+                        ),
+                        id: {
+                            text: delegate?.description,
+                            caption: delegate?.ruleset?.id,
+                        },
+                        shop: {
+                            text: shops?.find((s) => s?.id === shopId)?.details?.name,
+                            caption: shopId,
+                        },
+                    };
+                })
+        ),
+        shareReplay(1)
+    );
+
+    constructor(
+        private baseDialogService: BaseDialogService,
+        private partyRoutingRulesetService: PartyRoutingRulesetService,
+        private router: Router,
+        private route: ActivatedRoute,
+        private domainStoreService: DomainStoreService
+    ) {}
+
+    initialize() {
+        combineLatest([
+            this.partyRoutingRulesetService.partyID$,
+            this.partyRoutingRulesetService.refID$,
+        ])
+            .pipe(
+                take(1),
+                switchMap(([partyID, refID]) =>
+                    this.baseDialogService
+                        .open(InitializeRoutingRulesDialogComponent, { partyID, refID })
+                        .afterClosed()
+                ),
+                untilDestroyed(this)
+            )
+            .subscribe();
+    }
+
+    addPartyRule() {
+        combineLatest([
+            this.partyRoutingRulesetService.refID$,
+            this.partyRoutingRulesetService.shops$,
+            this.partyRoutingRulesetService.partyID$,
+        ])
+            .pipe(
+                take(1),
+                switchMap(([refID, shops, partyID]) =>
+                    this.baseDialogService
+                        .open(AddPartyRoutingRuleDialogComponent, { refID, shops, partyID })
+                        .afterClosed()
+                ),
+                untilDestroyed(this)
+            )
+            .subscribe({
+                next: (res) => {
+                    if (res.status === BaseDialogResponseStatus.Success) {
+                        this.partyRoutingRulesetService.reload();
+                    }
+                },
+            });
+    }
+
+    navigateToShopRuleset(parentRefId: number, delegateIdx: number) {
+        this.partyRoutingRulesetService.partyRuleset$
+            .pipe(take(1), untilDestroyed(this))
+            .subscribe((ruleset) =>
+                this.router.navigate([
+                    'party',
+                    this.route.snapshot.params.partyID,
+                    'routing-rules',
+                    this.route.snapshot.params.type,
+                    parentRefId,
+                    'shop-ruleset',
+                    ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,
+                ])
+            );
+    }
+}

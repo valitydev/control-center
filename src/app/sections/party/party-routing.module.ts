@@ -9,7 +9,7 @@ import { PartyComponent } from './party.component';
     imports: [
         RouterModule.forChild([
             {
-                path: 'party/:partyID',
+                path: ':partyID',
                 component: PartyComponent,
                 canActivate: [AppAuthGuardService],
                 data: {
@@ -47,11 +47,9 @@ import { PartyComponent } from './party.component';
                             import('../payment-details').then((m) => m.PaymentDetailsModule),
                     },
                     {
-                        path: 'payment-routing-rules',
+                        path: 'routing-rules',
                         loadChildren: () =>
-                            import('../payment-routing-rules').then(
-                                (m) => m.PaymentRoutingRulesModule
-                            ),
+                            import('../routing-rules').then((m) => m.RoutingRulesModule),
                     },
                     { path: '', redirectTo: 'payments', pathMatch: 'full' },
                 ],

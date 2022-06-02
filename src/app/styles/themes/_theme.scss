@@ -4,7 +4,7 @@
 @import '../../shared/components/shared-components-themes';
 
 @import '../../sections/party/party-theme';
-@import '../../sections/payment-routing-rules/payment-routing-rules-theme';
+@import '../../sections/routing-rules/routing-rules-theme';
 @import '../../sections/party-claim/party-claim-theme';
 
 @import '../../not-found/not-found-theme';
@@ -24,7 +24,7 @@
         @include cc-party-theme($theme);
         @include cc-components-themes($theme);
         @include cc-shared-components-themes($theme);
-        @include cc-payment-routing-rules-theme($theme);
+        @include cc-routing-rules-theme($theme);
         @include cc-party-claim-theme($theme);
         @include cc-not-found-theme($theme);
     }

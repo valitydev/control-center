@@ -419,6 +419,10 @@ export class RoutingRulesService {
         );
     }
 
+    reload(): void {
+        this.domainStoreService.forceReload();
+    }
+
     private cloneRulesetAndPushDelegate(ruleset: RoutingRulesObject, delegate: RoutingDelegate) {
         const newRuleset = cloneDeep(ruleset);
         if (!Array.isArray(newRuleset.data.decisions.delegates)) {
