@@ -10,10 +10,10 @@ import { RoutingRulesService } from '../../../../thrift-services';
 
 @UntilDestroy()
 @Component({
-    templateUrl: 'add-party-payment-routing-rule-dialog.component.html',
+    templateUrl: 'add-party-routing-rule-dialog.component.html',
 })
-export class AddPartyPaymentRoutingRuleDialogComponent extends BaseDialogSuperclass<
-    AddPartyPaymentRoutingRuleDialogComponent,
+export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
+    AddPartyRoutingRuleDialogComponent,
     { refID: number; partyID: string; shops: Shop[] }
 > {
     form = this.fb.group({

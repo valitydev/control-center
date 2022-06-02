@@ -7,7 +7,7 @@ import { filter, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
-import { AddPartyPaymentRoutingRuleDialogComponent } from './add-party-payment-routing-rule-dialog';
+import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payment-routing-rules-dialog';
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 
@@ -89,7 +89,7 @@ export class PartyRoutingRulesetComponent {
                 take(1),
                 switchMap(([refID, shops, partyID]) =>
                     this.baseDialogService
-                        .open(AddPartyPaymentRoutingRuleDialogComponent, { refID, shops, partyID })
+                        .open(AddPartyRoutingRuleDialogComponent, { refID, shops, partyID })
                         .afterClosed()
                 ),
                 untilDestroyed(this)

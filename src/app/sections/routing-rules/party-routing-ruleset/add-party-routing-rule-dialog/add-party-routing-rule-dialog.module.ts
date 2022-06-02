@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { BaseDialogModule } from '@cc/components/base-dialog';
 
-import { AddPartyPaymentRoutingRuleDialogComponent } from './add-party-payment-routing-rule-dialog.component';
+import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog.component';
 
 @NgModule({
     imports: [
@@ -32,7 +32,7 @@ import { AddPartyPaymentRoutingRuleDialogComponent } from './add-party-payment-r
         MatAutocompleteModule,
         BaseDialogModule,
     ],
-    declarations: [AddPartyPaymentRoutingRuleDialogComponent],
-    exports: [AddPartyPaymentRoutingRuleDialogComponent],
+    declarations: [AddPartyRoutingRuleDialogComponent],
+    exports: [AddPartyRoutingRuleDialogComponent],
 })
-export class AddPartyPaymentRoutingRuleDialogModule {}
+export class AddPartyRoutingRuleDialogModule {}

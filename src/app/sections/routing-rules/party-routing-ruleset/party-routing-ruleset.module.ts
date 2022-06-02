@@ -22,7 +22,7 @@ import { DamselModule } from '../../../thrift-services';
 import { ChangeTargetDialogModule } from '../change-target-dialog';
 import { RoutingRulesListModule } from '../routing-rules-list';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
-import { AddPartyPaymentRoutingRuleDialogModule } from './add-party-payment-routing-rule-dialog';
+import { AddPartyRoutingRuleDialogModule } from './add-party-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogModule } from './initialize-payment-routing-rules-dialog';
 import { PartyRoutingRulesetRoutingModule } from './party-routing-ruleset-routing.module';
 import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component';
@@ -49,7 +49,7 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
         MatRadioModule,
         MatExpansionModule,
         RoutingRulesetHeaderModule,
-        AddPartyPaymentRoutingRuleDialogModule,
+        AddPartyRoutingRuleDialogModule,
         InitializePaymentRoutingRulesDialogModule,
         MatProgressBarModule,
         ChangeTargetDialogModule,
