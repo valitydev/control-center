@@ -23,7 +23,7 @@ export class ShopPaymentRoutingRulesetService {
         shareReplay(1)
     );
     shopRuleset$ = this.refID$.pipe(
-        switchMap((refID) => this.paymentRoutingRulesService.getRuleset(refID)),
+        switchMap((refID) => this.routingRulesService.getRuleset(refID)),
         shareReplay(1)
     );
     private party$ = this.partyID$.pipe(
@@ -43,7 +43,7 @@ export class ShopPaymentRoutingRulesetService {
     );
 
     constructor(
-        private paymentRoutingRulesService: PaymentRoutingRulesDamselService,
+        private routingRulesService: PaymentRoutingRulesDamselService,
         private route: ActivatedRoute,
         private partyManagementWithUserService: PartyManagementWithUserService,
         private errorService: ErrorService
@@ -54,7 +54,7 @@ export class ShopPaymentRoutingRulesetService {
             .pipe(
                 take(1),
                 switchMap((refID) =>
-                    this.paymentRoutingRulesService.removeShopRule({
+                    this.routingRulesService.removeShopRule({
                         refID,
                         candidateIdx,
                     })

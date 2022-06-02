@@ -25,7 +25,7 @@ export class AddPartyPaymentRoutingRuleDialogComponent extends BaseDialogSupercl
     constructor(
         injector: Injector,
         private fb: FormBuilder,
-        private paymentRoutingRulesService: RoutingRulesService,
+        private routingRulesService: RoutingRulesService,
         private errorService: ErrorService
     ) {
         super(injector);
@@ -33,7 +33,7 @@ export class AddPartyPaymentRoutingRuleDialogComponent extends BaseDialogSupercl
 
     add() {
         const { shopID, name, description } = this.form.value;
-        this.paymentRoutingRulesService
+        this.routingRulesService
             .addShopRuleset({
                 name,
                 description,

@@ -32,7 +32,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private fb: FormBuilder,
-        private paymentRoutingRulesService: RoutingRulesService,
+        private routingRulesService: RoutingRulesService,
         private errorService: ErrorService
     ) {
         super(injector);
@@ -40,7 +40,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
 
     attach() {
         const { mainRulesetRefID, mainDelegateDescription } = this.targetRuleset$.value;
-        this.paymentRoutingRulesService
+        this.routingRulesService
             .attachPartyDelegateRuleset({
                 partyID: this.dialogData.partyID,
                 mainRulesetRefID,

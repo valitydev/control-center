@@ -56,7 +56,7 @@ export class PartyDelegateRulesetsComponent {
 
     constructor(
         private partyDelegateRulesetsService: PartyDelegateRulesetsService,
-        private paymentRoutingRulesService: RoutingRulesService,
+        private routingRulesService: RoutingRulesService,
         private router: Router,
         private baseDialogService: BaseDialogService,
         private domainStoreService: DomainStoreService,
@@ -76,7 +76,7 @@ export class PartyDelegateRulesetsComponent {
     }
 
     navigateToPartyRuleset(parentRefId: number, delegateIdx: number) {
-        this.paymentRoutingRulesService
+        this.routingRulesService
             .getRuleset(parentRefId)
             .pipe(first(), untilDestroyed(this))
             .subscribe((parent) => {

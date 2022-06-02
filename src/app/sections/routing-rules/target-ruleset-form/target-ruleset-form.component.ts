@@ -46,7 +46,7 @@ export class TargetRulesetFormComponent implements OnChanges {
     paymentInstitutions$ = this.domainStoreService
         .getObjects('payment_institution')
         .pipe(map((r) => sortBy(r, ['ref.id'])));
-    rulesets$ = this.paymentRoutingRulesService.rulesets$;
+    rulesets$ = this.routingRulesService.rulesets$;
 
     get policiesId() {
         return getPoliciesIdByType(
@@ -58,7 +58,7 @@ export class TargetRulesetFormComponent implements OnChanges {
     constructor(
         private fb: FormBuilder,
         private domainStoreService: DomainStoreService,
-        private paymentRoutingRulesService: RoutingRulesService,
+        private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute
     ) {
         this.form.controls.target.valueChanges
@@ -125,6 +125,6 @@ export class TargetRulesetFormComponent implements OnChanges {
     }
 
     getRulesetById(id: number) {
-        return this.paymentRoutingRulesService.getRuleset(id);
+        return this.routingRulesService.getRuleset(id);
     }
 }

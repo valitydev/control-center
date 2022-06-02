@@ -38,7 +38,7 @@ export class AddShopPaymentRoutingRuleDialogService {
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<AddShopPaymentRoutingRuleDialogComponent>,
-        private paymentRoutingRulesService: RoutingRulesService,
+        private routingRulesService: RoutingRulesService,
         private terminalService: TerminalService
     ) {
         this.form
@@ -78,7 +78,7 @@ export class AddShopPaymentRoutingRuleDialogService {
             .pipe(
                 take(1),
                 switchMap((terminalID) =>
-                    this.paymentRoutingRulesService.addShopRule({
+                    this.routingRulesService.addShopRule({
                         description,
                         weight,
                         priority,
