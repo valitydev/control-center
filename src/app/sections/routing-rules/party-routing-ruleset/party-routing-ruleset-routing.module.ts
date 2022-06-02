@@ -3,14 +3,14 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService, DomainConfigRole } from '@cc/app/shared/services';
 
-import { PaymentRoutingRulesComponent } from './party-payment-routing-ruleset.component';
+import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: ':partyRefID',
-                component: PaymentRoutingRulesComponent,
+                component: PartyRoutingRulesetComponent,
                 canActivate: [AppAuthGuardService],
                 data: {
                     roles: [DomainConfigRole.Checkout],
@@ -19,4 +19,4 @@ import { PaymentRoutingRulesComponent } from './party-payment-routing-ruleset.co
         ]),
     ],
 })
-export class PartyPaymentRoutingRulesetRoutingModule {}
+export class PartyRoutingRulesetRoutingModule {}

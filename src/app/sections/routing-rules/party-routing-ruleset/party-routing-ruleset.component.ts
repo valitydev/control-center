@@ -9,16 +9,16 @@ import { BaseDialogService } from '@cc/components/base-dialog/services/base-dial
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AddPartyPaymentRoutingRuleDialogComponent } from './add-party-payment-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogComponent } from './initialize-payment-routing-rules-dialog';
-import { PartyPaymentRoutingRulesetService } from './party-payment-routing-ruleset.service';
+import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-party-payment-routing-ruleset',
-    templateUrl: 'party-payment-routing-ruleset.component.html',
-    styleUrls: ['party-payment-routing-ruleset.component.scss'],
-    providers: [PartyPaymentRoutingRulesetService],
+    selector: 'cc-party-routing-ruleset',
+    templateUrl: 'party-routing-ruleset.component.html',
+    styleUrls: ['party-routing-ruleset.component.scss'],
+    providers: [PartyRoutingRulesetService],
 })
-export class PaymentRoutingRulesComponent {
+export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyPaymentRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyPaymentRoutingRulesetService.partyID$;
     routingRulesType$ = this.route.params.pipe(pluck('type'));
@@ -56,7 +56,7 @@ export class PaymentRoutingRulesComponent {
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private partyPaymentRoutingRulesetService: PartyPaymentRoutingRulesetService,
+        private partyPaymentRoutingRulesetService: PartyRoutingRulesetService,
         private router: Router,
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService

@@ -8,7 +8,7 @@ import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 
 @Injectable()
-export class PartyPaymentRoutingRulesetService {
+export class PartyRoutingRulesetService {
     partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
     refID$ = this.route.params.pipe(
         pluck('partyRefID'),

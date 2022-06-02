@@ -24,12 +24,12 @@ import { PaymentRoutingRulesetHeaderModule } from '../payment-routing-ruleset-he
 import { RoutingRulesListModule } from '../routing-rules-list';
 import { AddPartyPaymentRoutingRuleDialogModule } from './add-party-payment-routing-rule-dialog';
 import { InitializePaymentRoutingRulesDialogModule } from './initialize-payment-routing-rules-dialog';
-import { PartyPaymentRoutingRulesetRoutingModule } from './party-payment-routing-ruleset-routing.module';
-import { PaymentRoutingRulesComponent } from './party-payment-routing-ruleset.component';
+import { PartyRoutingRulesetRoutingModule } from './party-routing-ruleset-routing.module';
+import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component';
 
 @NgModule({
     imports: [
-        PartyPaymentRoutingRulesetRoutingModule,
+        PartyRoutingRulesetRoutingModule,
         CommonModule,
         MatButtonModule,
         FlexLayoutModule,
@@ -55,6 +55,6 @@ import { PaymentRoutingRulesComponent } from './party-payment-routing-ruleset.co
         ChangeTargetDialogModule,
         RoutingRulesListModule,
     ],
-    declarations: [PaymentRoutingRulesComponent],
+    declarations: [PartyRoutingRulesetComponent],
 })
 export class PartyPaymentRoutingRulesetModule {}

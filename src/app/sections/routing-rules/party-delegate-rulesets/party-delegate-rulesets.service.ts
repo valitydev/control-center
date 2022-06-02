@@ -28,7 +28,7 @@ export class PartyDelegateRulesetsService {
     constructor(
         private domainStoreService: DomainStoreService,
         private route: ActivatedRoute,
-        private paymentRoutingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService
     ) {}
 
     getDelegatesWithPaymentInstitution() {
@@ -70,7 +70,7 @@ export class PartyDelegateRulesetsService {
             switchMap(([paymentInstitutions, routingRulesType]) => {
                 return combineLatest(
                     paymentInstitutions.map((paymentInstitution) =>
-                        this.paymentRoutingRulesService
+                        this.routingRulesService
                             .getRuleset(
                                 getPoliciesIdByType(paymentInstitution?.data, routingRulesType)
                             )
