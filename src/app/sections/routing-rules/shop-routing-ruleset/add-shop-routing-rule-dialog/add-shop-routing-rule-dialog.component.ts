@@ -8,19 +8,19 @@ import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
 import {
-    AddShopPaymentRoutingRuleDialogService,
+    AddShopRoutingRuleDialogService,
     TerminalType,
-} from './add-shop-payment-routing-rule-dialog.service';
+} from './add-shop-routing-rule-dialog.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-add-shop-payment-routing-rule-dialog',
-    templateUrl: 'add-shop-payment-routing-rule-dialog.component.html',
-    styleUrls: ['add-shop-payment-routing-rule-dialog.component.scss'],
-    providers: [AddShopPaymentRoutingRuleDialogService],
+    selector: 'cc-add-shop-routing-rule-dialog',
+    templateUrl: 'add-shop-routing-rule-dialog.component.html',
+    styleUrls: ['add-shop-routing-rule-dialog.component.scss'],
+    providers: [AddShopRoutingRuleDialogService],
 })
-export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSuperclass<
-    AddShopPaymentRoutingRuleDialogComponent,
+export class AddShopRoutingRuleDialogComponent extends BaseDialogSuperclass<
+    AddShopRoutingRuleDialogComponent,
     { refID: number }
 > {
     form = this.addShopPaymentRoutingRuleDialogService.form;
@@ -33,7 +33,7 @@ export class AddShopPaymentRoutingRuleDialogComponent extends BaseDialogSupercla
 
     constructor(
         injector: Injector,
-        private addShopPaymentRoutingRuleDialogService: AddShopPaymentRoutingRuleDialogService,
+        private addShopPaymentRoutingRuleDialogService: AddShopRoutingRuleDialogService,
         private domainStoreService: DomainStoreService,
         private fb: FormBuilder
     ) {

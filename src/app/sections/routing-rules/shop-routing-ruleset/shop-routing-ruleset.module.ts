@@ -23,7 +23,7 @@ import { PrettyJsonModule } from '@cc/components/pretty-json';
 
 import { DamselModule } from '../../../thrift-services';
 import { PaymentRoutingRulesetHeaderModule } from '../payment-routing-ruleset-header';
-import { AddShopPaymentRoutingRuleDialogModule } from './add-shop-payment-routing-rule-dialog';
+import { AddShopRoutingRuleDialogModule } from './add-shop-routing-rule-dialog';
 import { ShopRoutingRulesetRoutingModule } from './shop-routing-ruleset-routing.module';
 import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
 
@@ -50,7 +50,7 @@ import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
         MatExpansionModule,
         PaymentRoutingRulesetHeaderModule,
         MatAutocompleteModule,
-        AddShopPaymentRoutingRuleDialogModule,
+        AddShopRoutingRuleDialogModule,
         PrettyJsonModule,
         MatProgressBarModule,
     ],

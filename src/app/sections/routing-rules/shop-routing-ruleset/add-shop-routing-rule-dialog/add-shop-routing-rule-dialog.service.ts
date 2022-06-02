@@ -8,7 +8,7 @@ import { startWith, switchMap, take } from 'rxjs/operators';
 import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
 
 import { RoutingRulesService, TerminalService } from '../../../../thrift-services';
-import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog.component';
+import { AddShopRoutingRuleDialogComponent } from './add-shop-routing-rule-dialog.component';
 
 export enum TerminalType {
     New = 'new',
@@ -16,7 +16,7 @@ export enum TerminalType {
 }
 
 @Injectable()
-export class AddShopPaymentRoutingRuleDialogService {
+export class AddShopRoutingRuleDialogService {
     form = this.fb.group({
         description: '',
         weight: '',
@@ -37,7 +37,7 @@ export class AddShopPaymentRoutingRuleDialogService {
 
     constructor(
         private fb: FormBuilder,
-        private dialogRef: MatDialogRef<AddShopPaymentRoutingRuleDialogComponent>,
+        private dialogRef: MatDialogRef<AddShopRoutingRuleDialogComponent>,
         private routingRulesService: RoutingRulesService,
         private terminalService: TerminalService
     ) {

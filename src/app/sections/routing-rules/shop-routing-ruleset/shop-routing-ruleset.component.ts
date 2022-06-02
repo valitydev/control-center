@@ -14,7 +14,7 @@ import { BaseDialogService } from '@cc/components/base-dialog/services/base-dial
 import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
-import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog';
+import { AddShopRoutingRuleDialogComponent } from './add-shop-routing-rule-dialog';
 import { ShopRoutingRulesetService } from './shop-routing-ruleset.service';
 
 @UntilDestroy()
@@ -60,7 +60,7 @@ export class ShopRoutingRulesetComponent {
                 first(),
                 switchMap((refID) =>
                     this.baseDialogService
-                        .open(AddShopPaymentRoutingRuleDialogComponent, { refID })
+                        .open(AddShopRoutingRuleDialogComponent, { refID })
                         .afterClosed()
                 )
             )
