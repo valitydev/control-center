@@ -23,8 +23,8 @@ export class AddShopRoutingRuleDialogComponent extends BaseDialogSuperclass<
     AddShopRoutingRuleDialogComponent,
     { refID: number }
 > {
-    form = this.addShopPaymentRoutingRuleDialogService.form;
-    newTerminalOptionsForm = this.addShopPaymentRoutingRuleDialogService.newTerminalOptionsForm;
+    form = this.addShopRoutingRuleDialogService.form;
+    newTerminalOptionsForm = this.addShopRoutingRuleDialogService.newTerminalOptionsForm;
     predicateControl = this.fb.control<Predicate>(null, Validators.required);
 
     terminalType = TerminalType;
@@ -33,7 +33,7 @@ export class AddShopRoutingRuleDialogComponent extends BaseDialogSuperclass<
 
     constructor(
         injector: Injector,
-        private addShopPaymentRoutingRuleDialogService: AddShopRoutingRuleDialogService,
+        private addShopRoutingRuleDialogService: AddShopRoutingRuleDialogService,
         private domainStoreService: DomainStoreService,
         private fb: FormBuilder
     ) {
@@ -41,17 +41,17 @@ export class AddShopRoutingRuleDialogComponent extends BaseDialogSuperclass<
     }
 
     add() {
-        this.addShopPaymentRoutingRuleDialogService.add(
+        this.addShopRoutingRuleDialogService.add(
             this.predicateControl.value,
             this.dialogData.refID
         );
     }
 
     addOption() {
-        this.addShopPaymentRoutingRuleDialogService.addOption();
+        this.addShopRoutingRuleDialogService.addOption();
     }
 
     removeOption(idx: number) {
-        this.addShopPaymentRoutingRuleDialogService.removeOption(idx);
+        this.addShopRoutingRuleDialogService.removeOption(idx);
     }
 }
