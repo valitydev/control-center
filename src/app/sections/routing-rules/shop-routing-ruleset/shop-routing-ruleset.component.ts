@@ -24,12 +24,12 @@ import { ShopRoutingRulesetService } from './shop-routing-ruleset.service';
     providers: [ShopRoutingRulesetService],
 })
 export class ShopRoutingRulesetComponent {
-    shopRuleset$ = this.shopPaymentRoutingRulesetService.shopRuleset$;
-    partyID$ = this.shopPaymentRoutingRulesetService.partyID$;
-    partyRulesetRefID$ = this.shopPaymentRoutingRulesetService.partyRulesetRefID$;
+    shopRuleset$ = this.shopRoutingRulesetService.shopRuleset$;
+    partyID$ = this.shopRoutingRulesetService.partyID$;
+    partyRulesetRefID$ = this.shopRoutingRulesetService.partyRulesetRefID$;
     routingRulesType$ = this.route.params.pipe(pluck('type')) as Observable<RoutingRulesType>;
-    shop$ = this.shopPaymentRoutingRulesetService.shop$;
-    candidates$ = this.shopPaymentRoutingRulesetService.shopRuleset$.pipe(
+    shop$ = this.shopRoutingRulesetService.shop$;
+    candidates$ = this.shopRoutingRulesetService.shopRuleset$.pipe(
         map((r) => r.data.decisions.candidates),
         shareReplay(1)
     );
@@ -47,7 +47,7 @@ export class ShopRoutingRulesetComponent {
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private shopPaymentRoutingRulesetService: ShopRoutingRulesetService,
+        private shopRoutingRulesetService: ShopRoutingRulesetService,
         private domainStoreService: DomainStoreService,
         private errorService: ErrorService,
         private notificationService: NotificationService,
@@ -55,7 +55,7 @@ export class ShopRoutingRulesetComponent {
     ) {}
 
     addShopRule() {
-        this.shopPaymentRoutingRulesetService.refID$
+        this.shopRoutingRulesetService.refID$
             .pipe(
                 first(),
                 switchMap((refID) =>
@@ -80,7 +80,7 @@ export class ShopRoutingRulesetComponent {
     }
 
     removeShopRule(idx: number) {
-        this.shopPaymentRoutingRulesetService.removeShopRule(idx);
+        this.shopRoutingRulesetService.removeShopRule(idx);
     }
 
     terminalToObject(terminal: TerminalObject) {
