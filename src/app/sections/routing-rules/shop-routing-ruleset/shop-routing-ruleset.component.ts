@@ -15,15 +15,15 @@ import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AddShopPaymentRoutingRuleDialogComponent } from './add-shop-payment-routing-rule-dialog';
-import { ShopPaymentRoutingRulesetService } from './shop-payment-routing-ruleset.service';
+import { ShopRoutingRulesetService } from './shop-routing-ruleset.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-shop-payment-routing-ruleset',
-    templateUrl: 'shop-payment-routing-ruleset.component.html',
-    providers: [ShopPaymentRoutingRulesetService],
+    selector: 'cc-shop-routing-ruleset',
+    templateUrl: 'shop-routing-ruleset.component.html',
+    providers: [ShopRoutingRulesetService],
 })
-export class ShopPaymentRoutingRulesetComponent {
+export class ShopRoutingRulesetComponent {
     shopRuleset$ = this.shopPaymentRoutingRulesetService.shopRuleset$;
     partyID$ = this.shopPaymentRoutingRulesetService.partyID$;
     partyRulesetRefID$ = this.shopPaymentRoutingRulesetService.partyRulesetRefID$;
@@ -47,7 +47,7 @@ export class ShopPaymentRoutingRulesetComponent {
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private shopPaymentRoutingRulesetService: ShopPaymentRoutingRulesetService,
+        private shopPaymentRoutingRulesetService: ShopRoutingRulesetService,
         private domainStoreService: DomainStoreService,
         private errorService: ErrorService,
         private notificationService: NotificationService,
