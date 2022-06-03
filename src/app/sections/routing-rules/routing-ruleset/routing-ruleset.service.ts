@@ -10,7 +10,7 @@ import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService as RoutingRulesDamselService } from '../../../thrift-services';
 
 @Injectable()
-export class ShopRoutingRulesetService {
+export class RoutingRulesetService {
     partyID$: Observable<string> = this.route.params.pipe(pluck('partyID'), shareReplay(1));
     partyRulesetRefID$: Observable<number> = this.route.params.pipe(
         pluck('partyRefID'),

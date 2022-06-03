@@ -24,12 +24,12 @@ import { PrettyJsonModule } from '@cc/components/pretty-json';
 import { DamselModule } from '../../../thrift-services';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { AddRoutingRuleDialogModule } from './add-routing-rule-dialog';
-import { ShopRoutingRulesetRoutingModule } from './shop-routing-ruleset-routing.module';
-import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
+import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
+import { RoutingRulesetComponent } from './routing-ruleset.component';
 
 @NgModule({
     imports: [
-        ShopRoutingRulesetRoutingModule,
+        RoutingRulesetRoutingModule,
         CommonModule,
         MatButtonModule,
         FlexLayoutModule,
@@ -54,6 +54,6 @@ import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
         PrettyJsonModule,
         MatProgressBarModule,
     ],
-    declarations: [ShopRoutingRulesetComponent],
+    declarations: [RoutingRulesetComponent],
 })
-export class ShopRoutingRulesetModule {}
+export class RoutingRulesetModule {}
