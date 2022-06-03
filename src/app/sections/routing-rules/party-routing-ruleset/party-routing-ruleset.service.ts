@@ -21,6 +21,10 @@ export class PartyRoutingRulesetService {
         pluck('shops'),
         map((shops) => Array.from(shops.values()))
     );
+    wallets$ = defer(() => this.party$).pipe(
+        pluck('wallets'),
+        map((wallets) => Array.from(wallets.values()))
+    );
 
     partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),

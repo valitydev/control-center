@@ -9,7 +9,7 @@ import { ShopRoutingRulesetComponent } from './shop-routing-ruleset.component';
     imports: [
         RouterModule.forChild([
             {
-                path: ':partyRefID/shop-ruleset/:refID',
+                path: ':partyRefID/delegate/:refID',
                 component: ShopRoutingRulesetComponent,
                 canActivate: [AppAuthGuardService],
                 data: {
