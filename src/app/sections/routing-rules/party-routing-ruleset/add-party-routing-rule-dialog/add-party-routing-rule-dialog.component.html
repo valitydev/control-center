@@ -1,10 +1,18 @@
 <cc-base-dialog title="Party routing rule params">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
-        <mat-form-field>
+        <mat-form-field *ngIf="dialogData.type === 'payment'">
             <mat-label>Shop</mat-label>
             <mat-select formControlName="shopID" required>
                 <mat-option *ngFor="let shop of dialogData.shops" [value]="shop.id">
                     {{ shop.details.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="dialogData.type === 'withdrawal'">
+            <mat-label>Wallet</mat-label>
+            <mat-select formControlName="shopID" required>
+                <mat-option *ngFor="let wallet of dialogData.wallets" [value]="wallet.id">
+                    {{ wallet.name }}
                 </mat-option>
             </mat-select>
         </mat-form-field>

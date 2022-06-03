@@ -1,12 +1,13 @@
 import { Component, Injector } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Shop } from '@vality/domain-proto/lib/domain';
+import { Shop, Wallet } from '@vality/domain-proto/lib/domain';
 
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';
+import { RoutingRulesType } from '../../types/routing-rules-type';
 
 @UntilDestroy()
 @Component({
@@ -14,10 +15,11 @@ import { RoutingRulesService } from '../../../../thrift-services';
 })
 export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
     AddPartyRoutingRuleDialogComponent,
-    { refID: number; partyID: string; shops: Shop[] }
+    { refID: number; partyID: string; shops: Shop[]; wallets: Wallet[]; type: RoutingRulesType }
 > {
-    form = this.fb.group({
+    form = this.fb.group<{ shopID: string; walletID: string; name: string; description: string }>({
         shopID: '',
+        walletID: '',
         name: 'Ruleset[candidates]',
         description: '',
     });
@@ -32,19 +34,27 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
     }
 
     add() {
-        const { shopID, name, description } = this.form.value;
-        this.routingRulesService
-            .addShopRuleset({
-                name,
-                description,
-                partyRulesetRefID: this.dialogData.refID,
-                partyID: this.dialogData.partyID,
-                shopID,
-            })
+        const { shopID, walletID, name, description } = this.form.value;
+        (this.dialogData.type === RoutingRulesType.Payment
+            ? this.routingRulesService.addShopRuleset({
+                  name,
+                  description,
+                  partyRulesetRefID: this.dialogData.refID,
+                  partyID: this.dialogData.partyID,
+                  shopID,
+              })
+            : this.routingRulesService.addWalletRuleset({
+                  name,
+                  description,
+                  partyRulesetRefID: this.dialogData.refID,
+                  partyID: this.dialogData.partyID,
+                  walletID,
+              })
+        )
             .pipe(untilDestroyed(this))
-            .subscribe(
-                () => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }),
-                this.errorService.error
-            );
+            .subscribe({
+                next: () => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }),
+                error: this.errorService.error,
+            });
     }
 }

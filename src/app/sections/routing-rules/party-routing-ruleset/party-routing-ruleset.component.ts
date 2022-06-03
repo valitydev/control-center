@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { combineLatest } from 'rxjs';
-import { filter, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { BaseDialogResponseStatus } from '../../../../components/base-dialog';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { RoutingRulesType } from '../types/routing-rules-type';
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
@@ -22,7 +23,10 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
-    routingRulesType$ = this.route.params.pipe(pluck('type'));
+    routingRulesType$ = this.route.params.pipe(
+        startWith(this.route.snapshot.params),
+        pluck('type')
+    ) as Observable<RoutingRulesType>;
     isLoading$ = this.domainStoreService.isLoading$;
 
     shopsDisplayedColumns = [
@@ -114,13 +118,21 @@ export class PartyRoutingRulesetComponent {
         combineLatest([
             this.partyRoutingRulesetService.refID$,
             this.partyRoutingRulesetService.shops$,
+            this.partyRoutingRulesetService.wallets$,
+            this.routingRulesType$,
             this.partyRoutingRulesetService.partyID$,
         ])
             .pipe(
                 take(1),
-                switchMap(([refID, shops, partyID]) =>
+                switchMap(([refID, shops, wallets, type, partyID]) =>
                     this.baseDialogService
-                        .open(AddPartyRoutingRuleDialogComponent, { refID, shops, partyID })
+                        .open(AddPartyRoutingRuleDialogComponent, {
+                            refID,
+                            shops,
+                            wallets,
+                            type,
+                            partyID,
+                        })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
