@@ -148,6 +148,64 @@ export class RoutingRulesService {
         );
     }
 
+    addWalletRuleset({
+        name,
+        walletID,
+        partyID,
+        partyRulesetRefID,
+        description,
+    }: {
+        name: string;
+        walletID: string;
+        partyID: string;
+        partyRulesetRefID: number;
+        description?: string;
+    }): Observable<Version> {
+        return combineLatest([this.getRuleset(partyRulesetRefID), this.nextRefID$]).pipe(
+            take(1),
+            switchMap(([partyRuleset, id]) => {
+                const walletRuleset: RoutingRulesObject = {
+                    ref: { id },
+                    data: {
+                        name,
+                        description,
+                        decisions: {
+                            candidates: [],
+                        },
+                    },
+                };
+                const newPartyRuleset = this.cloneRulesetAndPushDelegate(partyRuleset, {
+                    ruleset: { id },
+                    allowed: {
+                        condition: {
+                            party: {
+                                id: partyID,
+                                definition: {
+                                    wallet_is: walletID,
+                                },
+                            },
+                        },
+                    },
+                });
+                return this.domainStoreService.commit({
+                    ops: [
+                        {
+                            insert: {
+                                object: { routing_rules: walletRuleset },
+                            },
+                        },
+                        {
+                            update: {
+                                old_object: { routing_rules: partyRuleset },
+                                new_object: { routing_rules: newPartyRuleset },
+                            },
+                        },
+                    ],
+                });
+            })
+        );
+    }
+
     addShopRule({
         refID,
         terminalID,
@@ -165,8 +223,8 @@ export class RoutingRulesService {
     }): Observable<Version> {
         return this.getRuleset(refID).pipe(
             take(1),
-            switchMap((shopRuleset) => {
-                const newShopRule = this.cloneRulesetAndPushCandidate(shopRuleset, {
+            switchMap((ruleset) => {
+                const newShopRuleset = this.cloneRulesetAndPushCandidate(ruleset, {
                     description,
                     allowed: predicate,
                     terminal: {
@@ -179,8 +237,8 @@ export class RoutingRulesService {
                     ops: [
                         {
                             update: {
-                                old_object: { routing_rules: shopRuleset },
-                                new_object: { routing_rules: newShopRule },
+                                old_object: { routing_rules: ruleset },
+                                new_object: { routing_rules: newShopRuleset },
                             },
                         },
                     ],

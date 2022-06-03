@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { combineLatest } from 'rxjs';
-import { filter, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { BaseDialogResponseStatus } from '../../../../components/base-dialog';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { RoutingRulesType } from '../types/routing-rules-type';
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
@@ -22,25 +23,30 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
-    routingRulesType$ = this.route.params.pipe(pluck('type'));
+    routingRulesType$ = this.route.params.pipe(
+        startWith(this.route.snapshot.params),
+        pluck('type')
+    ) as Observable<RoutingRulesType>;
     isLoading$ = this.domainStoreService.isLoading$;
 
-    displayedColumns = [
+    shopsDisplayedColumns = [
         { key: 'shop', name: 'Shop' },
         { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
     ];
-    data$ = combineLatest([this.partyRuleset$, this.partyRoutingRulesetService.shops$]).pipe(
+    walletsDisplayedColumns = [
+        { key: 'wallet', name: 'Wallet' },
+        { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
+    ];
+    shopsData$ = combineLatest([this.partyRuleset$, this.partyRoutingRulesetService.shops$]).pipe(
         filter(([r]) => !!r),
         map(([ruleset, shops]) =>
             ruleset.data.decisions.delegates
                 .filter((d) => d?.allowed?.condition?.party?.definition?.shop_is)
-                .map((delegate) => {
-                    const shopId = delegate.allowed.condition.party.definition.shop_is;
+                .map((delegate, delegateIdx) => {
+                    const shopId = delegate?.allowed?.condition?.party?.definition?.shop_is;
                     return {
                         parentRefId: ruleset.ref.id,
-                        delegateIdx: ruleset.data.decisions.delegates.findIndex(
-                            (d) => d === delegate
-                        ),
+                        delegateIdx,
                         id: {
                             text: delegate?.description,
                             caption: delegate?.ruleset?.id,
@@ -52,6 +58,34 @@ export class PartyRoutingRulesetComponent {
                     };
                 })
         ),
+        untilDestroyed(this),
+        shareReplay(1)
+    );
+    walletsData$ = combineLatest([
+        this.partyRuleset$,
+        this.partyRoutingRulesetService.wallets$,
+    ]).pipe(
+        filter(([r]) => !!r),
+        map(([ruleset, wallets]) =>
+            ruleset.data.decisions.delegates
+                .filter((d) => d?.allowed?.condition?.party?.definition?.wallet_is)
+                .map((delegate, delegateIdx) => {
+                    const walletId = delegate?.allowed?.condition?.party?.definition?.wallet_is;
+                    return {
+                        parentRefId: ruleset.ref.id,
+                        delegateIdx,
+                        id: {
+                            text: delegate?.description,
+                            caption: delegate?.ruleset?.id,
+                        },
+                        wallet: {
+                            text: wallets?.find((w) => w?.id === walletId)?.name,
+                            caption: walletId,
+                        },
+                    };
+                })
+        ),
+        untilDestroyed(this),
         shareReplay(1)
     );
 
@@ -84,13 +118,21 @@ export class PartyRoutingRulesetComponent {
         combineLatest([
             this.partyRoutingRulesetService.refID$,
             this.partyRoutingRulesetService.shops$,
+            this.partyRoutingRulesetService.wallets$,
+            this.routingRulesType$,
             this.partyRoutingRulesetService.partyID$,
         ])
             .pipe(
                 take(1),
-                switchMap(([refID, shops, partyID]) =>
+                switchMap(([refID, shops, wallets, type, partyID]) =>
                     this.baseDialogService
-                        .open(AddPartyRoutingRuleDialogComponent, { refID, shops, partyID })
+                        .open(AddPartyRoutingRuleDialogComponent, {
+                            refID,
+                            shops,
+                            wallets,
+                            type,
+                            partyID,
+                        })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
@@ -104,7 +146,7 @@ export class PartyRoutingRulesetComponent {
             });
     }
 
-    navigateToShopRuleset(parentRefId: number, delegateIdx: number) {
+    navigateToDelegate(parentRefId: number, delegateIdx: number) {
         this.partyRoutingRulesetService.partyRuleset$
             .pipe(take(1), untilDestroyed(this))
             .subscribe((ruleset) =>
@@ -114,7 +156,7 @@ export class PartyRoutingRulesetComponent {
                     'routing-rules',
                     this.route.snapshot.params.type,
                     parentRefId,
-                    'shop-ruleset',
+                    'delegate',
                     ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,
                 ])
             );

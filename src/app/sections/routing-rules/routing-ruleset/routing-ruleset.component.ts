@@ -14,22 +14,21 @@ import { BaseDialogService } from '@cc/components/base-dialog/services/base-dial
 import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
-import { AddShopRoutingRuleDialogComponent } from './add-shop-routing-rule-dialog';
-import { ShopRoutingRulesetService } from './shop-routing-ruleset.service';
+import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog';
+import { RoutingRulesetService } from './routing-ruleset.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-shop-routing-ruleset',
-    templateUrl: 'shop-routing-ruleset.component.html',
-    providers: [ShopRoutingRulesetService],
+    templateUrl: 'routing-ruleset.component.html',
+    providers: [RoutingRulesetService],
 })
-export class ShopRoutingRulesetComponent {
-    shopRuleset$ = this.shopRoutingRulesetService.shopRuleset$;
-    partyID$ = this.shopRoutingRulesetService.partyID$;
-    partyRulesetRefID$ = this.shopRoutingRulesetService.partyRulesetRefID$;
+export class RoutingRulesetComponent {
+    shopRuleset$ = this.routingRulesetService.shopRuleset$;
+    partyID$ = this.routingRulesetService.partyID$;
+    partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
     routingRulesType$ = this.route.params.pipe(pluck('type')) as Observable<RoutingRulesType>;
-    shop$ = this.shopRoutingRulesetService.shop$;
-    candidates$ = this.shopRoutingRulesetService.shopRuleset$.pipe(
+    shop$ = this.routingRulesetService.shop$;
+    candidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) => r.data.decisions.candidates),
         shareReplay(1)
     );
@@ -47,7 +46,7 @@ export class ShopRoutingRulesetComponent {
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private shopRoutingRulesetService: ShopRoutingRulesetService,
+        private routingRulesetService: RoutingRulesetService,
         private domainStoreService: DomainStoreService,
         private errorService: ErrorService,
         private notificationService: NotificationService,
@@ -55,12 +54,12 @@ export class ShopRoutingRulesetComponent {
     ) {}
 
     addShopRule() {
-        this.shopRoutingRulesetService.refID$
+        this.routingRulesetService.refID$
             .pipe(
                 first(),
                 switchMap((refID) =>
                     this.baseDialogService
-                        .open(AddShopRoutingRuleDialogComponent, { refID })
+                        .open(AddRoutingRuleDialogComponent, { refID })
                         .afterClosed()
                 )
             )
@@ -69,18 +68,18 @@ export class ShopRoutingRulesetComponent {
                 next: (res) => {
                     if (res.status === BaseDialogResponseStatus.Success) {
                         this.domainStoreService.forceReload();
-                        this.notificationService.success('Shop routing ruleset successfully added');
+                        this.notificationService.success('Routing rule successfully added');
                     }
                 },
                 error: (err) => {
                     this.errorService.error(err);
-                    this.notificationService.success('Error while adding shop routing ruleset');
+                    this.notificationService.success('Error while adding routing rule');
                 },
             });
     }
 
     removeShopRule(idx: number) {
-        this.shopRoutingRulesetService.removeShopRule(idx);
+        this.routingRulesetService.removeShopRule(idx);
     }
 
     terminalToObject(terminal: TerminalObject) {
