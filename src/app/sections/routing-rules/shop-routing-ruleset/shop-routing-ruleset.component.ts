@@ -69,12 +69,12 @@ export class ShopRoutingRulesetComponent {
                 next: (res) => {
                     if (res.status === BaseDialogResponseStatus.Success) {
                         this.domainStoreService.forceReload();
-                        this.notificationService.success('Shop routing ruleset successfully added');
+                        this.notificationService.success('Routing rule successfully added');
                     }
                 },
                 error: (err) => {
                     this.errorService.error(err);
-                    this.notificationService.success('Error while adding shop routing ruleset');
+                    this.notificationService.success('Error while adding routing rule');
                 },
             });
     }

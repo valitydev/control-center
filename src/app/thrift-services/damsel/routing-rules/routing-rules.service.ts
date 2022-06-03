@@ -223,8 +223,8 @@ export class RoutingRulesService {
     }): Observable<Version> {
         return this.getRuleset(refID).pipe(
             take(1),
-            switchMap((shopRuleset) => {
-                const newShopRule = this.cloneRulesetAndPushCandidate(shopRuleset, {
+            switchMap((ruleset) => {
+                const newShopRuleset = this.cloneRulesetAndPushCandidate(ruleset, {
                     description,
                     allowed: predicate,
                     terminal: {
@@ -237,8 +237,8 @@ export class RoutingRulesService {
                     ops: [
                         {
                             update: {
-                                old_object: { routing_rules: shopRuleset },
-                                new_object: { routing_rules: newShopRule },
+                                old_object: { routing_rules: ruleset },
+                                new_object: { routing_rules: newShopRuleset },
                             },
                         },
                     ],
