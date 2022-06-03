@@ -7,20 +7,16 @@ import { Predicate, RiskScore } from '@vality/domain-proto/lib/domain';
 import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
-import {
-    AddShopRoutingRuleDialogService,
-    TerminalType,
-} from './add-shop-routing-rule-dialog.service';
+import { AddRoutingRuleDialogService, TerminalType } from './add-routing-rule-dialog.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-add-shop-routing-rule-dialog',
-    templateUrl: 'add-shop-routing-rule-dialog.component.html',
-    styleUrls: ['add-shop-routing-rule-dialog.component.scss'],
-    providers: [AddShopRoutingRuleDialogService],
+    templateUrl: 'add-routing-rule-dialog.component.html',
+    styleUrls: ['add-routing-rule-dialog.component.scss'],
+    providers: [AddRoutingRuleDialogService],
 })
-export class AddShopRoutingRuleDialogComponent extends BaseDialogSuperclass<
-    AddShopRoutingRuleDialogComponent,
+export class AddRoutingRuleDialogComponent extends BaseDialogSuperclass<
+    AddRoutingRuleDialogComponent,
     { refID: number }
 > {
     form = this.addShopRoutingRuleDialogService.form;
@@ -33,7 +29,7 @@ export class AddShopRoutingRuleDialogComponent extends BaseDialogSuperclass<
 
     constructor(
         injector: Injector,
-        private addShopRoutingRuleDialogService: AddShopRoutingRuleDialogService,
+        private addShopRoutingRuleDialogService: AddRoutingRuleDialogService,
         private domainStoreService: DomainStoreService,
         private fb: FormBuilder
     ) {

@@ -15,7 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MetadataFormModule } from '@cc/app/shared';
 import { BaseDialogModule } from '@cc/components/base-dialog';
 
-import { AddShopRoutingRuleDialogComponent } from './add-shop-routing-rule-dialog.component';
+import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 import { ExpanderComponent } from './expander';
 import { PredicateComponent } from './predicate';
 
@@ -36,7 +36,7 @@ import { PredicateComponent } from './predicate';
         MetadataFormModule,
         BaseDialogModule,
     ],
-    declarations: [AddShopRoutingRuleDialogComponent, PredicateComponent, ExpanderComponent],
-    exports: [AddShopRoutingRuleDialogComponent],
+    declarations: [AddRoutingRuleDialogComponent, PredicateComponent, ExpanderComponent],
+    exports: [AddRoutingRuleDialogComponent],
 })
-export class AddShopRoutingRuleDialogModule {}
+export class AddRoutingRuleDialogModule {}
