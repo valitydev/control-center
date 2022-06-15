@@ -1,7 +1,8 @@
 import { Component, Injector } from '@angular/core';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Shop, Wallet } from '@vality/domain-proto/lib/domain';
+import { Shop } from '@vality/domain-proto/lib/domain';
+import { StatWallet } from '@vality/fistful-proto/lib/fistful_stat';
 
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
 
@@ -15,7 +16,7 @@ import { RoutingRulesType } from '../../types/routing-rules-type';
 })
 export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
     AddPartyRoutingRuleDialogComponent,
-    { refID: number; partyID: string; shops: Shop[]; wallets: Wallet[]; type: RoutingRulesType }
+    { refID: number; partyID: string; shops: Shop[]; wallets: StatWallet[]; type: RoutingRulesType }
 > {
     form = this.fb.group<{ shopID: string; walletID: string; name: string; description: string }>({
         shopID: '',
