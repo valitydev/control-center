@@ -1,19 +1,28 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
+import { FistfulStatistics } from '@cc/app/api/fistful-stat';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 
+import { createDsl } from '../../../query-dsl';
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 
+@UntilDestroy()
 @Injectable()
 export class PartyRoutingRulesetService {
-    partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1)) as Observable<string>;
+    partyID$ = this.route.params.pipe(
+        pluck('partyID'),
+        untilDestroyed(this),
+        shareReplay(1)
+    ) as Observable<string>;
     refID$ = this.route.params.pipe(
         pluck('partyRefID'),
         map((r) => +r),
+        untilDestroyed(this),
         shareReplay(1)
     );
 
@@ -21,18 +30,26 @@ export class PartyRoutingRulesetService {
         pluck('shops'),
         map((shops) => Array.from(shops.values()))
     );
-    wallets$ = defer(() => this.party$).pipe(
-        pluck('wallets'),
-        map((wallets) => Array.from(wallets.values()))
+    wallets$ = defer(() => this.partyID$).pipe(
+        switchMap((partyID) =>
+            this.fistfulStatistics.GetWallets({
+                dsl: createDsl({ wallets: { party_id: partyID } }),
+            })
+        ),
+        pluck('data', 'wallets'),
+        untilDestroyed(this),
+        shareReplay(1)
     );
 
     partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),
+        untilDestroyed(this),
         shareReplay(1)
     );
 
     private party$ = this.partyID$.pipe(
         switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
+        untilDestroyed(this),
         shareReplay(1)
     );
 
@@ -40,7 +57,8 @@ export class PartyRoutingRulesetService {
         private route: ActivatedRoute,
         private partyManagementWithUserService: PartyManagementWithUserService,
         private domainStoreService: DomainStoreService,
-        private routingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService,
+        private fistfulStatistics: FistfulStatistics
     ) {}
 
     reload() {
