@@ -7,7 +7,6 @@ import {
     Output,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PaymentInstitutionObject } from '@vality/domain-proto';
 import sortBy from 'lodash-es/sortBy';
@@ -58,8 +57,7 @@ export class TargetRulesetFormComponent implements OnChanges {
     constructor(
         private fb: FormBuilder,
         private domainStoreService: DomainStoreService,
-        private routingRulesService: RoutingRulesService,
-        private route: ActivatedRoute
+        private routingRulesService: RoutingRulesService
     ) {
         this.form.controls.target.valueChanges
             .pipe(startWith(this.form.value.target), untilDestroyed(this))
@@ -89,7 +87,7 @@ export class TargetRulesetFormComponent implements OnChanges {
                             target === Target.PaymentInstitution
                                 ? getPoliciesIdByType(
                                       (paymentInstitution as PaymentInstitutionObject)?.data,
-                                      this.route.snapshot.params.type as RoutingRulesType
+                                      this.type
                                   )
                                 : mainRulesetRefID,
                         paymentInstitutionRefID:
