@@ -10,7 +10,7 @@
         </mat-form-field>
         <mat-form-field *ngIf="dialogData.type === 'withdrawal'">
             <mat-label>Wallet</mat-label>
-            <mat-select formControlName="shopID" required>
+            <mat-select formControlName="walletID" required>
                 <mat-option *ngFor="let wallet of dialogData.wallets" [value]="wallet.id">
                     {{ wallet.name }}
                 </mat-option>
