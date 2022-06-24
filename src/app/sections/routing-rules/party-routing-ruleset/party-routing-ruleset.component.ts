@@ -111,7 +111,11 @@ export class PartyRoutingRulesetComponent {
                 ),
                 untilDestroyed(this)
             )
-            .subscribe();
+            .subscribe({
+                next: () => {
+                    this.partyRoutingRulesetService.reload();
+                },
+            });
     }
 
     addPartyRule() {
