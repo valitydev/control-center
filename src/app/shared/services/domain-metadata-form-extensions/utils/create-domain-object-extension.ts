@@ -15,21 +15,18 @@ export function createDomainObjectExtension(
         determinant: (data) =>
             of(
                 isTypeWithAliases(data?.trueParent, refType, 'domain') &&
-                    isTypeWithAliases(data, 'ObjectID', 'domain')
+                    (isTypeWithAliases(data, 'ObjectID', 'domain') ||
+                        // TODO: 'field.name' must be passed as an argument
+                        ['id', 'symbolic_code'].includes(data.field?.name))
             ),
         extension: () =>
             options().pipe(
                 map((objects) => ({
-                    options: objects
-                        .sort((a, b) =>
-                            typeof a.value === 'number' && typeof b.value === 'number'
-                                ? a.value - b.value
-                                : 0
-                        )
-                        .map((o) => ({
-                            details: o,
-                            ...o,
-                        })),
+                    options: objects.sort((a, b) =>
+                        typeof a.value === 'number' && typeof b.value === 'number'
+                            ? a.value - b.value
+                            : 0
+                    ),
                     isIdentifier: true,
                 }))
             ),
