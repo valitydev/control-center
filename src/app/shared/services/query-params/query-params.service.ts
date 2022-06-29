@@ -34,7 +34,7 @@ export class QueryParamsService<Params> {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        @Optional() @Inject(QUERY_PARAMS_SERIALIZERS) private serializers?: Serializer[]
+        @Optional() @Inject(QUERY_PARAMS_SERIALIZERS) private readonly serializers?: Serializer[]
     ) {
         // Angular @Optional not support TS syntax: `serializers: Serializer[] = []`
         if (!this.serializers) {

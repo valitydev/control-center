@@ -9,7 +9,7 @@ import * as service from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/Fist
 import { createThriftApi } from '@cc/app/api/utils';
 
 @Injectable({ providedIn: 'root' })
-export class FistfulStatistics extends createThriftApi<CodegenClient>() {
+export class FistfulStatisticsService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
