@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { MatDateFormats } from '@angular/material/core';
+import { DateRange } from '@angular/material/datepicker';
 import { MatDialogConfig } from '@angular/material/dialog';
 import { Moment } from 'moment';
 import * as moment from 'moment';
@@ -35,6 +36,21 @@ export const DEFAULT_QUERY_PARAMS_SERIALIZERS: Serializer[] = [
         serialize: (date: Moment) => date.utc().format(),
         deserialize: (value) => moment(value),
         recognize: (value) => moment.isMoment(value),
+    },
+    {
+        id: 'momentRange',
+        serialize: ({ start, end }: DateRange<Moment>) =>
+            `${start ? start.utc().format() : ''}|${end ? end.utc().format() : ''}`,
+        deserialize: (value) => {
+            const [start, end] = value.split('|').map((p) => (p ? moment(p) : null));
+            return { start, end };
+        },
+        recognize: (value) => {
+            if (typeof value !== 'object') return false;
+            const { start, end, ...other } = value as DateRange<Moment>;
+            if (Object.keys(other).length) return false;
+            return (!start || moment.isMoment(start)) && (!end || moment.isMoment(end));
+        },
     },
 ];
 
