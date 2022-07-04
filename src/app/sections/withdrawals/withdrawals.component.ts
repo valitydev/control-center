@@ -7,6 +7,7 @@ import { Moment } from 'moment';
 import { switchMap } from 'rxjs';
 import { pluck, shareReplay } from 'rxjs/operators';
 
+import { SELECT_COLUMN_NAME } from '../../../components/table/select-column/select-column.component';
 import { FistfulStatisticsService } from '../../api/fistful-stat';
 import { createDsl } from '../../query-dsl';
 import { QueryParamsService } from '../../shared/services';
@@ -46,7 +47,18 @@ export class WithdrawalsComponent implements OnInit {
     );
     inProgress$;
     hasMore$;
-    displayedColumns = ['id'];
+    displayedColumns = [
+        SELECT_COLUMN_NAME,
+        'id',
+        'createdAt',
+        'identityId',
+        'sourceId',
+        'destinationId',
+        'externalId',
+        'amount',
+        'fee',
+        'status',
+    ];
 
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
