@@ -1,5 +1,14 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Optional,
+    Output,
+    ViewChild,
+} from '@angular/core';
 import {
     MatCellDef,
     MatColumnDef,
@@ -16,7 +25,7 @@ export const SELECT_COLUMN_NAME = '_select';
     selector: 'cc-select-column',
     templateUrl: './select-column.component.html',
 })
-export class SelectColumnComponent<T> implements OnInit {
+export class SelectColumnComponent<T> implements OnInit, OnDestroy {
     @Input() name = SELECT_COLUMN_NAME;
     @Input() dataSource: T[];
     @Output() changed = new EventEmitter<SelectionModel<T>>();
@@ -28,7 +37,7 @@ export class SelectColumnComponent<T> implements OnInit {
 
     selection = new SelectionModel<T>(true, []);
 
-    constructor(private table: MatTable<T>) {}
+    constructor(@Optional() private table: MatTable<T>) {}
 
     ngOnInit(): void {
         if (this.table && this.columnDef) {
@@ -41,6 +50,12 @@ export class SelectColumnComponent<T> implements OnInit {
         this.selection.changed.pipe(untilDestroyed(this)).subscribe(() => {
             this.changed.emit(this.selection);
         });
+    }
+
+    ngOnDestroy(): void {
+        if (this.table) {
+            this.table.removeColumnDef(this.columnDef);
+        }
     }
 
     isAllSelected() {

@@ -4,13 +4,10 @@ import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto';
 import { Moment } from 'moment';
-import { switchMap } from 'rxjs';
-import { pluck, shareReplay } from 'rxjs/operators';
 
 import { SELECT_COLUMN_NAME } from '../../../components/table';
-import { FistfulStatisticsService } from '../../api/fistful-stat';
-import { createDsl } from '../../query-dsl';
 import { QueryParamsService } from '../../shared/services';
+import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
 
 interface WithdrawalsForm {
     dateRange: DateRange<Moment>;
@@ -21,6 +18,7 @@ interface WithdrawalsForm {
 @Component({
     selector: 'cc-withdrawals',
     templateUrl: './withdrawals.component.html',
+    providers: [FetchWithdrawalsService],
 })
 export class WithdrawalsComponent implements OnInit {
     filters = this.fb.group<WithdrawalsForm>({
@@ -29,24 +27,9 @@ export class WithdrawalsComponent implements OnInit {
         ...this.qp.params,
     });
 
-    withdrawals$ = this.qp.params$.pipe(
-        switchMap(({ dateRange, merchant }) =>
-            this.fistfulStatisticsService.GetWithdrawals({
-                dsl: createDsl({
-                    withdrawals: {
-                        party_id: merchant,
-                        from_time: dateRange?.start?.toISOString(),
-                        to_time: dateRange?.end?.toISOString(),
-                    },
-                }),
-            })
-        ),
-        pluck('data', 'withdrawals'),
-        untilDestroyed(this),
-        shareReplay(1)
-    );
-    inProgress$;
-    hasMore$;
+    withdrawals$ = this.fetchWithdrawalsService.searchResult$;
+    inProgress$ = this.fetchWithdrawalsService.doAction$;
+    hasMore$ = this.fetchWithdrawalsService.hasMore$;
     displayedColumns = [
         SELECT_COLUMN_NAME,
         'id',
@@ -61,14 +44,23 @@ export class WithdrawalsComponent implements OnInit {
     ];
 
     constructor(
-        private fistfulStatisticsService: FistfulStatisticsService,
+        private fetchWithdrawalsService: FetchWithdrawalsService,
         private fb: FormBuilder,
         private qp: QueryParamsService<WithdrawalsForm>
     ) {}
 
     ngOnInit() {
         this.filters.valueChanges.pipe(untilDestroyed(this)).subscribe((v) => this.qp.set(v));
+        this.qp.params$.pipe(untilDestroyed(this)).subscribe(({ dateRange, merchant }) =>
+            this.fetchWithdrawalsService.search({
+                party_id: merchant,
+                from_time: dateRange?.start?.toISOString(),
+                to_time: dateRange?.end?.toISOString(),
+            })
+        );
     }
 
-    fetchMore() {}
+    fetchMore() {
+        this.fetchWithdrawalsService.fetchMore();
+    }
 }
