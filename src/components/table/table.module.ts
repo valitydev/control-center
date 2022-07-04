@@ -7,6 +7,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
 import { SelectColumnComponent } from './select-column/select-column.component';
+import { ShowMoreButtonComponent } from './show-more-button/show-more-button.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,7 @@ import { SelectColumnComponent } from './select-column/select-column.component';
         FlexModule,
         MatSortModule,
     ],
-    declarations: [SelectColumnComponent],
-    exports: [SelectColumnComponent],
+    declarations: [SelectColumnComponent, ShowMoreButtonComponent],
+    exports: [SelectColumnComponent, ShowMoreButtonComponent],
 })
 export class TableModule {}

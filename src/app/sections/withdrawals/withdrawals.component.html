@@ -57,15 +57,11 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
 
-            <button
-                fxFlex="100"
-                mat-button
+            <cc-show-more-button
                 *ngIf="hasMore$ | async"
-                (click)="fetchMore()"
-                [disabled]="inProgress$ | async"
-            >
-                {{ (inProgress$ | async) ? 'LOADING...' : 'SHOW MORE' }}
-            </button>
+                [inProgress]="inProgress$ | async"
+                (fetchMore)="fetchMore()"
+            ></cc-show-more-button>
         </mat-card>
     </div>
 </div>

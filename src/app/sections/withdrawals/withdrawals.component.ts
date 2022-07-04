@@ -7,7 +7,7 @@ import { Moment } from 'moment';
 import { switchMap } from 'rxjs';
 import { pluck, shareReplay } from 'rxjs/operators';
 
-import { SELECT_COLUMN_NAME } from '../../../components/table/select-column/select-column.component';
+import { SELECT_COLUMN_NAME } from '../../../components/table';
 import { FistfulStatisticsService } from '../../api/fistful-stat';
 import { createDsl } from '../../query-dsl';
 import { QueryParamsService } from '../../shared/services';
