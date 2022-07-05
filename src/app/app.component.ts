@@ -54,10 +54,10 @@ export class AppComponent implements OnInit {
                 route: '/operations',
                 activateRoles: [OperationRole.SearchOperations],
             },
-            // {
-            //     name: 'Withdrawals',
-            //     route: '/withdrawals',
-            // },
+            {
+                name: 'Withdrawals',
+                route: '/withdrawals',
+            },
         ];
         return menuItems.filter((item) =>
             this.appAuthGuardService.userHasRoles(item.activateRoles)
