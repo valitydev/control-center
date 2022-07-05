@@ -9,11 +9,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
+import { BaseDialogModule } from '../../../components/base-dialog';
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
-import { ThriftPipesModule } from '../../shared';
+import { MetadataFormModule, ThriftPipesModule } from '../../shared';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
+import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { WithdrawalsRoutingModule } from './withdrawals-routing.module';
 import { WithdrawalsComponent } from './withdrawals.component';
 
@@ -35,7 +37,9 @@ import { WithdrawalsComponent } from './withdrawals.component';
         MatCheckboxModule,
         TableModule,
         MatSortModule,
+        MetadataFormModule,
+        BaseDialogModule,
     ],
-    declarations: [WithdrawalsComponent],
+    declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })
 export class WithdrawalsModule {}

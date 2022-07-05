@@ -14,6 +14,7 @@ export interface MetadataFormExtensionResult {
     options?: MetadataFormExtensionOption[];
     generate?: () => Observable<unknown>;
     isIdentifier?: boolean;
+    label?: string;
 }
 
 export type MetadataFormExtension = {
