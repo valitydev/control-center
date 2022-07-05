@@ -2,18 +2,18 @@ import { Injectable, Injector } from '@angular/core';
 import {
     codegenClientConfig,
     CodegenClient,
-} from '@vality/fistful-proto/lib/fistful_stat-FistfulStatistics';
-import context from '@vality/fistful-proto/lib/fistful_stat/context';
-import * as service from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/FistfulStatistics';
+} from '@vality/fistful-proto/lib/withdrawal-Management';
+import context from '@vality/fistful-proto/lib/withdrawal/context';
+import * as service from '@vality/fistful-proto/lib/withdrawal/gen-nodejs/Management';
 
 import { createThriftApi } from '@cc/app/api/utils';
 
 @Injectable({ providedIn: 'root' })
-export class FistfulStatisticsService extends createThriftApi<CodegenClient>() {
+export class ManagementService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            path: '/fistful/stat',
+            path: '/v1/withdrawal',
             metadata: () =>
                 import('@vality/fistful-proto/lib/metadata.json').then((m) => m.default),
             context,

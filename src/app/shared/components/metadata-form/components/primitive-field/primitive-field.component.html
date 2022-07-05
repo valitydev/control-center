@@ -30,7 +30,14 @@
         <div fxLayoutGap="4px">
             <mat-form-field fxFlex>
                 <mat-label>
-                    <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label>
+                    <cc-field-label
+                        *ngIf="!(data.extensionResult$ | async)?.label; else extensionLabel"
+                        [field]="data.field"
+                        [type]="data.type"
+                    ></cc-field-label>
+                    <ng-template #extensionLabel>{{
+                        (data.extensionResult$ | async).label
+                    }}</ng-template>
                 </mat-label>
                 <input
                     matInput
