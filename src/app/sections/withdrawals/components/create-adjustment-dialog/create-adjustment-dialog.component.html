@@ -1,17 +1,24 @@
-<cc-base-dialog title="Create Adjustment">
-    <cc-metadata-form
-        [formControl]="statusControl"
-        [metadata]="metadata$ | async"
-        namespace="withdrawal_status"
-        type="Status"
-    ></cc-metadata-form>
-    <cc-metadata-form
-        [formControl]="externalIdControl"
-        [metadata]="metadata$ | async"
-        [extensions]="extensions"
-        namespace="base"
-        type="ExternalID"
-    ></cc-metadata-form>
+<cc-base-dialog title="Create Adjustment" gdColumn="1fr">
+    <div gdGap="16px">
+        <cc-metadata-form
+            [formControl]="statusControl"
+            [metadata]="metadata$ | async"
+            namespace="withdrawal_status"
+            type="Status"
+        ></cc-metadata-form>
+        <cc-metadata-form
+            [formControl]="externalIdControl"
+            [metadata]="metadata$ | async"
+            [extensions]="extensions"
+            namespace="base"
+            type="ExternalID"
+        ></cc-metadata-form>
+        <mat-progress-bar
+            *ngIf="progress !== -1"
+            mode="determinate"
+            [value]="(progress / dialogData.withdrawals.length) * 100"
+        ></mat-progress-bar>
+    </div>
     <cc-base-dialog-actions>
         <button mat-button color="primary" [disabled]="statusControl.invalid">CREATE</button>
     </cc-base-dialog-actions>

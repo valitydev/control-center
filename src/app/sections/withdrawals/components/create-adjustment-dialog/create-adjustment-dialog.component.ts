@@ -6,7 +6,7 @@ import { ExternalID } from '@vality/fistful-proto/lib/base';
 import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
 import { Status } from '@vality/fistful-proto/lib/withdrawal';
 import { combineLatest, from, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 
 import {
     BaseDialogResponseStatus,
@@ -34,6 +34,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
             extension: () => of({ label: 'External ID' }),
         },
     ];
+    progress = -1;
 
     constructor(
         injector: Injector,
@@ -45,6 +46,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
     }
 
     adjustment() {
+        this.progress = 0;
         combineLatest(
             this.dialogData.withdrawals.map((w) =>
                 this.managementService
@@ -59,6 +61,9 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                                 `Error when creating adjustment for withdrawal ${w.id}`
                             );
                             return of(null);
+                        }),
+                        finalize(() => {
+                            this.progress += 1;
                         })
                     )
             )
@@ -71,6 +76,9 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                 error: (err) => {
                     this.errorService.error(err);
                     this.notificationService.error();
+                },
+                complete: () => {
+                    this.progress = -1;
                 },
             });
     }
