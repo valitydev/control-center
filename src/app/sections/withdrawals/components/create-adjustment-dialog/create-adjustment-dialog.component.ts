@@ -7,6 +7,7 @@ import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
 import { Status } from '@vality/fistful-proto/lib/withdrawal';
 import { combineLatest, from, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
+import * as short from 'short-uuid';
 
 import {
     BaseDialogResponseStatus,
@@ -25,8 +26,12 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
     CreateAdjustmentDialogComponent,
     { withdrawals: StatWithdrawal[] }
 > {
-    statusControl = new FormControl<Status>(null, [Validators.required]);
+    statusControl = new FormControl<Status>(
+        { failed: { failure: { code: 'account_limit_exceeded:unknown' } } },
+        [Validators.required]
+    );
     externalIdControl = new FormControl<ExternalID>();
+    typeControl = new FormControl<number>(0);
     metadata$ = from(import('@vality/fistful-proto/lib/metadata.json').then((m) => m.default));
     extensions: MetadataFormExtension[] = [
         {
@@ -51,7 +56,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
             this.dialogData.withdrawals.map((w) =>
                 this.managementService
                     .CreateAdjustment(w.id, {
-                        id: w.id,
+                        id: this.typeControl.value === 0 ? w.id : short().uuid(),
                         change: { change_status: { new_status: this.statusControl.value } },
                         external_id: this.externalIdControl.value,
                     })

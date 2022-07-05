@@ -1,5 +1,9 @@
 <cc-base-dialog title="Create Adjustment" gdColumn="1fr">
     <div gdGap="16px">
+        <mat-radio-group gdColumns="1fr 1fr" gdGap="8px" [formControl]="typeControl">
+            <mat-radio-button [value]="0">Use ID from withdrawal</mat-radio-button>
+            <mat-radio-button [value]="1">Generate ID</mat-radio-button>
+        </mat-radio-group>
         <cc-metadata-form
             [formControl]="statusControl"
             [metadata]="metadata$ | async"
