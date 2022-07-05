@@ -7,7 +7,7 @@ export interface WithdrawalParams {
     withdrawal_id?: string;
     identity_id?: string;
     destination_id?: string;
-    status?: keyof WithdrawalStatus; // TODO: or 'Pending'
+    status?: Capitalize<keyof WithdrawalStatus>;
     external_id?: string;
     amount_from?: number;
     amount_to?: number;

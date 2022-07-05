@@ -10,6 +10,7 @@ import { Moment } from 'moment';
 import { BaseDialogResponseStatus } from '../../../components/base-dialog';
 import { BaseDialogService } from '../../../components/base-dialog/services/base-dialog.service';
 import { SELECT_COLUMN_NAME } from '../../../components/table';
+import { WithdrawalParams } from '../../query-dsl';
 import { QueryParamsService } from '../../shared/services';
 import { ErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
@@ -19,6 +20,10 @@ import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
 interface WithdrawalsForm {
     dateRange: DateRange<Moment>;
     merchant: PartyID;
+    status: WithdrawalParams['status'];
+    amountFrom: WithdrawalParams['amount_from'];
+    amountTo: WithdrawalParams['amount_to'];
+    withdrawalId: WithdrawalParams['withdrawal_id'];
 }
 
 @UntilDestroy()
@@ -39,6 +44,10 @@ export class WithdrawalsComponent implements OnInit {
     filters = this.fb.group<WithdrawalsForm>({
         dateRange: null,
         merchant: null,
+        status: null,
+        amountFrom: null,
+        amountTo: null,
+        withdrawalId: null,
         ...this.qp.params,
     });
 
@@ -58,6 +67,7 @@ export class WithdrawalsComponent implements OnInit {
         'status',
     ];
     selection: SelectionModel<StatWithdrawal>;
+    statuses: WithdrawalParams['status'][] = ['Pending', 'Succeeded', 'Failed'];
 
     constructor(
         private fetchWithdrawalsService: FetchWithdrawalsService,
@@ -70,13 +80,19 @@ export class WithdrawalsComponent implements OnInit {
 
     ngOnInit() {
         this.filters.valueChanges.pipe(untilDestroyed(this)).subscribe((v) => this.qp.set(v));
-        this.qp.params$.pipe(untilDestroyed(this)).subscribe(({ dateRange, merchant }) =>
-            this.fetchWithdrawalsService.search({
-                party_id: merchant,
-                from_time: dateRange?.start?.toISOString(),
-                to_time: dateRange?.end?.toISOString(),
-            })
-        );
+        this.qp.params$
+            .pipe(untilDestroyed(this))
+            .subscribe(({ dateRange, merchant, status, amountFrom, amountTo, withdrawalId }) =>
+                this.fetchWithdrawalsService.search({
+                    party_id: merchant,
+                    from_time: dateRange?.start?.toISOString(),
+                    to_time: dateRange?.end?.toISOString(),
+                    status: status,
+                    amount_from: amountFrom,
+                    amount_to: amountTo,
+                    withdrawal_id: withdrawalId,
+                })
+            );
     }
 
     fetchMore() {
