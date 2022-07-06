@@ -42,9 +42,10 @@ export function parseNamespaceObjectType(
     type: string,
     include?: JsonAST['include']
 ): NamespaceObjectType {
+    // metadata reverse find - search for the last matching protocol if the names match (files are overwritten in the same order)
     const namespaceMetadata = include
-        ? metadata.find((m) => m.path === include[namespace].path)
-        : metadata.find((m) => m.name === namespace);
+        ? metadata.reverse().find((m) => m.path === include[namespace].path)
+        : metadata.reverse().find((m) => m.name === namespace);
     const objectType = (Object.keys(namespaceMetadata.ast) as StructureType[]).find(
         (t) => namespaceMetadata.ast[t][type]
     );
