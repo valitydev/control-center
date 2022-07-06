@@ -21,7 +21,6 @@ import { CreateModificationDialogComponent } from './create-modification-dialog.
         ModificationNameModule,
     ],
     declarations: [CreateModificationDialogComponent],
-    entryComponents: [CreateModificationDialogComponent],
-    providers: [PartyModificationEmitter],
+    providers: [PartyModificationEmitter]
 })
 export class CreateModificationDialogModule {}

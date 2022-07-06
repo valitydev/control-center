@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '@vality/domain-proto/lib/domain';
 import { of } from 'rxjs';
@@ -32,11 +32,11 @@ export class AddRoutingRuleDialogService {
     });
 
     get newTerminalOptionsForm() {
-        return this.form.get('newTerminal').get('options') as FormArray;
+        return this.form.get('newTerminal').get('options') as UntypedFormArray;
     }
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private dialogRef: MatDialogRef<AddRoutingRuleDialogComponent>,
         private routingRulesService: RoutingRulesService,
         private terminalService: TerminalService

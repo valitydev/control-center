@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { InternationalLegalEntity } from '@vality/domain-proto/lib/domain';
 
 @Component({
@@ -8,12 +8,12 @@ import { InternationalLegalEntity } from '@vality/domain-proto/lib/domain';
 })
 export class InternationalLegalEntityComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: InternationalLegalEntity;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit(): void {
         this.form.registerControl('legal_name', this.fb.control(null, Validators.required));

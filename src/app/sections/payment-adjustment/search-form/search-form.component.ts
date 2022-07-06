@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
@@ -20,13 +20,13 @@ export class SearchFormComponent implements OnInit {
     @Output()
     statusChanges: EventEmitter<string> = new EventEmitter();
 
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     statuses: string[] = ['pending', 'processed', 'captured', 'cancelled', 'refunded', 'failed'];
 
     constructor(
         private paymentAdjustmentService: PaymentAdjustmentService,
-        private fb: FormBuilder
+        private fb: UntypedFormBuilder
     ) {}
 
     ngOnInit() {

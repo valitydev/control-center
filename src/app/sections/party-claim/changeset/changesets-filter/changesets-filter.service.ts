@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { combineLatest, Subject } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 
@@ -32,7 +32,7 @@ export class ChangesetsFilterService {
         shareReplay(1)
     );
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: UntypedFormBuilder) {
         this.filteredChangesetInfos$.subscribe();
     }
 

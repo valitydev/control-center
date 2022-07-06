@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { Machine } from '@vality/machinegun-proto';
 import { Observable } from 'rxjs';
 
@@ -41,10 +41,10 @@ export class SimpleRepairComponent {
     dataSource: Element[] = [];
     selection = new SelectionModel<Element>(true, []);
     namespaces = Object.values(Namespace);
-    nsControl: FormControl;
+    nsControl: UntypedFormControl;
     isLoading$: Observable<boolean>;
 
-    constructor(fb: FormBuilder, private repairingService: RepairingService) {
+    constructor(fb: UntypedFormBuilder, private repairingService: RepairingService) {
         this.isLoading$ = repairingService.isLoading$;
         this.nsControl = fb.control(Namespace.Invoice);
     }

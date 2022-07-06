@@ -11,7 +11,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
+import { UntypedFormControl, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 import { CustomFormControl, RadioButtonObject } from '../utils';
@@ -23,12 +23,12 @@ import { CustomFormControl, RadioButtonObject } from '../utils';
     encapsulation: ViewEncapsulation.Emulated,
 })
 export class ExpandableRadioGroupComponent extends CustomFormControl implements OnChanges {
-    form = new FormControl();
+    form = new UntypedFormControl();
 
     @Input()
     values: RadioButtonObject[];
 
-    control = new FormControl();
+    control = new UntypedFormControl();
 
     visibleValues: RadioButtonObject[];
 

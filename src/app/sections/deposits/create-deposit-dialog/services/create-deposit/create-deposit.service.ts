@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/lib/fistful_admin';
 import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import Int64 from '@vality/thrift-ts/lib/int64';
@@ -79,7 +79,7 @@ export class CreateDepositService {
         private fistfulAdminService: FistfulAdminService,
         private fistfulStatisticsService: FistfulStatisticsService,
         private keycloakService: KeycloakService,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private configService: ConfigService
     ) {}
@@ -88,7 +88,7 @@ export class CreateDepositService {
         this.create$.next();
     }
 
-    private initForm(): FormGroup {
+    private initForm(): UntypedFormGroup {
         return this.fb.group({
             destination: ['', Validators.required],
             amount: ['', [Validators.required, Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],

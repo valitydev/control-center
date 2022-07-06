@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,11 +26,11 @@ export interface DialogData {
 export class RepairWithScenarioSettingsComponent {
     scenarios = Object.values(Scenario);
     codes: string[] = ['authorization_failed'];
-    formGroup: FormGroup;
+    formGroup: UntypedFormGroup;
     autocompleteCodes$: Observable<string[]>;
 
     constructor(
-        fb: FormBuilder,
+        fb: UntypedFormBuilder,
         public dialogRef: MatDialogRef<RepairWithScenarioSettingsComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData
     ) {

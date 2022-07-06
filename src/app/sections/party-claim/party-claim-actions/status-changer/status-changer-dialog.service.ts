@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Int64 from '@vality/thrift-ts/lib/int64';
 import { merge, of, Subject } from 'rxjs';
@@ -79,7 +79,7 @@ export class StatusChangerDialogService {
     inProgress$ = progress(this.updateClaim$, merge(this.statusChanged$, this.hasError$));
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private claimManagementService: ClaimManagementService,
         private snackBar: MatSnackBar
     ) {

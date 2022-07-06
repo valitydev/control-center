@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PayoutToolModification } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 
@@ -14,7 +14,7 @@ enum Type {
 })
 export class PayoutToolModificationComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: PayoutToolModification;
@@ -25,7 +25,7 @@ export class PayoutToolModificationComponent implements OnInit {
 
     t = Type;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const creation = get(this, 'initialValue.creation', '');

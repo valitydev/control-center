@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PayoutToolInfo } from '@vality/domain-proto/lib/domain';
 
 @Component({
@@ -8,12 +8,12 @@ import { PayoutToolInfo } from '@vality/domain-proto/lib/domain';
 })
 export class PayoutToolParamsComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: PayoutToolInfo;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.form.registerControl('currency', this.fb.group({}));

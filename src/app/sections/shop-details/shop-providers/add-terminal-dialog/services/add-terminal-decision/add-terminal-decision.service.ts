@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PartyID, ProviderObject, ShopID } from '@vality/domain-proto/lib/domain';
 import { merge, Observable, Subject } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
@@ -47,7 +47,7 @@ export class AddTerminalDecisionService {
     constructor(
         private domainStoreService: DomainStoreService,
         private providerService: ProviderService,
-        private fb: FormBuilder
+        private fb: UntypedFormBuilder
     ) {
         this.terminalAdded$.subscribe();
     }
@@ -63,7 +63,7 @@ export class AddTerminalDecisionService {
         );
     }
 
-    private prepareForm(): FormGroup {
+    private prepareForm(): UntypedFormGroup {
         return this.fb.group({
             id: ['', Validators.required],
         });

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 import { SendCommentService } from './send-comment.service';
 
@@ -14,7 +14,7 @@ export class SendCommentComponent {
     @Input()
     disabled?: boolean;
 
-    form: FormGroup = this.sendCommentService.form;
+    form: UntypedFormGroup = this.sendCommentService.form;
     inProgress$ = this.sendCommentService.inProgress$;
 
     constructor(private sendCommentService: SendCommentService) {}

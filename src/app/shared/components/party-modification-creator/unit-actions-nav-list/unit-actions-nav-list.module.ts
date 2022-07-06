@@ -15,7 +15,6 @@ import { UnitActionsNavListComponent } from './unit-actions-nav-list.component';
         MatListModule,
         ModificationNameModule,
     ],
-    declarations: [UnitActionsNavListComponent],
-    entryComponents: [UnitActionsNavListComponent],
+    declarations: [UnitActionsNavListComponent]
 })
 export class UnitActionsNavListModule {}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 
 import { DomainService } from '../../../../../domain';
 
@@ -21,5 +21,5 @@ export class OtherFiltersDialogService {
         paymentSystemIs: null,
     });
 
-    constructor(private fb: FormBuilder, private domainService: DomainService) {}
+    constructor(private fb: UntypedFormBuilder, private domainService: DomainService) {}
 }

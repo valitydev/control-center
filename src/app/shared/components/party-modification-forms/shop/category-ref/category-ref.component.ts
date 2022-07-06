@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CategoryRef } from '@vality/domain-proto/lib/domain';
 import { Category } from '@vality/dominant-cache-proto';
@@ -15,7 +15,7 @@ import { DominantCacheService } from '@cc/app/api/dominant-cache';
     templateUrl: 'category-ref.component.html',
 })
 export class CategoryRefComponent implements OnInit {
-    @Input() form: FormGroup;
+    @Input() form: UntypedFormGroup;
     @Input() required: boolean;
     @Input() initialValue: CategoryRef;
 
@@ -24,7 +24,7 @@ export class CategoryRefComponent implements OnInit {
 
     constructor(
         private dominantCacheService: DominantCacheService,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private snackBar: MatSnackBar
     ) {}
 

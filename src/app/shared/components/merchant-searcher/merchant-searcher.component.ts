@@ -2,7 +2,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { Platform } from '@angular/cdk/platform';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 import { Component, ElementRef, OnInit, Optional, Self } from '@angular/core';
-import { FormControl, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
+import { UntypedFormControl, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { debounceTime, take } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { FetchPartiesService } from '../../services';
     providers: [FetchPartiesService],
 })
 export class MerchantSearcherComponent extends CustomFormControl implements OnInit {
-    searchControl = new FormControl();
+    searchControl = new UntypedFormControl();
     parties$ = this.fetchMarchantsService.parties$;
 
     constructor(

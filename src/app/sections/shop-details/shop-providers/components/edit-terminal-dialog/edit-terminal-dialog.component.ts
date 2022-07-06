@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PartyID, ShopID } from '@vality/domain-proto';
 import { TerminalID } from '@vality/fistful-proto';
@@ -13,7 +13,7 @@ import { EditTerminalDialogResponse, TerminalActionTypes } from '../../types';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditTerminalDialogComponent {
-    editValueControl = new FormControl('', [Validators.required]);
+    editValueControl = new UntypedFormControl('', [Validators.required]);
     terminalActionTypes = TerminalActionTypes;
     inProgress$ = this.editTerminalDecisionPropertyForShopService.inProgress$;
 

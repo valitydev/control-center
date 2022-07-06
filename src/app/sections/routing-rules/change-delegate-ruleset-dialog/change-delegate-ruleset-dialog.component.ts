@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { map } from 'rxjs/operators';
 
@@ -29,7 +29,7 @@ export class ChangeDelegateRulesetDialogComponent
 
     constructor(
         injector: Injector,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService
     ) {
         super(injector);

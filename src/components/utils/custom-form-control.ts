@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import {
     ControlValueAccessor,
-    FormControl,
+    UntypedFormControl,
     FormGroupDirective,
     NgControl,
     NgForm,
@@ -53,7 +53,7 @@ export class CustomFormControl<I = any, P = I>
     readonly stateChanges: Subject<void> = new Subject<void>();
     controlType = 'text';
     autofilled = false;
-    formControl = new FormControl();
+    formControl = new UntypedFormControl();
     autocompleteOrigin: MatAutocompleteOrigin;
     monitorsRegistered = false;
 

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ContractParams } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 
@@ -9,7 +9,7 @@ import get from 'lodash-es/get';
 })
 export class ContractParamsLegacyComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ContractParams;
@@ -18,7 +18,7 @@ export class ContractParamsLegacyComponent implements OnInit {
 
     showPaymentInstitution = false;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.form.registerControl('contractor', this.fb.group({}));
