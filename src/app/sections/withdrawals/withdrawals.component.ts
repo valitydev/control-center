@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto';
 import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
@@ -79,7 +79,9 @@ export class WithdrawalsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.filters.valueChanges.pipe(untilDestroyed(this)).subscribe((v) => this.qp.set(v));
+        this.filters.valueChanges
+            .pipe(untilDestroyed(this))
+            .subscribe((v) => this.qp.set(v as WithdrawalsForm));
         this.qp.params$
             .pipe(untilDestroyed(this))
             .subscribe(({ dateRange, merchant, status, amountFrom, amountTo, withdrawalId }) =>

@@ -24,7 +24,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
-    control = this.fb.group<T>({} as T);
+    control = this.fb.group<T>({} as any);
     labelControl = this.fb.control(false);
 
     get hasLabel() {

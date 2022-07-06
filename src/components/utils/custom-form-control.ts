@@ -50,7 +50,6 @@ export class CustomFormControl<I = any, P = I>
     @Input()
     placeholder: string;
 
-    readonly stateChanges: Subject<void> = new Subject<void>();
     controlType = 'text';
     autofilled = false;
     formControl = new UntypedFormControl();
@@ -148,7 +147,7 @@ export class CustomFormControl<I = any, P = I>
         @Optional() parentForm: NgForm,
         @Optional() parentFormGroup: FormGroupDirective
     ) {
-        super(defaultErrorStateMatcher, parentForm, parentFormGroup, ngControl);
+        super(defaultErrorStateMatcher, parentForm, parentFormGroup, ngControl, new Subject());
         if (this.ngControl !== null) {
             // Set the value accessor directly
             // (instead of providing NG_VALUE_ACCESSOR)
