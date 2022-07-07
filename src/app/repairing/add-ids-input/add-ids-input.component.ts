@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'cc-add-ids-input',
@@ -11,7 +11,7 @@ export class AddIdsInputComponent {
     @Output()
     add = new EventEmitter();
 
-    idsControl = new FormControl('');
+    idsControl = new UntypedFormControl('');
 
     emitAdd() {
         this.add.emit(this.execIdsFromStr(this.idsControl.value));

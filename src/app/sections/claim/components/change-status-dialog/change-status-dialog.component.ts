@@ -1,6 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { FormBuilder } from '@ngneat/reactive-forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ClaimStatus } from '@vality/domain-proto/lib/claim_management';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -20,13 +19,11 @@ export class ChangeStatusDialogComponent extends BaseDialogSuperclass<
     ChangeStatusDialogComponent,
     { partyID: string; claim: Claim }
 > {
-    form = this.fb.group<{ status: keyof ClaimStatus; revokeReason?: string; denyReason?: string }>(
-        {
-            status: [null, Validators.required],
-            revokeReason: null,
-            denyReason: null,
-        }
-    );
+    form = this.fb.group({
+        status: [null as keyof ClaimStatus, Validators.required],
+        revokeReason: null as string,
+        denyReason: null as string,
+    });
     statuses = this.allowedClaimStatusesService.getAllowedStatuses(
         getUnionKey(this.dialogData.claim.status)
     );

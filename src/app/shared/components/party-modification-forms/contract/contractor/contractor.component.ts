@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Contractor } from '@vality/domain-proto/lib/domain';
 
 @Component({
@@ -8,12 +8,12 @@ import { Contractor } from '@vality/domain-proto/lib/domain';
 })
 export class ContractorComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: Contractor;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.form.registerControl('legal_entity', this.fb.group({}));

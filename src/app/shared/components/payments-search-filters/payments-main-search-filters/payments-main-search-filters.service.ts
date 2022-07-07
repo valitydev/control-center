@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto';
 import * as moment from 'moment';
 import { ReplaySubject } from 'rxjs';
@@ -44,7 +44,7 @@ export class PaymentsMainSearchFiltersService {
 
     constructor(
         private partyManagementWithUserService: PartyManagementWithUserService,
-        private fb: FormBuilder
+        private fb: UntypedFormBuilder
     ) {}
 
     getShops(partyID: PartyID) {

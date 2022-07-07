@@ -77,6 +77,5 @@ import { TableComponent } from './table/table.component';
         CancelActionsComponent,
         CaptureActionsComponent,
     ],
-    entryComponents: [CreateAndCaptureComponent],
 })
 export class PaymentAdjustmentModule {}

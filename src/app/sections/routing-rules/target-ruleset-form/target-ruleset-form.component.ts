@@ -6,7 +6,7 @@ import {
     OnChanges,
     Output,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PaymentInstitutionObject } from '@vality/domain-proto';
 import sortBy from 'lodash-es/sortBy';
@@ -55,7 +55,7 @@ export class TargetRulesetFormComponent implements OnChanges {
     }
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private domainStoreService: DomainStoreService,
         private routingRulesService: RoutingRulesService
     ) {

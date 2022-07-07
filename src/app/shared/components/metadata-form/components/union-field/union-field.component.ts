@@ -44,9 +44,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     }
 
     validate(): ValidationErrors | null {
-        return (
-            (this.fieldControl.errors as ValidationErrors) || getErrorsTree(this.internalControl)
-        );
+        return this.fieldControl.errors || getErrorsTree(this.internalControl);
     }
 
     handleIncomingValue(value: T) {

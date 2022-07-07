@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Representative } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
@@ -9,12 +9,12 @@ import get from 'lodash-es/get';
 })
 export class RepresentativeComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: Representative;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const position = get(this, 'initialValue.position', '');

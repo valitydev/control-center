@@ -34,6 +34,5 @@ import { OtherFiltersDialogService } from './other-filters-dialog.service';
     declarations: [OtherFiltersDialogComponent],
     exports: [OtherFiltersDialogComponent],
     providers: [OtherFiltersDialogService],
-    entryComponents: [OtherFiltersDialogComponent],
 })
 export class OtherFiltersDialogModule {}

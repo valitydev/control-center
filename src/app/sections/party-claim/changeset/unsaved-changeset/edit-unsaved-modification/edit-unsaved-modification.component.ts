@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PartyModification } from '@vality/domain-proto/lib/claim_management';
 
@@ -17,12 +17,12 @@ type ModificationType =
 })
 export class EditUnsavedModificationComponent {
     mod = this.data;
-    form: FormGroup = this.fb.group({});
+    form: UntypedFormGroup = this.fb.group({});
     modType: ModificationType = getUnionKey<PartyModification>(this.data);
 
     constructor(
         private dialogRef: MatDialogRef<EditUnsavedModificationComponent>,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         @Inject(MAT_DIALOG_DATA) private data: PartyModification
     ) {}
 

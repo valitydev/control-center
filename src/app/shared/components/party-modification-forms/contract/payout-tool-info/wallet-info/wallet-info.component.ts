@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Component({
     selector: 'cc-wallet-info',
@@ -7,9 +7,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class WalletInfoComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.form.registerControl('wallet_id', this.fb.control(''));

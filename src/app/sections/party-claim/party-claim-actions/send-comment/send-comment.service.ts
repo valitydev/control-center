@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Modification } from '@vality/domain-proto/lib/claim_management';
 import { ConversationId, User } from '@vality/messages-proto';
@@ -60,7 +60,7 @@ export class SendCommentService {
     inProgress$ = progress(this.sendComment$, merge(this.comment$, this.hasError$));
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private messagesService: MessagesService,
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         private snackBar: MatSnackBar,

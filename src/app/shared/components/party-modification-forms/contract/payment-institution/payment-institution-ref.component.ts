@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaymentInstitutionObject, PaymentInstitutionRef } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
@@ -15,7 +15,7 @@ import { DomainStoreService } from '../../../../../thrift-services/damsel/domain
 })
 export class PaymentInstitutionRefComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     required: boolean;
@@ -28,7 +28,7 @@ export class PaymentInstitutionRefComponent implements OnInit {
     paymentInstitutions$: Observable<PaymentInstitutionObject[]>;
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private domainStoreService: DomainStoreService,
         private snackBar: MatSnackBar
     ) {}

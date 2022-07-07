@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ContractTemplateRef } from '@vality/domain-proto/lib/domain';
 import { ContractTemplate } from '@vality/dominant-cache-proto';
@@ -15,7 +15,7 @@ import { DominantCacheService } from '@cc/app/api/dominant-cache';
     templateUrl: 'contract-template-ref.component.html',
 })
 export class ContractTemplateRefComponent implements OnInit {
-    @Input() form: FormGroup;
+    @Input() form: UntypedFormGroup;
     @Input() required: boolean;
     @Input() initialValue: ContractTemplateRef;
 
@@ -23,7 +23,7 @@ export class ContractTemplateRefComponent implements OnInit {
     isLoading = true;
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private dominantCacheService: DominantCacheService,
         private snackBar: MatSnackBar
     ) {}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { RevertParams } from '@vality/fistful-proto/lib/deposit_revert';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -41,10 +41,10 @@ export class CreateRevertService {
     error$ = this.errorSubject$.asObservable();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private depositManagementService: ManagementService
     ) {}

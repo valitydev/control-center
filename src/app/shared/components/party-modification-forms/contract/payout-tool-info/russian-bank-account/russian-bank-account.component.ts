@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { RussianBankAccount } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
@@ -9,12 +9,12 @@ import get from 'lodash-es/get';
 })
 export class RussianBankAccountComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: RussianBankAccount;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const control = (value) => this.fb.control(value, Validators.required);

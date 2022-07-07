@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LegalAgreement } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
@@ -9,12 +9,12 @@ import get from 'lodash-es/get';
 })
 export class LegalAgreementBindingComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: LegalAgreement;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const legalAgreementId = get(this, 'initialValue.legal_agreement_id', '');

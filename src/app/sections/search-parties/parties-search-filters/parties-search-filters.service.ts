@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { debounceTime, filter, shareReplay } from 'rxjs/operators';
 
 import { PartiesSearchFiltersParams } from './parties-search-filters-params';
@@ -16,7 +16,7 @@ export class PartiesSearchFiltersService {
         shareReplay(1)
     );
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     init(params: PartiesSearchFiltersParams) {
         this.form.patchValue(params);

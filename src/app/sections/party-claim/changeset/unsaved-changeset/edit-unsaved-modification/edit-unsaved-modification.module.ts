@@ -10,7 +10,6 @@ import { EditUnsavedModificationComponent } from './edit-unsaved-modification.co
 
 @NgModule({
     declarations: [EditUnsavedModificationComponent],
-    entryComponents: [EditUnsavedModificationComponent],
     imports: [
         MatDialogModule,
         CommonModule,

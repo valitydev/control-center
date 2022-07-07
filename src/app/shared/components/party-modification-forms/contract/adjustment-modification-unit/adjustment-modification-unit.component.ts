@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ContractAdjustmentModificationUnit } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 import * as uuid from 'uuid/v4';
@@ -10,12 +10,12 @@ import * as uuid from 'uuid/v4';
 })
 export class AdjustmentModificationUnitComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ContractAdjustmentModificationUnit;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const adjustmentId = get(this, 'initialValue.adjustment_id', '');

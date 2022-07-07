@@ -16,7 +16,6 @@ import { SelectProviderComponent, TerminalsTableComponent } from './components';
 
 @NgModule({
     declarations: [AddTerminalDialogComponent, SelectProviderComponent, TerminalsTableComponent],
-    entryComponents: [AddTerminalDialogComponent],
     imports: [
         MatDialogModule,
         MatButtonModule,

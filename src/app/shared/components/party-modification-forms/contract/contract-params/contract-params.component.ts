@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ContractParams } from '@vality/domain-proto/lib/payment_processing';
 
 @Component({
@@ -8,12 +8,12 @@ import { ContractParams } from '@vality/domain-proto/lib/payment_processing';
 })
 export class ContractParamsComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ContractParams;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit(): void {
         this.form.registerControl('payment_institution', this.fb.group({}));

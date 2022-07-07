@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ShopAccountParams } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 
@@ -9,12 +9,12 @@ import get from 'lodash-es/get';
 })
 export class ShopAccountCreationComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ShopAccountParams;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const currency = get(this, 'initialValue.currency', '');

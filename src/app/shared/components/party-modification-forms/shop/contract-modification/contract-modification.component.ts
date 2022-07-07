@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ShopContractModification } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 
@@ -9,12 +9,12 @@ import get from 'lodash-es/get';
 })
 export class ContractModificationComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ShopContractModification;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const contractId = get(this, 'initialValue.contract_id', '');

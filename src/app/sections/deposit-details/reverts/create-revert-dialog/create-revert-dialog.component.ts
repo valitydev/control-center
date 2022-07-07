@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -13,7 +13,7 @@ import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
     providers: [CreateRevertService],
 })
 export class CreateRevertDialogComponent implements OnInit {
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     revertCreated$ = this.createRevertService.revertCreated$;
     isLoading$ = this.createRevertService.isLoading$;

@@ -148,7 +148,6 @@
             }
         }
     },
-    "defaultProject": "control-center",
     "cli": {
         "analytics": false
     }

@@ -7,7 +7,12 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { FormBuilder, FormControlStatus, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    FormControlStatus,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { ContractorModification } from '@vality/domain-proto/lib/claim_management';
 import {
     ContractModification,
@@ -53,9 +58,9 @@ export class PartyModificationCreationComponent implements OnInit, OnChanges {
     contractModificationNames = ContractModificationName;
     contractorModificationNames = ContractorModificationName;
 
-    form: FormGroup;
+    form: UntypedFormGroup;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.form = this.fb.group({

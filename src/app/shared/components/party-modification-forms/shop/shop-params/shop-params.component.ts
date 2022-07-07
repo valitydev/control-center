@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ShopParams } from '@vality/domain-proto/lib/payment_processing';
 import get from 'lodash-es/get';
 
@@ -9,14 +9,14 @@ import get from 'lodash-es/get';
 })
 export class ShopParamsComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ShopParams;
 
     showCategory = false;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const contractId = get(this, 'initialValue.contract_id', '');

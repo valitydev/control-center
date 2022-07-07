@@ -50,7 +50,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
         super(injector);
     }
 
-    adjustment() {
+    createAdjustment() {
         this.progress = 0;
         combineLatest(
             this.dialogData.withdrawals.map((w) =>
