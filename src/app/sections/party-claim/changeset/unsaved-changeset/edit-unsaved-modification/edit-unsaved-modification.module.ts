@@ -17,6 +17,6 @@ import { EditUnsavedModificationComponent } from './edit-unsaved-modification.co
         MatButtonModule,
         PartyModificationFormsModule,
     ],
-    exports: [EditUnsavedModificationComponent]
+    exports: [EditUnsavedModificationComponent],
 })
 export class EditUnsavedModificationModule {}

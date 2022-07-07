@@ -25,6 +25,6 @@ import { ResetConfirmDialogComponent } from './reset-confirm-dialog/reset-confir
         MonacoEditorModule,
         MatDialogModule,
     ],
-    exports: [DomainObjModificationComponent]
+    exports: [DomainObjModificationComponent],
 })
 export class DomainObjModificationModule {}

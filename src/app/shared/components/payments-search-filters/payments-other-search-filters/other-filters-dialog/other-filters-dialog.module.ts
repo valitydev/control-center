@@ -33,6 +33,6 @@ import { OtherFiltersDialogService } from './other-filters-dialog.service';
     ],
     declarations: [OtherFiltersDialogComponent],
     exports: [OtherFiltersDialogComponent],
-    providers: [OtherFiltersDialogService]
+    providers: [OtherFiltersDialogService],
 })
 export class OtherFiltersDialogModule {}

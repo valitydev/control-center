@@ -68,6 +68,6 @@ import { SimpleRepairComponent } from './simple-repair/simple-repair.component';
         AddIdsInputComponent,
         RepairingStatusComponent,
     ],
-    providers: [RepairingService]
+    providers: [RepairingService],
 })
 export class RepairingModule {}

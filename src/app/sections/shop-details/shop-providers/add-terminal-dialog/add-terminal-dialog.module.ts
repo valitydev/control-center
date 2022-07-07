@@ -28,6 +28,6 @@ import { SelectProviderComponent, TerminalsTableComponent } from './components';
         MatTableModule,
         MatCheckboxModule,
         MatPaginatorModule,
-    ]
+    ],
 })
 export class AddTerminalDialogModule {}

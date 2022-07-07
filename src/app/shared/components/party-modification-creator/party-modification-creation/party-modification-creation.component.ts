@@ -7,7 +7,12 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, FormControlStatus, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    FormControlStatus,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { ContractorModification } from '@vality/domain-proto/lib/claim_management';
 import {
     ContractModification,

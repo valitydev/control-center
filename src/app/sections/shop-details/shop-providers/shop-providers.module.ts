@@ -32,6 +32,6 @@ import { ShopProvidersComponent } from './shop-providers.component';
         ReactiveFormsModule,
         AddTerminalDialogModule,
     ],
-    exports: [ShopProvidersComponent]
+    exports: [ShopProvidersComponent],
 })
 export class ShopProvidersModule {}

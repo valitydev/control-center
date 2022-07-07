@@ -30,6 +30,6 @@ import { StatusChangerService } from './status-changer.service';
         ApiModelPipesModule,
     ],
     declarations: [StatusChangerDialogComponent],
-    providers: [StatusChangerService]
+    providers: [StatusChangerService],
 })
 export class StatusChangerModule {}
