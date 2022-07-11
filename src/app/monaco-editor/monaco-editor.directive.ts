@@ -1,5 +1,6 @@
-import { Directive, ElementRef, Input, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
+import { ComponentChanges } from '../shared';
 import { AbstractMonacoDirective } from './abstarct-monaco.directive';
 import { MonacoFile } from './model';
 import { MonacoEditorService } from './monaco-editor.service';
@@ -14,7 +15,7 @@ export class MonacoEditorDirective extends AbstractMonacoDirective {
         super(editorService, editorRef);
     }
 
-    childOnChanges({ file }: SimpleChanges) {
+    childOnChanges({ file }: ComponentChanges<MonacoEditorDirective>) {
         if (file) {
             this.editorService.open(file.currentValue);
         }
