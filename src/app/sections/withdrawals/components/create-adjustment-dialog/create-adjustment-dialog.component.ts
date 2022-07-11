@@ -75,8 +75,10 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
         )
             .pipe(untilDestroyed(this))
             .subscribe({
-                next: () => {
-                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                next: (res) => {
+                    if (!res.includes(null)) {
+                        this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    }
                 },
                 error: (err) => {
                     this.errorService.error(err);

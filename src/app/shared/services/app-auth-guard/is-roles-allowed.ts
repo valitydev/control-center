@@ -5,11 +5,6 @@ export const isRolesAllowed = (
     searchRoles: string[],
     isEnvProd = environment.production
 ): boolean => {
-    if (!isEnvProd) {
-        return true;
-    }
-    if (!Array.isArray(availableRoles) || !Array.isArray(searchRoles)) {
-        return false;
-    }
-    return searchRoles.every((r) => availableRoles.includes(r));
+    if (!isEnvProd) return true;
+    return (searchRoles || []).every((r) => (availableRoles || []).includes(r));
 };
