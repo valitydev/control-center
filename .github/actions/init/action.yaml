@@ -4,5 +4,5 @@ runs:
     using: composite
     steps:
         - uses: valitydev/action-frontend/setup@v0.1
-        - run: npm ci --force
+        - run: npm ci
           shell: bash
