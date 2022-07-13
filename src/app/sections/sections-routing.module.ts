@@ -11,6 +11,10 @@ const ROUTES: Routes = [
         loadChildren: () =>
             import('./withdrawals/withdrawals.module').then((m) => m.WithdrawalsModule),
     },
+    {
+        path: 'repairing',
+        loadChildren: () => import('./repairing/repairing.module').then((m) => m.RepairingModule),
+    },
 ];
 
 @NgModule({
