@@ -1,8 +1,14 @@
-.cc-actions {
-    ::ng-deep & > *:last-child {
-        margin-left: auto;
+::ng-deep .cc-actions {
+    & > *:first-child:not(:last-child) {
+        margin-right: auto !important;
         @media screen and (max-width: 959px) {
-            margin-left: initial;
+            margin-right: initial !important;
+        }
+    }
+    & > *:first-child:last-child {
+        margin-left: auto !important;
+        @media screen and (max-width: 959px) {
+            margin-left: initial !important;
         }
     }
 }
