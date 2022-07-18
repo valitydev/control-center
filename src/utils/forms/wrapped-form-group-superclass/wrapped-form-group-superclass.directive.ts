@@ -10,6 +10,10 @@ import { getValue } from '../get-value';
 import { getErrorsTree } from './utils/get-errors-tree';
 
 @Directive()
+/**
+ * - validation of FormGroup/Array internal controls
+ * - remember initial value as empty and set it when nothing comes (is this the best behaviour?)
+ */
 export abstract class WrappedFormGroupSuperclass<OuterType, InnerType = OuterType>
     extends WrappedControlSuperclass<OuterType, InnerType>
     implements OnInit
