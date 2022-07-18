@@ -1,16 +1,19 @@
 import { Directive, OnInit } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
+import { ValidationErrors } from '@angular/forms';
 import { FormControl } from '@ngneat/reactive-forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
+import isEqual from 'lodash-es/isEqual';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { REQUIRED_SUPER, RequiredSuper } from '../../required-super';
 import { getValue } from '../get-value';
 import { getErrorsTree } from './utils/get-errors-tree';
 
 @Directive()
-export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterType>
+export abstract class WrappedFormGroupSuperclass<OuterType, InnerType = OuterType>
     extends WrappedControlSuperclass<OuterType, InnerType>
-    implements OnInit, Validator
+    implements OnInit
 {
     protected emptyValue: InnerType;
 
@@ -20,8 +23,11 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
         return REQUIRED_SUPER;
     }
 
-    validate(): ValidationErrors | null {
-        return getErrorsTree(this.control);
+    protected setUpInnerToOuterErrors$(): Observable<ValidationErrors> {
+        return this.control.valueChanges.pipe(
+            map(() => getErrorsTree(this.control)),
+            distinctUntilChanged(isEqual)
+        );
     }
 
     protected outerToInner(outer: OuterType): InnerType {
@@ -36,6 +42,6 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
 export class ValidatedFormControlSuperclass<
     OuterType,
     InnerType = OuterType
-> extends ValidatedControlSuperclass<OuterType, InnerType> {
+> extends WrappedFormGroupSuperclass<OuterType, InnerType> {
     control = new FormControl<InnerType>();
 }

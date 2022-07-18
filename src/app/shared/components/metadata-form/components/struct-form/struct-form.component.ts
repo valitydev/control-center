@@ -2,13 +2,15 @@ import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@a
 import { ValidationErrors, Validators } from '@angular/forms';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { provideValueAccessor } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
+import isEqual from 'lodash-es/isEqual';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
-import { merge } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
+import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils';
+import { getErrorsTree, WrappedFormGroupSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -16,16 +18,16 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 @Component({
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
-    providers: createControlProviders(StructFormComponent),
+    providers: [provideValueAccessor(StructFormComponent)],
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
-    extends ValidatedControlSuperclass<T>
+    extends WrappedFormGroupSuperclass<T>
     implements OnChanges, OnInit
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
-    control = this.fb.group<T>({} as any);
     labelControl = this.fb.control(false);
+    control = this.fb.group<T>({} as never);
 
     get hasLabel() {
         return (
@@ -78,8 +80,11 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
-    validate(): ValidationErrors | null {
-        return this.labelControl.value ? super.validate() : null;
+    protected setUpInnerToOuterErrors$(): Observable<ValidationErrors> {
+        return merge(this.control.valueChanges, this.labelControl.valueChanges).pipe(
+            map(() => (this.labelControl.value ? getErrorsTree(this.control) : null)),
+            distinctUntilChanged(isEqual)
+        );
     }
 
     private setLabelControl(value: boolean = false) {

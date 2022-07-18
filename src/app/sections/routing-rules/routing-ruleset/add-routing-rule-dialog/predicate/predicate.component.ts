@@ -1,14 +1,15 @@
 import { Component, Injector, OnChanges } from '@angular/core';
+import { provideValueAccessor } from '@s-libs/ng-core';
 import { Predicate } from '@vality/domain-proto/lib/domain';
 import { from } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
+import { ValidatedFormControlSuperclass } from '@cc/utils';
 
 @Component({
     selector: 'cc-predicate',
     templateUrl: 'predicate.component.html',
-    providers: createControlProviders(PredicateComponent),
+    providers: [provideValueAccessor(PredicateComponent)],
 })
 export class PredicateComponent
     extends ValidatedFormControlSuperclass<Predicate>

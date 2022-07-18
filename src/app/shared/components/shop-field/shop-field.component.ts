@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { provideValueAccessor } from '@s-libs/ng-core';
 import { PartyID, Shop, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
@@ -15,7 +16,7 @@ import { filter, map, share, switchMap } from 'rxjs/operators';
 
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { ComponentChanges } from '@cc/app/shared/utils';
-import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
+import { WrappedFormGroupSuperclass } from '@cc/utils/forms';
 import { RequiredSuper } from '@cc/utils/required-super';
 
 @UntilDestroy()
@@ -23,11 +24,11 @@ import { RequiredSuper } from '@cc/utils/required-super';
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
     styleUrls: ['./shop-field.component.scss'],
-    providers: createControlProviders(ShopFieldComponent),
+    providers: [provideValueAccessor(ShopFieldComponent)],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFieldComponent<M extends boolean = boolean>
-    extends ValidatedControlSuperclass<
+    extends WrappedFormGroupSuperclass<
         M extends true ? Shop[] : Shop,
         M extends true ? ShopID[] : ShopID
     >

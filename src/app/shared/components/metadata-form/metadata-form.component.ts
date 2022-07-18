@@ -1,21 +1,21 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { Validator } from '@angular/forms';
+import { provideValueAccessor } from '@s-libs/ng-core';
 import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
+import { ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from './types/metadata-form-data';
 
 @Component({
     selector: 'cc-metadata-form',
     templateUrl: './metadata-form.component.html',
-    providers: createControlProviders(MetadataFormComponent),
+    providers: [provideValueAccessor(MetadataFormComponent)],
 })
 export class MetadataFormComponent<T>
     extends ValidatedFormControlSuperclass<T>
-    implements OnChanges, Validator
+    implements OnChanges
 {
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;

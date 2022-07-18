@@ -2,12 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormComponentSuperclass } from '@s-libs/ng-core';
+import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { createControlProviders, getErrorsTree } from '@cc/utils';
+import { getErrorsTree, provideValidator } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { getDefaultValue } from '../../utils/get-default-value';
@@ -16,7 +16,7 @@ import { getDefaultValue } from '../../utils/get-default-value';
 @Component({
     selector: 'cc-union-field',
     templateUrl: './union-field.component.html',
-    providers: createControlProviders(UnionFieldComponent),
+    providers: [provideValueAccessor(UnionFieldComponent), provideValidator(UnionFieldComponent)],
 })
 export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
