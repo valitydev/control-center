@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { provideValueAccessor } from '@s-libs/ng-core';
+import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { TypeDefs } from '@vality/thrift-ts';
-
-import { ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -11,6 +9,6 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     templateUrl: './typedef-form.component.html',
     providers: [provideValueAccessor(TypedefFormComponent)],
 })
-export class TypedefFormComponent<T> extends ValidatedFormControlSuperclass<T> {
+export class TypedefFormComponent<T> extends WrappedFormControlSuperclass<T> {
     @Input() data: MetadataFormData<string, TypeDefs[string]>;
 }

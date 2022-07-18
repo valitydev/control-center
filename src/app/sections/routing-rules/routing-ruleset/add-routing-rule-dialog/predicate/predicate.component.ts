@@ -1,10 +1,9 @@
 import { Component, Injector, OnChanges } from '@angular/core';
-import { provideValueAccessor } from '@s-libs/ng-core';
+import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Predicate } from '@vality/domain-proto/lib/domain';
 import { from } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { ValidatedFormControlSuperclass } from '@cc/utils';
 
 @Component({
     selector: 'cc-predicate',
@@ -12,7 +11,7 @@ import { ValidatedFormControlSuperclass } from '@cc/utils';
     providers: [provideValueAccessor(PredicateComponent)],
 })
 export class PredicateComponent
-    extends ValidatedFormControlSuperclass<Predicate>
+    extends WrappedFormControlSuperclass<Predicate>
     implements OnChanges
 {
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));

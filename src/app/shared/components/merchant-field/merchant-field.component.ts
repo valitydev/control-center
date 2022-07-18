@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { provideValueAccessor } from '@s-libs/ng-core';
+import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { PartyID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
@@ -10,7 +10,6 @@ import { catchError, debounceTime, filter, first, map, switchMap } from 'rxjs/op
 import { Option } from '@cc/components/select-search-field';
 import { progressTo } from '@cc/utils/operators';
 
-import { ValidatedFormControlSuperclass } from '../../../../utils';
 import { DeanonimusService } from '../../../thrift-services/deanonimus';
 
 @UntilDestroy()
@@ -21,7 +20,7 @@ import { DeanonimusService } from '../../../thrift-services/deanonimus';
     providers: [provideValueAccessor(MerchantFieldComponent)],
 })
 export class MerchantFieldComponent
-    extends ValidatedFormControlSuperclass<PartyID>
+    extends WrappedFormControlSuperclass<PartyID>
     implements OnInit
 {
     @Input() label: string;

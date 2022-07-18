@@ -1,6 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import { Observable } from 'rxjs';
@@ -36,12 +35,4 @@ export abstract class WrappedFormGroupSuperclass<OuterType, InnerType = OuterTyp
         }
         return outer as never;
     }
-}
-
-@Directive()
-export class ValidatedFormControlSuperclass<
-    OuterType,
-    InnerType = OuterType
-> extends WrappedFormGroupSuperclass<OuterType, InnerType> {
-    control = new FormControl<InnerType>();
 }
