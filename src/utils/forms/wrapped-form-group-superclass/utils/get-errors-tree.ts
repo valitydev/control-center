@@ -13,14 +13,17 @@ export function getErrorsTree(control: AbstractControl): ValidationErrors | null
     const errors: ValidationErrors = Object.assign({}, control.errors);
     if (hasControls(control)) {
         if (Array.isArray(control.controls)) {
-            errors.formArrayErrors = control.controls.map((c) => getErrorsTree(c));
+            const formArrayErrors = control.controls.map((c) => getErrorsTree(c)).filter(Boolean);
+            if (formArrayErrors.length) {
+                errors.formArrayErrors = formArrayErrors;
+            }
         } else {
-            errors.formGroupErrors = Object.fromEntries(
-                Array.from(Object.entries(control.controls)).map(([k, c]) => [
-                    k,
-                    getErrorsTree(c as AbstractControl),
-                ])
-            );
+            const formGroupErrors = Array.from(Object.entries(control.controls))
+                .map(([k, c]) => [k, getErrorsTree(c as AbstractControl)])
+                .filter(([, v]) => Boolean(v));
+            if (formGroupErrors.length) {
+                errors.formGroupErrors = Object.fromEntries(formGroupErrors);
+            }
         }
     }
     return errors;
