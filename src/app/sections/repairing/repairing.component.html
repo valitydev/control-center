@@ -1,0 +1,127 @@
+<div fxLayout="column" fxLayoutGap="32px">
+    <h1 class="cc-display-1">Repairing</h1>
+    <div fxLayout="column" fxLayoutGap="24px">
+        <mat-card>
+            <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr" gdGap="16px">
+                <mat-form-field>
+                    <mat-label>IDs</mat-label>
+                    <input formControlName="ids" matInput />
+                    <mat-hint>id0,id1</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Namespace</mat-label>
+                    <input formControlName="ns" matInput />
+                </mat-form-field>
+                <cc-date-range formControlName="timespan"></cc-date-range>
+                <mat-form-field>
+                    <mat-label>Provider ID</mat-label>
+                    <input formControlName="provider_id" matInput />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status">
+                        <mat-option [value]="null">any</mat-option>
+                        <mat-option
+                            *ngFor="let statusName of statuses"
+                            [value]="status[statusName]"
+                        >
+                            {{ statusName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Error message</mat-label>
+                    <input formControlName="error_message" matInput />
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-footer *ngIf="inProgress$ | async">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card>
+
+        <ng-container *ngIf="!(inProgress$ | async) || (machines$ | async)">
+            <cc-actions>
+                <button mat-button (click)="update()">UPDATE</button>
+                <button mat-button color="primary" (click)="repairByScenario()">
+                    REPAIR BY SCENARIO
+                </button>
+                <button
+                    mat-button
+                    color="primary"
+                    [disabled]="!selection?.selected?.length"
+                    (click)="repair()"
+                >
+                    SIMPLE REPAIR {{ selection?.selected?.length || '' }}
+                </button>
+            </cc-actions>
+
+            <cc-empty-search-result *ngIf="!(machines$ | async).length"></cc-empty-search-result>
+            <mat-card *ngIf="(machines$ | async).length" fxLayout="column" fxLayoutGap="18px">
+                <table mat-table [dataSource]="machines$ | async">
+                    <cc-select-column
+                        [dataSource]="machines$ | async"
+                        (changed)="selection = $event"
+                    ></cc-select-column>
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                        <td mat-cell *matCellDef="let i">{{ i.id }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="namespace">
+                        <th mat-header-cell *matHeaderCellDef>Namespace</th>
+                        <td mat-cell *matCellDef="let i">{{ i.ns }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="createdAt">
+                        <th mat-header-cell *matHeaderCellDef>Created at</th>
+                        <td mat-cell *matCellDef="let i">
+                            {{ i.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef matTooltip="Hover to view details">
+                            <span matBadge="ℹ" matBadgeSize="small" matBadgeOverlap="false">
+                                Status
+                            </span>
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let i"
+                            [matTooltip]="i.error_message"
+                            matTooltipPosition="left"
+                        >
+                            {{ statusNameByValue[i.status] }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="provider">
+                        <th mat-header-cell *matHeaderCellDef>Provider</th>
+                        <td mat-cell *matCellDef="let i">
+                            {{ i.provider_id }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="history">
+                        <th mat-header-cell *matHeaderCellDef matTooltip="Hover to view details">
+                            <span matBadge="ℹ" matBadgeSize="small" matBadgeOverlap="false"
+                                >History</span
+                            >
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let i"
+                            [matTooltip]="i.history?.length ? (i.history | json) : ''"
+                            matTooltipPosition="left"
+                        >
+                            {{ i.history?.length || '' }}
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+
+                <cc-show-more-button
+                    *ngIf="hasMore$ | async"
+                    [inProgress]="inProgress$ | async"
+                    (fetchMore)="fetchMore()"
+                ></cc-show-more-button>
+            </mat-card>
+        </ng-container>
+    </div>
+</div>

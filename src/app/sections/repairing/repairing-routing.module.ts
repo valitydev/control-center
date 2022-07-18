@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '@cc/app/shared/services';
-
+import { AppAuthGuardService } from '../../shared/services';
 import { RepairingComponent } from './repairing.component';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
-                path: 'old-repairing',
+                path: '',
                 component: RepairingComponent,
                 canActivate: [AppAuthGuardService],
                 data: {

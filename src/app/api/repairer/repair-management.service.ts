@@ -13,7 +13,7 @@ export class RepairManagementService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            path: '/v1/repairer', // TODO
+            path: '/v1/repair',
             metadata: () =>
                 import('@vality/repairer-proto/lib/metadata.json').then((m) => m.default),
             context,
