@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
 import { FormArray, FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 
-import { getErrorsTree, provideValidator } from '@cc/utils';
+import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -14,7 +14,7 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     selector: 'cc-complex-form',
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
-    providers: [provideValueAccessor(ComplexFormComponent), provideValidator(ComplexFormComponent)],
+    providers: createControlProviders(ComplexFormComponent),
 })
 export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | Set<unknown>>
     extends FormComponentSuperclass<T>

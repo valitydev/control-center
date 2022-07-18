@@ -1,22 +1,22 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
 
+import { createControlProviders, ValidatedFormControlSuperclass } from '../../../../../../utils';
 import { MetadataFormData } from '../../types/metadata-form-data';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
-    providers: [provideValueAccessor(PrimitiveFieldComponent)],
+    providers: createControlProviders(PrimitiveFieldComponent),
 })
 export class PrimitiveFieldComponent<T>
-    extends WrappedFormControlSuperclass<T>
+    extends ValidatedFormControlSuperclass<T>
     implements OnChanges
 {
     @Input() data: MetadataFormData<ThriftType>;

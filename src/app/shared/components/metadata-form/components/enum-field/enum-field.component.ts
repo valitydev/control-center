@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Enums } from '@vality/thrift-ts/src/thrift-parser';
 
+import { createControlProviders, ValidatedFormControlSuperclass } from '../../../../../../utils';
 import { MetadataFormData } from '../../types/metadata-form-data';
 
 @Component({
     selector: 'cc-enum-field',
     templateUrl: './enum-field.component.html',
-    providers: [provideValueAccessor(EnumFieldComponent)],
+    providers: createControlProviders(EnumFieldComponent),
 })
-export class EnumFieldComponent<T> extends WrappedFormControlSuperclass<T> {
+export class EnumFieldComponent<T> extends ValidatedFormControlSuperclass<T> {
     @Input() data: MetadataFormData<string, Enums[string]>;
 }

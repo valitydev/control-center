@@ -1,16 +1,14 @@
 import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ValidationErrors, Validators } from '@angular/forms';
+import { ValidationErrors, Validator, Validators } from '@angular/forms';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { provideValueAccessor } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
-import isEqual from 'lodash-es/isEqual';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
-import { merge, Observable } from 'rxjs';
-import { delay, distinctUntilChanged, map, startWith } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
-import { getErrorsTree, WrappedFormGroupSuperclass } from '@cc/utils';
+import { createControlProviders, ValidatedFormGroupSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -18,11 +16,11 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 @Component({
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
-    providers: [provideValueAccessor(StructFormComponent)],
+    providers: createControlProviders(StructFormComponent),
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
-    extends WrappedFormGroupSuperclass<T>
-    implements OnChanges, OnInit
+    extends ValidatedFormGroupSuperclass<T>
+    implements OnChanges, OnInit, Validator
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
@@ -80,12 +78,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
-    protected setUpInnerToOuterErrors$(): Observable<ValidationErrors> {
-        return merge(this.control.valueChanges, this.labelControl.valueChanges).pipe(
-            startWith(null),
-            map(() => (this.labelControl.value ? getErrorsTree(this.control) : null)),
-            distinctUntilChanged(isEqual)
-        );
+    validate(): ValidationErrors {
+        return this.labelControl.value ? super.validate() : null;
     }
 
     private setLabelControl(value: boolean = false) {

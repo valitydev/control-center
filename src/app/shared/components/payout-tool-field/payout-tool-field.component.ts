@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { provideValueAccessor } from '@s-libs/ng-core';
 import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
@@ -10,17 +9,17 @@ import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
-import { WrappedFormGroupSuperclass } from '@cc/utils/forms';
+import { createControlProviders, ValidatedFormGroupSuperclass } from '@cc/utils/forms';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-payout-tool-field',
     templateUrl: 'payout-tool-field.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [provideValueAccessor(PayoutToolFieldComponent)],
+    providers: createControlProviders(PayoutToolFieldComponent),
 })
 export class PayoutToolFieldComponent
-    extends WrappedFormGroupSuperclass<PartyID>
+    extends ValidatedFormGroupSuperclass<PartyID>
     implements OnInit
 {
     @Input() label: string;

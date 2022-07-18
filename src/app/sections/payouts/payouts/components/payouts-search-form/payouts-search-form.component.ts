@@ -1,13 +1,12 @@
 import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { provideValueAccessor } from '@s-libs/ng-core';
 import { PartyID, ShopID } from '@vality/domain-proto';
 import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
 import { Party, Shop } from '@vality/magista-proto/lib/domain';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
-import { WrappedFormGroupSuperclass } from '@cc/utils/forms';
+import { createControlProviders, ValidatedFormGroupSuperclass } from '@cc/utils/forms';
 import { getEnumKeys } from '@cc/utils/get-enum-keys';
 
 export interface PayoutsSearchForm {
@@ -23,9 +22,9 @@ export interface PayoutsSearchForm {
 @Component({
     selector: 'cc-payouts-search-form',
     templateUrl: './payouts-search-form.component.html',
-    providers: [provideValueAccessor(PayoutsSearchFormComponent)],
+    providers: createControlProviders(PayoutsSearchFormComponent),
 })
-export class PayoutsSearchFormComponent extends WrappedFormGroupSuperclass<PayoutsSearchForm> {
+export class PayoutsSearchFormComponent extends ValidatedFormGroupSuperclass<PayoutsSearchForm> {
     control = this.fb.group({
         payoutId: null as string,
         partyId: null as PartyID,
