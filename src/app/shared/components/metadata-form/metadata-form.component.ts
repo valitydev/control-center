@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
 import { Field, ValueType } from '@vality/thrift-ts';
 
@@ -22,7 +22,8 @@ export class MetadataFormComponent<T> extends WrappedFormControlSuperclass<T> im
 
     data: MetadataFormData;
 
-    ngOnChanges() {
+    ngOnChanges(changes: SimpleChanges) {
+        super.ngOnChanges(changes);
         if (this.metadata && this.namespace && this.type) {
             this.data = new MetadataFormData(
                 this.metadata,

@@ -74,9 +74,10 @@ export class SelectSearchFieldComponent<Value>
         this.select(value);
     }
 
-    ngOnChanges({ options }: ComponentChanges<SelectSearchFieldComponent<Value>>): void {
-        if (options) {
-            this.options$.next(options.currentValue);
+    ngOnChanges(changes: ComponentChanges<SelectSearchFieldComponent<Value>>): void {
+        super.ngOnChanges(changes);
+        if (changes.options) {
+            this.options$.next(changes.options.currentValue);
             this.cacheOption();
         }
     }

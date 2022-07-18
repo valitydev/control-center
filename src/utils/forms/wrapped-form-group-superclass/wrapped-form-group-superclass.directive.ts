@@ -3,9 +3,8 @@ import { ValidationErrors } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import { Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
-import { REQUIRED_SUPER, RequiredSuper } from '../../required-super';
 import { getValue } from '../get-value';
 import { getErrorsTree } from './utils/get-errors-tree';
 
@@ -20,14 +19,14 @@ export abstract class WrappedFormGroupSuperclass<OuterType, InnerType = OuterTyp
 {
     protected emptyValue: InnerType;
 
-    ngOnInit(): RequiredSuper {
+    ngOnInit(): void {
         this.emptyValue = getValue(this.control) as InnerType;
         super.ngOnInit();
-        return REQUIRED_SUPER;
     }
 
     protected setUpInnerToOuterErrors$(): Observable<ValidationErrors> {
         return this.control.valueChanges.pipe(
+            startWith(null),
             map(() => getErrorsTree(this.control)),
             distinctUntilChanged(isEqual)
         );

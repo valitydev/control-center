@@ -8,7 +8,7 @@ import isEqual from 'lodash-es/isEqual';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge, Observable } from 'rxjs';
-import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { delay, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 
 import { getErrorsTree, WrappedFormGroupSuperclass } from '@cc/utils';
 
@@ -82,6 +82,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
 
     protected setUpInnerToOuterErrors$(): Observable<ValidationErrors> {
         return merge(this.control.valueChanges, this.labelControl.valueChanges).pipe(
+            startWith(null),
             map(() => (this.labelControl.value ? getErrorsTree(this.control) : null)),
             distinctUntilChanged(isEqual)
         );

@@ -4,6 +4,7 @@ import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
+import isEqual from 'lodash-es/isEqual';
 import { merge } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
@@ -34,7 +35,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
                     const field = this.fieldControl.value;
                     return field ? ({ [field.name]: this.internalControl.value } as T) : null;
                 }),
-                distinctUntilChanged(),
+                distinctUntilChanged(isEqual),
                 delay(0),
                 untilDestroyed(this)
             )
