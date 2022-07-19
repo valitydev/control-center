@@ -1,7 +1,6 @@
 import { Directive, Injector, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
-import { EMPTY, Observable } from 'rxjs';
 
 import { getValue } from '../get-value';
 import { getErrorsTree } from './utils/get-errors-tree';
@@ -28,18 +27,6 @@ export abstract class ValidatedFormGroupSuperclass<OuterType, InnerType = OuterT
 
     validate(): ValidationErrors | null {
         return getErrorsTree(this.control);
-    }
-
-    protected setUpInnerToOuterErrors$(
-        _inner$: Observable<ValidationErrors>
-    ): Observable<ValidationErrors> {
-        return EMPTY;
-    }
-
-    protected setUpOuterToInnerErrors$(
-        _outer$: Observable<ValidationErrors>
-    ): Observable<ValidationErrors> {
-        return EMPTY;
     }
 
     protected outerToInner(outer: OuterType): InnerType {
