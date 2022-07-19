@@ -33,7 +33,7 @@
     "@ngneat/reactive-forms": "5.0.0",
     "@ngneat/until-destroy": "9.0.0",
     "@s-libs/js-core": "13.1.0",
-    "@s-libs/micro-dash": "13.1.0",
+    "@s-libs/micro-dash": "14.0.0",
     "@s-libs/ng-core": "13.1.0",
     "@s-libs/rxjs-core": "13.1.0",
     "@vality/deanonimus-proto": "1.0.1-c9a6cae.0",
