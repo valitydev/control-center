@@ -1,6 +1,7 @@
 import connectClient from '@vality/woody';
+import { KeycloakService } from 'keycloak-angular';
 import isNil from 'lodash-es/isNil';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '@cc/app/shared/services';
@@ -12,9 +13,11 @@ import { toConnectOptions } from './utils';
 export class ThriftConnector {
     keycloakTokenInfoService: KeycloakTokenInfoService;
     options: ThriftApiOptions;
+    keycloakService: KeycloakService;
 
     constructor(...[injector, options]: ThriftApiArgs) {
         this.keycloakTokenInfoService = injector.get(KeycloakTokenInfoService);
+        this.keycloakService = injector.get(KeycloakService);
         this.options = options;
     }
 
@@ -22,10 +25,13 @@ export class ThriftConnector {
         serviceMethodName: string,
         ...args: unknown[]
     ): Observable<T> {
-        return this.keycloakTokenInfoService.decoded$.pipe(
+        return combineLatest([
+            this.keycloakTokenInfoService.decoded$,
+            this.keycloakService.getToken(),
+        ]).pipe(
             first(),
             switchMap(
-                (token) =>
+                ([parsedToken, token]) =>
                     new Observable<T>((observer) => {
                         try {
                             /**
@@ -39,8 +45,9 @@ export class ThriftConnector {
                                 this.options.path,
                                 this.options.service,
                                 toConnectOptions(
-                                    token,
+                                    parsedToken,
                                     this.options.wachterServiceName,
+                                    token,
                                     this.options.deprecatedHeaders
                                 ),
                                 (err) => {

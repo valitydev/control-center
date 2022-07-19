@@ -1,22 +1,33 @@
 require('dotenv').config();
 
-const THRIFT_PROXY_CONFIG = {
-    context: [
-        '/v1',
-        '/v3',
-        '/stat',
-        '/fistful',
-        '/file_storage',
-        '/deanonimus',
-        '/payout/management',
-        '/wachter',
-    ],
-    target: process.env.PROXY_TARGET,
-    secure: false,
-    logLevel: 'debug',
-    changeOrigin: true,
-};
+const { BASE_TARGET, WACHTER_TARGET } = process.env;
+const REQUIRED_ENV = [BASE_TARGET, WACHTER_TARGET];
 
-if (!THRIFT_PROXY_CONFIG.target) throw new Error('proxy.conf.js - set the thrift proxy target!');
+if (REQUIRED_ENV.findIndex((e) => !e)) {
+    throw new Error('[proxy.conf.js] Set required environment variables!');
+}
 
-module.exports = [THRIFT_PROXY_CONFIG];
+module.exports = [
+    {
+        context: [
+            '/v1',
+            '/v3',
+            '/stat',
+            '/fistful',
+            '/file_storage',
+            '/deanonimus',
+            '/payout/management',
+        ],
+        target: BASE_TARGET,
+        secure: false,
+        logLevel: 'debug',
+        changeOrigin: true,
+    },
+    {
+        context: '/wachter',
+        target: WACHTER_TARGET,
+        secure: false,
+        logLevel: 'debug',
+        changeOrigin: true,
+    },
+];
