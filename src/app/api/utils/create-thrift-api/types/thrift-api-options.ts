@@ -1,11 +1,9 @@
-export interface ThriftApiOptions {
+import { ThriftClientMainOptions } from '../utils';
+
+export interface ThriftApiOptions extends ThriftClientMainOptions {
     name: string;
-    service: object;
     serviceName: string;
-    path: string;
     wachterServiceName?: string;
-    hostname?: string;
-    port?: string;
     metadata: () => Promise<any>;
     context: any;
     functions: string[];

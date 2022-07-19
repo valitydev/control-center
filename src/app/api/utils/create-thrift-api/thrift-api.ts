@@ -1,22 +1,33 @@
 import { KeycloakService } from 'keycloak-angular';
-import { combineLatest, from, Observable } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import pick from 'lodash-es/pick';
+import { combineLatest, from } from 'rxjs';
+import { first, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { KeycloakTokenInfoService } from '../../../shared/services';
 import { createThriftInstance, thriftInstanceToObject } from '../thrift-instance';
 import { ThriftApiArgs } from './types/thrift-api-args';
-import { ThriftApiOptions } from './types/thrift-api-options';
-import { callThriftServiceMethod, toConnectOptions } from './utils';
+import {
+    callThriftServiceMethod,
+    createAuthorizationHeaders,
+    createDeprecatedUserIdentityHeaders,
+    createUserIdentityHeaders,
+    createWachterHeaders, ThriftClientMainOptions,
+    UserIdentityHeaderParams
+} from "./utils";
+import { ConnectOptions } from "@vality/woody/src/connect-options";
 
 export class ThriftApi {
-    options: ThriftApiOptions;
-    keycloakTokenInfoService: KeycloakTokenInfoService;
-    keycloakService: KeycloakService;
+    private connectOptions$ = combineLatest([
+        this.injector.get(KeycloakTokenInfoService).decoded$,
+        this.injector.get(KeycloakService).getToken(),
+    ]).pipe(
+        map(([{ email, sub: id, preferred_username: username }, token]) =>
+            this.getConnectOptions({ email, id, username }, token)
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
-    constructor(...[injector, options]: ThriftApiArgs) {
-        this.keycloakTokenInfoService = injector.get(KeycloakTokenInfoService);
-        this.keycloakService = injector.get(KeycloakService);
-        this.options = options;
+    constructor(private injector: ThriftApiArgs[0], private options: ThriftApiArgs[1]) {
         this.initServiceMethods();
     }
 
@@ -29,7 +40,7 @@ export class ThriftApi {
                     (...methodArgs) =>
                         from(this.options.metadata()).pipe(
                             switchMap((metadata) =>
-                                this.callThriftServiceMethodWithConvert(
+                                this.callThriftServiceMethod(
                                     this.options.name,
                                     this.options.serviceName,
                                     methodName,
@@ -44,7 +55,7 @@ export class ThriftApi {
         );
     }
 
-    private callThriftServiceMethodWithConvert(
+    private callThriftServiceMethod(
         namespaceName: string,
         serviceName: string,
         methodName: string,
@@ -64,38 +75,29 @@ export class ThriftApi {
                 arg
             )
         );
-        return this.callThriftServiceMethod(methodName, ...methodThriftArgs).pipe(
+
+        return this.connectOptions$.pipe(
+            first(),
+            switchMap((options) => callThriftServiceMethod(options, methodName, methodThriftArgs)),
             map((v) => thriftInstanceToObject(metadata, namespaceName, methodMetadata.type, v))
         );
     }
 
-    private callThriftServiceMethod<T>(
-        serviceMethodName: string,
-        ...args: unknown[]
-    ): Observable<T> {
-        return combineLatest([
-            this.keycloakTokenInfoService.decoded$,
-            this.keycloakService.getToken(),
-        ]).pipe(
-            first(),
-            switchMap(([parsedToken, token]) =>
-                callThriftServiceMethod<T>(
-                    {
-                        hostname: this.options.hostname,
-                        port: this.options.port,
-                        service: this.options.service,
-                        path: this.options.path,
-                        ...toConnectOptions(
-                            parsedToken,
-                            this.options.wachterServiceName,
-                            token,
-                            this.options.deprecatedHeaders
-                        ),
-                    },
-                    serviceMethodName,
-                    args
-                )
-            )
-        );
+    private getConnectOptions(
+        userIdentityHeaderParams: Partial<UserIdentityHeaderParams>,
+        token: string
+    ): ThriftClientMainOptions & ConnectOptions {
+        return {
+            ...pick(this.options, 'hostname', 'port', 'service', 'path', 'deprecatedHeaders'),
+            headers: Object.assign(
+                createUserIdentityHeaders(userIdentityHeaderParams),
+                this.options.deprecatedHeaders &&
+                    createDeprecatedUserIdentityHeaders(userIdentityHeaderParams),
+                this.options.wachterServiceName && {
+                    ...createWachterHeaders(this.options.wachterServiceName),
+                    ...createAuthorizationHeaders(token),
+                }
+            ),
+        };
     }
 }

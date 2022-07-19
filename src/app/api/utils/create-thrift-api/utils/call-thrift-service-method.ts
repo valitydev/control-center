@@ -10,6 +10,13 @@ export interface ThriftClientMainOptions {
     port?: string;
 }
 
+const DEFAULT_CONNECT_OPTIONS: ConnectOptions = {
+    deadlineConfig: {
+        amount: 3,
+        unitOfTime: 'm',
+    },
+};
+
 export function callThriftServiceMethod<T>(
     { hostname, port, path, service, ...options }: ThriftClientMainOptions & ConnectOptions,
     serviceMethodName: string,
@@ -27,7 +34,7 @@ export function callThriftServiceMethod<T>(
                 port ?? location.port,
                 path,
                 service,
-                options,
+                { ...DEFAULT_CONNECT_OPTIONS, ...options },
                 (err) => {
                     observer.error(err);
                     observer.complete();
