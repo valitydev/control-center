@@ -9,6 +9,7 @@ const THRIFT_PROXY_CONFIG = {
         '/file_storage',
         '/deanonimus',
         '/payout/management',
+        '/wachter',
     ],
     target: process.env.PROXY_TARGET,
     secure: false,

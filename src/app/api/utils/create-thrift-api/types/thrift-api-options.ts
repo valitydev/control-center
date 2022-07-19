@@ -3,6 +3,7 @@ export interface ThriftApiOptions {
     service: object;
     serviceName: string;
     path: string;
+    wachterServiceName?: string;
     hostname?: string;
     port?: string;
     metadata: () => Promise<any>;

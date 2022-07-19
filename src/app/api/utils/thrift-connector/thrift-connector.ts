@@ -38,7 +38,11 @@ export class ThriftConnector {
                                 this.options.port || location.port,
                                 this.options.path,
                                 this.options.service,
-                                toConnectOptions(token, this.options.deprecatedHeaders),
+                                toConnectOptions(
+                                    token,
+                                    this.options.wachterServiceName,
+                                    this.options.deprecatedHeaders
+                                ),
                                 (err) => {
                                     observer.error(err);
                                     observer.complete();

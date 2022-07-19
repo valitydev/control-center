@@ -18,6 +18,7 @@ const toHeaders = (email: string, username: string, partyID: string, realm: stri
 
 export const toConnectOptions = (
     { email, sub, preferred_username }: KeycloakToken,
+    serviceName: string,
     deprecatedHeaders = false,
     realm = 'internal'
 ): ConnectOptions => ({
@@ -26,6 +27,8 @@ export const toConnectOptions = (
         ...(deprecatedHeaders
             ? toDepricatedHeaders(email, preferred_username, sub, realm)
             : undefined),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        ...(serviceName ? { Service: serviceName } : {}),
     },
     deadlineConfig: {
         amount: 3,

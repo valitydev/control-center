@@ -13,7 +13,8 @@ export class ClaimManagementService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            path: '/v1/cm',
+            wachterServiceName: 'claimManagement',
+            path: '/wachter',
             metadata: () => import('@vality/domain-proto/lib/metadata.json').then((m) => m.default),
             context,
             ...codegenClientConfig,
