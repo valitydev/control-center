@@ -8,7 +8,7 @@ import isEqual from 'lodash-es/isEqual';
 import { merge } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { createControlProviders, getErrorsTree } from '@cc/utils';
+import { createControlProviders } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { getDefaultValue } from '../../utils/get-default-value';
@@ -33,19 +33,21 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
             .pipe(
                 map(() => {
                     const field = this.fieldControl.value;
-                    return field ? ({ [field.name]: this.internalControl.value } as T) : null;
+                    return field
+                        ? ({ [field.name]: this.internalControl.value } as T)
+                        : (null as T);
                 }),
                 distinctUntilChanged(isEqual),
                 delay(0),
                 untilDestroyed(this)
             )
-            .subscribe((value) => {
+            .subscribe((value: T) => {
                 this.emitOutgoingValue(value);
             });
     }
 
     validate(): ValidationErrors | null {
-        return this.fieldControl.errors || getErrorsTree(this.internalControl);
+        return this.fieldControl.errors || this.internalControl.errors;
     }
 
     handleIncomingValue(value: T) {

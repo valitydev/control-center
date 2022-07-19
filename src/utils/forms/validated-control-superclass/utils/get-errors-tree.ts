@@ -13,7 +13,9 @@ export function getErrorsTree(control: AbstractControl): ValidationErrors | null
     const errors: ValidationErrors = Object.assign({}, control.errors);
     if (hasControls(control)) {
         if (Array.isArray(control.controls)) {
-            const formArrayErrors = control.controls.map((c) => getErrorsTree(c)).filter(Boolean);
+            const formArrayErrors = control.controls
+                .map((c: AbstractControl) => getErrorsTree(c))
+                .filter(Boolean);
             if (formArrayErrors.length) {
                 errors.formArrayErrors = formArrayErrors;
             }
@@ -22,7 +24,7 @@ export function getErrorsTree(control: AbstractControl): ValidationErrors | null
                 .map(([k, c]) => [k, getErrorsTree(c as AbstractControl)])
                 .filter(([, v]) => Boolean(v));
             if (formGroupErrors.length) {
-                errors.formGroupErrors = Object.fromEntries(formGroupErrors);
+                errors.formGroupErrors = Object.fromEntries(formGroupErrors) as ValidationErrors;
             }
         }
     }
