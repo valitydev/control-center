@@ -17,7 +17,6 @@ export * from './has-active-fragments';
 export * from './poll';
 export * from './boolean-delay';
 export * from './forms';
-export * from './required-super';
 export * from './operators';
 export * from './get-enum-keys';
 export * from './is-nil-or-empty-string';
