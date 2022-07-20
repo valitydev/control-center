@@ -1,6 +1,5 @@
 import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
-import { WrappedFormControlSuperclass } from '@s-libs/ng-core';
+import { Validator } from '@angular/forms';
 import { Claim } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
 import { from, Observable } from 'rxjs';
@@ -8,7 +7,7 @@ import { map } from 'rxjs/operators';
 
 import { ComponentChanges, MetadataFormExtension } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services/domain-metadata-form-extensions';
-import { createControlProviders } from '@cc/utils';
+import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { createPartyClaimMetadataFormExtensions } from './utils/create-party-claim-metadata-form-extensions';
 
@@ -18,7 +17,7 @@ import { createPartyClaimMetadataFormExtensions } from './utils/create-party-cla
     providers: createControlProviders(ModificationFormComponent),
 })
 export class ModificationFormComponent
-    extends WrappedFormControlSuperclass<unknown>
+    extends ValidatedFormControlSuperclass<unknown>
     implements Validator, OnChanges
 {
     @Input() party: Party;
@@ -45,9 +44,5 @@ export class ModificationFormComponent
                 ])
             );
         }
-    }
-
-    validate(): ValidationErrors | null {
-        return this.control.errors;
     }
 }
