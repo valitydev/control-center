@@ -16,7 +16,6 @@ import { filter, map, share, switchMap } from 'rxjs/operators';
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { ComponentChanges } from '@cc/app/shared/utils';
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
-import { RequiredSuper } from '@cc/utils/required-super';
 
 @UntilDestroy()
 @Component({
@@ -65,7 +64,7 @@ export class ShopFieldComponent<M extends boolean = boolean>
         }
     }
 
-    ngOnInit(): RequiredSuper {
+    ngOnInit() {
         this.shops$
             .pipe(
                 filter(
@@ -76,6 +75,6 @@ export class ShopFieldComponent<M extends boolean = boolean>
             .subscribe(() => {
                 this.control.setValue(null);
             });
-        return super.ngOnInit();
+        super.ngOnInit();
     }
 }

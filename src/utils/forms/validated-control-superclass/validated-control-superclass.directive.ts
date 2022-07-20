@@ -1,10 +1,8 @@
 import { Directive, OnInit } from '@angular/core';
 import { ValidationErrors, Validator } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import { EMPTY, Observable } from 'rxjs';
 
-import { REQUIRED_SUPER, RequiredSuper } from '../../required-super';
 import { getValue } from '../get-value';
 import { getErrorsTree } from './utils/get-errors-tree';
 
@@ -15,10 +13,9 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
 {
     protected emptyValue: InnerType;
 
-    ngOnInit(): RequiredSuper {
+    ngOnInit() {
         this.emptyValue = getValue(this.control) as InnerType;
         super.ngOnInit();
-        return REQUIRED_SUPER;
     }
 
     validate(): ValidationErrors | null {
@@ -43,12 +40,4 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
         }
         return outer as never;
     }
-}
-
-@Directive()
-export class ValidatedFormControlSuperclass<
-    OuterType,
-    InnerType = OuterType
-> extends ValidatedControlSuperclass<OuterType, InnerType> {
-    control = new FormControl<InnerType>();
 }
