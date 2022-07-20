@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-const { BASE_TARGET, WACHTER_TARGET } = process.env;
-const REQUIRED_ENV = [BASE_TARGET, WACHTER_TARGET];
+const { BASE_TARGET } = process.env;
+const REQUIRED_ENV = [BASE_TARGET];
 
-if (REQUIRED_ENV.findIndex((e) => !e)) {
+if (REQUIRED_ENV.findIndex((e) => !e) !== -1) {
     throw new Error('[proxy.conf.js] Set required environment variables!');
 }
 
@@ -17,15 +17,9 @@ module.exports = [
             '/file_storage',
             '/deanonimus',
             '/payout/management',
+            '/wachter',
         ],
         target: BASE_TARGET,
-        secure: false,
-        logLevel: 'debug',
-        changeOrigin: true,
-    },
-    {
-        context: '/wachter',
-        target: WACHTER_TARGET,
         secure: false,
         logLevel: 'debug',
         changeOrigin: true,
