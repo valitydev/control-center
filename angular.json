@@ -35,7 +35,9 @@
                             "@vality/magista-proto",
                             "@vality/messages-proto",
                             "@vality/payout-manager-proto",
-                            "@vality/repairer-proto"
+                            "@vality/repairer-proto",
+                            "@vality/fistful-proto",
+                            "@vality/file-storage-proto"
                         ],
                         "outputPath": "dist",
                         "index": "src/index.html",
