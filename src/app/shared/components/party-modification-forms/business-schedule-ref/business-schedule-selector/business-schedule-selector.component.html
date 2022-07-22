@@ -1,10 +1,10 @@
 <div fxLayout="column">
     <mat-form-field>
         <mat-select
-            placeholder="Select schedule"
-            [disabled]="isLoading || hasError"
             (selectionChange)="selectionChange($event)"
+            [disabled]="isLoading || hasError"
             [value]="initialValue"
+            placeholder="Select schedule"
         >
             <mat-option *ngFor="let schedule of schedules$ | async" [value]="schedule.ref.id">
                 {{ schedule.ref.id }} {{ schedule.data.name }}

@@ -2,9 +2,9 @@
     <div fxLayout="column">
         <mat-form-field>
             <mat-select
-                placeholder="Legal entity type"
                 [(value)]="selected"
                 (selectionChange)="select()"
+                placeholder="Legal entity type"
             >
                 <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
             </mat-select>

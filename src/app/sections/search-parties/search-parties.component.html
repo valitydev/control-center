@@ -3,8 +3,8 @@
     <mat-card>
         <mat-card-content>
             <cc-parties-search-filters
-                [initParams]="initSearchParams$ | async"
                 (searchParamsChanged$)="searchParamsUpdated($event)"
+                [initParams]="initSearchParams$ | async"
             ></cc-parties-search-filters>
         </mat-card-content>
         <mat-card-footer *ngIf="inProgress$ | async">
@@ -16,8 +16,8 @@
         <cc-empty-search-result *ngIf="parties.length === 0"></cc-empty-search-result>
         <mat-card *ngIf="parties.length > 0" fxLayout="column" fxLayoutGap="16px">
             <cc-parties-table
-                [parties]="parties"
                 (menuItemSelected$)="partyMenuItemSelected($event)"
+                [parties]="parties"
             ></cc-parties-table>
         </mat-card>
     </ng-container>

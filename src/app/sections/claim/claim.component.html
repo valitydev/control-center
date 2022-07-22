@@ -1,19 +1,19 @@
-<div class="content" gdGap="32px" gdColumns="1fr">
-    <div gdGap="16px" gdColumns="1fr">
+<div class="content" gdColumns="1fr" gdGap="32px">
+    <div gdColumns="1fr" gdGap="16px">
         <div fxLayoutAlign="space-between center">
             <h1 class="cc-display-1">
                 Claim
-                <span class="cc-secondary-text" *ngIf="claim$ | async as claim"
+                <span *ngIf="claim$ | async as claim" class="cc-secondary-text"
                     >#{{ claim.id }}</span
                 >
             </h1>
-            <h1 class="cc-display-1" *ngIf="claim$ | async as claim">
+            <h1 *ngIf="claim$ | async as claim" class="cc-display-1">
                 <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
                     claim.status | ccUnionKey | keyTitle | titlecase
                 }}</cc-status>
             </h1>
         </div>
-        <div fxLayoutAlign="space-between center" *ngIf="party$ | async as party">
+        <div *ngIf="party$ | async as party" fxLayoutAlign="space-between center">
             <span class="cc-subheading-2 cc-secondary-text">
                 <a class="cc-secondary-text" routerLink="/claims">Claims</a> / Claim details
             </span>
@@ -22,13 +22,13 @@
             </span>
         </div>
     </div>
-    <div gdGap="24px" gdColumns="1fr" *ngIf="claim$ | async as claim">
+    <div *ngIf="claim$ | async as claim" gdColumns="1fr" gdGap="24px">
         <h2 class="cc-headline">Changeset</h2>
         <div *ngIf="isLoading$ | async; else timeline" fxLayoutAlign="center">
             <mat-progress-spinner
                 color="primary"
-                mode="indeterminate"
                 diameter="128"
+                mode="indeterminate"
             ></mat-progress-spinner>
         </div>
         <ng-template #timeline>
@@ -39,8 +39,8 @@
                     </cc-timeline-item-badge>
                     <cc-timeline-item-title>
                         <cc-timeline-item-header
-                            text="Claim created"
                             [createdAt]="claim.created_at"
+                            text="Claim created"
                         ></cc-timeline-item-header>
                     </cc-timeline-item-title>
                 </cc-timeline-item>
@@ -54,16 +54,16 @@
                     >
                         <cc-shop-modification-timeline-item
                             *ngSwitchCase="'shop_modification'"
-                            [claim]="claim"
                             (claimChanged)="reloadClaim()"
+                            [claim]="claim"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-shop-modification-timeline-item>
                         <cc-modification-unit-timeline-item
                             *ngSwitchDefault
+                            (claimChanged)="reloadClaim()"
                             [claim]="claim"
                             [modificationUnit]="modificationUnit"
-                            (claimChanged)="reloadClaim()"
                             isChangeable
                         ></cc-modification-unit-timeline-item>
                     </ng-container>
@@ -73,23 +73,23 @@
                     >
                         <cc-status-modification-timeline-item
                             *ngSwitchCase="'status_modification'"
-                            [claim]="claim"
                             (claimChanged)="reloadClaim()"
+                            [claim]="claim"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-status-modification-timeline-item>
                         <cc-comment-modification-timeline-item
                             *ngSwitchCase="'comment_modification'"
-                            [claim]="claim"
                             (claimChanged)="reloadClaim()"
+                            [claim]="claim"
                             [modificationUnit]="modificationUnit"
                         >
                         </cc-comment-modification-timeline-item>
                         <cc-modification-unit-timeline-item
                             *ngSwitchDefault
+                            (claimChanged)="reloadClaim()"
                             [claim]="claim"
                             [modificationUnit]="modificationUnit"
-                            (claimChanged)="reloadClaim()"
                         ></cc-modification-unit-timeline-item>
                     </ng-container>
                 </ng-container>
@@ -97,7 +97,7 @@
         </ng-template>
         <mat-card>
             <mat-card-content fxLayout="row" fxLayoutGap="24px">
-                <button mat-button color="primary" (click)="addModification()">
+                <button (click)="addModification()" color="primary" mat-button>
                     ADD PARTY MODIFICATION
                 </button>
                 <!--                TODO fix uploading-->
@@ -105,10 +105,10 @@
                 <!--                    <button mat-button color="primary">ATTACH FILE</button>-->
                 <!--                </div>-->
                 <button
-                    mat-button
-                    color="primary"
                     (click)="changeStatus()"
                     [disabled]="(isAllowedChangeStatus$ | async) === false"
+                    color="primary"
+                    mat-button
                 >
                     CHANGE STATUS
                 </button>

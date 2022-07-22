@@ -3,26 +3,26 @@
         <div fxLayout="column" fxLayoutGap="16px">
             <mat-form-field>
                 <input
+                    formControlName="description"
                     matInput
                     placeholder="Description (optional)"
-                    formControlName="description"
                 />
             </mat-form-field>
             <mat-form-field>
                 <input
+                    formControlName="weight"
                     matInput
                     placeholder="Weight (optional)"
-                    formControlName="weight"
                     type="number"
                 />
             </mat-form-field>
             <mat-form-field>
                 <input
+                    formControlName="priority"
                     matInput
                     placeholder="Priority"
-                    formControlName="priority"
-                    type="number"
                     required
+                    type="number"
                 />
             </mat-form-field>
         </div>
@@ -50,13 +50,13 @@
             >
                 <div fxLayout="column" fxLayoutGap="16px">
                     <mat-form-field>
-                        <input matInput placeholder="Name" formControlName="name" required />
+                        <input formControlName="name" matInput placeholder="Name" required />
                     </mat-form-field>
                     <mat-form-field>
                         <input
+                            formControlName="description"
                             matInput
                             placeholder="Description"
-                            formControlName="description"
                             required
                         />
                     </mat-form-field>
@@ -67,31 +67,31 @@
                         <mat-radio-button [value]="riskScore.fatal" fxFlex>Fatal</mat-radio-button>
                     </mat-radio-group>
                 </div>
-                <div fxLayout="column" fxLayoutGap="8px" formArrayName="options">
+                <div formArrayName="options" fxLayout="column" fxLayoutGap="8px">
                     <div class="cc-body-1">Options:</div>
                     <div
                         *ngFor="let optionForm of newTerminalOptionsForm.controls; let idx = index"
                         [formGroup]="optionForm"
                         fxLayout
-                        fxLayoutGap="24px"
                         fxLayoutAlign=" center"
+                        fxLayoutGap="24px"
                     >
                         <div fxFlex fxLayout>
                             <mat-form-field fxFlex="33">
-                                <input matInput placeholder="Key" formControlName="key" required />
+                                <input formControlName="key" matInput placeholder="Key" required />
                             </mat-form-field>
                             <mat-form-field fxFlex>
                                 <input
+                                    formControlName="value"
                                     matInput
                                     placeholder="Value"
-                                    formControlName="value"
                                     required
                                 />
                             </mat-form-field>
                         </div>
                         <mat-icon (click)="removeOption(idx)" class="action">clear</mat-icon>
                     </div>
-                    <mat-icon fxFlexAlign="end" (click)="addOption()" class="action">add</mat-icon>
+                    <mat-icon (click)="addOption()" class="action" fxFlexAlign="end">add</mat-icon>
                 </div>
             </div>
             <div *ngIf="form.value.terminalType === terminalType.Existent" fxLayout>
@@ -112,10 +112,10 @@
 
     <cc-base-dialog-actions>
         <button
-            mat-button
-            color="primary"
             (click)="add()"
             [disabled]="form.invalid || predicateControl.invalid"
+            color="primary"
+            mat-button
         >
             ADD
         </button>

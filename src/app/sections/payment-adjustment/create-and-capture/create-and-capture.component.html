@@ -10,22 +10,22 @@
                 <div fxLayout="column" fxLayoutGap="10px">
                     <div class="mat-subheading-2" fxFlex="10">Scenario:</div>
                     <mat-radio-group
+                        (change)="onScenarioChange($event)"
                         fxFlex="50"
                         fxLayout
                         fxLayoutAlign="space-between center"
-                        (change)="onScenarioChange($event)"
                     >
                         <mat-radio-button
+                            [checked]="activeScenario === 'cash_flow'"
                             fxFlex
                             value="cash_flow"
-                            [checked]="activeScenario === 'cash_flow'"
                         >
                             Domain revision
                         </mat-radio-button>
                         <mat-radio-button
+                            [checked]="activeScenario === 'status_change'"
                             fxFlex
                             value="status_change"
-                            [checked]="activeScenario === 'status_change'"
                         >
                             Status change
                         </mat-radio-button>
@@ -34,19 +34,19 @@
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
                     <mat-form-field *ngIf="activeScenario === 'cash_flow'" fxFlex="20">
                         <input
+                            formControlName="cash_flow"
                             matInput
                             placeholder="Domain revision"
-                            formControlName="cash_flow"
-                            type="number"
                             required
+                            type="number"
                         />
                     </mat-form-field>
                     <mat-form-field *ngIf="activeScenario === 'status_change'" fxFlex="20">
                         <mat-select
-                            placeholder="Payment status"
                             formControlName="status_change"
-                            type="number"
+                            placeholder="Payment status"
                             required
+                            type="number"
                         >
                             <mat-option *ngFor="let status of statuses" [value]="status">{{
                                 status
@@ -54,21 +54,21 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field fxFlex="90">
-                        <input matInput placeholder="Reason" formControlName="reason" required />
+                        <input formControlName="reason" matInput placeholder="Reason" required />
                     </mat-form-field>
                 </div>
                 <div
-                    fxLayout="row"
                     *ngIf="
                         activeScenario === 'status_change' && form.value?.status_change === 'failed'
                     "
+                    fxLayout="row"
                 >
                     <mat-form-field fxFlex="100">
                         <mat-select
-                            placeholder="Failure code"
                             formControlName="failure_code"
-                            type="string"
+                            placeholder="Failure code"
                             required
+                            type="string"
                         >
                             <mat-option
                                 *ngFor="let failureCode of failureCodes"
@@ -81,10 +81,10 @@
             </form>
             <div>
                 <button
-                    mat-raised-button
-                    color="primary"
                     (click)="create()"
                     [disabled]="createStarted || !form.valid"
+                    color="primary"
+                    mat-raised-button
                 >
                     CREATE
                 </button>
@@ -93,18 +93,18 @@
         <div fxLayout="column" fxLayoutGap="20px">
             <cc-create-actions [isLoading]="isLoading"></cc-create-actions>
             <cc-cancel-actions
-                [isLoading]="isLoading"
                 [adjustmentParams]="adjustmentParams"
+                [isLoading]="isLoading"
             ></cc-cancel-actions>
             <cc-capture-actions [isLoading]="isLoading"></cc-capture-actions>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button [disabled]="isLoading" [mat-dialog-close]="false">CLOSE</button>
+    <button [disabled]="isLoading" [mat-dialog-close]="false" mat-button>CLOSE</button>
     <mat-progress-bar
         *ngIf="isLoading"
-        mode="determinate"
         [value]="progress$ | async"
+        mode="determinate"
     ></mat-progress-bar>
 </mat-dialog-actions>

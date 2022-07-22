@@ -9,16 +9,16 @@
     </mat-radio-group>
     <cc-fill-in-unit-id
         *ngIf="selectedTarget === t.FillIn"
-        [unitID]="unitID"
         (valueChanges)="unitIDChanges($event)"
+        [unitID]="unitID"
     >
     </cc-fill-in-unit-id>
     <cc-target-table
         *ngIf="selectedTarget === t.PartyItem"
+        (valueChanges)="unitIDChanges($event)"
+        [fromClaim]="fromClaim"
         [partyID]="partyID"
         [partyTarget]="partyTarget"
-        [fromClaim]="fromClaim"
-        (valueChanges)="unitIDChanges($event)"
     >
     </cc-target-table>
 </div>

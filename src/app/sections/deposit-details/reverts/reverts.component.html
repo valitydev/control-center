@@ -3,10 +3,10 @@
         <h1 class="mat-headline">Reverts</h1>
         <button
             *ngIf="hasNecessaryRole()"
-            mat-raised-button
-            color="primary"
-            [disabled]="isCreateRevertAvailable(deposit?.status)"
             (click)="createRevert()"
+            [disabled]="isCreateRevertAvailable(deposit?.status)"
+            color="primary"
+            mat-raised-button
         >
             CREATE REVERT
         </button>
@@ -19,11 +19,11 @@
         <mat-card-content *ngIf="reverts.length > 0" fxLayout="column" fxLayoutGap="16px">
             <cc-reverts-table [reverts]="reverts"></cc-reverts-table>
             <button
-                fxFlex="100"
-                mat-button
                 *ngIf="hasMore$ | async"
                 (click)="fetchMore()"
                 [disabled]="doAction$ | async"
+                fxFlex="100"
+                mat-button
             >
                 {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
             </button>

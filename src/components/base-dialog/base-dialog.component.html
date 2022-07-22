@@ -1,11 +1,11 @@
-<div class="base-dialog" fxLayout="column" fxLayoutGap="24px" fxFlex="grow">
+<div class="base-dialog" fxFlex="grow" fxLayout="column" fxLayoutGap="24px">
     <div class="base-dialog-title" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="cc-headline">{{ title }}</div>
         <mat-icon
-            class="base-dialog-title-close"
-            inline
             (click)="cancelDialog()"
             [matDialogClose]="cancelData"
+            class="base-dialog-title-close"
+            inline
             >clear</mat-icon
         >
     </div>

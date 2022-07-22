@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Repair with scenario</h1>
 <form [formGroup]="formGroup" fxLayout="column">
     <mat-form-field>
-        <mat-select placeholder="Scenario" formControlName="scenario">
+        <mat-select formControlName="scenario" placeholder="Scenario">
             <mat-option *ngFor="let scenario of scenarios" [value]="scenario">
                 {{ scenario }}
             </mat-option>
@@ -9,11 +9,11 @@
     </mat-form-field>
     <mat-form-field>
         <input
-            type="text"
-            placeholder="Code"
-            matInput
-            formControlName="code"
             [matAutocomplete]="auto"
+            formControlName="code"
+            matInput
+            placeholder="Code"
+            type="text"
         />
         <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let code of autocompleteCodes$ | async" [value]="code">
@@ -23,8 +23,8 @@
     </mat-form-field>
 </form>
 <div>
-    <button mat-button color="primary" cdkFocusInitial [mat-dialog-close]="getData()">
+    <button [mat-dialog-close]="getData()" cdkFocusInitial color="primary" mat-button>
         REPAIR
     </button>
-    <button mat-button (click)="cancel()">CANCEL</button>
+    <button (click)="cancel()" mat-button>CANCEL</button>
 </div>

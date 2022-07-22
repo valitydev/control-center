@@ -1,8 +1,8 @@
 <div *ngIf="isLoading$ | async" fxLayout="row" fxLayoutAlign="center">
     <mat-progress-spinner
         color="primary"
-        mode="indeterminate"
         diameter="128"
+        mode="indeterminate"
     ></mat-progress-spinner>
 </div>
 <div *ngIf="!(isLoading$ | async)">
@@ -12,22 +12,22 @@
             [status]="status$ | async"
         ></cc-party-claim-title>
         <cc-claim-changeset
-            [createdAt]="createdAt$ | async"
             [changeset]="changeset$ | async"
+            [createdAt]="createdAt$ | async"
             [partyID]="partyID$ | async"
         ></cc-claim-changeset>
         <cc-unsaved-claim-changeset
-            [changeset]="changeset$ | async"
-            [partyID]="partyID$ | async"
-            [claimID]="claimID$ | async"
             (changesetUpdated)="changesetUpdated()"
+            [changeset]="changeset$ | async"
+            [claimID]="claimID$ | async"
+            [partyID]="partyID$ | async"
         ></cc-unsaved-claim-changeset>
         <cc-party-claim-actions
-            [partyID]="partyID$ | async"
-            [claimID]="claimID$ | async"
-            [status]="status$ | async"
-            [changeset]="changeset$ | async"
             (changesetUpdated)="changesetUpdated()"
+            [changeset]="changeset$ | async"
+            [claimID]="claimID$ | async"
+            [partyID]="partyID$ | async"
+            [status]="status$ | async"
         ></cc-party-claim-actions>
     </div>
 </div>

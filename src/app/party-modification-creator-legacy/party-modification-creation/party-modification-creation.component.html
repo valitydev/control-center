@@ -1,6 +1,6 @@
 <form [formGroup]="form" fxLayout="column" fxLayoutGap="5px">
     <mat-form-field fxFlex>
-        <input matInput placeholder="Unit ID" formControlName="unitID" required />
+        <input formControlName="unitID" matInput placeholder="Unit ID" required />
     </mat-form-field>
     <div *ngIf="action.type === actionTypes.ContractorAction">
         <cc-contractor

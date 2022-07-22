@@ -2,9 +2,9 @@
     <div fxFlex fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
         <h3 class="cc-title">Changeset</h3>
         <cc-changesets-filter
-            fxFlex="0 1 266px"
-            [changesetInfos]="changesetInfos$ | async"
             (filterChange)="filterChange($event)"
+            [changesetInfos]="changesetInfos$ | async"
+            fxFlex="0 1 266px"
         ></cc-changesets-filter>
     </div>
     <cc-timeline>
@@ -14,20 +14,20 @@
         >
             <cc-file-timeline-item
                 *ngIf="info.type === changesetInfoType.fileModification"
-                [changesetInfo]="info"
                 (menuItemSelected)="menuItemSelected($event, i)"
+                [changesetInfo]="info"
                 [menuConfig]="fileMenuConfig"
             ></cc-file-timeline-item>
             <cc-comment-timeline-item
                 *ngIf="info.type === changesetInfoType.commentModification"
-                [changesetInfo]="info"
                 (menuItemSelected)="menuItemSelected($event, i)"
+                [changesetInfo]="info"
                 [menuConfig]="commentMenuConfig"
             ></cc-comment-timeline-item>
             <cc-party-modification-timeline-item
                 *ngIf="info.type === changesetInfoType.partyModification"
-                [changesetInfo]="info"
                 (menuItemSelected)="menuItemSelected($event, i)"
+                [changesetInfo]="info"
                 [menuConfig]="partyModMenuConfig"
             ></cc-party-modification-timeline-item>
             <cc-status-timeline-item

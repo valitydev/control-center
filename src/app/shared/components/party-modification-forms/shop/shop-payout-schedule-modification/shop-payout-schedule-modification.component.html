@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutGap="10px">
-    <mat-checkbox [checked]="showSchedule" (change)="toggleCheckbox($event, 'schedule')"
+    <mat-checkbox (change)="toggleCheckbox($event, 'schedule')" [checked]="showSchedule"
         >Schedule</mat-checkbox
     >
     <cc-business-schedule-ref

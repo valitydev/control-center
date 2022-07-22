@@ -5,23 +5,23 @@
         </mat-checkbox>
         <ng-template #label>
             <cc-field-label
-                class="cc-body-1"
                 [field]="data.field"
                 [type]="data.type"
+                class="cc-body-1"
             ></cc-field-label>
         </ng-template>
     </ng-container>
     <ng-container *ngIf="labelControl.value">
         <cc-metadata-form
             *ngFor="let field of data.ast"
-            [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
+            [extensions]="data.extensions"
+            [field]="field"
             [formControl]="control.get(field.name)"
             [metadata]="data.metadata"
             [namespace]="data.namespace"
-            [type]="field.type"
-            [field]="field"
+            [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
             [parent]="data"
-            [extensions]="data.extensions"
+            [type]="field.type"
         ></cc-metadata-form>
     </ng-container>
 </div>

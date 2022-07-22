@@ -3,15 +3,15 @@
     <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
     <mat-select
         (selectionChange)="select($event.value)"
-        [value]="selected$ | async"
-        [required]="required"
         [disabled]="disabled"
+        [required]="required"
+        [value]="selected$ | async"
     >
         <mat-option>
             <ngx-mat-select-search
                 [formControl]="selectSearchControl"
-                placeholderLabel="Search..."
                 noEntriesFoundLabel="No entries found"
+                placeholderLabel="Search..."
             >
                 <mat-icon *ngIf="svgIcon" [svgIcon]="svgIcon" ngxMatSelectSearchClear></mat-icon>
             </ngx-mat-select-search>
@@ -41,7 +41,7 @@
             </mat-option>
         </ng-template>
     </mat-select>
-    <button *ngIf="selected$ | async" mat-icon-button matSuffix (click)="clear($event)">
+    <button *ngIf="selected$ | async" (click)="clear($event)" mat-icon-button matSuffix>
         <ng-container *ngIf="svgIcon; else defaultIcon">
             <mat-icon [svgIcon]="svgIcon"></mat-icon>
         </ng-container>

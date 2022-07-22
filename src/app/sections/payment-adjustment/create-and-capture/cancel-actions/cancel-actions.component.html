@@ -1,21 +1,21 @@
 <cc-action-item
     *ngIf="cancelResult.length > 0"
+    (action)="recreate()"
+    [actionDisabled]="isLoading"
+    actionButtonLabel="recreate"
     description="Cancel adjustment success: {{ cancelResult.length }} adjustment(s) cancelled"
     hasAction="true"
-    actionButtonLabel="recreate"
-    [actionDisabled]="isLoading"
-    (action)="recreate()"
 >
 </cc-action-item>
 <cc-action-item
     *ngIf="failedInternal.length > 0"
+    (action)="retry()"
+    [actionDisabled]="isLoading"
+    actionButtonLabel="retry"
     description="Cancel adjustment failed: {{
         failedInternal.length
     }} operations(s) failed with 5xx"
     hasAction="true"
-    actionButtonLabel="retry"
-    [actionDisabled]="isLoading"
-    (action)="retry()"
 >
 </cc-action-item>
 <cc-action-item

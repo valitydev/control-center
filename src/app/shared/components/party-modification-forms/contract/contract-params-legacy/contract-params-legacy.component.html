@@ -1,5 +1,5 @@
 <form *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="5px">
-    <mat-checkbox [checked]="showTemplate" (change)="toggleCheckbox($event.checked, 'template')"
+    <mat-checkbox (change)="toggleCheckbox($event.checked, 'template')" [checked]="showTemplate"
         >Template</mat-checkbox
     >
     <cc-contract-template-ref
@@ -9,8 +9,8 @@
     >
     </cc-contract-template-ref>
     <mat-checkbox
-        [checked]="showPaymentInstitution"
         (change)="toggleCheckbox($event.checked, 'payment_institution')"
+        [checked]="showPaymentInstitution"
         >Payment institution</mat-checkbox
     >
     <cc-payment-institution-ref
@@ -21,9 +21,9 @@
     </cc-payment-institution-ref>
     <cc-nested-form-wrapper caption="contractor">
         <cc-contractor
-            fxFlex
             [form]="form.get('contractor')"
             [initialValue]="initialValue?.contractor"
+            fxFlex
         >
         </cc-contractor>
     </cc-nested-form-wrapper>

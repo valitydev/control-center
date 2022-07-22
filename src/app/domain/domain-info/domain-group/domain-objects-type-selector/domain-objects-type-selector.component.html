@@ -1,15 +1,15 @@
 <div fxLayout>
     <mat-form-field fxFlex>
         <mat-select
-            placeholder="Domain objects"
-            multiple
-            [(ngModel)]="selectedNames"
             #nameSelect="ngModel"
+            [(ngModel)]="selectedNames"
             (selectionChange)="selectionChange($event)"
+            multiple
+            placeholder="Domain objects"
         >
             <mat-option class="filter-option" disabled="disabled">
-                <button mat-button (click)="selectAll(nameSelect)">SELECT ALL</button>
-                <button mat-button (click)="deselectAll(nameSelect)">DESELECT ALL</button>
+                <button (click)="selectAll(nameSelect)" mat-button>SELECT ALL</button>
+                <button (click)="deselectAll(nameSelect)" mat-button>DESELECT ALL</button>
             </mat-option>
             <mat-option *ngFor="let name of names" [value]="name"> {{ name }} </mat-option>
         </mat-select>

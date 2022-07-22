@@ -1,26 +1,26 @@
 <div
     [formGroup]="control"
-    gdGap="16px"
     gdColumns="1fr 1fr 1fr 1fr"
     gdColumns.lt-md="1fr 1fr"
     gdColumns.lt-sm="1fr"
+    gdGap="16px"
 >
     <mat-form-field>
         <mat-label>Date Range</mat-label>
         <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate matInput formControlName="fromTime" placeholder="Start Date" />
-            <input matEndDate matInput formControlName="toTime" placeholder="End Date" />
+            <input formControlName="fromTime" matInput matStartDate placeholder="Start Date" />
+            <input formControlName="toTime" matEndDate matInput placeholder="End Date" />
         </mat-date-range-input>
-        <mat-datepicker-toggle matSuffix [for]="picker">
+        <mat-datepicker-toggle [for]="picker" matSuffix>
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="Payout ID" formControlName="payoutId" autocomplete="off" />
+        <input autocomplete="off" formControlName="payoutId" matInput placeholder="Payout ID" />
     </mat-form-field>
     <mat-form-field>
-        <mat-select multiple formControlName="payoutStatusTypes" placeholder="Payout Status Type">
+        <mat-select formControlName="payoutStatusTypes" multiple placeholder="Payout Status Type">
             <mat-option *ngFor="let type of statusTypes" [value]="statusType[type]">
                 {{ type }}
             </mat-option>
@@ -36,9 +36,9 @@
     </mat-form-field>
     <cc-merchant-field formControlName="partyId"></cc-merchant-field>
     <cc-shop-field
-        gdColumn.gt-sm="auto/span 3"
-        multiple
         [partyId]="control.value.partyId"
         formControlName="shops"
+        gdColumn.gt-sm="auto/span 3"
+        multiple
     ></cc-shop-field>
 </div>

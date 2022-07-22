@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <div fxLayout="row" fxLayoutAlign="space-between">
         <h1 class="cc-headline">Payouts</h1>
-        <div><button mat-button (click)="create()">CREATE</button></div>
+        <div><button (click)="create()" mat-button>CREATE</button></div>
     </div>
     <mat-card>
         <mat-card-content>
@@ -16,11 +16,11 @@
         <mat-card *ngIf="payouts.length > 0" fxLayout="column" fxLayoutGap="18px">
             <cc-payouts-table [payouts]="payouts"></cc-payouts-table>
             <button
-                fxFlex="100"
-                mat-button
                 *ngIf="hasMore$ | async"
                 (click)="fetchMore()"
                 [disabled]="inProgress$ | async"
+                fxFlex="100"
+                mat-button
             >
                 {{ (inProgress$ | async) ? 'LOADING...' : 'SHOW MORE' }}
             </button>

@@ -1,9 +1,9 @@
 <div fxLayout="column">
     <mat-form-field>
         <mat-select
-            placeholder="Payout tool info"
             [(value)]="selected"
             (selectionChange)="select()"
+            placeholder="Payout tool info"
         >
             <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
         </mat-select>

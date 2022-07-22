@@ -1,12 +1,12 @@
 <div gdColumns="1fr" gdGap="16px">
-    <span class="cc-body-1" *ngIf="hasLabel">
+    <span *ngIf="hasLabel" class="cc-body-1">
         <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label>
         ({{ data.type.name | titlecase }})
     </span>
     <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px' }">
         <mat-expansion-panel
-            class="mat-elevation-z0"
             *ngFor="let valueControl of valueControls.controls; let i = index"
+            class="mat-elevation-z0"
         >
             <mat-expansion-panel-header>
                 <mat-panel-title fxLayoutAlign=" center">
@@ -15,7 +15,7 @@
                     {{ data.type.valueType | valueTypeTitle | titlecase }}
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
-                    <button mat-icon-button (click)="delete(i)">
+                    <button (click)="delete(i)" mat-icon-button>
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-panel-description>
@@ -24,27 +24,27 @@
                 <ng-container *ngIf="hasKeys">
                     <span class="cc-body-2">Key</span>
                     <cc-metadata-form
+                        [extensions]="data.extensions"
                         [formControl]="keyControls.controls[i]"
                         [metadata]="data.metadata"
                         [namespace]="data.namespace"
-                        [type]="keyType"
                         [parent]="data"
-                        [extensions]="data.extensions"
+                        [type]="keyType"
                     ></cc-metadata-form>
                 </ng-container>
-                <span class="cc-body-2" *ngIf="data.type.name === 'map'">Value</span>
+                <span *ngIf="data.type.name === 'map'" class="cc-body-2">Value</span>
                 <cc-metadata-form
+                    [extensions]="data.extensions"
                     [formControl]="valueControl"
                     [metadata]="data.metadata"
                     [namespace]="data.namespace"
-                    [type]="data.type.valueType"
                     [parent]="data"
-                    [extensions]="data.extensions"
+                    [type]="data.type.valueType"
                 ></cc-metadata-form>
             </div>
         </mat-expansion-panel>
     </mat-accordion>
-    <button mat-button (click)="add()">
+    <button (click)="add()" mat-button>
         ADD {{ data.type.valueType | valueTypeTitle | uppercase }}
     </button>
 </div>

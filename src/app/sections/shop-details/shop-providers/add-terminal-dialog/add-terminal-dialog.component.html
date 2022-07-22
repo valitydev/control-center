@@ -5,15 +5,15 @@
             <ng-template matStepLabel>Select provider:</ng-template>
             <div fxLayout="column" fxLayoutGap="20px">
                 <cc-select-provider
-                    [providers]="providers$ | async"
                     (providerIDSelected)="providerIDSelected($event)"
+                    [providers]="providers$ | async"
                 ></cc-select-provider>
                 <div>
                     <button
-                        matStepperNext
-                        mat-button
                         [disabled]="!providerForm.valid"
                         color="primary"
+                        mat-button
+                        matStepperNext
                     >
                         NEXT
                     </button>
@@ -24,10 +24,10 @@
             <ng-template matStepLabel>Select or create terminal:</ng-template>
             <div fxLayout="column" fxLayoutGap="20px">
                 <cc-terminals-table
-                    [terminals]="terminals$ | async"
                     (terminalIDSelected)="terminalIDSelected($event)"
+                    [terminals]="terminals$ | async"
                 ></cc-terminals-table>
-                <div><button matStepperPrevious mat-button color="primary">BACK</button></div>
+                <div><button color="primary" mat-button matStepperPrevious>BACK</button></div>
             </div>
         </mat-step>
     </mat-horizontal-stepper>
@@ -35,13 +35,13 @@
 <mat-dialog-actions>
     <div>
         <button
-            mat-button
             (click)="add()"
             [disabled]="!(providerForm.valid && terminalForm.valid) || (inProgress$ | async)"
+            mat-button
         >
             ADD
         </button>
-        <button mat-button [mat-dialog-close]="false" [disabled]="inProgress$ | async">
+        <button [disabled]="inProgress$ | async" [mat-dialog-close]="false" mat-button>
             CANCEL
         </button>
     </div>

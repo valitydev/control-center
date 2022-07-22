@@ -1,9 +1,9 @@
 <form [formGroup]="form" fxLayout="column">
     <mat-form-field fxFlex>
         <mat-select
-            placeholder="Select payment institution"
-            formControlName="id"
             [required]="required"
+            formControlName="id"
+            placeholder="Select payment institution"
         >
             <mat-option
                 *ngFor="let paymentInstitution of paymentInstitutions$ | async"

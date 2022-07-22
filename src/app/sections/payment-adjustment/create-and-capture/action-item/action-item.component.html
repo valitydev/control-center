@@ -1,7 +1,7 @@
 <div fxLayout fxLayoutAlign="space-between">
     <label class="mat-subheading-2" fxFlex="80">{{ description }}</label>
     <div *ngIf="hasAction" fxFlex="20">
-        <button [disabled]="actionDisabled" (click)="doAction()" mat-stroked-button>
+        <button (click)="doAction()" [disabled]="actionDisabled" mat-stroked-button>
             {{ actionButtonLabel | uppercase }}
         </button>
     </div>

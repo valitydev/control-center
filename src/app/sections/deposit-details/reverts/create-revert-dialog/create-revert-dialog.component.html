@@ -4,53 +4,53 @@
         <div fxLayout fxLayoutGap="24px">
             <mat-form-field fxFlex>
                 <input
-                    matInput
-                    type="number"
-                    placeholder="Amount"
                     formControlName="amount"
+                    matInput
+                    placeholder="Amount"
                     required
+                    type="number"
                 />
             </mat-form-field>
             <mat-form-field fxFlex>
                 <input
-                    matInput
-                    type="text"
-                    placeholder="Currency"
                     formControlName="currency"
-                    required
+                    matInput
+                    placeholder="Currency"
                     readonly
+                    required
+                    type="text"
                 />
             </mat-form-field>
         </div>
         <div fxLayout fxLayoutGap="24px">
             <mat-form-field fxFlex>
                 <input
-                    matInput
-                    type="text"
-                    placeholder="Reason (optional)"
                     formControlName="reason"
+                    matInput
+                    placeholder="Reason (optional)"
+                    type="text"
                 />
             </mat-form-field>
             <mat-form-field fxFlex>
                 <input
-                    matInput
-                    type="text"
-                    placeholder="External ID (optional)"
                     formControlName="externalID"
+                    matInput
+                    placeholder="External ID (optional)"
+                    type="text"
                 />
             </mat-form-field>
         </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-        <button [disabled]="isLoading$ | async" mat-button (click)="closeDialog()">CANCEL</button>
+        <button (click)="closeDialog()" [disabled]="isLoading$ | async" mat-button>CANCEL</button>
         <button
-            [disabled]="(isLoading$ | async) || form.invalid"
-            mat-button
-            color="primary"
             (click)="createRevert()"
+            [disabled]="(isLoading$ | async) || form.invalid"
+            color="primary"
+            mat-button
         >
             CREATE
         </button>
-        <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
+        <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
     </mat-dialog-actions>
 </form>

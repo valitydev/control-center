@@ -1,5 +1,5 @@
 <mat-chip-list>
-    <mat-chip selected [color]="getColor()" [disabled]="disabled">
+    <mat-chip [color]="getColor()" [disabled]="disabled" selected>
         {{ status }}{{ description ? ' (' + description + ')' : '' }}
     </mat-chip>
 </mat-chip-list>

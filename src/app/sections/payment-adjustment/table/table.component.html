@@ -1,17 +1,17 @@
 <div fxLayout fxLayoutAlign="space-between">
     <mat-form-field>
         <input
-            matInput
-            type="text"
             (keyup)="applyFilter($event.target.value)"
+            matInput
             placeholder="Filter revision"
+            type="text"
         />
     </mat-form-field>
     <mat-paginator [pageSizeOptions]="[20, 50, 100, 250, 500]" showFirstLastButtons></mat-paginator>
 </div>
-<table mat-table [dataSource]="dataSource">
+<table [dataSource]="dataSource" mat-table>
     <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
+        <th *matHeaderCellDef mat-header-cell>
             <mat-checkbox
                 (change)="$event ? masterToggle() : null"
                 [checked]="selection.hasValue() && isAllSelected()"
@@ -19,33 +19,33 @@
             >
             </mat-checkbox>
         </th>
-        <td mat-cell *matCellDef="let row">
+        <td *matCellDef="let row" mat-cell>
             <mat-checkbox
-                (click)="$event.stopPropagation()"
                 (change)="$event ? selection.toggle(row) : null"
+                (click)="$event.stopPropagation()"
                 [checked]="selection.isSelected(row)"
             >
             </mat-checkbox>
         </td>
     </ng-container>
     <ng-container matColumnDef="revision">
-        <th mat-header-cell *matHeaderCellDef>Revision</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.domain_revision | ccThriftInt64 }}</td>
+        <th *matHeaderCellDef mat-header-cell>Revision</th>
+        <td *matCellDef="let payment" mat-cell>{{ payment.domain_revision | ccThriftInt64 }}</td>
     </ng-container>
     <ng-container matColumnDef="invoiceId">
-        <th mat-header-cell *matHeaderCellDef>Invoice ID</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.invoice_id }}</td>
+        <th *matHeaderCellDef mat-header-cell>Invoice ID</th>
+        <td *matCellDef="let payment" mat-cell>{{ payment.invoice_id }}</td>
     </ng-container>
     <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef>Created At</th>
-        <td mat-cell *matCellDef="let payment">
+        <th *matHeaderCellDef mat-header-cell>Created At</th>
+        <td *matCellDef="let payment" mat-cell>
             {{ payment.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
         </td>
     </ng-container>
     <ng-container matColumnDef="ownerId">
-        <th mat-header-cell *matHeaderCellDef>Party ID</th>
-        <td mat-cell *matCellDef="let payment">{{ payment.owner_id }}</td>
+        <th *matHeaderCellDef mat-header-cell>Party ID</th>
+        <td *matCellDef="let payment" mat-cell>{{ payment.owner_id }}</td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="cols"></tr>
-    <tr mat-row *matRowDef="let payment; columns: cols"></tr>
+    <tr *matHeaderRowDef="cols" mat-header-row></tr>
+    <tr *matRowDef="let payment; columns: cols" mat-row></tr>
 </table>

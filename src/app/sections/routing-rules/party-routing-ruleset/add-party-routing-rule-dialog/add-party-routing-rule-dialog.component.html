@@ -20,19 +20,19 @@
         <div class="cc-title">Routing ruleset</div>
         <div fxLayout="column" fxLayoutGap="16px">
             <mat-form-field>
-                <input matInput placeholder="Name" formControlName="name" required />
+                <input formControlName="name" matInput placeholder="Name" required />
             </mat-form-field>
             <mat-form-field>
                 <input
+                    formControlName="description"
                     matInput
                     placeholder="Description (optional)"
-                    formControlName="description"
                 />
             </mat-form-field>
         </div>
     </div>
 
     <cc-base-dialog-actions>
-        <button mat-button color="primary" (click)="add()" [disabled]="form.invalid">ADD</button>
+        <button (click)="add()" [disabled]="form.invalid" color="primary" mat-button>ADD</button>
     </cc-base-dialog-actions>
 </cc-base-dialog>

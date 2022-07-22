@@ -1,6 +1,6 @@
-<cc-base-dialog title="Create Adjustment" gdColumn="1fr">
+<cc-base-dialog gdColumn="1fr" title="Create Adjustment">
     <div gdGap="16px">
-        <mat-radio-group gdColumns="1fr 1fr" gdGap="8px" [formControl]="typeControl">
+        <mat-radio-group [formControl]="typeControl" gdColumns="1fr 1fr" gdGap="8px">
             <mat-radio-button [value]="0">Use ID from withdrawal</mat-radio-button>
             <mat-radio-button [value]="1">Generate ID</mat-radio-button>
         </mat-radio-group>
@@ -11,24 +11,24 @@
             type="Status"
         ></cc-metadata-form>
         <cc-metadata-form
+            [extensions]="extensions"
             [formControl]="externalIdControl"
             [metadata]="metadata$ | async"
-            [extensions]="extensions"
             namespace="base"
             type="ExternalID"
         ></cc-metadata-form>
         <mat-progress-bar
             *ngIf="progress !== -1"
-            mode="determinate"
             [value]="(progress / dialogData.withdrawals.length) * 100"
+            mode="determinate"
         ></mat-progress-bar>
     </div>
     <cc-base-dialog-actions>
         <button
-            mat-button
-            color="primary"
-            [disabled]="statusControl.invalid"
             (click)="createAdjustment()"
+            [disabled]="statusControl.invalid"
+            color="primary"
+            mat-button
         >
             CREATE
         </button>

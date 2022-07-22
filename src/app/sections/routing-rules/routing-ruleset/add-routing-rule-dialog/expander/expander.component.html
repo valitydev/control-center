@@ -4,8 +4,8 @@
             {{ title }}
         </div>
         <div fxLayout fxLayoutGap="16px">
-            <mat-icon class="action" fxFlexAlign="end" (click)="remove.emit()">clear</mat-icon>
-            <mat-icon class="action" fxFlexAlign="end" (click)="toggle()">{{
+            <mat-icon (click)="remove.emit()" class="action" fxFlexAlign="end">clear</mat-icon>
+            <mat-icon (click)="toggle()" class="action" fxFlexAlign="end">{{
                 expanded ? 'expand_less' : 'expand_more'
             }}</mat-icon>
         </div>
