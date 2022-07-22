@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { InvoiceRepairScenario, UserInfo } from '@vality/domain-proto/lib/payment_processing';
+import { InvoiceRepairScenario } from '@vality/domain-proto/lib/payment_processing';
 import { RepairScenario } from '@vality/fistful-proto/lib/withdrawal_session';
 import { KeycloakService } from 'keycloak-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -51,13 +51,6 @@ export class RepairingService {
         return ids;
     }
 
-    getUser(): UserInfo {
-        return {
-            id: this.keycloakService.getUsername(),
-            type: { internal_user: {} },
-        };
-    }
-
     remove<E>(currentElements: E[], elements: E[]) {
         const resultDataSource = currentElements.slice();
         for (const element of elements) {
@@ -105,13 +98,12 @@ export class RepairingService {
         elements: E[],
         scenario: InvoiceRepairScenario
     ) {
-        const user = this.getUser();
         this._progress$.next(0);
         return execute(
             elements.map(
                 ({ id }) =>
                     () =>
-                        this.paymentProcessingService.repairWithScenario(user, id, scenario)
+                        this.paymentProcessingService.repairWithScenario(id, scenario)
             )
         ).pipe(tap(({ progress }) => this._progress$.next(progress)));
     }
