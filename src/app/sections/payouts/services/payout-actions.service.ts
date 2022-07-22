@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -11,9 +11,8 @@ import { PayoutManagementService } from '../../../api/payout-manager';
 import { NotificationService } from '../../../shared/services/notification';
 import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout-dialog/cancel-payout-dialog.component';
 
-@Injectable({
-    providedIn: 'root',
-})
+@UntilDestroy()
+@Injectable()
 export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
@@ -30,7 +29,7 @@ export class PayoutActionsService {
     }
 
     cancel(id: PayoutID) {
-        this.baseDialogService.open(CancelPayoutDialogComponent, { id }).afterClosed().subscribe();
+        this.baseDialogService.open(CancelPayoutDialogComponent, { id });
     }
 
     confirm(id: PayoutID) {

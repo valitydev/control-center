@@ -40,6 +40,7 @@ export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
             .subscribe({
                 next: () => {
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.notificationService.success('Payout canceled successfully');
                 },
                 error: (err) => {
                     this.notificationService.error('Payout cancellation error');

@@ -13,6 +13,7 @@ import { PayoutActionsService } from '../services/payout-actions.service';
     selector: 'cc-payout-details',
     templateUrl: './payout-details.component.html',
     styleUrls: ['./payout-details.component.scss'],
+    providers: [PayoutActionsService],
 })
 export class PayoutDetailsComponent {
     payout$ = this.route.params.pipe(
