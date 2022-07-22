@@ -4,7 +4,7 @@ import { PartyID, ShopID } from '@vality/domain-proto';
 import { BehaviorSubject, merge, of, Subject } from 'rxjs';
 import { catchError, filter, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class FetchShopService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     shop$ = this.getShop$.pipe(
         switchMap(({ partyID, shopID }) =>
-            this.partyManagementWithUserService.getShop(partyID, shopID).pipe(
+            this.partyManagementService.GetShop(partyID, shopID).pipe(
                 catchError((e) => {
                     this.hasError$.next(e);
                     this.snackBar.open('An error occurred while fetching shop', 'OK');
@@ -31,7 +31,7 @@ export class FetchShopService {
     inProgress$ = progress(this.getShop$, merge(this.shop$, this.hasError$)).pipe(startWith(true));
 
     constructor(
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private snackBar: MatSnackBar
     ) {}
 

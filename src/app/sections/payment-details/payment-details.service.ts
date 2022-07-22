@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, of } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { QueryDsl } from '../../query-dsl';
@@ -49,14 +49,12 @@ export class PaymentDetailsService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     shop$ = this.payment$.pipe(
         switchMap((payment) => combineLatest([this.partyID$, of(payment.shop_id)])),
-        switchMap(([partyID, shopID]) =>
-            this.partyManagementWithUserService.getShop(partyID, shopID)
-        ),
+        switchMap(([partyID, shopID]) => this.partyManagementService.GetShop(partyID, shopID)),
         shareReplay(1)
     );
 
     constructor(
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private merchantStatisticsService: MerchantStatisticsService,
         private route: ActivatedRoute,
         private snackBar: MatSnackBar
