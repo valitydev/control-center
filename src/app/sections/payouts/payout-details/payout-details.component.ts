@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { PayoutID, PayoutStatus } from '@vality/magista-proto';
 import { combineLatest } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
+
+import { PayoutActionsService } from '../services/payout-actions.service';
 
 @Component({
     selector: 'cc-payout-details',
@@ -41,6 +44,23 @@ export class PayoutDetailsComponent {
     constructor(
         private route: ActivatedRoute,
         private payoutManagementService: PayoutManagementService,
-        private partyManagementWithUserService: PartyManagementWithUserService
+        private partyManagementWithUserService: PartyManagementWithUserService,
+        private payoutActionsService: PayoutActionsService
     ) {}
+
+    canBeConfirmed(status: keyof PayoutStatus) {
+        return this.payoutActionsService.canBeConfirmed(status);
+    }
+
+    canBeCancelled(status: keyof PayoutStatus) {
+        return this.payoutActionsService.canBeCancelled(status);
+    }
+
+    cancel(id: PayoutID) {
+        this.payoutActionsService.cancel(id);
+    }
+
+    confirm(id: PayoutID) {
+        this.payoutActionsService.confirm(id);
+    }
 }

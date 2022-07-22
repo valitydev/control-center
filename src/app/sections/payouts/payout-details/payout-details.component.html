@@ -1,5 +1,25 @@
 <div fxLayout="column" fxLayoutGap="24px" *ngIf="payout$ | async as payout">
-    <cc-headline>Payout details</cc-headline>
+    <div fxLayoutAlign="space-between">
+        <cc-headline>Payout details</cc-headline>
+        <div fxLayoutGap="16px">
+            <button
+                [disabled]="canBeCancelled(payout.status | ccUnionKey)"
+                mat-button
+                color="warn"
+                (click)="cancel(payout.id)"
+            >
+                CANCEL
+            </button>
+            <button
+                [disabled]="canBeConfirmed(payout.status | ccUnionKey)"
+                mat-button
+                color="primary"
+                (click)="confirm(payout.id)"
+            >
+                CONFIRM
+            </button>
+        </div>
+    </div>
     <mat-card>
         <mat-card-content gdGap="16px">
             <div gdGap="16px" gdColumns="1fr 1fr 1fr">
