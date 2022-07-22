@@ -3,17 +3,17 @@
         <ng-container matColumnDef="select">
             <th *matHeaderCellDef mat-header-cell>
                 <mat-checkbox
-                    (change)="$event ? masterToggle() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    (change)="$event ? masterToggle() : null"
                 >
                 </mat-checkbox>
             </th>
             <td *matCellDef="let row" mat-cell>
                 <mat-checkbox
+                    [checked]="selection.isSelected(row)"
                     (change)="$event ? selection.toggle(row) : null"
                     (click)="$event.stopPropagation()"
-                    [checked]="selection.isSelected(row)"
                 >
                 </mat-checkbox>
             </td>
@@ -38,21 +38,21 @@
         <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
     </table>
 
-    <cc-add-ids-input (add)="add($event)" [disabled]="isLoading$ | async" fxFlex></cc-add-ids-input>
+    <cc-add-ids-input [disabled]="isLoading$ | async" fxFlex (add)="add($event)"></cc-add-ids-input>
     <div fxLayoutAlign="space-between">
         <button
-            (click)="remove()"
             [disabled]="(isLoading$ | async) || !this.selection.selected.length"
             color="warn"
             mat-button
+            (click)="remove()"
         >
             REMOVE
         </button>
         <button
-            (click)="repairDialog()"
             [disabled]="(isLoading$ | async) || !this.selection.selected.length"
             color="primary"
             mat-button
+            (click)="repairDialog()"
         >
             CONFIGURE REPAIR
         </button>

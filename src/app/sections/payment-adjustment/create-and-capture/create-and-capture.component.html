@@ -10,10 +10,10 @@
                 <div fxLayout="column" fxLayoutGap="10px">
                     <div class="mat-subheading-2" fxFlex="10">Scenario:</div>
                     <mat-radio-group
-                        (change)="onScenarioChange($event)"
                         fxFlex="50"
                         fxLayout
                         fxLayoutAlign="space-between center"
+                        (change)="onScenarioChange($event)"
                     >
                         <mat-radio-button
                             [checked]="activeScenario === 'cash_flow'"
@@ -81,10 +81,10 @@
             </form>
             <div>
                 <button
-                    (click)="create()"
                     [disabled]="createStarted || !form.valid"
                     color="primary"
                     mat-raised-button
+                    (click)="create()"
                 >
                     CREATE
                 </button>

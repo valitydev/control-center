@@ -32,10 +32,10 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button (click)="navigateToClaim(claim.party_id, claim.id)" mat-menu-item>
+                <button mat-menu-item (click)="navigateToClaim(claim.party_id, claim.id)">
                     Details
                 </button>
-                <button (click)="navigateToNewClaim(claim.party_id, claim.id)" mat-menu-item>
+                <button mat-menu-item (click)="navigateToNewClaim(claim.party_id, claim.id)">
                     New details
                 </button>
             </mat-menu>

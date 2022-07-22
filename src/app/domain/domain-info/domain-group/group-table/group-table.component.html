@@ -1,7 +1,7 @@
 <cc-group-control
+    [group]="group"
     (regExpPatternChange)="applyFilter($event)"
     (typeSelectionChange)="setTableData($event)"
-    [group]="group"
 ></cc-group-control>
 <div class="table-container">
     <table [dataSource]="dataSource" mat-table matSort>
@@ -24,7 +24,7 @@
         <ng-container matColumnDef="details" stickyEnd>
             <th *matHeaderCellDef mat-header-cell>Details</th>
             <td *matCellDef="let object; let index = index" mat-cell>
-                <button (click)="openDetails(object, index)" mat-icon-button>
+                <button mat-icon-button (click)="openDetails(object, index)">
                     <mat-icon>visibility</mat-icon>
                 </button>
             </td>

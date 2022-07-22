@@ -29,26 +29,26 @@
                     </button>
                     <mat-menu #menu="matMenu">
                         <button
+                            mat-menu-item
                             (click)="
                                 toDetails.emit({
                                     parentRefId: element?.parentRefId,
                                     delegateIdx: element?.delegateIdx
                                 })
                             "
-                            mat-menu-item
                         >
                             Details
                         </button>
-                        <button (click)="changeDelegateRuleset(element)" mat-menu-item>
+                        <button mat-menu-item (click)="changeDelegateRuleset(element)">
                             Change delegate ruleset
                         </button>
-                        <button (click)="changeTarget(element)" mat-menu-item>
+                        <button mat-menu-item (click)="changeTarget(element)">
                             Change main ruleset
                         </button>
-                        <button (click)="cloneDelegateRuleset(element)" mat-menu-item>
+                        <button mat-menu-item (click)="cloneDelegateRuleset(element)">
                             Clone delegate ruleset
                         </button>
-                        <button (click)="delete(element)" mat-menu-item>Delete</button>
+                        <button mat-menu-item (click)="delete(element)">Delete</button>
                     </mat-menu>
                 </td>
             </ng-container>

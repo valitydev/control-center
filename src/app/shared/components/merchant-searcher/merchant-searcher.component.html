@@ -8,8 +8,8 @@
     />
     <mat-autocomplete
         #auto="matAutocomplete"
-        (optionSelected)="optionSelectedHandler($event)"
         autoActiveFirstOption
+        (optionSelected)="optionSelectedHandler($event)"
     >
         <mat-option *ngFor="let party of parties$ | async" [value]="party">
             {{ party.email }}

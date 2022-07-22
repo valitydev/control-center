@@ -2,10 +2,10 @@
     <div class="base-dialog-title" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="cc-headline">{{ title }}</div>
         <mat-icon
-            (click)="cancelDialog()"
             [matDialogClose]="cancelData"
             class="base-dialog-title-close"
             inline
+            (click)="cancelDialog()"
             >clear</mat-icon
         >
     </div>

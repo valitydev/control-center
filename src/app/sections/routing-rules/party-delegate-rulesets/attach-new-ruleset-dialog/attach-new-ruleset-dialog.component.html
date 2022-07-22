@@ -1,9 +1,9 @@
 <cc-base-dialog title="Attach party delegate ruleset">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <cc-target-ruleset-form
+            [type]="dialogData.type"
             (valid)="targetRulesetValid$.next($event)"
             (valueChanges)="targetRuleset$.next($event)"
-            [type]="dialogData.type"
         ></cc-target-ruleset-form>
 
         <ng-container formGroupName="ruleset">
@@ -26,10 +26,10 @@
 
     <cc-base-dialog-actions>
         <button
-            (click)="attach()"
             [disabled]="form.invalid || !(targetRulesetValid$ | async)"
             color="primary"
             mat-button
+            (click)="attach()"
         >
             ATTACH
         </button>

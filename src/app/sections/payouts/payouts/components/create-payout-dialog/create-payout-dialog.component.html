@@ -29,10 +29,10 @@
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
     <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>CANCEL</button>
     <button
-        (click)="create()"
         [disabled]="control.invalid || !!(progress$ | async)"
         color="primary"
         mat-button
+        (click)="create()"
     >
         CREATE
     </button>

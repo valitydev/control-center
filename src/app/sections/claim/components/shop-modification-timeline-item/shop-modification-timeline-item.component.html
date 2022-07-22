@@ -1,7 +1,7 @@
 <cc-modification-unit-timeline-item
-    (claimChanged)="claimChanged.emit()"
     [claim]="claim"
     [modificationUnit]="modificationUnit"
     [patches]="extended$ | async"
     isChangeable
+    (claimChanged)="claimChanged.emit()"
 ></cc-modification-unit-timeline-item>

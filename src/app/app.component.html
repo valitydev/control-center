@@ -1,10 +1,10 @@
 <mat-toolbar class="toolbar" color="primary">
-    <button (click)="sidenav.toggle()" mat-icon-button><mat-icon>menu</mat-icon></button>
+    <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     <span>Control Center</span> <span class="spacer"></span> <span>{{ username }}</span>
     <button [matMenuTriggerFor]="userMenu" mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </mat-toolbar>
 
-<mat-menu #userMenu="matMenu"> <button (click)="logout()" mat-menu-item>Logout</button> </mat-menu>
+<mat-menu #userMenu="matMenu"> <button mat-menu-item (click)="logout()">Logout</button> </mat-menu>
 
 <mat-sidenav-container>
     <mat-sidenav #sidenav fixedInViewport="true" fixedTopGap="64" mode="side" role="navigation">

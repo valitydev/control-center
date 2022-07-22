@@ -2,9 +2,9 @@
     <div class="cc-headline">Merchant's payments</div>
     <cc-payments-searcher
         *ngIf="searchType"
-        (paymentEventFired$)="paymentEventFired($event)"
-        (searchParamsChanged$)="searchParamsUpdated($event)"
         [initSearchParams]="initSearchParams$ | async"
         [type]="searchType"
+        (paymentEventFired$)="paymentEventFired($event)"
+        (searchParamsChanged$)="searchParamsUpdated($event)"
     ></cc-payments-searcher>
 </div>

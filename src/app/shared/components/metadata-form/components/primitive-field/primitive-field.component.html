@@ -15,12 +15,12 @@
                     *ngIf="
                         !data.isRequired && control.value !== null && control.value !== undefined
                     "
-                    (click)="clear($event)"
                     mat-icon-button
+                    (click)="clear($event)"
                 >
                     <mat-icon>clear</mat-icon>
                 </button>
-                <button *ngIf="generate$ | async" (click)="generate($event)" mat-icon-button>
+                <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
                     <mat-icon>loop</mat-icon>
                 </button>
             </div>
@@ -51,18 +51,18 @@
                 <div fxLayoutGap="4px" matSuffix>
                     <button
                         *ngIf="!data.isRequired && control.value"
-                        (click)="clear($event)"
                         mat-icon-button
+                        (click)="clear($event)"
                     >
                         <mat-icon>clear</mat-icon>
                     </button>
                     <button
                         *ngIf="(extensionResult$ | async)?.options?.length"
+                        mat-icon-button
                         (click)="
                             auto.isOpen ? trigger.closePanel() : trigger.openPanel();
                             $event.stopPropagation()
                         "
-                        mat-icon-button
                     >
                         <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
                     </button>
@@ -84,7 +84,7 @@
                     </ng-container>
                 </mat-autocomplete>
             </mat-form-field>
-            <button *ngIf="generate$ | async" (click)="generate($event)" mat-icon-button>
+            <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
                 <mat-icon>loop</mat-icon>
             </button>
         </div>

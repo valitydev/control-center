@@ -89,9 +89,9 @@
                                 />
                             </mat-form-field>
                         </div>
-                        <mat-icon (click)="removeOption(idx)" class="action">clear</mat-icon>
+                        <mat-icon class="action" (click)="removeOption(idx)">clear</mat-icon>
                     </div>
-                    <mat-icon (click)="addOption()" class="action" fxFlexAlign="end">add</mat-icon>
+                    <mat-icon class="action" fxFlexAlign="end" (click)="addOption()">add</mat-icon>
                 </div>
             </div>
             <div *ngIf="form.value.terminalType === terminalType.Existent" fxLayout>
@@ -112,10 +112,10 @@
 
     <cc-base-dialog-actions>
         <button
-            (click)="add()"
             [disabled]="form.invalid || predicateControl.invalid"
             color="primary"
             mat-button
+            (click)="add()"
         >
             ADD
         </button>

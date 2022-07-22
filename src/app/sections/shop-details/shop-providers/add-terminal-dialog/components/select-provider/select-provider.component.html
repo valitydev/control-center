@@ -1,10 +1,10 @@
 <div fxLayout fxLayoutAlign="space-between">
     <mat-form-field fxFlex>
         <input
-            (keyup)="applyFilter($event.target.value)"
             matInput
             placeholder="Filter"
             type="text"
+            (keyup)="applyFilter($event.target.value)"
         />
     </mat-form-field>
 </div>
@@ -13,9 +13,9 @@
         <th *matHeaderCellDef mat-header-cell></th>
         <td *matCellDef="let row" mat-cell>
             <mat-checkbox
+                [checked]="selection.isSelected(row)"
                 (change)="$event ? selection.toggle(row) : null"
                 (click)="$event.stopPropagation()"
-                [checked]="selection.isSelected(row)"
             >
             </mat-checkbox>
         </td>
@@ -35,8 +35,8 @@
     <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
     <tr
         *matRowDef="let row; columns: displayedColumns"
-        (click)="selection.toggle(row)"
         mat-row
+        (click)="selection.toggle(row)"
     ></tr>
 </table>
 

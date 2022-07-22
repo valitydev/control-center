@@ -3,8 +3,8 @@
         <mat-form-field>
             <mat-select
                 [(value)]="selected"
-                (selectionChange)="select()"
                 placeholder="Legal entity type"
+                (selectionChange)="select()"
             >
                 <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
             </mat-select>

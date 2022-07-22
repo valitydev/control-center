@@ -6,9 +6,9 @@
     </mat-form-field>
     <div class="send-comment-action">
         <button
-            (click)="sendComment()"
             [disabled]="!form.valid || (inProgress$ | async)"
             mat-icon-button
+            (click)="sendComment()"
         >
             <mat-icon>send</mat-icon>
         </button>

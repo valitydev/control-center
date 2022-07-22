@@ -2,10 +2,10 @@
     <mat-label>{{ label }}</mat-label>
     <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
     <mat-select
-        (selectionChange)="select($event.value)"
         [disabled]="disabled"
         [required]="required"
         [value]="selected$ | async"
+        (selectionChange)="select($event.value)"
     >
         <mat-option>
             <ngx-mat-select-search
@@ -41,7 +41,7 @@
             </mat-option>
         </ng-template>
     </mat-select>
-    <button *ngIf="selected$ | async" (click)="clear($event)" mat-icon-button matSuffix>
+    <button *ngIf="selected$ | async" mat-icon-button matSuffix (click)="clear($event)">
         <ng-container *ngIf="svgIcon; else defaultIcon">
             <mat-icon [svgIcon]="svgIcon"></mat-icon>
         </ng-container>

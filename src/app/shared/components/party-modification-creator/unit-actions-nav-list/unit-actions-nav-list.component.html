@@ -2,8 +2,8 @@
     <div *ngIf="contractorActions.visible">
         <a
             *ngFor="let contractorAction of contractorActions.names"
-            (click)="select(contractorActions.type, contractorAction)"
             mat-list-item
+            (click)="select(contractorActions.type, contractorAction)"
         >
             {{ contractorAction | ccModificationName: 'ContractorUnitContainer' }}
         </a>
@@ -12,8 +12,8 @@
     <div *ngIf="contractActions.visible">
         <a
             *ngFor="let contractAction of contractActions.names"
-            (click)="select(contractActions.type, contractAction)"
             mat-list-item
+            (click)="select(contractActions.type, contractAction)"
         >
             {{ contractAction | ccModificationName: 'ContractUnitContainer' }}
         </a>
@@ -22,8 +22,8 @@
     <div *ngIf="shopActions.visible">
         <a
             *ngFor="let shopAction of shopActions.names"
-            (click)="select(shopActions.type, shopAction)"
             mat-list-item
+            (click)="select(shopActions.type, shopAction)"
         >
             {{ shopAction | ccModificationName: 'ShopUnitContainer' }}
         </a>

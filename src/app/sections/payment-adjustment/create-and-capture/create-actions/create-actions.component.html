@@ -1,32 +1,32 @@
 <cc-action-item
     *ngIf="createResult.length > 0"
-    (action)="capture()"
     [actionDisabled]="isLoading"
     actionButtonLabel="capture"
     description="Create adjustment success: {{ createResult.length }} adjustments created"
     hasAction="true"
+    (action)="capture()"
 >
 </cc-action-item>
 <cc-action-item
     *ngIf="failedPending.length > 0"
-    (action)="cancelPending()"
     [actionDisabled]="isLoading"
     actionButtonLabel="cancel pending"
     description="Create adjustment failed: {{
         failedPending.length
     }} payment(s) has pending adjustment"
     hasAction="true"
+    (action)="cancelPending()"
 >
 </cc-action-item>
 <cc-action-item
     *ngIf="failedInternal.length > 0"
-    (action)="retryFailedInternal()"
     [actionDisabled]="isLoading"
     actionButtonLabel="retry"
     description="Create adjustment failed: {{
         failedInternal.length
     }} operations(s) failed with 5xx"
     hasAction="true"
+    (action)="retryFailedInternal()"
 >
 </cc-action-item>
 <cc-action-item

@@ -15,10 +15,10 @@
                 <cc-search-table [claims]="claims"></cc-search-table>
                 <button
                     *ngIf="hasMore$ | async"
-                    (click)="fetchMore()"
                     [disabled]="doAction$ | async"
                     fxFlex="100"
                     mat-button
+                    (click)="fetchMore()"
                 >
                     {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
                 </button>

@@ -1,10 +1,10 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <div fxFlexFill fxLayout fxLayoutAlign="end">
-        <button (click)="createDeposit()" color="primary" mat-raised-button>CREATE DEPOSIT</button>
+        <button color="primary" mat-raised-button (click)="createDeposit()">CREATE DEPOSIT</button>
     </div>
     <cc-search-filters
-        (valueChanges)="searchParamsUpdated($event)"
         [initParams]="initParams$ | async"
+        (valueChanges)="searchParamsUpdated($event)"
     ></cc-search-filters>
     <ng-container *ngIf="deposits$ | async as deposits; else noDeposits">
         <cc-empty-search-result
@@ -12,15 +12,15 @@
         ></cc-empty-search-result>
         <mat-card *ngIf="deposits.length > 0" fxLayout="column" fxLayoutGap="16px">
             <cc-deposits-table
-                (menuItemSelected$)="depositMenuItemSelected($event)"
                 [deposits]="deposits"
+                (menuItemSelected$)="depositMenuItemSelected($event)"
             ></cc-deposits-table>
             <button
                 *ngIf="hasMore$ | async"
-                (click)="fetchMore()"
                 [disabled]="doAction$ | async"
                 fxFlex="100"
                 mat-button
+                (click)="fetchMore()"
             >
                 {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
             </button>

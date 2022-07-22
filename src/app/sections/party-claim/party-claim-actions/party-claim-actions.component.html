@@ -4,9 +4,9 @@
         <cc-file-uploader></cc-file-uploader>
     </mat-card-content>
     <mat-card-actions fxLayout="row" fxLayoutAlign="space-between center">
-        <button (click)="changeStatus()" [disabled]="!canChangeStatus()" mat-button>
+        <button [disabled]="!canChangeStatus()" mat-button (click)="changeStatus()">
             CHANGE STATUS
         </button>
-        <button (click)="addPartyModification()" mat-button>ADD PARTY MODIFICATION</button>
+        <button mat-button (click)="addPartyModification()">ADD PARTY MODIFICATION</button>
     </mat-card-actions>
 </mat-card>

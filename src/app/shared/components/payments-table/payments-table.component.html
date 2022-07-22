@@ -39,10 +39,10 @@
             <mat-menu #menu="matMenu">
                 <button
                     *ngFor="let action of paymentActions"
+                    mat-menu-item
                     (click)="
                         menuItemSelected(action, payment.id, payment.invoice_id, payment.owner_id)
                     "
-                    mat-menu-item
                 >
                     {{ action | ccPaymentActions }}
                 </button>

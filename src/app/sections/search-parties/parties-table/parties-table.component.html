@@ -22,8 +22,8 @@
             <mat-menu #menu="matMenu">
                 <button
                     *ngFor="let action of partyActions"
-                    (click)="menuItemSelected(action, party.id)"
                     mat-menu-item
+                    (click)="menuItemSelected(action, party.id)"
                 >
                     {{ action | ccPartyActions }}
                 </button>

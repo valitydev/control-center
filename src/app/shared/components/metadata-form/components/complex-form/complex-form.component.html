@@ -15,7 +15,7 @@
                     {{ data.type.valueType | valueTypeTitle | titlecase }}
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
-                    <button (click)="delete(i)" mat-icon-button>
+                    <button mat-icon-button (click)="delete(i)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-panel-description>
@@ -44,7 +44,7 @@
             </div>
         </mat-expansion-panel>
     </mat-accordion>
-    <button (click)="add()" mat-button>
+    <button mat-button (click)="add()">
         ADD {{ data.type.valueType | valueTypeTitle | uppercase }}
     </button>
 </div>

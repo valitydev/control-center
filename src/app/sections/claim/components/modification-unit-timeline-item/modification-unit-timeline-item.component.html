@@ -16,13 +16,13 @@
             <mat-menu #menu="matMenu">
                 <button
                     *ngIf="isChangeable"
-                    (click)="update()"
                     [disabled]="isLoading$ | async"
                     mat-menu-item
+                    (click)="update()"
                 >
                     Update
                 </button>
-                <button (click)="remove()" [disabled]="isLoading$ | async" mat-menu-item>
+                <button [disabled]="isLoading$ | async" mat-menu-item (click)="remove()">
                     Remove
                 </button>
             </mat-menu>

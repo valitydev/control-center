@@ -2,7 +2,7 @@
 <div *ngIf="!loading && items">
     <div *ngFor="let item of items" fxLayout="column">
         <div fxLayout="column">
-            <mat-checkbox (change)="change(item, $event)" [checked]="item.checked"
+            <mat-checkbox [checked]="item.checked" (change)="change(item, $event)"
                 >{{ item.id }}
             </mat-checkbox>
             <cc-pretty-json [cleanLook]="true" [object]="item.data"></cc-pretty-json>

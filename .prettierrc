@@ -9,7 +9,8 @@
         "$ANGULAR_ANIMATION",
         "$ANGULAR_ANIMATION_INPUT",
         "$ANGULAR_TWO_WAY_BINDING",
-        "$ANGULAR_OUTPUT",
-        "$ANGULAR_INPUT"
+        "$ANGULAR_INPUT",
+        "$DEFAULT",
+        "$ANGULAR_OUTPUT"
     ]
 }

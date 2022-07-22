@@ -41,15 +41,15 @@
 
         <ng-container *ngIf="!(inProgress$ | async) || (machines$ | async)">
             <cc-actions>
-                <button (click)="update()" mat-button>UPDATE</button>
-                <button (click)="repairByScenario()" color="primary" mat-button>
+                <button mat-button (click)="update()">UPDATE</button>
+                <button color="primary" mat-button (click)="repairByScenario()">
                     REPAIR BY SCENARIO
                 </button>
                 <button
-                    (click)="repair()"
                     [disabled]="!selection?.selected?.length"
                     color="primary"
                     mat-button
+                    (click)="repair()"
                 >
                     SIMPLE REPAIR {{ selection?.selected?.length || '' }}
                 </button>
@@ -59,8 +59,8 @@
             <mat-card *ngIf="(machines$ | async).length" fxLayout="column" fxLayoutGap="18px">
                 <table [dataSource]="machines$ | async" mat-table>
                     <cc-select-column
-                        (changed)="selection = $event"
                         [dataSource]="machines$ | async"
+                        (changed)="selection = $event"
                     ></cc-select-column>
                     <ng-container matColumnDef="id">
                         <th *matHeaderCellDef mat-header-cell>ID</th>
@@ -118,8 +118,8 @@
 
                 <cc-show-more-button
                     *ngIf="hasMore$ | async"
-                    (fetchMore)="fetchMore()"
                     [inProgress]="inProgress$ | async"
+                    (fetchMore)="fetchMore()"
                 ></cc-show-more-button>
             </mat-card>
         </ng-container>

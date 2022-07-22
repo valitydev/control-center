@@ -8,7 +8,7 @@
         </mat-form-field>
         <div fxLayout="column" fxLayoutGap="15px">
             <section>
-                <mat-checkbox (change)="detailsChange($event.checked)" [checked]="isBankDetails"
+                <mat-checkbox [checked]="isBankDetails" (change)="detailsChange($event.checked)"
                     >International bank details</mat-checkbox
                 >
             </section>
@@ -20,8 +20,8 @@
             </cc-international-bank-details>
             <section>
                 <mat-checkbox
-                    (change)="accountChange($event.checked)"
                     [checked]="isCorrespondentAccount"
+                    (change)="accountChange($event.checked)"
                     >Correspondent account</mat-checkbox
                 >
             </section>

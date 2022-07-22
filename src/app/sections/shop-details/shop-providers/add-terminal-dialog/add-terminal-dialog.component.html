@@ -5,8 +5,8 @@
             <ng-template matStepLabel>Select provider:</ng-template>
             <div fxLayout="column" fxLayoutGap="20px">
                 <cc-select-provider
-                    (providerIDSelected)="providerIDSelected($event)"
                     [providers]="providers$ | async"
+                    (providerIDSelected)="providerIDSelected($event)"
                 ></cc-select-provider>
                 <div>
                     <button
@@ -24,8 +24,8 @@
             <ng-template matStepLabel>Select or create terminal:</ng-template>
             <div fxLayout="column" fxLayoutGap="20px">
                 <cc-terminals-table
-                    (terminalIDSelected)="terminalIDSelected($event)"
                     [terminals]="terminals$ | async"
+                    (terminalIDSelected)="terminalIDSelected($event)"
                 ></cc-terminals-table>
                 <div><button color="primary" mat-button matStepperPrevious>BACK</button></div>
             </div>
@@ -35,9 +35,9 @@
 <mat-dialog-actions>
     <div>
         <button
-            (click)="add()"
             [disabled]="!(providerForm.valid && terminalForm.valid) || (inProgress$ | async)"
             mat-button
+            (click)="add()"
         >
             ADD
         </button>

@@ -3,13 +3,13 @@
         <mat-select
             #nameSelect="ngModel"
             [(ngModel)]="selectedNames"
-            (selectionChange)="selectionChange($event)"
             multiple
             placeholder="Domain objects"
+            (selectionChange)="selectionChange($event)"
         >
             <mat-option class="filter-option" disabled="disabled">
-                <button (click)="selectAll(nameSelect)" mat-button>SELECT ALL</button>
-                <button (click)="deselectAll(nameSelect)" mat-button>DESELECT ALL</button>
+                <button mat-button (click)="selectAll(nameSelect)">SELECT ALL</button>
+                <button mat-button (click)="deselectAll(nameSelect)">DESELECT ALL</button>
             </mat-option>
             <mat-option *ngFor="let name of names" [value]="name"> {{ name }} </mat-option>
         </mat-select>

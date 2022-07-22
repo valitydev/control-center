@@ -8,10 +8,10 @@
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
     <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>CANCEL</button>
     <button
-        (click)="accept()"
         [disabled]="detailsControl.invalid || !!(progress$ | async)"
         color="primary"
         mat-button
+        (click)="accept()"
     >
         ACCEPT
     </button>

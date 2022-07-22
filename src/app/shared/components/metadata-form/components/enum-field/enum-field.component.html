@@ -12,9 +12,9 @@
     </mat-select>
     <button
         *ngIf="control.value && data.isRequired"
-        (click)="control.reset(); $event.stopPropagation()"
         mat-icon-button
         matSuffix
+        (click)="control.reset(); $event.stopPropagation()"
     >
         <mat-icon>clear</mat-icon>
     </button>

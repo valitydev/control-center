@@ -8,27 +8,27 @@
         fxLayoutGap="64px"
     >
         <cc-routing-ruleset-header
-            (add)="addPartyRule()"
             [backTo]="
                 'party/' + (partyID$ | async) + '/routing-rules/' + (routingRulesType$ | async)
             "
             [refID]="partyRuleset.ref.id"
+            (add)="addPartyRule()"
         >
             Party routing rules
         </cc-routing-ruleset-header>
 
         <cc-routing-rules-list
             *ngIf="(shopsData$ | async)?.length || !(walletsData$ | async)?.length"
-            (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
             [data]="shopsData$ | async"
             [displayedColumns]="shopsDisplayedColumns"
+            (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
         ></cc-routing-rules-list>
 
         <cc-routing-rules-list
             *ngIf="(walletsData$ | async)?.length"
-            (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
             [data]="walletsData$ | async"
             [displayedColumns]="walletsDisplayedColumns"
+            (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
         ></cc-routing-rules-list>
     </div>
 
@@ -40,7 +40,7 @@
             fxLayoutGap="24px"
         >
             <div class="cc-display-1">Routing rules not found</div>
-            <button (click)="initialize()" class="init" color="primary" mat-raised-button>
+            <button class="init" color="primary" mat-raised-button (click)="initialize()">
                 INITIALIZE
             </button>
         </div>

@@ -4,9 +4,9 @@
             <cc-field-label [field]="data.field" [type]="data.type"> </cc-field-label>
         </mat-label>
         <mat-select
-            (ngModelChange)="cleanInternal()"
             [formControl]="fieldControl"
             [required]="data.isRequired"
+            (ngModelChange)="cleanInternal()"
         >
             <mat-option *ngFor="let field of data.ast" [value]="field">
                 <cc-field-label [field]="field" [type]="field.type"></cc-field-label>
@@ -14,9 +14,9 @@
         </mat-select>
         <button
             *ngIf="fieldControl.value && data.isRequired"
-            (click)="fieldControl.reset(); $event.stopPropagation()"
             mat-icon-button
             matSuffix
+            (click)="fieldControl.reset(); $event.stopPropagation()"
         >
             <mat-icon>clear</mat-icon>
         </button>

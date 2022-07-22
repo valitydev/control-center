@@ -1,10 +1,10 @@
 <cc-modification-unit-timeline-item
-    (claimChanged)="claimChanged.emit()"
     [claim]="claim"
     [color]="claimStatusColor[status]"
     [icon]="claimStatusIconName[status]"
     [modificationUnit]="modificationUnit"
     [title]="'changed claim status to ' + (status | keyTitle)"
+    (claimChanged)="claimChanged.emit()"
 >
     <mat-card *ngIf="reason">
         <mat-card-content>

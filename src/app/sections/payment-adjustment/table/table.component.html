@@ -1,10 +1,10 @@
 <div fxLayout fxLayoutAlign="space-between">
     <mat-form-field>
         <input
-            (keyup)="applyFilter($event.target.value)"
             matInput
             placeholder="Filter revision"
             type="text"
+            (keyup)="applyFilter($event.target.value)"
         />
     </mat-form-field>
     <mat-paginator [pageSizeOptions]="[20, 50, 100, 250, 500]" showFirstLastButtons></mat-paginator>
@@ -13,17 +13,17 @@
     <ng-container matColumnDef="select">
         <th *matHeaderCellDef mat-header-cell>
             <mat-checkbox
-                (change)="$event ? masterToggle() : null"
                 [checked]="selection.hasValue() && isAllSelected()"
                 [indeterminate]="selection.hasValue() && !isAllSelected()"
+                (change)="$event ? masterToggle() : null"
             >
             </mat-checkbox>
         </th>
         <td *matCellDef="let row" mat-cell>
             <mat-checkbox
+                [checked]="selection.isSelected(row)"
                 (change)="$event ? selection.toggle(row) : null"
                 (click)="$event.stopPropagation()"
-                [checked]="selection.isSelected(row)"
             >
             </mat-checkbox>
         </td>

@@ -2,8 +2,8 @@
     <mat-form-field>
         <mat-select
             [(value)]="selected"
-            (selectionChange)="select()"
             placeholder="Payout tool info"
+            (selectionChange)="select()"
         >
             <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>
         </mat-select>

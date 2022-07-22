@@ -18,11 +18,11 @@
     mat-dialog-actions
 >
     <button
-        (click)="save()"
         [disabled]="!editValueControl.valid || (inProgress$ | async)"
         fxFlex
         fxFlex.xs="none"
         mat-button
+        (click)="save()"
     >
         SAVE
     </button>

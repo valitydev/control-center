@@ -3,10 +3,10 @@
         <mat-card-content>
             <mat-form-field fxFlex="25">
                 <input
-                    (keyup)="applyFilter($event.target.value)"
                     matInput
                     placeholder="Filter"
                     type="text"
+                    (keyup)="applyFilter($event.target.value)"
                 />
             </mat-form-field>
         </mat-card-content>
@@ -34,7 +34,7 @@
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
-                            <button (click)="navigateToShop(shop.id)" mat-menu-item>Details</button>
+                            <button mat-menu-item (click)="navigateToShop(shop.id)">Details</button>
                         </mat-menu>
                     </td>
                 </ng-container>

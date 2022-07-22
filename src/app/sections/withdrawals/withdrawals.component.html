@@ -35,10 +35,10 @@
         <ng-container *ngIf="!(inProgress$ | async) || (withdrawals$ | async)">
             <div fxLayoutAlign="end">
                 <button
-                    (click)="adjustment()"
                     [disabled]="!selection?.selected?.length"
                     color="primary"
                     mat-button
+                    (click)="adjustment()"
                 >
                     CREATE ADJUSTMENT
                 </button>
@@ -48,8 +48,8 @@
             <mat-card *ngIf="(withdrawals$ | async).length" fxLayout="column" fxLayoutGap="18px">
                 <table [dataSource]="withdrawals$ | async" mat-table>
                     <cc-select-column
-                        (changed)="selection = $event"
                         [dataSource]="withdrawals$ | async"
+                        (changed)="selection = $event"
                     ></cc-select-column>
                     <ng-container matColumnDef="id">
                         <th *matHeaderCellDef mat-header-cell>ID</th>
@@ -101,8 +101,8 @@
 
                 <cc-show-more-button
                     *ngIf="hasMore$ | async"
-                    (fetchMore)="fetchMore()"
                     [inProgress]="inProgress$ | async"
+                    (fetchMore)="fetchMore()"
                 ></cc-show-more-button>
             </mat-card>
         </ng-container>

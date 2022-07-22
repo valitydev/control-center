@@ -4,8 +4,8 @@
             <mat-card-title>Review changes of {{ objectType }}</mat-card-title>
             <div>
                 <mat-checkbox
-                    (change)="renderSideBySide($event)"
                     [checked]="options.renderSideBySide"
+                    (change)="renderSideBySide($event)"
                     >Side by side</mat-checkbox
                 >
             </div>
@@ -20,11 +20,11 @@
         </mat-card-content>
         <mat-card-actions>
             <div fxLayout="row" fxLayoutAlign="space-between center">
-                <button (click)="back()" mat-button>
+                <button mat-button (click)="back()">
                     <mat-icon>keyboard_arrow_left</mat-icon>
                     BACK TO EDIT
                 </button>
-                <button (click)="commit()" [disabled]="isLoading" color="primary" mat-button>
+                <button [disabled]="isLoading" color="primary" mat-button (click)="commit()">
                     COMMIT
                 </button>
             </div>

@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutGap="20px">
-    <mat-radio-group (change)="targetChanges($event)" fxLayout fxLayoutGap="20px">
+    <mat-radio-group fxLayout fxLayoutGap="20px" (change)="targetChanges($event)">
         <mat-radio-button
             *ngFor="let item of radioItems"
             [checked]="selectedTarget === item"
@@ -9,16 +9,16 @@
     </mat-radio-group>
     <cc-fill-in-unit-id
         *ngIf="selectedTarget === t.FillIn"
-        (valueChanges)="unitIDChanges($event)"
         [unitID]="unitID"
+        (valueChanges)="unitIDChanges($event)"
     >
     </cc-fill-in-unit-id>
     <cc-target-table
         *ngIf="selectedTarget === t.PartyItem"
-        (valueChanges)="unitIDChanges($event)"
         [fromClaim]="fromClaim"
         [partyID]="partyID"
         [partyTarget]="partyTarget"
+        (valueChanges)="unitIDChanges($event)"
     >
     </cc-target-table>
 </div>

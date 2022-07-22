@@ -1,10 +1,10 @@
 <cc-modification-unit-timeline-item
-    (claimChanged)="claimChanged.emit()"
     [claim]="claim"
     [icon]="iconMap[commentModification.modification | ccUnionKey]"
     [isLoading]="isLoading$ | async"
     [modificationUnit]="modificationUnit"
     [title]="messageMap[commentModification.modification | ccUnionKey] + ' comment'"
+    (claimChanged)="claimChanged.emit()"
 >
     <mat-card *ngIf="messages$ | async as messages">
         <mat-card-content>

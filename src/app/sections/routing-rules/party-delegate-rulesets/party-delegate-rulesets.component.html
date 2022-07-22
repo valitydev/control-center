@@ -5,15 +5,15 @@
     <div [fxLayoutGap]="(data$ | async)?.length ? '24px' : '64px'" fxLayout="column">
         <div fxLayout fxLayoutAlign="space-between center" fxLayoutGap="8px">
             <div class="cc-headline">Party delegate rulesets</div>
-            <button (click)="attachNewRuleset()" color="primary" mat-button>
+            <button color="primary" mat-button (click)="attachNewRuleset()">
                 ATTACH NEW RULESET
             </button>
         </div>
 
         <cc-routing-rules-list
-            (toDetails)="navigateToPartyRuleset($event.parentRefId, $event.delegateIdx)"
             [data]="data$ | async"
             [displayedColumns]="displayedColumns"
+            (toDetails)="navigateToPartyRuleset($event.parentRefId, $event.delegateIdx)"
         ></cc-routing-rules-list>
     </div>
 </ng-template>

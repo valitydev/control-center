@@ -63,15 +63,15 @@
                 <button [routerLink]="payout.id" mat-menu-item>Details</button>
                 <button
                     *ngIf="canBeConfirmed(payout.status | ccUnionKey)"
-                    (click)="confirm(payout.id)"
                     mat-menu-item
+                    (click)="confirm(payout.id)"
                 >
                     Confirm
                 </button>
                 <button
                     *ngIf="canBeCancelled(payout.status | ccUnionKey)"
-                    (click)="cancel(payout.id)"
                     mat-menu-item
+                    (click)="cancel(payout.id)"
                 >
                     Cancel
                 </button>

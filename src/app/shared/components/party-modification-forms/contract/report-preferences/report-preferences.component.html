@@ -1,7 +1,7 @@
 <form [formGroup]="form" fxLayout="column">
     <mat-checkbox
-        (change)="toggleCheckbox($event.checked, 'service_acceptance_act_preferences')"
         [checked]="showPreferences"
+        (change)="toggleCheckbox($event.checked, 'service_acceptance_act_preferences')"
         >Service acceptance act preferences
     </mat-checkbox>
     <div *ngIf="form.get('service_acceptance_act_preferences')">

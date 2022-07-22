@@ -19,10 +19,10 @@
     </div>
     <cc-base-dialog-actions>
         <button
-            (click)="repair()"
             [disabled]="form.invalid || typeControl.invalid"
             color="primary"
             mat-button
+            (click)="repair()"
         >
             REPAIR
         </button>

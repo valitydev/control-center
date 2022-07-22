@@ -17,7 +17,7 @@
         >
         </cc-shop-location>
     </cc-nested-form-wrapper>
-    <mat-checkbox (change)="toggleCheckbox($event.checked, 'category')" [checked]="showCategory"
+    <mat-checkbox [checked]="showCategory" (change)="toggleCheckbox($event.checked, 'category')"
         >Category</mat-checkbox
     >
     <cc-category-ref

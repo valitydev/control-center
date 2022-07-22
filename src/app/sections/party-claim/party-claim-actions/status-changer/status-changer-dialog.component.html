@@ -30,10 +30,10 @@
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
     <button [disabled]="inProgress$ | async" [mat-dialog-close]="false" mat-button>CANCEL</button>
     <button
-        (click)="confirm()"
         [disabled]="!form.valid || (inProgress$ | async)"
         color="primary"
         mat-button
+        (click)="confirm()"
     >
         CONFIRM
     </button>

@@ -10,10 +10,10 @@
     ></cc-modification-form>
     <cc-base-dialog-actions>
         <button
-            (click)="isUpdate ? update() : add()"
             [disabled]="control.invalid || (isLoading$ | async)"
             color="primary"
             mat-raised-button
+            (click)="isUpdate ? update() : add()"
         >
             {{ isUpdate ? 'UPDATE' : 'ADD' }}
         </button>

@@ -10,10 +10,10 @@
         </mat-card-content>
         <mat-card-actions>
             <button
-                (click)="search()"
                 [disabled]="!formValid || isLoading"
                 color="primary"
                 mat-button
+                (click)="search()"
             >
                 SEARCH PAYMENTS
             </button>
@@ -28,17 +28,17 @@
                 <div>Found: {{ payments.length }}</div>
                 <div>Selected: {{ selectedPayments.length }}</div>
                 <button
-                    (click)="create()"
                     [disabled]="!selectedPayments.length"
                     color="primary"
                     mat-button
+                    (click)="create()"
                 >
                     CREATE
                 </button>
             </div>
             <cc-payment-adjustment-table
-                (changeSelected)="changeSelected($event)"
                 [payments]="payments"
+                (changeSelected)="changeSelected($event)"
             >
             </cc-payment-adjustment-table>
         </mat-card-content>

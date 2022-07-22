@@ -42,12 +42,12 @@
         </div>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-        <button (click)="closeDialog()" [disabled]="isLoading$ | async" mat-button>CANCEL</button>
+        <button [disabled]="isLoading$ | async" mat-button (click)="closeDialog()">CANCEL</button>
         <button
-            (click)="createRevert()"
             [disabled]="(isLoading$ | async) || form.invalid"
             color="primary"
             mat-button
+            (click)="createRevert()"
         >
             CREATE
         </button>

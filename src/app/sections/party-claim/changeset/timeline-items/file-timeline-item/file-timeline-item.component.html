@@ -11,7 +11,7 @@
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button *ngFor="let item of menuConfig" (click)="action(item)" mat-menu-item>
+                <button *ngFor="let item of menuConfig" mat-menu-item (click)="action(item)">
                     {{ item.label }}
                 </button>
             </mat-menu>

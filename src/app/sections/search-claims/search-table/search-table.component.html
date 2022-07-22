@@ -41,17 +41,17 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button (click)="navigateToClaim(claim.party_id, claim.id)" mat-menu-item>
+                <button mat-menu-item (click)="navigateToClaim(claim.party_id, claim.id)">
                     Details
                 </button>
-                <button (click)="navigateToNewClaim(claim.party_id, claim.id)" mat-menu-item>
+                <button mat-menu-item (click)="navigateToNewClaim(claim.party_id, claim.id)">
                     New details
                 </button>
                 <!-- FR-688 
                     <button mat-menu-item (click)="navigateToClaimDeprecated(claim.party_id, claim.id)">
                     Deprecated details
                 </button> -->
-                <button (click)="navigateToPartyClaims(claim.party_id)" mat-menu-item>
+                <button mat-menu-item (click)="navigateToPartyClaims(claim.party_id)">
                     Party claims
                 </button>
             </mat-menu>

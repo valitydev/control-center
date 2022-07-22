@@ -6,10 +6,10 @@
         <div fxLayout fxLayoutAlign="space-between">
             <mat-form-field fxFlex="35">
                 <input
-                    (keyup)="applyFilter($event.target.value)"
                     matInput
                     placeholder="Filter"
                     type="text"
+                    (keyup)="applyFilter($event.target.value)"
                 />
             </mat-form-field>
         </div>
@@ -19,8 +19,8 @@
                     <th *matHeaderCellDef class="mat-column-select" mat-header-cell></th>
                     <td *matCellDef="let item" class="mat-column-select" mat-cell>
                         <mat-checkbox
-                            (change)="change(item, $event)"
                             [checked]="item.checked"
+                            (change)="change(item, $event)"
                         ></mat-checkbox>
                     </td>
                 </ng-container>

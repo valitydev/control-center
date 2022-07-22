@@ -1,17 +1,17 @@
 <cc-base-dialog title="Change main ruleset">
     <cc-target-ruleset-form
-        (valid)="targetRulesetValid$.next($event)"
-        (valueChanges)="targetRuleset$.next($event)"
         [type]="dialogData.type"
         [value]="initValue"
+        (valid)="targetRulesetValid$.next($event)"
+        (valueChanges)="targetRuleset$.next($event)"
     ></cc-target-ruleset-form>
 
     <cc-base-dialog-actions>
         <button
-            (click)="changeTarget()"
             [disabled]="!(targetRulesetValid$ | async)"
             color="primary"
             mat-button
+            (click)="changeTarget()"
         >
             CHANGE TARGET
         </button>

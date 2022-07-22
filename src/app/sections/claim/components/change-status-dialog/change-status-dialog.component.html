@@ -44,10 +44,10 @@
     </div>
     <cc-base-dialog-actions>
         <button
-            (click)="confirm()"
             [disabled]="form.invalid || (inProgress$ | async)"
             color="primary"
             mat-raised-button
+            (click)="confirm()"
         >
             CONFIRM
         </button>

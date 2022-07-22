@@ -20,11 +20,11 @@
         </mat-radio-group>
     </mat-form-field>
     <div
-        (click)="changeVisibility(!isExpanded)"
         class="show-others"
         fxLayout
         fxLayoutAlign="start center"
         fxLayoutGap="8px"
+        (click)="changeVisibility(!isExpanded)"
     >
         <div class="mat-body-1">{{ isExpanded ? 'Show less' : 'Show others' }}</div>
         <mat-icon>{{ isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon>

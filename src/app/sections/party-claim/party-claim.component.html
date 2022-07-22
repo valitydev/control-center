@@ -17,17 +17,17 @@
             [partyID]="partyID$ | async"
         ></cc-claim-changeset>
         <cc-unsaved-claim-changeset
-            (changesetUpdated)="changesetUpdated()"
             [changeset]="changeset$ | async"
             [claimID]="claimID$ | async"
             [partyID]="partyID$ | async"
+            (changesetUpdated)="changesetUpdated()"
         ></cc-unsaved-claim-changeset>
         <cc-party-claim-actions
-            (changesetUpdated)="changesetUpdated()"
             [changeset]="changeset$ | async"
             [claimID]="claimID$ | async"
             [partyID]="partyID$ | async"
             [status]="status$ | async"
+            (changesetUpdated)="changesetUpdated()"
         ></cc-party-claim-actions>
     </div>
 </div>
