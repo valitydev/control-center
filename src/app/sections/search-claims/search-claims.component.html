@@ -14,11 +14,11 @@
             <mat-card *ngIf="claims.length > 0" fxLayout="column" fxLayoutGap="18px">
                 <cc-search-table [claims]="claims"></cc-search-table>
                 <button
+                    *ngIf="hasMore$ | async"
+                    [disabled]="doAction$ | async"
                     fxFlex="100"
                     mat-button
-                    *ngIf="hasMore$ | async"
                     (click)="fetchMore()"
-                    [disabled]="doAction$ | async"
                 >
                     {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
                 </button>

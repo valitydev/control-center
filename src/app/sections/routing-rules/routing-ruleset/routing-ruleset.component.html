@@ -4,8 +4,6 @@
 <ng-template #loaded>
     <div fxLayout="column" fxLayoutGap="64px">
         <cc-routing-ruleset-header
-            [refID]="(shopRuleset$ | async)?.ref?.id"
-            [description]="(shop$ | async)?.details?.name"
             [backTo]="
                 'party/' +
                 (partyID$ | async) +
@@ -14,6 +12,8 @@
                 '/' +
                 (partyRulesetRefID$ | async)
             "
+            [description]="(shop$ | async)?.details?.name"
+            [refID]="(shopRuleset$ | async)?.ref?.id"
             (add)="addShopRule()"
         >
             Routing rules
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <mat-action-row flexLayout fxLayoutAlign="start">
-                    <button mat-button color="warn" (click)="removeShopRule(idx)">REMOVE</button>
+                    <button color="warn" mat-button (click)="removeShopRule(idx)">REMOVE</button>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>

@@ -9,7 +9,7 @@
         <div class="cc-subheading-2">{{ title }}</div>
         <mat-icon [@indicatorRotate]="animationState">expand_less</mat-icon>
     </div>
-    <div class="cc-collapse-body" *ngIf="expanded" @bodyExpansion>
+    <div *ngIf="expanded" @bodyExpansion class="cc-collapse-body">
         <ng-content></ng-content>
     </div>
 </div>

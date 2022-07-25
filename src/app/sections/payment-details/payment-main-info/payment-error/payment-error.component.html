@@ -3,7 +3,7 @@
         <cc-details-item fxFlex="32" title="Code">{{ error.code }}</cc-details-item>
         <cc-details-item fxFlex title="Reason">{{ error.reason }}</cc-details-item>
     </div>
-    <cc-details-item fxFlex title="Sub Failure" *ngIf="error.path">{{
+    <cc-details-item *ngIf="error.path" fxFlex title="Sub Failure">{{
         error.path
     }}</cc-details-item>
 </div>

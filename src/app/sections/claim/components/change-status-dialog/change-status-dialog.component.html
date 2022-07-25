@@ -1,10 +1,10 @@
-<cc-base-dialog title="Change claim status" [inProgress]="inProgress$ | async">
-    <div gdColumns="1fr" gdGap="16px" [formGroup]="form">
+<cc-base-dialog [inProgress]="inProgress$ | async" title="Change claim status">
+    <div [formGroup]="form" gdColumns="1fr" gdGap="16px">
         <mat-form-field>
             <mat-select
-                placeholder="Status"
-                formControlName="status"
                 [disabled]="inProgress$ | async"
+                formControlName="status"
+                placeholder="Status"
             >
                 <mat-option *ngFor="let status of statuses" [value]="status">{{
                     status | keyTitle | titlecase
@@ -13,17 +13,17 @@
         </mat-form-field>
         <mat-form-field *ngIf="form.value.status === 'denied'">
             <input
-                aria-label="reason"
-                matInput
-                required
-                formControlName="denyReason"
-                placeholder="Reason"
                 [disabled]="inProgress$ | async"
+                aria-label="reason"
+                formControlName="denyReason"
+                matInput
+                placeholder="Reason"
+                required
             />
         </mat-form-field>
         <mat-form-field *ngIf="form.value.status === 'revoked'">
             <mat-label>Reason</mat-label>
-            <mat-select formControlName="revokeReason" [disabled]="inProgress$ | async" required>
+            <mat-select [disabled]="inProgress$ | async" formControlName="revokeReason" required>
                 <!-- TODO: It's necessary to hardcode reasons (backend issue) -->
                 <mat-option
                     *ngFor="
@@ -44,9 +44,9 @@
     </div>
     <cc-base-dialog-actions>
         <button
-            mat-raised-button
-            color="primary"
             [disabled]="form.invalid || (inProgress$ | async)"
+            color="primary"
+            mat-raised-button
             (click)="confirm()"
         >
             CONFIRM

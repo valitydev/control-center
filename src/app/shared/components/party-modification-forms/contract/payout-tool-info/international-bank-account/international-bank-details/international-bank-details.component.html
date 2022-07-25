@@ -1,13 +1,13 @@
 <form [formGroup]="form" fxLayout="column">
-    <mat-form-field> <input matInput placeholder="BIC" formControlName="bic" /> </mat-form-field>
-    <mat-form-field> <input matInput placeholder="Name" formControlName="name" /> </mat-form-field>
+    <mat-form-field> <input formControlName="bic" matInput placeholder="BIC" /> </mat-form-field>
+    <mat-form-field> <input formControlName="name" matInput placeholder="Name" /> </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="Address" formControlName="address" />
+        <input formControlName="address" matInput placeholder="Address" />
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="ABA routing transit number" formControlName="aba_rtn" />
+        <input formControlName="aba_rtn" matInput placeholder="ABA routing transit number" />
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="Country code" formControlName="country" />
+        <input formControlName="country" matInput placeholder="Country code" />
     </mat-form-field>
 </form>

@@ -1,19 +1,19 @@
 <cc-base-dialog
-    [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
     [inProgress]="isLoading$ | async"
+    [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
 >
     <cc-modification-form
+        [claim]="dialogData.claim"
         [formControl]="control"
         [party]="dialogData.party"
-        [claim]="dialogData.claim"
         [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
     ></cc-modification-form>
     <cc-base-dialog-actions>
         <button
-            mat-raised-button
-            color="primary"
-            (click)="isUpdate ? update() : add()"
             [disabled]="control.invalid || (isLoading$ | async)"
+            color="primary"
+            mat-raised-button
+            (click)="isUpdate ? update() : add()"
         >
             {{ isUpdate ? 'UPDATE' : 'ADD' }}
         </button>

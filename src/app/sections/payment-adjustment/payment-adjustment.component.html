@@ -3,16 +3,16 @@
     <mat-card>
         <mat-card-content>
             <cc-payment-adjustment-search-form
-                (valueChanges)="formValueChanges($event)"
                 (statusChanges)="formStatusChanges($event)"
+                (valueChanges)="formValueChanges($event)"
             >
             </cc-payment-adjustment-search-form>
         </mat-card-content>
         <mat-card-actions>
             <button
-                mat-button
-                color="primary"
                 [disabled]="!formValid || isLoading"
+                color="primary"
+                mat-button
                 (click)="search()"
             >
                 SEARCH PAYMENTS
@@ -24,14 +24,14 @@
     </mat-card>
     <mat-card>
         <mat-card-content>
-            <div fxLayout fxLayoutGap="16px" fxLayoutAlign="start center">
+            <div fxLayout fxLayoutAlign="start center" fxLayoutGap="16px">
                 <div>Found: {{ payments.length }}</div>
                 <div>Selected: {{ selectedPayments.length }}</div>
                 <button
-                    mat-button
-                    color="primary"
-                    (click)="create()"
                     [disabled]="!selectedPayments.length"
+                    color="primary"
+                    mat-button
+                    (click)="create()"
                 >
                     CREATE
                 </button>

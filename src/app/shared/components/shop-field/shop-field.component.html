@@ -1,10 +1,10 @@
 <mat-form-field>
     <mat-label>{{ multiple ? 'Shops' : 'Shop' }}</mat-label>
     <mat-select
+        [disabled]="!partyId"
+        [formControl]="control"
         [multiple]="multiple"
         [required]="required"
-        [formControl]="control"
-        [disabled]="!partyId"
     >
         <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
             {{ shop.details.name }}

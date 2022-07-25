@@ -10,10 +10,10 @@
                 ></cc-select-provider>
                 <div>
                     <button
-                        matStepperNext
-                        mat-button
                         [disabled]="!providerForm.valid"
                         color="primary"
+                        mat-button
+                        matStepperNext
                     >
                         NEXT
                     </button>
@@ -27,7 +27,7 @@
                     [terminals]="terminals$ | async"
                     (terminalIDSelected)="terminalIDSelected($event)"
                 ></cc-terminals-table>
-                <div><button matStepperPrevious mat-button color="primary">BACK</button></div>
+                <div><button color="primary" mat-button matStepperPrevious>BACK</button></div>
             </div>
         </mat-step>
     </mat-horizontal-stepper>
@@ -35,13 +35,13 @@
 <mat-dialog-actions>
     <div>
         <button
+            [disabled]="!(providerForm.valid && terminalForm.valid) || (inProgress$ | async)"
             mat-button
             (click)="add()"
-            [disabled]="!(providerForm.valid && terminalForm.valid) || (inProgress$ | async)"
         >
             ADD
         </button>
-        <button mat-button [mat-dialog-close]="false" [disabled]="inProgress$ | async">
+        <button [disabled]="inProgress$ | async" [mat-dialog-close]="false" mat-button>
             CANCEL
         </button>
     </div>
