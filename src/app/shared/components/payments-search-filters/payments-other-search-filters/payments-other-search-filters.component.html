@@ -1,9 +1,9 @@
 <button
+    [matBadge]="count$ | async"
     class="other-filters-button"
     mat-button
-    [matBadge]="count$ | async"
-    matBadgePosition="after"
     matBadgeColor="accent"
+    matBadgePosition="after"
     (click)="openOtherFiltersDialog()"
 >
     OTHER FILTERS

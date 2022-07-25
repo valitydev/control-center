@@ -1,5 +1,5 @@
-<div ngfSelect class="cc-file-uploader" (filesChange)="startUploading($event)">
-    <button mat-icon-button [disabled]="disabled || (inProgress$ | async)">
+<div class="cc-file-uploader" ngfSelect (filesChange)="startUploading($event)">
+    <button [disabled]="disabled || (inProgress$ | async)" mat-icon-button>
         <mat-icon>cloud_upload</mat-icon>
     </button>
 </div>

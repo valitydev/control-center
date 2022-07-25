@@ -2,28 +2,28 @@
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="16px">
         <mat-form-field fxFlex>
             <input
-                matInput
-                formControlName="fromTime"
                 [matDatepicker]="fromTimePicker"
+                formControlName="fromTime"
+                matInput
                 placeholder="From time"
                 required
             />
-            <mat-datepicker-toggle matSuffix [for]="fromTimePicker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle [for]="fromTimePicker" matSuffix></mat-datepicker-toggle>
             <mat-datepicker #fromTimePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field fxFlex>
             <input
-                matInput
-                formControlName="toTime"
                 [matDatepicker]="toTimePicker"
+                formControlName="toTime"
+                matInput
                 placeholder="To time"
                 required
             />
-            <mat-datepicker-toggle matSuffix [for]="toTimePicker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle [for]="toTimePicker" matSuffix></mat-datepicker-toggle>
             <mat-datepicker #toTimePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field fxFlex>
-            <mat-select placeholder="Payment status" formControlName="status">
+            <mat-select formControlName="status" placeholder="Payment status">
                 <mat-option [value]="null">any</mat-option>
                 <mat-option *ngFor="let status of statuses" [value]="status">{{
                     status
@@ -34,42 +34,42 @@
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="16px">
         <mat-form-field fxFlex>
             <input
-                matInput
                 formControlName="fromRevision"
+                matInput
                 placeholder="From domain revision"
                 required
             />
         </mat-form-field>
         <mat-form-field fxFlex>
             <input
-                matInput
                 formControlName="toRevision"
+                matInput
                 placeholder="To domain revision"
                 required
             />
         </mat-form-field>
         <mat-form-field fxFlex>
-            <input matInput formControlName="providerID" placeholder="Provider ID" />
+            <input formControlName="providerID" matInput placeholder="Provider ID" />
         </mat-form-field>
     </div>
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="16px">
         <mat-form-field fxFlex>
-            <input matInput formControlName="partyId" placeholder="Party ID" />
+            <input formControlName="partyId" matInput placeholder="Party ID" />
         </mat-form-field>
         <mat-form-field fxFlex>
             <input
-                matInput
                 formControlName="shopId"
+                matInput
                 placeholder="Shop ID (Filled party ID required)"
             />
         </mat-form-field>
         <mat-form-field fxFlex>
-            <input matInput formControlName="terminalID" placeholder="Terminal ID" />
+            <input formControlName="terminalID" matInput placeholder="Terminal ID" />
         </mat-form-field>
     </div>
     <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutGap="16px">
         <mat-form-field fxFlex>
-            <input matInput formControlName="invoiceIds" placeholder="Invoice IDs" />
+            <input formControlName="invoiceIds" matInput placeholder="Invoice IDs" />
             <mat-hint>Ex: 1QLplnyXEC8, 1QLpm9gHTs0, 1QLpkenTYx6</mat-hint>
         </mat-form-field>
     </div>

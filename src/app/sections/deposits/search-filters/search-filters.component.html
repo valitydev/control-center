@@ -1,35 +1,35 @@
 <mat-card>
     <mat-card-content>
-        <form fxLayout="column" fxLayoutGap="16px" [formGroup]="form">
-            <div fxLayout fxLayoutGap="16px" fxFlexFill>
+        <form [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
+            <div fxFlexFill fxLayout fxLayoutGap="16px">
                 <mat-form-field fxFlex>
                     <mat-label>Date Range</mat-label>
                     <mat-date-range-input [rangePicker]="picker">
                         <input
-                            matStartDate
-                            matInput
                             formControlName="fromTime"
+                            matInput
+                            matStartDate
                             placeholder="Start Date"
                         />
                         <input
+                            formControlName="toTime"
                             matEndDate
                             matInput
-                            formControlName="toTime"
                             placeholder="End Date"
                         />
                     </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    <mat-datepicker-toggle [for]="picker" matSuffix>
                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                     </mat-datepicker-toggle>
                     <mat-date-range-picker #picker></mat-date-range-picker>
                 </mat-form-field>
                 <mat-form-field fxFlex>
                     <input
+                        autocomplete="false"
+                        formControlName="amountTo"
                         matInput
                         placeholder="Amount To"
-                        formControlName="amountTo"
                         type="number"
-                        autocomplete="false"
                     />
                 </mat-form-field>
                 <mat-form-field fxFlex>
@@ -51,32 +51,32 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div fxLayout fxLayoutGap="16px" fxFlexFill>
+            <div fxFlexFill fxLayout fxLayoutGap="16px">
                 <mat-form-field fxFlex>
                     <input
+                        autocomplete="false"
+                        formControlName="depositId"
                         matInput
                         placeholder="Deposit ID"
-                        formControlName="depositId"
                         type="text"
-                        autocomplete="false"
                     />
                 </mat-form-field>
                 <mat-form-field fxFlex>
                     <input
+                        autocomplete="false"
+                        formControlName="identityId"
                         matInput
                         placeholder="Identity ID"
-                        formControlName="identityId"
                         type="text"
-                        autocomplete="false"
                     />
                 </mat-form-field>
                 <mat-form-field fxFlex>
                     <input
+                        autocomplete="false"
+                        formControlName="walletId"
                         matInput
                         placeholder="Wallet ID"
-                        formControlName="walletId"
                         type="text"
-                        autocomplete="false"
                     />
                 </mat-form-field>
                 <cc-merchant-searcher formControlName="partyId" fxFlex></cc-merchant-searcher>

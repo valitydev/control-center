@@ -12,10 +12,10 @@
         </mat-card-header>
         <mat-card-content>
             <cc-monaco-diff-editor
-                class="editor"
+                [modified]="modified"
                 [options]="options"
                 [original]="original"
-                [modified]="modified"
+                class="editor"
             ></cc-monaco-diff-editor>
         </mat-card-content>
         <mat-card-actions>
@@ -24,7 +24,7 @@
                     <mat-icon>keyboard_arrow_left</mat-icon>
                     BACK TO EDIT
                 </button>
-                <button mat-button color="primary" [disabled]="isLoading" (click)="commit()">
+                <button [disabled]="isLoading" color="primary" mat-button (click)="commit()">
                     COMMIT
                 </button>
             </div>

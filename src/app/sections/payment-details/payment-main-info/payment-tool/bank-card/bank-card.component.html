@@ -1,4 +1,4 @@
-<div fxLayout fxLayoutGap="8px" fxLayoutAlign="start center">
+<div fxLayout fxLayoutAlign="start center" fxLayoutGap="8px">
     <div>{{ bankCard | toCardNumber }}</div>
     <mat-icon
         *ngIf="bankCard.payment_system_deprecated === legacyPaymentSystems?.visa"

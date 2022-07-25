@@ -2,16 +2,16 @@
     <mat-label>{{ label }}</mat-label>
     <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
     <mat-select
-        (selectionChange)="select($event.value)"
-        [value]="selected$ | async"
-        [required]="required"
         [disabled]="disabled"
+        [required]="required"
+        [value]="selected$ | async"
+        (selectionChange)="select($event.value)"
     >
         <mat-option>
             <ngx-mat-select-search
                 [formControl]="selectSearchControl"
-                placeholderLabel="Search..."
                 noEntriesFoundLabel="No entries found"
+                placeholderLabel="Search..."
             >
                 <mat-icon *ngIf="svgIcon" [svgIcon]="svgIcon" ngxMatSelectSearchClear></mat-icon>
             </ngx-mat-select-search>

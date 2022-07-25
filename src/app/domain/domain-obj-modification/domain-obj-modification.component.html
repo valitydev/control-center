@@ -6,11 +6,11 @@
         </mat-card-header>
         <mat-card-content>
             <cc-monaco-editor
-                class="editor"
-                [file]="modifiedFile"
-                (fileChange)="fileChange($event)"
                 [codeLensProviders]="codeLensProviders"
                 [completionProviders]="completionProviders"
+                [file]="modifiedFile"
+                class="editor"
+                (fileChange)="fileChange($event)"
             ></cc-monaco-editor>
         </mat-card-content>
         <mat-card-actions>
@@ -19,8 +19,8 @@
                     <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
                     BACK TO DOMAIN
                 </button>
-                <button mat-button color="warn" (click)="resetChanges()">RESET CHANGES</button>
-                <button mat-button [disabled]="!valid" (click)="reviewChanges()">
+                <button color="warn" mat-button (click)="resetChanges()">RESET CHANGES</button>
+                <button [disabled]="!valid" mat-button (click)="reviewChanges()">
                     REVIEW CHANGES
                     <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
                 </button>

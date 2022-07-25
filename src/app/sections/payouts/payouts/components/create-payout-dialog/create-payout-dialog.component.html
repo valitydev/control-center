@@ -1,5 +1,5 @@
 <div class="mat-dialog-title">Create payout</div>
-<mat-dialog-content [formGroup]="control" gdGap="16px" gdColumns="1fr">
+<mat-dialog-content [formGroup]="control" gdColumns="1fr" gdGap="16px">
     <cc-merchant-field formControlName="partyId" required></cc-merchant-field>
     <cc-shop-field
         [partyId]="this.control.value.partyId"
@@ -8,15 +8,15 @@
     ></cc-shop-field>
     <div fxLayout fxLayoutGap="24px">
         <mat-form-field fxFlex>
-            <input matInput type="number" placeholder="Amount" formControlName="amount" required />
+            <input formControlName="amount" matInput placeholder="Amount" required type="number" />
         </mat-form-field>
         <mat-form-field fxFlex>
             <input
-                matInput
-                type="text"
-                placeholder="Currency"
                 formControlName="currency"
+                matInput
+                placeholder="Currency"
                 required
+                type="text"
             />
         </mat-form-field>
     </div>
@@ -27,12 +27,12 @@
     ></cc-payout-tool-field>
 </mat-dialog-content>
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-    <button mat-button [mat-dialog-close]="false" [disabled]="!!(progress$ | async)">CANCEL</button>
+    <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>CANCEL</button>
     <button
-        mat-button
-        (click)="create()"
         [disabled]="control.invalid || !!(progress$ | async)"
         color="primary"
+        mat-button
+        (click)="create()"
     >
         CREATE
     </button>

@@ -2,13 +2,13 @@
     <div fxLayout="column">
         <mat-form-field>
             <input
+                formControlName="payout_tool_id"
                 matInput
                 placeholder="Payout tool ID"
-                formControlName="payout_tool_id"
                 required
             />
         </mat-form-field>
-        <div><button (click)="generate()" mat-stroked-button>GENERATE NEW VALUE</button></div>
+        <div><button mat-stroked-button (click)="generate()">GENERATE NEW VALUE</button></div>
     </div>
     <cc-contract-payout-tool-modification
         [form]="form.get('modification')"

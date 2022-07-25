@@ -1,10 +1,10 @@
 <div fxLayout="column" fxLayoutGap="16px">
     <div
         fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="16px"
         fxLayout.lt-sm="column"
+        fxLayoutAlign="start center"
         fxLayoutAlign.lt-sm="start"
+        fxLayoutGap="16px"
     >
         <cc-details-item fxFlex title="Name">{{ shop.details.name }}</cc-details-item>
         <cc-details-item fxFlex title="Description">{{
@@ -16,10 +16,10 @@
     </div>
     <div
         fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="16px"
         fxLayout.lt-sm="column"
+        fxLayoutAlign="start center"
         fxLayoutAlign.lt-sm="start"
+        fxLayoutGap="16px"
     >
         <cc-details-item fxFlex title="Created at">{{
             shop.created_at | date: 'dd.MM.yyyy HH:mm:ss'
@@ -33,10 +33,10 @@
     </div>
     <div
         fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="16px"
         fxLayout.lt-sm="column"
+        fxLayoutAlign="start center"
         fxLayoutAlign.lt-sm="start"
+        fxLayoutGap="16px"
     >
         <cc-details-item fxFlex title="Blocking">{{
             shop.blocking | ccBlockingPipe
@@ -48,10 +48,10 @@
     </div>
     <div
         fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="16px"
         fxLayout.lt-sm="column"
+        fxLayoutAlign="start center"
         fxLayoutAlign.lt-sm="start"
+        fxLayoutGap="16px"
     >
         <cc-details-item fxFlex title="Payout tool ID">{{
             shop.payout_tool_id ? shop.payout_tool_id : '-'

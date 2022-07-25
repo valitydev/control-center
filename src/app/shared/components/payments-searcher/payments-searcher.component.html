@@ -2,17 +2,17 @@
     <mat-card>
         <mat-card-content fxLayout>
             <cc-payments-main-search-filters
-                fxFlex="75"
-                [type]="mainFilterSearchType"
-                (valueChanges)="searchParamsChanges($event)"
                 [initParams]="initSearchParams"
+                [type]="mainFilterSearchType"
+                fxFlex="75"
+                (valueChanges)="searchParamsChanges($event)"
             ></cc-payments-main-search-filters>
             <cc-payments-other-search-filters
+                [initParams]="initSearchParams"
                 class="other-filters-button"
                 fxFlex
                 fxLayoutAlign="center start"
                 (valueChanges)="searchParamsChanges($event)"
-                [initParams]="initSearchParams"
             ></cc-payments-other-search-filters>
         </mat-card-content>
         <mat-card-footer *ngIf="doAction$ | async">
@@ -30,11 +30,11 @@
                 (menuItemSelected$)="paymentMenuItemSelected($event)"
             ></cc-payments-table>
             <button
+                *ngIf="hasMore$ | async"
+                [disabled]="doAction$ | async"
                 fxFlex="100"
                 mat-button
-                *ngIf="hasMore$ | async"
                 (click)="fetchMore()"
-                [disabled]="doAction$ | async"
             >
                 {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
             </button>
