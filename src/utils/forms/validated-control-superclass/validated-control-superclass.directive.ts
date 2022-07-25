@@ -1,5 +1,5 @@
 import { Directive, OnInit } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
+import { FormGroup, ValidationErrors, Validator } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import { EMPTY, Observable } from 'rxjs';
 
@@ -34,9 +34,13 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
         return EMPTY;
     }
 
-    protected outerToInner(outer: OuterType): InnerType {
-        if (!outer && 'controls' in this.control) {
-            return this.emptyValue;
+    protected outerToInnerValue(outer: OuterType): InnerType {
+        if ('controls' in this.control) {
+            if (!outer) return this.emptyValue;
+            if (
+                Object.keys(outer).length < Object.keys((this.control as FormGroup).controls).length
+            )
+                return Object.assign({}, this.emptyValue, outer);
         }
         return outer as never;
     }

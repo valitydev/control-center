@@ -13,7 +13,6 @@ import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
 import {
     InvoicePaymentAdjustmentParams,
     InvoicePaymentAdjustmentScenario,
-    UserInfo,
 } from '@vality/domain-proto/lib/payment_processing';
 import { KeycloakService } from 'keycloak-angular';
 import isEqual from 'lodash-es/isEqual';
@@ -142,7 +141,6 @@ export class CreateAndCaptureComponent implements OnInit {
         this.createStarted = true;
         this.form.disable();
         const createParams = this.payments.map(({ invoice_id, id }) => ({
-            user: this.getUser(),
             invoice_id,
             payment_id: id,
             params: this.adjustmentParams,
@@ -196,12 +194,5 @@ export class CreateAndCaptureComponent implements OnInit {
             reason,
             scenario,
         } as InvoicePaymentAdjustmentParams;
-    }
-
-    private getUser(): UserInfo {
-        return {
-            id: this.keycloakService.getUsername(),
-            type: { internal_user: {} },
-        };
     }
 }

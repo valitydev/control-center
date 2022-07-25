@@ -3,13 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto';
 import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
 import { Moment } from 'moment';
+import { map } from 'rxjs/operators';
 
 import { BaseDialogResponseStatus } from '../../../components/base-dialog';
 import { BaseDialogService } from '../../../components/base-dialog/services/base-dialog.service';
 import { SELECT_COLUMN_NAME } from '../../../components/table';
+import { isNilOrEmptyString } from '../../../utils';
 import { WithdrawalParams } from '../../query-dsl';
 import { QueryParamsService } from '../../shared/services';
 import { ErrorService } from '../../shared/services/error';
@@ -72,7 +75,7 @@ export class WithdrawalsComponent implements OnInit {
     constructor(
         private fetchWithdrawalsService: FetchWithdrawalsService,
         private fb: FormBuilder,
-        private qp: QueryParamsService<WithdrawalsForm>,
+        private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
         private errorService: ErrorService
@@ -80,8 +83,11 @@ export class WithdrawalsComponent implements OnInit {
 
     ngOnInit() {
         this.filters.valueChanges
-            .pipe(untilDestroyed(this))
-            .subscribe((v) => this.qp.set(v as WithdrawalsForm));
+            .pipe(
+                map((v) => omitBy(v, isNilOrEmptyString)),
+                untilDestroyed(this)
+            )
+            .subscribe((v) => void this.qp.set(omitBy(v, isNilOrEmptyString)));
         this.qp.params$
             .pipe(untilDestroyed(this))
             .subscribe(({ dateRange, merchant, status, amountFrom, amountTo, withdrawalId }) =>

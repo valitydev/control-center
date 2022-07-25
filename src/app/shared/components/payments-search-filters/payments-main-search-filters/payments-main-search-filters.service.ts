@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { ReplaySubject } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { SearchFiltersParams } from '../search-filters-params';
 import { formValueToSearchParams } from './form-value-to-search-params';
@@ -37,13 +37,13 @@ export class PaymentsMainSearchFiltersService {
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     shops$ = this.getShops$.pipe(
-        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
+        switchMap((partyID) => this.partyManagementService.Get(partyID)),
         map(({ shops }) => Array.from(shops.values())),
         shareReplay(1)
     );
 
     constructor(
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private fb: UntypedFormBuilder
     ) {}
 

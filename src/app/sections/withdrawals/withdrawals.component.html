@@ -20,11 +20,11 @@
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Amount from</mat-label>
-                    <input formControlName="amountFrom" matInput />
+                    <input formControlName="amountFrom" matInput type="number" />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Amount to</mat-label>
-                    <input formControlName="amountTo" matInput />
+                    <input formControlName="amountTo" matInput type="number" />
                 </mat-form-field>
             </mat-card-content>
             <mat-card-footer *ngIf="inProgress$ | async">

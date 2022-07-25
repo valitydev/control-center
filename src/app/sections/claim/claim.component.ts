@@ -14,7 +14,7 @@ import {
 import { catchError, first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { ChangeStatusDialogComponent } from '@cc/app/sections/claim/components/change-status-dialog/change-status-dialog.component';
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
 import { UploadFileService } from '@cc/app/sections/claim/services/upload-file.service';
@@ -36,7 +36,7 @@ import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 export class ClaimComponent {
     party$ = (this.route.params as Observable<Record<string, string>>).pipe(
         switchMap(({ partyID }) =>
-            this.partyManagementWithUserService.getParty(partyID).pipe(
+            this.partyManagementService.Get(partyID).pipe(
                 progressTo(this.progress$),
                 catchError((err) => {
                     this.notificationService.error('The party was not loaded');
@@ -81,7 +81,7 @@ export class ClaimComponent {
     constructor(
         private route: ActivatedRoute,
         private claimManagementService: ClaimManagementService,
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private notificationService: NotificationService,
         private uploadFileService: UploadFileService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,

@@ -32,7 +32,7 @@ export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams
                 ...params,
                 common_search_query_params: {
                     ...params.common_search_query_params,
-                    continuation_token: continuationToken,
+                    ...(continuationToken ? { continuation_token: continuationToken } : {}),
                 },
             })
             .pipe(

@@ -26,6 +26,6 @@ export const DOMAIN_OBJECTS_TO_OPTIONS: {
 export function defaultDomainObjectToOption(o: DomainRefDataObjects[keyof DomainRefDataObjects]) {
     let label: string;
     if ('name' in o.data) label = o.data.name;
-    if ('id' in o.data && !label) label = o.data.id;
+    if ('id' in o.data && !label) label = (o.data as unknown as { id: string }).id;
     return { value: o.ref.id, label, details: o };
 }
