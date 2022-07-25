@@ -6,7 +6,7 @@ import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
 import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
@@ -49,11 +49,11 @@ export class PayoutToolFieldComponent
     private payoutTools$ = combineLatest([this.partyId$, this.shopId$]).pipe(
         switchMap(([partyId, shopId]) =>
             partyId && shopId
-                ? this.partyManagementWithUserService
-                      .getShop(partyId, shopId)
+                ? this.partyManagementService
+                      .GetShop(partyId, shopId)
                       .pipe(
                           switchMap(({ contract_id }) =>
-                              this.partyManagementWithUserService.getContract(partyId, contract_id)
+                              this.partyManagementService.GetContract(partyId, contract_id)
                           ),
                           pluck('payout_tools')
                       )
@@ -71,7 +71,7 @@ export class PayoutToolFieldComponent
 
     constructor(
         injector: Injector,
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private notificationService: NotificationService
     ) {
         super(injector);

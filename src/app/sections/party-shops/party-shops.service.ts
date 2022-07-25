@@ -4,7 +4,7 @@ import { Party } from '@vality/domain-proto/lib/domain';
 import { defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 @Injectable()
 export class PartyShopsService {
@@ -15,12 +15,12 @@ export class PartyShopsService {
 
     private party$: Observable<Party> = this.route.params.pipe(
         pluck('partyID'),
-        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
+        switchMap((partyID) => this.partyManagementService.Get(partyID)),
         shareReplay(1)
     );
 
     constructor(
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private route: ActivatedRoute
     ) {}
 }

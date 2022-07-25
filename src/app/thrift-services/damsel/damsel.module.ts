@@ -5,15 +5,12 @@ import { DomainStoreService } from './domain-store.service';
 import { DomainService } from './domain.service';
 import { MerchantStatisticsService } from './merchant-statistics.service';
 import { PaymentProcessingService } from './payment-processing.service';
-import { ProviderService } from './provider.service';
 import { RoutingRulesModule } from './routing-rules';
-import { TerminalModule } from './terminal';
 
 @NgModule({
-    imports: [RoutingRulesModule, TerminalModule],
+    imports: [RoutingRulesModule],
     providers: [
         DomainService,
-        ProviderService,
         PaymentProcessingService,
         MerchantStatisticsService,
         DomainStoreService,

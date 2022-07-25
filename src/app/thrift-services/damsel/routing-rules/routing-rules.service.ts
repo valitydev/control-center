@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import {
+    Terminal,
     Predicate,
     RoutingCandidate,
     RoutingDelegate,
     RoutingRulesObject,
-} from '@vality/domain-proto/lib/domain';
+} from '@vality/domain-proto';
 import { Version } from '@vality/domain-proto/lib/domain_config';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, Observable } from 'rxjs';
-import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+import { first, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../domain-store.service';
 import { createNextId } from './utils/create-next-id';
@@ -423,6 +424,27 @@ export class RoutingRulesService {
                             update: {
                                 old_object: { routing_rules: mainRuleset },
                                 new_object: { routing_rules: newMainRuleset },
+                            },
+                        },
+                    ],
+                });
+            })
+        );
+    }
+
+    createTerminal(terminal: Terminal): Observable<Version> {
+        return this.domainStoreService.getObjects('terminal').pipe(
+            first(),
+            map((objs) => objs.map(({ ref }) => ref.id)),
+            map(createNextId),
+            switchMap((id) => {
+                return this.domainStoreService.commit({
+                    ops: [
+                        {
+                            insert: {
+                                object: {
+                                    terminal: { ref: { id }, data: terminal },
+                                },
                             },
                         },
                     ],

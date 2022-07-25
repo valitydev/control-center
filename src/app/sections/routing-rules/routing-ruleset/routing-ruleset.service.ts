@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
@@ -27,7 +27,7 @@ export class RoutingRulesetService {
         shareReplay(1)
     );
     private party$ = this.partyID$.pipe(
-        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
+        switchMap((partyID) => this.partyManagementService.Get(partyID)),
         shareReplay(1)
     );
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -45,7 +45,7 @@ export class RoutingRulesetService {
     constructor(
         private routingRulesService: RoutingRulesDamselService,
         private route: ActivatedRoute,
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private errorService: ErrorService
     ) {}
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto';
@@ -16,7 +16,6 @@ import { DeanonimusService } from '../../../thrift-services/deanonimus';
 @Component({
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     providers: createControlProviders(MerchantFieldComponent),
 })
 export class MerchantFieldComponent
@@ -48,7 +47,7 @@ export class MerchantFieldComponent
                 untilDestroyed(this)
             )
             .subscribe((options) => this.options$.next(options));
-        return super.ngOnInit();
+        super.ngOnInit();
     }
 
     private searchOptions(str: string): Observable<Option<PartyID>[]> {
