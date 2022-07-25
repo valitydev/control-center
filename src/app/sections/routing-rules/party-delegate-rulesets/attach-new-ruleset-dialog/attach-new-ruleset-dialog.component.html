@@ -2,8 +2,8 @@
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <cc-target-ruleset-form
             [type]="dialogData.type"
-            (valueChanges)="targetRuleset$.next($event)"
             (valid)="targetRulesetValid$.next($event)"
+            (valueChanges)="targetRuleset$.next($event)"
         ></cc-target-ruleset-form>
 
         <ng-container formGroupName="ruleset">
@@ -11,13 +11,13 @@
             <div class="cc-title">Routing ruleset</div>
             <div fxLayout="column" fxLayoutGap="16px">
                 <mat-form-field>
-                    <input matInput placeholder="Name" formControlName="name" required />
+                    <input formControlName="name" matInput placeholder="Name" required />
                 </mat-form-field>
                 <mat-form-field>
                     <input
+                        formControlName="description"
                         matInput
                         placeholder="Description (optional)"
-                        formControlName="description"
                     />
                 </mat-form-field>
             </div>
@@ -26,10 +26,10 @@
 
     <cc-base-dialog-actions>
         <button
-            mat-button
-            color="primary"
-            (click)="attach()"
             [disabled]="form.invalid || !(targetRulesetValid$ | async)"
+            color="primary"
+            mat-button
+            (click)="attach()"
         >
             ATTACH
         </button>

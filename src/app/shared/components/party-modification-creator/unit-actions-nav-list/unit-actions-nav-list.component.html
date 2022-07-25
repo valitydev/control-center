@@ -1,8 +1,8 @@
 <mat-nav-list>
     <div *ngIf="contractorActions.visible">
         <a
-            mat-list-item
             *ngFor="let contractorAction of contractorActions.names"
+            mat-list-item
             (click)="select(contractorActions.type, contractorAction)"
         >
             {{ contractorAction | ccModificationName: 'ContractorUnitContainer' }}
@@ -11,8 +11,8 @@
     <div *ngIf="data.type === unitActionType.AllActions"><mat-divider></mat-divider></div>
     <div *ngIf="contractActions.visible">
         <a
-            mat-list-item
             *ngFor="let contractAction of contractActions.names"
+            mat-list-item
             (click)="select(contractActions.type, contractAction)"
         >
             {{ contractAction | ccModificationName: 'ContractUnitContainer' }}
@@ -21,8 +21,8 @@
     <div *ngIf="data.type === unitActionType.AllActions"><mat-divider></mat-divider></div>
     <div *ngIf="shopActions.visible">
         <a
-            mat-list-item
             *ngFor="let shopAction of shopActions.names"
+            mat-list-item
             (click)="select(shopActions.type, shopAction)"
         >
             {{ shopAction | ccModificationName: 'ShopUnitContainer' }}

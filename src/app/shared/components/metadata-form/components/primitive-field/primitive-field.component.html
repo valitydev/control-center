@@ -2,20 +2,20 @@
     <ng-container *ngIf="data.type === 'bool'; else input">
         <div gdColumns="1fr" gdGap="16px">
             <cc-field-label
-                class="cc-body-1"
                 [field]="data.field"
                 [type]="data.type"
+                class="cc-body-1"
             ></cc-field-label>
-            <div fxLayoutGap="4px" fxLayoutAlign=" center">
-                <mat-radio-group fxFlex gdColumns="1fr 1fr" gdGap="8px" [formControl]="control">
+            <div fxLayoutAlign=" center" fxLayoutGap="4px">
+                <mat-radio-group [formControl]="control" fxFlex gdColumns="1fr 1fr" gdGap="8px">
                     <mat-radio-button [value]="false">False</mat-radio-button>
                     <mat-radio-button [value]="true">True</mat-radio-button>
                 </mat-radio-group>
                 <button
-                    mat-icon-button
                     *ngIf="
                         !data.isRequired && control.value !== null && control.value !== undefined
                     "
+                    mat-icon-button
                     (click)="clear($event)"
                 >
                     <mat-icon>clear</mat-icon>
@@ -40,18 +40,18 @@
                     }}</ng-template>
                 </mat-label>
                 <input
-                    matInput
-                    [matAutocomplete]="auto"
                     #trigger="matAutocompleteTrigger"
                     [formControl]="control"
+                    [matAutocomplete]="auto"
+                    [ngClass]="{ 'cc-code': (data.extensionResult$ | async)?.isIdentifier }"
                     [required]="data.isRequired"
                     [type]="inputType"
-                    [ngClass]="{ 'cc-code': (data.extensionResult$ | async)?.isIdentifier }"
+                    matInput
                 />
-                <div matSuffix fxLayoutGap="4px">
+                <div fxLayoutGap="4px" matSuffix>
                     <button
-                        mat-icon-button
                         *ngIf="!data.isRequired && control.value"
+                        mat-icon-button
                         (click)="clear($event)"
                     >
                         <mat-icon>clear</mat-icon>
@@ -74,11 +74,11 @@
                             *ngFor="let option of filteredOptions$ | async"
                             [value]="option.value"
                         >
-                            <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign=" center">
+                            <div fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="8px">
                                 <div [ngClass]="{ 'cc-code': extensionResult.isIdentifier }">
                                     {{ option.value }}
                                 </div>
-                                <cc-label [label]="option.label" [color]="option.color"></cc-label>
+                                <cc-label [color]="option.color" [label]="option.label"></cc-label>
                             </div>
                         </mat-option>
                     </ng-container>
@@ -92,9 +92,9 @@
     <ng-container *ngIf="selected$ | async as selected">
         <mat-expansion-panel *ngIf="selected.details">
             <mat-expansion-panel-header>
-                <mat-panel-title fxLayout="row" fxLayoutGap="8px" fxLayoutAlign=" center">
+                <mat-panel-title fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="8px">
                     <div>Details</div>
-                    <cc-label [label]="selected.label" [color]="selected.color"></cc-label>
+                    <cc-label [color]="selected.color" [label]="selected.label"></cc-label>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <cc-json-viewer [json]="selected.details"></cc-json-viewer>

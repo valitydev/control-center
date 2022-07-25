@@ -1,6 +1,6 @@
-<form fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px" [formGroup]="form">
+<form [formGroup]="form" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px">
     <mat-form-field fxFlex>
-        <mat-select placeholder="Claim statuses" formControlName="statuses" multiple>
+        <mat-select formControlName="statuses" multiple placeholder="Claim statuses">
             <mat-option *ngFor="let status of claimStatuses" [value]="status">{{
                 status | ccClaimStatus
             }}</mat-option>
@@ -8,16 +8,16 @@
     </mat-form-field>
     <mat-form-field fxFlex>
         <input
+            autocomplete="off"
+            formControlName="claim_id"
             matInput
             placeholder="Claim ID"
-            formControlName="claim_id"
             type="number"
-            autocomplete="off"
         />
     </mat-form-field>
     <cc-merchant-field
         *ngIf="!hideMerchantSearch"
-        fxFlex
         formControlName="party_id"
+        fxFlex
     ></cc-merchant-field>
 </form>

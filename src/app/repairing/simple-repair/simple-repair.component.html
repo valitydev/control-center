@@ -1,76 +1,76 @@
 <div fxLayout="column" fxLayoutGap="15px">
-    <table mat-table [dataSource]="dataSource">
+    <table [dataSource]="dataSource" mat-table>
         <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
+            <th *matHeaderCellDef mat-header-cell>
                 <mat-checkbox
-                    (change)="$event ? masterToggle() : null"
                     [checked]="selection.hasValue() && isAllSelected()"
                     [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    (change)="$event ? masterToggle() : null"
                 >
                 </mat-checkbox>
             </th>
-            <td mat-cell *matCellDef="let row">
+            <td *matCellDef="let row" mat-cell>
                 <mat-checkbox
-                    (click)="$event.stopPropagation()"
-                    (change)="$event ? selection.toggle(row) : null"
                     [checked]="selection.isSelected(row)"
+                    (change)="$event ? selection.toggle(row) : null"
+                    (click)="$event.stopPropagation()"
                 >
                 </mat-checkbox>
             </td>
         </ng-container>
         <ng-container matColumnDef="ns">
-            <th mat-header-cell *matHeaderCellDef>Namespace</th>
-            <td mat-cell *matCellDef="let el">{{ el.ns }}</td>
+            <th *matHeaderCellDef mat-header-cell>Namespace</th>
+            <td *matCellDef="let el" mat-cell>{{ el.ns }}</td>
         </ng-container>
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let el">{{ el.id }}</td>
+            <th *matHeaderCellDef mat-header-cell>ID</th>
+            <td *matCellDef="let el" mat-cell>{{ el.id }}</td>
         </ng-container>
         <ng-container matColumnDef="timer">
-            <th mat-header-cell *matHeaderCellDef>Timer</th>
-            <td mat-cell *matCellDef="let el">{{ el.machine?.timer | date: 'short' }}</td>
+            <th *matHeaderCellDef mat-header-cell>Timer</th>
+            <td *matCellDef="let el" mat-cell>{{ el.machine?.timer | date: 'short' }}</td>
         </ng-container>
         <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let el">
+            <th *matHeaderCellDef mat-header-cell>Status</th>
+            <td *matCellDef="let el" mat-cell>
                 <cc-repairing-status
-                    [type]="getRepairingStatusType(el.status)"
-                    [status]="el.status"
                     [disabled]="isLoading$"
+                    [status]="el.status"
+                    [type]="getRepairingStatusType(el.status)"
                 ></cc-repairing-status>
             </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
     </table>
 
-    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
         <mat-form-field>
-            <mat-select placeholder="Namespace" [formControl]="nsControl">
+            <mat-select [formControl]="nsControl" placeholder="Namespace">
                 <mat-option *ngFor="let ns of namespaces" [value]="ns"> {{ ns }} </mat-option>
             </mat-select>
         </mat-form-field>
         <cc-add-ids-input
             [disabled]="isLoading$ | async"
-            (add)="add($event)"
             fxFlex
+            (add)="add($event)"
         ></cc-add-ids-input>
     </div>
     <div fxLayoutAlign="space-between">
         <button
-            mat-button
-            color="warn"
-            (click)="remove()"
             [disabled]="(isLoading$ | async) || !this.selection.selected.length"
+            color="warn"
+            mat-button
+            (click)="remove()"
         >
             REMOVE
         </button>
         <button
-            mat-button
-            color="primary"
-            (click)="repair()"
             [disabled]="(isLoading$ | async) || !this.selection.selected.length"
+            color="primary"
+            mat-button
+            (click)="repair()"
         >
             REPAIR
         </button>

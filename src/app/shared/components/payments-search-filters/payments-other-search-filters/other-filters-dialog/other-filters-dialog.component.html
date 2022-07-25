@@ -4,15 +4,15 @@
         <div fxLayout="column" fxLayoutGap="16px">
             <div fxLayout fxLayoutGap="16px">
                 <mat-form-field fxFlex>
-                    <input matInput placeholder="Payer email" formControlName="payerEmail" />
+                    <input formControlName="payerEmail" matInput placeholder="Payer email" />
                 </mat-form-field>
                 <mat-form-field fxFlex>
-                    <input matInput placeholder="Terminal ID" formControlName="terminalID" />
+                    <input formControlName="terminalID" matInput placeholder="Terminal ID" />
                 </mat-form-field>
             </div>
             <div fxLayout fxLayoutGap="16px">
                 <mat-form-field fxFlex>
-                    <input matInput placeholder="Provider ID" formControlName="providerID" />
+                    <input formControlName="providerID" matInput placeholder="Provider ID" />
                 </mat-form-field>
                 <div fxFlex></div>
             </div>
@@ -20,17 +20,17 @@
         <mat-divider></mat-divider>
         <h2 class="mat-title">Payment Status</h2>
         <cc-expandable-radio-group
-            formControlName="paymentStatus"
             [values]="paymentStatuses"
+            formControlName="paymentStatus"
         ></cc-expandable-radio-group>
         <mat-divider></mat-divider>
         <h2 class="mat-title">Domain Revision</h2>
         <div fxLayout fxLayoutGap="16px">
             <mat-form-field fxFlex>
-                <input matInput placeholder="From" formControlName="domainRevisionFrom" />
+                <input formControlName="domainRevisionFrom" matInput placeholder="From" />
             </mat-form-field>
             <mat-form-field fxFlex>
-                <input matInput placeholder="To" formControlName="domainRevisionTo" />
+                <input formControlName="domainRevisionTo" matInput placeholder="To" />
                 <mat-hint *ngIf="currentDomainVersion$ | async as version"
                     >Latest: {{ version }}</mat-hint
                 >
@@ -40,33 +40,33 @@
         <h2 class="mat-title">Payment Amount</h2>
         <div fxLayout fxLayoutGap="16px">
             <mat-form-field fxFlex>
-                <input matInput placeholder="From" formControlName="paymentAmountFrom" />
+                <input formControlName="paymentAmountFrom" matInput placeholder="From" />
             </mat-form-field>
             <mat-form-field fxFlex>
-                <input matInput placeholder="To" formControlName="paymentAmountTo" />
+                <input formControlName="paymentAmountTo" matInput placeholder="To" />
             </mat-form-field>
         </div>
         <mat-divider></mat-divider>
         <h2 class="mat-title">Payment Method</h2>
         <cc-expandable-radio-group
-            formControlName="paymentMethod"
             [values]="paymentMethods"
+            formControlName="paymentMethod"
         ></cc-expandable-radio-group>
         <mat-divider></mat-divider>
         <h2 class="mat-title">Token Provider</h2>
         <cc-expandable-radio-group
-            formControlName="tokenProvider"
             [values]="tokenProviders"
+            formControlName="tokenProvider"
         ></cc-expandable-radio-group>
         <mat-divider></mat-divider>
         <h2 class="mat-title">Payment System</h2>
         <cc-expandable-radio-group
-            formControlName="paymentSystem"
             [values]="paymentSystems"
+            formControlName="paymentSystem"
         ></cc-expandable-radio-group>
     </mat-dialog-content>
     <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
         <button mat-button (click)="cancel()">CANCEL</button>
-        <button mat-button color="primary" [disabled]="form.invalid" (click)="save()">SAVE</button>
+        <button [disabled]="form.invalid" color="primary" mat-button (click)="save()">SAVE</button>
     </mat-dialog-actions>
 </div>

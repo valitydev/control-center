@@ -2,28 +2,28 @@
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <mat-form-field>
             <input
+                formControlName="delegateDescription"
                 matInput
                 placeholder="Main delegate description"
-                formControlName="delegateDescription"
             />
         </mat-form-field>
         <mat-divider></mat-divider>
         <div class="cc-title">Routing ruleset</div>
         <div fxLayout="column" fxLayoutGap="16px">
             <mat-form-field>
-                <input matInput placeholder="Name" formControlName="name" required />
+                <input formControlName="name" matInput placeholder="Name" required />
             </mat-form-field>
             <mat-form-field>
                 <input
+                    formControlName="description"
                     matInput
                     placeholder="Description (optional)"
-                    formControlName="description"
                 />
             </mat-form-field>
         </div>
     </div>
 
     <cc-base-dialog-actions>
-        <button mat-button color="primary" (click)="init()" [disabled]="form.invalid">INIT</button>
+        <button [disabled]="form.invalid" color="primary" mat-button (click)="init()">INIT</button>
     </cc-base-dialog-actions>
 </cc-base-dialog>

@@ -1,4 +1,4 @@
-<div fxLayout fxLayoutGap="16px" *ngIf="provider$ | async as provider; else empty">
+<div *ngIf="provider$ | async as provider; else empty" fxLayout fxLayoutGap="16px">
     <cc-details-item fxFlex title="ID">{{ provider.ref.id }}</cc-details-item>
     <cc-details-item fxFlex title="Name">{{ provider.data.name }}</cc-details-item>
     <div fxFlex></div>

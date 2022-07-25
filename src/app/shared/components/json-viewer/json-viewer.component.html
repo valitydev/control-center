@@ -1,5 +1,5 @@
-<div gdGap="16px" gdColumns="1fr">
-    <div gdGap="16px" gdColumns="1fr 1fr 1fr">
+<div gdColumns="1fr" gdGap="16px">
+    <div gdColumns="1fr 1fr 1fr" gdGap="16px">
         <cc-details-item
             *ngFor="let item of items; let i = index; trackBy: trackByFn"
             [title]="item.key | keyTitle | titlecase"
@@ -7,8 +7,8 @@
             <span
                 *ngIf="!!item.value"
                 [matTooltip]="item.tooltip"
-                fxLayoutGap="4px"
                 fxLayoutAlign=" center"
+                fxLayoutGap="4px"
             >
                 <span>{{ item.value }}</span>
                 <mat-icon *ngIf="item.tooltip" class="cc-secondary-text" inline>info</mat-icon>
@@ -23,8 +23,8 @@
         <cc-json-viewer
             *ngIf="!item.isEmpty"
             [json]="item.sourceValue"
-            [path]="item.path"
             [patches]="patches"
+            [path]="item.path"
         ></cc-json-viewer>
     </ng-container>
 </div>

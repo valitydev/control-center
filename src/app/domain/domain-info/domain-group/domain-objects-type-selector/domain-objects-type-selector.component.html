@@ -1,10 +1,10 @@
 <div fxLayout>
     <mat-form-field fxFlex>
         <mat-select
-            placeholder="Domain objects"
-            multiple
-            [(ngModel)]="selectedNames"
             #nameSelect="ngModel"
+            [(ngModel)]="selectedNames"
+            multiple
+            placeholder="Domain objects"
             (selectionChange)="selectionChange($event)"
         >
             <mat-option class="filter-option" disabled="disabled">

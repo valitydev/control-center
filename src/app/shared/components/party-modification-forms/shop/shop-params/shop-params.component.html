@@ -1,19 +1,19 @@
 <form *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="5px">
     <mat-form-field fxFlex>
-        <input matInput placeholder="Contract ID" formControlName="contract_id" required />
+        <input formControlName="contract_id" matInput placeholder="Contract ID" required />
     </mat-form-field>
     <mat-form-field fxFlex>
-        <input matInput placeholder="Payout tool ID" formControlName="payout_tool_id" />
+        <input formControlName="payout_tool_id" matInput placeholder="Payout tool ID" />
     </mat-form-field>
     <cc-nested-form-wrapper caption="details">
-        <cc-shop-details fxFlex [form]="form.get('details')" [initialValue]="initialValue?.details">
+        <cc-shop-details [form]="form.get('details')" [initialValue]="initialValue?.details" fxFlex>
         </cc-shop-details>
     </cc-nested-form-wrapper>
     <cc-nested-form-wrapper caption="location">
         <cc-shop-location
-            fxFlex
             [form]="form.get('location')"
             [initialValue]="initialValue?.location"
+            fxFlex
         >
         </cc-shop-location>
     </cc-nested-form-wrapper>
@@ -23,8 +23,8 @@
     <cc-category-ref
         *ngIf="form.get('category')"
         [form]="form.get('category')"
-        [required]="true"
         [initialValue]="initialValue?.category"
+        [required]="true"
     >
     </cc-category-ref>
 </form>

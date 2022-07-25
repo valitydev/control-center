@@ -2,16 +2,16 @@
     <cc-timeline-item-title>
         <cc-timeline-item-header
             [createdAt]="changesetInfo.createdAt"
+            [removed]="changesetInfo.removed"
             [text]="changesetInfo.modificationType | ccFileHeader"
             [username]="changesetInfo.userInfo.username"
-            [removed]="changesetInfo.removed"
         ></cc-timeline-item-header>
         <div *ngIf="menuConfig.length > 0">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
+            <button [matMenuTriggerFor]="menu" mat-icon-button>
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item *ngFor="let item of menuConfig" (click)="action(item)">
+                <button *ngFor="let item of menuConfig" mat-menu-item (click)="action(item)">
                     {{ item.label }}
                 </button>
             </mat-menu>

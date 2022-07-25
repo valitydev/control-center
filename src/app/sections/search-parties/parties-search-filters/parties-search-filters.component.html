@@ -1,11 +1,11 @@
-<form fxLayout="column" [formGroup]="form">
+<form [formGroup]="form" fxLayout="column">
     <mat-form-field fxFlexFill>
         <input
+            autocomplete="false"
+            formControlName="text"
             matInput
             placeholder="Search params"
-            formControlName="text"
             type="string"
-            autocomplete="false"
         />
         <mat-hint class="cc-caption">
             Email, ID, INN, Registred name, Legal name, Trading name, Russian bank account

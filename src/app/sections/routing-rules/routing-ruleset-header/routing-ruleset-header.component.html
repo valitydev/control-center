@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="8px">
-    <div fxLayout fxLayoutGap="8px" fxLayoutAlign="space-between center">
-        <div class="cc-headline title" fxLayout fxLayoutGap="8px" fxLayoutAlign=" center">
-            <mat-icon *ngIf="backTo" (click)="navigateBack()" class="back">arrow_back</mat-icon>
+    <div fxLayout fxLayoutAlign="space-between center" fxLayoutGap="8px">
+        <div class="cc-headline title" fxLayout fxLayoutAlign=" center" fxLayoutGap="8px">
+            <mat-icon *ngIf="backTo" class="back" (click)="navigateBack()">arrow_back</mat-icon>
             <div><ng-content></ng-content></div>
         </div>
         <button mat-button (click)="add.emit($event)">ADD RULE</button>

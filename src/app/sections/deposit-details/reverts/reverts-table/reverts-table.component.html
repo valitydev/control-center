@@ -1,14 +1,14 @@
-<table mat-table [dataSource]="reverts" fxFlex="100" *ngIf="displayedColumns">
+<table *ngIf="displayedColumns" [dataSource]="reverts" fxFlex="100" mat-table>
     <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td class="id" mat-cell *matCellDef="let revert">
+        <th *matHeaderCellDef mat-header-cell>#</th>
+        <td *matCellDef="let revert" class="id" mat-cell>
             {{ revert.id }}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let revert">
+        <th *matHeaderCellDef mat-header-cell>Status</th>
+        <td *matCellDef="let revert" mat-cell>
             <cc-status [color]="revert.status | toStatus | toRevertColor">{{
                 revert.status | toStatus
             }}</cc-status>
@@ -16,20 +16,20 @@
     </ng-container>
 
     <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef>Amount</th>
-        <td mat-cell *matCellDef="let revert">
+        <th *matHeaderCellDef mat-header-cell>Amount</th>
+        <td *matCellDef="let revert" mat-cell>
             {{ revert.body.amount | ccThriftInt64 | ccFormatAmount }}
             {{ revert.body.currency.symbolic_code | ccCurrency }}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="createdAt">
-        <th mat-header-cell *matHeaderCellDef>Created At</th>
-        <td mat-cell *matCellDef="let revert">
+        <th *matHeaderCellDef mat-header-cell>Created At</th>
+        <td *matCellDef="let revert" mat-cell>
             {{ revert.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
         </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
 </table>
