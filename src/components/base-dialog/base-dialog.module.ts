@@ -6,8 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
-import { ActionsModule } from '@cc/components/actions';
+import { ActionsModule } from '@vality/ng-core';
 
 import { BaseDialogComponent } from './base-dialog.component';
 import { BaseDialogActionsComponent } from './components/base-dialog-actions/base-dialog-actions.component';
@@ -20,7 +19,6 @@ const SHARED_DECLARATIONS = [BaseDialogComponent, BaseDialogActionsComponent];
         FlexLayoutModule,
         MatDividerModule,
         MatButtonModule,
-        ActionsModule,
         ActionsModule,
         MatIconModule,
         MatProgressBarModule,

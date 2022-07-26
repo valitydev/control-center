@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "postinstall": "ngcc",
-    "start": "ng serve --proxy-config proxy.conf.js --port 4200",
+    "start": "concurrently -n LIB,APP -c magenta,cyan npm:libs-watch \"sleep 0.5 && npm run dev\"",
+    "dev": "ng serve --proxy-config proxy.conf.js --port 4200",
+    "libs-watch": "ng build ng-core --watch",
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
     "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1115",
@@ -103,6 +105,7 @@
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.0.0",
+    "ng-packagr": "^14.0.0",
     "ngx-build-plus": "14.0.0",
     "prettier": "2.7.1",
     "prettier-plugin-organize-attributes": "0.0.5",

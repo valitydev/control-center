@@ -12,8 +12,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActionsModule } from '@vality/ng-core';
 
-import { ActionsModule } from '../../../components/actions';
 import { BaseDialogModule } from '../../../components/base-dialog';
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
