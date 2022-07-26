@@ -9,7 +9,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG } from '@vality/ng-core';
 import * as moment from 'moment';
 
 import 'moment/locale/ru';
@@ -86,7 +85,6 @@ moment.locale('en');
         { provide: LOCALE_ID, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
-        { provide: DIALOG_CONFIG, useValue: DEFAULT_DIALOG_CONFIG },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
     ],
     bootstrap: [AppComponent],

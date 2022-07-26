@@ -1,8 +1,8 @@
 import { ComponentType } from '@angular/cdk/overlay';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
-import { DIALOG_CONFIG, DialogConfig } from '../tokens';
+import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG, DialogConfig } from '../tokens';
 import { BaseDialogResponse } from '../types/base-dialog-response';
 import { BaseDialogSuperclass } from '../utils/base-dialog-superclass';
 
@@ -12,8 +12,12 @@ import { BaseDialogSuperclass } from '../utils/base-dialog-superclass';
 export class BaseDialogService {
     constructor(
         private dialog: MatDialog,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
-    ) {}
+        @Optional()
+        @Inject(DIALOG_CONFIG)
+        private dialogConfig: DialogConfig
+    ) {
+        if (!dialogConfig) this.dialogConfig = DEFAULT_DIALOG_CONFIG;
+    }
 
     open<C, D, R, S>(
         dialogComponent: ComponentType<BaseDialogSuperclass<C, D, R, S>>,
@@ -26,12 +30,16 @@ export class BaseDialogService {
             ? []
             : [data: D, configOrConfigName?: Omit<MatDialogConfig<D>, 'data'> | keyof DialogConfig]
     ): MatDialogRef<C, BaseDialogResponse<R, S>> {
+        let config: Partial<MatDialogConfig<D>>;
+        if (!configOrConfigName) config = this.dialogConfig.medium;
+        else if (typeof configOrConfigName === 'string')
+            config = this.dialogConfig[configOrConfigName];
+        else config = configOrConfigName;
+
         return this.dialog.open(dialogComponent as never, {
             data,
             ...(dialogComponent as typeof BaseDialogSuperclass).defaultDialogConfig,
-            ...(typeof configOrConfigName === 'string'
-                ? this.dialogConfig[configOrConfigName]
-                : configOrConfigName),
+            ...config,
         });
     }
 }
