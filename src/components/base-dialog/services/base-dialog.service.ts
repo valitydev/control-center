@@ -2,8 +2,9 @@ import { ComponentType } from '@angular/cdk/overlay';
 import { Inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
-import { DIALOG_CONFIG, DialogConfig } from '@cc/app/tokens';
 import { BaseDialogResponse, BaseDialogSuperclass } from '@cc/components/base-dialog';
+
+import { DIALOG_CONFIG, DialogConfig } from '../tokens';
 
 @Injectable({
     providedIn: 'root',

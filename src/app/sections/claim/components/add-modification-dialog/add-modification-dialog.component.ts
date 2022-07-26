@@ -13,8 +13,11 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { DEFAULT_DIALOG_CONFIG } from '@cc/app/tokens';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
+import {
+    BaseDialogResponseStatus,
+    BaseDialogSuperclass,
+    DEFAULT_DIALOG_CONFIG,
+} from '@cc/components/base-dialog';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
 @UntilDestroy()

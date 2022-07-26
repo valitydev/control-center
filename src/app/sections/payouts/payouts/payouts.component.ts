@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import omitBy from 'lodash-es/omitBy';
@@ -7,7 +7,6 @@ import { QueryParamsService } from '@cc/app/shared/services';
 import { isNilOrEmptyString } from '@cc/utils/is-nil-or-empty-string';
 
 import { BaseDialogService } from '../../../../components/base-dialog/services/base-dialog.service';
-import { DIALOG_CONFIG, DialogConfig } from '../../../tokens';
 import { PayoutActionsService } from '../services/payout-actions.service';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchForm } from './components/payouts-search-form/payouts-search-form.component';
@@ -29,8 +28,7 @@ export class PayoutsComponent implements OnInit {
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
         private qp: QueryParamsService<Partial<PayoutsSearchForm>>,
-        private baseDialogService: BaseDialogService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig
+        private baseDialogService: BaseDialogService
     ) {}
 
     ngOnInit() {

@@ -19,6 +19,7 @@ import {
     MomentUtcDateAdapter,
 } from '@cc/app/shared/services';
 
+import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG } from '../components/base-dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -36,12 +37,10 @@ import { SearchPartiesModule } from './sections/search-parties/search-parties.mo
 import { SectionsModule } from './sections/sections.module';
 import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
 import {
-    DEFAULT_DIALOG_CONFIG,
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
     DEFAULT_SEARCH_LIMIT,
     DEFAULT_SMALL_SEARCH_LIMIT,
-    DIALOG_CONFIG,
     SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
 } from './tokens';
