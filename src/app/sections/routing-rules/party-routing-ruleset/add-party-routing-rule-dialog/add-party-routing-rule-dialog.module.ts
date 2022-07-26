@@ -11,8 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-
-import { BaseDialogModule } from '@cc/components/base-dialog';
+import { BaseDialogModule } from '@vality/ng-core';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog.component';
 

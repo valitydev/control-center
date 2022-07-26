@@ -9,15 +9,15 @@ import {
     PartyModificationChange,
 } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
-import { BehaviorSubject } from 'rxjs';
-
-import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import {
     BaseDialogResponseStatus,
     BaseDialogSuperclass,
     DEFAULT_DIALOG_CONFIG,
-} from '@cc/components/base-dialog';
+} from '@vality/ng-core';
+import { BehaviorSubject } from 'rxjs';
+
+import { ClaimManagementService } from '@cc/app/api/claim-management';
+import { NotificationService } from '@cc/app/shared/services/notification';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
 @UntilDestroy()

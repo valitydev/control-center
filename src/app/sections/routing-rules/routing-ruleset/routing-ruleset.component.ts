@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Predicate, TerminalObject } from '@vality/domain-proto/lib/domain';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
 import { objectToJSON } from '@cc/app/api/utils';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { ErrorService } from '../../../shared/services/error';
 import { damselInstanceToObject } from '../../../thrift-services';

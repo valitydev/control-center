@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG } from '@vality/ng-core';
 import * as moment from 'moment';
 
 import 'moment/locale/ru';
@@ -19,7 +20,6 @@ import {
     MomentUtcDateAdapter,
 } from '@cc/app/shared/services';
 
-import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG } from '../components/base-dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';

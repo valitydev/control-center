@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { BaseDialogResponseStatus } from '../../../../components/base-dialog';
-import { BaseDialogService } from '../../../../components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { PayoutManagementService } from '../../../api/payout-manager';
 import { NotificationService } from '../../../shared/services/notification';
