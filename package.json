@@ -37,7 +37,7 @@
     "@s-libs/ng-core": "14.0.0",
     "@s-libs/rxjs-core": "14.0.0",
     "@vality/deanonimus-proto": "1.0.1-c9a6cae.0",
-    "@vality/domain-proto": "1.0.1-9362c08.0",
+    "@vality/domain-proto": "1.0.1-09e7a75.0",
     "@vality/dominant-cache-proto": "1.0.1-5b29d81.0",
     "@vality/file-storage-proto": "1.0.1-447212b.0",
     "@vality/fistful-proto": "1.0.1-ea0fe7a.0",
