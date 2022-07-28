@@ -10,6 +10,7 @@
     "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
     "lint-libs": "eslint \"projects/**/*.{ts,js,html}\" --max-warnings 0",
+    "lint-libs-fix": "npm run lint -- --fix",
     "lint-cmd": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1115",
     "lint": "npm run lint-cmd -- --cache",
     "lint-fix": "npm run lint -- --fix",
@@ -17,7 +18,7 @@
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier:fix": "npm run prettier-preset -- --write",
-    "fix": "npm run lint-fix; npm run prettier:fix"
+    "fix": "concurrently -n LIB,APP -c magenta,cyan npm:lint-libs-fix npm:lint-fix && npm run prettier:fix"
   },
   "dependencies": {
     "@angular/animations": "14.0.4",
@@ -107,7 +108,7 @@
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.0.0",
-    "ng-packagr": "^14.0.0",
+    "ng-packagr": "14.1.0",
     "ngx-build-plus": "14.0.0",
     "prettier": "2.7.1",
     "prettier-plugin-organize-attributes": "0.0.5",
