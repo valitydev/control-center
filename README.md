@@ -45,5 +45,5 @@ If you want to develop a library, then it's better to start building library sep
 
 ```sh
 npm run dev
-npm run libs-watch
+npm run dev-libs
 ```
