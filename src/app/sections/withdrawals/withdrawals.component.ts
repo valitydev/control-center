@@ -6,11 +6,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto';
 import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { Moment } from 'moment';
 import { map } from 'rxjs/operators';
 
-import { BaseDialogResponseStatus } from '../../../components/base-dialog';
-import { BaseDialogService } from '../../../components/base-dialog/services/base-dialog.service';
 import { SELECT_COLUMN_NAME } from '../../../components/table';
 import { isNilOrEmptyString } from '../../../utils';
 import { WithdrawalParams } from '../../query-dsl';

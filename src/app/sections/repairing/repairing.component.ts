@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-proto';
 import isEmpty from 'lodash-es/isEmpty';
 import isNil from 'lodash-es/isNil';
@@ -10,8 +11,6 @@ import omitBy from 'lodash-es/omitBy';
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { BaseDialogResponseStatus } from '../../../components/base-dialog';
-import { BaseDialogService } from '../../../components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getEnumKeys } from '../../../utils';
 import { RepairManagementService } from '../../api/repairer';

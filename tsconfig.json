@@ -19,8 +19,8 @@
         "skipLibCheck": false,
         "paths": {
             "@cc/*": ["src/*"],
-            "thrift": ["node_modules/@vality/woody/dist/thrift"],
-            "node-int64": ["node_modules/@vality/thrift-ts/lib/int64"]
+            "@vality/ng-core": ["dist/ng-core"],
+            "thrift": ["node_modules/@vality/woody/dist/thrift"]
         }
     },
     "angularCompilerOptions": {

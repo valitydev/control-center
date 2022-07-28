@@ -3,8 +3,7 @@ import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/lib/domain';
 import { StatWallet } from '@vality/fistful-proto/lib/fistful_stat';
-
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';

@@ -1,17 +1,13 @@
 import { Component, Injector } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { PayoutID } from '@vality/payout-manager-proto';
 import { BehaviorSubject } from 'rxjs';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils/operators';
-
-import {
-    BaseDialogResponseStatus,
-    BaseDialogSuperclass,
-} from '../../../../../../components/base-dialog';
 
 @UntilDestroy()
 @Component({

@@ -36,12 +36,10 @@ import { SearchPartiesModule } from './sections/search-parties/search-parties.mo
 import { SectionsModule } from './sections/sections.module';
 import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
 import {
-    DEFAULT_DIALOG_CONFIG,
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
     DEFAULT_SEARCH_LIMIT,
     DEFAULT_SMALL_SEARCH_LIMIT,
-    DIALOG_CONFIG,
     SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
 } from './tokens';
@@ -87,7 +85,6 @@ moment.locale('en');
         { provide: LOCALE_ID, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
-        { provide: DIALOG_CONFIG, useValue: DEFAULT_DIALOG_CONFIG },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
     ],
     bootstrap: [AppComponent],

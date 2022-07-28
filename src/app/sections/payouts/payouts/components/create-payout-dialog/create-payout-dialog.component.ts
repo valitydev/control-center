@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
@@ -10,11 +11,6 @@ import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils/operators';
 import { toMinor } from '@cc/utils/to-minor';
-
-import {
-    BaseDialogResponseStatus,
-    BaseDialogSuperclass,
-} from '../../../../../../components/base-dialog';
 
 interface CreatePayoutDialogForm {
     partyId: string;

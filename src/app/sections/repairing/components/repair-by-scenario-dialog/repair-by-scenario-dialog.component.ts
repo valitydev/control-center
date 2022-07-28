@@ -2,13 +2,10 @@ import { Component, Injector } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { RepairInvoicesRequest, RepairWithdrawalsRequest } from '@vality/repairer-proto';
 import { BehaviorSubject, from } from 'rxjs';
 
-import {
-    BaseDialogResponseStatus,
-    BaseDialogSuperclass,
-} from '../../../../../components/base-dialog';
 import { progressTo } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
 import { ErrorService } from '../../../../shared/services/error';

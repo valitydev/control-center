@@ -37,9 +37,10 @@
                             "@vality/payout-manager-proto",
                             "@vality/repairer-proto",
                             "@vality/fistful-proto",
-                            "@vality/file-storage-proto"
+                            "@vality/file-storage-proto",
+                            "@vality/thrift-ts"
                         ],
-                        "outputPath": "dist",
+                        "outputPath": "dist/control-center",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -140,6 +141,37 @@
                         "ci": {
                             "karmaConfig": "karma-ci.conf.js"
                         }
+                    }
+                }
+            }
+        },
+        "ng-core": {
+            "projectType": "library",
+            "root": "projects/ng-core",
+            "sourceRoot": "projects/ng-core/src",
+            "prefix": "v",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "project": "projects/ng-core/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/ng-core/tsconfig.lib.prod.json"
+                        },
+                        "development": {
+                            "tsConfig": "projects/ng-core/tsconfig.lib.json"
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/ng-core/src/test.ts",
+                        "tsConfig": "projects/ng-core/tsconfig.spec.json",
+                        "karmaConfig": "projects/ng-core/karma.conf.js"
                     }
                 }
             }

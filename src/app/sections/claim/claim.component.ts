@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import {
     BehaviorSubject,
     combineLatest,
@@ -19,8 +20,6 @@ import { ChangeStatusDialogComponent } from '@cc/app/sections/claim/components/c
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
 import { UploadFileService } from '@cc/app/sections/claim/services/upload-file.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';

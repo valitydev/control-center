@@ -10,11 +10,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
-
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';

@@ -40,3 +40,10 @@
     npm start
     ```
 2. Open [localhost:4200](http://localhost:4200/)
+
+If you want to develop a library, then it's better to start building library separately:
+
+```sh
+npm run dev
+npm run dev-libs
+```

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogSuperclass } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
-
-import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { RoutingRulesService } from '../../../thrift-services';
 

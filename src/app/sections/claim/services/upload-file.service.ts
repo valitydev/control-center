@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import moment from 'moment';
 import { switchMap } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -7,8 +8,6 @@ import { filter, map } from 'rxjs/operators';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { FileStorageService } from '@cc/app/api/file-storage';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 @Injectable()

@@ -43,7 +43,7 @@ module.exports = {
         {
             ...baseTsRules,
             // TODO: add fixed directories
-            files: ['**/src/app/core/**/*.ts'],
+            files: ['**/src/app/core/**/*.ts', '**/projects/**/*.ts'],
         },
         {
             ...baseTsRules,

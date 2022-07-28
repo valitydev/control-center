@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
-
-import { BaseDialogResponseStatus } from '../../../../components/base-dialog';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';

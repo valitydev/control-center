@@ -2,12 +2,12 @@ import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ClaimStatus } from '@vality/domain-proto/lib/claim_management';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 @UntilDestroy()

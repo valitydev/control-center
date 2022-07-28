@@ -9,7 +9,7 @@ import { BaseDialogResponseStatus } from './types/base-dialog-response-status';
     styleUrls: ['base-dialog.component.scss'],
 })
 export class BaseDialogComponent {
-    @Input() title: string;
+    @Input() title!: string;
 
     @coerceBoolean @Input() disabled = false;
     @coerceBoolean @Input() inProgress = false;

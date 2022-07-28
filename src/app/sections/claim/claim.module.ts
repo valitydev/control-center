@@ -15,13 +15,12 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 import { ngfModule } from 'angular-file';
 
 import { MetadataFormModule, StatusModule } from '@cc/app/shared/components';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
-import { ActionsModule } from '@cc/components/actions';
-import { BaseDialogModule } from '@cc/components/base-dialog';
 import { TimelineModule } from '@cc/components/timeline';
 
 import { TimelineComponentsModule } from '../party-claim/changeset/timeline-components';

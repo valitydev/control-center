@@ -1,4 +1,4 @@
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
+import { BaseDialogResponseStatus } from './base-dialog-response-status';
 
 export interface BaseDialogResponse<T = void, S = void> {
     status: S | BaseDialogResponseStatus;

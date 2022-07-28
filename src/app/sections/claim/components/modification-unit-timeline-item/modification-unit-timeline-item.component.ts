@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap } from 'rxjs';
@@ -12,8 +13,6 @@ import { getModificationName } from '@cc/app/sections/claim/utils/get-modificati
 import { Patch } from '@cc/app/shared/components/json-viewer';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
