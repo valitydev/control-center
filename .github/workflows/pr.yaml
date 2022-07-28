@@ -16,7 +16,7 @@ jobs:
                   path: ./*
                   key: ${{ github.sha }}
     eslint:
-        name: ESLint
+        name: ESLint App
         runs-on: ubuntu-latest
         needs: [init]
         steps:
@@ -28,6 +28,19 @@ jobs:
                   key: ${{ github.sha }}
             - name: Check
               run: npm run lint-cmd
+    eslint-libs:
+        name: ESLint Libs
+        runs-on: ubuntu-latest
+        needs: [init]
+        steps:
+            - name: Cache all
+              uses: actions/cache@v3
+              id: cache
+              with:
+                  path: ./*
+                  key: ${{ github.sha }}
+            - name: Check
+              run: npm run lint-libs
     prettier:
         name: Prettier
         runs-on: ubuntu-latest
