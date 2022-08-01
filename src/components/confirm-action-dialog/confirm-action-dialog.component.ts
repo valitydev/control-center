@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@cc/components/base-dialog';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 
 @Component({
     selector: 'cc-confirm-action-dialog',

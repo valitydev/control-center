@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { filter } from 'rxjs/operators';
 
 import { ClaimSearchForm } from '@cc/app/shared/components';
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { CreateClaimService } from './create-claim.service';

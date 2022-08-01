@@ -11,9 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { BaseDialogModule } from '@vality/ng-core';
 
 import { MetadataFormModule } from '@cc/app/shared';
-import { BaseDialogModule } from '@cc/components/base-dialog';
 
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 import { ExpanderComponent } from './expander';

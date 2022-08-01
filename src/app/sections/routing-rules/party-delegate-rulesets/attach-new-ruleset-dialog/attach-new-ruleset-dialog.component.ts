@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { BaseDialogSuperclass } from '@cc/components/base-dialog';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';

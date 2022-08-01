@@ -13,13 +13,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { BaseDialogModule } from '@vality/ng-core';
 
 import { PayoutToolFieldModule, ShopFieldModule, StatusModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
-import { BaseDialogModule } from '../../../../components/base-dialog';
 import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchFormComponent } from './components/payouts-search-form/payouts-search-form.component';

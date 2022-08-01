@@ -1,8 +1,7 @@
 import { Directive, Injector } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { DEFAULT_DIALOG_CONFIG } from '@cc/app/tokens';
-
+import { DEFAULT_DIALOG_CONFIG } from '../tokens';
 import { BaseDialogResponse } from '../types/base-dialog-response';
 
 @Directive()
