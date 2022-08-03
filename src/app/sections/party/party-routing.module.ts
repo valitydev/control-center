@@ -27,11 +27,6 @@ import { PartyComponent } from './party.component';
                             import('../party-claims').then((m) => m.PartyClaimsModule),
                     },
                     {
-                        path: 'claim/:claimID',
-                        loadChildren: () =>
-                            import('../party-claim').then((m) => m.PartyClaimModule),
-                    },
-                    {
                         path: 'shops',
                         loadChildren: () =>
                             import('../party-shops').then((m) => m.PartyShopsModule),

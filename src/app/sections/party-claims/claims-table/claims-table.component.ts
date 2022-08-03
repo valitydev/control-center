@@ -20,8 +20,4 @@ export class ClaimsTableComponent {
     navigateToClaim(partyID: PartyID, claimID: ClaimID) {
         void this.router.navigate([`/party/${partyID}/claim/${claimID}`]);
     }
-
-    navigateToNewClaim(partyID: PartyID, claimID: ClaimID) {
-        void this.router.navigate([`/party/${partyID}/claim/${claimID}/new`]);
-    }
 }
