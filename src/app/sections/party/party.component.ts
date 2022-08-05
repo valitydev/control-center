@@ -7,7 +7,6 @@ import {
     AppAuthGuardService,
     ClaimManagementRole,
     DomainConfigRole,
-    OperationRole,
     PartyRole,
 } from '@cc/app/shared/services';
 
@@ -50,12 +49,6 @@ export class PartyComponent {
 
     private getLinks() {
         const links = [
-            {
-                name: 'Payments',
-                url: 'payments',
-                otherActiveUrlFragments: ['payment', 'invoice'],
-                activateRoles: [OperationRole.SearchPayments],
-            },
             {
                 name: 'Claims',
                 url: 'claims',
