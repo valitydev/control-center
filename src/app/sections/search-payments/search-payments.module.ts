@@ -13,7 +13,6 @@ import {
 } from '@cc/app/shared/components';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
-import { PartyPaymentsModule } from '../party-payments';
 import { SearchPaymentsRoutingModule } from './search-payments-routing.module';
 import { SearchPaymentsComponent } from './search-payments.component';
 
@@ -29,7 +28,6 @@ import { SearchPaymentsComponent } from './search-payments.component';
         EmptySearchResultModule,
         PaymentsTableModule,
         MatButtonModule,
-        PartyPaymentsModule,
         PaymentsSearcherModule,
     ],
     declarations: [SearchPaymentsComponent],

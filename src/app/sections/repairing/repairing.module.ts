@@ -14,9 +14,10 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 
+import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
-import { MetadataFormModule } from '../../shared';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { RepairingRoutingModule } from './repairing-routing.module';

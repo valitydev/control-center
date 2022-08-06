@@ -1,66 +1,63 @@
-<form [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
-    <div fxFlexFill fxLayout fxLayoutGap="16px">
-        <mat-form-field fxFlex>
-            <mat-label>Date Range</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-                <input formControlName="fromTime" matInput matStartDate placeholder="Start Date" />
-                <input formControlName="toTime" matEndDate matInput placeholder="End Date" />
-            </mat-date-range-input>
-            <mat-datepicker-toggle [for]="picker" matSuffix>
-                <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
-        <mat-form-field fxFlex>
-            <input
-                autocomplete="false"
-                formControlName="invoiceID"
-                matInput
-                placeholder="Invoice ID"
-                type="string"
-            />
-        </mat-form-field>
-        <cc-merchant-searcher
-            *ngIf="type.type === mainSearchType.GlobalSearchFilter"
-            formControlName="partyID"
-            fxFlex
-        ></cc-merchant-searcher>
-        <mat-form-field *ngIf="type.type === mainSearchType.PartySearchFilter" fxFlex>
-            <mat-label>Shops</mat-label>
-            <mat-select class="select" formControlName="shopIDs" multiple>
-                <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
-                    {{ shop.details.name }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div fxFlexFill fxLayout fxLayoutGap="16px">
-        <mat-form-field fxFlex>
-            <input
-                autocomplete="false"
-                formControlName="bin"
-                matInput
-                placeholder="Card Bin"
-                type="string"
-            />
-        </mat-form-field>
-        <mat-form-field fxFlex>
-            <input
-                autocomplete="false"
-                formControlName="pan"
-                matInput
-                placeholder="Card Pan"
-                type="string"
-            />
-        </mat-form-field>
-        <mat-form-field fxFlex>
-            <input
-                autocomplete="false"
-                formControlName="rrn"
-                matInput
-                placeholder="Payment RRN"
-                type="string"
-            />
-        </mat-form-field>
-    </div>
-</form>
+<div [formGroup]="form" gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
+    <mat-form-field>
+        <mat-label>Date Range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+            <input formControlName="fromTime" matInput matStartDate placeholder="Start Date" />
+            <input formControlName="toTime" matEndDate matInput placeholder="End Date" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle [for]="picker" matSuffix>
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-form-field>
+        <input
+            autocomplete="false"
+            formControlName="invoiceID"
+            matInput
+            placeholder="Invoice ID"
+            type="string"
+        />
+    </mat-form-field>
+    <cc-merchant-field formControlName="partyID"></cc-merchant-field>
+    <mat-form-field>
+        <mat-label>Shops</mat-label>
+        <mat-select
+            [disabled]="!form.value['partyID']"
+            class="select"
+            formControlName="shopIDs"
+            multiple
+        >
+            <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
+                {{ shop.details.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input
+            autocomplete="false"
+            formControlName="bin"
+            matInput
+            placeholder="Card Bin"
+            type="string"
+        />
+    </mat-form-field>
+    <mat-form-field>
+        <input
+            autocomplete="false"
+            formControlName="pan"
+            matInput
+            placeholder="Card Pan"
+            type="string"
+        />
+    </mat-form-field>
+    <mat-form-field>
+        <input
+            autocomplete="false"
+            formControlName="rrn"
+            matInput
+            placeholder="Payment RRN"
+            type="string"
+        />
+    </mat-form-field>
+</div>

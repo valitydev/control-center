@@ -13,7 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { BaseDialogModule } from '@vality/ng-core';
 
-import { MetadataFormModule } from '@cc/app/shared';
+import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 import { ExpanderComponent } from './expander';
