@@ -3,11 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import {
-    AppAuthGuardService,
-    DomainConfigRole,
-    PartyRole,
-} from '@cc/app/shared/services';
+import { AppAuthGuardService, DomainConfigRole, PartyRole } from '@cc/app/shared/services';
 
 import { DeanonimusService, getMaxSearchHitParty } from '../../thrift-services/deanonimus';
 
