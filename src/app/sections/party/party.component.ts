@@ -5,7 +5,6 @@ import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } fro
 
 import {
     AppAuthGuardService,
-    ClaimManagementRole,
     DomainConfigRole,
     PartyRole,
 } from '@cc/app/shared/services';
@@ -49,12 +48,6 @@ export class PartyComponent {
 
     private getLinks() {
         const links = [
-            {
-                name: 'Claims',
-                url: 'claims',
-                otherActiveUrlFragments: ['claim'],
-                activateRoles: [ClaimManagementRole.GetClaims],
-            },
             {
                 name: 'Shops',
                 url: 'shops',
