@@ -11,7 +11,7 @@
     "build-libs": "ng build ng-core",
     "build": "npm run build-libs && npm run build-app",
     "test": "ng test",
-    "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1115",
+    "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 1033",
     "lint-fix": "npm run lint -- --fix",
     "lint-errors": "npm run lint -- --quiet",
     "lint-libs": "eslint \"projects/**/*.{ts,js,html}\" --max-warnings 0",
