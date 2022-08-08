@@ -25,7 +25,7 @@
         <mat-form-field fxFlex>
             <mat-select formControlName="status" placeholder="Payment status">
                 <mat-option [value]="null">any</mat-option>
-                <mat-option *ngFor="let status of statuses" [value]="status">{{
+                <mat-option *ngFor="let status of statuses" [value]="statusEnum[status]">{{
                     status
                 }}</mat-option>
             </mat-select>
@@ -38,6 +38,7 @@
                 matInput
                 placeholder="From domain revision"
                 required
+                type="number"
             />
         </mat-form-field>
         <mat-form-field fxFlex>
@@ -46,6 +47,7 @@
                 matInput
                 placeholder="To domain revision"
                 required
+                type="number"
             />
         </mat-form-field>
         <mat-form-field fxFlex>

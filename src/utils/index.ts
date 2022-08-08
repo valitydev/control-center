@@ -8,7 +8,6 @@ export * from './wrap-values-to-array';
 export * from './get-or';
 export * from './skip-null-values';
 export * from './thrift-json-converter';
-export * from './i64-to-number';
 export * from './to-minor';
 export * from './to-major';
 export * from './java-thrift-formatter';
