@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="16px">
     <div fxLayout fxLayoutGap="16px">
         <cc-details-item fxFlex title="Amount"
-            >{{ payment.amount | ccThriftInt64 | ccFormatAmount }}
+            >{{ payment.amount | ccFormatAmount }}
             {{ payment.currency_symbolic_code | ccCurrency }}</cc-details-item
         >
         <cc-details-item fxFlex title="Created At">{{

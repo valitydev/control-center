@@ -14,6 +14,7 @@
                 <h2 class="cc-headline">Refunds</h2>
                 <cc-payment-refunds
                     [invoiceID]="payment.invoice_id"
+                    [partyID]="payment.owner_id"
                     [paymentID]="payment.id"
                 ></cc-payment-refunds>
             </mat-card-content>

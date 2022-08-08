@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PaymentTool } from '@vality/domain-proto/lib/merch_stat';
+import { PaymentTool } from '@vality/magista-proto/lib/domain';
 
 @Component({
     selector: 'cc-payment-tool',
