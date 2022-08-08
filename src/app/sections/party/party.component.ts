@@ -5,7 +5,6 @@ import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } fro
 
 import {
     AppAuthGuardService,
-    ClaimManagementRole,
     DomainConfigRole,
     OperationRole,
     PartyRole,
@@ -55,12 +54,6 @@ export class PartyComponent {
                 url: 'payments',
                 otherActiveUrlFragments: ['payment', 'invoice'],
                 activateRoles: [OperationRole.SearchPayments],
-            },
-            {
-                name: 'Claims',
-                url: 'claims',
-                otherActiveUrlFragments: ['claim'],
-                activateRoles: [ClaimManagementRole.GetClaims],
             },
             {
                 name: 'Shops',

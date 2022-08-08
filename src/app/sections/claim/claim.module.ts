@@ -23,7 +23,7 @@ import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-vie
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
 
-import { TimelineComponentsModule } from '../party-claim/changeset/timeline-components';
+import { HumanizeDurationModule } from '../../shared/pipes/humanize-duration';
 import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
@@ -33,6 +33,8 @@ import { ModificationFormComponent } from './components/modification-form/modifi
 import { ModificationUnitTimelineItemComponent } from './components/modification-unit-timeline-item/modification-unit-timeline-item.component';
 import { ShopModificationTimelineItemComponent } from './components/shop-modification-timeline-item/shop-modification-timeline-item.component';
 import { StatusModificationTimelineItemComponent } from './components/status-modification-timeline-item/status-modification-timeline-item.component';
+import { TimelineItemHeaderComponent } from './components/timeline-item-header/timeline-item-header.component';
+import { TimelineItemLoadingComponent } from './components/timeline-item-loading/timeline-item-loading.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +46,8 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         AddModificationDialogComponent,
         ChangeStatusDialogComponent,
         ModificationFormComponent,
+        TimelineItemHeaderComponent,
+        TimelineItemLoadingComponent,
     ],
     imports: [
         CommonModule,
@@ -52,7 +56,6 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         RouterModule,
         TimelineModule,
         MatIconModule,
-        TimelineComponentsModule,
         ThriftPipesModule,
         MatExpansionModule,
         JsonViewerModule,
@@ -72,6 +75,7 @@ import { StatusModificationTimelineItemComponent } from './components/status-mod
         MatProgressBarModule,
         BaseDialogModule,
         ActionsModule,
+        HumanizeDurationModule,
     ],
 })
 export class ClaimModule {}
