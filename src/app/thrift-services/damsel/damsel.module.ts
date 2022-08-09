@@ -15,4 +15,7 @@ import { RoutingRulesModule } from './routing-rules';
         ClaimManagementService,
     ],
 })
+/**
+ * @deprecated
+ */
 export class DamselModule {}

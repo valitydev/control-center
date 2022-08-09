@@ -10,6 +10,7 @@ import { StatusModule } from '@cc/app/shared/components';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
+import { ChargebacksComponent } from '../../shared/components/chargebacks/chargebacks.component';
 import { PaymentDetailsRoutingModule } from './payment-details-routing.module';
 import { PaymentDetailsComponent } from './payment-details.component';
 import { PaymentMainInfoModule } from './payment-main-info';
@@ -31,6 +32,7 @@ import { PaymentRefundsModule } from './payment-refunds';
         MatButtonModule,
         MatDialogModule,
         PaymentRefundsModule,
+        ChargebacksComponent,
     ],
     declarations: [PaymentDetailsComponent],
 })
