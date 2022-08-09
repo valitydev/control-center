@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { ReplaySubject } from 'rxjs';
+import { filter, map, shareReplay, switchMap, first } from 'rxjs/operators';
 
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
@@ -11,11 +12,10 @@ import { OtherFiltersDialogComponent } from './other-filters-dialog';
 import { searchParamsToFormParams } from './search-params-to-form-params';
 import { toFiltersCount } from './to-filters-count';
 
+@UntilDestroy()
 @Injectable()
 export class PaymentsOtherSearchFiltersService {
-    private openFiltersDialog$ = new Subject<Observable<SearchFiltersParams> | void>();
-
-    private formParams = new ReplaySubject<SearchFiltersParams>();
+    private formParams = new ReplaySubject<SearchFiltersParams>(1);
 
     private countableKeys = [
         'payerEmail',
@@ -41,29 +41,22 @@ export class PaymentsOtherSearchFiltersService {
         shareReplay(1)
     );
 
-    constructor(private dialog: MatDialog) {
-        this.openFiltersDialog$
-            .pipe(
-                switchMap(() => this.formParams.pipe(shareReplay(1), take(1))),
-                switchMap((formParams) =>
-                    this.dialog
-                        .open(OtherFiltersDialogComponent, {
-                            disableClose: true,
-                            width: '552px',
-                            data: formParams,
-                        })
-                        .afterClosed()
-                ),
-                filter((v) => !!v)
-            )
-            .subscribe((params) => this.formParams.next(params));
-    }
+    constructor(private baseDialogService: BaseDialogService) {}
 
     init(params: SearchFiltersParams) {
         this.formParams.next(searchParamsToFormParams(params));
     }
 
     openOtherFiltersDialog() {
-        this.openFiltersDialog$.next();
+        this.formParams
+            .pipe(
+                first(),
+                switchMap((data) =>
+                    this.baseDialogService.open(OtherFiltersDialogComponent, data).afterClosed()
+                ),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                untilDestroyed(this)
+            )
+            .subscribe(({ data }) => this.formParams.next(data));
     }
 }

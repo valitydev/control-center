@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 import {
     PaymentActions,
     PaymentMenuItemEvent,
-    SearcherType,
     SearchFiltersParams,
-    SearchType,
 } from '@cc/app/shared/components';
 
 import { SearchPaymentsService } from './search-payments.service';
@@ -17,10 +15,6 @@ import { SearchPaymentsService } from './search-payments.service';
     providers: [SearchPaymentsService],
 })
 export class SearchPaymentsComponent {
-    searchType: SearcherType = {
-        type: SearchType.GlobalSearcher,
-    };
-
     initsearchParams$ = this.searchPaymentsService.data$;
 
     constructor(private searchPaymentsService: SearchPaymentsService, private router: Router) {}

@@ -1,7 +1,7 @@
 import { ThemePalette } from '@angular/material/core';
 import { Observable } from 'rxjs';
 
-import { MetadataFormData } from '@cc/app/shared';
+import { MetadataFormData } from './metadata-form-data';
 
 export interface MetadataFormExtensionOption {
     value: unknown;

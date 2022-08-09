@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="24px">
+<div fxLayout="column" fxLayoutGap="24px" style="margin: 24px">
     <cc-headline>Payment details</cc-headline>
     <ng-container *ngIf="payment$ | async as payment">
         <mat-card>
@@ -14,6 +14,7 @@
                 <h2 class="cc-headline">Refunds</h2>
                 <cc-payment-refunds
                     [invoiceID]="payment.invoice_id"
+                    [partyID]="payment.owner_id"
                     [paymentID]="payment.id"
                 ></cc-payment-refunds>
             </mat-card-content>

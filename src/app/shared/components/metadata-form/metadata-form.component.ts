@@ -3,10 +3,10 @@ import { Validator } from '@angular/forms';
 import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
-import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from './types/metadata-form-data';
+import { MetadataFormExtension } from './types/metadata-form-extension';
 
 @Component({
     selector: 'cc-metadata-form',

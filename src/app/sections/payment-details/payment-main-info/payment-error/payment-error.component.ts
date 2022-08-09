@@ -4,7 +4,7 @@ import {
     FailureReason,
     InvoicePaymentStatus,
     SubFailure,
-} from '@vality/domain-proto/lib/domain';
+} from '@vality/magista-proto/lib/domain';
 
 import { getUnionKey } from '@cc/utils/get-union-key';
 

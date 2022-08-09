@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/lib/domain';
-import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
+import { StatPayment } from '@vality/magista-proto';
 
 import { PaymentActions } from './payment-actions';
 import { PaymentMenuItemEvent } from './payment-menu-item-event';
-import { PaymentsTableType, TableType } from './payments-table';
 
 @Component({
     selector: 'cc-payments-table',
@@ -13,29 +12,11 @@ import { PaymentsTableType, TableType } from './payments-table';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaymentsTableComponent {
-    @Input()
-    payments: StatPayment[];
-
-    partyID: string;
-
-    @Input()
-    set type(type: PaymentsTableType) {
-        this.displayedColumns = [
-            'amount',
-            'status',
-            'createdAt',
-            ...(type.type === TableType.PartyTable ? ['shop'] : []),
-            'actions',
-        ];
-        this.partyID = type.partyID;
-    }
-
-    @Output()
-    menuItemSelected$: EventEmitter<PaymentMenuItemEvent> = new EventEmitter();
+    @Input() payments: StatPayment[];
+    @Output() menuItemSelected$: EventEmitter<PaymentMenuItemEvent> = new EventEmitter();
 
     paymentActions = Object.keys(PaymentActions);
-
-    displayedColumns: string[];
+    displayedColumns = ['amount', 'status', 'createdAt', 'shop', 'actions'];
 
     menuItemSelected(
         action: string,

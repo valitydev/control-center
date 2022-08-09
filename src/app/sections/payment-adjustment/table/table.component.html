@@ -30,7 +30,7 @@
     </ng-container>
     <ng-container matColumnDef="revision">
         <th *matHeaderCellDef mat-header-cell>Revision</th>
-        <td *matCellDef="let payment" mat-cell>{{ payment.domain_revision | ccThriftInt64 }}</td>
+        <td *matCellDef="let payment" mat-cell>{{ payment.domain_revision }}</td>
     </ng-container>
     <ng-container matColumnDef="invoiceId">
         <th *matHeaderCellDef mat-header-cell>Invoice ID</th>

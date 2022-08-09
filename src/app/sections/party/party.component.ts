@@ -3,12 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import {
-    AppAuthGuardService,
-    DomainConfigRole,
-    OperationRole,
-    PartyRole,
-} from '@cc/app/shared/services';
+import { AppAuthGuardService, DomainConfigRole, PartyRole } from '@cc/app/shared/services';
 
 import { DeanonimusService, getMaxSearchHitParty } from '../../thrift-services/deanonimus';
 
@@ -49,12 +44,6 @@ export class PartyComponent {
 
     private getLinks() {
         const links = [
-            {
-                name: 'Payments',
-                url: 'payments',
-                otherActiveUrlFragments: ['payment', 'invoice'],
-                activateRoles: [OperationRole.SearchPayments],
-            },
             {
                 name: 'Shops',
                 url: 'shops',

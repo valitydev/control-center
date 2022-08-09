@@ -1,43 +1,41 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <mat-card>
-        <mat-card-content fxLayout>
-            <cc-payments-main-search-filters
-                [initParams]="initSearchParams"
-                [type]="mainFilterSearchType"
-                fxFlex="75"
-                (valueChanges)="searchParamsChanges($event)"
-            ></cc-payments-main-search-filters>
-            <cc-payments-other-search-filters
-                [initParams]="initSearchParams"
-                class="other-filters-button"
-                fxFlex
-                fxLayoutAlign="center start"
-                (valueChanges)="searchParamsChanges($event)"
-            ></cc-payments-other-search-filters>
-        </mat-card-content>
+        <cc-payments-main-search-filters
+            [initParams]="initSearchParams"
+            (valueChanges)="searchParamsChanges($event)"
+        ></cc-payments-main-search-filters>
         <mat-card-footer *ngIf="doAction$ | async">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </mat-card-footer>
     </mat-card>
-    <ng-container *ngIf="payments$ | async as payments">
-        <cc-empty-search-result
-            *ngIf="!(isLoading$ | async) && payments.length === 0"
-        ></cc-empty-search-result>
-        <mat-card *ngIf="payments.length > 0" fxLayout="column" fxLayoutGap="16px">
-            <cc-payments-table
-                [payments]="payments"
-                [type]="tableType"
-                (menuItemSelected$)="paymentMenuItemSelected($event)"
-            ></cc-payments-table>
-            <button
-                *ngIf="hasMore$ | async"
-                [disabled]="doAction$ | async"
-                fxFlex="100"
-                mat-button
-                (click)="fetchMore()"
-            >
-                {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
-            </button>
-        </mat-card>
-    </ng-container>
+    <cc-actions>
+        <cc-payments-other-search-filters
+            [initParams]="initSearchParams"
+            (valueChanges)="searchParamsChanges($event)"
+        ></cc-payments-other-search-filters>
+    </cc-actions>
+    <!-- TODO: Remove params (and params?.partyID validation) when backend starts working without merchant -->
+    <cc-empty-search-result
+        *ngIf="(!(isLoading$ | async) && (payments$ | async)?.length === 0) || !params?.partyID"
+        [label]="params?.partyID ? 'Payments not found' : 'Merchant input field is required'"
+    ></cc-empty-search-result>
+    <mat-card
+        *ngIf="(payments$ | async)?.length > 0 && params?.partyID"
+        fxLayout="column"
+        fxLayoutGap="16px"
+    >
+        <cc-payments-table
+            [payments]="payments$ | async"
+            (menuItemSelected$)="paymentMenuItemSelected($event)"
+        ></cc-payments-table>
+        <button
+            *ngIf="hasMore$ | async"
+            [disabled]="doAction$ | async"
+            fxFlex="100"
+            mat-button
+            (click)="fetchMore()"
+        >
+            {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
+        </button>
+    </mat-card>
 </div>
