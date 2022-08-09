@@ -1,1 +1,9 @@
-<p>chargebacks works!</p>
+<table [dataSource]="chargebacks" mat-table>
+    <cc-select-column [dataSource]="chargebacks" (changed)="selection = $event"></cc-select-column>
+    <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell>ID</th>
+        <td *matCellDef="let i" mat-cell>{{ i.id }}</td>
+    </ng-container>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+</table>

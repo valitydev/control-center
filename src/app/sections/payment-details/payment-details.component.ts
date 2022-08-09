@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { pluck, shareReplay } from 'rxjs/operators';
+import { pluck, shareReplay, switchMap, map } from 'rxjs/operators';
 
+import { InvoicingService } from '../../api/payment-processing/invoicing.service';
 import { PaymentDetailsService } from './payment-details.service';
 
 @Component({
@@ -15,10 +15,18 @@ export class PaymentDetailsComponent {
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     shop$ = this.paymentDetailsService.shop$;
-    updateSearchParams$ = new Subject();
+
+    chargebacks$ = this.route.params.pipe(
+        switchMap(({ invoiceID, paymentID }: Record<'invoiceID' | 'paymentID', string>) =>
+            this.invoicingService.GetPayment(invoiceID, paymentID)
+        ),
+        map(({ chargebacks }) => chargebacks),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
 
     constructor(
         private paymentDetailsService: PaymentDetailsService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private invoicingService: InvoicingService
     ) {}
 }

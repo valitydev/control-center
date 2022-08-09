@@ -21,7 +21,7 @@
         </mat-card>
 
         <h2 class="cc-headline">Chargebacks</h2>
-        <cc-chargebacks></cc-chargebacks>
+        <cc-chargebacks [chargebacks]="chargebacks$ | async"></cc-chargebacks>
     </ng-container>
     <div *ngIf="isLoading$ | async" fxLayout fxLayoutAlign="center center">
         <mat-spinner diameter="64"></mat-spinner>
