@@ -11,7 +11,7 @@ import { PaymentDetailsService } from './payment-details.service';
     providers: [PaymentDetailsService],
 })
 export class PaymentDetailsComponent {
-    partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
+    partyID$ = this.route.params.pipe(pluck('partyID'));
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     shop$ = this.paymentDetailsService.shop$;
