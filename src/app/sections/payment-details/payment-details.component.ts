@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
-import { pluck, shareReplay } from 'rxjs/operators';
+import { pluck } from 'rxjs/operators';
 
 import { PaymentDetailsService } from './payment-details.service';
 
@@ -11,11 +10,10 @@ import { PaymentDetailsService } from './payment-details.service';
     providers: [PaymentDetailsService],
 })
 export class PaymentDetailsComponent {
-    partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
+    partyID$ = this.route.params.pipe(pluck('partyID'));
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     shop$ = this.paymentDetailsService.shop$;
-    updateSearchParams$ = new Subject();
 
     constructor(
         private paymentDetailsService: PaymentDetailsService,

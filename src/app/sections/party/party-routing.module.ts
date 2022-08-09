@@ -27,16 +27,11 @@ import { PartyComponent } from './party.component';
                             import('../shop-details').then((m) => m.ShopDetailsModule),
                     },
                     {
-                        path: 'invoice/:invoiceID/payment/:paymentID',
-                        loadChildren: () =>
-                            import('../payment-details').then((m) => m.PaymentDetailsModule),
-                    },
-                    {
                         path: 'routing-rules',
                         loadChildren: () =>
                             import('../routing-rules').then((m) => m.RoutingRulesModule),
                     },
-                    { path: '', redirectTo: 'payments', pathMatch: 'full' },
+                    { path: '', redirectTo: 'shops', pathMatch: 'full' },
                 ],
             },
         ]),
