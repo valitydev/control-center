@@ -14,8 +14,6 @@ const SEARCH_LIMIT = 10;
 
 @Injectable()
 export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFiltersParams> {
-    isLoading$ = this.doAction$;
-
     constructor(private merchantStatisticsService: MerchantStatisticsService) {
         super();
     }
