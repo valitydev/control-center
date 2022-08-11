@@ -46,10 +46,10 @@ export class SelectSearchFieldComponent<Value>
     @Output() searchChange = new EventEmitter<string>();
 
     selectSearchControl = new FormControl<string>('');
-    filteredOptions$: Observable<Option<Value>[]> = combineLatest(
+    filteredOptions$: Observable<Option<Value>[]> = combineLatest([
         getFormValueChanges(this.selectSearchControl),
-        defer(() => this.options$)
-    ).pipe(map(([value, options]) => filterOptions(options, value)));
+        defer(() => this.options$),
+    ]).pipe(map(([value, options]) => filterOptions(options, value)));
     selected$ = new BehaviorSubject<Value>(null);
     cachedOption: Option<Value> = null;
 

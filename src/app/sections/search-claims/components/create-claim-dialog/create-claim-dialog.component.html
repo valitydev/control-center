@@ -1,0 +1,6 @@
+<cc-base-dialog title="Create claim">
+    <cc-merchant-field [formControl]="control"></cc-merchant-field>
+    <cc-base-dialog-actions>
+        <button [disabled]="control.invalid" color="primary" mat-raised-button>CREATE</button>
+    </cc-base-dialog-actions>
+</cc-base-dialog>
