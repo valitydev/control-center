@@ -8,12 +8,8 @@ import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core'
 })
 export class ConfirmActionDialogComponent extends BaseDialogSuperclass<
     ConfirmActionDialogComponent,
-    { title?: string } | void
+    { title?: string; confirmLabel?: string } | void
 > {
-    get title() {
-        return typeof this.dialogData === 'object' ? this.dialogData.title : '';
-    }
-
     cancel() {
         this.dialogRef.close({ status: BaseDialogResponseStatus.Cancelled });
     }
