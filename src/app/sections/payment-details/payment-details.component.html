@@ -9,9 +9,10 @@
                 ></cc-payment-main-info>
             </mat-card-content>
         </mat-card>
+
+        <h2 class="cc-headline">Refunds</h2>
         <mat-card>
             <mat-card-content>
-                <h2 class="cc-headline">Refunds</h2>
                 <cc-payment-refunds
                     [invoiceID]="payment.invoice_id"
                     [partyID]="payment.owner_id"
@@ -20,8 +21,17 @@
             </mat-card-content>
         </mat-card>
 
-        <h2 class="cc-headline">Chargebacks</h2>
-        <cc-chargebacks [chargebacks]="chargebacks$ | async"></cc-chargebacks>
+        <div fxLayout fxLayoutAlign="space-between">
+            <h2 class="cc-headline">Chargebacks</h2>
+            <cc-actions>
+                <button color="primary" mat-button (click)="createChargeback()">
+                    CREATE CHARGEBACK
+                </button>
+            </cc-actions>
+        </div>
+        <mat-card>
+            <cc-chargebacks [chargebacks]="chargebacks$ | async"></cc-chargebacks>
+        </mat-card>
     </ng-container>
     <div *ngIf="isLoading$ | async" fxLayout fxLayoutAlign="center center">
         <mat-spinner diameter="64"></mat-spinner>
