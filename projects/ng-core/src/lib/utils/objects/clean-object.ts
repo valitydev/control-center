@@ -1,10 +1,9 @@
-import isEmpty from 'lodash-es/isEmpty';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { ValuesType } from 'utility-types';
 
 function isEmptyValue(value: unknown): boolean {
-    return isNil(value) || value === '' || (typeof value === 'object' && isEmpty(value));
+    return isNil(value) || value === '' || (Array.isArray(value) && !value.length); // || (typeof value === 'object' && isEmpty(value));
 }
 
 export function cleanObject<T extends object>(

@@ -9,15 +9,14 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ClaimStatus } from '@vality/domain-proto/lib/claim_management';
 import { coerceBoolean } from 'coerce-property';
 import { debounceTime, map, take } from 'rxjs/operators';
 
-import { queryParamsToFormValue } from '@cc/app/shared/components/claim-search-form/query-params-to-form-value';
+import { CLAIM_STATUSES } from '@cc/app/api/claim-management';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
 import { ClaimSearchForm } from './claim-search-form';
-import { formValueToSearchParams } from './form-value-to-search-params';
+import { queryParamsToFormValue } from './query-params-to-form-value';
 
 @UntilDestroy()
 @Component({
@@ -35,14 +34,7 @@ export class ClaimSearchFormComponent implements OnInit {
         party_id: null,
     });
 
-    claimStatuses: (keyof ClaimStatus)[] = [
-        'pending',
-        'review',
-        'accepted',
-        'denied',
-        'revoked',
-        'pending_acceptance',
-    ];
+    claimStatuses = CLAIM_STATUSES;
 
     constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder) {}
 
@@ -51,7 +43,7 @@ export class ClaimSearchFormComponent implements OnInit {
             .pipe(debounceTime(600), map(removeEmptyProperties), untilDestroyed(this))
             .subscribe((value) => {
                 void this.router.navigate([location.pathname], { queryParams: value });
-                this.valueChanges.emit(formValueToSearchParams(value));
+                this.valueChanges.emit(value as never);
             });
         this.route.queryParams
             .pipe(

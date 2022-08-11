@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartyID } from '@vality/domain-proto';
-import { BaseDialogService } from '@vality/ng-core';
+import { BaseDialogService, cleanObject } from '@vality/ng-core';
 
 import { ClaimSearchForm } from '@cc/app/shared/components';
 
@@ -14,7 +14,7 @@ import { SearchClaimsService } from './search-claims.service';
 })
 export class SearchClaimsComponent implements OnInit {
     doAction$ = this.searchClaimService.doAction$;
-    claims$ = this.searchClaimService.claims$;
+    claims$ = this.searchClaimService.searchResult$;
     hasMore$ = this.searchClaimService.hasMore$;
     private selectedPartyId: PartyID;
 
@@ -32,7 +32,9 @@ export class SearchClaimsComponent implements OnInit {
 
     search(v: ClaimSearchForm): void {
         this.selectedPartyId = v?.party_id;
-        this.searchClaimService.search(v);
+        this.searchClaimService.search(
+            cleanObject({ ...v, statuses: v.statuses?.map((s) => ({ [s]: {} })) })
+        );
     }
 
     fetchMore(): void {

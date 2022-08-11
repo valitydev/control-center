@@ -1,12 +1,16 @@
 import { Component, Injector } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { BaseDialogSuperclass } from '@vality/ng-core';
+import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { ErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { progressTo } from '@cc/utils';
 
+@UntilDestroy()
 @Component({
     selector: 'cc-create-claim-dialog',
     templateUrl: './create-claim-dialog.component.html',
@@ -16,6 +20,7 @@ export class CreateClaimDialogComponent extends BaseDialogSuperclass<
     { partyId: string }
 > {
     control = new FormControl(this.dialogData.partyId, Validators.required);
+    progress$ = new BehaviorSubject(0);
 
     constructor(
         injector: Injector,
@@ -28,14 +33,20 @@ export class CreateClaimDialogComponent extends BaseDialogSuperclass<
     }
 
     create() {
-        this.claimService.CreateClaim(this.dialogData.partyId, []).subscribe({
-            next: (claim) => {
-                this.notificationService.success('Claim successfully created');
-                void this.router.navigate([`party/${this.dialogData.partyId}/claim/${claim.id}`]);
-            },
-            error: (err) => {
-                this.errorService.error(err, 'An error occurred while claim creation');
-            },
-        });
+        this.claimService
+            .CreateClaim(this.dialogData.partyId, [])
+            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .subscribe({
+                next: (claim) => {
+                    this.notificationService.success('Claim successfully created');
+                    this.closeWithSuccess();
+                    void this.router.navigate([
+                        `party/${this.dialogData.partyId}/claim/${claim.id}`,
+                    ]);
+                },
+                error: (err) => {
+                    this.errorService.error(err, 'An error occurred while claim creation');
+                },
+            });
     }
 }
