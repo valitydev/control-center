@@ -8,6 +8,7 @@ import { BaseDialogService } from '@vality/ng-core';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { AmountCurrencyPipe, ThriftPipesModule } from '@cc/app/shared';
+import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog/details-dialog.component';
 import { TableModule, Columns } from '@cc/components/table';
 
 import { ChangeChargebackStatusDialogComponent } from '../change-chargeback-status-dialog/change-chargeback-status-dialog.component';
@@ -43,6 +44,13 @@ export class ChargebacksComponent {
             paymentId: this.paymentId,
             invoiceId: this.invoiceId,
             id,
+        });
+    }
+
+    showDetails(chargeback: InvoicePaymentChargeback) {
+        this.baseDialogService.open(DetailsDialogComponent, {
+            title: 'Chargeback details',
+            json: chargeback,
         });
     }
 }

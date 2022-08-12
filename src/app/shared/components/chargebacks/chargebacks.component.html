@@ -37,7 +37,7 @@
         <th *matHeaderCellDef mat-header-cell></th>
         <td *matCellDef="let c" mat-cell style="width: 0">
             <cc-menu-cell>
-                <button mat-menu-item>Details</button>
+                <button mat-menu-item (click)="showDetails(c)">Details</button>
                 <button mat-menu-item (click)="changeStatus(c.chargeback.id)">Change</button>
             </cc-menu-cell>
         </td>
