@@ -30,7 +30,11 @@
             </cc-actions>
         </div>
         <mat-card>
-            <cc-chargebacks [chargebacks]="chargebacks$ | async"></cc-chargebacks>
+            <cc-chargebacks
+                [chargebacks]="chargebacks$ | async"
+                [invoiceId]="payment.invoice_id"
+                [paymentId]="payment.id"
+            ></cc-chargebacks>
         </mat-card>
     </ng-container>
     <div *ngIf="isLoading$ | async" fxLayout fxLayoutAlign="center center">

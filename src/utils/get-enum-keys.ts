@@ -6,6 +6,13 @@ export function getEnumKeyValues<E extends Record<PropertyKey, unknown>>(srcEnum
         .map(([value, key]) => ({ key, value })) as { key: keyof E; value: ValuesType<E> }[];
 }
 
+export function getEnumKey<E extends Record<PropertyKey, unknown>>(
+    srcEnum: E,
+    value: ValuesType<E>
+): keyof E {
+    return getEnumKeyValues(srcEnum).find((e) => e.value === String(value)).key;
+}
+
 export function getEnumKeys<E extends Record<PropertyKey, unknown>>(srcEnum: E): (keyof E)[] {
     return Object.values(srcEnum).filter((v) => typeof v === 'string') as string[];
 }

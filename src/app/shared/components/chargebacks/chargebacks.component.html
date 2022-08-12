@@ -1,9 +1,46 @@
-<table [dataSource]="chargebacks" mat-table>
-    <cc-select-column [dataSource]="chargebacks" (changed)="selection = $event"></cc-select-column>
-    <ng-container matColumnDef="id">
+<table [dataSource]="chargebacks" mat-table style="min-width: 100%">
+    <ng-container [matColumnDef]="cols.def.id">
         <th *matHeaderCellDef mat-header-cell>ID</th>
-        <td *matCellDef="let i" mat-cell>{{ i.id }}</td>
+        <td *matCellDef="let c" mat-cell>{{ c.chargeback.id }}</td>
     </ng-container>
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+    <ng-container [matColumnDef]="cols.def.status">
+        <th *matHeaderCellDef mat-header-cell>Status</th>
+        <td *matCellDef="let c" mat-cell>{{ c.chargeback.status | ccUnionKey }}</td>
+    </ng-container>
+    <ng-container [matColumnDef]="cols.def.created_at">
+        <th *matHeaderCellDef mat-header-cell>Created At</th>
+        <td *matCellDef="let c" mat-cell>{{ c.chargeback.created_at | date: 'medium' }}</td>
+    </ng-container>
+    <ng-container [matColumnDef]="cols.def.body">
+        <th *matHeaderCellDef mat-header-cell>Body</th>
+        <td *matCellDef="let c" mat-cell>
+            {{
+                c.chargeback.body.amount | amountCurrency: c.chargeback.body.currency.symbolic_code
+            }}
+        </td>
+    </ng-container>
+    <ng-container [matColumnDef]="cols.def.levy">
+        <th *matHeaderCellDef mat-header-cell>Levy</th>
+        <td *matCellDef="let c" mat-cell>
+            {{
+                c.chargeback.levy.amount | amountCurrency: c.chargeback.levy.currency.symbolic_code
+            }}
+        </td>
+    </ng-container>
+    <ng-container [matColumnDef]="cols.def.stage">
+        <th *matHeaderCellDef mat-header-cell>Stage</th>
+        <td *matCellDef="let c" mat-cell>{{ c.chargeback.stage | ccUnionKey }}</td>
+    </ng-container>
+    <ng-container [matColumnDef]="cols.def.actions">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let c" mat-cell style="width: 0">
+            <cc-menu-cell>
+                <button mat-menu-item>Details</button>
+                <button mat-menu-item (click)="changeStatus(c.chargeback.id)">Change</button>
+            </cc-menu-cell>
+        </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="cols.list" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
 </table>
