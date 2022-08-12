@@ -40,10 +40,7 @@ export class PaymentsSearcherComponent implements OnInit {
             .pipe(untilDestroyed(this))
             .subscribe((params) => {
                 this.params = params;
-                // TODO: the partyID is optional, but the backend returns 500
-                // if (params.partyID) {
                 this.fetchPaymentsService.search(params);
-                // }
                 this.searchParamsChanged$.emit(params);
             });
     }

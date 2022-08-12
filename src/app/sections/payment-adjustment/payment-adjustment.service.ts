@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatPayment } from '@vality/magista-proto';
-import { cleanObject } from '@vality/ng-core';
+import { cleanPrimitiveProps, clean } from '@vality/ng-core';
 import { Observable, of, Subject } from 'rxjs';
 import { mergeMap, shareReplay } from 'rxjs/operators';
 
@@ -54,21 +54,21 @@ export class PaymentAdjustmentService {
             terminalID,
         } = params;
         return this.merchantStatisticsService.SearchPayments(
-            cleanObject({
-                common_search_query_params: {
+            cleanPrimitiveProps({
+                common_search_query_params: clean({
                     from_time: fromTime,
                     to_time: toTime,
                     party_id: partyId,
                     shop_ids: [shopId],
                     continuation_token: continuationToken,
-                },
-                payment_params: {
+                }),
+                payment_params: clean({
                     from_payment_domain_revision: fromRevision,
                     to_payment_domain_revision: toRevision,
                     payment_provider_id: providerID,
                     payment_terminal_id: terminalID,
                     payment_status: status,
-                },
+                }),
                 invoice_ids: invoiceIds,
             })
         );

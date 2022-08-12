@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatRefund, RefundSearchQuery } from '@vality/magista-proto';
-import { cleanObject } from '@vality/ng-core';
+import { cleanPrimitiveProps } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';
@@ -28,7 +28,7 @@ export class FetchRefundsService extends PartialFetcher<
     ): Observable<FetchResult<StatRefund>> {
         return this.merchantStatisticsService
             .SearchRefunds(
-                cleanObject({
+                cleanPrimitiveProps({
                     ...params,
                     common_search_query_params: Object.assign(
                         {

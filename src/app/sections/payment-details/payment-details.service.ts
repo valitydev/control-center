@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { cleanObject } from '@vality/ng-core';
+import { cleanPrimitiveProps } from '@vality/ng-core';
 import { combineLatest, of } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ export class PaymentDetailsService {
         switchMap(({ partyID, invoiceID, paymentID }) =>
             this.merchantStatisticsService
                 .SearchPayments(
-                    cleanObject({
+                    cleanPrimitiveProps({
                         common_search_query_params: {
                             from_time: new Date('2020-01-01').toISOString(), // TODO
                             to_time: new Date().toISOString(),
