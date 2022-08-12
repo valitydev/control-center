@@ -47,7 +47,7 @@ import {
 /**
  * For use in specific locations (for example, questionary PDF document)
  */
-moment.locale('en');
+moment.locale('en-GB');
 
 @NgModule({
     declarations: [AppComponent],
