@@ -24,6 +24,9 @@ import { ThriftService } from '../services/thrift/thrift-service';
 import { createDamselInstance, damselInstanceToObject } from './utils/create-damsel-instance';
 
 @Injectable()
+/**
+ * @deprecated
+ */
 export class PaymentProcessingService extends ThriftService {
     constructor(zone: NgZone, keycloakTokenInfoService: KeycloakTokenInfoService) {
         super(zone, keycloakTokenInfoService, '/v1/processing/invoicing', Invoicing);

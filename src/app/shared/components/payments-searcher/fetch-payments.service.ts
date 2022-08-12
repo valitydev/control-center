@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatPayment } from '@vality/magista-proto';
-import { cleanObject } from '@vality/ng-core';
+import { cleanPrimitiveProps, clean } from '@vality/ng-core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,8 +14,6 @@ const SEARCH_LIMIT = 10;
 
 @Injectable()
 export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFiltersParams> {
-    isLoading$ = this.doAction$;
-
     constructor(private merchantStatisticsService: MerchantStatisticsService) {
         super();
     }
@@ -47,36 +45,33 @@ export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFilt
         } = params;
         return this.merchantStatisticsService
             .SearchPayments(
-                cleanObject(
-                    {
-                        common_search_query_params: {
-                            from_time: moment(fromTime).utc().format(),
-                            to_time: moment(toTime).utc().format(),
-                            limit: SEARCH_LIMIT,
-                            continuation_token: continuationToken,
-                            party_id: partyID,
-                            shop_ids: shopIDs,
-                        },
-                        invoice_ids: [invoiceID],
-                        payment_params: {
-                            payment_status: paymentStatus,
-                            payment_tool: paymentMethod,
-                            payment_email: payerEmail,
-                            payment_first6: bin,
-                            payment_system: { id: paymentSystem },
-                            payment_last4: pan,
-                            payment_provider_id: providerID,
-                            payment_terminal_id: terminalID,
-                            from_payment_domain_revision: domainRevisionFrom,
-                            to_payment_domain_revision: domainRevisionTo,
-                            payment_rrn: rrn,
-                            payment_amount_from: paymentAmountFrom,
-                            payment_amount_to: paymentAmountTo,
-                            payment_token_provider: { id: tokenProvider },
-                        },
-                    },
-                    ['common_search_query_params', 'payment_params']
-                )
+                cleanPrimitiveProps({
+                    common_search_query_params: clean({
+                        from_time: moment(fromTime).utc().format(),
+                        to_time: moment(toTime).utc().format(),
+                        limit: SEARCH_LIMIT,
+                        continuation_token: continuationToken,
+                        party_id: partyID,
+                        shop_ids: shopIDs,
+                    }),
+                    invoice_ids: clean([invoiceID], true),
+                    payment_params: clean({
+                        payment_status: paymentStatus,
+                        payment_tool: paymentMethod,
+                        payment_email: payerEmail,
+                        payment_first6: bin,
+                        payment_system: { id: paymentSystem },
+                        payment_last4: pan,
+                        payment_provider_id: providerID,
+                        payment_terminal_id: terminalID,
+                        from_payment_domain_revision: domainRevisionFrom,
+                        to_payment_domain_revision: domainRevisionTo,
+                        payment_rrn: rrn,
+                        payment_amount_from: paymentAmountFrom,
+                        payment_amount_to: paymentAmountTo,
+                        payment_token_provider: { id: tokenProvider },
+                    }),
+                })
             )
             .pipe(
                 map(({ payments, continuation_token }) => ({

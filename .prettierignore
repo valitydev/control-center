@@ -4,3 +4,6 @@ node_modules
 dist
 src/assets/icons/
 .angular
+
+.github/settings.*
+.github/workflows/basic-*

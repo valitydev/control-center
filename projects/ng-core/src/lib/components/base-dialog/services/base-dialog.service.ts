@@ -14,7 +14,7 @@ export class BaseDialogService {
         private dialog: MatDialog,
         @Optional()
         @Inject(DIALOG_CONFIG)
-        private dialogConfig: DialogConfig
+        private readonly dialogConfig: DialogConfig
     ) {
         if (!dialogConfig) this.dialogConfig = DEFAULT_DIALOG_CONFIG;
     }
@@ -31,7 +31,7 @@ export class BaseDialogService {
             : [data: D, configOrConfigName?: Omit<MatDialogConfig<D>, 'data'> | keyof DialogConfig]
     ): MatDialogRef<C, BaseDialogResponse<R, S>> {
         let config: Partial<MatDialogConfig<D>>;
-        if (!configOrConfigName) config = this.dialogConfig.medium;
+        if (!configOrConfigName) config = {};
         else if (typeof configOrConfigName === 'string')
             config = this.dialogConfig[configOrConfigName];
         else config = configOrConfigName;

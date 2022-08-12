@@ -14,16 +14,11 @@
             (valueChanges)="searchParamsChanges($event)"
         ></cc-payments-other-search-filters>
     </cc-actions>
-    <!-- TODO: Remove params (and params?.partyID validation) when backend starts working without merchant -->
     <cc-empty-search-result
-        *ngIf="(!(isLoading$ | async) && (payments$ | async)?.length === 0) || !params?.partyID"
-        [label]="params?.partyID ? 'Payments not found' : 'Merchant input field is required'"
+        *ngIf="!(doAction$ | async) && !(payments$ | async)?.length"
+        label="Payments not found"
     ></cc-empty-search-result>
-    <mat-card
-        *ngIf="(payments$ | async)?.length > 0 && params?.partyID"
-        fxLayout="column"
-        fxLayoutGap="16px"
-    >
+    <mat-card *ngIf="(payments$ | async)?.length > 0" fxLayout="column" fxLayoutGap="16px">
         <cc-payments-table
             [payments]="payments$ | async"
             (menuItemSelected$)="paymentMenuItemSelected($event)"

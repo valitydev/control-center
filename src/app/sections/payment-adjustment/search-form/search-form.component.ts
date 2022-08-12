@@ -34,7 +34,7 @@ export class SearchFormComponent implements OnInit {
             fromTime: [moment(), Validators.required],
             toTime: [moment(), Validators.required],
             invoiceIds: '',
-            partyId: ['', Validators.required],
+            partyId: '',
             shopId: '',
             fromRevision: [0, Validators.required],
             toRevision: ['', Validators.required],

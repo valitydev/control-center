@@ -26,7 +26,6 @@ export class PaymentsSearcherComponent implements OnInit {
     @Output() searchParamsChanged$: EventEmitter<SearchFiltersParams> = new EventEmitter();
     @Output() paymentEventFired$: EventEmitter<PaymentMenuItemEvent> = new EventEmitter();
 
-    isLoading$ = this.fetchPaymentsService.isLoading$;
     doAction$ = this.fetchPaymentsService.doAction$;
     payments$ = this.fetchPaymentsService.searchResult$;
     hasMore$ = this.fetchPaymentsService.hasMore$;
@@ -41,10 +40,7 @@ export class PaymentsSearcherComponent implements OnInit {
             .pipe(untilDestroyed(this))
             .subscribe((params) => {
                 this.params = params;
-                // TODO: the partyID is optional, but the backend returns 500
-                if (params.partyID) {
-                    this.fetchPaymentsService.search(params);
-                }
+                this.fetchPaymentsService.search(params);
                 this.searchParamsChanged$.emit(params);
             });
     }

@@ -1,9 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { pluck } from 'rxjs/operators';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { Subject, merge, defer } from 'rxjs';
+import { pluck, shareReplay, switchMap, map } from 'rxjs/operators';
 
+import { InvoicingService } from '../../api/payment-processing/invoicing.service';
+import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsService } from './payment-details.service';
 
+@UntilDestroy()
 @Component({
     templateUrl: 'payment-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,8 +21,37 @@ export class PaymentDetailsComponent {
     isLoading$ = this.paymentDetailsService.isLoading$;
     shop$ = this.paymentDetailsService.shop$;
 
+    chargebacks$ = merge(
+        this.route.params,
+        defer(() => this.updateChargebacks$)
+    ).pipe(
+        map(() => this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>),
+        switchMap(({ invoiceID, paymentID }) =>
+            this.invoicingService.GetPayment(invoiceID, paymentID)
+        ),
+        map(({ chargebacks }) => chargebacks),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
+
+    private updateChargebacks$ = new Subject<void>();
+
     constructor(
         private paymentDetailsService: PaymentDetailsService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private invoicingService: InvoicingService,
+        private baseDialogService: BaseDialogService
     ) {}
+
+    createChargeback() {
+        this.baseDialogService
+            .open(
+                CreateChargebackDialogComponent,
+                this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>
+            )
+            .afterClosed()
+            .pipe(untilDestroyed(this))
+            .subscribe(({ status }) => {
+                if (status === BaseDialogResponseStatus.Success) this.updateChargebacks$.next();
+            });
+    }
 }

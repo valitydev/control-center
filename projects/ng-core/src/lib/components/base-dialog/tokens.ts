@@ -16,5 +16,5 @@ export const BASE_CONFIG: ValuesType<DialogConfig> = {
 export const DEFAULT_DIALOG_CONFIG: DialogConfig = {
     small: { ...BASE_CONFIG, width: '360px' },
     medium: BASE_CONFIG,
-    large: { ...BASE_CONFIG, width: '648px' },
+    large: { ...BASE_CONFIG, width: '800px' },
 };
