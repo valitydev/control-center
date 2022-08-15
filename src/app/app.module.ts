@@ -26,7 +26,6 @@ import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
-import { ClaimModule } from './sections/claim';
 import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
@@ -72,7 +71,6 @@ moment.locale('en-GB');
         DomainConfigModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
-        ClaimModule,
         SectionsModule,
         // It is important that NotFoundModule module should be last
         NotFoundModule,

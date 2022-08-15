@@ -38,8 +38,7 @@ export class DomainMetadataFormExtensionsService {
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
-                extension: () =>
-                    of({ type: 'datetime', generate: () => of(moment().toISOString()) }),
+                extension: () => of({ type: 'datetime', generate: () => of(moment()) }),
             },
         ]),
         shareReplay(1)
