@@ -1,20 +1,10 @@
-import { Component, Inject, Input } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Component, Input } from '@angular/core';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { PayoutID, PayoutStatus, StatPayout } from '@vality/magista-proto';
-import { switchMap } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
-import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { StatusColor } from '@cc/app/styles';
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
-import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
-import { DIALOG_CONFIG, DialogConfig } from '../../../../../tokens';
-import { CancelPayoutDialogComponent } from '../cancel-payout-dialog/cancel-payout-dialog.component';
+import { PayoutActionsService } from '../../../services/payout-actions.service';
 
 @UntilDestroy()
 @Component({
@@ -37,14 +27,7 @@ export class PayoutsTableComponent {
         'actions',
     ];
 
-    constructor(
-        private router: Router,
-        private payoutManagementService: PayoutManagementService,
-        private dialog: MatDialog,
-        private baseDialogService: BaseDialogService,
-        @Inject(DIALOG_CONFIG) private dialogConfig: DialogConfig,
-        private notificationService: NotificationService
-    ) {}
+    constructor(private payoutActionsService: PayoutActionsService) {}
 
     getColorByStatus(status: keyof PayoutStatus) {
         switch (status) {
@@ -61,37 +44,18 @@ export class PayoutsTableComponent {
     }
 
     canBeConfirmed(status: keyof PayoutStatus) {
-        return (['paid'] as (keyof PayoutStatus)[]).includes(status);
+        return this.payoutActionsService.canBeConfirmed(status);
     }
 
     canBeCancelled(status: keyof PayoutStatus) {
-        return (['paid', 'confirmed', 'unpaid'] as (keyof PayoutStatus)[]).includes(status);
+        return this.payoutActionsService.canBeCancelled(status);
     }
 
     cancel(id: PayoutID) {
-        this.dialog
-            .open(CancelPayoutDialogComponent, {
-                ...this.dialogConfig.medium,
-                data: { id },
-            })
-            .afterClosed()
-            .subscribe();
+        this.payoutActionsService.cancel(id);
     }
 
     confirm(id: PayoutID) {
-        this.baseDialogService
-            .open(ConfirmActionDialogComponent, { title: 'Confirm payout' })
-            .afterClosed()
-            .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
-                switchMap(() => this.payoutManagementService.ConfirmPayout(id)),
-                untilDestroyed(this)
-            )
-            .subscribe({
-                error: (err) => {
-                    this.notificationService.error('Payout confirmation error');
-                    console.error(err);
-                },
-            });
+        this.payoutActionsService.confirm(id);
     }
 }

@@ -10,11 +10,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-
-import { ExpandableRadioGroupModule } from '@cc/components/expandable-radio-group';
+import { MatSelectModule } from '@angular/material/select';
+import { BaseDialogModule } from '@vality/ng-core';
 
 import { OtherFiltersDialogComponent } from './other-filters-dialog.component';
-import { OtherFiltersDialogService } from './other-filters-dialog.service';
 
 @NgModule({
     imports: [
@@ -29,11 +28,10 @@ import { OtherFiltersDialogService } from './other-filters-dialog.service';
         MatDialogModule,
         MatDividerModule,
         FlexLayoutModule,
-        ExpandableRadioGroupModule,
+        MatSelectModule,
+        BaseDialogModule,
     ],
     declarations: [OtherFiltersDialogComponent],
     exports: [OtherFiltersDialogComponent],
-    providers: [OtherFiltersDialogService],
-    entryComponents: [OtherFiltersDialogComponent],
 })
 export class OtherFiltersDialogModule {}

@@ -1,4 +1,5 @@
 import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
+import { JsonAST } from '@vality/thrift-ts';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
@@ -32,21 +33,35 @@ export type StructureType = typeof STRUCTURE_TYPES[number];
 export interface NamespaceObjectType {
     namespaceMetadata: ThriftAstMetadata;
     objectType: StructureType;
+    include: JsonAST['include'];
 }
 
 export function parseNamespaceObjectType(
     metadata: ThriftAstMetadata[],
     namespace: string,
-    type: string
+    type: string,
+    include?: JsonAST['include']
 ): NamespaceObjectType {
-    const namespaceMetadata = metadata.find((m) => m.name === namespace);
+    // metadata reverse find - search for the last matching protocol if the names match (files are overwritten in the same order)
+    let namespaceMetadata: ThriftAstMetadata;
+    if (include)
+        namespaceMetadata = metadata.reverse().find((m) => m.path === include[namespace].path);
+    if (!namespaceMetadata)
+        namespaceMetadata = metadata.reverse().find((m) => m.name === namespace);
     const objectType = (Object.keys(namespaceMetadata.ast) as StructureType[]).find(
         (t) => namespaceMetadata.ast[t][type]
     );
     if (!objectType || !STRUCTURE_TYPES.includes(objectType)) {
         throw new Error(`Unknown thrift structure type: ${objectType}`);
     }
-    return { namespaceMetadata, objectType };
+    return {
+        namespaceMetadata,
+        objectType,
+        include: {
+            ...namespaceMetadata.ast.include,
+            ...{ [namespace]: { path: namespaceMetadata.path } },
+        },
+    };
 }
 
 export interface NamespaceType<T extends ValueType = ValueType> {

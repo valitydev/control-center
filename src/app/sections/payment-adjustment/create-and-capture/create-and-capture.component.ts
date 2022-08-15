@@ -1,5 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    UntypedFormControl,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -8,7 +13,6 @@ import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
 import {
     InvoicePaymentAdjustmentParams,
     InvoicePaymentAdjustmentScenario,
-    UserInfo,
 } from '@vality/domain-proto/lib/payment_processing';
 import { KeycloakService } from 'keycloak-angular';
 import isEqual from 'lodash-es/isEqual';
@@ -37,7 +41,7 @@ import { ExecutorService } from './executor.service';
     ],
 })
 export class CreateAndCaptureComponent implements OnInit {
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     isLoading: boolean;
 
@@ -86,7 +90,7 @@ export class CreateAndCaptureComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) data: StatPayment[],
         private snackBar: MatSnackBar,
         private keycloakService: KeycloakService,
-        private fb: FormBuilder
+        private fb: UntypedFormBuilder
     ) {
         this.payments = data;
     }
@@ -112,7 +116,7 @@ export class CreateAndCaptureComponent implements OnInit {
             .pipe(distinctUntilChanged(isEqual), untilDestroyed(this))
             .subscribe((formValue) => {
                 if (formValue?.status_change === 'failed')
-                    this.form.addControl('failure_code', new FormControl(''));
+                    this.form.addControl('failure_code', new UntypedFormControl(''));
                 else this.form.removeControl('failure_code');
             });
     }
@@ -122,11 +126,11 @@ export class CreateAndCaptureComponent implements OnInit {
         switch (value) {
             case 'cash_flow':
                 this.form.removeControl('status_change');
-                this.form.addControl('cash_flow', new FormControl(''));
+                this.form.addControl('cash_flow', new UntypedFormControl(''));
                 break;
             case 'status_change':
                 this.form.removeControl('cash_flow');
-                this.form.addControl('status_change', new FormControl(''));
+                this.form.addControl('status_change', new UntypedFormControl(''));
                 break;
         }
         this.form.updateValueAndValidity();
@@ -137,7 +141,6 @@ export class CreateAndCaptureComponent implements OnInit {
         this.createStarted = true;
         this.form.disable();
         const createParams = this.payments.map(({ invoice_id, id }) => ({
-            user: this.getUser(),
             invoice_id,
             payment_id: id,
             params: this.adjustmentParams,
@@ -191,12 +194,5 @@ export class CreateAndCaptureComponent implements OnInit {
             reason,
             scenario,
         } as InvoicePaymentAdjustmentParams;
-    }
-
-    private getUser(): UserInfo {
-        return {
-            id: this.keycloakService.getUsername(),
-            type: { internal_user: {} },
-        };
     }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { debounceTime, filter, map, shareReplay } from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ export class SearchFiltersService {
         shareReplay(1)
     );
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     init(params: SearchParams) {
         this.form.patchValue(searchParamsToFormParams(params));

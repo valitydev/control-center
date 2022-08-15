@@ -9,7 +9,7 @@ import { RepairingComponent } from './repairing.component';
     imports: [
         RouterModule.forChild([
             {
-                path: 'repairing',
+                path: 'old-repairing',
                 component: RepairingComponent,
                 canActivate: [AppAuthGuardService],
                 data: {

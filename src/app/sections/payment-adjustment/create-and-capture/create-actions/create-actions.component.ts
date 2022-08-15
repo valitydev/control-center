@@ -73,8 +73,7 @@ export class CreateActionsComponent implements OnInit {
 
     capture() {
         const captureParams = this.createResult.map(
-            ({ adjustmentId, creationParams: { user, invoice_id, payment_id } }) => ({
-                user,
+            ({ adjustmentId, creationParams: { invoice_id, payment_id } }) => ({
                 invoice_id,
                 payment_id,
                 adjustment_id: adjustmentId,
@@ -95,10 +94,9 @@ export class CreateActionsComponent implements OnInit {
             ({
                 operationScope: {
                     adjustmentId,
-                    creationParams: { user, invoice_id, payment_id },
+                    creationParams: { invoice_id, payment_id },
                 },
             }) => ({
-                user,
                 invoice_id,
                 payment_id,
                 adjustment_id: adjustmentId,

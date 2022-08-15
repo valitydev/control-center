@@ -2,7 +2,6 @@ import {
     Directive,
     ElementRef,
     EventEmitter,
-    HostListener,
     Input,
     OnChanges,
     OnDestroy,
@@ -47,10 +46,6 @@ export abstract class AbstractMonacoDirective implements OnInit, OnChanges, OnDe
         protected monacoEditorService: AbstractMonacoService,
         protected editorRef: ElementRef
     ) {}
-
-    @HostListener('window:resize') onResize() {
-        this.monacoEditorService.resize();
-    }
 
     ngOnChanges(changes: SimpleChanges) {
         this.childOnChanges(changes);

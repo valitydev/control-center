@@ -35,7 +35,7 @@ export class PrimitiveFieldComponent<T>
     ]).pipe(
         map(([value, extensionResult]) => {
             const filterValue = String(value ?? '').toLowerCase();
-            return extensionResult.options.filter(
+            return extensionResult.options?.filter(
                 (option) =>
                     String(option.value).toLowerCase().includes(filterValue) ||
                     option.label.toLowerCase().includes(filterValue)

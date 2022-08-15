@@ -3,7 +3,7 @@ import { ContractID, PartyID } from '@vality/domain-proto';
 import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class FetchContractorService {
             ({ partyID, contractID }): Observable<[ContractID, any]> =>
                 forkJoin([
                     of(contractID),
-                    this.partyManagementWithUserService.getParty(partyID).pipe(
+                    this.partyManagementService.Get(partyID).pipe(
                         catchError(() => {
                             this.hasError$.next();
                             return of('error');
@@ -38,7 +38,7 @@ export class FetchContractorService {
         startWith(true)
     );
 
-    constructor(private partyManagementWithUserService: PartyManagementWithUserService) {
+    constructor(private partyManagementService: PartyManagementService) {
         this.contractor$.subscribe();
     }
 

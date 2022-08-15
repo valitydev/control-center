@@ -14,12 +14,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 
 import { ClaimSearchFormModule } from '@cc/app/shared/components';
+import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
+import { TableModule } from '@cc/components/table';
 
 import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
+import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
 import { SearchClaimsComponentRouting } from './search-claims-routing.module';
 import { SearchClaimsComponent } from './search-claims.component';
 import { SearchClaimsService } from './search-claims.service';
@@ -48,8 +52,17 @@ import { SearchTableComponent } from './search-table/search-table.component';
         EmptySearchResultModule,
         ApiModelPipesModule,
         ThriftPipesModule,
+        TableModule,
+        ActionsModule,
+        BaseDialogModule,
+        MerchantFieldModule,
     ],
-    declarations: [SearchClaimsComponent, SearchTableComponent, ClaimMailPipePipe],
+    declarations: [
+        SearchClaimsComponent,
+        SearchTableComponent,
+        ClaimMailPipePipe,
+        CreateClaimDialogComponent,
+    ],
     providers: [SearchClaimsService, ClaimManagementService],
 })
 export class SearchClaimsModule {}

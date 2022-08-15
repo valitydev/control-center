@@ -1,0 +1,30 @@
+<cc-base-dialog gdColumn="1fr" title="Repair by scenario">
+    <div gdGap="16px">
+        <mat-radio-group [formControl]="typeControl" gdColumns="1fr 1fr" gdGap="8px">
+            <mat-radio-button [value]="typesEnum.Invoices">Invoices</mat-radio-button>
+            <mat-radio-button [value]="typesEnum.Withdrawals">Withdrawals</mat-radio-button>
+        </mat-radio-group>
+        <cc-metadata-form
+            *ngIf="typeControl.value !== null"
+            [formControl]="form"
+            [metadata]="metadata$ | async"
+            [type]="
+                typeControl.value === typesEnum.Invoices
+                    ? 'RepairInvoicesRequest'
+                    : 'RepairWithdrawalsRequest'
+            "
+            namespace="repairer"
+        ></cc-metadata-form>
+        <mat-progress-bar *ngIf="progress$ | async"></mat-progress-bar>
+    </div>
+    <cc-base-dialog-actions>
+        <button
+            [disabled]="form.invalid || typeControl.invalid"
+            color="primary"
+            mat-button
+            (click)="repair()"
+        >
+            REPAIR
+        </button>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

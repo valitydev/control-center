@@ -15,8 +15,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { ThriftPipesModule, ValueTypeTitleModule } from '@cc/app/shared';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
+import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
+import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';

@@ -8,11 +8,11 @@
         fxLayoutGap="64px"
     >
         <cc-routing-ruleset-header
-            [refID]="partyRuleset.ref.id"
-            (add)="addPartyRule()"
             [backTo]="
                 'party/' + (partyID$ | async) + '/routing-rules/' + (routingRulesType$ | async)
             "
+            [refID]="partyRuleset.ref.id"
+            (add)="addPartyRule()"
         >
             Party routing rules
         </cc-routing-ruleset-header>
@@ -40,7 +40,7 @@
             fxLayoutGap="24px"
         >
             <div class="cc-display-1">Routing rules not found</div>
-            <button mat-raised-button color="primary" (click)="initialize()" class="init">
+            <button class="init" color="primary" mat-raised-button (click)="initialize()">
                 INITIALIZE
             </button>
         </div>

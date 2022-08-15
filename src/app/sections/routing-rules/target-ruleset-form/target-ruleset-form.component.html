@@ -2,7 +2,7 @@
     <div class="cc-title">Change Main Ruleset</div>
 
     <div fxLayout="column" fxLayoutGap="39px">
-        <mat-radio-group fxLayout formControlName="target">
+        <mat-radio-group formControlName="target" fxLayout>
             <mat-radio-button [value]="target.PaymentInstitution" fxFlex
                 >Payment Institution</mat-radio-button
             >
@@ -45,9 +45,9 @@
 
     <mat-form-field>
         <input
+            formControlName="mainDelegateDescription"
             matInput
             placeholder="Main deligate description"
-            formControlName="mainDelegateDescription"
         />
     </mat-form-field>
 </div>

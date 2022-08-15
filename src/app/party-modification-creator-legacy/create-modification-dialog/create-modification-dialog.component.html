@@ -6,9 +6,9 @@
         <mat-step>
             <ng-template matStepLabel>Prepare party modification target</ng-template>
             <cc-party-modification-target
-                [unitID]="unitID"
                 [partyID]="partyID"
                 [partyTarget]="getPartyTarget(action.type)"
+                [unitID]="unitID"
                 (valueChanges)="unitIDChange($event)"
             >
             </cc-party-modification-target>
@@ -17,12 +17,12 @@
             <form>
                 <ng-template matStepLabel>Fill in party modification params</ng-template>
                 <cc-party-modification-creation
+                    [action]="action"
+                    [modification]="data?.modification?.modification"
                     [unitID]="unitID"
                     [unitIDDisabled]="true"
-                    [modification]="data?.modification?.modification"
-                    [action]="action"
-                    (valueChanges)="valueChanges($event)"
                     (statusChanges)="statusChanges($event)"
+                    (valueChanges)="valueChanges($event)"
                 >
                 </cc-party-modification-creation>
             </form>
@@ -30,8 +30,8 @@
     </mat-vertical-stepper>
 </mat-dialog-content>
 <mat-dialog-actions *ngIf="initialized">
-    <button mat-button [disabled]="isLoading || !valid" color="primary" (click)="apply()">
+    <button [disabled]="isLoading || !valid" color="primary" mat-button (click)="apply()">
         APPLY
     </button>
-    <button [disabled]="isLoading" mat-button [mat-dialog-close]="false">CANCEL</button>
+    <button [disabled]="isLoading" [mat-dialog-close]="false" mat-button>CANCEL</button>
 </mat-dialog-actions>

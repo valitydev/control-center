@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { ActionsModule } from '@vality/ng-core';
 
 import { ShopDetailsModule } from '@cc/app/shared/components';
 import { PayoutToolDetailsModule } from '@cc/app/shared/components/payout-tool-details/payout-tool-details.module';
@@ -33,6 +35,8 @@ import { PayoutDetailsComponent } from './payout-details.component';
         MatTableModule,
         EmptySearchResultModule,
         MatPaginatorModule,
+        MatButtonModule,
+        ActionsModule,
     ],
 })
 export class PayoutDetailsModule {}

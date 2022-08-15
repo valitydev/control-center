@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="16px">
     <div fxLayout fxLayoutGap="16px">
         <cc-details-item fxFlex title="Amount"
-            >{{ payment.amount | ccThriftInt64 | ccFormatAmount }}
+            >{{ payment.amount | ccFormatAmount }}
             {{ payment.currency_symbolic_code | ccCurrency }}</cc-details-item
         >
         <cc-details-item fxFlex title="Created At">{{
@@ -28,7 +28,7 @@
             <div class="cc-title">Shop</div>
             <cc-shop-details [shop]="shop"></cc-shop-details>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px" *ngIf="hasError(payment.status)">
+        <div *ngIf="hasError(payment.status)" fxLayout="column" fxLayoutGap="16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
@@ -56,8 +56,8 @@
             <div class="cc-title">Contractor</div>
             <cc-payment-contractor
                 *ngIf="payment && shop"
-                [partyID]="payment?.owner_id"
                 [contractID]="shop.contract_id"
+                [partyID]="payment?.owner_id"
             >
             </cc-payment-contractor>
         </div>

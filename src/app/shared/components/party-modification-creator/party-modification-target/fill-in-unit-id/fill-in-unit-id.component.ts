@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import * as uuid from 'uuid/v4';
 
 @Component({
@@ -13,9 +13,9 @@ export class FillInUnitIdComponent implements OnInit {
     @Output()
     valueChanges: EventEmitter<string> = new EventEmitter();
 
-    form: FormGroup;
+    form: UntypedFormGroup;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.form = this.fb.group({

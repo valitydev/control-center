@@ -5,7 +5,7 @@ import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/lib
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, tap, filter } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyTarget } from '../party-target';
@@ -26,7 +26,7 @@ export class TargetTableService {
         tap(() => this.hasError$.next()),
         switchMap(({ partyID, targetName, fromClaim }) =>
             combineLatest([
-                this.partyManagementWithUserService.getParty(partyID).pipe(
+                this.partyManagementService.Get(partyID).pipe(
                     map((party) => {
                         const result = [];
                         const target = this.getTarget(party, targetName);
@@ -52,7 +52,7 @@ export class TargetTableService {
     inProgress$ = progress(this.getSelectableItems$, merge(this.selectableItems$, this.hasError$));
 
     constructor(
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private snackBar: MatSnackBar
     ) {}
 

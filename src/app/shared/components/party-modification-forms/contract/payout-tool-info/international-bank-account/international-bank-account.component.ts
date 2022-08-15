@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { InternationalBankAccount } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
@@ -9,7 +9,7 @@ import get from 'lodash-es/get';
 })
 export class InternationalBankAccountComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: InternationalBankAccount;
@@ -18,7 +18,7 @@ export class InternationalBankAccountComponent implements OnInit {
 
     isCorrespondentAccount = false;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         const num = get(this, 'initialValue.number', '');

@@ -2,7 +2,6 @@ import {
     InvoicePaymentFlow,
     InvoicePaymentStatus,
     PaymentTool,
-    TerminalPaymentProvider,
 } from '@vality/domain-proto/lib/merch_stat';
 
 export interface Payment {
@@ -11,7 +10,6 @@ export interface Payment {
     payment_email?: string;
     payment_flow?: InvoicePaymentFlow;
     payment_method?: PaymentTool;
-    payment_terminal_provider?: TerminalPaymentProvider;
     payment_ip?: string;
     payment_provider_id?: string;
     payment_terminal_id?: string;

@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { ValidationErrors, Validators } from '@angular/forms';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Field } from '@vality/thrift-ts';
@@ -24,7 +24,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
 {
     @Input() data: MetadataFormData<string, Field[]>;
 
-    control = this.fb.group<T>({} as T);
+    control = this.fb.group<T>({} as any);
     labelControl = this.fb.control(false);
 
     get hasLabel() {
@@ -76,6 +76,10 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     handleIncomingValue(value: T) {
         this.control.patchValue(value as never, { emitEvent: false });
         this.setLabelControl(!!(value && Object.keys(value).length));
+    }
+
+    validate(): ValidationErrors | null {
+        return this.labelControl.value ? super.validate() : null;
     }
 
     private setLabelControl(value: boolean = false) {

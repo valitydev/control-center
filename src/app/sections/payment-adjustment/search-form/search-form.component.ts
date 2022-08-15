@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { InvoicePaymentStatus } from '@vality/magista-proto';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 
+import { getEnumKeys } from '../../../../utils';
 import { PaymentAdjustmentService } from '../payment-adjustment.service';
 import { SearchFormParams } from './search-form-params';
 import { toSearchParams } from './to-search-params';
@@ -14,19 +16,17 @@ import { toSearchParams } from './to-search-params';
     templateUrl: './search-form.component.html',
 })
 export class SearchFormComponent implements OnInit {
-    @Output()
-    valueChanges: EventEmitter<SearchFormParams> = new EventEmitter();
+    @Output() valueChanges = new EventEmitter<SearchFormParams>();
+    @Output() statusChanges = new EventEmitter<string>();
 
-    @Output()
-    statusChanges: EventEmitter<string> = new EventEmitter();
+    form: UntypedFormGroup;
 
-    form: FormGroup;
-
-    statuses: string[] = ['pending', 'processed', 'captured', 'cancelled', 'refunded', 'failed'];
+    statuses = getEnumKeys(InvoicePaymentStatus);
+    statusEnum = InvoicePaymentStatus;
 
     constructor(
         private paymentAdjustmentService: PaymentAdjustmentService,
-        private fb: FormBuilder
+        private fb: UntypedFormBuilder
     ) {}
 
     ngOnInit() {

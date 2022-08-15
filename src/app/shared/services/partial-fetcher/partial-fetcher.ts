@@ -65,7 +65,7 @@ export abstract class PartialFetcher<R, P> {
             shareReplay(SHARE_REPLAY_CONF)
         );
 
-        this.doAction$ = progress(actionWithParams$, fetchResult$, true).pipe(
+        this.doAction$ = progress(actionWithParams$, fetchResult$, false).pipe(
             shareReplay(SHARE_REPLAY_CONF)
         );
         this.doSearchAction$ = progress(

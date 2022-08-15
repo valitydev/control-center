@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 
-import { DomainService } from '../../../../../domain';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 
 @Injectable()
 export class OtherFiltersDialogService {
-    currentDomainVersion$ = this.domainService.version$;
+    currentDomainVersion$ = this.domainStoreService.version$;
 
     form = this.fb.group({
         payerEmail: ['', [Validators.email]],
@@ -18,8 +18,8 @@ export class OtherFiltersDialogService {
         paymentAmountTo: '',
         paymentMethod: null,
         tokenProvider: null,
-        paymentSystemIs: null,
+        paymentSystem: null,
     });
 
-    constructor(private fb: FormBuilder, private domainService: DomainService) {}
+    constructor(private fb: UntypedFormBuilder, private domainStoreService: DomainStoreService) {}
 }

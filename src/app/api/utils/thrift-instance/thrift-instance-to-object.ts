@@ -1,4 +1,4 @@
-import type { Field, Int64, ValueType } from '@vality/thrift-ts';
+import type { Field, Int64, JsonAST, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 
 import {
@@ -13,31 +13,32 @@ export function thriftInstanceToObject<V>(
     metadata: ThriftAstMetadata[],
     namespaceName: string,
     indefiniteType: ValueType,
-    value: V
+    value: V,
+    include?: JsonAST['include']
 ): V {
     if (typeof value !== 'object' || isNil(value)) {
         return value;
     }
     const { namespace, type } = parseNamespaceType(indefiniteType, namespaceName);
-    const internalThriftInstanceToObject = (t: ValueType, v: V) =>
-        thriftInstanceToObject(metadata, namespace, t, v);
+    const internalThriftInstanceToObject = (t: ValueType, v: V, include: JsonAST['include']) =>
+        thriftInstanceToObject(metadata, namespace, t, v, include);
     if (isComplexType(type)) {
         switch (type.name) {
             case 'map':
                 return new Map(
                     Array.from(value as unknown as Map<any, any>).map(([k, v]) => [
-                        internalThriftInstanceToObject(type.keyType, k),
-                        internalThriftInstanceToObject(type.valueType, v),
+                        internalThriftInstanceToObject(type.keyType, k, include),
+                        internalThriftInstanceToObject(type.valueType, v, include),
                     ])
                 ) as unknown as V;
             case 'list':
                 return (value as unknown as any[]).map((v) =>
-                    internalThriftInstanceToObject(type.valueType, v)
+                    internalThriftInstanceToObject(type.valueType, v, include)
                 ) as unknown as V;
             case 'set':
                 return new Set(
                     Array.from(value as unknown as Set<any>).map((v) =>
-                        internalThriftInstanceToObject(type.valueType, v)
+                        internalThriftInstanceToObject(type.valueType, v, include)
                     )
                 ) as unknown as V;
             default:
@@ -51,7 +52,11 @@ export function thriftInstanceToObject<V>(
                 return value;
         }
     }
-    const { namespaceMetadata, objectType } = parseNamespaceObjectType(metadata, namespace, type);
+    const {
+        namespaceMetadata,
+        objectType,
+        include: objectInclude,
+    } = parseNamespaceObjectType(metadata, namespace, type);
     const typeMeta = namespaceMetadata.ast[objectType][type];
     switch (objectType) {
         case 'exception':
@@ -60,13 +65,19 @@ export function thriftInstanceToObject<V>(
             type TypedefType = {
                 type: ValueType;
             };
-            return internalThriftInstanceToObject((typeMeta as TypedefType).type, value);
+            return internalThriftInstanceToObject(
+                (typeMeta as TypedefType).type,
+                value,
+                objectInclude
+            );
         }
         case 'union': {
             const [key, val] = Object.entries(value).find(([, v]) => v !== null);
             type UnionType = Field[];
             const fieldTypeMeta = (typeMeta as UnionType).find((m) => m.name === key);
-            return { [key]: internalThriftInstanceToObject(fieldTypeMeta.type, val) } as any;
+            return {
+                [key]: internalThriftInstanceToObject(fieldTypeMeta.type, val, objectInclude),
+            } as any;
         }
         default: {
             const result = {} as V;
@@ -74,7 +85,11 @@ export function thriftInstanceToObject<V>(
                 type StructType = Field[];
                 const fieldTypeMeta = (typeMeta as StructType).find((m) => m.name === k);
                 if (v !== null && v !== undefined) {
-                    result[k] = internalThriftInstanceToObject(fieldTypeMeta.type, v);
+                    result[k] = internalThriftInstanceToObject(
+                        fieldTypeMeta.type,
+                        v,
+                        objectInclude
+                    );
                 }
             }
             return result;

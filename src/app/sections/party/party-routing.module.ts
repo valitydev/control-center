@@ -17,21 +17,6 @@ import { PartyComponent } from './party.component';
                 },
                 children: [
                     {
-                        path: 'payments',
-                        loadChildren: () =>
-                            import('../party-payments').then((m) => m.PartyPaymentsModule),
-                    },
-                    {
-                        path: 'claims',
-                        loadChildren: () =>
-                            import('../party-claims').then((m) => m.PartyClaimsModule),
-                    },
-                    {
-                        path: 'claim/:claimID',
-                        loadChildren: () =>
-                            import('../party-claim').then((m) => m.PartyClaimModule),
-                    },
-                    {
                         path: 'shops',
                         loadChildren: () =>
                             import('../party-shops').then((m) => m.PartyShopsModule),
@@ -42,16 +27,11 @@ import { PartyComponent } from './party.component';
                             import('../shop-details').then((m) => m.ShopDetailsModule),
                     },
                     {
-                        path: 'invoice/:invoiceID/payment/:paymentID',
-                        loadChildren: () =>
-                            import('../payment-details').then((m) => m.PaymentDetailsModule),
-                    },
-                    {
                         path: 'routing-rules',
                         loadChildren: () =>
                             import('../routing-rules').then((m) => m.RoutingRulesModule),
                     },
-                    { path: '', redirectTo: 'payments', pathMatch: 'full' },
+                    { path: '', redirectTo: 'shops', pathMatch: 'full' },
                 ],
             },
         ]),

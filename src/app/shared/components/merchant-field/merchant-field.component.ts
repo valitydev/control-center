@@ -1,43 +1,29 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { WrappedFormControlSuperclass, provideValueAccessor } from '@s-libs/ng-core';
 import { PartyID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import {
-    catchError,
-    debounceTime,
-    filter,
-    map,
-    startWith,
-    switchMap,
-    tap,
-    withLatestFrom,
-} from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
+import { catchError, debounceTime, filter, map, switchMap, first, takeUntil } from 'rxjs/operators';
 
+import { DeanonimusService } from '@cc/app/thrift-services/deanonimus';
 import { Option } from '@cc/components/select-search-field';
+import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 import { progressTo } from '@cc/utils/operators';
-
-import { DeanonimusService } from '../../../thrift-services/deanonimus';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [provideValueAccessor(MerchantFieldComponent)],
+    providers: createControlProviders(MerchantFieldComponent),
 })
 export class MerchantFieldComponent
-    extends WrappedFormControlSuperclass<PartyID>
+    extends ValidatedFormControlSuperclass<PartyID>
     implements OnInit
 {
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
 
-    control = new FormControl<PartyID>();
-    incomingValue$ = new Subject<Partial<PartyID>>();
     options$ = new ReplaySubject<Option<PartyID>[]>(1);
     searchChange$ = new Subject<string>();
     progress$ = new BehaviorSubject(0);
@@ -50,27 +36,11 @@ export class MerchantFieldComponent
         super(injector);
     }
 
-    ngOnInit(): void {
-        this.incomingValue$
-            .pipe(
-                withLatestFrom(this.options$.pipe(startWith<Option<PartyID>[]>([]))),
-                switchMap(([value, options]) => {
-                    if (!value) return of<PartyID>(null);
-                    const v = options.find((o) => o.value === value);
-                    if (v) return of(v.value);
-                    return this.searchOptions(value).pipe(
-                        tap((options) => this.options$.next(options)),
-                        map(
-                            (options) =>
-                                options?.find((o) => o.value === this.control.value)?.value || null
-                        )
-                    );
-                }),
-                untilDestroyed(this)
-            )
-            .subscribe((v) => this.control.setValue(v));
-        this.control.valueChanges.subscribe((v) => this.emitOutgoingValue(v));
-        this.searchChange$
+    ngOnInit() {
+        merge(
+            this.searchChange$,
+            this.control.valueChanges.pipe(filter(Boolean), first(), takeUntil(this.searchChange$))
+        )
             .pipe(
                 filter(Boolean),
                 debounceTime(600),
@@ -78,11 +48,7 @@ export class MerchantFieldComponent
                 untilDestroyed(this)
             )
             .subscribe((options) => this.options$.next(options));
-    }
-
-    handleIncomingValue(partyId: PartyID): void {
-        this.control.setValue(partyId);
-        this.incomingValue$.next(partyId);
+        super.ngOnInit();
     }
 
     private searchOptions(str: string): Observable<Option<PartyID>[]> {

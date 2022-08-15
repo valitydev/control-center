@@ -1,8 +1,28 @@
-<div fxLayout="column" fxLayoutGap="24px" *ngIf="payout$ | async as payout">
-    <cc-headline>Payout details</cc-headline>
+<div *ngIf="payout$ | async as payout" fxLayout="column" fxLayoutGap="24px">
+    <div fxLayoutAlign="space-between">
+        <cc-headline>Payout details</cc-headline>
+        <div fxLayoutGap="16px">
+            <button
+                [disabled]="canBeCancelled(payout.status | ccUnionKey)"
+                color="warn"
+                mat-button
+                (click)="cancel(payout.id)"
+            >
+                CANCEL
+            </button>
+            <button
+                [disabled]="canBeConfirmed(payout.status | ccUnionKey)"
+                color="primary"
+                mat-button
+                (click)="confirm(payout.id)"
+            >
+                CONFIRM
+            </button>
+        </div>
+    </div>
     <mat-card>
         <mat-card-content gdGap="16px">
-            <div gdGap="16px" gdColumns="1fr 1fr 1fr">
+            <div gdColumns="1fr 1fr 1fr" gdGap="16px">
                 <cc-details-item title="Payout ID">{{ payout.payout_id }}</cc-details-item>
                 <cc-details-item title="Amount">
                     {{ payout.amount | ccFormatAmount }}
@@ -24,7 +44,7 @@
             <ng-container *ngIf="party$ | async as party">
                 <div><mat-divider></mat-divider></div>
                 <h2 class="cc-title">Party</h2>
-                <div gdGap="16px" gdColumns="1fr 1fr 1fr">
+                <div gdColumns="1fr 1fr 1fr" gdGap="16px">
                     <cc-details-item title="ID">{{ payout.party_id }}</cc-details-item>
                     <cc-details-item title="Email">
                         {{ party.contact_info?.email }}
@@ -48,10 +68,10 @@
         <mat-card-content gdGap="24px">
             <h2 class="cc-headline">Cash Flow</h2>
             <div>
-                <table mat-table [dataSource]="payout.cash_flow">
+                <table [dataSource]="payout.cash_flow" mat-table>
                     <ng-container matColumnDef="source">
-                        <th mat-header-cell *matHeaderCellDef>Source</th>
-                        <td mat-cell *matCellDef="let cashFlow">
+                        <th *matHeaderCellDef mat-header-cell>Source</th>
+                        <td *matCellDef="let cashFlow" mat-cell>
                             {{ cashFlow.source.account_type | ccUnionKey }}
                             {{
                                 cashFlow.source.account_type[
@@ -61,8 +81,8 @@
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="destination">
-                        <th mat-header-cell *matHeaderCellDef>Destination</th>
-                        <td mat-cell *matCellDef="let cashFlow">
+                        <th *matHeaderCellDef mat-header-cell>Destination</th>
+                        <td *matCellDef="let cashFlow" mat-cell>
                             {{ cashFlow.destination.account_type | ccUnionKey }}
                             {{
                                 cashFlow.destination.account_type[
@@ -72,25 +92,25 @@
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="volume">
-                        <th mat-header-cell *matHeaderCellDef>Volume</th>
-                        <td mat-cell *matCellDef="let cashFlow">
+                        <th *matHeaderCellDef mat-header-cell>Volume</th>
+                        <td *matCellDef="let cashFlow" mat-cell>
                             {{ cashFlow.volume.amount | ccFormatAmount }}
                             {{ cashFlow.volume.currency.symbolic_code | ccCurrency }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="details">
-                        <th mat-header-cell *matHeaderCellDef>Details</th>
-                        <td mat-cell *matCellDef="let cashFlow">
+                        <th *matHeaderCellDef mat-header-cell>Details</th>
+                        <td *matCellDef="let cashFlow" mat-cell>
                             {{ cashFlow.details }}
                         </td>
                     </ng-container>
 
-                    <tr class="mat-row" *matNoDataRow>
+                    <tr *matNoDataRow class="mat-row">
                         <td class="mat-cell" colspan="9999">No data</td>
                     </tr>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
                 </table>
                 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
                 </mat-paginator>

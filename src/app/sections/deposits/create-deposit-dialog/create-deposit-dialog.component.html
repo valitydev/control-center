@@ -3,15 +3,15 @@
     <mat-dialog-content fxLayout="column" fxLayoutGap="16px">
         <div fxLayout fxLayoutGap="24px">
             <mat-form-field fxFlex>
-                <input matInput placeholder="Destination" formControlName="destination" required />
+                <input formControlName="destination" matInput placeholder="Destination" required />
             </mat-form-field>
             <mat-form-field fxFlex>
                 <input
-                    matInput
-                    type="number"
-                    placeholder="Amount"
                     formControlName="amount"
+                    matInput
+                    placeholder="Amount"
                     required
+                    type="number"
                 />
             </mat-form-field>
         </div>
@@ -32,12 +32,12 @@
         <button
             *ngIf="hasNecessaryRole()"
             [disabled]="(isLoading$ | async) || form.invalid"
-            mat-button
             color="primary"
+            mat-button
             (click)="createDeposit()"
         >
             CREATE
         </button>
-        <mat-progress-bar mode="indeterminate" *ngIf="isLoading$ | async"></mat-progress-bar>
+        <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
     </mat-dialog-actions>
 </form>

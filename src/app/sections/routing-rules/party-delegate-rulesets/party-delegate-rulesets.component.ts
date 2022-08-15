@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogService } from '@vality/ng-core';
 import { first, map } from 'rxjs/operators';
 
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { BaseDialogService } from '@cc/components/base-dialog/services/base-dialog.service';
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';

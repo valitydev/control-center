@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { LegalEntity } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
@@ -14,7 +14,7 @@ enum Type {
 })
 export class LegalEntityComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: LegalEntity;
@@ -25,7 +25,7 @@ export class LegalEntityComponent implements OnInit {
 
     t = Type;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit(): void {
         const russianLegalEntity = get(this, 'initialValue.russian_legal_entity', null);

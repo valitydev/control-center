@@ -6,48 +6,24 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { filter } from 'rxjs/operators';
 
 import { SearchFiltersParams } from '../search-filters-params';
-import { MainFilterSearchType, MainSearchType } from './main-filter-search-type';
 import { PaymentsMainSearchFiltersService } from './payments-main-search-filters.service';
 
-export const MY_FORMATS = {
-    parse: {
-        dateInput: ['l', 'LL'],
-    },
-    display: {
-        dateInput: 'DD.MM.YYYY',
-        monthYearLabel: 'DD.MM.YYYY',
-        dateA11yLabel: 'DD.MM.YYYY',
-        monthYearA11yLabel: 'DD.MM.YYYY',
-    },
-};
-
+@UntilDestroy()
 @Component({
     selector: 'cc-payments-main-search-filters',
     templateUrl: 'payments-main-search-filters.component.html',
-    styleUrls: ['payments-main-search-filters.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [
-        PaymentsMainSearchFiltersService,
-        { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-    ],
+    providers: [PaymentsMainSearchFiltersService],
 })
 export class PaymentsMainSearchFiltersComponent implements OnInit {
-    @Input()
-    initParams: SearchFiltersParams;
-
-    @Input()
-    type: MainFilterSearchType;
-
-    @Output()
-    valueChanges = new EventEmitter<SearchFiltersParams>();
-
-    mainSearchType = MainSearchType;
+    @Input() initParams: SearchFiltersParams;
+    @Output() valueChanges = new EventEmitter<SearchFiltersParams>();
 
     shops$ = this.paymentsMainSearchFiltersService.shops$;
-
     form = this.paymentsMainSearchFiltersService.form;
 
     constructor(private paymentsMainSearchFiltersService: PaymentsMainSearchFiltersService) {
@@ -58,8 +34,10 @@ export class PaymentsMainSearchFiltersComponent implements OnInit {
 
     ngOnInit() {
         this.paymentsMainSearchFiltersService.init(this.initParams);
-        if (this.type.type === MainSearchType.PartySearchFilter) {
-            this.paymentsMainSearchFiltersService.getShops(this.type.partyID);
-        }
+        this.form.controls.partyID.valueChanges
+            .pipe(filter(Boolean), untilDestroyed(this))
+            .subscribe((partyID: string) => {
+                this.paymentsMainSearchFiltersService.getShops(partyID);
+            });
     }
 }

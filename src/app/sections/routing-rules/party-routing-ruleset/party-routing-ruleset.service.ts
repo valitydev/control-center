@@ -4,8 +4,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
-import { FistfulStatistics } from '@cc/app/api/fistful-stat';
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { FistfulStatisticsService } from '@cc/app/api/fistful-stat';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { createDsl } from '../../../query-dsl';
 import { RoutingRulesService } from '../../../thrift-services';
@@ -48,17 +48,17 @@ export class PartyRoutingRulesetService {
     );
 
     private party$ = this.partyID$.pipe(
-        switchMap((partyID) => this.partyManagementWithUserService.getParty(partyID)),
+        switchMap((partyID) => this.partyManagementService.Get(partyID)),
         untilDestroyed(this),
         shareReplay(1)
     );
 
     constructor(
         private route: ActivatedRoute,
-        private partyManagementWithUserService: PartyManagementWithUserService,
+        private partyManagementService: PartyManagementService,
         private domainStoreService: DomainStoreService,
         private routingRulesService: RoutingRulesService,
-        private fistfulStatistics: FistfulStatistics
+        private fistfulStatistics: FistfulStatisticsService
     ) {}
 
     reload() {

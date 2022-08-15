@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, Injector } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { PayoutID } from '@vality/payout-manager-proto';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,24 +14,29 @@ import { progressTo } from '@cc/utils/operators';
     selector: 'cc-cancel-payout-dialog',
     templateUrl: './cancel-payout-dialog.component.html',
 })
-export class CancelPayoutDialogComponent {
+export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
+    CancelPayoutDialogComponent,
+    { id: PayoutID }
+> {
     detailsControl = new FormControl<string>();
     progress$ = new BehaviorSubject(0);
 
     constructor(
-        private dialogRef: MatDialogRef<CancelPayoutDialogComponent, boolean>,
-        @Inject(MAT_DIALOG_DATA) private data: { id: PayoutID },
+        injector: Injector,
         private payoutManagementService: PayoutManagementService,
         private notificationService: NotificationService
-    ) {}
+    ) {
+        super(injector);
+    }
 
     accept() {
         this.payoutManagementService
-            .CancelPayout(this.data.id, this.detailsControl.value)
+            .CancelPayout(this.dialogData.id, this.detailsControl.value)
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
-                    this.dialogRef.close(true);
+                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.notificationService.success('Payout canceled successfully');
                 },
                 error: (err) => {
                     this.notificationService.error('Payout cancellation error');

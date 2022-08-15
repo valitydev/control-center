@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { FormBuilder } from '@ngneat/reactive-forms';
+import { Validators, FormBuilder } from '@angular/forms';
+import { PartyID, ShopID } from '@vality/domain-proto';
 import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
 import { Party, Shop } from '@vality/magista-proto/lib/domain';
 import { Moment } from 'moment';
@@ -25,14 +25,14 @@ export interface PayoutsSearchForm {
     providers: createControlProviders(PayoutsSearchFormComponent),
 })
 export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<PayoutsSearchForm> {
-    control = this.fb.group<PayoutsSearchForm>({
-        payoutId: null,
-        partyId: null,
+    control = this.fb.group({
+        payoutId: null as string,
+        partyId: null as PartyID,
         fromTime: [moment().subtract(1, 'year').startOf('d'), Validators.required],
         toTime: [moment().endOf('d'), Validators.required],
-        shops: null,
-        payoutStatusTypes: null,
-        payoutToolType: null,
+        shops: null as ShopID[],
+        payoutStatusTypes: null as PayoutStatusType[],
+        payoutToolType: null as PayoutToolType,
     });
 
     statusType = PayoutStatusType;

@@ -1,14 +1,7 @@
 import { ElementRef, NgZone } from '@angular/core';
+import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { Observable, Subject } from 'rxjs';
-import {
-    debounceTime,
-    distinctUntilChanged,
-    map,
-    skipUntil,
-    take,
-    takeUntil,
-    tap,
-} from 'rxjs/operators';
+import { map, take, takeUntil, tap } from 'rxjs/operators';
 
 import { BOOTSTRAP$ } from './bootstrap';
 import { fromDisposable } from './from-disposable';
@@ -27,9 +20,9 @@ export abstract class AbstractMonacoService {
     protected _editor: monaco.editor.IEditor;
     private editorInitialized$ = new Subject<void>();
     private fileChange$ = new Subject<MonacoFile>();
-    private resize$ = new Subject<void>();
-    private nativeElement: any;
+    private nativeElement: HTMLElement;
     private destroy$ = new Subject<void>();
+    private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
     get fileChange(): Observable<MonacoFile> {
         return this.fileChange$.pipe(takeUntil(this.destroy$));
@@ -67,10 +60,6 @@ export abstract class AbstractMonacoService {
 
     destroy() {
         this.destroy$.next();
-    }
-
-    resize() {
-        this.resize$.next();
     }
 
     updateOptions(options: IEditorOptions) {
@@ -119,6 +108,11 @@ export abstract class AbstractMonacoService {
         return model;
     }
 
+    protected getLayout() {
+        const { clientWidth, clientHeight } = this.nativeElement;
+        return { width: clientWidth, height: clientHeight };
+    }
+
     private disposeModels() {
         for (const model of monaco.editor.getModels()) {
             model.dispose();
@@ -157,17 +151,15 @@ export abstract class AbstractMonacoService {
     }
 
     private registerResizeListener() {
-        this.resize$
-            .pipe(
-                skipUntil(this.editorInitialized$),
-                map(() => {
-                    const { clientWidth, clientHeight } = this.nativeElement;
-                    return { width: clientWidth, height: clientHeight };
-                }),
-                distinctUntilChanged((a, b) => a.width === b.width && a.height === b.height),
-                debounceTime(50),
-                takeUntil(this.destroy$)
-            )
-            .subscribe((dimension) => this._editor.layout(dimension));
+        this.editorInitialized$.pipe(takeUntil(this.destroy$)).subscribe({
+            next: () => {
+                this.resizeDetector.listenTo(this.nativeElement, () => {
+                    this._editor.layout(this.getLayout());
+                });
+            },
+            complete: () => {
+                this.resizeDetector.removeAllListeners(this.nativeElement);
+            },
+        });
     }
 }

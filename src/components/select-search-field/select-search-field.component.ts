@@ -1,5 +1,4 @@
 import {
-    ChangeDetectionStrategy,
     Component,
     Inject,
     Injector,
@@ -12,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { provideValueAccessor, WrappedFormControlSuperclass } from '@s-libs/ng-core';
+import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
@@ -30,10 +29,9 @@ import { filterOptions } from './utils';
     templateUrl: 'select-search-field.component.html',
     styleUrls: ['select-search-field.component.scss'],
     providers: [provideValueAccessor(SelectSearchFieldComponent)],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectSearchFieldComponent<Value>
-    extends WrappedFormControlSuperclass<Value>
+    extends FormComponentSuperclass<Value>
     implements OnInit, OnChanges
 {
     @Input() label: string;
@@ -48,10 +46,10 @@ export class SelectSearchFieldComponent<Value>
     @Output() searchChange = new EventEmitter<string>();
 
     selectSearchControl = new FormControl<string>('');
-    filteredOptions$: Observable<Option<Value>[]> = combineLatest(
+    filteredOptions$: Observable<Option<Value>[]> = combineLatest([
         getFormValueChanges(this.selectSearchControl),
-        defer(() => this.options$)
-    ).pipe(map(([value, options]) => filterOptions(options, value)));
+        defer(() => this.options$),
+    ]).pipe(map(([value, options]) => filterOptions(options, value)));
     selected$ = new BehaviorSubject<Value>(null);
     cachedOption: Option<Value> = null;
 
@@ -97,6 +95,5 @@ export class SelectSearchFieldComponent<Value>
     private cacheOption(): void {
         const option = this.options?.find((o) => o.value === this.selected$.value);
         if (option) this.cachedOption = option;
-        else if (this.selected$.value) this.select(null);
     }
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -17,7 +17,7 @@ import { CreateDepositService } from './services/create-deposit/create-deposit.s
     providers: [CreateDepositService],
 })
 export class CreateDepositDialogComponent implements OnInit {
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     currencies = this.configService.config.constants.currencies;
 

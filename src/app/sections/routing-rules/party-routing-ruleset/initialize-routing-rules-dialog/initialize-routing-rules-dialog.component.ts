@@ -1,8 +1,7 @@
 import { Component, Injector } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
-import { BaseDialogSuperclass } from '@cc/components/base-dialog';
+import { BaseDialogSuperclass } from '@vality/ng-core';
 
 import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../../../thrift-services';
@@ -24,7 +23,7 @@ export class InitializeRoutingRulesDialogComponent extends BaseDialogSuperclass<
 
     constructor(
         injector: Injector,
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
         private errorService: ErrorService
     ) {

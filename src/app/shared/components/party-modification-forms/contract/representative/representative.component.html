@@ -1,9 +1,9 @@
 <form [formGroup]="form" fxLayout="column" fxLayoutGap="5px">
     <mat-form-field fxFlex>
-        <input matInput placeholder="Position" formControlName="position" required />
+        <input formControlName="position" matInput placeholder="Position" required />
     </mat-form-field>
     <mat-form-field fxFlex>
-        <input matInput placeholder="Full name" formControlName="full_name" required />
+        <input formControlName="full_name" matInput placeholder="Full name" required />
     </mat-form-field>
     <cc-representative-document
         [form]="form.get('document')"

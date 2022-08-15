@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ReportPreferences } from '@vality/domain-proto/lib/domain';
 import get from 'lodash-es/get';
 
@@ -9,14 +9,14 @@ import get from 'lodash-es/get';
 })
 export class ReportPreferencesComponent implements OnInit {
     @Input()
-    form: FormGroup;
+    form: UntypedFormGroup;
 
     @Input()
     initialValue: ReportPreferences;
 
     showPreferences = false;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
         this.togglePreferences();

@@ -2,16 +2,16 @@
 <mat-dialog-content gdColumns="1fr">
     <mat-form-field>
         <mat-label>Details</mat-label>
-        <input matInput type="text" [formControl]="detailsControl" required />
+        <input [formControl]="detailsControl" matInput required type="text" />
     </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-    <button mat-button [mat-dialog-close]="false" [disabled]="!!(progress$ | async)">CANCEL</button>
+    <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>CANCEL</button>
     <button
-        mat-button
-        (click)="accept()"
         [disabled]="detailsControl.invalid || !!(progress$ | async)"
         color="primary"
+        mat-button
+        (click)="accept()"
     >
         ACCEPT
     </button>

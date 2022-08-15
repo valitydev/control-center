@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
-import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
+import { StatPayment } from '@vality/magista-proto';
+import { cleanPrimitiveProps, clean } from '@vality/ng-core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
+import { MerchantStatisticsService } from '@cc/app/api/magista';
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
-import { booleanDelay } from '@cc/utils/boolean-delay';
 
-import { QueryDsl } from '../../../query-dsl';
-import { MerchantStatisticsService } from '../../../thrift-services/damsel/merchant-statistics.service';
-import { SearchFiltersParams } from '../payments-search-filters/search-filters-params';
+import { SearchFiltersParams } from '../payments-search-filters';
 
 const SEARCH_LIMIT = 10;
 
 @Injectable()
 export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFiltersParams> {
-    isLoading$ = this.doAction$.pipe(booleanDelay(), shareReplay(1));
-
     constructor(private merchantStatisticsService: MerchantStatisticsService) {
         super();
     }
@@ -30,7 +27,6 @@ export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFilt
             fromTime,
             toTime,
             invoiceID,
-            shopID,
             shopIDs,
             payerEmail,
             terminalID,
@@ -48,45 +44,38 @@ export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFilt
             paymentStatus,
         } = params;
         return this.merchantStatisticsService
-            .getPayments({
-                dsl: JSON.stringify({
-                    query: {
-                        payments: {
-                            from_time: moment(fromTime).utc().format(),
-                            to_time: moment(toTime).utc().format(),
-                            size: SEARCH_LIMIT.toString(),
-                            ...(partyID ? { merchant_id: partyID } : {}),
-                            ...(shopID ? { shop_id: shopID } : {}),
-                            ...(shopIDs?.length ? { shop_ids: shopIDs } : {}),
-                            ...(domainRevisionFrom
-                                ? { from_payment_domain_revision: domainRevisionFrom }
-                                : {}),
-                            ...(domainRevisionTo
-                                ? { to_payment_domain_revision: domainRevisionTo }
-                                : {}),
-                            ...(paymentAmountFrom
-                                ? { payment_amount_from: paymentAmountFrom }
-                                : {}),
-                            ...(paymentAmountTo ? { payment_amount_to: paymentAmountTo } : {}),
-                            ...(providerID ? { payment_provider_id: providerID } : {}),
-                            ...(terminalID ? { payment_terminal_id: terminalID } : {}),
-                            ...(paymentStatus ? { payment_status: paymentStatus } : {}),
-                            ...(invoiceID ? { invoice_id: invoiceID } : {}),
-                            ...(payerEmail ? { payment_email: payerEmail } : {}),
-                            ...(rrn ? { payment_rrn: rrn } : {}),
-                            ...(paymentSystem ? { payment_system: paymentSystem } : {}),
-                            ...(paymentMethod ? { payment_method: paymentMethod } : {}),
-                            ...(tokenProvider ? { payment_token_provider: tokenProvider } : {}),
-                            ...(bin ? { payment_first6: bin } : {}),
-                            ...(pan ? { payment_last4: pan } : {}),
-                        },
-                    },
-                } as QueryDsl),
-                ...(continuationToken ? { continuation_token: continuationToken } : {}),
-            })
+            .SearchPayments(
+                cleanPrimitiveProps({
+                    common_search_query_params: clean({
+                        from_time: moment(fromTime).utc().format(),
+                        to_time: moment(toTime).utc().format(),
+                        limit: SEARCH_LIMIT,
+                        continuation_token: continuationToken,
+                        party_id: partyID,
+                        shop_ids: shopIDs,
+                    }),
+                    invoice_ids: clean([invoiceID], true),
+                    payment_params: clean({
+                        payment_status: paymentStatus,
+                        payment_tool: paymentMethod,
+                        payment_email: payerEmail,
+                        payment_first6: bin,
+                        payment_system: { id: paymentSystem },
+                        payment_last4: pan,
+                        payment_provider_id: providerID,
+                        payment_terminal_id: terminalID,
+                        from_payment_domain_revision: domainRevisionFrom,
+                        to_payment_domain_revision: domainRevisionTo,
+                        payment_rrn: rrn,
+                        payment_amount_from: paymentAmountFrom,
+                        payment_amount_to: paymentAmountTo,
+                        payment_token_provider: { id: tokenProvider },
+                    }),
+                })
+            )
             .pipe(
-                map(({ data, continuation_token }) => ({
-                    result: data.payments,
+                map(({ payments, continuation_token }) => ({
+                    result: payments,
                     continuationToken: continuation_token,
                 }))
             );

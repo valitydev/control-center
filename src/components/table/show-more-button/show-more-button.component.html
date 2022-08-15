@@ -1,0 +1,3 @@
+<button [disabled]="inProgress" fxFlex="100" mat-button (click)="fetchMore.emit()">
+    {{ inProgress ? 'LOADING...' : 'SHOW MORE' }}
+</button>

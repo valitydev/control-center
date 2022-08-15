@@ -1,8 +1,8 @@
 <div fxLayout="column">
     <mat-form-field>
         <mat-select
-            placeholder="Representative document"
             [(value)]="selected"
+            placeholder="Representative document"
             (selectionChange)="select()"
         >
             <mat-option *ngFor="let type of types" [value]="type">{{ type }}</mat-option>

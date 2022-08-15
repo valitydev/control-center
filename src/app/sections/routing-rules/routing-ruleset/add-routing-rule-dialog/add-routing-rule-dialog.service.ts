@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '@vality/domain-proto/lib/domain';
+import { BaseDialogResponseStatus } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
 
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
-
-import { RoutingRulesService, TerminalService } from '../../../../thrift-services';
+import { RoutingRulesService } from '../../../../thrift-services';
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 
 export enum TerminalType {
@@ -32,14 +31,13 @@ export class AddRoutingRuleDialogService {
     });
 
     get newTerminalOptionsForm() {
-        return this.form.get('newTerminal').get('options') as FormArray;
+        return this.form.get('newTerminal').get('options') as UntypedFormArray;
     }
 
     constructor(
-        private fb: FormBuilder,
+        private fb: UntypedFormBuilder,
         private dialogRef: MatDialogRef<AddRoutingRuleDialogComponent>,
-        private routingRulesService: RoutingRulesService,
-        private terminalService: TerminalService
+        private routingRulesService: RoutingRulesService
     ) {
         this.form
             .get('terminalType')
@@ -67,10 +65,10 @@ export class AddRoutingRuleDialogService {
         const { description, weight, priority, terminalType, existentTerminalID, newTerminal } =
             this.form.value;
         (terminalType === TerminalType.New
-            ? this.terminalService.createTerminal({
-                  terminalName: newTerminal.name,
-                  terminalDescription: newTerminal.description,
-                  riskCoverage: newTerminal.riskCoverage,
+            ? this.routingRulesService.createTerminal({
+                  name: newTerminal.name,
+                  description: newTerminal.description,
+                  risk_coverage: newTerminal.riskCoverage,
                   options: newTerminal.options,
               })
             : of(existentTerminalID)

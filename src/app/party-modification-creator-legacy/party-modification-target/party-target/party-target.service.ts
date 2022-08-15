@@ -3,17 +3,17 @@ import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/lib
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { PartyManagementWithUserService } from '@cc/app/api/payment-processing';
+import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { PartyTarget } from '../party-target';
 import { SelectableItem } from './selectable-item';
 
 @Injectable()
 export class PartyTargetService {
-    constructor(private partyManagementWithUserService: PartyManagementWithUserService) {}
+    constructor(private partyManagementService: PartyManagementService) {}
 
     getSelectableItems(partyID: string, targetName: PartyTarget): Observable<SelectableItem[]> {
-        return this.partyManagementWithUserService.getParty(partyID).pipe(
+        return this.partyManagementService.Get(partyID).pipe(
             map((party) => {
                 const result = [];
                 const target = this.getTarget(party, targetName);

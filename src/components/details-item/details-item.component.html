@@ -4,7 +4,7 @@
         <div #content>
             <ng-content></ng-content>
         </div>
-        <div class="cc-details-item-content-empty" *ngIf="isEmpty$ | async">
+        <div *ngIf="isEmpty$ | async" class="cc-details-item-content-empty">
             <mat-icon inline>hide_source</mat-icon>
         </div>
     </div>

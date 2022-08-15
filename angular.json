@@ -22,27 +22,25 @@
                     "options": {
                         "allowedCommonJsDependencies": [
                             "moment",
-                            "keycloak-js",
                             "uuid",
                             "short-uuid",
                             "js-sha256",
                             "jwt-decode",
-                            "rxjs",
-                            "thrift-ts",
-                            "buffer",
-                            "humanize-duration",
-                            "node-int64",
+                            "element-resize-detector",
+                            "base64-js",
                             "@vality/deanonimus-proto",
                             "@vality/domain-proto",
                             "@vality/dominant-cache-proto",
-                            "@vality/file-storage-proto",
-                            "@vality/fistful-proto",
                             "@vality/machinegun-proto",
                             "@vality/magista-proto",
                             "@vality/messages-proto",
-                            "@vality/payout-manager-proto"
+                            "@vality/payout-manager-proto",
+                            "@vality/repairer-proto",
+                            "@vality/fistful-proto",
+                            "@vality/file-storage-proto",
+                            "@vality/thrift-ts"
                         ],
-                        "outputPath": "dist",
+                        "outputPath": "dist/control-center",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -146,9 +144,39 @@
                     }
                 }
             }
+        },
+        "ng-core": {
+            "projectType": "library",
+            "root": "projects/ng-core",
+            "sourceRoot": "projects/ng-core/src",
+            "prefix": "v",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:ng-packagr",
+                    "options": {
+                        "project": "projects/ng-core/ng-package.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "tsConfig": "projects/ng-core/tsconfig.lib.prod.json"
+                        },
+                        "development": {
+                            "tsConfig": "projects/ng-core/tsconfig.lib.json"
+                        }
+                    },
+                    "defaultConfiguration": "production"
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "projects/ng-core/src/test.ts",
+                        "tsConfig": "projects/ng-core/tsconfig.spec.json",
+                        "karmaConfig": "projects/ng-core/karma.conf.js"
+                    }
+                }
+            }
         }
     },
-    "defaultProject": "control-center",
     "cli": {
         "analytics": false
     }
