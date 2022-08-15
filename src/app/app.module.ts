@@ -81,7 +81,7 @@ moment.locale('en-GB');
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
-        { provide: MAT_DATE_LOCALE, useValue: 'en' },
+        { provide: MAT_DATE_LOCALE, useValue: 'ru' },
         { provide: LOCALE_ID, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },

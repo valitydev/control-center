@@ -1,8 +1,9 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ThriftType } from '@vality/thrift-ts';
+import { Moment } from 'moment';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
-import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
+import { map, pluck, shareReplay, startWith, filter } from 'rxjs/operators';
 
 import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
@@ -42,6 +43,10 @@ export class PrimitiveFieldComponent<T>
             );
         }),
         shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    time$ = this.control.value$.pipe(
+        filter(Boolean),
+        map((d) => (d as unknown as Moment).format('HH:mm'))
     );
 
     get inputType(): string {
@@ -87,5 +92,14 @@ export class PrimitiveFieldComponent<T>
     clear(event: MouseEvent) {
         this.control.reset(null);
         event.stopPropagation();
+    }
+
+    timeChange(event: InputEvent) {
+        const [hours, minutes] = (event.target as HTMLInputElement).value.split(':');
+        this.control.setValue(
+            (this.control.value as unknown as Moment)
+                .clone()
+                .set({ minutes: Number(minutes), hours: Number(hours) }) as unknown as T
+        );
     }
 }
