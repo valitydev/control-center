@@ -1,11 +1,7 @@
 <div gdColumns="1fr" gdGap="16px">
     <ng-container *ngIf="data.type === 'bool'; else input">
         <div gdColumns="1fr" gdGap="16px">
-            <cc-field-label
-                [field]="data.field"
-                [type]="data.type"
-                class="cc-body-1"
-            ></cc-field-label>
+            <span class="cc-body-1">{{ data.type | fieldLabel: data.field }}</span>
             <div fxLayoutAlign=" center" fxLayoutGap="4px">
                 <mat-radio-group [formControl]="control" fxFlex gdColumns="1fr 1fr" gdGap="8px">
                     <mat-radio-button [value]="false">False</mat-radio-button>
@@ -29,37 +25,15 @@
     <ng-template #input>
         <div fxLayoutGap="4px">
             <ng-container *ngIf="(data.extensionResult$ | async)?.type === 'datetime'; else input">
-                <mat-form-field fxFlex>
-                    <mat-label>
-                        <cc-field-label
-                            *ngIf="!(data.extensionResult$ | async)?.label; else extensionLabel"
-                            [field]="data.field"
-                            [type]="data.type"
-                        ></cc-field-label>
-                        <ng-template #extensionLabel>{{
-                            (data.extensionResult$ | async).label
-                        }}</ng-template>
-                    </mat-label>
-                    <mat-hint>{{ aliases }}</mat-hint>
-                    <input
-                        [formControl]="control"
-                        [matDatepicker]="picker"
-                        [required]="data.isRequired"
-                        matInput
-                    />
-                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field *ngIf="control.value" style="width: 100px">
-                    <input
-                        [value]="time$ | async"
-                        matInput
-                        max="23:59"
-                        min="00:00"
-                        type="time"
-                        (input)="timeChange($event)"
-                    />
-                </mat-form-field>
+                <cc-datetime
+                    [formControl]="control"
+                    [hint]="aliases"
+                    [label]="
+                        (data.extensionResult$ | async)?.label ??
+                        (data.type | fieldLabel: data.field)
+                    "
+                    fxFlex
+                ></cc-datetime>
                 <button
                     *ngIf="!data.isRequired && control.value"
                     mat-icon-button
@@ -74,11 +48,10 @@
             <ng-template #input>
                 <mat-form-field fxFlex>
                     <mat-label>
-                        <cc-field-label
+                        <ng-container
                             *ngIf="!(data.extensionResult$ | async)?.label; else extensionLabel"
-                            [field]="data.field"
-                            [type]="data.type"
-                        ></cc-field-label>
+                            >{{ data.type | fieldLabel: data.field }}</ng-container
+                        >
                         <ng-template #extensionLabel>{{
                             (data.extensionResult$ | async).label
                         }}</ng-template>
