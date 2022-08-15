@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
+import { TableModule } from '@cc/components/table';
 
 import { FetchRefundsService } from './fetch-refunds.service';
 import { PaymentRefundsComponent } from './payment-refunds.component';
@@ -20,6 +21,7 @@ import { RefundsTableModule } from './refunds-table';
         MatProgressSpinnerModule,
         EmptySearchResultModule,
         MatButtonModule,
+        TableModule,
     ],
     exports: [PaymentRefundsComponent],
 })

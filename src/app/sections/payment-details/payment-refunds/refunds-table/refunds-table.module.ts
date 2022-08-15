@@ -6,6 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { StatusModule } from '@cc/app/shared/components/status';
 import { CommonPipesModule, ThriftPipesModule, AmountCurrencyPipe } from '@cc/app/shared/pipes';
+import { TableModule } from '@cc/components/table';
 
 import { RefundsTableComponent } from './refunds-table.component';
 
@@ -19,6 +20,7 @@ import { RefundsTableComponent } from './refunds-table.component';
         ThriftPipesModule,
         CommonPipesModule,
         AmountCurrencyPipe,
+        TableModule,
     ],
     declarations: [RefundsTableComponent],
     exports: [RefundsTableComponent],
