@@ -26,7 +26,6 @@ import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
-import { ClaimModule } from './sections/claim';
 import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
@@ -72,7 +71,6 @@ moment.locale('en-GB');
         DomainConfigModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
-        ClaimModule,
         SectionsModule,
         // It is important that NotFoundModule module should be last
         NotFoundModule,
@@ -81,7 +79,7 @@ moment.locale('en-GB');
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
-        { provide: MAT_DATE_LOCALE, useValue: 'en' },
+        { provide: MAT_DATE_LOCALE, useValue: 'ru' },
         { provide: LOCALE_ID, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },

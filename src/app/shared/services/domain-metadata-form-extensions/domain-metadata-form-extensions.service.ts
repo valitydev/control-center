@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomainObject } from '@vality/domain-proto/lib/domain';
 import { Field } from '@vality/thrift-ts';
+import moment from 'moment';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import uuid from 'uuid';
@@ -29,11 +30,15 @@ export class DomainMetadataFormExtensionsService {
             (m) => m.default as never as ThriftAstMetadata[]
         )
     ).pipe(
-        map((metadata) => [
+        map((metadata): MetadataFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
                 extension: () => of({ generate: () => of(uuid()), isIdentifier: true }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
+                extension: () => of({ type: 'datetime', generate: () => of(moment()) }),
             },
         ]),
         shareReplay(1)

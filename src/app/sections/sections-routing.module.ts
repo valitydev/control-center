@@ -7,8 +7,21 @@ const ROUTES: Routes = [
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
     },
     {
-        path: 'party/:partyID/invoice/:invoiceID/payment/:paymentID',
-        loadChildren: () => import('./payment-details').then((m) => m.PaymentDetailsModule),
+        path: 'party',
+        loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
+    },
+    {
+        path: 'party/:partyID',
+        children: [
+            {
+                path: 'claim/:claimID',
+                loadChildren: () => import('./claim').then((m) => m.ClaimModule),
+            },
+            {
+                path: 'invoice/:invoiceID/payment/:paymentID',
+                loadChildren: () => import('./payment-details').then((m) => m.PaymentDetailsModule),
+            },
+        ],
     },
     {
         path: 'withdrawals',
