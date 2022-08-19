@@ -16,9 +16,8 @@
     "lint-errors": "npm run lint -- --quiet",
     "lint-libs": "eslint \"projects/ng-core/**/*.{ts,js,html}\" --max-warnings 0",
     "lint-libs-fix": "npm run lint -- --fix",
-    "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
-    "prettier": "npm run prettier-preset -- --list-different",
-    "prettier-fix": "npm run prettier-preset -- --write",
+    "prettier": "prettier . --list-different",
+    "prettier-fix": "prettier . --write",
     "fix": "concurrently -n LIB,APP -c magenta,cyan npm:lint-libs-fix npm:lint-fix && npm run prettier-fix"
   },
   "dependencies": {
