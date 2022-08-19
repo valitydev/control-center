@@ -1,0 +1,7 @@
+{
+    "realm": "internal",
+    "auth-server-url": "https://auth.empayre.com/auth/",
+    "ssl-required": "external",
+    "resource": "control-center",
+    "public-client": true
+}

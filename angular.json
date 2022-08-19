@@ -13,8 +13,8 @@
                     "strict": true
                 }
             },
-            "root": "",
-            "sourceRoot": "src",
+            "root": "projects/control-center",
+            "sourceRoot": "projects/control-center/src",
             "prefix": "cc",
             "architect": {
                 "build": {
@@ -41,14 +41,14 @@
                             "@vality/thrift-ts"
                         ],
                         "outputPath": "dist/control-center",
-                        "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "tsconfig.app.json",
+                        "index": "projects/control-center/src/index.html",
+                        "main": "projects/control-center/src/main.ts",
+                        "polyfills": "projects/control-center/src/polyfills.ts",
+                        "tsConfig": "projects/control-center/tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
-                            "src/favicon.ico",
-                            "src/assets",
+                            "projects/control-center/src/favicon.ico",
+                            "projects/control-center/src/assets",
                             {
                                 "glob": "**/*",
                                 "input": "./node_modules/monaco-editor/min/vs",
@@ -56,9 +56,9 @@
                             }
                         ],
                         "styles": [
-                            "src/app/styles/core.scss",
+                            "projects/control-center/src/app/styles/core.scss",
                             {
-                                "input": "src/app/styles/themes/light.scss",
+                                "input": "projects/control-center/src/app/styles/themes/light.scss",
                                 "bundleName": "light-theme",
                                 "inject": false
                             }
@@ -81,8 +81,8 @@
                             ],
                             "fileReplacements": [
                                 {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.prod.ts"
+                                    "replace": "projects/control-center/src/environments/environment.ts",
+                                    "with": "projects/control-center/src/environments/environment.prod.ts"
                                 }
                             ],
                             "outputHashing": "all"
@@ -110,17 +110,23 @@
                     },
                     "defaultConfiguration": "development"
                 },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "control-center:build"
+                    }
+                },
                 "test": {
                     "builder": "ngx-build-plus:karma",
                     "options": {
-                        "main": "src/test.ts",
-                        "polyfills": "src/polyfills.ts",
-                        "tsConfig": "tsconfig.spec.json",
-                        "karmaConfig": "karma.conf.js",
+                        "main": "projects/control-center/src/test.ts",
+                        "polyfills": "projects/control-center/src/polyfills.ts",
+                        "tsConfig": "projects/control-center/tsconfig.spec.json",
+                        "karmaConfig": "projects/control-center/karma.conf.js",
                         "inlineStyleLanguage": "scss",
                         "assets": [
-                            "src/favicon.ico",
-                            "src/assets",
+                            "projects/control-center/src/favicon.ico",
+                            "projects/control-center/src/assets",
                             {
                                 "glob": "**/*",
                                 "input": "./node_modules/monaco-editor/min/vs",
@@ -128,9 +134,9 @@
                             }
                         ],
                         "styles": [
-                            "src/app/styles/core.scss",
+                            "projects/control-center/src/app/styles/core.scss",
                             {
-                                "input": "src/app/styles/themes/light.scss",
+                                "input": "projects/control-center/src/app/styles/themes/light.scss",
                                 "bundleName": "light-theme",
                                 "inject": false
                             }

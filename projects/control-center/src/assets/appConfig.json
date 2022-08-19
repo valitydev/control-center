@@ -1,0 +1,13 @@
+{
+    "fileStorageEndpoint": "https://s3.eu-central-1.amazonaws.com",
+    "constants": {
+        "currencies": [
+            { "source": "a284b146-0cbd-43d8-b968-a123c82bf0a7", "currency": "RUB" },
+            { "source": "00322b9b-d39d-4bfe-be7b-baa89a6a0235", "currency": "USD" },
+            { "source": "f090e9b1-bd87-49a7-8555-61219cbae1a2", "currency": "UAH" },
+            { "source": "7b409105-fd84-402e-a319-1941462abb3f", "currency": "EUR" },
+            { "source": "ba072450-1944-42e8-bdc1-0e3662727956", "currency": "KZT" },
+            { "source": "c5ac50f7-1c41-4a4a-94e1-946f4e8827ad", "currency": "INR" }
+        ]
+    }
+}

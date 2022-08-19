@@ -1,4 +1,5 @@
 const rules = require('./tools/eslint-config/rules');
+const path = require('path');
 
 const baseTsRules = {
     parserOptions: {
@@ -28,13 +29,16 @@ const lenientTsRules = {
     '@typescript-eslint/no-unsafe-argument': 'warn',
 };
 
+const CONTROL_CENTER_DIR = 'projects/control-center/src';
+const NG_CORE_DIR = 'projects/ng-core/src';
+
 module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
     overrides: [
         {
             ...baseTsRules,
-            files: ['*.ts'],
+            files: [path.join(CONTROL_CENTER_DIR, '**/*.ts')],
             rules: {
                 ...baseTsRules.rules,
                 ...lenientTsRules,
@@ -43,7 +47,10 @@ module.exports = {
         {
             ...baseTsRules,
             // TODO: add fixed directories
-            files: ['**/src/app/core/**/*.ts', '**/projects/**/*.ts'],
+            files: [
+                path.join(CONTROL_CENTER_DIR, 'app/core/**/*.ts'),
+                path.join(NG_CORE_DIR, '**/*.ts'),
+            ],
         },
         {
             ...baseTsRules,
