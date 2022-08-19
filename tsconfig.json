@@ -18,7 +18,7 @@
         "resolveJsonModule": true,
         "skipLibCheck": false,
         "paths": {
-            "@cc/*": ["src/*"],
+            "@cc/*": ["projects/control-center/src/*"],
             "@vality/ng-core": ["dist/ng-core"],
             "thrift": ["node_modules/@vality/woody/dist/thrift"]
         }

@@ -8,8 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
-import { MenuCellComponent } from '@cc/components/table/menu-cell/menu-cell.component';
-
+import { MenuCellComponent } from './menu-cell/menu-cell.component';
 import { NoDataRowComponent } from './no-data-row/no-data-row.component';
 import { SelectColumnComponent } from './select-column/select-column.component';
 import { ShowMoreButtonComponent } from './show-more-button/show-more-button.component';
