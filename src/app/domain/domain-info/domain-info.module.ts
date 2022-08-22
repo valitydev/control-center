@@ -9,8 +9,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { CardContainerModule } from '@cc/components/card-container/card-container.module';
-
 import { MonacoEditorModule } from '../../monaco-editor';
 import { DamselModule } from '../../thrift-services/damsel';
 import { DomainGroupModule } from './domain-group';
@@ -32,7 +30,6 @@ import { DomainObjDetailsComponent } from './domain-obj-details';
         MatProgressSpinnerModule,
         MonacoEditorModule,
         DamselModule,
-        CardContainerModule,
     ],
 })
 export class DomainInfoModule {}

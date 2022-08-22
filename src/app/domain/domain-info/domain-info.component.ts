@@ -3,6 +3,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
+import { DomainStoreService } from '@cc/app/thrift-services/damsel/domain-store.service';
+
 import { DetailsContainerService } from './details-container.service';
 import { DomainDetailsService } from './domain-details.service';
 import { DomainInfoService } from './domain-info.service';
@@ -16,6 +18,7 @@ export class DomainInfoComponent implements OnInit {
     initialized = false;
     isLoading: boolean;
     @ViewChild('domainObjDetails', { static: true }) detailsContainer: MatSidenav;
+    version$ = this.domainStoreService.version$;
 
     private detailedObjRef: any;
 
@@ -24,7 +27,8 @@ export class DomainInfoComponent implements OnInit {
         private detailsService: DomainDetailsService,
         private detailsContainerService: DetailsContainerService,
         private domainInfoService: DomainInfoService,
-        private router: Router
+        private router: Router,
+        private domainStoreService: DomainStoreService
     ) {}
 
     ngOnInit() {

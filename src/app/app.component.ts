@@ -50,11 +50,6 @@ export class AppComponent implements OnInit {
             { name: 'Merchants', route: '/parties', activateRoles: [PartyRole.Get] },
             {
                 name: 'Repairing',
-                route: '/old-repairing',
-                activateRoles: [DomainConfigRole.Checkout],
-            },
-            {
-                name: 'New repairing',
                 route: '/repairing',
                 activateRoles: [DomainConfigRole.Checkout],
             },

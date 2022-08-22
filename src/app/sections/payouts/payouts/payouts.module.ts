@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { BaseDialogModule } from '@vality/ng-core';
+import { BaseDialogModule, ActionsModule } from '@vality/ng-core';
 
 import { PayoutToolFieldModule, ShopFieldModule, StatusModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
@@ -61,6 +61,7 @@ import { PayoutsComponent } from './payouts.component';
         ShopFieldModule,
         PayoutToolFieldModule,
         BaseDialogModule,
+        ActionsModule,
     ],
 })
 export class PayoutsModule {}

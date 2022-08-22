@@ -15,11 +15,19 @@
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <cc-card-container>
+        <div fxLayout="column" fxLayoutGap="24px" style="margin: 24px 16px">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <h1 class="cc-display-1">
+                    Domain config <span class="cc-secondary-text">#{{ version$ | async }}</span>
+                </h1>
+                <!--                <div>-->
+                <!--                    <button color="primary" mat-button (click)="create()">CREATE OBJECT</button>-->
+                <!--                </div>-->
+            </div>
             <div *ngIf="isLoading" fxLayout fxLayoutAlign="center stretch">
                 <mat-spinner></mat-spinner>
             </div>
             <cc-domain-group *ngIf="initialized"></cc-domain-group>
-        </cc-card-container>
+        </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
