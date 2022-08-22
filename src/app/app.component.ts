@@ -11,6 +11,8 @@ import {
     PayoutRole,
 } from '@cc/app/shared/services';
 
+const SIDENAV_OPENED_KEY = 'sidenav-opened';
+
 @Component({
     selector: 'cc-root',
     templateUrl: './app.component.html',
@@ -18,8 +20,14 @@ import {
 })
 export class AppComponent implements OnInit {
     username: string;
-
     menuItems: { name: string; route: string }[] = [];
+
+    get opened(): boolean {
+        return localStorage.getItem(SIDENAV_OPENED_KEY) === String(true);
+    }
+    set opened(opened: boolean) {
+        localStorage.setItem(SIDENAV_OPENED_KEY, String(opened));
+    }
 
     constructor(
         private keycloakService: KeycloakService,

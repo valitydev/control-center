@@ -6,8 +6,15 @@
 
 <mat-menu #userMenu="matMenu"> <button mat-menu-item (click)="logout()">Logout</button> </mat-menu>
 
-<mat-sidenav-container>
-    <mat-sidenav #sidenav fixedInViewport="true" fixedTopGap="64" mode="side" role="navigation">
+<mat-sidenav-container autosize>
+    <mat-sidenav
+        #sidenav
+        [(opened)]="opened"
+        fixedInViewport="true"
+        fixedTopGap="64"
+        mode="side"
+        role="navigation"
+    >
         <mat-nav-list>
             <mat-list-item
                 *ngFor="let item of menuItems"
