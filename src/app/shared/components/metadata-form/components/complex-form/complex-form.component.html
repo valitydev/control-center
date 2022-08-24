@@ -12,6 +12,7 @@
                     {{ i + 1 }}.
                     {{ isKeyValue ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
                     {{ data.type.valueType | valueTypeTitle | titlecase }}
+                    <!--                    TODO: {{ valueControl.value | json }}-->
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
                     <button mat-icon-button (click)="delete(i)">

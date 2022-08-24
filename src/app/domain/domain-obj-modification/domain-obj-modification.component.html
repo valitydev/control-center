@@ -7,7 +7,7 @@
             <div class="cc-display-1">Edit {{ type$ | async }}</div>
             <mat-card>
                 <mat-card-content style="height: calc(100vh - 260px); overflow-y: scroll">
-                    <cc-thrift-data
+                    <cc-thrift-editor
                         [codeLensProviders]="codeLensProviders"
                         [completionProviders]="completionProviders"
                         [defaultValue]="object$ | async"
@@ -15,9 +15,9 @@
                         [metadata]="metadata$ | async"
                         [type]="type$ | async"
                         class="editor"
-                        kind="editor"
+                        kind="form"
                         namespace="domain"
-                    ></cc-thrift-data>
+                    ></cc-thrift-editor>
                 </mat-card-content>
             </mat-card>
             <cc-actions>

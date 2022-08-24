@@ -22,12 +22,12 @@ enum Kind {
 
 @UntilDestroy()
 @Component({
-    selector: 'cc-thrift-data',
-    templateUrl: './thrift-data.component.html',
-    styleUrls: ['./thrift-data.component.scss'],
-    providers: createControlProviders(ThriftDataComponent),
+    selector: 'cc-thrift-editor',
+    templateUrl: './thrift-editor.component.html',
+    styleUrls: ['./thrift-editor.component.scss'],
+    providers: createControlProviders(ThriftEditorComponent),
 })
-export class ThriftDataComponent<T> extends ValidatedFormControlSuperclass<T> {
+export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> {
     @Input() mode: Mode = Mode.Edit;
     @Input() kind: Kind = Kind.Editor;
     @Input() height: string = '100%';

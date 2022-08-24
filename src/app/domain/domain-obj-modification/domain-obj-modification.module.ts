@@ -10,14 +10,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ActionsModule } from '@vality/ng-core';
 
-import { ThriftDataModule } from '@cc/app/shared/components/thrift-data/thrift-data.module';
+import { ThriftEditorModule } from '@cc/app/shared/components/thrift-editor';
 
 import { MonacoEditorModule } from '../../monaco-editor';
 import { DomainObjModificationComponent } from './domain-obj-modification.component';
-import { ResetConfirmDialogComponent } from './reset-confirm-dialog/reset-confirm-dialog.component';
 
 @NgModule({
-    declarations: [DomainObjModificationComponent, ResetConfirmDialogComponent],
+    declarations: [DomainObjModificationComponent],
     imports: [
         CommonModule,
         FlexLayoutModule,
@@ -29,7 +28,7 @@ import { ResetConfirmDialogComponent } from './reset-confirm-dialog/reset-confir
         MonacoEditorModule,
         MatDialogModule,
         ReactiveFormsModule,
-        ThriftDataModule,
+        ThriftEditorModule,
         ActionsModule,
     ],
     exports: [DomainObjModificationComponent],

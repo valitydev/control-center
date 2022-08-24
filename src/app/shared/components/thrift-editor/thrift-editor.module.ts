@@ -9,11 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MonacoEditorModule } from '@cc/app/monaco-editor';
 import { MetadataFormModule } from '@cc/app/shared';
 
-import { ThriftDataComponent } from './thrift-data.component';
+import { ThriftEditorComponent } from './thrift-editor.component';
 
 @NgModule({
-    declarations: [ThriftDataComponent],
-    exports: [ThriftDataComponent],
+    declarations: [ThriftEditorComponent],
+    exports: [ThriftEditorComponent],
     imports: [
         CommonModule,
         MetadataFormModule,
@@ -25,4 +25,4 @@ import { ThriftDataComponent } from './thrift-data.component';
         FlexModule,
     ],
 })
-export class ThriftDataModule {}
+export class ThriftEditorModule {}
