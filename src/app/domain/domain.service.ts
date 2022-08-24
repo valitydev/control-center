@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
 import { Commit, Snapshot } from '@vality/domain-proto/lib/domain_config';
 import { Int64 } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-
-import { toJson } from '@cc/utils/thrift-json-converter';
 
 import { toGenCommit, toGenReference } from '../thrift-services/converters';
 import { DomainService as ThriftDomainService } from '../thrift-services/damsel/domain.service';
@@ -34,24 +31,6 @@ export class DomainService {
     get version$(): Observable<number> {
         return this.shapshot$.pipe(
             map(({ version }) => (version ? (version as unknown as Int64).toNumber() : undefined))
-        );
-    }
-
-    /**
-     * @deprecated use DomainCacheService -> getObjects or specific service from thrift-services/damsel
-     */
-    getDomainObject(ref: Reference): Observable<DomainObject | null> {
-        return this.shapshot$.pipe(
-            map(({ domain }) => {
-                const searchRef = JSON.stringify(ref);
-                for (const [k, v] of domain) {
-                    const domainRef = JSON.stringify(toJson(k));
-                    if (domainRef === searchRef) {
-                        return v;
-                    }
-                }
-                return null;
-            })
         );
     }
 

@@ -10,7 +10,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title fxLayoutAlign=" center">
                     {{ i + 1 }}.
-                    {{ hasKeys ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
+                    {{ isKeyValue ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
                     {{ data.type.valueType | valueTypeTitle | titlecase }}
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
@@ -20,7 +20,7 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <div gdColumns="1fr" gdGap="16px">
-                <ng-container *ngIf="hasKeys">
+                <ng-container *ngIf="isKeyValue">
                     <span class="cc-body-2">Key</span>
                     <cc-metadata-form
                         [extensions]="data.extensions"
@@ -30,8 +30,8 @@
                         [parent]="data"
                         [type]="keyType"
                     ></cc-metadata-form>
+                    <span class="cc-body-2">Value</span>
                 </ng-container>
-                <span *ngIf="data.type.name === 'map'" class="cc-body-2">Value</span>
                 <cc-metadata-form
                     [extensions]="data.extensions"
                     [formControl]="valueControl"

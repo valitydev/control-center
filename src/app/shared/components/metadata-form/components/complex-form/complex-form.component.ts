@@ -9,6 +9,14 @@ import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
+function updateFormArray<V>(formArray: FormArray<V>, values: V[]) {
+    formArray.clear({ emitEvent: false });
+    values.forEach((v) => {
+        formArray.push(new FormControl(v) as never);
+    });
+    formArray.patchValue(values);
+}
+
 @UntilDestroy()
 @Component({
     selector: 'cc-complex-form',
@@ -29,7 +37,7 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
         return !!this.data.trueParent;
     }
 
-    get hasKeys() {
+    get isKeyValue() {
         return this.data.type.name === 'map';
     }
 
@@ -56,7 +64,12 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
     }
 
     handleIncomingValue(value: T) {
-        this.valueControls.patchValue(value as never, { emitEvent: false });
+        if (this.isKeyValue) {
+            const keys = Array.from(value?.keys() || []);
+            updateFormArray(this.keyControls, keys);
+        }
+        const values = this.isKeyValue ? Array.from(value?.keys() || []) : Array.from(value || []);
+        updateFormArray(this.valueControls, values);
     }
 
     validate(): ValidationErrors | null {
@@ -65,11 +78,11 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
 
     add() {
         this.valueControls.push(new FormControl());
-        if (this.hasKeys) this.keyControls.push(new FormControl());
+        if (this.isKeyValue) this.keyControls.push(new FormControl());
     }
 
     delete(idx: number) {
         this.valueControls.removeAt(idx);
-        if (this.hasKeys) this.keyControls.removeAt(idx);
+        if (this.isKeyValue) this.keyControls.removeAt(idx);
     }
 }

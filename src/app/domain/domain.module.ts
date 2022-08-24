@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 
-import { DamselMetaModule } from '../damsel-meta/damsel-meta.module';
 import { DomainInfoModule } from './domain-info/domain-info.module';
 import { DomainObjModificationModule } from './domain-obj-modification';
 import { DomainObjReviewModule } from './domain-obj-review';
@@ -15,7 +14,6 @@ import { MetadataService } from './metadata.service';
         DomainInfoModule,
         DomainObjModificationModule,
         DomainObjReviewModule,
-        DamselMetaModule,
     ],
     providers: [DomainService, MetadataService, DomainReviewService],
 })

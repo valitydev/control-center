@@ -26,7 +26,7 @@
                             "short-uuid",
                             "js-sha256",
                             "jwt-decode",
-                            "element-resize-detector",
+                            "css-element-queries",
                             "base64-js",
                             "@vality/deanonimus-proto",
                             "@vality/domain-proto",

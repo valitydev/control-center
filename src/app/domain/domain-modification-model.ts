@@ -1,10 +1,8 @@
 import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
 
-import { MetaStruct, MetaUnion } from '../damsel-meta';
-
 export interface ModificationItem {
     monacoContent: string;
-    meta: MetaStruct | MetaUnion;
+    meta: any;
     domainObj: DomainObject;
 }
 

@@ -1,30 +1,42 @@
 <div class="editor-container">
-    <div *ngIf="isLoading" fxLayout fxLayoutAlign="center stretch"><mat-spinner></mat-spinner></div>
-    <mat-card *ngIf="initialized">
-        <mat-card-header>
-            <mat-card-title>Edit {{ model.objectType }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <cc-monaco-editor
-                [codeLensProviders]="codeLensProviders"
-                [completionProviders]="completionProviders"
-                [file]="modifiedFile"
-                class="editor"
-                (fileChange)="fileChange($event)"
-            ></cc-monaco-editor>
-        </mat-card-content>
-        <mat-card-actions>
-            <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
+        <mat-spinner></mat-spinner>
+    </div>
+    <ng-template #content>
+        <div fxLayout="column" fxLayoutGap="24px">
+            <div class="cc-display-1">Edit {{ type$ | async }}</div>
+            <mat-card>
+                <mat-card-content style="height: calc(100vh - 260px); overflow-y: scroll">
+                    <cc-thrift-data
+                        [codeLensProviders]="codeLensProviders"
+                        [completionProviders]="completionProviders"
+                        [defaultValue]="object$ | async"
+                        [formControl]="control"
+                        [metadata]="metadata$ | async"
+                        [type]="type$ | async"
+                        class="editor"
+                        height="calc(100vh - 260px)"
+                        kind="form"
+                        mode="edit"
+                        namespace="domain"
+                    ></cc-thrift-data>
+                </mat-card-content>
+            </mat-card>
+            <cc-actions>
                 <button mat-button routerLink="/domain">
                     <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
                     BACK TO DOMAIN
                 </button>
-                <button color="warn" mat-button (click)="resetChanges()">RESET CHANGES</button>
-                <button [disabled]="!valid" mat-button (click)="reviewChanges()">
+                <button
+                    [disabled]="control.invalid"
+                    color="primary"
+                    mat-button
+                    (click)="reviewChanges()"
+                >
                     REVIEW CHANGES
                     <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
                 </button>
-            </div>
-        </mat-card-actions>
-    </mat-card>
+            </cc-actions>
+        </div>
+    </ng-template>
 </div>
