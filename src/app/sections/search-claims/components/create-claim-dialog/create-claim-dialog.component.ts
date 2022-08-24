@@ -34,15 +34,13 @@ export class CreateClaimDialogComponent extends BaseDialogSuperclass<
 
     create() {
         this.claimService
-            .CreateClaim(this.dialogData.partyId, [])
+            .CreateClaim(this.control.value, [])
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: (claim) => {
                     this.notificationService.success('Claim successfully created');
+                    void this.router.navigate([`party/${claim.party_id}/claim/${claim.id}`]);
                     this.closeWithSuccess();
-                    void this.router.navigate([
-                        `party/${this.dialogData.partyId}/claim/${claim.id}`,
-                    ]);
                 },
                 error: (err) => {
                     this.errorService.error(err, 'An error occurred while claim creation');
