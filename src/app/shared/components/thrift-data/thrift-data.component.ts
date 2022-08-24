@@ -1,6 +1,6 @@
 import { Component, Input, Injector } from '@angular/core';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { BaseDialogService } from '@vality/ng-core';
+import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
 import { ThriftAstMetadata, objectToJSON, thriftInstanceToObject } from '@cc/app/api/utils';
@@ -15,9 +15,9 @@ enum Mode {
 }
 
 enum Kind {
-    Viewer = 'viewer',
     Form = 'form',
     Editor = 'editor',
+    Diff = 'diff',
 }
 
 @UntilDestroy()
@@ -28,7 +28,7 @@ enum Kind {
     providers: createControlProviders(ThriftDataComponent),
 })
 export class ThriftDataComponent<T> extends ValidatedFormControlSuperclass<T> {
-    @Input() mode: Mode = Mode.Read;
+    @Input() mode: Mode = Mode.Edit;
     @Input() kind: Kind = Kind.Editor;
     @Input() height: string = '100%';
 
@@ -69,7 +69,6 @@ export class ThriftDataComponent<T> extends ValidatedFormControlSuperclass<T> {
     toggleKind() {
         switch (this.kind) {
             case Kind.Editor:
-            case Kind.Viewer:
                 this.kind = Kind.Form;
                 return;
             case Kind.Form:
@@ -82,6 +81,7 @@ export class ThriftDataComponent<T> extends ValidatedFormControlSuperclass<T> {
         this.baseDialogService
             .open(ConfirmActionDialogComponent, { title: 'Reset changes' })
             .afterClosed()
+            .pipe(filter(({ status }) => status === BaseDialogResponseStatus.Success))
             .subscribe(() => {
                 this.control.reset(this.defaultValue);
             });
