@@ -68,7 +68,9 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
             const keys = Array.from(value?.keys() || []);
             updateFormArray(this.keyControls, keys);
         }
-        const values = this.isKeyValue ? Array.from(value?.keys() || []) : Array.from(value || []);
+        const values = this.isKeyValue
+            ? Array.from(value?.values() || [])
+            : Array.from(value || []);
         updateFormArray(this.valueControls, values);
     }
 

@@ -1,18 +1,35 @@
 <div gdColumns="1fr" gdGap="16px">
     <span *ngIf="hasLabel" class="cc-body-1">
-        {{ data.type | fieldLabel: data.field }} ({{ data.type.name | titlecase }})
+        {{ data.type | fieldLabel: data.field }}
+        <span class="cc-secondary-text">
+            ({{ data.type.name | titlecase }}:
+            {{ isKeyValue ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
+            {{ data.type.valueType | valueTypeTitle | titlecase }})
+        </span>
     </span>
-    <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px' }">
+    <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px', overflow: 'hidden' }">
         <mat-expansion-panel
             *ngFor="let valueControl of valueControls.controls; let i = index"
-            class="mat-elevation-z0"
+            class="mat-elevation-z0 expansion-panel"
         >
             <mat-expansion-panel-header>
-                <mat-panel-title fxLayoutAlign=" center">
-                    {{ i + 1 }}.
-                    {{ isKeyValue ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
-                    {{ data.type.valueType | valueTypeTitle | titlecase }}
-                    <!--                    TODO: {{ valueControl.value | json }}-->
+                <mat-panel-title
+                    [gdColumns]="isKeyValue ? '1fr 2fr' : '1fr'"
+                    class="panel-title"
+                    gdGap="16px"
+                >
+                    <div>
+                        {{ i + 1 }}.
+                        <span *ngIf="isKeyValue; else value" class="cc-secondary-text">
+                            {{ keyControls.controls[i].value | inlineJson }}
+                        </span>
+                        <ng-template #value>
+                            {{ valueControl.value | inlineJson }}
+                        </ng-template>
+                    </div>
+                    <div *ngIf="isKeyValue">
+                        {{ valueControl.value | inlineJson }}
+                    </div>
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
                     <button mat-icon-button (click)="delete(i)">
@@ -20,28 +37,30 @@
                     </button>
                 </mat-panel-description>
             </mat-expansion-panel-header>
-            <div gdColumns="1fr" gdGap="16px">
-                <ng-container *ngIf="isKeyValue">
-                    <span class="cc-body-2">Key</span>
+            <ng-template matExpansionPanelContent>
+                <div gdColumns="1fr" gdGap="16px">
+                    <ng-container *ngIf="isKeyValue">
+                        <span class="cc-body-2">Key</span>
+                        <cc-metadata-form
+                            [extensions]="data.extensions"
+                            [formControl]="keyControls.controls[i]"
+                            [metadata]="data.metadata"
+                            [namespace]="data.namespace"
+                            [parent]="data"
+                            [type]="keyType"
+                        ></cc-metadata-form>
+                        <span class="cc-body-2">Value</span>
+                    </ng-container>
                     <cc-metadata-form
                         [extensions]="data.extensions"
-                        [formControl]="keyControls.controls[i]"
+                        [formControl]="valueControl"
                         [metadata]="data.metadata"
                         [namespace]="data.namespace"
                         [parent]="data"
-                        [type]="keyType"
+                        [type]="data.type.valueType"
                     ></cc-metadata-form>
-                    <span class="cc-body-2">Value</span>
-                </ng-container>
-                <cc-metadata-form
-                    [extensions]="data.extensions"
-                    [formControl]="valueControl"
-                    [metadata]="data.metadata"
-                    [namespace]="data.namespace"
-                    [parent]="data"
-                    [type]="data.type.valueType"
-                ></cc-metadata-form>
-            </div>
+                </div>
+            </ng-template>
         </mat-expansion-panel>
     </mat-accordion>
     <button mat-button (click)="add()">
