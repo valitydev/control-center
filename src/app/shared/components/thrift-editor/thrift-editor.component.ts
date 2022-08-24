@@ -44,6 +44,10 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
         shareReplay(1)
     );
 
+    get hasDefaultValue() {
+        return 'defaultValue' in this;
+    }
+
     private editorContent$: string = null;
 
     constructor(injector: Injector, private baseDialogService: BaseDialogService) {
