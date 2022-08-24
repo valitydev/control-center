@@ -6,11 +6,12 @@
         <div fxLayout="column" fxLayoutGap="24px">
             <div class="cc-display-1">Edit {{ type$ | async }}</div>
             <mat-card>
-                <mat-card-content style="height: calc(100vh - 260px); overflow-y: scroll">
+                <mat-card-content class="content">
                     <cc-thrift-editor
                         [codeLensProviders]="codeLensProviders"
                         [completionProviders]="completionProviders"
                         [defaultValue]="object$ | async"
+                        [extensions]="extensions$ | async"
                         [formControl]="control"
                         [metadata]="metadata$ | async"
                         [type]="type$ | async"

@@ -1,0 +1,9 @@
+<div class="wrapper" fxLayout="column" fxLayoutGap="8px">
+    <cc-monaco-diff-editor
+        *ngIf="kind === 'diff'"
+        [modified]="comparedFile$ | async"
+        [options]="{ renderSideBySide: true, readOnly: true }"
+        [original]="valueFile$ | async"
+        class="monaco-editor"
+    ></cc-monaco-diff-editor>
+</div>

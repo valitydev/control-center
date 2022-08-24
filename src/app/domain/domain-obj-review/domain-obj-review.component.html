@@ -1,33 +1,34 @@
 <div class="editor-container">
-    <mat-card *ngIf="initialized">
-        <mat-card-header fxLayout="row" fxLayoutAlign="space-between stretch">
-            <mat-card-title>Review changes of {{ objectType }}</mat-card-title>
-            <div>
-                <mat-checkbox
-                    [checked]="options.renderSideBySide"
-                    (change)="renderSideBySide($event)"
-                    >Side by side</mat-checkbox
-                >
-            </div>
-        </mat-card-header>
-        <mat-card-content>
-            <cc-monaco-diff-editor
-                [modified]="modified"
-                [options]="options"
-                [original]="original"
-                class="editor"
-            ></cc-monaco-diff-editor>
-        </mat-card-content>
-        <mat-card-actions>
-            <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
+        <mat-spinner></mat-spinner>
+    </div>
+    <ng-template #content>
+        <div fxLayout="column" fxLayoutGap="24px">
+            <div class="cc-display-1">Review changes of {{ type$ | async }}</div>
+            <mat-card>
+                <mat-card-content class="content">
+                    <cc-thrift-viewer
+                        [compared]="modifiedObject"
+                        [value]="object$ | async"
+                        class="editor"
+                        kind="diff"
+                    ></cc-thrift-viewer>
+                </mat-card-content>
+            </mat-card>
+            <cc-actions>
                 <button mat-button (click)="back()">
                     <mat-icon>keyboard_arrow_left</mat-icon>
                     BACK TO EDIT
                 </button>
-                <button [disabled]="isLoading" color="primary" mat-button (click)="commit()">
+                <button
+                    [disabled]="!!(progress$ | async)"
+                    color="primary"
+                    mat-button
+                    (click)="commit()"
+                >
                     COMMIT
                 </button>
-            </div>
-        </mat-card-actions>
-    </mat-card>
+            </cc-actions>
+        </div>
+    </ng-template>
 </div>

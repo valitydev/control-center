@@ -9,15 +9,11 @@ import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/app/monaco
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/utils';
 
-enum Mode {
-    Edit = 'edit',
-    Read = 'read',
-}
+import { MetadataFormExtension } from '../metadata-form';
 
 enum Kind {
     Form = 'form',
     Editor = 'editor',
-    Diff = 'diff',
 }
 
 @UntilDestroy()
@@ -28,15 +24,14 @@ enum Kind {
     providers: createControlProviders(ThriftEditorComponent),
 })
 export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> {
-    @Input() mode: Mode = Mode.Edit;
     @Input() kind: Kind = Kind.Editor;
-    @Input() height: string = '100%';
 
     @Input() defaultValue?: T;
 
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;
     @Input() type: string;
+    @Input() extensions: MetadataFormExtension[];
 
     @Input() codeLensProviders: CodeLensProvider[];
     @Input() completionProviders: CompletionProvider[];

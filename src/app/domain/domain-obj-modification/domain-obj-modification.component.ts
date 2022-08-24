@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
 
-import { MetadataService } from '@cc/app/domain/metadata.service';
-
 import { CodeLensProvider, CompletionProvider } from '../../monaco-editor';
-import { DomainReviewService } from '../domain-review.service';
+import { DomainMetadataFormExtensionsService } from '../../shared/services';
+import { DomainObjModificationService } from '../services/domain-obj-modification.service';
+import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
 import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
-import { DomainObjModificationService } from './domain-obj-modification.service';
 
 @UntilDestroy()
 @Component({
@@ -28,13 +27,15 @@ export class DomainObjModificationComponent implements OnInit {
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     object$ = this.domainObjModService.object$;
     type$ = this.domainObjModService.type$;
+    extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private snackBar: MatSnackBar,
         private domainObjModService: DomainObjModificationService,
-        private domainReviewService: DomainReviewService,
-        private metadataService: MetadataService
+        private modifiedDomainObjectService: ModifiedDomainObjectService,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {}
 
     ngOnInit() {
@@ -44,7 +45,7 @@ export class DomainObjModificationComponent implements OnInit {
     }
 
     reviewChanges() {
-        // this.domainReviewService.addReviewModel(this.model);
-        // void this.router.navigate(['domain', JSON.stringify(this.model.ref), 'review']);
+        this.modifiedDomainObjectService.update(this.control.value);
+        void this.router.navigate(['domain', this.route.snapshot.params.ref, 'review']);
     }
 }
