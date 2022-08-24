@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Stage" type="CompoundRunConfigurationType">
+    <toRun name="App Stage Server" type="js.build_tools.npm" />
+    <toRun name="Libs Dev Server" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
+import { environment } from '../../environments/environment';
 import { KeycloakTokenInfoService } from '../keycloak-token-info.service';
 import { ConfigService } from './config.service';
 
@@ -18,7 +19,7 @@ const initializer =
                 Promise.all([
                     keycloak
                         .init({
-                            config: '/assets/authConfig.json',
+                            config: environment.authConfigPath,
                             initOptions: {
                                 onLoad: 'login-required',
                                 checkLoginIframe: true,

@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: ['.env', process.env.NODE_ENV].filter(Boolean).join('.') });
 
 const THRIFT_PROXY_CONFIG = {
     context: [
