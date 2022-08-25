@@ -24,6 +24,6 @@ export class DomainInfoComponent {
     ) {}
 
     edit() {
-        void this.router.navigate(['domain', JSON.stringify(this.objWithRef.ref)]);
+        void this.router.navigate(['domain', 'edit', JSON.stringify(this.objWithRef.ref)]);
     }
 }

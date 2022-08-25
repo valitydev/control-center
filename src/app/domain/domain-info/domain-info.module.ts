@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
 import { PipesModule } from '@vality/ng-core';
 
 import { MonacoEditorModule } from '../../monaco-editor';
@@ -33,6 +34,7 @@ import { DomainInfoComponent } from './domain-info.component';
         DamselModule,
         ThriftViewerModule,
         PipesModule,
+        RouterModule,
     ],
 })
 export class DomainInfoModule {}

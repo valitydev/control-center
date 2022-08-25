@@ -1,9 +1,10 @@
 import { Component, Input, Injector } from '@angular/core';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { ValidationErrors } from '@angular/forms';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { merge, defer, of } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
-import { ThriftAstMetadata, objectToJSON, thriftInstanceToObject } from '@cc/app/api/utils';
+import { ThriftAstMetadata, thriftInstanceToObject, objectToJSON } from '@cc/app/api/utils';
 import { toMonacoFile } from '@cc/app/domain/utils';
 import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/app/monaco-editor';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
@@ -16,7 +17,6 @@ enum Kind {
     Editor = 'editor',
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-thrift-editor',
     templateUrl: './thrift-editor.component.html',
@@ -36,36 +36,50 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     @Input() codeLensProviders: CodeLensProvider[];
     @Input() completionProviders: CompletionProvider[];
 
-    file$ = this.control.value$.pipe(
+    file$ = merge(
+        this.control.value$.pipe(filter(() => this.kind !== Kind.Editor)),
+        defer(() => of(this.control.value))
+    ).pipe(
         map((value) => JSON.stringify(objectToJSON(value), null, 2)),
-        filter((content) => content !== this.editorContent$),
+        // filter((content) => content !== this.editorContent),
         map((content) => toMonacoFile(content)),
-        untilDestroyed(this),
-        shareReplay(1)
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    get hasDefaultValue() {
-        return 'defaultValue' in this;
-    }
-
-    private editorContent$: string = null;
+    private editorContent: string = null;
+    private editorError: unknown = null;
 
     constructor(injector: Injector, private baseDialogService: BaseDialogService) {
         super(injector);
     }
 
+    validate(): ValidationErrors | null {
+        if (this.kind === Kind.Editor) {
+            return this.editorError ? { jsonParse: this.editorError } : null;
+        }
+        return super.validate();
+    }
+
     fileChange($event: MonacoFile) {
-        this.editorContent$ = $event.content;
-        const value: T = thriftInstanceToObject<T>(
-            this.metadata,
-            this.namespace,
-            this.type,
-            JSON.parse($event.content)
-        );
-        this.control.setValue(value);
+        this.editorContent = $event.content;
+        try {
+            const value: T = thriftInstanceToObject<T>(
+                this.metadata,
+                this.namespace,
+                this.type,
+                JSON.parse($event.content)
+            );
+            this.editorError = null;
+            this.control.setValue(value);
+        } catch (err) {
+            console.warn(err);
+            this.editorError = err;
+            this.control.updateValueAndValidity();
+        }
     }
 
     toggleKind() {
+        this.editorError = null;
         switch (this.kind) {
             case Kind.Editor:
                 this.kind = Kind.Form;

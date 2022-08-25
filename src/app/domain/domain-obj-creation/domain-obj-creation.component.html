@@ -1,0 +1,33 @@
+<div class="editor-container">
+    <div fxLayout="column" fxLayoutGap="24px">
+        <div class="cc-display-1">Create</div>
+        <mat-card>
+            <mat-card-content class="content">
+                <cc-thrift-editor
+                    [extensions]="extensions$ | async"
+                    [formControl]="control"
+                    [metadata]="metadata$ | async"
+                    class="editor"
+                    kind="form"
+                    namespace="domain"
+                    type="DomainObject"
+                ></cc-thrift-editor>
+            </mat-card-content>
+        </mat-card>
+        <cc-actions>
+            <button mat-button routerLink="/domain">
+                <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
+                BACK TO DOMAIN
+            </button>
+            <button
+                [disabled]="control.invalid"
+                color="primary"
+                mat-button
+                (click)="reviewChanges()"
+            >
+                REVIEW CHANGES
+                <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
+            </button>
+        </cc-actions>
+    </div>
+</div>

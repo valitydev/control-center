@@ -21,9 +21,11 @@
                 <h1 class="cc-display-1">
                     Domain config <span class="cc-secondary-text">#{{ version$ | async }}</span>
                 </h1>
-                <!--                <div>-->
-                <!--                    <button color="primary" mat-button (click)="create()">CREATE OBJECT</button>-->
-                <!--                </div>-->
+                <div>
+                    <button color="primary" mat-raised-button routerLink="/domain/create">
+                        CREATE OBJECT
+                    </button>
+                </div>
             </div>
             <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
                 <mat-spinner></mat-spinner>

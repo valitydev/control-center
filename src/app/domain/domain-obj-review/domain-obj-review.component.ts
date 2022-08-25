@@ -36,6 +36,6 @@ export class DomainObjReviewComponent {
     commit() {}
 
     back() {
-        void this.router.navigate(['domain', this.route.snapshot.params.ref]);
+        void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref]);
     }
 }

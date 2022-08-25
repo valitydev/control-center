@@ -46,6 +46,6 @@ export class DomainObjModificationComponent implements OnInit {
 
     reviewChanges() {
         this.modifiedDomainObjectService.update(this.control.value);
-        void this.router.navigate(['domain', this.route.snapshot.params.ref, 'review']);
+        void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref, 'review']);
     }
 }
