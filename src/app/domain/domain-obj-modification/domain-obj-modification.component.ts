@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CodeLensProvider, CompletionProvider } from '../../monaco-editor';
 import { DomainMetadataFormExtensionsService } from '../../shared/services';
@@ -28,6 +29,7 @@ export class DomainObjModificationComponent implements OnInit {
     object$ = this.domainObjModService.object$;
     type$ = this.domainObjModService.type$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
+    qp$ = this.type$.pipe(map((type) => JSON.stringify([type])));
 
     constructor(
         private router: Router,

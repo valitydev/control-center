@@ -41,8 +41,7 @@
             </button>
 
             <button
-                [disabled]="control.invalid"
-                [disabled]="!!(progress$ | async)"
+                [disabled]="control.invalid || !!(progress$ | async)"
                 color="primary"
                 mat-button
                 (click)="review ? commit() : reviewChanges()"

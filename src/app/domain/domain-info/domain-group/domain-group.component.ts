@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChildren, QueryList, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -12,11 +12,16 @@ import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 import { Columns } from '../../../../components/table';
 import { getUnionValue } from '../../../../utils';
 import { objectToJSON } from '../../../api/utils';
+import { QueryParamsService } from '../../../shared/services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { MetadataService } from '../../services/metadata.service';
 import { DataSourceItem } from './types/data-source-item';
 import { filterPredicate } from './utils/filter-predicate';
 import { sortData } from './utils/sort-table-data';
+
+interface Params {
+    types?: string[];
+}
 
 @UntilDestroy()
 @Component({
@@ -24,14 +29,14 @@ import { sortData } from './utils/sort-table-data';
     templateUrl: './domain-group.component.html',
     styleUrls: ['./domain-group.component.scss'],
 })
-export class DomainGroupComponent {
+export class DomainGroupComponent implements OnInit {
     @Output() refChange = new EventEmitter<{ ref: Reference; obj: DomainObject }>();
 
     @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
     @ViewChildren(MatSort) sort = new QueryList<MatSort>();
 
     searchControl = new FormControl('');
-    typesControl = new FormControl([]);
+    typesControl = new FormControl(this.queryParamsService.params.types || []);
     dataSource$: Observable<MatTableDataSource<DataSourceItem>> =
         this.domainStoreService.domain$.pipe(
             map((domain) =>
@@ -91,8 +96,15 @@ export class DomainGroupComponent {
 
     constructor(
         private domainStoreService: DomainStoreService,
-        private metadataService: MetadataService
+        private metadataService: MetadataService,
+        private queryParamsService: QueryParamsService<Params>
     ) {}
+
+    ngOnInit() {
+        this.typesControl.valueChanges.subscribe((types) => {
+            void this.queryParamsService.set({ types });
+        });
+    }
 
     openDetails(item: DataSourceItem) {
         this.refChange.emit({ ref: item.sourceRef, obj: item.sourceObj });
