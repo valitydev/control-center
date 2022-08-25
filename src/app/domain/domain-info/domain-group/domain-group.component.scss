@@ -1,0 +1,27 @@
+$offset: 16px;
+
+.table-wrapper {
+    $header-height: 64px;
+    $title-height: 40px;
+    $offsets: $offset * 4;
+    $internal-offsets: 16px * 2;
+    $paginator-height: 63.555px;
+    $filters-height: 57.555px;
+
+    overflow: scroll;
+    height: calc(
+        100vh -
+            (
+                $header-height + $title-height + $offsets + $internal-offsets + $paginator-height +
+                    $filters-height
+            )
+    );
+
+    .mat-table-sticky-border-elem-right {
+        border-left: 1px solid #e0e0e0;
+    }
+
+    .mat-table-sticky-border-elem-left {
+        border-right: 1px solid #e0e0e0;
+    }
+}

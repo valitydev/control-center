@@ -7,7 +7,7 @@ import { toMonacoFile } from '../../../domain/utils';
 import { ComponentChanges } from '../../utils';
 
 enum Kind {
-    Diff = 'diff',
+    Editor = 'editor',
 }
 
 @UntilDestroy()
@@ -17,7 +17,7 @@ enum Kind {
     styleUrls: ['./thrift-viewer.component.scss'],
 })
 export class ThriftViewerComponent<T> implements OnChanges {
-    @Input() kind: Kind = Kind.Diff;
+    @Input() kind: Kind = Kind.Editor;
     @Input() value: T;
     @Input() compared?: T;
 

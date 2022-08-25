@@ -8,7 +8,7 @@ import { ErrorService } from '@cc/app/shared/services/error';
 import { DomainStoreService } from '@cc/app/thrift-services/damsel/domain-store.service';
 import { toJson, getUnionValue, progressTo } from '@cc/utils';
 
-import { MetadataService } from '../metadata.service';
+import { MetadataService } from './metadata.service';
 
 @Injectable()
 export class DomainObjModificationService {

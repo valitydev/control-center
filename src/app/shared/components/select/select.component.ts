@@ -25,7 +25,7 @@ export class SelectComponent<T> extends FormComponentSuperclass<T[]> {
     }
 
     get isAllSelected() {
-        return this.value.length === this.options.length;
+        return this.value?.length === this.options?.length;
     }
 
     get currentLabel() {
@@ -33,7 +33,7 @@ export class SelectComponent<T> extends FormComponentSuperclass<T[]> {
     }
 
     handleIncomingValue(value: T[]) {
-        this.value = value || [];
+        this.update(value || []);
     }
 
     change(value: (T | symbol)[]) {

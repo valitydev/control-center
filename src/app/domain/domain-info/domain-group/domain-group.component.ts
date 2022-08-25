@@ -1,33 +1,100 @@
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { filter } from 'rxjs/operators';
+import { Component, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { Reference, DomainObject } from '@vality/domain-proto/lib/domain';
+import sortBy from 'lodash-es/sortBy';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 
-import { DomainGroup } from './domain-group';
-import { DomainGroupService } from './domain-group.service';
+import { Columns } from '../../../../components/table';
+import { getUnionValue } from '../../../../utils';
+import { objectToJSON } from '../../../api/utils';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { MetadataService } from '../../services/metadata.service';
+import { DataSourceItem } from './types/data-source-item';
+import { filterPredicate } from './utils/filter-predicate';
+import { sortData } from './utils/sort-table-data';
 
+@UntilDestroy()
 @Component({
     selector: 'cc-domain-group',
     templateUrl: './domain-group.component.html',
-    providers: [DomainGroupService],
+    styleUrls: ['./domain-group.component.scss'],
 })
-export class DomainGroupComponent implements OnInit {
-    group: DomainGroup[];
-    version: number;
+export class DomainGroupComponent {
+    @Output() refChange = new EventEmitter<{ ref: Reference; obj: DomainObject }>();
 
-    constructor(private groupService: DomainGroupService, private snackBar: MatSnackBar) {}
+    @ViewChildren(MatPaginator) paginator = new QueryList<MatPaginator>();
+    @ViewChildren(MatSort) sort = new QueryList<MatSort>();
 
-    ngOnInit() {
-        this.groupService.initialize().subscribe(({ group, version }) => {
-            this.group = group;
-            this.version = version;
-        });
-        this.groupService.undefDetectionStatus$
-            .pipe(filter((s) => s === 'detected'))
-            .subscribe(() =>
-                this.snackBar.open(
-                    'Detected undefined domain types. Need to bump damsel version.',
-                    'OK'
+    searchControl = new FormControl('');
+    typesControl = new FormControl([]);
+    dataSource$: Observable<MatTableDataSource<DataSourceItem>> =
+        this.domainStoreService.domain$.pipe(
+            map((domain) =>
+                Array.from(domain).map(([sourceRef, sourceObj]) => ({
+                    ref: getUnionValue(sourceRef),
+                    sourceRef,
+                    sourceObj,
+                    obj: getUnionValue(sourceObj).data,
+                }))
+            ),
+            switchMap((data) =>
+                combineLatest(
+                    data.map((d) => this.metadataService.getDomainObjectType(d.sourceRef))
+                ).pipe(
+                    map((r) =>
+                        r.map((type, idx) => ({
+                            ...data[idx],
+                            type,
+                            stringified: JSON.stringify(
+                                objectToJSON([data[idx].obj, data[idx].ref, type])
+                            ),
+                        }))
+                    )
                 )
-            );
+            ),
+            switchMap((data: DataSourceItem[]) =>
+                combineLatest([
+                    of(data),
+                    this.searchControl.valueChanges.pipe(startWith(this.searchControl.value)),
+                    this.typesControl.valueChanges.pipe(startWith(this.typesControl.value)),
+                    this.paginator.changes.pipe(startWith(this.paginator)),
+                    this.sort.changes.pipe(startWith(this.sort)),
+                ])
+            ),
+            map(([data, searchStr, selectedTypes]) => {
+                const dataSource = new MatTableDataSource(
+                    data.filter((d) => selectedTypes.includes(d.type))
+                );
+                dataSource.paginator = this.paginator?.first;
+                dataSource.sort = this.sort?.first;
+                dataSource.sortData = sortData;
+                dataSource.filterPredicate = filterPredicate;
+                dataSource.filter = searchStr.trim();
+                return dataSource;
+            }),
+            shareReplay({ refCount: true, bufferSize: 1 })
+        );
+    cols = new Columns('type', 'ref', 'obj', 'actions');
+    fields$ = this.metadataService.getDomainFields().pipe(
+        map((fields) => sortBy(fields, 'type')),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    options$ = this.fields$.pipe(
+        map((fields) => fields.map(({ type }) => ({ label: type, value: type })))
+    );
+    isLoading$ = this.domainStoreService.isLoading$;
+
+    constructor(
+        private domainStoreService: DomainStoreService,
+        private metadataService: MetadataService
+    ) {}
+
+    openDetails(item: DataSourceItem) {
+        this.refChange.emit({ ref: item.sourceRef, obj: item.sourceObj });
     }
 }

@@ -2,7 +2,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,24 +10,20 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { PipesModule } from '@vality/ng-core';
 
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
+import { TableModule } from '../../../../components/table';
+import { SelectModule } from '../../../shared/components/select';
 import { DomainGroupComponent } from './domain-group.component';
-import { DomainObjectsTypeSelectorComponent } from './domain-objects-type-selector';
-import { GroupControlComponent } from './group-control';
-import { GroupTableComponent } from './group-table';
 
 @NgModule({
-    declarations: [
-        DomainGroupComponent,
-        DomainObjectsTypeSelectorComponent,
-        GroupControlComponent,
-        GroupTableComponent,
-    ],
+    declarations: [DomainGroupComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -44,6 +40,11 @@ import { GroupTableComponent } from './group-table';
         MatSelectModule,
         MatSortModule,
         PrettyJsonModule,
+        PipesModule,
+        TableModule,
+        ReactiveFormsModule,
+        SelectModule,
+        MatProgressSpinnerModule,
     ],
     exports: [DomainGroupComponent],
 })

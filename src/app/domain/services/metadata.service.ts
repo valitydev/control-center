@@ -1,20 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Reference } from '@vality/domain-proto/lib/domain';
-import { Field, JsonAST } from '@vality/thrift-ts';
+import { Field } from '@vality/thrift-ts';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-export interface Metadata {
-    path: string;
-    name: string;
-    ast: JsonAST;
-}
+import { ThriftAstMetadata } from '../../api/utils';
 
 @Injectable()
 export class MetadataService {
-    private metadata$: Observable<Metadata[]> = from(
+    private metadata$: Observable<ThriftAstMetadata[]> = from(
         import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
-    ).pipe(shareReplay(1)) as Observable<Metadata[]>;
+    ).pipe(shareReplay(1)) as Observable<ThriftAstMetadata[]>;
 
     get metadata() {
         return this.metadata$;
@@ -29,7 +25,7 @@ export class MetadataService {
             return of(null);
         }
         const searchName = keys[0];
-        return this.getDomainDef().pipe(
+        return this.getDomainFields().pipe(
             map((d) => {
                 const found = d.find(({ name }) => name === searchName);
                 return found ? (found.type as string) : null;
@@ -37,7 +33,7 @@ export class MetadataService {
         );
     }
 
-    getDomainDef(): Observable<Field[]> {
+    getDomainFields(): Observable<Field[]> {
         return this.metadata$.pipe(
             map((m) => m.find(({ name }) => name === 'domain').ast.union.DomainObject)
         );
