@@ -1,7 +1,7 @@
 import { Component, Input, Injector } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
-import { merge, defer, of } from 'rxjs';
+import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
 import { ThriftAstMetadata, thriftInstanceToObject, objectToJSON } from '@cc/app/api/utils';
@@ -38,14 +38,14 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
 
     file$ = merge(
         this.control.value$.pipe(filter(() => this.kind !== Kind.Editor)),
-        defer(() => of(this.control.value))
+        defer(() => of(this.control.value)),
+        defer(() => this.updateFile$)
     ).pipe(
-        map((value) => JSON.stringify(objectToJSON(value), null, 2)),
-        // filter((content) => content !== this.editorContent),
-        map((content) => toMonacoFile(content)),
+        map((value) => toMonacoFile(this.createMonacoContent(value))),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
+    private updateFile$ = new Subject<void>();
     private editorContent: string = null;
     private editorError: unknown = null;
 
@@ -97,6 +97,12 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
             .pipe(filter(({ status }) => status === BaseDialogResponseStatus.Success))
             .subscribe(() => {
                 this.control.reset(this.defaultValue);
+                this.editorError = null;
+                this.updateFile$.next();
             });
+    }
+
+    private createMonacoContent(value: unknown): string {
+        return JSON.stringify(objectToJSON(value), null, 2);
     }
 }
