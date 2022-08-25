@@ -13,8 +13,11 @@ import { MetadataService } from './metadata.service';
 @Injectable()
 export class DomainObjModificationService {
     progress$ = new BehaviorSubject(0);
-    object$ = defer(() => this.ref$).pipe(
+    fullObject$ = defer(() => this.ref$).pipe(
         switchMap((ref) => this.getDomainObject(ref).pipe(progressTo(this.progress$))),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    object$ = this.fullObject$.pipe(
         map((obj) => getUnionValue(obj)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );

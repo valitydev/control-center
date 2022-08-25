@@ -4,6 +4,7 @@
         <mat-card>
             <mat-card-content class="content">
                 <cc-thrift-editor
+                    *ngIf="!review"
                     [extensions]="extensions$ | async"
                     [formControl]="control"
                     [metadata]="metadata$ | async"
@@ -12,20 +13,41 @@
                     namespace="domain"
                     type="DomainObject"
                 ></cc-thrift-editor>
+                <cc-thrift-viewer
+                    *ngIf="review"
+                    [value]="control.value"
+                    class="editor"
+                ></cc-thrift-viewer>
             </mat-card-content>
         </mat-card>
         <cc-actions>
-            <button mat-button routerLink="/domain">
+            <button
+                *ngIf="!review"
+                [disabled]="!!(progress$ | async)"
+                mat-button
+                routerLink="/domain"
+            >
                 <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
                 BACK TO DOMAIN
             </button>
             <button
+                *ngIf="review"
+                [disabled]="!!(progress$ | async)"
+                mat-button
+                (click)="review = false"
+            >
+                <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
+                BACK TO EDIT
+            </button>
+
+            <button
                 [disabled]="control.invalid"
+                [disabled]="!!(progress$ | async)"
                 color="primary"
                 mat-button
-                (click)="reviewChanges()"
+                (click)="review ? commit() : reviewChanges()"
             >
-                REVIEW CHANGES
+                {{ review ? 'COMMIT' : 'REVIEW' }}
                 <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
             </button>
         </cc-actions>

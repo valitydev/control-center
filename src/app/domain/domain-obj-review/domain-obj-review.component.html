@@ -16,7 +16,7 @@
                 </mat-card-content>
             </mat-card>
             <cc-actions>
-                <button mat-button (click)="back()">
+                <button [disabled]="!!(progress$ | async)" mat-button (click)="back()">
                     <mat-icon>keyboard_arrow_left</mat-icon>
                     BACK TO EDIT
                 </button>

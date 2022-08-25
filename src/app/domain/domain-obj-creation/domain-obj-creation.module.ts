@@ -13,6 +13,7 @@ import { ActionsModule } from '@vality/ng-core';
 import { ThriftEditorModule } from '@cc/app/shared/components/thrift-editor';
 
 import { MonacoEditorModule } from '../../monaco-editor';
+import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
 import { DomainObjCreationComponent } from './domain-obj-creation.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { DomainObjCreationComponent } from './domain-obj-creation.component';
         ReactiveFormsModule,
         ThriftEditorModule,
         ActionsModule,
+        ThriftViewerModule,
     ],
     exports: [DomainObjCreationComponent],
 })
