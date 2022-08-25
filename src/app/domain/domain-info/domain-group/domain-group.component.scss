@@ -17,6 +17,15 @@ $offset: 16px;
             )
     );
 
+    table {
+        width: 100%;
+
+        td,
+        th {
+            padding: 0 4px;
+        }
+    }
+
     .mat-table-sticky-border-elem-right {
         border-left: 1px solid #e0e0e0;
     }

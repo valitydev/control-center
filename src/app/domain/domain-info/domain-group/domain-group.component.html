@@ -21,7 +21,6 @@
                     matSortActive="ref"
                     matSortDirection="asc"
                     matSortDisableClear
-                    style="width: 100%"
                 >
                     <ng-container [matColumnDef]="cols.def.type" sticky>
                         <th *matHeaderCellDef mat-header-cell mat-sort-header>Type</th>
@@ -34,7 +33,7 @@
                             mat-cell
                             style="overflow: hidden; white-space: nowrap"
                         >
-                            {{ c.ref | inlineJson: false }}
+                            <cc-pretty-json [object]="c.ref" inline></cc-pretty-json>
                         </td>
                     </ng-container>
                     <ng-container [matColumnDef]="cols.def.obj">
@@ -44,7 +43,7 @@
                             mat-cell
                             style="overflow: hidden; white-space: nowrap"
                         >
-                            {{ c.obj | inlineJson: false }}
+                            <cc-pretty-json [object]="c.obj" inline></cc-pretty-json>
                         </td>
                     </ng-container>
                     <ng-container [matColumnDef]="cols.def.actions" stickyEnd>
