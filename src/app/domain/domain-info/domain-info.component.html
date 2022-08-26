@@ -8,7 +8,12 @@
         position="end"
     >
         <div class="details-container" fxLayout="column" fxLayoutGap="24px">
-            <cc-thrift-viewer [value]="objWithRef?.obj" style="height: 100%"></cc-thrift-viewer>
+            <cc-thrift-viewer
+                [kind]="kind"
+                [value]="objWithRef?.obj"
+                class="viewer"
+                (changeKind)="kind = $event"
+            ></cc-thrift-viewer>
             <div fxLayout fxLayoutAlign="space-between center">
                 <button mat-button (click)="objWithRef = null">CLOSE</button>
                 <button color="primary" mat-button (click)="edit()">EDIT</button>

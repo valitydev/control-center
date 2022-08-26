@@ -1,16 +1,25 @@
 <div class="wrapper" fxLayout="column" fxLayoutGap="8px">
     <cc-monaco-diff-editor
-        *ngIf="!!compared"
+        *ngIf="isDiff; else standard"
         [modified]="comparedFile$ | async"
         [options]="{ renderSideBySide: true, readOnly: true }"
         [original]="valueFile$ | async"
         class="monaco-editor"
     ></cc-monaco-diff-editor>
-    <cc-monaco-editor
-        *ngIf="kind === 'editor'"
-        [file]="valueFile$ | async"
-        [options]="{ readOnly: true }"
-        class="monaco-editor"
-    >
-    </cc-monaco-editor>
+    <ng-template #standard>
+        <div class="actions" fxLayout fxLayoutAlign="end center" fxLayoutGap="2px">
+            <button color="primary" mat-icon-button (click)="toggleKind()">
+                <mat-icon *ngIf="kind === 'component'">code_blocks</mat-icon>
+                <mat-icon *ngIf="kind === 'editor'">view_comfy_alt</mat-icon>
+            </button>
+        </div>
+        <cc-json-viewer *ngIf="kind === 'component'" [json]="json"></cc-json-viewer>
+        <cc-monaco-editor
+            *ngIf="kind === 'editor'"
+            [file]="valueFile$ | async"
+            [options]="{ readOnly: true }"
+            class="monaco-editor"
+        >
+        </cc-monaco-editor>
+    </ng-template>
 </div>

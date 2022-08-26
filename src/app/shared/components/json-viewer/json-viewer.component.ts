@@ -17,18 +17,22 @@ export class JsonViewerComponent {
     @Input() patches: Patch[] = [];
 
     get inline(): InlineItem[] {
-        return Object.entries(this.json)
-            .map(([k, v]) => getInline([k], v))
-            .filter(Boolean)
-            .map(
-                ([path, value]): InlineItem =>
-                    new InlineItem(
-                        path,
-                        value,
-                        this.patches?.find((p) => isEqual(p.path, path))
-                    )
-            )
-            .sort(({ key: a }, { key: b }) => a.localeCompare(b));
+        try {
+            return Object.entries(this.json)
+                .map(([k, v]) => getInline([k], v))
+                .filter(Boolean)
+                .map(
+                    ([path, value]): InlineItem =>
+                        new InlineItem(
+                            path,
+                            value,
+                            this.patches?.find((p) => isEqual(p.path, path))
+                        )
+                )
+                .sort(({ key: a }, { key: b }) => a.localeCompare(b));
+        } catch (err) {
+            return [];
+        }
     }
 
     get objects() {

@@ -6,12 +6,16 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { enumHasValue } from '../../../utils';
 import { CodeLensProvider, CompletionProvider } from '../../monaco-editor';
+import { EditorKind } from '../../shared/components/thrift-editor';
 import { DomainMetadataFormExtensionsService } from '../../shared/services';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
 import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
+
+const EDITOR_KIND = 'domain-obj-modification-kind';
 
 @UntilDestroy()
 @Component({
@@ -30,6 +34,18 @@ export class DomainObjModificationComponent implements OnInit {
     type$ = this.domainObjModService.type$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     qp$ = this.type$.pipe(map((type) => JSON.stringify([type])));
+
+    get kind() {
+        const kind = localStorage.getItem(EDITOR_KIND);
+        if (!enumHasValue(EditorKind, kind)) {
+            this.kind = EditorKind.Editor;
+            return EditorKind.Editor;
+        }
+        return kind;
+    }
+    set kind(kind: EditorKind) {
+        localStorage.setItem(EDITOR_KIND, kind);
+    }
 
     constructor(
         private router: Router,

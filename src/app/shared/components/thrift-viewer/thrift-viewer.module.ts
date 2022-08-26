@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MonacoEditorModule } from '@cc/app/monaco-editor';
 import { MetadataFormModule } from '@cc/app/shared';
 
+import { JsonViewerModule } from '../json-viewer';
 import { ThriftViewerComponent } from './thrift-viewer.component';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ThriftViewerComponent } from './thrift-viewer.component';
         MatButtonModule,
         MatIconModule,
         FlexModule,
+        JsonViewerModule,
     ],
 })
 export class ThriftViewerModule {}

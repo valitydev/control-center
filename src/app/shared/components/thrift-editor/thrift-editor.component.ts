@@ -1,4 +1,4 @@
-import { Component, Input, Injector } from '@angular/core';
+import { Component, Input, Injector, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
@@ -12,7 +12,7 @@ import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/util
 
 import { MetadataFormExtension } from '../metadata-form';
 
-enum Kind {
+export enum EditorKind {
     Form = 'form',
     Editor = 'editor',
 }
@@ -24,7 +24,7 @@ enum Kind {
     providers: createControlProviders(ThriftEditorComponent),
 })
 export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> {
-    @Input() kind: Kind = Kind.Editor;
+    @Input() kind: EditorKind = EditorKind.Editor;
 
     @Input() defaultValue?: T;
 
@@ -36,8 +36,10 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     @Input() codeLensProviders: CodeLensProvider[];
     @Input() completionProviders: CompletionProvider[];
 
+    @Output() changeKind = new EventEmitter<EditorKind>();
+
     file$ = merge(
-        this.control.value$.pipe(filter(() => this.kind !== Kind.Editor)),
+        this.control.value$.pipe(filter(() => this.kind !== EditorKind.Editor)),
         defer(() => of(this.control.value)),
         defer(() => this.updateFile$)
     ).pipe(
@@ -54,7 +56,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     }
 
     validate(): ValidationErrors | null {
-        if (this.kind === Kind.Editor) {
+        if (this.kind === EditorKind.Editor) {
             return this.editorError ? { jsonParse: this.editorError } : null;
         }
         return super.validate();
@@ -81,13 +83,14 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     toggleKind() {
         this.editorError = null;
         switch (this.kind) {
-            case Kind.Editor:
-                this.kind = Kind.Form;
-                return;
-            case Kind.Form:
-                this.kind = Kind.Editor;
-                return;
+            case EditorKind.Editor:
+                this.kind = EditorKind.Form;
+                break;
+            case EditorKind.Form:
+                this.kind = EditorKind.Editor;
+                break;
         }
+        this.changeKind.emit(this.kind);
     }
 
     reset() {
