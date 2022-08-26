@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 
 import { enumHasValue } from '../../../utils';
 import { CodeLensProvider, CompletionProvider } from '../../monaco-editor';
@@ -57,13 +57,18 @@ export class DomainObjModificationComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.object$.pipe(untilDestroyed(this)).subscribe((object) => {
-            this.control.setValue(object);
+        this.domainObjModService.object$.pipe(first(), untilDestroyed(this)).subscribe((object) => {
+            if (
+                this.modifiedDomainObjectService.domainObject &&
+                this.route.snapshot.params.ref === this.modifiedDomainObjectService.ref
+            )
+                this.control.setValue(this.modifiedDomainObjectService.domainObject);
+            else this.control.setValue(object);
         });
     }
 
     reviewChanges() {
-        this.modifiedDomainObjectService.update(this.control.value);
+        this.modifiedDomainObjectService.update(this.control.value, this.route.snapshot.params.ref);
         void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref, 'review']);
     }
 }

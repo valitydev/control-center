@@ -4,8 +4,10 @@ import { DomainObject } from '@vality/domain-proto/lib/domain';
 @Injectable()
 export class ModifiedDomainObjectService {
     domainObject: DomainObject;
+    ref: string;
 
-    update(domainObject: DomainObject) {
+    update(domainObject: DomainObject, ref: string) {
         this.domainObject = domainObject;
+        this.ref = ref;
     }
 }
