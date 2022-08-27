@@ -28,22 +28,17 @@
                     </ng-container>
                     <ng-container [matColumnDef]="cols.def.ref">
                         <th *matHeaderCellDef mat-header-cell mat-sort-header>Ref</th>
-                        <td
-                            *matCellDef="let c"
-                            mat-cell
-                            style="overflow: hidden; white-space: nowrap"
-                        >
-                            <cc-pretty-json [object]="c.ref" inline></cc-pretty-json>
+                        <td *matCellDef="let c" class="json-cell" mat-cell>
+                            <cc-pretty-json [object]="c.ref | ccUnionValue" inline></cc-pretty-json>
                         </td>
                     </ng-container>
                     <ng-container [matColumnDef]="cols.def.obj">
                         <th *matHeaderCellDef mat-header-cell mat-sort-header>Object</th>
-                        <td
-                            *matCellDef="let c"
-                            mat-cell
-                            style="overflow: hidden; white-space: nowrap"
-                        >
-                            <cc-pretty-json [object]="c.obj" inline></cc-pretty-json>
+                        <td *matCellDef="let c" class="json-cell" mat-cell>
+                            <cc-pretty-json
+                                [object]="(c.obj | ccUnionValue)?.data"
+                                inline
+                            ></cc-pretty-json>
                         </td>
                     </ng-container>
                     <ng-container [matColumnDef]="cols.def.actions" stickyEnd>

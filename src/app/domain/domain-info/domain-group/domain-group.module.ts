@@ -19,6 +19,7 @@ import { PipesModule } from '@vality/ng-core';
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
 import { TableModule } from '../../../../components/table';
+import { ThriftPipesModule } from '../../../shared';
 import { SelectModule } from '../../../shared/components/select';
 import { DomainGroupComponent } from './domain-group.component';
 
@@ -45,6 +46,7 @@ import { DomainGroupComponent } from './domain-group.component';
         ReactiveFormsModule,
         SelectModule,
         MatProgressSpinnerModule,
+        ThriftPipesModule,
     ],
     exports: [DomainGroupComponent],
 })

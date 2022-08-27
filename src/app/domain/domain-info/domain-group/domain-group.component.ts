@@ -6,11 +6,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/lib/domain';
 import sortBy from 'lodash-es/sortBy';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 
 import { Columns } from '../../../../components/table';
-import { getUnionValue } from '../../../../utils';
 import { objectToJSON } from '../../../api/utils';
 import { QueryParamsService } from '../../../shared/services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
@@ -39,17 +38,10 @@ export class DomainGroupComponent implements OnInit {
     typesControl = new FormControl(this.queryParamsService.params.types || []);
     dataSource$: Observable<MatTableDataSource<DataSourceItem>> =
         this.domainStoreService.domain$.pipe(
-            map((domain) =>
-                Array.from(domain).map(([sourceRef, sourceObj]) => ({
-                    ref: getUnionValue(sourceRef),
-                    sourceRef,
-                    sourceObj,
-                    obj: getUnionValue(sourceObj).data,
-                }))
-            ),
+            map((domain) => Array.from(domain).map(([ref, obj]) => ({ ref, obj }))),
             switchMap((data) =>
                 combineLatest(
-                    data.map((d) => this.metadataService.getDomainObjectType(d.sourceRef))
+                    data.map((d) => this.metadataService.getDomainObjectType(d.ref))
                 ).pipe(
                     map((r) =>
                         r.map((type, idx) => ({
@@ -64,24 +56,16 @@ export class DomainGroupComponent implements OnInit {
             ),
             switchMap((data: DataSourceItem[]) =>
                 combineLatest([
-                    of(data),
                     this.searchControl.valueChanges.pipe(startWith(this.searchControl.value)),
                     this.typesControl.valueChanges.pipe(startWith(this.typesControl.value)),
                     this.paginator.changes.pipe(startWith(this.paginator)),
                     this.sort.changes.pipe(startWith(this.sort)),
-                ])
+                ]).pipe(
+                    map(([searchStr, selectedTypes]) =>
+                        this.createMatTableDataSource(data, searchStr, selectedTypes)
+                    )
+                )
             ),
-            map(([data, searchStr, selectedTypes]) => {
-                const dataSource = new MatTableDataSource(
-                    data.filter((d) => selectedTypes.includes(d.type))
-                );
-                dataSource.paginator = this.paginator?.first;
-                dataSource.sort = this.sort?.first;
-                dataSource.sortData = sortData;
-                dataSource.filterPredicate = filterPredicate;
-                dataSource.filter = searchStr.trim();
-                return dataSource;
-            }),
             shareReplay({ refCount: true, bufferSize: 1 })
         );
     cols = new Columns('type', 'ref', 'obj', 'actions');
@@ -107,6 +91,22 @@ export class DomainGroupComponent implements OnInit {
     }
 
     openDetails(item: DataSourceItem) {
-        this.refChange.emit({ ref: item.sourceRef, obj: item.sourceObj });
+        this.refChange.emit({ ref: item.ref, obj: item.obj });
+    }
+
+    private createMatTableDataSource(
+        data: DataSourceItem[],
+        searchStr: string,
+        selectedTypes: string[]
+    ) {
+        const dataSource = new MatTableDataSource(
+            data.filter((d) => selectedTypes.includes(d.type))
+        );
+        dataSource.paginator = this.paginator?.first;
+        dataSource.sort = this.sort?.first;
+        dataSource.sortData = sortData;
+        dataSource.filterPredicate = filterPredicate;
+        dataSource.filter = searchStr.trim();
+        return dataSource;
     }
 }
