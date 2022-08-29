@@ -5,7 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
 import { StatusModule } from '@cc/app/shared/components/status';
-import { CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
+import { CommonPipesModule, ThriftPipesModule, AmountCurrencyPipe } from '@cc/app/shared/pipes';
+import { TableModule } from '@cc/components/table';
 
 import { RefundsTableComponent } from './refunds-table.component';
 
@@ -18,6 +19,8 @@ import { RefundsTableComponent } from './refunds-table.component';
         StatusModule,
         ThriftPipesModule,
         CommonPipesModule,
+        AmountCurrencyPipe,
+        TableModule,
     ],
     declarations: [RefundsTableComponent],
     exports: [RefundsTableComponent],

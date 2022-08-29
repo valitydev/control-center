@@ -1,0 +1,19 @@
+<div fxLayout fxLayoutGap="8px">
+    <mat-form-field fxFlex>
+        <mat-label>
+            {{ label }}
+        </mat-label>
+        <mat-hint>{{ hint }}</mat-hint>
+        <input
+            [matDatepicker]="picker"
+            [required]="required"
+            matInput
+            (dateInput)="dateChanged($event)"
+        />
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field *ngIf="datetime" style="width: 100px">
+        <input [value]="time" matInput type="time" (input)="timeChanged($event)" />
+    </mat-form-field>
+</div>

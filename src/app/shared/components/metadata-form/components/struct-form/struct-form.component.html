@@ -4,11 +4,7 @@
             <ng-container [ngTemplateOutlet]="label"></ng-container>
         </mat-checkbox>
         <ng-template #label>
-            <cc-field-label
-                [field]="data.field"
-                [type]="data.type"
-                class="cc-body-1"
-            ></cc-field-label>
+            <span class="cc-body-1">{{ data.type | fieldLabel: data.field }}</span>
         </ng-template>
     </ng-container>
     <ng-container *ngIf="labelControl.value">

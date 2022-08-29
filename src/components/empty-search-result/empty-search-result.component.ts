@@ -8,4 +8,5 @@ import { coerceBoolean } from 'coerce-property';
 })
 export class EmptySearchResultComponent {
     @Input() @coerceBoolean unwrapped = false;
+    @Input() label: string;
 }

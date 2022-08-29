@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { BankCard } from '@vality/domain-proto/lib/merch_stat';
+import { BankCard } from '@vality/magista-proto/lib/domain';
 
 @Component({
     selector: 'cc-bank-card',

@@ -1,7 +1,5 @@
 <mat-form-field style="width: 100%">
-    <mat-label>
-        <cc-field-label [field]="data.field" [type]="data.type"></cc-field-label>
-    </mat-label>
+    <mat-label>{{ data.type | fieldLabel: data.field }}</mat-label>
     <mat-select [formControl]="control" [required]="data.isRequired">
         <mat-option
             *ngFor="let item of data.ast.items; let idx = index"

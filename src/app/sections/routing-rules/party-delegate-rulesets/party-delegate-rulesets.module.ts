@@ -14,8 +14,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import { BaseDialogModule } from '@vality/ng-core';
 
-import { BaseDialogModule } from '@cc/components/base-dialog';
 import { DetailsItemModule } from '@cc/components/details-item';
 
 import { ChangeTargetDialogModule } from '../change-target-dialog';

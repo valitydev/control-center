@@ -3,14 +3,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, debounceTime, filter, first, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
+import { catchError, debounceTime, filter, map, switchMap, first, takeUntil } from 'rxjs/operators';
 
+import { DeanonimusService } from '@cc/app/thrift-services/deanonimus';
 import { Option } from '@cc/components/select-search-field';
+import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 import { progressTo } from '@cc/utils/operators';
-
-import { createControlProviders, ValidatedFormControlSuperclass } from '../../../../utils';
-import { DeanonimusService } from '../../../thrift-services/deanonimus';
 
 @UntilDestroy()
 @Component({
@@ -38,8 +37,10 @@ export class MerchantFieldComponent
     }
 
     ngOnInit() {
-        this.control.valueChanges.pipe(first()).subscribe((v) => this.searchChange$.next(v));
-        this.searchChange$
+        merge(
+            this.searchChange$,
+            this.control.valueChanges.pipe(filter(Boolean), first(), takeUntil(this.searchChange$))
+        )
             .pipe(
                 filter(Boolean),
                 debounceTime(600),

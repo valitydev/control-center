@@ -23,15 +23,7 @@ export class SearchTableComponent {
 
     constructor(private router: Router) {}
 
-    navigateToPartyClaims(partyId: string) {
-        void this.router.navigate([`/party/${partyId}/claims`]);
-    }
-
     navigateToClaim(partyId: string, claimID: number) {
         void this.router.navigate([`/party/${partyId}/claim/${claimID}`]);
-    }
-
-    navigateToNewClaim(partyId: string, claimID: number) {
-        void this.router.navigate([`/party/${partyId}/claim/${claimID}/new`]);
     }
 }

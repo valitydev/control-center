@@ -5,14 +5,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ExternalID } from '@vality/fistful-proto/lib/base';
 import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
 import { Status } from '@vality/fistful-proto/lib/withdrawal';
+import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { combineLatest, from, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
-import {
-    BaseDialogResponseStatus,
-    BaseDialogSuperclass,
-} from '../../../../../components/base-dialog';
 import { ManagementService } from '../../../../api/withdrawal';
 import { MetadataFormExtension } from '../../../../shared';
 import { ErrorService } from '../../../../shared/services/error';

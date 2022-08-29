@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { cleanPrimitiveProps } from '@vality/ng-core';
 import { combineLatest, of } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
 
+import { MerchantStatisticsService } from '@cc/app/api/magista';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
-
-import { QueryDsl } from '../../query-dsl';
-import { MerchantStatisticsService } from '../../thrift-services/damsel/merchant-statistics.service';
 
 @Injectable()
 export class PaymentDetailsService {
@@ -20,19 +19,21 @@ export class PaymentDetailsService {
     payment$ = this.routeParams$.pipe(
         switchMap(({ partyID, invoiceID, paymentID }) =>
             this.merchantStatisticsService
-                .getPayments({
-                    dsl: JSON.stringify({
-                        query: {
-                            payments: {
-                                ...(paymentID ? { payment_id: paymentID } : {}),
-                                ...(partyID ? { merchant_id: partyID } : {}),
-                                ...(invoiceID ? { invoice_id: invoiceID } : {}),
-                            },
+                .SearchPayments(
+                    cleanPrimitiveProps({
+                        common_search_query_params: {
+                            from_time: new Date('2020-01-01').toISOString(), // TODO
+                            to_time: new Date().toISOString(),
+                            party_id: partyID,
                         },
-                    } as QueryDsl),
-                })
+                        payment_params: {
+                            payment_id: paymentID,
+                        },
+                        invoice_ids: [invoiceID],
+                    })
+                )
                 .pipe(
-                    map(({ data }) => data.payments[0]),
+                    map(({ payments }) => payments[0]),
                     tap((payment) => {
                         if (!payment) {
                             this.snackBar.open('An error occurred when receiving payment', 'OK');

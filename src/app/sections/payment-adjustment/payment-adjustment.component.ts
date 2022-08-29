@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
+import { StatPayment } from '@vality/magista-proto';
 
 import { CreateAndCaptureComponent } from './create-and-capture/create-and-capture.component';
 import { PaymentAdjustmentService } from './payment-adjustment.service';

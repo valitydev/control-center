@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '@vality/domain-proto/lib/domain';
+import { BaseDialogResponseStatus } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
-
-import { BaseDialogResponseStatus } from '@cc/components/base-dialog';
 
 import { RoutingRulesService } from '../../../../thrift-services';
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';

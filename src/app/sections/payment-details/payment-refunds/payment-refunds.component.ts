@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { InvoiceID, InvoicePaymentID } from '@vality/domain-proto';
+import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto';
 
 import { FetchRefundsService } from './fetch-refunds.service';
 
@@ -11,6 +11,7 @@ import { FetchRefundsService } from './fetch-refunds.service';
 export class PaymentRefundsComponent implements OnInit {
     @Input() paymentID: InvoicePaymentID;
     @Input() invoiceID: InvoiceID;
+    @Input() partyID: PartyID;
 
     doAction$ = this.fetchRefundsService.doAction$;
     isLoading$ = this.fetchRefundsService.isLoading$;
@@ -21,8 +22,9 @@ export class PaymentRefundsComponent implements OnInit {
 
     ngOnInit() {
         this.fetchRefundsService.search({
-            paymentID: this.paymentID,
-            invoiceID: this.invoiceID,
+            common_search_query_params: { party_id: this.partyID },
+            payment_id: this.paymentID,
+            invoice_ids: [this.invoiceID],
         });
         this.fetchRefundsService.errors$.subscribe((e) =>
             this.snackBar.open(`An error occurred while search refunds (${String(e)})`, 'OK')

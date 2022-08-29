@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="24px">
+<div fxLayout="column" fxLayoutGap="24px" style="margin: 24px">
     <cc-headline>Payment details</cc-headline>
     <ng-container *ngIf="payment$ | async as payment">
         <mat-card>
@@ -9,14 +9,32 @@
                 ></cc-payment-main-info>
             </mat-card-content>
         </mat-card>
+
+        <h2 class="cc-headline">Refunds</h2>
         <mat-card>
             <mat-card-content>
-                <h2 class="cc-headline">Refunds</h2>
                 <cc-payment-refunds
                     [invoiceID]="payment.invoice_id"
+                    [partyID]="payment.owner_id"
                     [paymentID]="payment.id"
                 ></cc-payment-refunds>
             </mat-card-content>
+        </mat-card>
+
+        <div fxLayout fxLayoutAlign="space-between">
+            <h2 class="cc-headline">Chargebacks</h2>
+            <cc-actions>
+                <button color="primary" mat-button (click)="createChargeback()">
+                    CREATE CHARGEBACK
+                </button>
+            </cc-actions>
+        </div>
+        <mat-card>
+            <cc-chargebacks
+                [chargebacks]="chargebacks$ | async"
+                [invoiceId]="payment.invoice_id"
+                [paymentId]="payment.id"
+            ></cc-chargebacks>
         </mat-card>
     </ng-container>
     <div *ngIf="isLoading$ | async" fxLayout fxLayoutAlign="center center">

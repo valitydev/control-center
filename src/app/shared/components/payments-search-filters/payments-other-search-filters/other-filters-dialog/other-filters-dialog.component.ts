@@ -1,38 +1,46 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
+import { PaymentToolType, InvoicePaymentStatus } from '@vality/magista-proto';
+import { BaseDialogSuperclass } from '@vality/ng-core';
 
+import { getEnumKeyValues } from '../../../../../../utils';
+import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 import { SearchFiltersParams } from '../../search-filters-params';
-import { PAYMENT_METHODS, PAYMENT_STATUSES, PAYMENT_SYSTEMS, TOKEN_PROVIDERS } from './constants';
 import { OtherFiltersDialogService } from './other-filters-dialog.service';
 
 @Component({
     templateUrl: 'other-filters-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [OtherFiltersDialogService],
 })
-export class OtherFiltersDialogComponent implements OnInit {
-    paymentStatuses = PAYMENT_STATUSES;
-    paymentMethods = PAYMENT_METHODS;
-    tokenProviders = TOKEN_PROVIDERS;
-    paymentSystems = PAYMENT_SYSTEMS;
+export class OtherFiltersDialogComponent
+    extends BaseDialogSuperclass<
+        OtherFiltersDialogComponent,
+        SearchFiltersParams,
+        SearchFiltersParams
+    >
+    implements OnInit
+{
+    paymentStatuses = getEnumKeyValues(InvoicePaymentStatus);
+    paymentMethods = getEnumKeyValues(PaymentToolType);
+    tokenProviders$ = this.domainStoreService.getObjects('payment_token');
+    paymentSystems$ = this.domainStoreService.getObjects('payment_system');
 
     currentDomainVersion$ = this.paymentsOtherSearchFiltersService.currentDomainVersion$;
     form = this.paymentsOtherSearchFiltersService.form;
 
     constructor(
-        private dialogRef: MatDialogRef<OtherFiltersDialogComponent>,
+        injector: Injector,
         private paymentsOtherSearchFiltersService: OtherFiltersDialogService,
-        @Inject(MAT_DIALOG_DATA) public initParams: SearchFiltersParams
-    ) {}
-
-    ngOnInit() {
-        this.form.patchValue(this.initParams);
+        private domainStoreService: DomainStoreService
+    ) {
+        super(injector);
     }
 
-    cancel() {
-        this.dialogRef.close();
+    ngOnInit() {
+        this.form.patchValue(this.dialogData);
     }
 
     save() {
-        this.dialogRef.close(this.form.value);
+        this.closeWithSuccess(this.form.value);
     }
 }

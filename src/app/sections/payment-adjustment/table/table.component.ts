@@ -12,9 +12,6 @@ import {
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { StatPayment } from '@vality/domain-proto/lib/merch_stat';
-import { Int64 } from '@vality/thrift-ts';
-
-import { i64ToNumber } from '@cc/utils/i64-to-number';
 
 @Component({
     selector: 'cc-payment-adjustment-table',
@@ -48,13 +45,8 @@ export class TableComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.selection.changed.subscribe((e) => this.changeSelected.emit(e.source.selected));
-        this.dataSource.filterPredicate = ({ domain_revision }, filter) => {
-            const num = i64ToNumber(
-                (domain_revision as unknown as Int64).buffer,
-                (domain_revision as unknown as Int64).offset
-            );
-            return filter === num.toString();
-        };
+        this.dataSource.filterPredicate = ({ domain_revision }, filter) =>
+            filter === domain_revision.toString();
         this.dataSource.paginator = this.paginator;
     }
 

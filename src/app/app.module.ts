@@ -26,7 +26,6 @@ import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
-import { ClaimModule } from './sections/claim';
 import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
@@ -36,12 +35,10 @@ import { SearchPartiesModule } from './sections/search-parties/search-parties.mo
 import { SectionsModule } from './sections/sections.module';
 import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
 import {
-    DEFAULT_DIALOG_CONFIG,
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
     DEFAULT_SEARCH_LIMIT,
     DEFAULT_SMALL_SEARCH_LIMIT,
-    DIALOG_CONFIG,
     SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
 } from './tokens';
@@ -49,7 +46,7 @@ import {
 /**
  * For use in specific locations (for example, questionary PDF document)
  */
-moment.locale('en');
+moment.locale('en-GB');
 
 @NgModule({
     declarations: [AppComponent],
@@ -74,7 +71,6 @@ moment.locale('en');
         DomainConfigModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
-        ClaimModule,
         SectionsModule,
         // It is important that NotFoundModule module should be last
         NotFoundModule,
@@ -83,11 +79,10 @@ moment.locale('en');
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
-        { provide: MAT_DATE_LOCALE, useValue: 'en' },
+        { provide: MAT_DATE_LOCALE, useValue: 'ru' },
         { provide: LOCALE_ID, useValue: 'en' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
-        { provide: DIALOG_CONFIG, useValue: DEFAULT_DIALOG_CONFIG },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
     ],
     bootstrap: [AppComponent],

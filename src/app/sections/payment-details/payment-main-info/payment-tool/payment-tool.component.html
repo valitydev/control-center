@@ -1,6 +1,6 @@
 <cc-bank-card *ngIf="paymentTool.bank_card" [bankCard]="paymentTool.bank_card"></cc-bank-card>
 <div *ngIf="paymentTool.crypto_currency">
-    {{ paymentTool.crypto_currency?.crypto_currency?.id }}
+    {{ paymentTool.crypto_currency?.id }}
 </div>
 <div *ngIf="paymentTool.digital_wallet">
     {{ paymentTool.digital_wallet?.id }}

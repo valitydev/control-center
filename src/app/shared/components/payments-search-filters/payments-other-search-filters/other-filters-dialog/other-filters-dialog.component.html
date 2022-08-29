@@ -1,28 +1,53 @@
-<div fxLayout="column" fxLayoutGap="32px">
-    <h1 class="mat-headline">Other filters</h1>
-    <mat-dialog-content [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
-        <div fxLayout="column" fxLayoutGap="16px">
-            <div fxLayout fxLayoutGap="16px">
-                <mat-form-field fxFlex>
-                    <input formControlName="payerEmail" matInput placeholder="Payer email" />
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <input formControlName="terminalID" matInput placeholder="Terminal ID" />
-                </mat-form-field>
-            </div>
-            <div fxLayout fxLayoutGap="16px">
-                <mat-form-field fxFlex>
-                    <input formControlName="providerID" matInput placeholder="Provider ID" />
-                </mat-form-field>
-                <div fxFlex></div>
-            </div>
+<cc-base-dialog title="Other filters">
+    <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
+        <div fxLayout fxLayoutGap="16px">
+            <mat-form-field fxFlex>
+                <input formControlName="payerEmail" matInput placeholder="Payer email" />
+            </mat-form-field>
+            <mat-form-field fxFlex>
+                <input formControlName="terminalID" matInput placeholder="Terminal ID" />
+            </mat-form-field>
         </div>
-        <mat-divider></mat-divider>
-        <h2 class="mat-title">Payment Status</h2>
-        <cc-expandable-radio-group
-            [values]="paymentStatuses"
-            formControlName="paymentStatus"
-        ></cc-expandable-radio-group>
+        <mat-form-field fxFlex>
+            <input formControlName="providerID" matInput placeholder="Provider ID" />
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select formControlName="paymentStatus" placeholder="Payment Status">
+                <mat-option [value]="null">any</mat-option>
+                <mat-option *ngFor="let s of paymentStatuses" [value]="s.value">
+                    {{ s.key }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select formControlName="paymentMethod" placeholder="Payment Method">
+                <mat-option [value]="null">any</mat-option>
+                <mat-option *ngFor="let pm of paymentMethods" [value]="pm.value">
+                    {{ pm.key }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select formControlName="tokenProvider" placeholder="Token Provider">
+                <mat-option [value]="null">any</mat-option>
+                <mat-option *ngFor="let p of tokenProviders$ | async" [value]="p.ref.id">
+                    {{ p.data.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select formControlName="paymentSystem" placeholder="Payment System">
+                <mat-option [value]="null">any</mat-option>
+                <mat-option *ngFor="let ps of paymentSystems$ | async" [value]="ps.ref.id">
+                    {{ ps.data.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <mat-divider></mat-divider>
         <h2 class="mat-title">Domain Revision</h2>
         <div fxLayout fxLayoutGap="16px">
@@ -46,27 +71,8 @@
                 <input formControlName="paymentAmountTo" matInput placeholder="To" />
             </mat-form-field>
         </div>
-        <mat-divider></mat-divider>
-        <h2 class="mat-title">Payment Method</h2>
-        <cc-expandable-radio-group
-            [values]="paymentMethods"
-            formControlName="paymentMethod"
-        ></cc-expandable-radio-group>
-        <mat-divider></mat-divider>
-        <h2 class="mat-title">Token Provider</h2>
-        <cc-expandable-radio-group
-            [values]="tokenProviders"
-            formControlName="tokenProvider"
-        ></cc-expandable-radio-group>
-        <mat-divider></mat-divider>
-        <h2 class="mat-title">Payment System</h2>
-        <cc-expandable-radio-group
-            [values]="paymentSystems"
-            formControlName="paymentSystem"
-        ></cc-expandable-radio-group>
-    </mat-dialog-content>
-    <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-        <button mat-button (click)="cancel()">CANCEL</button>
+    </div>
+    <cc-base-dialog-actions>
         <button [disabled]="form.invalid" color="primary" mat-button (click)="save()">SAVE</button>
-    </mat-dialog-actions>
-</div>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

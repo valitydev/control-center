@@ -109,9 +109,5 @@ export function createPartyClaimMetadataFormExtensions(
                     isIdentifier: true,
                 }),
         },
-        {
-            determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
-            extension: () => of({ generate, isIdentifier: true }),
-        },
     ];
 }

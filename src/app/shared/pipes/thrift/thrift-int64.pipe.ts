@@ -1,12 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
-import { i64ToNumber } from '@cc/utils/i64-to-number';
+import { Int64 } from '@vality/thrift-ts';
 
 @Pipe({
     name: 'ccThriftInt64',
 })
+/**
+ * @deprecated
+ */
 export class ThriftInt64Pipe implements PipeTransform {
-    transform(value: any): any {
-        return i64ToNumber(value.buffer, value.offset);
+    transform(value: Int64 | number): any {
+        return typeof value === 'number' ? value : value.toNumber();
     }
 }
