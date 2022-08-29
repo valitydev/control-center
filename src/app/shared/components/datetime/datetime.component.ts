@@ -37,7 +37,6 @@ export class DatetimeComponent extends FormComponentSuperclass<string> {
     timeChanged(event: Event) {
         const [hours, minutes] = (event.target as HTMLInputElement).value.split(':');
         this.datetime.set({ minutes: Number(minutes), hours: Number(hours) });
-        console.log(this.datetime.toISOString());
         this.emitOutgoingValue(this.datetime.toISOString());
     }
 
@@ -45,7 +44,6 @@ export class DatetimeComponent extends FormComponentSuperclass<string> {
         const v = date.target.value;
         if (!this.datetime) this.datetime = date.target.value;
         else this.datetime.set({ date: v.date(), month: v.month(), year: v.year() });
-        console.log(this.datetime.toISOString());
         this.emitOutgoingValue(this.datetime.toISOString());
     }
 
