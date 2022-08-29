@@ -33,6 +33,12 @@ export class MetadataService {
         );
     }
 
+    getDomainFieldByFieldName(fieldName: string): Observable<Field> {
+        return this.getDomainFields().pipe(
+            map((fields) => fields.find((f) => f.name === fieldName))
+        );
+    }
+
     getDomainFields(): Observable<Field[]> {
         return this.metadata$.pipe(
             map((m) => m.find(({ name }) => name === 'domain').ast.union.DomainObject)

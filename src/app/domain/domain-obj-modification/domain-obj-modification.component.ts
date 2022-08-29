@@ -4,12 +4,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 import { enumHasValue } from '../../../utils';
 import { CodeLensProvider, CompletionProvider } from '../../monaco-editor';
 import { EditorKind } from '../../shared/components/thrift-editor';
 import { DomainMetadataFormExtensionsService } from '../../shared/services';
+import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
@@ -33,7 +34,6 @@ export class DomainObjModificationComponent implements OnInit {
     object$ = this.domainObjModService.object$;
     type$ = this.domainObjModService.type$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
-    qp$ = this.type$.pipe(map((type) => JSON.stringify([type])));
 
     get kind() {
         const kind = localStorage.getItem(EDITOR_KIND);
@@ -53,7 +53,8 @@ export class DomainObjModificationComponent implements OnInit {
         private snackBar: MatSnackBar,
         private domainObjModService: DomainObjModificationService,
         private modifiedDomainObjectService: ModifiedDomainObjectService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private domainNavigateService: DomainNavigateService
     ) {}
 
     ngOnInit() {
@@ -70,5 +71,9 @@ export class DomainObjModificationComponent implements OnInit {
     reviewChanges() {
         this.modifiedDomainObjectService.update(this.control.value, this.route.snapshot.params.ref);
         void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref, 'review']);
+    }
+
+    backToDomain() {
+        this.type$.pipe(first()).subscribe((type) => this.domainNavigateService.toType(type));
     }
 }

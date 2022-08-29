@@ -23,7 +23,7 @@
                 </mat-card-content>
             </mat-card>
             <cc-actions>
-                <button [queryParams]="{ types: qp$ | async }" mat-button routerLink="/domain">
+                <button mat-button (click)="backToDomain()">
                     <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
                     BACK TO DOMAIN
                 </button>

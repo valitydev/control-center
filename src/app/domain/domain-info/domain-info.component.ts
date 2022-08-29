@@ -1,15 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
+import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { filter, switchMap } from 'rxjs/operators';
 
+import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { enumHasValue } from '../../../utils';
 import { ViewerKind } from '../../shared/components/thrift-viewer';
+import { ErrorService } from '../../shared/services/error';
+import { NotificationService } from '../../shared/services/notification';
 import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
 
 const VIEWER_KIND = 'domain-info-kind';
 
+@UntilDestroy()
 @Component({
     templateUrl: './domain-info.component.html',
     styleUrls: ['./domain-info.component.scss'],
@@ -34,12 +40,37 @@ export class DomainInfoComponent {
     }
 
     constructor(
-        private snackBar: MatSnackBar,
         private router: Router,
-        private domainStoreService: DomainStoreService
+        private domainStoreService: DomainStoreService,
+        private baseDialogService: BaseDialogService,
+        private notificationService: NotificationService,
+        private errorService: ErrorService
     ) {}
 
     edit() {
         void this.router.navigate(['domain', 'edit', JSON.stringify(this.objWithRef.ref)]);
+    }
+
+    delete() {
+        this.baseDialogService
+            .open(ConfirmActionDialogComponent, { title: 'Delete object' })
+            .afterClosed()
+            .pipe(
+                untilDestroyed(this),
+                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                switchMap(() =>
+                    this.domainStoreService.commit({
+                        ops: [{ remove: { object: this.objWithRef.obj } }],
+                    })
+                )
+            )
+            .subscribe({
+                next: () => {
+                    this.notificationService.success('Successfully removed');
+                },
+                error: (err) => {
+                    this.errorService.error(err);
+                },
+            });
     }
 }

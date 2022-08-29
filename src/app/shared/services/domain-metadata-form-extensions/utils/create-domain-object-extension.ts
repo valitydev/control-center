@@ -1,6 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { createNextId } from '../../../../thrift-services/damsel/routing-rules/utils/create-next-id';
 import {
     isTypeWithAliases,
     MetadataFormExtension,
@@ -19,7 +20,7 @@ export function createDomainObjectExtension(
                         // TODO: 'field.name' must be passed as an argument
                         ['id', 'symbolic_code'].includes(data.field?.name))
             ),
-        extension: () =>
+        extension: (data) =>
             options().pipe(
                 map((objects) => ({
                     options: objects.sort((a, b) =>
@@ -28,6 +29,16 @@ export function createDomainObjectExtension(
                             : 0
                     ),
                     isIdentifier: true,
+                    generate: isTypeWithAliases(data, 'ObjectID', 'domain')
+                        ? () =>
+                              of(
+                                  createNextId(
+                                      objects.map((o) =>
+                                          typeof o.value === 'number' ? o.value : 0
+                                      )
+                                  )
+                              )
+                        : undefined,
                 }))
             ),
     };

@@ -9,7 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { PipesModule } from '@vality/ng-core';
+import { PipesModule, ActionsModule } from '@vality/ng-core';
 
 import { MonacoEditorModule } from '../../monaco-editor';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
@@ -35,6 +35,7 @@ import { DomainInfoComponent } from './domain-info.component';
         ThriftViewerModule,
         PipesModule,
         RouterModule,
+        ActionsModule,
     ],
 })
 export class DomainInfoModule {}

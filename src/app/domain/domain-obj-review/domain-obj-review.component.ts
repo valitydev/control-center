@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, withLatestFrom } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../utils';
 import { ErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
+import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 
@@ -30,7 +31,8 @@ export class DomainObjReviewComponent {
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private domainNavigateService: DomainNavigateService
     ) {
         if (!modifiedDomainObjectService.domainObject) {
             this.back();
@@ -56,13 +58,14 @@ export class DomainObjReviewComponent {
                         ],
                     })
                 ),
+                withLatestFrom(this.type$),
                 // progressTo(this.progress$),
                 untilDestroyed(this)
             )
             .subscribe({
-                next: () => {
+                next: ([, type]) => {
                     this.notificationService.success('Successfully changed');
-                    void this.router.navigate(['domain']);
+                    void this.domainNavigateService.toType(type);
                 },
                 error: (err) => {
                     this.errorService.error(err);

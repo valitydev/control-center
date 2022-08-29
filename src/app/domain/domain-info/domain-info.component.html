@@ -14,10 +14,11 @@
                 class="viewer"
                 (changeKind)="kind = $event"
             ></cc-thrift-viewer>
-            <div fxLayout fxLayoutAlign="space-between center">
+            <cc-actions>
                 <button mat-button (click)="objWithRef = null">CLOSE</button>
+                <button color="warn" mat-button (click)="delete()">DELETE</button>
                 <button color="primary" mat-button (click)="edit()">EDIT</button>
-            </div>
+            </cc-actions>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
