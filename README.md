@@ -35,7 +35,7 @@
 
 ### Stage
 
-To run in the stage, you need to add:
+Running in stage mode needs files:
 
 -   `env.stage`
 -   `src/assets/appConfig.stage.json`
