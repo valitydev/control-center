@@ -33,6 +33,14 @@
     npm ci
     ```
 
+### Stage
+
+To run in the stage, you need to add:
+
+-   `env.stage`
+-   `src/assets/appConfig.stage.json`
+-   `src/assets/authConfig.stage.json`
+
 ## Usage
 
 1. Start
