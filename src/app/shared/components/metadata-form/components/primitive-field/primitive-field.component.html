@@ -118,7 +118,9 @@
                     <cc-label [color]="selected.color" [label]="selected.label"></cc-label>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <cc-json-viewer [json]="selected.details"></cc-json-viewer>
+            <ng-template matExpansionPanelContent>
+                <cc-json-viewer [json]="selected.details"></cc-json-viewer>
+            </ng-template>
         </mat-expansion-panel>
     </ng-container>
 </div>

@@ -1,9 +1,27 @@
 import { ValuesType } from 'utility-types';
 
-export function getEnumKeyValues<E extends Record<PropertyKey, unknown>>(srcEnum: E) {
-    return Object.entries(srcEnum)
-        .filter(([, v]) => typeof v === 'string')
-        .map(([value, key]) => ({ key, value })) as { key: keyof E; value: ValuesType<E> }[];
+export function getEnumEntries<E extends Record<PropertyKey, unknown>>(
+    srcEnum: E
+): [key: keyof E, value: ValuesType<E>][] {
+    const entries = Object.entries(srcEnum);
+    if (!entries.length) return [];
+    const isValueNumberEnum = entries.some(([, v]) => typeof v === 'number');
+    if (isValueNumberEnum) return entries.filter(([, v]) => typeof v === 'number') as never;
+    return entries as never;
+}
+
+export function getEnumKeyValues<E extends Record<PropertyKey, unknown>>(
+    srcEnum: E
+): { key: keyof E; value: ValuesType<E> }[] {
+    return getEnumEntries(srcEnum).map(([key, value]) => ({ key, value }));
+}
+
+export function getEnumKeys<E extends Record<PropertyKey, unknown>>(srcEnum: E): (keyof E)[] {
+    return getEnumEntries(srcEnum).map(([k]) => k);
+}
+
+export function getEnumValues<E extends Record<PropertyKey, unknown>>(srcEnum: E): ValuesType<E>[] {
+    return getEnumEntries(srcEnum).map(([, v]) => v);
 }
 
 export function getEnumKey<E extends Record<PropertyKey, unknown>>(
@@ -13,6 +31,9 @@ export function getEnumKey<E extends Record<PropertyKey, unknown>>(
     return getEnumKeyValues(srcEnum).find((e) => e.value === String(value)).key;
 }
 
-export function getEnumKeys<E extends Record<PropertyKey, unknown>>(srcEnum: E): (keyof E)[] {
-    return Object.values(srcEnum).filter((v) => typeof v === 'string') as string[];
+export function enumHasValue<E extends Record<PropertyKey, unknown>>(
+    srcEnum: E,
+    value: ValuesType<E> | string
+): value is ValuesType<E> {
+    return getEnumValues(srcEnum).includes(value as ValuesType<E>);
 }

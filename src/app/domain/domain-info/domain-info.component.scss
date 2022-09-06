@@ -5,4 +5,9 @@ mat-sidenav {
 .details-container {
     padding: 20px;
     height: 100%;
+
+    .viewer {
+        height: 100%;
+        overflow: scroll;
+    }
 }

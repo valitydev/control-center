@@ -1,5 +1,17 @@
-::ng-deep .mat-expansion-panel-body {
-    padding: 0 !important;
+.expansion-panel {
+    ::ng-deep .mat-expansion-panel-body {
+        padding: 0 !important;
+    }
+
+    .panel-title {
+        overflow: hidden;
+
+        & > * {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
 }
 
 mat-expansion-panel-header {

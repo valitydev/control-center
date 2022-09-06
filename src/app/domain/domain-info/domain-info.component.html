@@ -1,25 +1,44 @@
 <mat-sidenav-container>
     <mat-sidenav
         #domainObjDetails
+        [opened]="!!objWithRef"
         fixedInViewport="true"
         fixedTopGap="64"
         mode="side"
         position="end"
     >
-        <div class="details-container" fxLayout="column" fxLayoutGap="10px">
-            <cc-domain-obj-details fxFlex="95"></cc-domain-obj-details>
-            <div fxLayout fxLayoutAlign="space-between center">
-                <button mat-button (click)="closeDetails()">CLOSE</button>
-                <button mat-button (click)="editDomainObj()">EDIT</button>
-            </div>
+        <div class="details-container" fxLayout="column" fxLayoutGap="24px">
+            <cc-thrift-viewer
+                [kind]="kind"
+                [value]="objWithRef?.obj"
+                class="viewer"
+                (changeKind)="kind = $event"
+            ></cc-thrift-viewer>
+            <cc-actions>
+                <button mat-button (click)="objWithRef = null">CLOSE</button>
+                <button color="warn" mat-button (click)="delete()">DELETE</button>
+                <button color="primary" mat-button (click)="edit()">EDIT</button>
+            </cc-actions>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <cc-card-container>
-            <div *ngIf="isLoading" fxLayout fxLayoutAlign="center stretch">
+        <div fxLayout="column" fxLayoutGap="24px" style="margin: 24px 16px 4px">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <h1 class="cc-display-1">
+                    Domain config <span class="cc-secondary-text">#{{ version$ | async }}</span>
+                </h1>
+                <div>
+                    <button color="primary" mat-raised-button routerLink="/domain/create">
+                        CREATE OBJECT
+                    </button>
+                </div>
+            </div>
+            <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
                 <mat-spinner></mat-spinner>
             </div>
-            <cc-domain-group *ngIf="initialized"></cc-domain-group>
-        </cc-card-container>
+            <ng-template #content>
+                <cc-domain-group (refChange)="objWithRef = $event"></cc-domain-group>
+            </ng-template>
+        </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

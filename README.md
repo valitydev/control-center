@@ -33,6 +33,14 @@
     npm ci
     ```
 
+### Stage
+
+Running in stage mode needs files:
+
+-   `env.stage`
+-   `src/assets/appConfig.stage.json`
+-   `src/assets/authConfig.stage.json`
+
 ## Usage
 
 1. Start

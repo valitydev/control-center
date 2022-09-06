@@ -1,7 +1,7 @@
 import { ElementRef, NgZone } from '@angular/core';
-import * as elementResizeDetectorMaker from 'element-resize-detector';
+import { ResizeSensor } from 'css-element-queries';
 import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil, tap } from 'rxjs/operators';
+import { map, take, takeUntil, tap, first } from 'rxjs/operators';
 
 import { BOOTSTRAP$ } from './bootstrap';
 import { fromDisposable } from './from-disposable';
@@ -22,7 +22,7 @@ export abstract class AbstractMonacoService {
     private fileChange$ = new Subject<MonacoFile>();
     private nativeElement: HTMLElement;
     private destroy$ = new Subject<void>();
-    private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
+    private resizeDetector: ResizeSensor;
 
     get fileChange(): Observable<MonacoFile> {
         return this.fileChange$.pipe(takeUntil(this.destroy$));
@@ -39,13 +39,15 @@ export abstract class AbstractMonacoService {
         protected tokenCodeLensProviders: CodeLensProvider[],
         protected tokenCompletionProviders: CompletionProvider[]
     ) {
-        this.registerResizeListener();
-        this.registerCodeLensListener();
-        this.registerCompletionListener();
+        BOOTSTRAP$.pipe(first()).subscribe(() => {
+            this.registerCodeLensListener();
+            this.registerCompletionListener();
+        });
     }
 
     init({ nativeElement }: ElementRef, options: IEditorOptions = {}): Observable<void> {
         this.nativeElement = nativeElement;
+        this.registerResizeListener();
         return BOOTSTRAP$.pipe(
             tap(() => {
                 this.disposeModels();
@@ -59,6 +61,7 @@ export abstract class AbstractMonacoService {
     }
 
     destroy() {
+        if (this.resizeDetector) this.resizeDetector.detach();
         this.destroy$.next();
     }
 
@@ -109,8 +112,7 @@ export abstract class AbstractMonacoService {
     }
 
     protected getLayout() {
-        const { clientWidth, clientHeight } = this.nativeElement;
-        return { width: clientWidth, height: clientHeight };
+        return this.nativeElement.getBoundingClientRect();
     }
 
     private disposeModels() {
@@ -151,15 +153,13 @@ export abstract class AbstractMonacoService {
     }
 
     private registerResizeListener() {
-        this.editorInitialized$.pipe(takeUntil(this.destroy$)).subscribe({
-            next: () => {
-                this.resizeDetector.listenTo(this.nativeElement, () => {
-                    this._editor.layout(this.getLayout());
-                });
-            },
-            complete: () => {
-                this.resizeDetector.removeAllListeners(this.nativeElement);
-            },
+        if (this.resizeDetector) this.resizeDetector.detach();
+        this.resizeDetector = new ResizeSensor(this.nativeElement, () => {
+            this.updateLayoutSize();
         });
+    }
+
+    private updateLayoutSize() {
+        this._editor.layout(this.getLayout());
     }
 }

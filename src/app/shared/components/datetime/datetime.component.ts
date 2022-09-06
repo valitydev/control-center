@@ -36,14 +36,14 @@ export class DatetimeComponent extends FormComponentSuperclass<string> {
 
     timeChanged(event: Event) {
         const [hours, minutes] = (event.target as HTMLInputElement).value.split(':');
-        this.datetime = this.datetime
-            .clone()
-            .set({ minutes: Number(minutes), hours: Number(hours) });
+        this.datetime.set({ minutes: Number(minutes), hours: Number(hours) });
         this.emitOutgoingValue(this.datetime.toISOString());
     }
 
     dateChanged(date: MatDatepickerInputEvent<Moment>) {
-        this.datetime = date.target.value;
+        const v = date.target.value;
+        if (!this.datetime) this.datetime = date.target.value;
+        else this.datetime.set({ date: v.date(), month: v.month(), year: v.year() });
         this.emitOutgoingValue(this.datetime.toISOString());
     }
 

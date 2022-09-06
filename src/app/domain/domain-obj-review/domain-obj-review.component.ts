@@ -1,90 +1,79 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { switchMap } from 'rxjs';
+import { first, withLatestFrom } from 'rxjs/operators';
 
-import { IDiffEditorOptions, MonacoFile } from '../../monaco-editor';
-import { DomainModificationModel } from '../domain-modification-model';
-import { toMonacoFile } from '../utils';
-import { DomainObjReviewService } from './domain-obj-review.service';
+import { getUnionKey } from '../../../utils';
+import { ErrorService } from '../../shared/services/error';
+import { NotificationService } from '../../shared/services/notification';
+import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
+import { DomainNavigateService } from '../services/domain-navigate.service';
+import { DomainObjModificationService } from '../services/domain-obj-modification.service';
+import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 
+@UntilDestroy()
 @Component({
     templateUrl: './domain-obj-review.component.html',
     styleUrls: ['../editor-container.scss'],
-    providers: [DomainObjReviewService],
+    providers: [DomainObjModificationService],
 })
-export class DomainObjReviewComponent implements OnInit, OnDestroy {
-    initialized = false;
-    original: MonacoFile;
-    modified: MonacoFile;
-    objectType: string;
-    options: IDiffEditorOptions = {
-        renderSideBySide: true,
-        readOnly: true,
-    };
-    isLoading = false;
-
-    private reviewModelSub: Subscription;
-    private ref: string;
-    private model: DomainModificationModel;
+export class DomainObjReviewComponent {
+    progress$ = this.domainObjModService.progress$;
+    object$ = this.domainObjModService.object$;
+    type$ = this.domainObjModService.type$;
+    modifiedObject = this.modifiedDomainObjectService.domainObject;
 
     constructor(
         private router: Router,
-        private snackBar: MatSnackBar,
-        private domainObjReviewService: DomainObjReviewService
-    ) {}
-
-    ngOnInit() {
-        this.initialize();
-    }
-
-    ngOnDestroy() {
-        if (this.reviewModelSub) {
-            this.reviewModelSub.unsubscribe();
+        private route: ActivatedRoute,
+        private domainObjModService: DomainObjModificationService,
+        private modifiedDomainObjectService: ModifiedDomainObjectService,
+        private domainStoreService: DomainStoreService,
+        private notificationService: NotificationService,
+        private errorService: ErrorService,
+        private domainNavigateService: DomainNavigateService
+    ) {
+        if (!modifiedDomainObjectService.domainObject) {
+            this.back();
         }
     }
 
-    renderSideBySide({ checked }: MatCheckboxChange) {
-        this.options = { ...this.options, renderSideBySide: checked };
+    commit() {
+        this.domainObjModService.fullObject$
+            .pipe(
+                first(),
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                switchMap((old_object) =>
+                    this.domainStoreService.commit({
+                        ops: [
+                            {
+                                update: {
+                                    old_object,
+                                    new_object: {
+                                        [getUnionKey(old_object)]: this.modifiedObject,
+                                    },
+                                },
+                            },
+                        ],
+                    })
+                ),
+                withLatestFrom(this.type$),
+                // progressTo(this.progress$),
+                untilDestroyed(this)
+            )
+            .subscribe({
+                next: ([, type]) => {
+                    this.notificationService.success('Successfully changed');
+                    void this.domainNavigateService.toType(type);
+                },
+                error: (err) => {
+                    this.errorService.error(err);
+                },
+            });
     }
 
     back() {
-        void this.router.navigate(['domain', this.ref]);
-    }
-
-    commit() {
-        this.isLoading = true;
-        this.domainObjReviewService.commit(this.model).subscribe(
-            () => {
-                this.isLoading = false;
-                this.snackBar.open('Commit successful', 'OK', {
-                    duration: 2000,
-                });
-                void this.router.navigate(['domain', this.ref]);
-            },
-            (ex) => {
-                this.isLoading = false;
-                console.error(ex);
-                this.snackBar.open(`An error occured while commit: ${String(ex)}`, 'OK');
-            }
-        );
-    }
-
-    private initialize() {
-        this.reviewModelSub = this.domainObjReviewService
-            .initialize()
-            .subscribe(([{ ref }, model]) => {
-                this.ref = ref;
-                if (!model) {
-                    this.back();
-                    return;
-                }
-                this.original = toMonacoFile(model.original.monacoContent);
-                this.modified = toMonacoFile(model.modified.monacoContent);
-                this.objectType = model.objectType;
-                this.model = model;
-                this.initialized = true;
-            });
+        void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref]);
     }
 }

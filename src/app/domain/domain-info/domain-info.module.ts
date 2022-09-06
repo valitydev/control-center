@@ -8,17 +8,17 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
-import { CardContainerModule } from '@cc/components/card-container/card-container.module';
+import { RouterModule } from '@angular/router';
+import { PipesModule, ActionsModule } from '@vality/ng-core';
 
 import { MonacoEditorModule } from '../../monaco-editor';
+import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
 import { DamselModule } from '../../thrift-services/damsel';
 import { DomainGroupModule } from './domain-group';
 import { DomainInfoComponent } from './domain-info.component';
-import { DomainObjDetailsComponent } from './domain-obj-details';
 
 @NgModule({
-    declarations: [DomainInfoComponent, DomainObjDetailsComponent],
+    declarations: [DomainInfoComponent],
     imports: [
         CommonModule,
         DomainGroupModule,
@@ -32,7 +32,10 @@ import { DomainObjDetailsComponent } from './domain-obj-details';
         MatProgressSpinnerModule,
         MonacoEditorModule,
         DamselModule,
-        CardContainerModule,
+        ThriftViewerModule,
+        PipesModule,
+        RouterModule,
+        ActionsModule,
     ],
 })
 export class DomainInfoModule {}

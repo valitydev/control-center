@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PipesModule } from '@vality/ng-core';
 
 import { DatetimeComponent } from '@cc/app/shared/components/datetime/datetime.component';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
@@ -54,6 +55,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         MatRadioModule,
         MatDatepickerModule,
         DatetimeComponent,
+        PipesModule,
     ],
     declarations: [
         MetadataFormComponent,

@@ -1,7 +1,9 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <div fxLayout="row" fxLayoutAlign="space-between">
-        <h1 class="cc-headline">Payouts</h1>
-        <div><button color="primary" mat-button (click)="create()">CREATE</button></div>
+        <h1 class="cc-display-1">Payouts</h1>
+        <cc-actions>
+            <button color="primary" mat-raised-button (click)="create()">CREATE</button>
+        </cc-actions>
     </div>
     <mat-card>
         <mat-card-content>

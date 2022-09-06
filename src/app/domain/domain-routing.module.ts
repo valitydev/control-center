@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AppAuthGuardService, DomainConfigRole } from '@cc/app/shared/services';
 
 import { DomainInfoComponent } from './domain-info';
+import { DomainObjCreationComponent } from './domain-obj-creation';
 import { DomainObjModificationComponent } from './domain-obj-modification';
 import { DomainObjReviewComponent } from './domain-obj-review';
 
@@ -19,7 +20,15 @@ import { DomainObjReviewComponent } from './domain-obj-review';
                 },
             },
             {
-                path: 'domain/:ref',
+                path: 'domain/create',
+                component: DomainObjCreationComponent,
+                canActivate: [AppAuthGuardService],
+                data: {
+                    roles: [DomainConfigRole.Checkout],
+                },
+            },
+            {
+                path: 'domain/edit/:ref',
                 component: DomainObjModificationComponent,
                 canActivate: [AppAuthGuardService],
                 data: {
@@ -27,7 +36,7 @@ import { DomainObjReviewComponent } from './domain-obj-review';
                 },
             },
             {
-                path: 'domain/:ref/review',
+                path: 'domain/edit/:ref/review',
                 component: DomainObjReviewComponent,
                 canActivate: [AppAuthGuardService],
                 data: {

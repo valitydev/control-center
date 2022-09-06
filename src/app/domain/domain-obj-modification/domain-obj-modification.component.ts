@@ -1,98 +1,79 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { from } from 'rxjs';
+import { first } from 'rxjs/operators';
 
-import { CodeLensProvider, CompletionProvider, MonacoFile } from '../../monaco-editor';
-import { DomainModificationModel } from '../domain-modification-model';
-import { DomainReviewService } from '../domain-review.service';
-import { toMonacoFile } from '../utils';
+import { enumHasValue } from '../../../utils';
+import { CodeLensProvider, CompletionProvider } from '../../monaco-editor';
+import { EditorKind } from '../../shared/components/thrift-editor';
+import { DomainMetadataFormExtensionsService } from '../../shared/services';
+import { DomainNavigateService } from '../services/domain-navigate.service';
+import { DomainObjModificationService } from '../services/domain-obj-modification.service';
+import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
 import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
-import { DomainObjModificationService } from './domain-obj-modification.service';
-import { ResetConfirmDialogComponent } from './reset-confirm-dialog/reset-confirm-dialog.component';
 
+const EDITOR_KIND = 'domain-obj-modification-kind';
+
+@UntilDestroy()
 @Component({
     templateUrl: './domain-obj-modification.component.html',
     styleUrls: ['../editor-container.scss'],
     providers: [DomainObjModificationService],
 })
-export class DomainObjModificationComponent implements OnInit, OnDestroy {
-    initialized = false;
-    isLoading: boolean;
-    valid = false;
-    codeLensProviders: CodeLensProvider[];
-    completionProviders: CompletionProvider[];
-    modifiedFile: MonacoFile;
-    model: DomainModificationModel;
+export class DomainObjModificationComponent implements OnInit {
+    control = new FormControl();
 
-    private initSub: Subscription;
+    progress$ = this.domainObjModService.progress$;
+    codeLensProviders: CodeLensProvider[] = [new DomainObjCodeLensProvider()];
+    completionProviders: CompletionProvider[] = [new DomainObjCompletionProvider()];
+    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    object$ = this.domainObjModService.object$;
+    type$ = this.domainObjModService.type$;
+    extensions$ = this.domainMetadataFormExtensionsService.extensions$;
+
+    get kind() {
+        const kind = localStorage.getItem(EDITOR_KIND);
+        if (!enumHasValue(EditorKind, kind)) {
+            this.kind = EditorKind.Editor;
+            return EditorKind.Editor;
+        }
+        return kind;
+    }
+    set kind(kind: EditorKind) {
+        localStorage.setItem(EDITOR_KIND, kind);
+    }
 
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private snackBar: MatSnackBar,
         private domainObjModService: DomainObjModificationService,
-        private domainReviewService: DomainReviewService,
-        private dialog: MatDialog
+        private modifiedDomainObjectService: ModifiedDomainObjectService,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private domainNavigateService: DomainNavigateService
     ) {}
 
     ngOnInit() {
-        this.initSub = this.initialize();
-        this.codeLensProviders = [new DomainObjCodeLensProvider()];
-        this.completionProviders = [new DomainObjCompletionProvider()];
-    }
-
-    ngOnDestroy() {
-        if (this.initSub) {
-            this.initSub.unsubscribe();
-        }
-    }
-
-    fileChange({ content }: MonacoFile) {
-        const modified = this.domainObjModService.modify(this.model.original, content);
-        this.valid = !!modified;
-        this.model.modified = modified;
+        this.domainObjModService.object$.pipe(first(), untilDestroyed(this)).subscribe((object) => {
+            if (
+                this.modifiedDomainObjectService.domainObject &&
+                this.route.snapshot.params.ref === this.modifiedDomainObjectService.ref
+            )
+                this.control.setValue(this.modifiedDomainObjectService.domainObject);
+            else this.control.setValue(object);
+        });
     }
 
     reviewChanges() {
-        this.domainReviewService.addReviewModel(this.model);
-        void this.router.navigate(['domain', JSON.stringify(this.model.ref), 'review']);
+        this.modifiedDomainObjectService.update(this.control.value, this.route.snapshot.params.ref);
+        void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref, 'review']);
     }
 
-    resetChanges() {
-        this.dialog
-            .open(ResetConfirmDialogComponent, {
-                width: '300px',
-            })
-            .afterClosed()
-            .subscribe((result) => {
-                if (!result) {
-                    return;
-                }
-                const modified = this.domainObjModService.reset(this.model.original);
-                this.model.modified = modified;
-                this.modifiedFile = toMonacoFile(modified.monacoContent);
-            });
-    }
-
-    private initialize(): Subscription {
-        this.isLoading = true;
-        return this.domainObjModService.init().subscribe(
-            (model) => {
-                this.isLoading = false;
-                this.model = model;
-                this.modifiedFile = toMonacoFile(model.modified.monacoContent);
-                this.initialized = true;
-                if (this.initSub) {
-                    this.initSub.unsubscribe();
-                }
-            },
-            (err) => {
-                console.error(err);
-                this.isLoading = false;
-                this.snackBar.open(`An error occurred while initializing: ${String(err)}`, 'OK');
-            }
-        );
+    backToDomain() {
+        this.type$.pipe(first()).subscribe((type) => this.domainNavigateService.toType(type));
     }
 }

@@ -2,22 +2,21 @@ import { Injectable } from '@angular/core';
 import { StatPayment } from '@vality/magista-proto';
 import { cleanPrimitiveProps, clean } from '@vality/ng-core';
 import { Observable, of, Subject } from 'rxjs';
-import { mergeMap, shareReplay } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { MerchantStatisticsService } from '@cc/app/api/magista';
 
-import { DomainService } from '../../domain';
+import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
 import { SearchFormParams } from './search-form/search-form-params';
 
 @Injectable()
 export class PaymentAdjustmentService {
     searchPaymentChanges$: Subject<StatPayment[]> = new Subject<StatPayment[]>();
-
-    domainVersion$: Observable<number> = this.domainService.version$.pipe(shareReplay(1));
+    domainVersion$ = this.domainStoreService.version$;
 
     constructor(
         private merchantStatisticsService: MerchantStatisticsService,
-        private domainService: DomainService
+        private domainStoreService: DomainStoreService
     ) {}
 
     fetchPayments(params: SearchFormParams): Observable<StatPayment[]> {
