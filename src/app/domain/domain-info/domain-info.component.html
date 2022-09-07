@@ -10,7 +10,7 @@
         <div class="details-container" fxLayout="column" fxLayoutGap="24px">
             <cc-thrift-viewer
                 [kind]="kind"
-                [value]="objWithRef?.obj"
+                [value]="objWithRef?.obj | ccUnionValue"
                 class="viewer"
                 (changeKind)="kind = $event"
             ></cc-thrift-viewer>
