@@ -5,7 +5,7 @@ import { InvoicePaymentChargeback } from '@vality/domain-proto';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/lib/payment_processing';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import { from } from 'rxjs';
-import uuid from 'uuid';
+import * as short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
@@ -22,7 +22,7 @@ export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
     { invoiceID: string; paymentID: string },
     InvoicePaymentChargeback
 > {
-    form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: uuid() });
+    form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: short().generate() });
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
