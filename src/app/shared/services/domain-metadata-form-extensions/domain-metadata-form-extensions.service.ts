@@ -4,7 +4,7 @@ import { Field } from '@vality/thrift-ts';
 import moment from 'moment';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import uuid from 'uuid';
+import * as short from 'short-uuid';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
@@ -34,7 +34,7 @@ export class DomainMetadataFormExtensionsService {
             ...this.createDomainObjectsOptions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
-                extension: () => of({ generate: () => of(uuid()), isIdentifier: true }),
+                extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
