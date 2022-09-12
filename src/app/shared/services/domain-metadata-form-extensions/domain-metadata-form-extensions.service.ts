@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomainObject } from '@vality/domain-proto/lib/domain';
+import { DomainObject, Cash } from '@vality/domain-proto/lib/domain';
 import { Field } from '@vality/thrift-ts';
 import moment from 'moment';
 import { from, Observable, of } from 'rxjs';
@@ -8,6 +8,8 @@ import * as short from 'short-uuid';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
+import { Cash as CashField } from '../../../../components/cash-field';
+import { toMajor, toMinor } from '../../../../utils';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import {
     MetadataFormData,
@@ -39,6 +41,29 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
                 extension: () => of({ type: 'datetime', generate: () => of(moment()) }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'domain')),
+                extension: () =>
+                    of({
+                        type: 'cash',
+                        converter: {
+                            internalToOutput: (cash: CashField): Cash =>
+                                cash
+                                    ? {
+                                          amount: toMinor(cash.amount, cash.currencyCode),
+                                          currency: { symbolic_code: cash.currencyCode },
+                                      }
+                                    : null,
+                            outputToInternal: (cash: Cash) =>
+                                cash
+                                    ? {
+                                          amount: toMajor(cash.amount, cash.currency.symbolic_code),
+                                          currency: cash.currency.symbolic_code,
+                                      }
+                                    : null,
+                        },
+                    }),
             },
         ]),
         shareReplay(1)

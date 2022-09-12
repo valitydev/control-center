@@ -1,0 +1,8 @@
+<ng-container [ngSwitch]="(extensionResult$ | async)?.type">
+    <cc-cash-field
+        *ngSwitchCase="'cash'"
+        [formControl]="control"
+        [required]="data.isRequired"
+        label="{{ data.type | fieldLabel: data.field }} (amount)"
+    ></cc-cash-field>
+</ng-container>

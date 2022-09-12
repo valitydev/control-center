@@ -22,8 +22,10 @@ import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
 import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
 
+import { CashModule } from '../../../../components/cash-field';
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
+import { ExtensionFieldComponent } from './components/extension-field/extension-field.component';
 import { LabelComponent } from './components/label/label.component';
 import { PrimitiveFieldComponent } from './components/primitive-field/primitive-field.component';
 import { StructFormComponent } from './components/struct-form/struct-form.component';
@@ -56,6 +58,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         MatDatepickerModule,
         DatetimeComponent,
         PipesModule,
+        CashModule,
     ],
     declarations: [
         MetadataFormComponent,
@@ -67,6 +70,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         EnumFieldComponent,
         LabelComponent,
         FieldLabelPipe,
+        ExtensionFieldComponent,
     ],
     exports: [MetadataFormComponent],
 })

@@ -1,30 +1,45 @@
 <div [ngSwitch]="data?.typeGroup">
-    <cc-primitive-field
-        *ngSwitchCase="'primitive'"
+    <cc-extension-field
+        *ngIf="
+            (data?.extensionResult$ | async)?.type &&
+                (data?.extensionResult$ | async)?.type !== 'datetime';
+            else defaultFields
+        "
         [data]="data"
         [formControl]="control"
-    ></cc-primitive-field>
-    <cc-complex-form
-        *ngSwitchCase="'complex'"
-        [data]="data"
-        [formControl]="control"
-    ></cc-complex-form>
-    <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
-        <cc-struct-form
-            *ngSwitchCase="'struct'"
+    ></cc-extension-field>
+    <ng-template #defaultFields>
+        <cc-primitive-field
+            *ngSwitchCase="'primitive'"
             [data]="data"
             [formControl]="control"
-        ></cc-struct-form>
-        <cc-union-field
-            *ngSwitchCase="'union'"
+        ></cc-primitive-field>
+        <cc-complex-form
+            *ngSwitchCase="'complex'"
             [data]="data"
             [formControl]="control"
-        ></cc-union-field>
-        <cc-enum-field *ngSwitchCase="'enum'" [data]="data" [formControl]="control"></cc-enum-field>
-        <cc-typedef-form
-            *ngSwitchCase="'typedef'"
-            [data]="data"
-            [formControl]="control"
-        ></cc-typedef-form>
-    </ng-container>
+        ></cc-complex-form>
+        <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
+            <cc-struct-form
+                *ngSwitchCase="'struct'"
+                [data]="data"
+                [formControl]="control"
+            ></cc-struct-form>
+            <cc-union-field
+                *ngSwitchCase="'union'"
+                [data]="data"
+                [formControl]="control"
+            ></cc-union-field>
+            <cc-enum-field
+                *ngSwitchCase="'enum'"
+                [data]="data"
+                [formControl]="control"
+            ></cc-enum-field>
+            <cc-typedef-form
+                *ngSwitchCase="'typedef'"
+                [data]="data"
+                [formControl]="control"
+            ></cc-typedef-form>
+        </ng-container>
+    </ng-template>
 </div>
