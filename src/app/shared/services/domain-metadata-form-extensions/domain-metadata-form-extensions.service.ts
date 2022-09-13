@@ -40,7 +40,8 @@ export class DomainMetadataFormExtensionsService {
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
-                extension: () => of({ type: 'datetime', generate: () => of(moment()) }),
+                extension: () =>
+                    of({ type: 'datetime', generate: () => of(moment().toISOString()) }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'domain')),
