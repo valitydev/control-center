@@ -143,7 +143,7 @@ export class RepairingComponent implements OnInit {
 
     repairByScenario() {
         this.baseDialogService
-            .open(RepairByScenarioDialogComponent)
+            .open(RepairByScenarioDialogComponent, { machines: this.selection.selected })
             .afterClosed()
             .pipe(untilDestroyed(this))
             .subscribe();

@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -45,6 +46,7 @@ import { RepairingComponent } from './repairing.component';
         BaseDialogModule,
         MetadataFormModule,
         MatRadioModule,
+        MatChipsModule,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })
