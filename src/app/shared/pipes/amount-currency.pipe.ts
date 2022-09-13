@@ -1,10 +1,10 @@
 import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import { Pipe, Inject, LOCALE_ID, DEFAULT_CURRENCY_CODE, PipeTransform } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import round from 'lodash-es/round';
 import { ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { toMajor } from '../../../utils';
 import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
 
 @UntilDestroy()
@@ -36,7 +36,7 @@ export class AmountCurrencyPipe implements PipeTransform {
                     const exponent = currencies.find((c) => c.data.symbolic_code === currencyCode)
                         .data.exponent;
                     return formatCurrency(
-                        round(amount / 10 ** exponent, exponent),
+                        toMajor(amount, exponent),
                         this._locale,
                         getCurrencySymbol(currencyCode, 'narrow', this._locale),
                         currencyCode,

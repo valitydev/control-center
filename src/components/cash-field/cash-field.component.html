@@ -1,0 +1,33 @@
+<div fxLayout fxLayoutAlign fxLayoutGap="8px">
+    <mat-form-field style="width: 100%">
+        <mat-label>{{ label || 'Amount' }}</mat-label>
+        <span matPrefix>{{ prefix }}&nbsp;</span>
+        <input
+            [formControl]="amountControl"
+            [inputMask]="amountMask$ | async"
+            [required]="required"
+            matInput
+        />
+    </mat-form-field>
+    <mat-form-field style="min-width: 28px; width: 50%">
+        <mat-label>Currency</mat-label>
+        <input
+            [formControl]="currencyCodeControl"
+            [inputMask]="currencyMask"
+            [matAutocomplete]="auto"
+            [required]="required"
+            matInput
+        />
+        <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="this.currencyCodeControl.setValue($event.option.value)"
+        >
+            <mat-option
+                *ngFor="let currency of currencies$ | async"
+                [value]="currency.data.symbolic_code"
+            >
+                {{ currency.data.symbolic_code }} ({{ currency.data.name }})
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</div>

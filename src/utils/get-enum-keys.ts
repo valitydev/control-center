@@ -28,7 +28,7 @@ export function getEnumKey<E extends Record<PropertyKey, unknown>>(
     srcEnum: E,
     value: ValuesType<E>
 ): keyof E {
-    return getEnumKeyValues(srcEnum).find((e) => e.value === String(value)).key;
+    return getEnumKeyValues(srcEnum).find((e) => e.value === String(value))?.key;
 }
 
 export function enumHasValue<E extends Record<PropertyKey, unknown>>(
