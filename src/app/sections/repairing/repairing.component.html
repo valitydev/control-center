@@ -55,8 +55,8 @@
                 </button>
             </cc-actions>
 
-            <cc-empty-search-result *ngIf="!(machines$ | async).length"></cc-empty-search-result>
-            <mat-card *ngIf="(machines$ | async).length" fxLayout="column" fxLayoutGap="18px">
+            <cc-empty-search-result *ngIf="!(machines$ | async)?.length"></cc-empty-search-result>
+            <mat-card *ngIf="(machines$ | async)?.length" fxLayout="column" fxLayoutGap="18px">
                 <table [dataSource]="machines$ | async" mat-table>
                     <cc-select-column
                         [dataSource]="machines$ | async"
