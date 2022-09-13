@@ -44,7 +44,9 @@
                 </button>
             </div>
 
-            <cc-empty-search-result *ngIf="!(withdrawals$ | async).length"></cc-empty-search-result>
+            <cc-empty-search-result
+                *ngIf="!(withdrawals$ | async)?.length"
+            ></cc-empty-search-result>
             <mat-card *ngIf="(withdrawals$ | async).length" fxLayout="column" fxLayoutGap="18px">
                 <table [dataSource]="withdrawals$ | async" mat-table>
                     <cc-select-column

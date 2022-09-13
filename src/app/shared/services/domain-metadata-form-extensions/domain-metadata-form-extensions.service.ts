@@ -46,25 +46,40 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'domain')),
                 extension: () =>
-                    of({
-                        type: 'cash',
-                        converter: {
-                            internalToOutput: (cash: CashField): Cash =>
-                                cash
-                                    ? {
-                                          amount: toMinor(cash.amount, cash.currencyCode),
-                                          currency: { symbolic_code: cash.currencyCode },
-                                      }
-                                    : null,
-                            outputToInternal: (cash: Cash) =>
-                                cash
-                                    ? {
-                                          amount: toMajor(cash.amount, cash.currency.symbolic_code),
-                                          currency: cash.currency.symbolic_code,
-                                      }
-                                    : null,
-                        },
-                    }),
+                    this.domainStoreService.getObjects('currency').pipe(
+                        map((currencies) => ({
+                            type: 'cash',
+                            converter: {
+                                internalToOutput: (cash: CashField): Cash =>
+                                    cash
+                                        ? {
+                                              amount: toMinor(
+                                                  cash.amount,
+                                                  currencies.find(
+                                                      (c) =>
+                                                          c.data.symbolic_code === cash.currencyCode
+                                                  )?.data?.exponent
+                                              ),
+                                              currency: { symbolic_code: cash.currencyCode },
+                                          }
+                                        : null,
+                                outputToInternal: (cash: Cash) =>
+                                    cash
+                                        ? {
+                                              amount: toMajor(
+                                                  cash.amount,
+                                                  currencies.find(
+                                                      (c) =>
+                                                          c.data.symbolic_code ===
+                                                          cash.currency.symbolic_code
+                                                  )?.data?.exponent
+                                              ),
+                                              currency: cash.currency.symbolic_code,
+                                          }
+                                        : null,
+                            },
+                        }))
+                    ),
             },
         ]),
         shareReplay(1)

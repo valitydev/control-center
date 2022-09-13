@@ -1,12 +1,16 @@
-import { Component, Input } from '@angular/core';
-import { Validator, ValidationErrors } from '@angular/forms';
+import { getCurrencySymbol } from '@angular/common';
+import { Component, Input, Injector, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import { Validator, ValidationErrors, FormControl, FormBuilder } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
-import CurrencyList from 'currency-list';
 import sortBy from 'lodash-es/sortBy';
+import { combineLatest } from 'rxjs';
+import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
 
-import { createControlProviders } from '../../utils';
+import { DomainStoreService } from '../../app/thrift-services/damsel/domain-store.service';
+import { createControlProviders, getFormValueChanges } from '../../utils';
 
 export interface Cash {
     amount: number;
@@ -15,90 +19,102 @@ export interface Cash {
 
 const GROUP_SEPARATOR = ' ';
 
+@UntilDestroy()
 @Component({
     selector: 'cc-cash-field',
     templateUrl: './cash-field.component.html',
     providers: createControlProviders(CashFieldComponent),
 })
-export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator {
+export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;
     @Input() @coerceBoolean required: boolean = false;
 
-    amount: string;
-    currencyCode: string = '';
-    options = this.getCurrencies();
-    amountMask = this.createAmountMask();
+    amountControl = new FormControl<string>(null);
+    currencyCodeControl = new FormControl<string>(null);
+
+    currencies$ = combineLatest([
+        getFormValueChanges(this.currencyCodeControl, true),
+        this.domainStoreService.getObjects('currency'),
+    ]).pipe(
+        map(([code, currencies]) =>
+            sortBy(currencies, 'data', 'symbolic_code').filter(
+                (c) =>
+                    c.data.symbolic_code.toUpperCase().includes(code) || c.data.name.includes(code)
+            )
+        )
+    );
+
+    amountMask$ = getFormValueChanges(this.currencyCodeControl, true).pipe(
+        switchMap((code) => this.getCurrencyByCode(code)),
+        map((c) => c?.data?.exponent || 2),
+        distinctUntilChanged(),
+        map((digits) =>
+            createMask({
+                alias: 'numeric',
+                groupSeparator: GROUP_SEPARATOR,
+                digits,
+                digitsOptional: true,
+                placeholder: '',
+            })
+        )
+    );
     currencyMask = createMask({ mask: 'AAA', placeholder: '' });
 
-    get decimalDigits() {
-        return CurrencyList.get(this.currencyCode)?.decimal_digits || 2;
+    get prefix() {
+        return getCurrencySymbol(this.currencyCodeControl.value, 'narrow', this._locale);
     }
 
-    get prefix() {
-        return CurrencyList.get(this.currencyCode)
-            ? (0)
-                  .toLocaleString('ru', {
-                      style: 'currency',
-                      currency: this.currencyCode,
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                  })
-                  .replace(/\d/g, '')
-                  .trim()
-            : '';
+    constructor(
+        injector: Injector,
+        @Inject(LOCALE_ID) private _locale: string,
+        private domainStoreService: DomainStoreService,
+        private fb: FormBuilder
+    ) {
+        super(injector);
+    }
+
+    ngOnInit() {
+        combineLatest([
+            getFormValueChanges(this.currencyCodeControl, true),
+            getFormValueChanges(this.amountControl, true),
+        ])
+            .pipe(
+                switchMap(([currencyCode]) => this.getCurrencyByCode(currencyCode)),
+                untilDestroyed(this)
+            )
+            .subscribe((currency) => {
+                const amountStr = this.amountControl.value;
+                if (amountStr && currency && !this.validate()) {
+                    const [whole, fractional] = amountStr.split('.');
+                    if (fractional?.length > currency.data.exponent)
+                        this.amountControl.setValue(
+                            `${whole}.${fractional.slice(0, currency.data.exponent)}`
+                        );
+                    const amount = Number(this.amountControl.value.replaceAll(GROUP_SEPARATOR, ''));
+                    this.emitOutgoingValue({ amount, currencyCode: currency.data.symbolic_code });
+                } else {
+                    this.emitOutgoingValue(null);
+                }
+            });
     }
 
     validate(): ValidationErrors | null {
-        return !this.amount || this.currencyCode?.length !== 3 ? { invalidCash: true } : null;
+        return !this.amountControl.value || this.currencyCodeControl.value?.length !== 3
+            ? { invalidCash: true }
+            : null;
     }
 
     handleIncomingValue(value: Cash) {
-        this.amountChanged(typeof value?.amount === 'number' ? String(value.amount) : null);
-        this.currencyChanged(value?.currencyCode);
+        this.amountControl.setValue(
+            typeof value?.amount === 'number' ? String(value.amount) : null
+        );
+        this.currencyCodeControl.setValue(value?.currencyCode);
     }
 
-    amountChanged(amount: string) {
-        this.amount = amount;
-        this.update();
-    }
-
-    currencyChanged(currencyCode: string) {
-        this.currencyCode = currencyCode;
-        this.amountMask = this.createAmountMask();
-        this.options = this.getCurrencies();
-        this.update();
-    }
-
-    private update() {
-        if (this.amount && this.currencyCode && !this.validate()) {
-            const [whole, fractional] = this.amount.split('.');
-            if (fractional?.length > this.decimalDigits)
-                this.amount = `${whole}.${fractional.slice(0, this.decimalDigits)}`;
-            const amount = Number(this.amount.replaceAll(GROUP_SEPARATOR, ''));
-            this.emitOutgoingValue({ amount, currencyCode: this.currencyCode });
-        } else {
-            this.emitOutgoingValue(null);
-        }
-    }
-
-    private createAmountMask() {
-        return createMask({
-            alias: 'numeric',
-            groupSeparator: GROUP_SEPARATOR,
-            digits: this.decimalDigits,
-            digitsOptional: true,
-            placeholder: '',
-        });
-    }
-
-    private getCurrencies() {
-        const currensies = sortBy(Object.values(CurrencyList.getAll('en')), 'code');
-        return this.currencyCode
-            ? currensies.filter(
-                  (v) =>
-                      v.name.toUpperCase().includes(this.currencyCode) ||
-                      v.code.includes(this.currencyCode)
-              )
-            : currensies;
+    private getCurrencyByCode(currencyCode: string) {
+        return this.domainStoreService.getObjects('currency').pipe(
+            map((c) => c.find((v) => v.data.symbolic_code === currencyCode)),
+            first()
+        );
     }
 }
