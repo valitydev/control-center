@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Snapshot } from '@vality/domain-proto/lib/domain_config';
 import { KeycloakService } from 'keycloak-angular';
-import isNil from 'lodash-es/isNil';
 
 import { ThriftAstMetadata } from '../../../api/utils';
-import { metadataReducer } from './metadata-redicer';
+import { isDominantSecretRole } from './is-dominant-secret-role';
+import { metadataReducer } from './metadata-reducer';
 
 const DOMINANT_SECRETS_ROLE = 'dominant:secrets';
 
@@ -18,8 +18,9 @@ const EXCLUDE_OBJECTS = [
     providedIn: 'root',
 })
 export class DomainSecretService {
-    private isDominantSecret: boolean = !isNil(
-        this.keycloakService.getUserRoles().find((role) => role === DOMINANT_SECRETS_ROLE)
+    private isDominantSecret = isDominantSecretRole(
+        this.keycloakService.getUserRoles(),
+        DOMINANT_SECRETS_ROLE
     );
 
     constructor(private keycloakService: KeycloakService) {}
