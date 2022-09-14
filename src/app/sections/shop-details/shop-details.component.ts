@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, switchMap } from 'rxjs';
-import { pluck, filter, withLatestFrom } from 'rxjs/operators';
+import { pluck, filter, withLatestFrom, first } from 'rxjs/operators';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
@@ -41,6 +41,7 @@ export class ShopDetailsComponent {
     toggleBlocking() {
         this.shop$
             .pipe(
+                first(),
                 switchMap((shop) =>
                     this.baseDialogService
                         .open(ConfirmActionDialogComponent, {
@@ -62,6 +63,7 @@ export class ShopDetailsComponent {
             )
             .subscribe({
                 next: () => {
+                    this.fetchShopService.reload();
                     this.notificationService.success();
                 },
                 error: (err) => {
@@ -73,6 +75,7 @@ export class ShopDetailsComponent {
     toggleSuspension() {
         this.shop$
             .pipe(
+                first(),
                 switchMap((shop) =>
                     this.baseDialogService
                         .open(ConfirmActionDialogComponent, {
@@ -80,7 +83,6 @@ export class ShopDetailsComponent {
                                 getUnionKey(shop.suspension) === 'active'
                                     ? 'Suspend shop'
                                     : 'Activate shop',
-                            hasReason: true,
                         })
                         .afterClosed()
                 ),
@@ -94,6 +96,7 @@ export class ShopDetailsComponent {
             )
             .subscribe({
                 next: () => {
+                    this.fetchShopService.reload();
                     this.notificationService.success();
                 },
                 error: (err) => {

@@ -38,4 +38,8 @@ export class FetchShopService {
     getShop(partyID: PartyID, shopID: ShopID) {
         this.getShop$.next({ shopID, partyID });
     }
+
+    reload() {
+        if (this.getShop$.value) this.getShop$.next(this.getShop$.value);
+    }
 }
