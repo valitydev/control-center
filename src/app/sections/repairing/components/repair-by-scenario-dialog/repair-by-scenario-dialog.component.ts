@@ -4,6 +4,7 @@ import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { RepairInvoicesRequest, RepairWithdrawalsRequest, Machine } from '@vality/repairer-proto';
+import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
 
 import { progressTo, getFormValueChanges } from '../../../../../utils';
@@ -44,6 +45,10 @@ export class RepairByScenarioDialogComponent
 
     typesEnum = Types;
     nsEnum = Namespace;
+
+    get hasNs() {
+        return !isNil(this.nsControl.value);
+    }
 
     constructor(
         injector: Injector,
