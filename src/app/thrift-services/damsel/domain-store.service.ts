@@ -6,6 +6,7 @@ import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { RepositoryService } from '@cc/app/api/domain-config';
+import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionKey } from '@cc/utils/get-union-key';
 
@@ -17,6 +18,7 @@ export class DomainStoreService {
         switchMap(() =>
             this.repositoryService.Checkout({ head: {} }).pipe(progressTo(this.progress$))
         ),
+        map((s) => this.domainSecretService.reduceSnapshot(s)),
         untilDestroyed(this),
         shareReplay(1)
     );
@@ -27,7 +29,10 @@ export class DomainStoreService {
     private reload$ = new ReplaySubject<void>(1);
     private progress$ = new BehaviorSubject(0);
 
-    constructor(private repositoryService: RepositoryService) {}
+    constructor(
+        private repositoryService: RepositoryService,
+        private domainSecretService: DomainSecretService
+    ) {}
 
     forceReload(): void {
         this.reload$.next();
