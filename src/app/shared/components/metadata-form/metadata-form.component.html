@@ -1,4 +1,4 @@
-<div [ngSwitch]="data?.typeGroup">
+<div *ngIf="data" [ngSwitch]="data?.typeGroup">
     <cc-extension-field
         *ngIf="
             (data?.extensionResult$ | async)?.type &&

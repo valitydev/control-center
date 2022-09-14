@@ -28,14 +28,19 @@ export class MetadataFormComponent<T>
 
     ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
-            this.data = new MetadataFormData(
-                this.metadata,
-                this.namespace,
-                this.type,
-                this.field,
-                this.parent,
-                this.extensions
-            );
+            try {
+                this.data = new MetadataFormData(
+                    this.metadata,
+                    this.namespace,
+                    this.type,
+                    this.field,
+                    this.parent,
+                    this.extensions
+                );
+            } catch (err) {
+                this.data = undefined;
+                console.warn(err);
+            }
         }
     }
 }

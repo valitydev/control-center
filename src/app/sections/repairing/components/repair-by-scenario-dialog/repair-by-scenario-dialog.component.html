@@ -1,25 +1,53 @@
 <cc-base-dialog gdColumn="1fr" title="Repair by scenario">
     <div gdGap="16px">
+        <mat-form-field>
+            <mat-label>Type</mat-label>
+            <mat-select [formControl]="nsControl">
+                <mat-option value="invoice">Invoice</mat-option>
+                <mat-option value="withdrawal">Withdrawal</mat-option>
+            </mat-select>
+        </mat-form-field>
+
         <mat-radio-group [formControl]="typeControl" gdColumns="1fr 1fr" gdGap="8px">
-            <mat-radio-button [value]="typesEnum.Invoices">Invoices</mat-radio-button>
-            <mat-radio-button [value]="typesEnum.Withdrawals">Withdrawals</mat-radio-button>
+            <mat-radio-button [disabled]="!ids.length" [value]="typesEnum.Same"
+                >Same</mat-radio-button
+            >
+            <mat-radio-button [value]="typesEnum.Different">Different</mat-radio-button>
         </mat-radio-group>
+
+        <ng-container *ngIf="typeControl.value === typesEnum.Same">
+            <mat-chip-list>
+                <mat-chip *ngFor="let id of ids" class="cc-body-1">{{ id }}</mat-chip>
+            </mat-chip-list>
+            <cc-metadata-form
+                [formControl]="sameForm"
+                [metadata]="metadata$ | async"
+                [namespace]="
+                    nsControl.value === 'invoice' ? 'payment_processing' : 'withdrawal_session'
+                "
+                [type]="nsControl.value === 'invoice' ? 'InvoiceRepairScenario' : 'RepairScenario'"
+            ></cc-metadata-form>
+        </ng-container>
+
         <cc-metadata-form
-            *ngIf="typeControl.value !== null"
+            *ngIf="typeControl.value === typesEnum.Different"
             [formControl]="form"
             [metadata]="metadata$ | async"
             [type]="
-                typeControl.value === typesEnum.Invoices
-                    ? 'RepairInvoicesRequest'
-                    : 'RepairWithdrawalsRequest'
+                nsControl.value === 'invoice' ? 'RepairInvoicesRequest' : 'RepairWithdrawalsRequest'
             "
             namespace="repairer"
         ></cc-metadata-form>
+
         <mat-progress-bar *ngIf="progress$ | async"></mat-progress-bar>
     </div>
     <cc-base-dialog-actions>
         <button
-            [disabled]="form.invalid || typeControl.invalid"
+            [disabled]="
+                typeControl.invalid ||
+                nsControl.invalid ||
+                (typeControl.value === typesEnum.Same ? sameForm.invalid : form.invalid)
+            "
             color="primary"
             mat-button
             (click)="repair()"

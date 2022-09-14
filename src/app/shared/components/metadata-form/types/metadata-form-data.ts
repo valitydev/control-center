@@ -59,6 +59,13 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
     objectType?: StructureType;
     ast?: M;
 
+    include?: JsonAST['include'];
+
+    /**
+     * The first one identified is used
+     */
+    extensionResult$: Observable<MetadataFormExtensionResult>;
+
     /**
      * Parent who is not typedef
      */
@@ -73,11 +80,6 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
     get isRequired() {
         return this.field?.option === 'required' || this.trueParent?.objectType === 'union';
     }
-
-    /**
-     * The first one identified is used
-     */
-    extensionResult$: Observable<MetadataFormExtensionResult>;
 
     constructor(
         public metadata: ThriftAstMetadata[],
@@ -115,14 +117,14 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
     }
 
     private setNamespaceObjectType() {
-        const namespaceObjectType = parseNamespaceObjectType(
+        const { namespaceMetadata, objectType, include } = parseNamespaceObjectType(
             this.metadata,
             this.namespace,
-            this.type as string
+            this.type as string,
+            this.parent?.include
         );
-        this.objectType = namespaceObjectType.objectType;
-        this.ast = (namespaceObjectType.namespaceMetadata.ast[this.objectType] as unknown)[
-            this.type
-        ] as M;
+        this.objectType = objectType;
+        this.ast = (namespaceMetadata.ast[this.objectType] as unknown)[this.type] as M;
+        this.include = include;
     }
 }
