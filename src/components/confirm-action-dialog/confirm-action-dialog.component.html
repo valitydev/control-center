@@ -1,4 +1,11 @@
-<cc-base-dialog [title]="dialogData?.['title'] ?? 'Confirm this action'" noContent>
+<cc-base-dialog
+    [noContent]="!(dialogData && dialogData.hasReason)"
+    [title]="dialogData?.['title'] ?? 'Confirm this action'"
+>
+    <mat-form-field *ngIf="dialogData && dialogData.hasReason" style="width: 100%">
+        <mat-label>Reason</mat-label>
+        <input [formControl]="control" matInput />
+    </mat-form-field>
     <cc-base-dialog-actions>
         <button mat-button (click)="cancel()">CANCEL</button>
         <button color="primary" mat-raised-button (click)="confirm()">
