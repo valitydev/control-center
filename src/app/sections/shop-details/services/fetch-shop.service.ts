@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PartyID, ShopID } from '@vality/domain-proto';
-import { BehaviorSubject, merge, of, Subject } from 'rxjs';
+import { PartyID, ShopID, Shop } from '@vality/domain-proto';
+import { BehaviorSubject, merge, of, Subject, Observable } from 'rxjs';
 import { catchError, filter, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
@@ -13,7 +13,7 @@ export class FetchShopService {
     private hasError$: Subject<any> = new Subject();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    shop$ = this.getShop$.pipe(
+    shop$: Observable<Shop> = this.getShop$.pipe(
         switchMap(({ partyID, shopID }) =>
             this.partyManagementService.GetShop(partyID, shopID).pipe(
                 catchError((e) => {
@@ -24,7 +24,7 @@ export class FetchShopService {
             )
         ),
         filter((result) => result !== 'error'),
-        shareReplay(1)
+        shareReplay<Shop>(1)
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -37,5 +37,9 @@ export class FetchShopService {
 
     getShop(partyID: PartyID, shopID: ShopID) {
         this.getShop$.next({ shopID, partyID });
+    }
+
+    reload() {
+        if (this.getShop$.value) this.getShop$.next(this.getShop$.value);
     }
 }
