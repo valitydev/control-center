@@ -9,6 +9,7 @@
     </span>
     <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px', overflow: 'hidden' }">
         <mat-expansion-panel
+            #panel
             *ngFor="let valueControl of valueControls.controls; let i = index"
             class="mat-elevation-z0 expansion-panel"
         >
@@ -20,14 +21,19 @@
                 >
                     <div>
                         {{ i + 1 }}.
-                        <span *ngIf="isKeyValue; else value" class="cc-secondary-text">
-                            {{ keyControls.controls[i].value | inlineJson }}
-                        </span>
-                        <ng-template #value>
-                            {{ valueControl.value | inlineJson }}
+                        <ng-container *ngIf="!panel.expanded; else edited">
+                            <span *ngIf="isKeyValue; else value" class="cc-secondary-text">
+                                {{ keyControls.controls[i].value | inlineJson }}
+                            </span>
+                            <ng-template #value>
+                                {{ valueControl.value | inlineJson }}
+                            </ng-template>
+                        </ng-container>
+                        <ng-template #edited>
+                            {{ data.type.valueType | valueTypeTitle }}
                         </ng-template>
                     </div>
-                    <div *ngIf="isKeyValue">
+                    <div *ngIf="isKeyValue && !panel.expanded">
                         {{ valueControl.value | inlineJson }}
                     </div>
                 </mat-panel-title>
