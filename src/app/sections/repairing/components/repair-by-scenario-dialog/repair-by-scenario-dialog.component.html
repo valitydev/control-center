@@ -3,29 +3,31 @@
         <mat-form-field>
             <mat-label>Type</mat-label>
             <mat-select [formControl]="nsControl">
-                <mat-option value="invoice">Invoice</mat-option>
-                <mat-option value="withdrawal">Withdrawal</mat-option>
+                <mat-option [value]="nsEnum.Invoice">Invoice</mat-option>
+                <mat-option [value]="nsEnum.Withdrawal">Withdrawal</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-radio-group [formControl]="typeControl" gdColumns="1fr 1fr" gdGap="8px">
-            <mat-radio-button [disabled]="!ids.length" [value]="typesEnum.Same"
-                >Same</mat-radio-button
-            >
+            <mat-radio-button [value]="typesEnum.Same">Same</mat-radio-button>
             <mat-radio-button [value]="typesEnum.Different">Different</mat-radio-button>
         </mat-radio-group>
 
         <ng-container *ngIf="typeControl.value === typesEnum.Same">
             <mat-chip-list>
-                <mat-chip *ngFor="let id of ids" class="cc-body-1">{{ id }}</mat-chip>
+                <mat-chip *ngFor="let machine of dialogData.machines" class="cc-body-1">{{
+                    machine.id
+                }}</mat-chip>
             </mat-chip-list>
             <cc-metadata-form
                 [formControl]="sameForm"
                 [metadata]="metadata$ | async"
                 [namespace]="
-                    nsControl.value === 'invoice' ? 'payment_processing' : 'withdrawal_session'
+                    nsControl.value === nsEnum.Invoice ? 'payment_processing' : 'withdrawal_session'
                 "
-                [type]="nsControl.value === 'invoice' ? 'InvoiceRepairScenario' : 'RepairScenario'"
+                [type]="
+                    nsControl.value === nsEnum.Invoice ? 'InvoiceRepairScenario' : 'RepairScenario'
+                "
             ></cc-metadata-form>
         </ng-container>
 
@@ -34,7 +36,9 @@
             [formControl]="form"
             [metadata]="metadata$ | async"
             [type]="
-                nsControl.value === 'invoice' ? 'RepairInvoicesRequest' : 'RepairWithdrawalsRequest'
+                nsControl.value === nsEnum.Invoice
+                    ? 'RepairInvoicesRequest'
+                    : 'RepairWithdrawalsRequest'
             "
             namespace="repairer"
         ></cc-metadata-form>

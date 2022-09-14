@@ -16,6 +16,11 @@ enum Types {
     Different,
 }
 
+enum Namespace {
+    Invoice,
+    Withdrawal,
+}
+
 @UntilDestroy()
 @Component({
     templateUrl: './repair-by-scenario-dialog.component.html',
@@ -24,10 +29,7 @@ export class RepairByScenarioDialogComponent
     extends BaseDialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>
     implements OnInit
 {
-    nsControl = new FormControl<string>(
-        this.dialogData.machines.find((m) => m.ns === 'invoice') ? 'invoice' : 'withdrawal',
-        Validators.required
-    );
+    nsControl = new FormControl<Namespace>(null, Validators.required);
     typeControl = new FormControl<Types>(Types.Same, Validators.required);
     form = new FormControl<RepairInvoicesRequest | RepairWithdrawalsRequest>(
         [],
@@ -39,13 +41,9 @@ export class RepairByScenarioDialogComponent
     );
     metadata$ = from(import('@vality/repairer-proto/lib/metadata.json').then((m) => m.default));
     progress$ = new BehaviorSubject(0);
-    typesEnum = Types;
 
-    get ids() {
-        return this.dialogData.machines
-            .filter((m) => m.ns === this.nsControl.value)
-            .map((m) => m.id);
-    }
+    typesEnum = Types;
+    nsEnum = Namespace;
 
     constructor(
         injector: Injector,
@@ -60,9 +58,9 @@ export class RepairByScenarioDialogComponent
         getFormValueChanges(this.nsControl)
             .pipe(untilDestroyed(this))
             .subscribe(() => {
-                this.form.setValue(this.ids.map((id) => ({ id, scenario: {} })));
-                if (!this.ids.length && this.typeControl.value === Types.Same)
-                    this.typeControl.setValue(Types.Different);
+                this.form.setValue(
+                    this.dialogData.machines.map(({ id }) => ({ id, scenario: {} }))
+                );
             });
     }
 
@@ -70,8 +68,8 @@ export class RepairByScenarioDialogComponent
         const value =
             this.typeControl.value === Types.Different
                 ? this.form.value
-                : this.ids.map((id) => ({ id, scenario: this.sameForm.value }));
-        (this.nsControl.value === 'invoice'
+                : this.dialogData.machines.map(({ id }) => ({ id, scenario: this.sameForm.value }));
+        (this.nsControl.value === Namespace.Invoice
             ? this.repairManagementService.RepairInvoices(value as RepairInvoicesRequest)
             : this.repairManagementService.RepairWithdrawals(value as RepairWithdrawalsRequest)
         )
