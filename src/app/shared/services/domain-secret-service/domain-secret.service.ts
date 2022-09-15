@@ -26,14 +26,14 @@ export class DomainSecretService {
     constructor(private keycloakService: KeycloakService) {}
 
     reduceMetadata(metadata: ThriftAstMetadata[]): ThriftAstMetadata[] {
-        if (!this.isDominantSecret) {
+        if (this.isDominantSecret) {
             return metadata;
         }
         return metadata.reduce(metadataReducer(EXCLUDE_OBJECTS.map((o) => o.metadataTerm)), []);
     }
 
     reduceSnapshot(snapshot: Snapshot): Snapshot {
-        if (!this.isDominantSecret) {
+        if (this.isDominantSecret) {
             return snapshot;
         }
         for (const [key] of snapshot.domain) {
