@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DomainObject } from '@vality/domain-proto/lib/domain';
-import { from, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 
 import { progressTo, getUnionKey, enumHasValue } from '../../../utils';
@@ -28,7 +27,7 @@ export class DomainObjCreationComponent {
     control = new FormControl<DomainObject>(null, Validators.required);
     review = false;
 
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = this.metadataService.metadata;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
@@ -61,7 +60,6 @@ export class DomainObjCreationComponent {
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
         private errorService: ErrorService,
-        private router: Router,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService
     ) {}

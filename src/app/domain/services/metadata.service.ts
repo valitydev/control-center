@@ -4,17 +4,24 @@ import { Field } from '@vality/thrift-ts';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { DomainSecretService } from '@cc/app/shared/services';
+
 import { ThriftAstMetadata } from '../../api/utils';
 
 @Injectable()
 export class MetadataService {
     private metadata$: Observable<ThriftAstMetadata[]> = from(
         import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
-    ).pipe(shareReplay(1)) as Observable<ThriftAstMetadata[]>;
+    ).pipe(
+        map((m) => this.domainSecretService.reduceMetadata(m as any)),
+        shareReplay(1)
+    );
 
     get metadata() {
         return this.metadata$;
     }
+
+    constructor(private domainSecretService: DomainSecretService) {}
 
     getDomainObjectType(ref: Reference): Observable<string | null> {
         if (!ref) {
