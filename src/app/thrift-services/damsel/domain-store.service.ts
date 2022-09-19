@@ -13,6 +13,12 @@ import { getUnionKey } from '@cc/utils/get-union-key';
 @UntilDestroy()
 @Injectable()
 export class DomainStoreService {
+    version$ = defer(() => this.snapshot$).pipe(pluck('version'));
+    isLoading$ = inProgressFrom(
+        () => this.progress$,
+        defer(() => this.snapshot$)
+    );
+
     private snapshot$: Observable<Snapshot> = defer(() => this.reload$).pipe(
         startWith(undefined),
         switchMap(() =>
@@ -21,11 +27,6 @@ export class DomainStoreService {
         untilDestroyed(this),
         shareReplay(1)
     );
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    version$ = this.snapshot$.pipe(pluck('version'));
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    isLoading$ = inProgressFrom(() => this.progress$, this.snapshot$);
-
     private reload$ = new ReplaySubject<void>(1);
     private progress$ = new BehaviorSubject(0);
 
