@@ -4,6 +4,8 @@ import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
 import { first, withLatestFrom } from 'rxjs/operators';
 
+import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
+
 import { getUnionKey } from '../../../utils';
 import { ErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
@@ -32,7 +34,8 @@ export class DomainObjReviewComponent {
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
         private errorService: ErrorService,
-        private domainNavigateService: DomainNavigateService
+        private domainNavigateService: DomainNavigateService,
+        private domainSecretService: DomainSecretService
     ) {
         if (!modifiedDomainObjectService.domainObject) {
             this.back();
@@ -50,16 +53,15 @@ export class DomainObjReviewComponent {
                             {
                                 update: {
                                     old_object,
-                                    new_object: {
+                                    new_object: this.domainSecretService.restoreDomain(old_object, {
                                         [getUnionKey(old_object)]: this.modifiedObject,
-                                    },
+                                    }),
                                 },
                             },
                         ],
                     })
                 ),
                 withLatestFrom(this.type$),
-                // progressTo(this.progress$),
                 untilDestroyed(this)
             )
             .subscribe({

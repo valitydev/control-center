@@ -37,7 +37,7 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
     searchControl = new FormControl('');
     typesControl = new FormControl(this.queryParamsService.params.types || []);
     dataSource$: Observable<MatTableDataSource<DataSourceItem>> = defer(() => this.init$).pipe(
-        switchMap(() => this.domainStoreService.domain$),
+        switchMap(() => this.domainStoreService.getDomain()),
         map((domain) => Array.from(domain).map(([ref, obj]) => ({ ref, obj }))),
         switchMap((data) =>
             combineLatest(data.map((d) => this.metadataService.getDomainObjectType(d.ref))).pipe(
