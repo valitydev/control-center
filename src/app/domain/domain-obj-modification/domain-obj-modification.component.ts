@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
@@ -50,7 +49,6 @@ export class DomainObjModificationComponent implements OnInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private snackBar: MatSnackBar,
         private domainObjModService: DomainObjModificationService,
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,

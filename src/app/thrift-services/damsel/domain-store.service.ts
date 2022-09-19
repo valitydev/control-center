@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DomainObject } from '@vality/domain-proto/lib/domain';
+import { Domain, DomainObject } from '@vality/domain-proto/lib/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/lib/domain_config';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
@@ -13,19 +13,20 @@ import { getUnionKey } from '@cc/utils/get-union-key';
 @UntilDestroy()
 @Injectable()
 export class DomainStoreService {
-    snapshot$: Observable<Snapshot> = defer(() => this.reload$).pipe(
+    version$ = defer(() => this.snapshot$).pipe(pluck('version'));
+    isLoading$ = inProgressFrom(
+        () => this.progress$,
+        defer(() => this.snapshot$)
+    );
+
+    private snapshot$: Observable<Snapshot> = defer(() => this.reload$).pipe(
         startWith(undefined),
         switchMap(() =>
             this.repositoryService.Checkout({ head: {} }).pipe(progressTo(this.progress$))
         ),
-        map((s) => this.domainSecretService.reduceSnapshot(s)),
         untilDestroyed(this),
         shareReplay(1)
     );
-    domain$ = this.snapshot$.pipe(pluck('domain'));
-    version$ = this.snapshot$.pipe(pluck('version'));
-    isLoading$ = inProgressFrom(() => this.progress$, this.snapshot$);
-
     private reload$ = new ReplaySubject<void>(1);
     private progress$ = new BehaviorSubject(0);
 
@@ -38,8 +39,15 @@ export class DomainStoreService {
         this.reload$.next();
     }
 
+    getDomain(raw = false): Observable<Domain> {
+        return this.snapshot$.pipe(
+            pluck('domain'),
+            map((d) => (raw ? d : this.domainSecretService.reduceDomain(d)))
+        );
+    }
+
     getObjects<T extends keyof DomainObject>(objectType: T): Observable<DomainObject[T][]> {
-        return this.domain$.pipe(
+        return this.getDomain().pipe(
             map((d) =>
                 Array.from(d.values())
                     .filter((o) => getUnionKey(o) === objectType)

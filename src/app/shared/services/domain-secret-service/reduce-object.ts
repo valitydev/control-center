@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { DomainObject } from '@vality/domain-proto';
+import cloneDeep from 'lodash-es/cloneDeep';
+import isNil from 'lodash-es/isNil';
 
-export const reduceObject = (objectName: string, o: DomainObject): DomainObject => ({
-    ...o,
-    [objectName]: {
-        ...o[objectName],
-        data: {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            ...o[objectName].data,
-            options: undefined,
-        },
-    },
-});
+export const reduceObject = (objectName: string, o: DomainObject): DomainObject => {
+    if (isNil(o[objectName].data.options)) {
+        return o;
+    }
+    const result = cloneDeep(o);
+    delete result[objectName].data.options;
+    return result;
+};

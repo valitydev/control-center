@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Snapshot } from '@vality/domain-proto/lib/domain_config';
+import { Domain, DomainObject } from '@vality/domain-proto';
 import { KeycloakService } from 'keycloak-angular';
+import isNil from 'lodash-es/isNil';
 
 import { isDominantSecretRole } from './is-dominant-secret-role';
 import { reduceObject } from './reduce-object';
@@ -19,16 +20,28 @@ export class DomainSecretService {
 
     constructor(private keycloakService: KeycloakService) {}
 
-    reduceSnapshot(snapshot: Snapshot): Snapshot {
+    reduceDomain(domain: Domain): Domain {
         if (this.isDominantSecret) {
-            return snapshot;
+            return domain;
         }
-        for (const [key, value] of snapshot.domain) {
+        const result = new Map(domain);
+        for (const [key, value] of result) {
             const found = EXCLUDE_OBJECTS.find((term) => value[term]);
             if (found) {
-                snapshot.domain.set(key, reduceObject(found, value));
+                result.set(key, reduceObject(found, value));
             }
         }
-        return snapshot;
+        return result;
+    }
+
+    restoreDomain(raw: DomainObject, reduced: DomainObject): DomainObject {
+        if (this.isDominantSecret) {
+            return raw;
+        }
+        const found = EXCLUDE_OBJECTS.find((term) => raw[term]);
+        if (found && !isNil(reduced[found]) && !isNil(raw[found].data.options)) {
+            reduced[found].data.options = raw[found].data.options;
+        }
+        return reduced;
     }
 }
