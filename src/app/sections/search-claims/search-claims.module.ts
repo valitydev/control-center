@@ -22,7 +22,6 @@ import { ApiModelPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 import { TableModule } from '@cc/components/table';
 
-import { ClaimManagementService } from '../../thrift-services/damsel/claim-management.service';
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
 import { SearchClaimsComponentRouting } from './search-claims-routing.module';
 import { SearchClaimsComponent } from './search-claims.component';
@@ -63,6 +62,6 @@ import { SearchTableComponent } from './search-table/search-table.component';
         ClaimMailPipePipe,
         CreateClaimDialogComponent,
     ],
-    providers: [SearchClaimsService, ClaimManagementService],
+    providers: [SearchClaimsService],
 })
 export class SearchClaimsModule {}
