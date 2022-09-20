@@ -2,6 +2,7 @@ import { Inject, Injectable, NgZone } from '@angular/core';
 import { StatDeposit, StatRequest, StatResponse } from '@vality/fistful-proto/lib/fistful_stat';
 import { StatRequest as ThriftStatRequest } from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/fistful_stat_types';
 import * as FistfulStatistics from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/FistfulStatistics';
+import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -21,9 +22,10 @@ export class FistfulStatisticsService extends ThriftService {
         keycloakTokenInfoService: KeycloakTokenInfoService,
         zone: NgZone,
         @Inject(SEARCH_LIMIT) private searchLimit: number,
-        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number
+        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number,
+        keycloakService: KeycloakService
     ) {
-        super(zone, keycloakTokenInfoService, '/fistful/stat', FistfulStatistics);
+        super(zone, keycloakTokenInfoService, keycloakService, '/fistful/stat', FistfulStatistics);
     }
 
     getDeposits(

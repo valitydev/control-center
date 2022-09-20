@@ -1,8 +1,13 @@
 import { NgZone } from '@angular/core';
 import connectClient from '@vality/woody';
-import { Observable } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
+import { Observable, from, switchMap } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 
+import {
+    createWachterHeaders,
+    createAuthorizationHeaders,
+} from '../../../api/utils/create-thrift-api/utils';
 import { KeycloakTokenInfoService } from '../../../keycloak-token-info.service';
 
 type Exception<N = string, T = any> = {
@@ -18,8 +23,10 @@ export class ThriftService {
     constructor(
         private zone: NgZone,
         private keycloakTokenInfoService: KeycloakTokenInfoService,
+        private keycloakService: KeycloakService,
         endpoint: string,
-        thriftService: any
+        thriftService: any,
+        private wachterServiceName?: string
     ) {
         this.endpoint = endpoint;
         this.service = thriftService;
@@ -30,27 +37,37 @@ export class ThriftService {
         deprecatedHeaders = true
     ): T {
         return ((...args) =>
-            new Observable<any>((observer) => {
-                const cb = (msg) => {
-                    observer.error(msg);
-                    observer.complete();
-                };
-                this.zone.run(() => {
-                    try {
-                        const client = this.createClient(cb, deprecatedHeaders);
-                        client[name](...args, (ex: Exception, result) => {
-                            if (ex) observer.error(ex);
-                            else observer.next(result);
-                            observer.complete();
-                        });
-                    } catch (e) {
-                        cb(e);
-                    }
-                });
-            }).pipe(timeout(60000 * 3))) as any;
+            from(this.keycloakService.getToken()).pipe(
+                switchMap(
+                    (token) =>
+                        new Observable<any>((observer) => {
+                            const cb = (msg) => {
+                                observer.error(msg);
+                                observer.complete();
+                            };
+                            this.zone.run(() => {
+                                try {
+                                    const client = this.createClient(cb, deprecatedHeaders, token);
+                                    client[name](...args, (ex: Exception, result) => {
+                                        if (ex) observer.error(ex);
+                                        else observer.next(result);
+                                        observer.complete();
+                                    });
+                                } catch (e) {
+                                    cb(e);
+                                }
+                            });
+                        })
+                ),
+                timeout(60000 * 3)
+            )) as any;
     }
 
-    private createClient(errorCb: (cb: () => void) => void, deprecatedHeaders: boolean) {
+    private createClient(
+        errorCb: (cb: () => void) => void,
+        deprecatedHeaders: boolean,
+        token: string
+    ) {
         const { email, preferred_username, sub } = this.keycloakTokenInfoService.decodedUserToken;
         return connectClient(
             location.hostname,
@@ -71,6 +88,12 @@ export class ThriftService {
                               'x-rbk-meta-user-identity.id': sub,
                           }
                         : undefined),
+                    ...(this.wachterServiceName
+                        ? {
+                              ...createWachterHeaders(this.wachterServiceName),
+                              ...createAuthorizationHeaders(token),
+                          }
+                        : {}),
                 },
                 deadlineConfig: {
                     amount: 3,

@@ -11,6 +11,7 @@ import {
     Modification as ModificationType,
 } from '@vality/domain-proto/lib/claim_management/gen-nodejs/claim_management_types';
 import * as ClaimManagement from '@vality/domain-proto/lib/claim_management/gen-nodejs/ClaimManagement';
+import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
@@ -22,8 +23,12 @@ import { ThriftService } from '../services/thrift/thrift-service';
  * @deprecated use api/ClaimManagement service
  */
 export class ClaimManagementService extends ThriftService {
-    constructor(zone: NgZone, keycloakTokenInfoService: KeycloakTokenInfoService) {
-        super(zone, keycloakTokenInfoService, '/v1/cm', ClaimManagement);
+    constructor(
+        zone: NgZone,
+        keycloakTokenInfoService: KeycloakTokenInfoService,
+        keycloakService: KeycloakService
+    ) {
+        super(zone, keycloakTokenInfoService, keycloakService, '/v1/cm', ClaimManagement);
     }
 
     createClaim = (partyID: string, changeset: Modification[]): Observable<Claim> =>
