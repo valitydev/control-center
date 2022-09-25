@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass, BaseDialogModule, BaseDialogService } from '@vality/ng-core';
+import { BaseDialogSuperclass, BaseDialogModule } from '@vality/ng-core';
 import { from, BehaviorSubject, Observable } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
@@ -64,7 +64,6 @@ export class ChangeChargebackStatusDialogComponent
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
         private errorService: ErrorService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService

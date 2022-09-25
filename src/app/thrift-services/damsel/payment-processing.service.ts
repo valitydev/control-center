@@ -16,6 +16,7 @@ import {
     InvoicePaymentAdjustmentParams as InvoicePaymentAdjustmentParamsObject,
     InvoiceRepairScenario as InvoiceRepairScenarioObject,
 } from '@vality/domain-proto/lib/payment_processing/gen-nodejs/payment_processing_types';
+import { KeycloakService } from 'keycloak-angular';
 import { Observable, timer } from 'rxjs';
 import { first, map, share, switchMap } from 'rxjs/operators';
 
@@ -28,8 +29,18 @@ import { createDamselInstance, damselInstanceToObject } from './utils/create-dam
  * @deprecated
  */
 export class PaymentProcessingService extends ThriftService {
-    constructor(zone: NgZone, keycloakTokenInfoService: KeycloakTokenInfoService) {
-        super(zone, keycloakTokenInfoService, '/v1/processing/invoicing', Invoicing);
+    constructor(
+        zone: NgZone,
+        keycloakTokenInfoService: KeycloakTokenInfoService,
+        keycloakService: KeycloakService
+    ) {
+        super(
+            zone,
+            keycloakTokenInfoService,
+            keycloakService,
+            '/v1/processing/invoicing',
+            Invoicing
+        );
     }
 
     getPaymentAdjustment = (
