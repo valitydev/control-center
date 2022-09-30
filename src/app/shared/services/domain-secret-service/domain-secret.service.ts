@@ -34,14 +34,14 @@ export class DomainSecretService {
         return result;
     }
 
-    restoreDomain(raw: DomainObject, reduced: DomainObject): DomainObject {
+    restoreDomain(oldObject: DomainObject, newObject: DomainObject): DomainObject {
         if (this.isDominantSecret) {
-            return raw;
+            return newObject;
         }
-        const found = EXCLUDE_OBJECTS.find((term) => raw[term]);
-        if (found && !isNil(reduced[found]) && !isNil(raw[found].data.options)) {
-            reduced[found].data.options = raw[found].data.options;
+        const found = EXCLUDE_OBJECTS.find((term) => oldObject[term]);
+        if (found && !isNil(newObject[found]) && !isNil(oldObject[found].data.options)) {
+            newObject[found].data.options = oldObject[found].data.options;
         }
-        return reduced;
+        return newObject;
     }
 }
