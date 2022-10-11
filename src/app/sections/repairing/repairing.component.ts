@@ -9,6 +9,7 @@ import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
+import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
 import { QueryParamsService } from '../../shared/services';
 import { ErrorService } from '../../shared/services/error';
@@ -53,7 +54,15 @@ export class RepairingComponent implements OnInit {
         ...this.qp.params,
     });
     selection: SelectionModel<Machine>;
-    displayedColumns = ['_select', 'id', 'namespace', 'createdAt', 'provider', 'status', 'history'];
+    cols = new Columns(
+        SELECT_COLUMN_NAME,
+        'id',
+        'namespace',
+        'createdAt',
+        'provider',
+        'status',
+        'history'
+    );
     status = RepairStatus;
 
     constructor(
