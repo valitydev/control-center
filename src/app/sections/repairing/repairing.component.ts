@@ -3,16 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { BaseDialogResponseStatus, BaseDialogService, clean } from '@vality/ng-core';
 import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-proto';
-import isEmpty from 'lodash-es/isEmpty';
-import isNil from 'lodash-es/isNil';
-import omitBy from 'lodash-es/omitBy';
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
-import { getEnumKeys } from '../../../utils';
+import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
 import { QueryParamsService } from '../../shared/services';
 import { ErrorService } from '../../shared/services/error';
@@ -54,12 +51,19 @@ export class RepairingComponent implements OnInit {
         provider_id: null,
         status: null,
         error_message: null,
+        ...this.qp.params,
     });
     selection: SelectionModel<Machine>;
-    displayedColumns = ['_select', 'id', 'namespace', 'createdAt', 'provider', 'status', 'history'];
-    statusNameByValue = Object.fromEntries(Object.entries(RepairStatus).map(([k, v]) => [v, k]));
+    cols = new Columns(
+        SELECT_COLUMN_NAME,
+        'id',
+        'namespace',
+        'createdAt',
+        'provider',
+        'status',
+        'history'
+    );
     status = RepairStatus;
-    statuses = getEnumKeys(RepairStatus);
 
     constructor(
         private machinesService: MachinesService,
@@ -74,34 +78,28 @@ export class RepairingComponent implements OnInit {
     ngOnInit() {
         this.filters.valueChanges
             .pipe(
-                map(() => {
-                    return omitBy(this.filters.value, isEmpty);
-                }),
+                map(() => clean(this.filters.value)),
                 untilDestroyed(this)
             )
             .subscribe((v: Filters) => this.qp.set(v));
         this.qp.params$
             .pipe(
-                map(({ ids, ns, timespan: d, provider_id, status, error_message }) => {
-                    const timespan = omitBy(
-                        {
-                            from_time: d?.start?.toISOString(),
-                            to_time: d?.end?.toISOString(),
-                        },
-                        isNil
-                    );
-                    return omitBy(
-                        {
-                            ids: ids?.split(/[,.;\s]/)?.filter(Boolean),
-                            ns,
-                            provider_id,
-                            status,
-                            error_message,
-                            timespan: Object.keys(timespan).length ? timespan : null,
-                        },
-                        isEmpty
-                    );
-                }),
+                map(({ ids, ns, timespan, provider_id, status, error_message }) =>
+                    clean({
+                        ids: ids?.split(/[,.;\s]/)?.filter(Boolean),
+                        ns,
+                        provider_id,
+                        status,
+                        error_message,
+                        timespan:
+                            timespan?.start && timespan?.end
+                                ? {
+                                      from_time: timespan?.start?.toISOString(),
+                                      to_time: timespan?.end?.toISOString(),
+                                  }
+                                : null,
+                    })
+                ),
                 untilDestroyed(this)
             )
             .subscribe((params) => this.machinesService.search(params));

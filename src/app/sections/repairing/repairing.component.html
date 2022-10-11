@@ -22,7 +22,7 @@
                     <mat-select formControlName="status">
                         <mat-option [value]="null">any</mat-option>
                         <mat-option
-                            *ngFor="let statusName of statuses"
+                            *ngFor="let statusName of status | enumKeys"
                             [value]="status[statusName]"
                         >
                             {{ statusName }}
@@ -67,21 +67,21 @@
                         [dataSource]="machines$ | async"
                         (changed)="selection = $event"
                     ></cc-select-column>
-                    <ng-container matColumnDef="id">
+                    <ng-container [matColumnDef]="cols.def.id">
                         <th *matHeaderCellDef mat-header-cell>ID</th>
                         <td *matCellDef="let i" mat-cell>{{ i.id }}</td>
                     </ng-container>
-                    <ng-container matColumnDef="namespace">
+                    <ng-container [matColumnDef]="cols.def.namespace">
                         <th *matHeaderCellDef mat-header-cell>Namespace</th>
                         <td *matCellDef="let i" mat-cell>{{ i.ns }}</td>
                     </ng-container>
-                    <ng-container matColumnDef="createdAt">
+                    <ng-container [matColumnDef]="cols.def.createdAt">
                         <th *matHeaderCellDef mat-header-cell>Created at</th>
                         <td *matCellDef="let i" mat-cell>
                             {{ i.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="status">
+                    <ng-container [matColumnDef]="cols.def.status">
                         <th *matHeaderCellDef mat-header-cell matTooltip="Hover to view details">
                             <span matBadge="ℹ" matBadgeOverlap="false" matBadgeSize="small">
                                 Status
@@ -93,16 +93,16 @@
                             mat-cell
                             matTooltipPosition="left"
                         >
-                            {{ statusNameByValue[i.status] }}
+                            {{ i.status | enumKey: status }}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="provider">
+                    <ng-container [matColumnDef]="cols.def.provider">
                         <th *matHeaderCellDef mat-header-cell>Provider</th>
                         <td *matCellDef="let i" mat-cell>
                             {{ i.provider_id }}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="history">
+                    <ng-container [matColumnDef]="cols.def.history">
                         <th *matHeaderCellDef mat-header-cell matTooltip="Hover to view details">
                             <span matBadge="ℹ" matBadgeOverlap="false" matBadgeSize="small"
                                 >History</span
@@ -117,8 +117,8 @@
                             {{ i.history?.length || '' }}
                         </td>
                     </ng-container>
-                    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-                    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+                    <tr *matHeaderRowDef="cols.list" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
                 </table>
 
                 <cc-show-more-button
