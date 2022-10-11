@@ -17,7 +17,7 @@ export function clean<T>(
     isNotDeep = false,
     filterPredicate: (v: unknown, k?: PropertyKey) => boolean = (v) => !isEmptyObjectOrPrimitive(v)
 ): T | null {
-    if (!isObject(value)) return value;
+    if (!isObject(value) || value.constructor !== Object) return value;
     if (allowRootRemoval && !filterPredicate(value as never)) return null;
     let result: unknown;
     const cleanChild = (v: unknown) =>

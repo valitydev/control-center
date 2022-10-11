@@ -22,7 +22,7 @@
                     <mat-select formControlName="status">
                         <mat-option [value]="null">any</mat-option>
                         <mat-option
-                            *ngFor="let statusName of statuses"
+                            *ngFor="let statusName of status | enumKeys"
                             [value]="status[statusName]"
                         >
                             {{ statusName }}
@@ -93,7 +93,7 @@
                             mat-cell
                             matTooltipPosition="left"
                         >
-                            {{ statusNameByValue[i.status] }}
+                            {{ i.status | enumKey: status }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="provider">
