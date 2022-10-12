@@ -13,7 +13,7 @@ export class RepositoryService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service: Repository,
-            path: '/v1/domain/repository',
+            wachterServiceName: 'Domain',
             metadata: () => import('@vality/domain-proto/lib/metadata.json').then((m) => m.default),
             context,
             ...codegenClientConfig,

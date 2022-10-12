@@ -13,7 +13,7 @@ export class InvoicingService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            path: '/v1/processing/invoicing',
+            wachterServiceName: 'Invoicing',
             metadata: () => import('@vality/domain-proto/lib/metadata.json').then((m) => m.default),
             context,
             ...codegenClientConfig,

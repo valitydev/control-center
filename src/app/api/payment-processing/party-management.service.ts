@@ -13,7 +13,7 @@ export class PartyManagementService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service: PartyManagement,
-            path: '/v1/processing/partymgmt',
+            wachterServiceName: 'PartyManagement',
             metadata: () => import('@vality/domain-proto/lib/metadata.json').then((m) => m.default),
             context,
             ...codegenClientConfig,
