@@ -19,7 +19,14 @@ export class AutomatonService extends ThriftService {
         keycloakTokenInfoService: KeycloakTokenInfoService,
         keycloakService: KeycloakService
     ) {
-        super(zone, keycloakTokenInfoService, keycloakService, '/v1/automaton', Automaton);
+        super(
+            zone,
+            keycloakTokenInfoService,
+            keycloakService,
+            '/v1/automaton',
+            Automaton,
+            'Automaton'
+        );
     }
 
     simpleRepair = (ns: Namespace, ref: Reference): Observable<void> =>

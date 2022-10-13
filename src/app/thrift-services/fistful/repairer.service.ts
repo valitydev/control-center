@@ -15,13 +15,7 @@ export class RepairerService extends ThriftService {
         keycloakTokenInfoService: KeycloakTokenInfoService,
         keycloakService: KeycloakService
     ) {
-        super(
-            zone,
-            keycloakTokenInfoService,
-            keycloakService,
-            '/v1/repair/withdrawal/session',
-            Repairer
-        );
+        super(zone, keycloakTokenInfoService, keycloakService, '/wachter', Repairer, 'Repairer');
     }
 
     repair = (id: SessionID, scenario: RepairScenario): Observable<void> =>
