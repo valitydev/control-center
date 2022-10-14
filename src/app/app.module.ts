@@ -26,7 +26,6 @@ import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
-import { DomainConfigModule } from './sections/domain-config';
 import { OperationsModule } from './sections/operations/operations.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
 import { PayoutsModule } from './sections/payouts';
@@ -68,7 +67,6 @@ moment.locale('en-GB');
         SearchPartiesModule,
         SearchClaimsModule,
         OperationsModule,
-        DomainConfigModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
         SectionsModule,
