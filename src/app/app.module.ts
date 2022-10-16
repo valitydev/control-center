@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, Injector } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -47,6 +47,12 @@ import {
  */
 moment.locale('en-GB');
 
+// Do not use in code! Only for extending windows methods
+/* eslint-disable @typescript-eslint/naming-convention */
+/** @internal */
+export let AppInjector: Injector;
+/* eslint-enable @typescript-eslint/naming-convention */
+
 @NgModule({
     declarations: [AppComponent],
     imports: [
@@ -89,10 +95,12 @@ export class AppModule {
     constructor(
         private themeManager: ThemeManager,
         private matIconRegistry: MatIconRegistry,
-        private domSanitizer: DomSanitizer
+        private domSanitizer: DomSanitizer,
+        private injector: Injector
     ) {
         this.themeManager.change(ThemeName.Light);
         this.registerIcons();
+        AppInjector = this.injector;
     }
 
     registerIcons(): void {

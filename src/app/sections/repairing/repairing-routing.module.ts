@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '../../shared/services';
 import { RepairingComponent } from './repairing.component';
+import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
     imports: [
@@ -11,9 +12,7 @@ import { RepairingComponent } from './repairing.component';
                 path: '',
                 component: RepairingComponent,
                 canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [],
-                },
+                data: ROUTING_CONFIG,
             },
         ]),
     ],

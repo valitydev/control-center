@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService, OperationRole } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
 
+import { ROUTING_CONFIG } from './routing-config';
 import { SearchPaymentsComponent } from './search-payments.component';
 
 @NgModule({
@@ -12,9 +13,7 @@ import { SearchPaymentsComponent } from './search-payments.component';
                 path: '',
                 component: SearchPaymentsComponent,
                 canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [OperationRole.SearchPayments],
-                },
+                data: ROUTING_CONFIG,
             },
         ]),
     ],

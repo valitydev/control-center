@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
+import { ROUTING_CONFIG } from './routing-config';
 import { WithdrawalsComponent } from './withdrawals.component';
 
 @NgModule({
@@ -12,9 +13,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
                 path: '',
                 component: WithdrawalsComponent,
                 canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [],
-                },
+                data: ROUTING_CONFIG,
             },
         ]),
     ],

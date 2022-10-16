@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 
-import {
-    AppAuthGuardService,
-    ClaimManagementRole,
-    DomainConfigRole,
-    OperationRole,
-    PartyRole,
-    PaymentAdjustmentRole,
-    PayoutRole,
-} from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
+
+import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './domain/routing-config';
+import { ROUTING_CONFIG as OLD_REPAIRING_ROUTING_CONFIG } from './repairing/routing-config';
+import { ROUTING_CONFIG as PAYMENT_ADJUSTMENT_ROUTING_CONFIG } from './sections/payment-adjustment/routing-config';
+import { ROUTING_CONFIG as PAYOUTS_ROUTING_CONFIG } from './sections/payouts/payouts/routing-config';
+import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing/routing-config';
+import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/search-claims/routing-config';
+import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
+import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/search-payments/routing-config';
+import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 
 const SIDENAV_OPENED_KEY = 'sidenav-opened';
 
@@ -47,37 +49,54 @@ export class AppComponent implements OnInit {
 
     private getMenuItems() {
         const menuItems = [
-            { name: 'Domain config', route: '/domain', activateRoles: [DomainConfigRole.Checkout] },
-            { name: 'Payouts', route: '/payouts', activateRoles: [PayoutRole.Read] },
-            { name: 'Claims', route: '/claims', activateRoles: [ClaimManagementRole.GetClaims] },
+            {
+                name: 'Domain config',
+                route: '/domain',
+                services: DOMAIN_ROUTING_CONFIG.services,
+            },
+            {
+                name: 'Payouts',
+                route: '/payouts',
+                services: PAYOUTS_ROUTING_CONFIG.services,
+            },
+            {
+                name: 'Claims',
+                route: '/claims',
+                services: CLAIMS_ROUTING_CONFIG.services,
+            },
             {
                 name: 'Payment adjustment',
                 route: '/payment-adjustment',
-                activateRoles: [PaymentAdjustmentRole.Create],
+                services: PAYMENT_ADJUSTMENT_ROUTING_CONFIG.services,
             },
-            { name: 'Merchants', route: '/parties', activateRoles: [PartyRole.Get] },
+            {
+                name: 'Merchants',
+                route: '/parties',
+                services: PARTIES_ROUTING_CONFIG.services,
+            },
             {
                 name: 'Repairing',
                 route: '/old-repairing',
-                activateRoles: [DomainConfigRole.Checkout],
+                services: OLD_REPAIRING_ROUTING_CONFIG.services,
             },
             {
                 name: 'New repairing',
                 route: '/repairing',
-                activateRoles: [DomainConfigRole.Checkout],
+                services: REPAIRING_ROUTING_CONFIG.services,
             },
             {
                 name: 'Operations',
                 route: '/operations',
-                activateRoles: [OperationRole.SearchOperations],
+                services: PAYMENTS_ROUTING_CONFIG.services,
             },
             {
                 name: 'Withdrawals',
                 route: '/withdrawals',
+                services: WITHDRAWALS_ROUTING_CONFIG.services,
             },
         ];
         return menuItems.filter((item) =>
-            this.appAuthGuardService.userHasRoles(item.activateRoles)
+            this.appAuthGuardService.userHasSomeServiceMethods(item.services)
         );
     }
 }

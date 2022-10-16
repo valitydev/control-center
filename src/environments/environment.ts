@@ -1,14 +1,12 @@
-import { DEFAULT_ENVIRONMENT, Environment } from './default-environment';
+import { environment as devEnvironment } from './environment.dev';
+import { Environment } from './types/environment';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export const environment: Environment = {
-    ...DEFAULT_ENVIRONMENT,
-    production: false,
-};
+export const environment: Environment = devEnvironment;
 
 /*
  * In development mode, to ignore zone related error stack frames such as

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService, OperationRole } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
 
 import { DepositsComponent } from './deposits.component';
+import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
     imports: [
@@ -12,9 +13,7 @@ import { DepositsComponent } from './deposits.component';
                 path: '',
                 component: DepositsComponent,
                 canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [OperationRole.SearchDeposits],
-                },
+                data: ROUTING_CONFIG,
             },
         ]),
     ],

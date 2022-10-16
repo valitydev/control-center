@@ -3,9 +3,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { AppAuthGuardService, DomainConfigRole, PartyRole } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
 
 import { DeanonimusService, getMaxSearchHitParty } from '../../thrift-services/deanonimus';
+import { ROUTING_CONFIG as SHOPS_ROUTING_CONFIG } from '../party-shops/routing-config';
+import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
 
 @Component({
     templateUrl: 'party.component.html',
@@ -47,21 +49,23 @@ export class PartyComponent {
             {
                 name: 'Shops',
                 url: 'shops',
-                activateRoles: [PartyRole.Get],
                 otherActiveUrlFragments: ['shop'],
+                services: SHOPS_ROUTING_CONFIG.services,
             },
             {
                 name: 'Payment Routing Rules',
                 url: 'routing-rules/payment',
-                activateRoles: [DomainConfigRole.Checkout],
+                services: RULESET_ROUTING_CONFIG.services,
             },
             {
                 name: 'Withdrawal Routing Rules',
                 url: 'routing-rules/withdrawal',
-                activateRoles: [DomainConfigRole.Checkout],
+                services: RULESET_ROUTING_CONFIG.services,
             },
         ];
-        return links.filter((item) => this.appAuthGuardService.userHasRoles(item.activateRoles));
+        return links.filter((item) =>
+            this.appAuthGuardService.userHasSomeServiceMethods(item.services)
+        );
     }
 
     private activeFragments(fragments: string[]): number {

@@ -2,8 +2,9 @@ import { ConnectOptions } from '@vality/woody/src/connect-options';
 import { KeycloakService } from 'keycloak-angular';
 import pick from 'lodash-es/pick';
 import { combineLatest, from } from 'rxjs';
-import { first, map, shareReplay, switchMap } from 'rxjs/operators';
+import { first, map, shareReplay, switchMap, tap, catchError } from 'rxjs/operators';
 
+import { environment } from '../../../../environments/environment';
 import { KeycloakTokenInfoService } from '../../../shared/services';
 import { ThriftAstMetadata } from '../thrift-instance';
 import { ThriftApiArgs } from './types/thrift-api-args';
@@ -16,6 +17,8 @@ import {
     ThriftClientMainOptions,
     UserIdentityHeaderParams,
 } from './utils';
+
+export class ThriftError extends Error {}
 
 export class ThriftApi {
     private connectOptions$ = combineLatest([
@@ -56,6 +59,14 @@ export class ThriftApi {
         return (...methodArgs) =>
             combineLatest([this.connectOptions$, this.methodOptions$]).pipe(
                 first(),
+                tap(() => {
+                    if (environment.logging.requests)
+                        // eslint-disable-next-line no-console
+                        console.info(
+                            `📧 ${this.options.name}/${this.options.serviceName}/${methodName}`,
+                            methodArgs
+                        );
+                }),
                 switchMap(([connectOptions, methodOptions]) =>
                     callThriftServiceMethodWithConvert(
                         connectOptions,
@@ -63,7 +74,27 @@ export class ThriftApi {
                         methodName,
                         methodArgs
                     )
-                )
+                ),
+                tap((res) => {
+                    if (environment.logging.requests)
+                        // eslint-disable-next-line no-console
+                        console.info(
+                            `📨 ${this.options.name}/${this.options.serviceName}/${methodName}`,
+                            res
+                        );
+                }),
+                catchError((err) => {
+                    if (environment.logging.requests)
+                        // eslint-disable-next-line no-console
+                        console.info(
+                            `😞 ${this.options.name}/${this.options.serviceName}/${methodName}`,
+                            err
+                        );
+                    if (err === 403) {
+                        throw new ThriftError('Access is denied');
+                    }
+                    throw err;
+                })
             );
     }
 

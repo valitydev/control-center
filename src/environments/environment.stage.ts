@@ -1,9 +1,9 @@
-import { Environment, DEFAULT_ENVIRONMENT } from './default-environment';
+import { environment as devEnvironment } from './environment.dev';
+import { Environment } from './types/environment';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const environment: Environment = {
-    ...DEFAULT_ENVIRONMENT,
-    production: false,
+    ...devEnvironment,
     appConfigPath: '/assets/appConfig.stage.json',
     authConfigPath: '/assets/authConfig.stage.json',
 };

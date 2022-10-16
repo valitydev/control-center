@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { AppAuthGuardService, DepositRole } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
 
 import { ConfigService } from '../../../core/config.service';
 import { CreateDepositService } from './services/create-deposit/create-deposit.service';
@@ -70,9 +70,5 @@ export class CreateDepositDialogComponent implements OnInit {
 
     closeDialog() {
         this.dialogRef.close();
-    }
-
-    hasNecessaryRole(): boolean {
-        return this.authGuardService.userHasRoles([DepositRole.Write]);
     }
 }
