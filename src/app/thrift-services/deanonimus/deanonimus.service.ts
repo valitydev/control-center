@@ -14,7 +14,14 @@ export class DeanonimusService extends ThriftService {
         keycloakTokenInfoService: KeycloakTokenInfoService,
         keycloakService: KeycloakService
     ) {
-        super(zone, keycloakTokenInfoService, keycloakService, '/deanonimus', Deanonimus);
+        super(
+            zone,
+            keycloakTokenInfoService,
+            keycloakService,
+            '/wachter',
+            Deanonimus,
+            'Deanonimus'
+        );
     }
 
     searchParty = (text: string): Observable<SearchHit[]> =>

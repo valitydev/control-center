@@ -13,7 +13,7 @@ export class FistfulStatisticsService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            path: '/fistful/stat',
+            wachterServiceName: 'FistfulStatistics',
             metadata: () =>
                 import('@vality/fistful-proto/lib/metadata.json').then((m) => m.default),
             context,

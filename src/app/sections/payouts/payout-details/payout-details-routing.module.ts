@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
 import { PayoutDetailsComponent } from './payout-details.component';
+import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
     imports: [
@@ -12,9 +13,7 @@ import { PayoutDetailsComponent } from './payout-details.component';
                 path: '',
                 component: PayoutDetailsComponent,
                 canActivate: [AppAuthGuardService],
-                data: {
-                    roles: ['payout:read'],
-                },
+                data: ROUTING_CONFIG,
             },
         ]),
     ],

@@ -2,7 +2,6 @@
     <mat-card-title fxLayout fxLayoutAlign="space-between center">
         <h1 class="mat-headline">Reverts</h1>
         <button
-            *ngIf="hasNecessaryRole()"
             [disabled]="isCreateRevertAvailable(deposit?.status)"
             color="primary"
             mat-raised-button

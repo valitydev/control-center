@@ -13,7 +13,7 @@ export class FileStorageService extends createThriftApi<CodegenClient>() {
     constructor(injector: Injector) {
         super(injector, {
             service,
-            path: '/file_storage',
+            wachterServiceName: 'FileStorage',
             metadata: () =>
                 import('@vality/file-storage-proto/lib/metadata.json').then((m) => m.default),
             context,

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService, OperationRole } from '@cc/app/shared/services';
-
 import { OperationsComponent } from './operations.component';
 
 @NgModule({
@@ -11,10 +9,6 @@ import { OperationsComponent } from './operations.component';
             {
                 path: 'operations',
                 component: OperationsComponent,
-                canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [OperationRole.SearchOperations],
-                },
                 children: [
                     {
                         path: 'payments',
@@ -30,7 +24,11 @@ import { OperationsComponent } from './operations.component';
                         loadChildren: () =>
                             import('../deposit-details').then((m) => m.DepositDetailsModule),
                     },
-                    { path: '', redirectTo: 'payments', pathMatch: 'full' },
+                    {
+                        path: '',
+                        redirectTo: 'payments',
+                        pathMatch: 'full',
+                    },
                 ],
             },
         ]),

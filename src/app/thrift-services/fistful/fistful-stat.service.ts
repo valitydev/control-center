@@ -25,7 +25,14 @@ export class FistfulStatisticsService extends ThriftService {
         @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number,
         keycloakService: KeycloakService
     ) {
-        super(zone, keycloakTokenInfoService, keycloakService, '/fistful/stat', FistfulStatistics);
+        super(
+            zone,
+            keycloakTokenInfoService,
+            keycloakService,
+            '/wachter',
+            FistfulStatistics,
+            'FistfulStatistics'
+        );
     }
 
     getDeposits(

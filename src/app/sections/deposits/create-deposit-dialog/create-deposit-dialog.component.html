@@ -30,7 +30,6 @@
     <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
         <button [disabled]="isLoading$ | async" mat-button (click)="closeDialog()">CANCEL</button>
         <button
-            *ngIf="hasNecessaryRole()"
             [disabled]="(isLoading$ | async) || form.invalid"
             color="primary"
             mat-button

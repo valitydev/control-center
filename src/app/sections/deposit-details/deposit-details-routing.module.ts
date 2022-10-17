@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService, DepositRole } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
 
 import { DepositDetailsComponent } from './deposit-details.component';
+import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
     imports: [
@@ -12,9 +13,7 @@ import { DepositDetailsComponent } from './deposit-details.component';
                 path: '',
                 component: DepositDetailsComponent,
                 canActivate: [AppAuthGuardService],
-                data: {
-                    roles: [DepositRole.Write],
-                },
+                data: ROUTING_CONFIG,
             },
         ]),
     ],

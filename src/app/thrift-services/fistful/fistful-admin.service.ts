@@ -15,7 +15,14 @@ export class FistfulAdminService extends ThriftService {
         keycloakTokenInfoService: KeycloakTokenInfoService,
         keycloakService: KeycloakService
     ) {
-        super(zone, keycloakTokenInfoService, keycloakService, '/v1/admin', FistfulAdmin);
+        super(
+            zone,
+            keycloakTokenInfoService,
+            keycloakService,
+            '/wachter',
+            FistfulAdmin,
+            'FistfulAdmin'
+        );
     }
 
     createDeposit(params: DepositParams): Observable<void> {

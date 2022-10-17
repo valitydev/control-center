@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService, DomainConfigRole } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '@cc/app/shared/services';
 
 import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.component';
+import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
     imports: [
@@ -15,9 +16,7 @@ import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.compon
                         path: '',
                         component: PartyDelegateRulesetsComponent,
                         canActivate: [AppAuthGuardService],
-                        data: {
-                            roles: [DomainConfigRole.Checkout],
-                        },
+                        data: ROUTING_CONFIG,
                     },
                     {
                         path: '',

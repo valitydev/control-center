@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { DepositStatus, StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import { filter } from 'rxjs/operators';
 
-import { AppAuthGuardService, DepositRole } from '@cc/app/shared/services';
 import { getDepositStatus } from '@cc/app/shared/utils';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
@@ -25,11 +24,7 @@ export class RevertsComponent implements OnInit {
     hasMore$ = this.fetchRevertsService.hasMore$;
     doAction$ = this.fetchRevertsService.doAction$;
 
-    constructor(
-        private fetchRevertsService: FetchRevertsService,
-        private dialog: MatDialog,
-        private authGuardService: AppAuthGuardService
-    ) {}
+    constructor(private fetchRevertsService: FetchRevertsService, private dialog: MatDialog) {}
 
     ngOnInit() {
         this.fetchRevertsService.search({ depositID: this.deposit.id });
@@ -61,9 +56,5 @@ export class RevertsComponent implements OnInit {
 
     fetchMore() {
         this.fetchRevertsService.fetchMore();
-    }
-
-    hasNecessaryRole(): boolean {
-        return this.authGuardService.userHasRoles([DepositRole.Write]);
     }
 }

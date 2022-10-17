@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, UrlTree, RouterStateSnapshot } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
-import { isRolesAllowed } from './is-roles-allowed';
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class AppAuthGuardService extends KeycloakAuthGuard {
@@ -11,30 +11,31 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
     }
 
     // eslint-disable-next-line @typescript-eslint/require-await
-    async isAccessAllowed(route: ActivatedRouteSnapshot): Promise<boolean> {
-        return isRolesAllowed(this.roles, route.data.roles);
+    async isAccessAllowed(
+        route: ActivatedRouteSnapshot,
+        _state: RouterStateSnapshot
+    ): Promise<boolean | UrlTree> {
+        return (
+            this.userHasSomeServiceMethods(route.data.services) ||
+            this.router.createUrlTree(['404'])
+        );
+    }
+
+    userHasSomeServiceMethods(serviceMethods: string[]): boolean {
+        if ((!environment.production && environment.ignoreRoles) || !serviceMethods?.length)
+            return true;
+        const allowedServiceMethods = this.keycloakAngular
+            .getUserRoles(true)
+            .map((r) => r.split(':'));
+        return serviceMethods.some((serviceMethod) => {
+            const [service, method] = serviceMethod.split(':');
+            return allowedServiceMethods.some(
+                ([s, m]) => service === s && (!method || method === m)
+            );
+        });
     }
 
     userHasRoles(roles: string[]): boolean {
-        return isRolesAllowed(this.keycloakAngular.getUserRoles(), roles);
-    }
-
-    canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> {
-        // eslint-disable-next-line no-async-promise-executor
-        return new Promise(async (resolve, reject) => {
-            try {
-                this.authenticated = await this.keycloakAngular.isLoggedIn();
-                // eslint-disable-next-line @typescript-eslint/await-thenable
-                this.roles = await this.keycloakAngular.getUserRoles(true);
-
-                const result = await this.isAccessAllowed(route);
-                if (!result) {
-                    void this.router.navigate(['404']);
-                }
-                resolve(result);
-            } catch (error) {
-                reject('An error happened during access validation. Details:' + String(error));
-            }
-        });
+        return roles.every((role) => this.keycloakAngular.getUserRoles(true).includes(role));
     }
 }
