@@ -8,4 +8,5 @@ export const environment: Environment = {
     logging: {
         requests: true,
     },
+    ignoreRoles: true,
 };
