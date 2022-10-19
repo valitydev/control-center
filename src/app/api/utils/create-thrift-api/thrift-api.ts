@@ -27,8 +27,7 @@ export class ThriftApi {
     ]).pipe(
         map(([{ email, sub: id, preferred_username: username }, token]) =>
             this.getConnectOptions({ email, id, username }, token)
-        ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        )
     );
     private methodOptions$ = from(this.options.metadata()).pipe(
         map((metadata) => ({
