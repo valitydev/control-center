@@ -1,15 +1,13 @@
-import { Inject, Injectable, NgZone } from '@angular/core';
+import { Inject, Injectable, Injector } from '@angular/core';
 import { StatDeposit, StatRequest, StatResponse } from '@vality/fistful-proto/lib/fistful_stat';
 import { StatRequest as ThriftStatRequest } from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/fistful_stat_types';
 import * as FistfulStatistics from '@vality/fistful-proto/lib/fistful_stat/gen-nodejs/FistfulStatistics';
-import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FetchResult } from '@cc/app/shared/services';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
-import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { createDsl, QueryDsl } from '../../query-dsl';
 import { DepositRevertParams } from '../../query-dsl/deposit-revert';
 import { SEARCH_LIMIT, SMALL_SEARCH_LIMIT } from '../../tokens';
@@ -19,20 +17,11 @@ import { DepositParams } from './deposit-params';
 @Injectable()
 export class FistfulStatisticsService extends ThriftService {
     constructor(
-        keycloakTokenInfoService: KeycloakTokenInfoService,
-        zone: NgZone,
+        injector: Injector,
         @Inject(SEARCH_LIMIT) private searchLimit: number,
-        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number,
-        keycloakService: KeycloakService
+        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number
     ) {
-        super(
-            zone,
-            keycloakTokenInfoService,
-            keycloakService,
-            '/wachter',
-            FistfulStatistics,
-            'FistfulStatistics'
-        );
+        super(injector, '/wachter', FistfulStatistics, 'FistfulStatistics');
     }
 
     getDeposits(
