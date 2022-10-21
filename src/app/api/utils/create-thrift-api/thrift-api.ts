@@ -1,5 +1,4 @@
 import { ConnectOptions } from '@vality/woody/src/connect-options';
-import { KeycloakService } from 'keycloak-angular';
 import pick from 'lodash-es/pick';
 import { combineLatest, from } from 'rxjs';
 import { first, map, shareReplay, switchMap, tap, catchError } from 'rxjs/operators';
@@ -21,14 +20,15 @@ import {
 export class ThriftError extends Error {}
 
 export class ThriftApi {
+    private keycloakTokenInfoService = this.injector.get(KeycloakTokenInfoService);
+
     private connectOptions$ = combineLatest([
-        this.injector.get(KeycloakTokenInfoService).decoded$,
-        this.injector.get(KeycloakService).getToken(),
+        this.keycloakTokenInfoService.decoded$,
+        this.keycloakTokenInfoService.token$,
     ]).pipe(
         map(([{ email, sub: id, preferred_username: username }, token]) =>
             this.getConnectOptions({ email, id, username }, token)
-        ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        )
     );
     private methodOptions$ = from(this.options.metadata()).pipe(
         map((metadata) => ({

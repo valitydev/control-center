@@ -1,14 +1,13 @@
-import { NgZone } from '@angular/core';
+import { NgZone, Injector } from '@angular/core';
 import connectClient from '@vality/woody';
-import { KeycloakService } from 'keycloak-angular';
-import { Observable, from, switchMap } from 'rxjs';
-import { timeout } from 'rxjs/operators';
+import { Observable, combineLatest, switchMap } from 'rxjs';
+import { timeout, first } from 'rxjs/operators';
 
 import {
     createWachterHeaders,
     createAuthorizationHeaders,
 } from '../../../api/utils/create-thrift-api/utils';
-import { KeycloakTokenInfoService } from '../../../keycloak-token-info.service';
+import { KeycloakTokenInfoService, KeycloakToken } from '../../../shared/services';
 
 type Exception<N = string, T = any> = {
     name: N;
@@ -16,30 +15,29 @@ type Exception<N = string, T = any> = {
 } & T;
 
 export class ThriftService {
-    protected endpoint: string;
-    protected service: any;
     protected realm = 'internal';
+    private keycloakTokenInfoService = this.injector.get(KeycloakTokenInfoService);
+    private zone = this.injector.get(NgZone);
 
     constructor(
-        private zone: NgZone,
-        private keycloakTokenInfoService: KeycloakTokenInfoService,
-        private keycloakService: KeycloakService,
-        endpoint: string,
-        thriftService: any,
+        private injector: Injector,
+        protected endpoint: string,
+        protected service: any,
         private wachterServiceName?: string
-    ) {
-        this.endpoint = endpoint;
-        this.service = thriftService;
-    }
+    ) {}
 
     protected toObservableAction<T extends (...A: any[]) => Observable<any>>(
         name: string,
         deprecatedHeaders = true
     ): T {
         return ((...args) =>
-            from(this.keycloakService.getToken()).pipe(
+            combineLatest([
+                this.keycloakTokenInfoService.decoded$,
+                this.keycloakTokenInfoService.token$,
+            ]).pipe(
+                first(),
                 switchMap(
-                    (token) =>
+                    ([data, tokenData]) =>
                         new Observable<any>((observer) => {
                             const cb = (msg) => {
                                 observer.error(msg);
@@ -47,7 +45,12 @@ export class ThriftService {
                             };
                             this.zone.run(() => {
                                 try {
-                                    const client = this.createClient(cb, deprecatedHeaders, token);
+                                    const client = this.createClient(
+                                        cb,
+                                        deprecatedHeaders,
+                                        tokenData,
+                                        data
+                                    );
                                     client[name](...args, (ex: Exception, result) => {
                                         if (ex) observer.error(ex);
                                         else observer.next(result);
@@ -66,9 +69,10 @@ export class ThriftService {
     private createClient(
         errorCb: (cb: () => void) => void,
         deprecatedHeaders: boolean,
-        token: string
+        token: string,
+        tokenData: KeycloakToken
     ) {
-        const { email, preferred_username, sub } = this.keycloakTokenInfoService.decodedUserToken;
+        const { email, preferred_username, sub } = tokenData;
         return connectClient(
             location.hostname,
             location.port,

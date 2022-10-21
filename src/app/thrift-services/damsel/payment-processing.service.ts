@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { InvoiceID } from '@vality/domain-proto';
 import {
     InvoicePaymentAdjustment,
@@ -10,11 +10,9 @@ import {
     InvoicePaymentAdjustmentParams as InvoicePaymentAdjustmentParamsObject,
     InvoiceRepairScenario as InvoiceRepairScenarioObject,
 } from '@vality/domain-proto/lib/payment_processing/gen-nodejs/payment_processing_types';
-import { KeycloakService } from 'keycloak-angular';
 import { Observable, timer } from 'rxjs';
 import { first, share, switchMap } from 'rxjs/operators';
 
-import { KeycloakTokenInfoService } from '../../keycloak-token-info.service';
 import { ThriftService } from '../services/thrift/thrift-service';
 
 @Injectable()
@@ -22,12 +20,8 @@ import { ThriftService } from '../services/thrift/thrift-service';
  * @deprecated
  */
 export class PaymentProcessingService extends ThriftService {
-    constructor(
-        zone: NgZone,
-        keycloakTokenInfoService: KeycloakTokenInfoService,
-        keycloakService: KeycloakService
-    ) {
-        super(zone, keycloakTokenInfoService, keycloakService, '/wachter', Invoicing, 'Invoicing');
+    constructor(injector: Injector) {
+        super(injector, '/wachter', Invoicing, 'Invoicing');
     }
 
     getPaymentAdjustment = (

@@ -1,7 +1,8 @@
 import connectClient from '@vality/woody';
 import { ConnectOptions } from '@vality/woody/src/connect-options';
 import isNil from 'lodash-es/isNil';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 export interface ThriftClientMainOptions {
     path: string;
@@ -16,6 +17,8 @@ const DEFAULT_CONNECT_OPTIONS: ConnectOptions = {
         unitOfTime: 'm',
     },
 };
+
+const TIMEOUT_MS = 60_000;
 
 export function callThriftServiceMethod<T>(
     { hostname, port, path, service, ...options }: ThriftClientMainOptions & ConnectOptions,
@@ -42,20 +45,26 @@ export function callThriftServiceMethod<T>(
             );
             const serviceMethod = connection[serviceMethodName] as (...args: unknown[]) => unknown;
             if (isNil(serviceMethod)) {
-                observer.error(
+                throw new Error(
                     `Service method: "${serviceMethodName}" is not found in thrift client`
                 );
-                observer.complete();
-            } else {
-                serviceMethod.call(connection, ...serviceMethodArgs, (err, result: T) => {
-                    if (err) observer.error(err);
-                    else observer.next(result);
-                    observer.complete();
-                });
             }
+            serviceMethod.call(connection, ...serviceMethodArgs, (err, result: T) => {
+                if (err) observer.error(err);
+                else observer.next(result);
+                observer.complete();
+            });
         } catch (err) {
             observer.error(err);
             observer.complete();
         }
-    });
+    }).pipe(
+        timeout({
+            each: TIMEOUT_MS,
+            with: () =>
+                throwError(
+                    () => new Error(`Service did not respond within ${TIMEOUT_MS / 1000} seconds`)
+                ),
+        })
+    );
 }
