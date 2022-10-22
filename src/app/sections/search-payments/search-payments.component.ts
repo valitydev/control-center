@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { clean } from '@vality/ng-core';
 
 import {
     PaymentActions,
@@ -7,20 +8,16 @@ import {
     SearchFiltersParams,
 } from '@cc/app/shared/components';
 
-import { SearchPaymentsService } from './search-payments.service';
+import { QueryParamsService } from '../../shared/services';
 
 @Component({
     templateUrl: 'search-payments.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [SearchPaymentsService],
 })
 export class SearchPaymentsComponent {
-    initsearchParams$ = this.searchPaymentsService.data$;
+    constructor(private router: Router, public qp: QueryParamsService<SearchFiltersParams>) {}
 
-    constructor(private searchPaymentsService: SearchPaymentsService, private router: Router) {}
-
-    searchParamsUpdated($event: SearchFiltersParams) {
-        this.searchPaymentsService.preserve($event);
+    searchParamsUpdated(params: SearchFiltersParams) {
+        void this.qp.set(clean(params));
     }
 
     paymentEventFired($event: PaymentMenuItemEvent) {

@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <cc-payments-searcher
-        [initSearchParams]="initsearchParams$ | async"
-        (paymentEventFired$)="paymentEventFired($event)"
-        (searchParamsChanged$)="searchParamsUpdated($event)"
+        [initSearchParams]="qp.params || {}"
+        (paymentEventFired)="paymentEventFired($event)"
+        (searchParamsChanged)="searchParamsUpdated($event)"
     ></cc-payments-searcher>
 </div>
