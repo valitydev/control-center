@@ -26,7 +26,6 @@ import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
-import { OperationsModule } from './sections/operations/operations.module';
 import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
@@ -72,7 +71,6 @@ export let AppInjector: Injector;
         ThemeManagerModule,
         SearchPartiesModule,
         SearchClaimsModule,
-        OperationsModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
         SectionsModule,

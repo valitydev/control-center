@@ -15,6 +15,11 @@ import { ROUTING_CONFIG } from './routing-config';
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
             },
+            {
+                path: ':depositID',
+                loadChildren: () =>
+                    import('../deposit-details').then((m) => m.DepositDetailsModule),
+            },
         ]),
     ],
     exports: [RouterModule],
