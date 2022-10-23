@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 
+import { TableModule } from '../../../../components/table';
 import { ApiModelPipesModule, CommonPipesModule } from '../../pipes';
 import { StatusModule } from '../status';
 import { PaymentActionsPipe } from './payment-actions.pipe';
@@ -22,6 +23,7 @@ import { PaymentsTableComponent } from './payments-table.component';
         MatMenuModule,
         CommonPipesModule,
         ApiModelPipesModule,
+        TableModule,
     ],
     declarations: [PaymentsTableComponent, PaymentActionsPipe],
     exports: [PaymentsTableComponent],
