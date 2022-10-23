@@ -6,7 +6,7 @@ import {
     isTypeWithAliases,
     MetadataFormExtension,
     MetadataFormExtensionOption,
-} from '../../../components';
+} from '../../../components/metadata-form';
 
 export function createDomainObjectExtension(
     refType: string,

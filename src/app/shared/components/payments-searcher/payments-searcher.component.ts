@@ -8,10 +8,13 @@ import {
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { StatPayment } from '@vality/magista-proto';
+import { BaseDialogService } from '@vality/ng-core';
 import { BehaviorSubject, skip } from 'rxjs';
 
 import { SearchFiltersParams } from '../payments-search-filters';
 import { PaymentActions, PaymentMenuItemEvent } from '../payments-table';
+import { CreatePaymentAdjustmentComponent } from './create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './fetch-payments.service';
 
 @UntilDestroy()
@@ -31,10 +34,12 @@ export class PaymentsSearcherComponent implements OnInit {
     hasMore$ = this.fetchPaymentsService.hasMore$;
     params: SearchFiltersParams;
     searchParamsChange$ = new BehaviorSubject<SearchFiltersParams>({});
+    selectedPayments: StatPayment[];
 
     constructor(
         private fetchPaymentsService: FetchPaymentsService,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private baseDialogService: BaseDialogService
     ) {}
 
     ngOnInit() {
@@ -52,7 +57,7 @@ export class PaymentsSearcherComponent implements OnInit {
         this.fetchPaymentsService.fetchMore();
     }
 
-    searchParamsChanges(params: SearchFiltersParams) {
+    searchParamsChanges(params: SearchFiltersParams = {}) {
         this.searchParamsChange$.next({ ...this.searchParamsChange$.value, ...params });
     }
 
@@ -62,5 +67,11 @@ export class PaymentsSearcherComponent implements OnInit {
                 this.paymentEventFired.emit(paymentMenuItemEvent);
                 break;
         }
+    }
+
+    createPaymentAdjustment() {
+        this.baseDialogService.open(CreatePaymentAdjustmentComponent, {
+            payments: this.selectedPayments,
+        });
     }
 }

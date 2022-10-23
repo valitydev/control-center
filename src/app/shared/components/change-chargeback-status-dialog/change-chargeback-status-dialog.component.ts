@@ -10,11 +10,13 @@ import { BaseDialogSuperclass, BaseDialogModule } from '@vality/ng-core';
 import { from, BehaviorSubject, Observable } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
-import { MetadataFormModule, EnumKeysPipe, EnumKeyPipe } from '@cc/app/shared';
+import { EnumKeysPipe, EnumKeyPipe } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 import { ErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils';
+
+import { MetadataFormModule } from '../metadata-form';
 
 enum Action {
     Accept,

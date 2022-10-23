@@ -10,8 +10,9 @@ import { combineLatest, from, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
+import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
+
 import { ManagementService } from '../../../../api/withdrawal';
-import { MetadataFormExtension } from '../../../../shared';
 import { ErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 

@@ -4,10 +4,10 @@ import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
-import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
+import { ComponentChanges, getValueTypeTitle } from '@cc/app/shared';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
+import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
 
 @UntilDestroy()
 @Component({

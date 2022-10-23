@@ -9,10 +9,14 @@
         </mat-card-footer>
     </mat-card>
     <cc-actions>
+        <button mat-button (click)="searchParamsChanges()">UPDATE</button>
         <cc-payments-other-search-filters
             [initParams]="initSearchParams"
             (valueChanges)="searchParamsChanges($event)"
         ></cc-payments-other-search-filters>
+        <button color="primary" mat-button (click)="createPaymentAdjustment()">
+            CREATE PAYMENT ADJUSTMENT
+        </button>
     </cc-actions>
     <cc-empty-search-result
         *ngIf="!(doAction$ | async) && !(payments$ | async)?.length"
@@ -22,6 +26,7 @@
         <cc-payments-table
             [payments]="payments$ | async"
             (menuItemSelected$)="paymentMenuItemSelected($event)"
+            (selected$)="selectedPayments = $event.selected"
         ></cc-payments-table>
         <button
             *ngIf="hasMore$ | async"
