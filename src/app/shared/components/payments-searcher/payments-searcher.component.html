@@ -32,6 +32,7 @@
     <mat-card *ngIf="(payments$ | async)?.length > 0" fxLayout="column" fxLayoutGap="16px">
         <cc-payments-table
             [payments]="payments$ | async"
+            [selected]="selectedPayments"
             (menuItemSelected$)="paymentMenuItemSelected($event)"
             (selected$)="selectedPayments = $event.selected"
         ></cc-payments-table>

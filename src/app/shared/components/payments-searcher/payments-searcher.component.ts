@@ -9,7 +9,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatPayment } from '@vality/magista-proto';
-import { BaseDialogService } from '@vality/ng-core';
+import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { BehaviorSubject, skip } from 'rxjs';
 
 import { SearchFiltersParams } from '../payments-search-filters';
@@ -70,8 +70,18 @@ export class PaymentsSearcherComponent implements OnInit {
     }
 
     createPaymentAdjustment() {
-        this.baseDialogService.open(CreatePaymentAdjustmentComponent, {
-            payments: this.selectedPayments,
-        });
+        this.baseDialogService
+            .open(CreatePaymentAdjustmentComponent, {
+                payments: this.selectedPayments,
+            })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res.status === BaseDialogResponseStatus.Success) {
+                    this.searchParamsChanges();
+                    this.selectedPayments = [];
+                } else if (res.data?.withError?.length) {
+                    this.selectedPayments = res.data.withError;
+                }
+            });
     }
 }

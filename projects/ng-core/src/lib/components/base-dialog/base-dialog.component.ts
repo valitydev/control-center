@@ -13,6 +13,7 @@ export class BaseDialogComponent {
 
     @coerceBoolean @Input() disabled = false;
     @coerceBoolean @Input() inProgress = false;
+    @Input() progress?: number;
 
     @coerceBoolean @Input() hasDivider = true;
 

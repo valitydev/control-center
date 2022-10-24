@@ -1,4 +1,7 @@
-<cc-base-dialog title="Create payment adjustment ({{ dialogData.payments.length }})">
+<cc-base-dialog
+    [progress]="progress$ | async"
+    title="Create payment adjustment ({{ dialogData.payments.length }})"
+>
     <cc-metadata-form
         [extensions]="extensions"
         [formControl]="control"
@@ -8,12 +11,20 @@
     ></cc-metadata-form>
     <cc-base-dialog-actions>
         <button
+            *ngIf="this.withError.length"
+            [disabled]="control.invalid || !!(progress$ | async)"
+            mat-raised-button
+            (click)="closeAndSelectWithAnError()"
+        >
+            CLOSE AND SELECT WITH AN ERROR
+        </button>
+        <button
             [disabled]="control.invalid || !!(progress$ | async)"
             color="primary"
             mat-raised-button
             (click)="create()"
         >
-            CREATE
+            {{ this.withError.length ? 'REPEAT FOR ' + this.withError.length : 'CREATE' }}
         </button>
     </cc-base-dialog-actions>
 </cc-base-dialog>

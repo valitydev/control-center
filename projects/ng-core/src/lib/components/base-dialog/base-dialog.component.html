@@ -17,7 +17,11 @@
         </div>
     </ng-container>
 
-    <mat-progress-bar *ngIf="inProgress" mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar
+        *ngIf="inProgress || progress"
+        [mode]="inProgress ? 'indeterminate' : 'determinate'"
+        [value]="progress"
+    ></mat-progress-bar>
 
     <ng-container *ngIf="!noActions">
         <mat-divider *ngIf="hasDivider"></mat-divider>

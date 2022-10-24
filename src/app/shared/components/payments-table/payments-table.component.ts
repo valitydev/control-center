@@ -15,6 +15,10 @@ import { PaymentMenuItemEvent } from './payment-menu-item-event';
 })
 export class PaymentsTableComponent {
     @Input() payments: StatPayment[];
+    @Input() set selected(selected: StatPayment[]) {
+        this.selection.clear();
+        this.selection.select(...selected);
+    }
     @Output() menuItemSelected$ = new EventEmitter<PaymentMenuItemEvent>();
     @Output() selected$ = new EventEmitter<SelectionModel<StatPayment>>();
 

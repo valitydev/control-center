@@ -4,10 +4,12 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/lib/payment_processing';
 import { StatPayment } from '@vality/magista-proto';
 import { BaseDialogSuperclass } from '@vality/ng-core';
-import { BehaviorSubject, from, bufferCount, concatMap, forkJoin, of } from 'rxjs';
+import chunk from 'lodash-es/chunk';
+import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';
+import { catchError, finalize, delay } from 'rxjs/operators';
 
-import { progressTo } from '../../../../../utils';
 import { InvoicingService } from '../../../../api/payment-processing';
+import { NotificationService } from '../../../services/notification';
 import { MetadataFormExtension, isTypeWithAliases } from '../../metadata-form';
 
 @UntilDestroy()
@@ -17,7 +19,8 @@ import { MetadataFormExtension, isTypeWithAliases } from '../../metadata-form';
 })
 export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
     CreatePaymentAdjustmentComponent,
-    { payments: StatPayment[] }
+    { payments: StatPayment[] },
+    { withError?: StatPayment[] }
 > {
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
@@ -49,28 +52,59 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
                 }),
         },
     ];
+    withError: StatPayment[] = [];
 
-    constructor(injector: Injector, private invoicingService: InvoicingService) {
+    constructor(
+        injector: Injector,
+        private invoicingService: InvoicingService,
+        private notificationService: NotificationService
+    ) {
         super(injector);
     }
 
     create() {
-        from(this.dialogData.payments)
+        const payments = this.withError.length ? this.withError : this.dialogData.payments;
+        this.withError = [];
+        const progressStep = 100 / (payments.length + 1);
+        this.progress$.next(progressStep);
+        of(...chunk(payments, 4))
             .pipe(
-                bufferCount(4),
                 concatMap((payments) =>
                     forkJoin(
                         payments.map((p) =>
                             this.invoicingService
                                 .CreatePaymentAdjustment(p.invoice_id, p.id, this.control.value)
-                                .pipe(progressTo(this.progress$))
+                                .pipe(
+                                    delay(Math.random() * 10000),
+                                    catchError(() => {
+                                        this.withError.push(p);
+                                        return null;
+                                    }),
+                                    finalize(() =>
+                                        this.progress$.next(this.progress$.value + progressStep)
+                                    )
+                                )
                         )
                     )
                 ),
                 untilDestroyed(this)
             )
-            .subscribe(() => {
-                // this.closeWithSuccess();
+            .subscribe({
+                complete: () => {
+                    if (!this.withError.length) {
+                        this.notificationService.success(`${payments.length} created successfully`);
+                        this.closeWithSuccess();
+                    } else {
+                        this.notificationService.error(
+                            `${this.withError.length} out of ${payments.length} failed`
+                        );
+                    }
+                    this.progress$.next(0);
+                },
             });
+    }
+
+    closeAndSelectWithAnError() {
+        this.closeWithError({ withError: this.withError });
     }
 }
