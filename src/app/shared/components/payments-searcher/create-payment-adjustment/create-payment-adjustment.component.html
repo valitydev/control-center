@@ -1,5 +1,6 @@
-<cc-base-dialog title="Create payment adjustment">
+<cc-base-dialog title="Create payment adjustment ({{ dialogData.payments.length }})">
     <cc-metadata-form
+        [extensions]="extensions"
         [formControl]="control"
         [metadata]="metadata$ | async"
         namespace="payment_processing"

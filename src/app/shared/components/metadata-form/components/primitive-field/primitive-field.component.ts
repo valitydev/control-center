@@ -38,7 +38,7 @@ export class PrimitiveFieldComponent<T>
             return extensionResult.options?.filter(
                 (option) =>
                     String(option.value).toLowerCase().includes(filterValue) ||
-                    option.label.toLowerCase().includes(filterValue)
+                    (option.label && option.label.toLowerCase().includes(filterValue))
             );
         }),
         shareReplay({ refCount: true, bufferSize: 1 })

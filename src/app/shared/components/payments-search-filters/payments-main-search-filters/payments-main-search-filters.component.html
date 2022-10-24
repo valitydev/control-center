@@ -1,4 +1,11 @@
-<div [formGroup]="form" gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
+<div
+    [formGroup]="form"
+    gdColumns="1fr 1fr 1fr 1fr"
+    gdColumns.lt-lg="1fr 1fr 1fr"
+    gdColumns.lt-md="1fr 1fr"
+    gdColumns.lt-sm="1fr"
+    gdGap="16px"
+>
     <mat-form-field>
         <mat-label>Date Range</mat-label>
         <mat-date-range-input [rangePicker]="picker">

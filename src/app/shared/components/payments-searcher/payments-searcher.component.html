@@ -14,8 +14,15 @@
             [initParams]="initSearchParams"
             (valueChanges)="searchParamsChanges($event)"
         ></cc-payments-other-search-filters>
-        <button color="primary" mat-button (click)="createPaymentAdjustment()">
-            CREATE PAYMENT ADJUSTMENT
+        <button
+            [disabled]="!selectedPayments?.length"
+            color="primary"
+            mat-button
+            (click)="createPaymentAdjustment()"
+        >
+            CREATE PAYMENT ADJUSTMENT{{
+                selectedPayments?.length ? ' (' + selectedPayments?.length + ')' : ''
+            }}
         </button>
     </cc-actions>
     <cc-empty-search-result
