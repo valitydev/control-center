@@ -17,14 +17,24 @@ export class PaymentsTableComponent {
     @Input() payments: StatPayment[];
     @Input() set selected(selected: StatPayment[]) {
         this.selection.clear();
-        this.selection.select(...selected);
+        if (selected?.length) this.selection.select(...selected);
     }
     @Output() menuItemSelected$ = new EventEmitter<PaymentMenuItemEvent>();
     @Output() selected$ = new EventEmitter<SelectionModel<StatPayment>>();
 
     paymentActions = Object.keys(PaymentActions);
-    cols = new Columns(SELECT_COLUMN_NAME, 'amount', 'status', 'createdAt', 'shop', 'actions');
-    selection: SelectionModel<StatPayment>;
+    cols = new Columns(
+        SELECT_COLUMN_NAME,
+        'amount',
+        'status',
+        'createdAt',
+        'shop',
+        'revision',
+        'invoice',
+        'party',
+        'actions'
+    );
+    selection = new SelectionModel<StatPayment>();
 
     menuItemSelected(
         action: string,

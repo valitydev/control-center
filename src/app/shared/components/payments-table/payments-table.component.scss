@@ -1,5 +1,15 @@
+:host {
+    overflow: scroll;
+}
+
 table {
     width: 100%;
+
+    td,
+    th {
+        white-space: nowrap;
+        padding: 0 4px;
+    }
 }
 
 .action-cell {
