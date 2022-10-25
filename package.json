@@ -1,6 +1,6 @@
 {
   "name": "control-center",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "postinstall": "ngcc",
@@ -94,8 +94,8 @@
     "@types/lodash-es": "4.17.6",
     "@types/node": "16.4.12",
     "@types/uuid": "3.4.3",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
+    "@typescript-eslint/eslint-plugin": "5.30.5",
+    "@typescript-eslint/parser": "5.30.5",
     "concurrently": "7.3.0",
     "cross-env": "7.0.3",
     "dotenv": "16.0.0",
