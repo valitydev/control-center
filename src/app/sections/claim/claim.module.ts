@@ -18,11 +18,12 @@ import { RouterModule } from '@angular/router';
 import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 import { ngfModule } from 'angular-file';
 
-import { MetadataFormModule, StatusModule } from '@cc/app/shared/components';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
+import { StatusModule } from '@cc/app/shared/components/status';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
 
+import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { HumanizeDurationModule } from '../../shared/pipes/humanize-duration';
 import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';

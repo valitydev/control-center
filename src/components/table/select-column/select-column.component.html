@@ -1,4 +1,4 @@
-<ng-container [matColumnDef]="name">
+<ng-container [matColumnDef]="name" [sticky]="sticky">
     <th *matHeaderCellDef mat-header-cell>
         <mat-checkbox
             [checked]="selection.hasValue() && isAllSelected()"

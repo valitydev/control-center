@@ -4,10 +4,10 @@ import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
-import { ComponentChanges, getAliases, getValueTypeTitle } from '@cc/app/shared';
+import { ComponentChanges, getValueTypeTitle } from '@cc/app/shared';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
+import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
 
 @UntilDestroy()
 @Component({
@@ -38,7 +38,7 @@ export class PrimitiveFieldComponent<T>
             return extensionResult.options?.filter(
                 (option) =>
                     String(option.value).toLowerCase().includes(filterValue) ||
-                    option.label.toLowerCase().includes(filterValue)
+                    (option.label && option.label.toLowerCase().includes(filterValue))
             );
         }),
         shareReplay({ refCount: true, bufferSize: 1 })

@@ -7,7 +7,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 
 import { MonacoEditorModule } from '@cc/app/monaco-editor';
-import { MetadataFormModule } from '@cc/app/shared';
+import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { JsonViewerModule } from '../json-viewer';
 import { ThriftViewerComponent } from './thrift-viewer.component';

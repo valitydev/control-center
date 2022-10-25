@@ -1,4 +1,17 @@
-<table *ngIf="displayedColumns" [dataSource]="payments" fxFlex="100" mat-table>
+<table *ngIf="cols" [dataSource]="payments" mat-table>
+    <cc-select-column
+        [dataSource]="payments"
+        sticky
+        (changed)="selection = $event; selected$.emit($event)"
+    ></cc-select-column>
+
+    <ng-container matColumnDef="revision">
+        <th *matHeaderCellDef mat-header-cell>Revision</th>
+        <td *matCellDef="let payment" mat-cell>
+            {{ payment.domain_revision }}
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="amount">
         <th *matHeaderCellDef mat-header-cell>Amount</th>
         <td *matCellDef="let payment" mat-cell>
@@ -26,11 +39,26 @@
     <ng-container matColumnDef="shop">
         <th *matHeaderCellDef mat-header-cell>Shop</th>
         <td *matCellDef="let payment" mat-cell>
-            {{ payment.shop_id | shopName: payment.owner_id }}
+            <div>{{ payment.shop_id | shopName: payment.owner_id }}</div>
+            <div class="mat-caption cc-secondary-text">{{ payment.shop_id }}</div>
         </td>
     </ng-container>
 
-    <ng-container matColumnDef="actions">
+    <ng-container matColumnDef="party">
+        <th *matHeaderCellDef mat-header-cell>Party</th>
+        <td *matCellDef="let payment" mat-cell>
+            {{ payment.owner_id }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="invoice">
+        <th *matHeaderCellDef mat-header-cell>Invoice</th>
+        <td *matCellDef="let payment" mat-cell>
+            {{ payment.invoice_id }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions" stickyEnd>
         <th *matHeaderCellDef class="action-cell" mat-header-cell></th>
         <td *matCellDef="let payment" class="action-cell" mat-cell>
             <button [matMenuTriggerFor]="menu" mat-icon-button>
@@ -50,6 +78,6 @@
         </td>
     </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+    <tr *matHeaderRowDef="cols.list; sticky: true" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
 </table>

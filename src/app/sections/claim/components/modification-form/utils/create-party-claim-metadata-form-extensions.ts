@@ -8,7 +8,7 @@ import {
     isTypeWithAliases,
     MetadataFormExtension,
     MetadataFormExtensionOption,
-} from '@cc/app/shared';
+} from '@cc/app/shared/components/metadata-form';
 
 function createPartyOptions(
     values: IterableIterator<{ id: string }>

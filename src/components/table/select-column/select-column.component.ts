@@ -17,6 +17,7 @@ import {
     MatTable,
 } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { coerceBoolean } from 'coerce-property';
 
 export const SELECT_COLUMN_NAME = '_select';
 
@@ -27,6 +28,7 @@ export const SELECT_COLUMN_NAME = '_select';
 })
 export class SelectColumnComponent<T> implements OnInit, OnDestroy {
     @Input() name = SELECT_COLUMN_NAME;
+    @coerceBoolean @Input() sticky = false;
     @Input() dataSource: T[];
     @Output() changed = new EventEmitter<SelectionModel<T>>();
 

@@ -1,7 +1,7 @@
 import { DomainObject } from '@vality/domain-proto';
 import { PickByValue } from 'utility-types';
 
-import { MetadataFormExtensionOption } from '../../../components';
+import { MetadataFormExtensionOption } from '../../../components/metadata-form';
 
 type DomainRefDataObjects = PickByValue<
     DomainObject,
