@@ -26,7 +26,6 @@ import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
-import { PaymentAdjustmentModule } from './sections/payment-adjustment/payment-adjustment.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
@@ -65,7 +64,6 @@ export let AppInjector: Injector;
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        PaymentAdjustmentModule,
         DomainModule,
         RepairingModule,
         ThemeManagerModule,

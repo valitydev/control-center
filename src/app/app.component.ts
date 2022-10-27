@@ -6,7 +6,6 @@ import { AppAuthGuardService } from '@cc/app/shared/services';
 import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './domain/routing-config';
 import { ROUTING_CONFIG as OLD_REPAIRING_ROUTING_CONFIG } from './repairing/routing-config';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
-import { ROUTING_CONFIG as PAYMENT_ADJUSTMENT_ROUTING_CONFIG } from './sections/payment-adjustment/routing-config';
 import { ROUTING_CONFIG as PAYOUTS_ROUTING_CONFIG } from './sections/payouts/payouts/routing-config';
 import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing/routing-config';
 import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/search-claims/routing-config';
@@ -64,11 +63,6 @@ export class AppComponent implements OnInit {
                 name: 'Claims',
                 route: '/claims',
                 services: CLAIMS_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Payment adjustment',
-                route: '/payment-adjustment',
-                services: PAYMENT_ADJUSTMENT_ROUTING_CONFIG.services,
             },
             {
                 name: 'Merchants',
