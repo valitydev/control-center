@@ -25,6 +25,9 @@
                     <mat-panel-title>
                         {{ (terminalsMapID$ | async)[candidate.terminal.id]?.data?.name }}
                     </mat-panel-title>
+                    <mat-panel-description>
+                        #{{ (terminalsMapID$ | async)[candidate.terminal.id]?.ref?.id }}
+                    </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div fxLayout="column" fxLayoutGap="24px">
                     <div fxLayout fxLayoutGap="8px">
