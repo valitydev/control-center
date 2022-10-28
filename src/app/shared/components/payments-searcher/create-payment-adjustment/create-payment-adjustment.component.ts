@@ -8,9 +8,10 @@ import chunk from 'lodash-es/chunk';
 import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';
 import { catchError, finalize, delay } from 'rxjs/operators';
 
+import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
+
 import { InvoicingService } from '../../../../api/payment-processing';
 import { NotificationService } from '../../../services/notification';
-import { MetadataFormExtension, isTypeWithAliases } from '../../metadata-form';
 
 @UntilDestroy()
 @Component({
@@ -25,39 +26,14 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
-    extensions: MetadataFormExtension[] = [
-        {
-            determinant: (data) => of(isTypeWithAliases(data, 'FailureCode', 'domain')),
-            extension: () =>
-                of({
-                    options: [
-                        'authorization_failed:unknown',
-                        'authorization_failed:insufficient_funds',
-                        'authorization_failed:payment_tool_rejected:bank_card_rejected:card_expired',
-                        'authorization_failed:rejected_by_issuer',
-                        'authorization_failed:operation_blocked',
-                        'authorization_failed:account_stolen',
-                        'authorization_failed:temporarily_unavailable',
-                        'authorization_failed:account_limit_exceeded:number',
-                        'authorization_failed:account_limit_exceeded:amount',
-                        'authorization_failed:security_policy_violated',
-                        'preauthorization_failed',
-                        'authorization_failed:payment_tool_rejected:bank_card_rejected:cvv_invalid',
-                        'authorization_failed:account_not_found',
-                        'authorization_failed:payment_tool_rejected:bank_card_rejected:card_number_invalid',
-                        'authorization_failed:rejected_by_issuer',
-                    ]
-                        .sort()
-                        .map((value) => ({ value })),
-                }),
-        },
-    ];
+    extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     withError: StatPayment[] = [];
 
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
         super(injector);
     }
