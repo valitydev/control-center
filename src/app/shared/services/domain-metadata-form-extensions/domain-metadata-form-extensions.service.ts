@@ -82,7 +82,11 @@ export class DomainMetadataFormExtensionsService {
                     ),
             },
             {
-                determinant: (data) => of(isTypeWithAliases(data, 'FailureCode', 'domain')),
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'FailureCode', 'domain') ||
+                            isTypeWithAliases(data, 'FailureCode', 'base')
+                    ),
                 extension: () =>
                     of({
                         options: [
