@@ -6,9 +6,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActionsModule } from '@vality/ng-core';
 
+import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 import { HeadlineModule } from '@cc/components/headline';
 
 import { ThriftPipesModule } from '../../shared';
+import { ShopContractInfoComponent } from './components/shop-contract-info/shop-contract-info.component';
 import { ShopDetailsRoutingModule } from './shop-details-routing.module';
 import { ShopDetailsComponent } from './shop-details.component';
 import { ShopMainInfoModule } from './shop-main-info';
@@ -25,7 +27,8 @@ import { ShopMainInfoModule } from './shop-main-info';
         ActionsModule,
         MatButtonModule,
         ThriftPipesModule,
+        JsonViewerModule,
     ],
-    declarations: [ShopDetailsComponent],
+    declarations: [ShopDetailsComponent, ShopContractInfoComponent],
 })
 export class ShopDetailsModule {}

@@ -8,6 +8,18 @@
             </div>
         </mat-card-content>
     </mat-card>
+    <mat-card>
+        <mat-card-title>Contract</mat-card-title>
+        <mat-card-content>
+            <cc-shop-contract-info
+                *ngIf="contract$ | async as contract"
+                [contract]="contract"
+            ></cc-shop-contract-info>
+            <div *ngIf="inProgress$ | async" fxLayout fxLayoutAlign="center center">
+                <mat-spinner diameter="64"></mat-spinner>
+            </div>
+        </mat-card-content>
+    </mat-card>
     <cc-actions *ngIf="shop$ | async as shop">
         <button mat-raised-button (click)="toggleSuspension()">
             {{ (shop.suspension | ccUnionKey) === 'active' ? 'SUSPEND' : 'ACTIVATE' }}
