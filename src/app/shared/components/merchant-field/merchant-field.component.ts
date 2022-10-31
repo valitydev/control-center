@@ -6,7 +6,7 @@ import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap, first, takeUntil } from 'rxjs/operators';
 
-import { DeanonimusService } from '@cc/app/thrift-services/deanonimus';
+import { DeanonimusService } from '@cc/app/api/deanonimus';
 import { Option } from '@cc/components/select-search-field';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 import { progressTo } from '@cc/utils/operators';

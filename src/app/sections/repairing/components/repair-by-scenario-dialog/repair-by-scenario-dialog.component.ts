@@ -7,6 +7,8 @@ import { RepairInvoicesRequest, RepairWithdrawalsRequest, Machine } from '@valit
 import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
 
+import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
+
 import { progressTo, getFormValueChanges } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
 import { ErrorService } from '../../../../shared/services/error';
@@ -41,6 +43,7 @@ export class RepairByScenarioDialogComponent
         Validators.required
     );
     metadata$ = from(import('@vality/repairer-proto/lib/metadata.json').then((m) => m.default));
+    extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
     typesEnum = Types;
@@ -54,7 +57,8 @@ export class RepairByScenarioDialogComponent
         injector: Injector,
         private repairManagementService: RepairManagementService,
         private errorService: ErrorService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
         super(injector);
     }

@@ -5,13 +5,13 @@
             <mat-radio-button [value]="1">Generate ID</mat-radio-button>
         </mat-radio-group>
         <cc-metadata-form
-            [formControl]="statusControl"
+            [formControl]="control"
             [metadata]="metadata$ | async"
-            namespace="withdrawal_status"
-            type="Status"
+            namespace="withdrawal_adjustment"
+            type="ChangeRequest"
         ></cc-metadata-form>
         <cc-metadata-form
-            [extensions]="extensions"
+            [extensions]="externalIdExtensions"
             [formControl]="externalIdControl"
             [metadata]="metadata$ | async"
             namespace="base"
@@ -25,7 +25,7 @@
     </div>
     <cc-base-dialog-actions>
         <button
-            [disabled]="statusControl.invalid"
+            [disabled]="control.invalid"
             color="primary"
             mat-button
             (click)="createAdjustment()"

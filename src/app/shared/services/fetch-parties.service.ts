@@ -1,32 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Party } from '@vality/deanonimus-proto';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, defer, BehaviorSubject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { progress } from '@cc/app/shared/custom-operators';
-
-import { DeanonimusService } from '../../thrift-services/deanonimus';
+import { DeanonimusService } from '@cc/app/api/deanonimus';
+import { progressTo, inProgressFrom } from '@cc/utils';
 
 @Injectable()
 export class FetchPartiesService {
-    private searchParties$: Subject<string> = new Subject();
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    parties$: Observable<Party[]> = this.searchParties$.pipe(
+    parties$: Observable<Party[]> = defer(() => this.searchParties$).pipe(
         switchMap((text) =>
             this.deanonimusService.searchParty(text).pipe(
                 map((hits) => hits.map((hit) => hit.party)),
                 catchError((err) => {
                     console.error(err);
                     return of<Party[]>([]);
-                })
+                }),
+                progressTo(this.progress$)
             )
         ),
         shareReplay(1)
     );
+    inProgress$ = inProgressFrom(
+        () => this.progress$,
+        () => this.parties$
+    );
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    inProgress$: Observable<boolean> = progress(this.searchParties$, this.parties$);
+    private progress$ = new BehaviorSubject(0);
+    private searchParties$: Subject<string> = new Subject();
 
     constructor(private deanonimusService: DeanonimusService) {}
 

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import maxBy from 'lodash-es/maxBy';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { DeanonimusService } from '@cc/app/api/deanonimus';
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
-import { DeanonimusService, getMaxSearchHitParty } from '../../thrift-services/deanonimus';
 import { ROUTING_CONFIG as SHOPS_ROUTING_CONFIG } from '../party-shops/routing-config';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
 
@@ -34,7 +35,7 @@ export class PartyComponent {
         this.partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
         this.merchantEmail$ = this.partyID$.pipe(
             switchMap((partyID) => this.deanonimusService.searchParty(partyID)),
-            map(getMaxSearchHitParty),
+            map((searchHits) => maxBy(searchHits, (searchHit) => searchHit.score)?.party),
             pluck('email'),
             catchError((err) => {
                 console.error(err);

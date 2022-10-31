@@ -3,7 +3,7 @@
     title="Create payment adjustment ({{ dialogData.payments.length }})"
 >
     <cc-metadata-form
-        [extensions]="extensions"
+        [extensions]="extensions$ | async"
         [formControl]="control"
         [metadata]="metadata$ | async"
         namespace="payment_processing"

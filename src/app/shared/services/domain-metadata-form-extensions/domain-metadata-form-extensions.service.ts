@@ -81,6 +81,36 @@ export class DomainMetadataFormExtensionsService {
                         }))
                     ),
             },
+            {
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'FailureCode', 'domain') ||
+                            isTypeWithAliases(data, 'FailureCode', 'base')
+                    ),
+                extension: () =>
+                    of({
+                        options: [
+                            'authorization_failed:unknown',
+                            'authorization_failed:insufficient_funds',
+                            'authorization_failed:payment_tool_rejected:bank_card_rejected:card_expired',
+                            'authorization_failed:rejected_by_issuer',
+                            'authorization_failed:operation_blocked',
+                            'authorization_failed:account_stolen',
+                            'authorization_failed:temporarily_unavailable',
+                            'authorization_failed:account_limit_exceeded:number',
+                            'authorization_failed:account_limit_exceeded:amount',
+                            'authorization_failed:security_policy_violated',
+                            'preauthorization_failed',
+                            'authorization_failed:payment_tool_rejected:bank_card_rejected:cvv_invalid',
+                            'authorization_failed:account_not_found',
+                            'authorization_failed:payment_tool_rejected:bank_card_rejected:card_number_invalid',
+                            'authorization_failed:rejected_by_issuer',
+                        ]
+                            .sort()
+                            .map((value) => ({ value })),
+                        generate: () => of('authorization_failed:unknown'),
+                    }),
+            },
         ]),
         shareReplay(1)
     );
