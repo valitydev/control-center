@@ -2,6 +2,7 @@ import { Field, ValueType } from '@vality/thrift-ts';
 import { JsonAST } from '@vality/thrift-ts/src/thrift-parser';
 import { combineLatest, Observable, switchMap } from 'rxjs';
 import { map, pluck, shareReplay } from 'rxjs/operators';
+import { ValuesType } from 'utility-types';
 
 import {
     isComplexType,
@@ -48,7 +49,7 @@ export function isTypeWithAliases(
     return Boolean(getByType(data, type, namespace));
 }
 
-type ObjectAst = JsonAST[keyof JsonAST][keyof JsonAST[keyof JsonAST]];
+type ObjectAst = ValuesType<ValuesType<ValuesType<JsonAST>>>;
 
 export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectAst = ObjectAst> {
     typeGroup: TypeGroup;

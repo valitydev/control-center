@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, switchMap } from 'rxjs';
-import { pluck, filter, withLatestFrom, first } from 'rxjs/operators';
+import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
@@ -23,6 +23,7 @@ export class ShopDetailsComponent {
     shopID$ = this.route.params.pipe(pluck('shopID'));
 
     shop$ = this.fetchShopService.shop$;
+    contract$ = this.fetchShopService.contract$.pipe(map((c) => c?.contract));
     inProgress$ = this.fetchShopService.inProgress$;
 
     constructor(
