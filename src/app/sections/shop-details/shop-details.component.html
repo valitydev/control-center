@@ -11,10 +11,10 @@
     <mat-card>
         <mat-card-title>Contract</mat-card-title>
         <mat-card-content>
-            <cc-shop-contract-info
+            <cc-json-viewer
                 *ngIf="contract$ | async as contract"
-                [contract]="contract"
-            ></cc-shop-contract-info>
+                [json]="contract"
+            ></cc-json-viewer>
             <div *ngIf="inProgress$ | async" fxLayout fxLayoutAlign="center center">
                 <mat-spinner diameter="64"></mat-spinner>
             </div>
