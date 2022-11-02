@@ -12,12 +12,10 @@ import { HeadlineModule } from '@cc/components/headline';
 import { ThriftPipesModule } from '../../shared';
 import { ShopDetailsRoutingModule } from './shop-details-routing.module';
 import { ShopDetailsComponent } from './shop-details.component';
-import { ShopMainInfoModule } from './shop-main-info';
 
 @NgModule({
     imports: [
         ShopDetailsRoutingModule,
-        ShopMainInfoModule,
         HeadlineModule,
         FlexModule,
         MatCardModule,
