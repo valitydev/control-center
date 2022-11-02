@@ -18,7 +18,13 @@ export class JsonViewerComponent {
 
     get inline(): InlineItem[] {
         try {
-            return Object.entries(this.json)
+            return (
+                Array.isArray(this.json) || this.json instanceof Set
+                    ? Array.from(this.json).map((v, idx) => [idx, v])
+                    : this.json instanceof Map
+                    ? Array.from(this.json)
+                    : Object.entries(this.json)
+            )
                 .map(([k, v]) => getInline([k], v))
                 .filter(Boolean)
                 .map(
@@ -29,7 +35,15 @@ export class JsonViewerComponent {
                             this.patches?.find((p) => isEqual(p.path, path))
                         )
                 )
-                .sort(({ key: a }, { key: b }) => a.localeCompare(b));
+                .sort(({ key: a, value: aV }, { key: b, value: bV }) =>
+                    !aV && bV
+                        ? 1
+                        : !bV && aV
+                        ? -1
+                        : typeof a === 'number' && typeof b === 'number'
+                        ? a - b
+                        : String(a).localeCompare(String(b))
+                );
         } catch (err) {
             return [];
         }

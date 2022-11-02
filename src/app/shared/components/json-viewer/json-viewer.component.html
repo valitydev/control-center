@@ -1,5 +1,5 @@
 <div gdColumns="1fr" gdGap="16px">
-    <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+    <div *ngIf="items.length" gdColumns="1fr 1fr 1fr" gdGap="16px">
         <cc-details-item
             *ngFor="let item of items; let i = index; trackBy: trackByFn"
             [title]="item.key | keyTitle | titlecase"
@@ -19,12 +19,15 @@
     <!-- TODO: separate if 2 or more parents -->
     <ng-container *ngFor="let item of objects; let i = index; trackBy: trackByFn">
         <mat-divider *ngIf="i !== 0 || items.length"></mat-divider>
-        <span [class]="className">{{ item.key | keyTitle | titlecase }}</span>
-        <cc-json-viewer
-            *ngIf="!item.isEmpty"
-            [json]="item.sourceValue"
-            [patches]="patches"
-            [path]="item.path"
-        ></cc-json-viewer>
+        <div [gdColumns]="item.isIndex ? 'auto 1fr' : '1fr'" gdGap="16px">
+            <span [class]="className"
+                >{{ item.key | keyTitle | titlecase }}{{ item.isIndex ? '.' : '' }}</span
+            >
+            <cc-json-viewer
+                [json]="item.sourceValue"
+                [patches]="patches"
+                [path]="item.path"
+            ></cc-json-viewer>
+        </div>
     </ng-container>
 </div>

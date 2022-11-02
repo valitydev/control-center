@@ -1,12 +1,15 @@
-import isEmpty from 'lodash-es/isEmpty';
-import isNil from 'lodash-es/isNil';
-import isObject from 'lodash-es/isObject';
-
 import { Patch } from '../types/patch';
 
 export class InlineItem {
+    get isIndex() {
+        return (
+            (this.patch?.key || this.path.length === 1) &&
+            typeof (this.patch?.key ?? this.path[0]) === 'number'
+        );
+    }
+
     get key() {
-        return this.patch?.key ?? this.path.join(' / ');
+        return this.patch?.key ?? (this.isIndex ? Number(this.path[0]) + 1 : this.path.join(' / '));
     }
 
     get value() {
@@ -21,11 +24,11 @@ export class InlineItem {
         return !!this.patch;
     }
 
-    get isEmpty() {
-        return isObject(this.sourceValue) ? isEmpty(this.sourceValue) : isNil(this.sourceValue);
-    }
-
-    constructor(public path: string[], public sourceValue: unknown, private patch?: Patch) {
+    constructor(
+        public path: (string | number)[],
+        public sourceValue: unknown,
+        private patch?: Patch
+    ) {
         this.path = this.patch?.path ?? this.path;
     }
 }
