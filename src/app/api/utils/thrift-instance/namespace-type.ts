@@ -27,8 +27,8 @@ export function isPrimitiveType(type: ValueType): type is ThriftType {
     return PRIMITIVE_TYPES.includes(type as never);
 }
 
-export const STRUCTURE_TYPES = ['typedef', 'struct', 'union', 'exception', 'enum'] as const;
-export type StructureType = typeof STRUCTURE_TYPES[number];
+export type StructureType = keyof JsonAST;
+export const STRUCTURE_TYPES: StructureType[] = ['typedef', 'struct', 'union', 'exception', 'enum'];
 
 export interface NamespaceObjectType {
     namespaceMetadata: ThriftAstMetadata;
@@ -48,7 +48,7 @@ export function parseNamespaceObjectType(
         namespaceMetadata = metadata.reverse().find((m) => m.path === include[namespace].path);
     if (!namespaceMetadata)
         namespaceMetadata = metadata.reverse().find((m) => m.name === namespace);
-    const objectType = (Object.keys(namespaceMetadata.ast) as StructureType[]).find(
+    const objectType = Object.keys(namespaceMetadata.ast).find(
         (t) => namespaceMetadata.ast[t][type]
     );
     if (!objectType || !STRUCTURE_TYPES.includes(objectType)) {
