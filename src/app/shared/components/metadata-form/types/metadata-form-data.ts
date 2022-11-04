@@ -95,8 +95,19 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
         if (this.typeGroup === TypeGroup.Object) this.setNamespaceObjectType();
     }
 
+    create(params: { namespace?: string; type?: ValueType; field?: Field }) {
+        return new MetadataFormData(
+            this.metadata,
+            params.namespace ?? this.namespace,
+            params.type ?? params.field?.type,
+            params.field,
+            this,
+            this.extensions
+        );
+    }
+
     private setNamespaceType(namespace: string, type: T) {
-        const namespaceType = parseNamespaceType<T>(type, namespace);
+        const namespaceType = parseNamespaceType(type, namespace);
         this.namespace = namespaceType.namespace;
         this.type = namespaceType.type;
         this.extensionResult$ = combineLatest(
