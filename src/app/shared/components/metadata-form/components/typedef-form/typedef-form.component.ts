@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { TypeDefs } from '@vality/thrift-ts';
 
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
@@ -11,5 +10,5 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     providers: createControlProviders(TypedefFormComponent),
 })
 export class TypedefFormComponent<T> extends ValidatedFormControlSuperclass<T> {
-    @Input() data: MetadataFormData<string, TypeDefs[string]>;
+    @Input() data: MetadataFormData<string, 'typedef'>;
 }

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Enums } from '@vality/thrift-ts/src/thrift-parser';
 
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
@@ -11,5 +10,5 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     providers: createControlProviders(EnumFieldComponent),
 })
 export class EnumFieldComponent<T> extends ValidatedFormControlSuperclass<T> {
-    @Input() data: MetadataFormData<string, Enums[string]>;
+    @Input() data: MetadataFormData<string, 'enum'>;
 }

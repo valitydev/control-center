@@ -49,16 +49,17 @@ export function isTypeWithAliases(
     return Boolean(getByType(data, type, namespace));
 }
 
-type ObjectAst = ValuesType<ValuesType<ValuesType<JsonAST>>>;
-
-export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectAst = ObjectAst> {
+export class MetadataFormData<
+    T extends ValueType = ValueType,
+    S extends StructureType = StructureType
+> {
     typeGroup: TypeGroup;
 
     namespace: string;
     type: T;
 
-    objectType?: StructureType;
-    ast?: M;
+    objectType?: S;
+    ast?: ValuesType<JsonAST[S]>;
 
     include?: JsonAST['include'];
 
@@ -111,10 +112,12 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
         this.namespace = namespaceType.namespace;
         this.type = namespaceType.type;
         this.extensionResult$ = combineLatest(
-            (this.extensions || []).map(({ determinant }) => determinant(this))
+            (this.extensions || []).map(({ determinant }) => determinant(this as never))
         ).pipe(
             map((determined) => this.extensions.filter((_, idx) => determined[idx])),
-            switchMap((extensions) => combineLatest(extensions.map((e) => e.extension(this)))),
+            switchMap((extensions) =>
+                combineLatest(extensions.map((e) => e.extension(this as never)))
+            ),
             pluck(0),
             shareReplay({ refCount: true, bufferSize: 1 })
         );
@@ -135,8 +138,8 @@ export class MetadataFormData<T extends ValueType = ValueType, M extends ObjectA
             this.type as string,
             this.parent?.include
         );
-        this.objectType = objectType;
-        this.ast = (namespaceMetadata.ast[this.objectType] as unknown)[this.type] as M;
+        this.objectType = objectType as never;
+        this.ast = (namespaceMetadata.ast[this.objectType] as unknown)[this.type] as never;
         this.include = include;
     }
 }

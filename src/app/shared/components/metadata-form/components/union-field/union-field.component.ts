@@ -22,7 +22,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnInit, Validator
 {
-    @Input() data: MetadataFormData<string, Field[]>;
+    @Input() data: MetadataFormData<string, 'union'>;
 
     fieldControl = new FormControl<Field>();
     internalControl = new FormControl<T[keyof T]>();

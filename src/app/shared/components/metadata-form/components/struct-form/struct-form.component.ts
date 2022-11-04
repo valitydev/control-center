@@ -2,7 +2,6 @@ import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@a
 import { ValidationErrors, Validators } from '@angular/forms';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Field } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
@@ -22,9 +21,9 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     extends ValidatedControlSuperclass<T>
     implements OnChanges, OnInit
 {
-    @Input() data: MetadataFormData<string, Field[]>;
+    @Input() data: MetadataFormData<string, 'struct'>;
 
-    control = this.fb.group<T>({} as any);
+    control = this.fb.group<T>({} as never);
     labelControl = this.fb.control(false);
 
     get hasLabel() {

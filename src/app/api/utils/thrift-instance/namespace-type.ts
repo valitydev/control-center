@@ -50,7 +50,7 @@ export function parseNamespaceObjectType(
         namespaceMetadata = metadata.reverse().find((m) => m.name === namespace);
     const objectType = Object.keys(namespaceMetadata.ast).find(
         (t) => namespaceMetadata.ast[t][type]
-    );
+    ) as StructureType;
     if (!objectType || !STRUCTURE_TYPES.includes(objectType)) {
         throw new Error(`Unknown thrift structure type: ${objectType}`);
     }

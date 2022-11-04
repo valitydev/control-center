@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DomainObject, Cash } from '@vality/domain-proto/lib/domain';
-import { Field } from '@vality/thrift-ts';
 import moment from 'moment';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -118,7 +117,7 @@ export class DomainMetadataFormExtensionsService {
     constructor(private domainStoreService: DomainStoreService) {}
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
-        const domainFields = new MetadataFormData<string, Field[]>(
+        const domainFields = new MetadataFormData<string, 'struct'>(
             metadata,
             'domain',
             'DomainObject'
@@ -137,7 +136,7 @@ export class DomainMetadataFormExtensionsService {
         objectType: string,
         objectKey: keyof DomainObject
     ): MetadataFormExtension {
-        const objectFields = new MetadataFormData<string, Field[]>(metadata, 'domain', objectType)
+        const objectFields = new MetadataFormData<string, 'struct'>(metadata, 'domain', objectType)
             .ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
