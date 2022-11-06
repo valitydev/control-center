@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import isEqual from 'lodash-es/isEqual';
 import isObject from 'lodash-es/isObject';
 
+import { compareDifferentTypes } from '../../../../../projects/ng-core/src/lib';
 import { InlineItem } from './types/inline-item';
 import { Patch } from './types/patch';
 import { getInline } from './utils/get-inline';
@@ -36,13 +37,7 @@ export class JsonViewerComponent {
                         )
                 )
                 .sort(({ key: a, value: aV }, { key: b, value: bV }) =>
-                    !aV && bV
-                        ? 1
-                        : !bV && aV
-                        ? -1
-                        : typeof a === 'number' && typeof b === 'number'
-                        ? a - b
-                        : String(a).localeCompare(String(b))
+                    !aV && bV ? 1 : !bV && aV ? -1 : compareDifferentTypes(a, b)
                 );
         } catch (err) {
             return [];
