@@ -11,9 +11,10 @@ import { ThriftPipesModule } from '@cc/app/shared';
 import { DetailsItemModule } from '@cc/components/details-item';
 
 import { JsonViewerComponent } from './json-viewer.component';
+import { KeyComponent } from './components/key/key.component';
 
 @NgModule({
-    declarations: [JsonViewerComponent],
+    declarations: [JsonViewerComponent, KeyComponent],
     exports: [JsonViewerComponent],
     imports: [
         CommonModule,

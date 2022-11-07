@@ -1,20 +1,28 @@
 <div *ngIf="view" gdColumns="1fr" gdGap="16px">
     <div *ngIf="view.leaves.length" gdColumns="1fr 1fr 1fr" gdGap="16px">
-        <cc-details-item
-            *ngFor="let item of view.leaves; let i = index"
-            [empty]="item.isEmpty"
-            [title]="item.key | keyTitle | titlecase"
-        >
-            {{ item.xvalue }}
-        </cc-details-item>
+        <div *ngFor="let item of view.leaves; let i = index" fxLayout="column" fxLayoutGap="8px">
+            <div class="cc-details-item-title mat-caption">
+                <cc-key [keys]="item.keys"></cc-key>
+            </div>
+            <div class="mat-body-1 cc-details-item-content">
+                <div *ngIf="item.isEmpty; else content" class="cc-details-item-content-empty">
+                    <mat-icon inline>hide_source</mat-icon>
+                </div>
+                <ng-template #content>
+                    {{ item.xvalue }}
+                </ng-template>
+            </div>
+        </div>
     </div>
 
     <ng-container *ngFor="let item of view.nodes; let i = index">
         <mat-divider *ngIf="i !== 0 || view.leaves.length"></mat-divider>
         <div [gdColumns]="item.isIndex ? 'auto 1fr' : '1fr'" gdGap="16px">
-            <span [class]="className">{{
-                item.isIndex ? item.key : (item.key | keyTitle | titlecase)
-            }}</span>
+            <cc-key
+                [class]="className"
+                [index]="item.isIndex ? item.keys[0].value + 1 : undefined"
+                [keys]="item.keys"
+            ></cc-key>
             <cc-json-viewer
                 [data]="item.data"
                 [json]="item.value"

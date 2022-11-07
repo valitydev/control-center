@@ -1,0 +1,11 @@
+<ng-container *ngIf="index; else key">{{ index }}.</ng-container
+><ng-template #key
+    ><ng-container *ngFor="let key of keys; let i = index"
+        ><ng-container *ngIf="key.data?.objectType === 'union'; else defKey"
+            >{{ i !== 0 ? ': ' : '' }}<b>{{ key.value | keyTitle | titlecase }}</b>
+        </ng-container>
+        <ng-template #defKey>
+            {{ i !== 0 ? ' / ' : '' }}{{ key.value | keyTitle | titlecase }}</ng-template
+        ></ng-container
+    ></ng-template
+>

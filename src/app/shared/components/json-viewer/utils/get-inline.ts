@@ -6,7 +6,7 @@ import isObject from 'lodash-es/isObject';
 import { MetadataFormData, TypeGroup } from '../../metadata-form';
 import { getKeyValues } from './get-key-values';
 
-type Key = {
+export type Key = {
     value: string | number;
     data?: MetadataFormData;
 };
@@ -28,12 +28,6 @@ export class Inline {
         return !isObject(this.xvalue);
     }
 
-    get key() {
-        return this.isIndex
-            ? `${(this.keys[0].value as number) + 1}.`
-            : this.keys.map(({ value }) => value).join(' / ');
-    }
-
     get xvalue() {
         if (this.isEmpty) {
             return null;
@@ -52,14 +46,20 @@ export class Inline {
                 const [childKey, childValue] = entries[0];
                 if (entries.length === 1 && typeof childKey !== 'number' && !isObject(childKey)) {
                     const [inline] = getInline(value, data);
-                    if (
-                        data.trueTypeNode.data.objectType === 'union' &&
-                        !getKeyValues(childValue).length
-                    ) {
-                        this.keys = keys;
-                        this.value = childKey;
-                        this.data = data;
-                        return;
+                    if (data.trueTypeNode.data.objectType === 'union') {
+                        if (!getKeyValues(childValue).length) {
+                            this.keys = keys;
+                            this.value = childKey;
+                            this.data = data;
+                            return;
+                        } else {
+                            this.keys = [...keys, { value: childKey, data }];
+                            this.value = childValue;
+                            this.data = data.create({
+                                field: getTypes(data).fields?.find((f) => f.name === childKey),
+                            });
+                            return;
+                        }
                     }
                     this.keys = [...keys, ...inline.keys];
                     this.value = inline.value;
@@ -129,7 +129,7 @@ export function getInline(value: any, data: MetadataFormData): Inline[] {
                 )
         )
         .sort(({ keys: [a], value: aV }, { keys: [b], value: bV }) =>
-            !aV && bV ? 1 : !bV && aV ? -1 : compareDifferentTypes(a, b)
+            !aV && bV ? 1 : !bV && aV ? -1 : compareDifferentTypes(a.value, b.value)
         );
 }
 
