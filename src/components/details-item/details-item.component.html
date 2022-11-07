@@ -1,11 +1,11 @@
 <div fxLayout="column" fxLayoutGap="8px">
     <div class="cc-details-item-title mat-caption">{{ title }}</div>
     <div class="mat-body-1 cc-details-item-content">
-        <div #content>
-            <ng-content></ng-content>
-        </div>
-        <div *ngIf="isEmpty$ | async" class="cc-details-item-content-empty">
+        <div *ngIf="empty; else content" class="cc-details-item-content-empty">
             <mat-icon inline>hide_source</mat-icon>
         </div>
+        <ng-template #content>
+            <ng-content></ng-content>
+        </ng-template>
     </div>
 </div>
