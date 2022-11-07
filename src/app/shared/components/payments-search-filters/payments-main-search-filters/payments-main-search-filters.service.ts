@@ -15,7 +15,7 @@ export class PaymentsMainSearchFiltersService {
     form = this.fb.group({
         fromTime: [moment().subtract(1, 'year').startOf('d'), Validators.required],
         toTime: [moment().endOf('d'), Validators.required],
-        invoiceID: '',
+        invoiceIDs: '',
         partyID: '',
         shopIDs: [],
         bin: ['', [Validators.pattern(/\d{6}$/), Validators.maxLength(6)]],

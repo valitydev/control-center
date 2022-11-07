@@ -8,6 +8,7 @@ import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-p
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
+import { splitIds } from '../../../../projects/ng-core/src/lib';
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
@@ -86,7 +87,7 @@ export class RepairingComponent implements OnInit {
             .pipe(
                 map(({ ids, ns, timespan, provider_id, status, error_message }) =>
                     clean({
-                        ids: ids?.split(/[,.;\s]/)?.filter(Boolean),
+                        ids: splitIds(ids),
                         ns,
                         provider_id,
                         status,
