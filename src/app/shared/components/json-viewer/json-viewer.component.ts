@@ -1,59 +1,35 @@
-import { Component, Input } from '@angular/core';
-import isEqual from 'lodash-es/isEqual';
+import { Component, Input, OnChanges } from '@angular/core';
 import isObject from 'lodash-es/isObject';
 
-import { compareDifferentTypes } from '../../../../../projects/ng-core/src/lib';
-import { InlineItem } from './types/inline-item';
-import { Patch } from './types/patch';
-import { getInline } from './utils/get-inline';
+import { ComponentChanges } from '@cc/app/shared';
+import { getInline } from '@cc/app/shared/components/json-viewer/utils/get-inline';
 
 @Component({
     selector: 'cc-json-viewer',
     templateUrl: './json-viewer.component.html',
 })
-export class JsonViewerComponent {
+export class JsonViewerComponent implements OnChanges {
     @Input() json: unknown;
-    @Input() path: string[] = [];
+    @Input() level = 0;
 
-    @Input() patches: Patch[] = [];
+    inline: any;
+    objects: any;
+    items: any;
+    className = this.getClassName();
 
-    get inline(): InlineItem[] {
-        try {
-            return (
-                Array.isArray(this.json) || this.json instanceof Set
-                    ? Array.from(this.json).map((v, idx) => [idx, v])
-                    : this.json instanceof Map
-                    ? Array.from(this.json)
-                    : Object.entries(this.json)
-            )
-                .map(([k, v]) => getInline([k], v))
-                .filter(Boolean)
-                .map(
-                    ([path, value]): InlineItem =>
-                        new InlineItem(
-                            path,
-                            value,
-                            this.patches?.find((p) => isEqual(p.path, path))
-                        )
-                )
-                .sort(({ key: a, value: aV }, { key: b, value: bV }) =>
-                    !aV && bV ? 1 : !bV && aV ? -1 : compareDifferentTypes(a, b)
-                );
-        } catch (err) {
-            return [];
+    ngOnChanges({ json, level }: ComponentChanges<JsonViewerComponent>) {
+        if (json) {
+            this.inline = getInline(this.json);
+            this.objects = this.inline.filter(([, value]) => isObject(value));
+            this.items = this.inline.filter(([, value]) => !isObject(value));
+        }
+        if (level) {
+            this.className = this.getClassName();
         }
     }
 
-    get objects() {
-        return this.inline.filter(({ value }) => isObject(value));
-    }
-
-    get items() {
-        return this.inline.filter(({ value }) => !isObject(value));
-    }
-
-    get className() {
-        switch (this.path.length) {
+    getClassName() {
+        switch (this.level) {
             case 0:
                 return 'cc-title';
             case 1:
@@ -65,7 +41,11 @@ export class JsonViewerComponent {
         }
     }
 
-    trackByFn(idx: number, item: InlineItem) {
-        return item.path.join(';');
+    isIndex(item) {
+        return typeof item[0][0] === 'number';
+    }
+
+    getKey(item) {
+        return item[0].join(' / ');
     }
 }
