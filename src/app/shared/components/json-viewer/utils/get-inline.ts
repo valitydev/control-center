@@ -1,44 +1,77 @@
 import { compareDifferentTypes } from '@vality/ng-core';
 import { ValueType, SetType, MapType, ListType, Field } from '@vality/thrift-ts';
-import isNil from 'lodash-es/isNil';
+import isEmpty from 'lodash-es/isEmpty';
 import isObject from 'lodash-es/isObject';
 
 import { MetadataFormData, TypeGroup } from '../../metadata-form';
 import { getKeyValues } from './get-key-values';
 
-type Key = string | number;
+type Key = {
+    value: string | number;
+    data?: MetadataFormData;
+};
 
-export interface Inline {
+export class Inline {
     keys: Key[];
     value: any;
     data: MetadataFormData;
-    keyData?: MetadataFormData;
-}
 
-export function getInlineNode({ keys, value, data, keyData }: Inline): Inline {
-    if (isNil(value)) {
-        return null;
+    get isEmpty() {
+        return isObject(this.value) ? isEmpty(this.value) : !this.value;
     }
-    if (isObject(value) && !keyData) {
-        const entries = getKeyValues(value);
-        if (entries.length === 0) {
-            return { keys, value: null, data, keyData };
-        }
-        const [childKey, childValue] = entries[0];
-        if (
-            entries.length === 1 &&
-            typeof childKey !== 'number' &&
-            !isObject(childKey)
-            // &&
-            // data.trueParent?.objectType !== 'union'
-        ) {
-            const [inline] = getInline(value, data);
-            if (data.trueTypeNode.data.objectType === 'union' && !getKeyValues(childValue).length)
-                return { keys, value, data, keyData };
-            return { ...inline, keys: [...keys, ...inline.keys] };
-        }
+
+    get isIndex() {
+        return this.keys.length === 1 && typeof this.keys[0].value === 'number';
     }
-    return { keys, value, data, keyData };
+
+    get isLeaf() {
+        return !isObject(this.xvalue);
+    }
+
+    get key() {
+        return this.isIndex
+            ? `${(this.keys[0].value as number) + 1}.`
+            : this.keys.map(({ value }) => value).join(' / ');
+    }
+
+    get xvalue() {
+        if (this.isEmpty) {
+            return null;
+        }
+        if (this.data.trueTypeNode.data.objectType === 'union') {
+            const [unionKey, unionValue] = getKeyValues(this.value)[0];
+            if (isObject(unionValue) ? isEmpty(unionValue) : !unionValue) return unionKey;
+        }
+        return this.value;
+    }
+
+    constructor(keys: Key[], value: any, data: MetadataFormData) {
+        if (isObject(value) && !keys.at(-1).data) {
+            const entries = getKeyValues(value);
+            if (entries.length !== 0) {
+                const [childKey, childValue] = entries[0];
+                if (entries.length === 1 && typeof childKey !== 'number' && !isObject(childKey)) {
+                    const [inline] = getInline(value, data);
+                    if (
+                        data.trueTypeNode.data.objectType === 'union' &&
+                        !getKeyValues(childValue).length
+                    ) {
+                        this.keys = keys;
+                        this.value = childKey;
+                        this.data = data;
+                        return;
+                    }
+                    this.keys = [...keys, ...inline.keys];
+                    this.value = inline.value;
+                    this.data = inline.data;
+                    return;
+                }
+            }
+        }
+        this.keys = keys;
+        this.value = value;
+        this.data = data;
+    }
 }
 
 function getTypes(srcData: MetadataFormData): {
@@ -72,25 +105,41 @@ function getTypes(srcData: MetadataFormData): {
 }
 
 export function getInline(value: any, data: MetadataFormData): Inline[] {
-    if (!isObject(value)) return [{ keys: [], value, data }];
+    if (!isObject(value)) return [new Inline([], value, data)];
     const types = getTypes(data);
     return getKeyValues(value)
-        .map(([key, value]) => {
-            return getInlineNode({
-                keys: [key],
-                value,
-                data: data.create({
-                    field: types.fields?.find((f) => f.name === key),
-                    type: types.valueType,
-                }),
-                keyData: types.keyType
-                    ? data.create({
-                          type: types.keyType,
-                      })
-                    : undefined,
-            });
-        })
+        .map(
+            ([key, value]) =>
+                new Inline(
+                    [
+                        {
+                            value: key,
+                            data: types.keyType
+                                ? data.create({
+                                      type: types.keyType,
+                                  })
+                                : undefined,
+                        },
+                    ],
+                    value,
+                    data.create({
+                        field: types.fields?.find((f) => f.name === key),
+                        type: types.valueType,
+                    })
+                )
+        )
         .sort(({ keys: [a], value: aV }, { keys: [b], value: bV }) =>
             !aV && bV ? 1 : !bV && aV ? -1 : compareDifferentTypes(a, b)
         );
+}
+
+export class View {
+    leaves: Inline[];
+    nodes: Inline[];
+
+    constructor(value: any, data: MetadataFormData) {
+        const items = getInline(value, data);
+        this.nodes = items.filter((inline) => !inline.isLeaf);
+        this.leaves = items.filter((inline) => inline.isLeaf);
+    }
 }

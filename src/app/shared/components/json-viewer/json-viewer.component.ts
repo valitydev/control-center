@@ -1,12 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ValueType, Field } from '@vality/thrift-ts';
-import isObject from 'lodash-es/isObject';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { ComponentChanges } from '@cc/app/shared';
-import { getInline, Inline } from '@cc/app/shared/components/json-viewer/utils/get-inline';
-import { getKeyValues } from '@cc/app/shared/components/json-viewer/utils/get-key-values';
-import { MetadataFormData } from '@cc/app/shared/components/metadata-form';
+
+import { MetadataFormData } from '../metadata-form';
+import { View } from './utils/get-inline';
 
 @Component({
     selector: 'cc-json-viewer',
@@ -24,9 +23,7 @@ export class JsonViewerComponent implements OnChanges {
 
     @Input() data: MetadataFormData;
 
-    inline: Inline[];
-    objects: any;
-    items: any;
+    view: View;
     className = this.getClassName();
 
     ngOnChanges({ data }: ComponentChanges<JsonViewerComponent>) {
@@ -45,9 +42,7 @@ export class JsonViewerComponent implements OnChanges {
                     console.warn(err);
                 }
             }
-            this.inline = getInline(this.json, this.data);
-            this.objects = this.inline.filter((inline) => isObject(this.getValue(inline)));
-            this.items = this.inline.filter((inline) => !this.objects.includes(inline));
+            this.view = new View(this.json, this.data);
             this.className = this.getClassName();
         }
     }
@@ -63,23 +58,5 @@ export class JsonViewerComponent implements OnChanges {
             default:
                 return 'cc-body-2';
         }
-    }
-
-    isIndex(item: Inline) {
-        return typeof item.keys[0] === 'number';
-    }
-
-    getKey(item: Inline) {
-        return item.keys.join(' / ');
-    }
-
-    getValue(item: Inline) {
-        if (
-            isObject(item.value) &&
-            !getKeyValues(item.value).length &&
-            item.data.trueTypeNode.data.objectType === 'union'
-        )
-            return getKeyValues(item.value)[0];
-        return item.value;
     }
 }
