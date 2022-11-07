@@ -79,6 +79,21 @@ export class MetadataFormData<
         return data;
     }
 
+    /**
+     * Path to the object without aliases
+     */
+    get trueTypeNode() {
+        const typedefs: MetadataFormData<ValueType, 'typedef'>[] = [];
+        let currentData: MetadataFormData = this as never;
+        while (currentData.objectType === 'typedef') {
+            typedefs.push(currentData as never);
+            currentData = currentData.create({
+                type: (currentData as MetadataFormData<ValueType, 'typedef'>).ast.type,
+            });
+        }
+        return { data: currentData, typedefs };
+    }
+
     get isRequired() {
         return this.field?.option === 'required' || this.trueParent?.objectType === 'union';
     }
@@ -96,13 +111,13 @@ export class MetadataFormData<
         if (this.typeGroup === TypeGroup.Object) this.setNamespaceObjectType();
     }
 
-    create(params: { namespace?: string; type?: ValueType; field?: Field }) {
+    create(params: { type?: ValueType; field?: Field }): MetadataFormData {
         return new MetadataFormData(
             this.metadata,
-            params.namespace ?? this.namespace,
+            this.namespace,
             params.type ?? params.field?.type,
             params.field,
-            this,
+            this as never,
             this.extensions
         );
     }
