@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 export interface FormValue {
     fromTime: Moment;
     toTime: Moment;
-    invoiceID?: string;
+    invoiceIDs?: string;
     shopIDs?: string[];
     bin?: string;
     pan?: string;

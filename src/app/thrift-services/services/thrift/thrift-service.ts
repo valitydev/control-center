@@ -99,10 +99,10 @@ export class ThriftService {
                           }
                         : {}),
                 },
-                deadlineConfig: {
-                    amount: 3,
-                    unitOfTime: 'm',
-                },
+                // deadlineConfig: {
+                //     amount: 3,
+                //     unitOfTime: 'm',
+                // },
                 deprecatedHeaders,
             },
             errorCb

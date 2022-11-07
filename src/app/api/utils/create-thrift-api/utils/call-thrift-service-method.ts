@@ -12,10 +12,10 @@ export interface ThriftClientMainOptions {
 }
 
 const DEFAULT_CONNECT_OPTIONS: ConnectOptions = {
-    deadlineConfig: {
-        amount: 3,
-        unitOfTime: 'm',
-    },
+    // deadlineConfig: {
+    //     amount: 3,
+    //     unitOfTime: 'm',
+    // },
 };
 
 const TIMEOUT_MS = 60_000;
