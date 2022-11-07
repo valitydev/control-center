@@ -26,13 +26,12 @@ export class PaymentsMainSearchFiltersComponent implements OnInit {
     shops$ = this.paymentsMainSearchFiltersService.shops$;
     form = this.paymentsMainSearchFiltersService.form;
 
-    constructor(private paymentsMainSearchFiltersService: PaymentsMainSearchFiltersService) {
-        this.paymentsMainSearchFiltersService.searchParamsChanges$.subscribe((params) =>
-            this.valueChanges.emit(params)
-        );
-    }
+    constructor(private paymentsMainSearchFiltersService: PaymentsMainSearchFiltersService) {}
 
     ngOnInit() {
+        this.paymentsMainSearchFiltersService.searchParamsChanges$
+            .pipe(untilDestroyed(this))
+            .subscribe((params) => this.valueChanges.emit(params));
         this.paymentsMainSearchFiltersService.init(this.initParams);
         this.form.controls.partyID.valueChanges
             .pipe(filter(Boolean), untilDestroyed(this))

@@ -4,7 +4,7 @@ export interface SearchFiltersParams {
     partyID?: string;
     fromTime?: string;
     toTime?: string;
-    invoiceID?: string;
+    invoiceIDs?: string;
     shopIDs?: string[];
     payerEmail?: string;
     terminalID?: string;
