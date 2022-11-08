@@ -1,6 +1,6 @@
 import { ThemePalette } from '@angular/material/core';
-import { Observable, combineLatest, switchMap } from 'rxjs';
-import { map, pluck, shareReplay } from 'rxjs/operators';
+import { Observable, combineLatest, switchMap, of } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormData } from './metadata-form-data';
 
@@ -35,9 +35,8 @@ export function getFirstDeterminedExtensionsResult(
     data: MetadataFormData
 ): Observable<MetadataFormExtensionResult> {
     return combineLatest((sourceExtensions || []).map(({ determinant }) => determinant(data))).pipe(
-        map((determined) => (sourceExtensions || []).filter((_, idx) => determined[idx])),
-        pluck(0),
-        switchMap((extension) => extension.extension(data)),
+        map((determined) => (sourceExtensions || []).find((_, idx) => determined[idx])),
+        switchMap((extension) => extension?.extension(data) ?? of(null)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 }
