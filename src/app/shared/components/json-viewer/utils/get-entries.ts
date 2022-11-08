@@ -1,4 +1,4 @@
-export function getKeyValues(obj: any): [number | string, any][] {
+export function getEntries(obj: any): [number | string, any][] {
     return Array.isArray(obj) || obj instanceof Set
         ? Array.from(obj).map((v, idx) => [idx, v])
         : obj instanceof Map

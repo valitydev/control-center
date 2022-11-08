@@ -1,11 +1,17 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ValueType, Field } from '@vality/thrift-ts';
+import { Observable } from 'rxjs';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { ComponentChanges } from '@cc/app/shared';
 
 import { MetadataFormData } from '../metadata-form';
 import { View } from './utils/get-inline';
+import {
+    MetadataViewExtension,
+    getFirstDeterminedExtensionsResult,
+    MetadataViewExtensionResult,
+} from './utils/metadata-view-extension';
 
 @Component({
     selector: 'cc-json-viewer',
@@ -22,6 +28,9 @@ export class JsonViewerComponent implements OnChanges {
     @Input() parent?: MetadataFormData;
 
     @Input() data: MetadataFormData;
+    @Input() extensions: MetadataViewExtension[];
+
+    extensionResult$: Observable<MetadataViewExtensionResult>;
 
     view: View;
     className = this.getClassName();
@@ -43,6 +52,11 @@ export class JsonViewerComponent implements OnChanges {
                 }
             }
             this.view = new View(this.json, this.data);
+            this.extensionResult$ = getFirstDeterminedExtensionsResult(
+                this.extensions,
+                this.data,
+                this.json
+            );
             this.className = this.getClassName();
         }
     }
