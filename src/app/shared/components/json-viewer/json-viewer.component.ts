@@ -1,17 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ValueType, Field } from '@vality/thrift-ts';
-import { Observable } from 'rxjs';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
-import { ComponentChanges } from '@cc/app/shared';
 
 import { MetadataFormData } from '../metadata-form';
 import { View } from './utils/get-inline';
-import {
-    MetadataViewExtension,
-    getFirstDeterminedExtensionsResult,
-    MetadataViewExtensionResult,
-} from './utils/metadata-view-extension';
+import { MetadataViewExtension } from './utils/metadata-view-extension';
 
 @Component({
     selector: 'cc-json-viewer',
@@ -30,33 +24,26 @@ export class JsonViewerComponent implements OnChanges {
     @Input() data: MetadataFormData;
     @Input() extensions: MetadataViewExtension[];
 
-    extensionResult$: Observable<MetadataViewExtensionResult>;
-
     view: View;
     className = this.getClassName();
 
-    ngOnChanges({ data }: ComponentChanges<JsonViewerComponent>) {
-        if (data || (this.metadata && this.namespace && this.type)) {
-            if (!data) {
-                try {
-                    this.data = new MetadataFormData(
-                        this.metadata,
-                        this.namespace,
-                        this.type,
-                        this.field,
-                        this.parent
-                    );
-                } catch (err) {
-                    this.data = undefined;
-                    console.warn(err);
-                }
+    ngOnChanges() {
+        if (this.metadata && this.namespace && this.type) {
+            try {
+                this.data = new MetadataFormData(
+                    this.metadata,
+                    this.namespace,
+                    this.type,
+                    this.field,
+                    this.parent
+                );
+            } catch (err) {
+                this.data = undefined;
+                console.warn(err);
             }
-            this.view = new View(this.json, this.data);
-            this.extensionResult$ = getFirstDeterminedExtensionsResult(
-                this.extensions,
-                this.data,
-                this.json
-            );
+        }
+        if (this.data) {
+            this.view = new View(this.json, this.data, this.extensions);
             this.className = this.getClassName();
         }
     }
