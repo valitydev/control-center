@@ -10,6 +10,7 @@ import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
+import { MetadataFormExtension } from '../../types/metadata-form-extension';
 import { getDefaultValue } from '../../utils/get-default-value';
 
 @UntilDestroy()
@@ -23,6 +24,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     implements OnInit, Validator
 {
     @Input() data: MetadataFormData<string, 'union'>;
+    @Input() extensions: MetadataFormExtension[];
 
     fieldControl = new FormControl<Field>();
     internalControl = new FormControl<T[keyof T]>();

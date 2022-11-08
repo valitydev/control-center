@@ -10,6 +10,7 @@ import { delay } from 'rxjs/operators';
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
+import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +23,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     implements OnChanges, OnInit
 {
     @Input() data: MetadataFormData<string, 'struct'>;
+    @Input() extensions: MetadataFormExtension[];
 
     control = this.fb.group<T>({} as never);
     labelControl = this.fb.control(false);

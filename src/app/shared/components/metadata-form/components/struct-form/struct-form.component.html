@@ -10,7 +10,7 @@
     <ng-container *ngIf="labelControl.value">
         <cc-metadata-form
             *ngFor="let field of data.ast"
-            [extensions]="data.extensions"
+            [extensions]="extensions"
             [field]="field"
             [formControl]="control.get(field.name)"
             [metadata]="data.metadata"

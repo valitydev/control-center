@@ -1,10 +1,15 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ThriftType } from '@vality/thrift-ts';
-import { combineLatest, defer, ReplaySubject, switchMap } from 'rxjs';
+import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { ComponentChanges, getValueTypeTitle } from '@cc/app/shared';
+import {
+    MetadataFormExtensionResult,
+    MetadataFormExtension,
+} from '@cc/app/shared/components/metadata-form';
+import { getFirstDeterminedExtensionsResult } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
@@ -20,9 +25,13 @@ export class PrimitiveFieldComponent<T>
     implements OnChanges
 {
     @Input() data: MetadataFormData<ThriftType>;
+    @Input() extensions: MetadataFormExtension[];
 
-    extensionResult$ = defer(() => this.data$).pipe(
-        switchMap((data) => data.extensionResult$),
+    extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
+        defer(() => this.data$),
+        defer(() => this.extensions$),
+    ]).pipe(
+        switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     generate$ = this.extensionResult$.pipe(pluck('generate'));
@@ -68,10 +77,12 @@ export class PrimitiveFieldComponent<T>
     }
 
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
+    private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
 
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.data) this.data$.next(this.data);
+        if (changes.extensions) this.extensions$.next(this.extensions);
     }
 
     generate(event: MouseEvent) {

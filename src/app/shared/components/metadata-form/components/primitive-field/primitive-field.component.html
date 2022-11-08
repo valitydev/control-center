@@ -24,13 +24,12 @@
     </ng-container>
     <ng-template #input>
         <div fxLayoutGap="4px">
-            <ng-container *ngIf="(data.extensionResult$ | async)?.type === 'datetime'; else input">
+            <ng-container *ngIf="(extensionResult$ | async)?.type === 'datetime'; else input">
                 <cc-datetime
                     [formControl]="control"
                     [hint]="aliases"
                     [label]="
-                        (data.extensionResult$ | async)?.label ??
-                        (data.type | fieldLabel: data.field)
+                        (extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)
                     "
                     fxFlex
                 ></cc-datetime>
@@ -49,11 +48,11 @@
                 <mat-form-field fxFlex>
                     <mat-label>
                         <ng-container
-                            *ngIf="!(data.extensionResult$ | async)?.label; else extensionLabel"
+                            *ngIf="!(extensionResult$ | async)?.label; else extensionLabel"
                             >{{ data.type | fieldLabel: data.field }}</ng-container
                         >
                         <ng-template #extensionLabel>{{
-                            (data.extensionResult$ | async).label
+                            (extensionResult$ | async).label
                         }}</ng-template>
                     </mat-label>
                     <mat-hint>{{ aliases }}</mat-hint>
@@ -61,7 +60,7 @@
                         #trigger="matAutocompleteTrigger"
                         [formControl]="control"
                         [matAutocomplete]="auto"
-                        [ngClass]="{ 'cc-code': (data.extensionResult$ | async)?.isIdentifier }"
+                        [ngClass]="{ 'cc-code': (extensionResult$ | async)?.isIdentifier }"
                         [required]="data.isRequired"
                         [type]="inputType"
                         matInput
@@ -86,7 +85,7 @@
                         </button>
                     </div>
                     <mat-autocomplete #auto="matAutocomplete">
-                        <ng-container *ngIf="data.extensionResult$ | async as extensionResult">
+                        <ng-container *ngIf="extensionResult$ | async as extensionResult">
                             <mat-option
                                 *ngFor="let option of filteredOptions$ | async"
                                 [value]="option.value"

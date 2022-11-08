@@ -5,6 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 
+import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
@@ -29,6 +30,7 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
     implements OnInit, Validator
 {
     @Input() data: MetadataFormData<SetType | MapType | ListType>;
+    @Input() extensions: MetadataFormExtension[];
 
     valueControls = new FormArray([]);
     keyControls = new FormArray([]);

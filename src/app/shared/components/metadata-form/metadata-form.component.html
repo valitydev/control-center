@@ -1,33 +1,37 @@
 <div *ngIf="data" [ngSwitch]="data?.typeGroup">
     <cc-extension-field
         *ngIf="
-            (data?.extensionResult$ | async)?.type &&
-                (data?.extensionResult$ | async)?.type !== 'datetime';
+            (extensionResult$ | async)?.type && (extensionResult$ | async)?.type !== 'datetime';
             else defaultFields
         "
         [data]="data"
+        [extensions]="extensions"
         [formControl]="control"
     ></cc-extension-field>
     <ng-template #defaultFields>
         <cc-primitive-field
             *ngSwitchCase="'primitive'"
             [data]="data"
+            [extensions]="extensions"
             [formControl]="control"
         ></cc-primitive-field>
         <cc-complex-form
             *ngSwitchCase="'complex'"
             [data]="data"
+            [extensions]="extensions"
             [formControl]="control"
         ></cc-complex-form>
         <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
             <cc-struct-form
                 *ngSwitchCase="'struct'"
                 [data]="data"
+                [extensions]="extensions"
                 [formControl]="control"
             ></cc-struct-form>
             <cc-union-field
                 *ngSwitchCase="'union'"
                 [data]="data"
+                [extensions]="extensions"
                 [formControl]="control"
             ></cc-union-field>
             <cc-enum-field
@@ -38,6 +42,7 @@
             <cc-typedef-form
                 *ngSwitchCase="'typedef'"
                 [data]="data"
+                [extensions]="extensions"
                 [formControl]="control"
             ></cc-typedef-form>
         </ng-container>
