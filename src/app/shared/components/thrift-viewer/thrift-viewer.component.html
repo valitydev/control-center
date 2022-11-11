@@ -13,7 +13,7 @@
                 <mat-icon *ngIf="kind === 'editor'">view_comfy_alt</mat-icon>
             </button>
         </div>
-        <cc-json-viewer *ngIf="kind === 'component'" [json]="json"></cc-json-viewer>
+        <cc-json-viewer *ngIf="kind === 'component'" [value]="json"></cc-json-viewer>
         <cc-monaco-editor
             *ngIf="kind === 'editor'"
             [file]="valueFile$ | async"

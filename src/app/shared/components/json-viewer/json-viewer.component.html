@@ -1,39 +1,53 @@
-<div *ngIf="view" gdColumns="1fr" gdGap="16px">
-    <div *ngIf="(view.leaves$ | async)?.length" gdColumns="1fr 1fr 1fr" gdGap="16px">
-        <div
-            *ngFor="let item of view.leaves$ | async; let i = index"
-            fxLayout="column"
-            fxLayoutGap="8px"
-        >
-            <div class="cc-caption cc-secondary-text">
-                <cc-key [keys]="item.keys"></cc-key>
-            </div>
-            <div class="cc-body-1">
-                <div *ngIf="item.isEmpty; else content" class="cc-secondary-text">
-                    <mat-icon inline>hide_source</mat-icon>
+<ng-container *ngIf="view?.items$ | async as items">
+    <div *ngIf="items?.length; else onlyValue" gdColumns="1fr" gdGap="16px">
+        <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+            <div
+                *ngFor="let item of view.leaves$ | async; let i = index"
+                gdColumns="1fr"
+                gdGap="8px"
+            >
+                <div class="cc-caption cc-secondary-text">
+                    <div *ngIf="item.path$ | async as path">
+                        <ng-container *ngFor="let pathItem of path; let idx = index">
+                            <cc-json-viewer
+                                *ngIf="pathItem.key$ | async as key"
+                                [data]="key.data$ | async"
+                                [value]="key.value$ | async"
+                            ></cc-json-viewer>
+                            {{ idx !== path.length - 1 ? ' / ' : '' }}
+                        </ng-container>
+                    </div>
                 </div>
-                <ng-template #content>
-                    {{ item.xvalue }}
-                </ng-template>
+                <div class="cc-body-1">
+                    <cc-json-viewer
+                        *ngIf="item.current$ | async as current"
+                        [data]="current.data$ | async"
+                        [value]="current.value$ | async"
+                    ></cc-json-viewer>
+                </div>
             </div>
+        </div>
+
+        <div *ngFor="let item of view?.nodes$ | async" gdColumns="1fr" gdGap="16px">
+            <div *ngIf="item.path$ | async as path" [class]="className">
+                <ng-container *ngFor="let pathItem of path; let idx = index">
+                    <cc-json-viewer
+                        *ngIf="pathItem.key$ | async as key"
+                        [data]="key.data$ | async"
+                        [value]="key.value$ | async"
+                    ></cc-json-viewer>
+                    {{ idx !== path.length - 1 ? ' / ' : '' }}
+                </ng-container>
+            </div>
+            <cc-json-viewer
+                *ngIf="item.current$ | async as current"
+                [data]="current.data$ | async"
+                [value]="current.value$ | async"
+            ></cc-json-viewer>
         </div>
     </div>
 
-    <ng-container *ngFor="let item of view.nodes$ | async; let i = index">
-        <mat-divider *ngIf="i !== 0 || (view.leaves$ | async)?.length"></mat-divider>
-        <div [gdColumns]="item.isIndex ? 'auto 1fr' : '1fr'" gdGap="16px">
-            <cc-key
-                [class]="className"
-                [index]="item.isIndex ? item.keys[0].value + 1 : undefined"
-                [keys]="item.keys"
-            ></cc-key>
-
-            <cc-json-viewer
-                [data]="item.data"
-                [extensions]="extensions"
-                [json]="item.value"
-                [level]="level + 1"
-            ></cc-json-viewer>
-        </div>
-    </ng-container>
-</div>
+    <ng-template #onlyValue>
+        {{ view.value$ | async }}
+    </ng-template>
+</ng-container>

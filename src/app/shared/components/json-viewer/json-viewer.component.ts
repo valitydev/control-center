@@ -4,7 +4,7 @@ import { ValueType, Field } from '@vality/thrift-ts';
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { MetadataFormData } from '../metadata-form';
-import { View } from './utils/get-inline';
+import { MetadataViewItem } from './utils/metadata-view';
 import { MetadataViewExtension } from './utils/metadata-view-extension';
 
 @Component({
@@ -12,7 +12,7 @@ import { MetadataViewExtension } from './utils/metadata-view-extension';
     templateUrl: './json-viewer.component.html',
 })
 export class JsonViewerComponent implements OnChanges {
-    @Input() json: unknown;
+    @Input() value: unknown;
     @Input() level = 0;
 
     @Input() metadata: ThriftAstMetadata[];
@@ -24,7 +24,7 @@ export class JsonViewerComponent implements OnChanges {
     @Input() data: MetadataFormData;
     @Input() extensions: MetadataViewExtension[];
 
-    view: View;
+    view: MetadataViewItem;
     className = this.getClassName();
 
     ngOnChanges() {
@@ -42,10 +42,8 @@ export class JsonViewerComponent implements OnChanges {
                 console.warn(err);
             }
         }
-        if (this.data) {
-            this.view = new View(this.json, this.data, this.extensions);
-            this.className = this.getClassName();
-        }
+        this.view = new MetadataViewItem(this.value, undefined, this.data, this.extensions);
+        this.className = this.getClassName();
     }
 
     getClassName() {

@@ -1,4 +1,5 @@
 import { SetType, ListType, MapType } from '@vality/thrift-ts';
+import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, of, defer, switchMap, combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
@@ -12,28 +13,61 @@ import {
     getFirstDeterminedExtensionsResult,
 } from './metadata-view-extension';
 
-interface Inline {
-    keys: MetadataViewItem[];
-    item: MetadataViewItem;
-}
-
 export class MetadataViewItem {
     extension$ = getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value);
-    key$ = this.extension$.pipe(map((ext) => new MetadataViewItem(ext?.key) ?? this.key));
+    key$ = this.extension$.pipe(
+        map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key)))
+    );
     value$ = this.extension$.pipe(map((ext) => ext?.value ?? this.value));
     data$ = this.extension$.pipe(map((ext) => (ext ? null : this.data)));
 
     items$: Observable<MetadataViewItem[]> = this.createItems();
-    inline$: Observable<Inline> = defer(() => this.items$).pipe(
-        withLatestFrom(this.key$),
+    inline$: Observable<MetadataViewItem[]> = defer(() => this.items$).pipe(
+        withLatestFrom(this.key$, this.data$),
+        switchMap(([items, key, data]) =>
+            combineLatest([of(items), of(key), key.value$, of(data)])
+        ),
         switchMap(([items, key]) => {
-            if (!items.length || items.length > 1 || key?.data)
-                return of({ keys: [this], item: this });
+            if (!items.length || items.length > 1 || key?.data) return of([]);
             const [item] = items;
-            return item.inline$.pipe(
-                map((childInline) => ({ ...childInline, keys: [this, ...childInline.keys] }))
+            return combineLatest([
+                item.items$,
+                item.data$,
+                item.key$.pipe(switchMap((key) => key.value$)),
+                item.value$,
+            ]).pipe(
+                switchMap(([childItems, childData, childKey, childValue]) => {
+                    if (typeof childKey === 'number' || childData?.objectType === 'union')
+                        return of([]);
+                    return item.inline$.pipe(map((childInline) => [item, ...childInline]));
+                })
             );
         })
+    );
+    path$: Observable<MetadataViewItem[]> = this.inline$.pipe(
+        map((inline) => {
+            return [this, ...inline];
+        })
+    );
+    current$ = this.path$.pipe(map((keys) => keys.at(-1)));
+
+    isLeaf$ = this.current$.pipe(switchMap((c) => c.items$)).pipe(map((items) => !items.length));
+
+    leaves$ = this.items$.pipe(
+        switchMap((items) =>
+            combineLatest(
+                items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? item : null))))
+            )
+        ),
+        map((items) => items.filter(Boolean))
+    );
+    nodes$ = this.items$.pipe(
+        switchMap((items) =>
+            combineLatest(
+                items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? null : item))))
+            )
+        ),
+        map((items) => items.filter(Boolean))
     );
 
     constructor(
