@@ -4,10 +4,9 @@ import isObject from 'lodash-es/isObject';
 import { Observable, of, defer, switchMap, combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 
-import { getEntries } from '@cc/app/shared/components/json-viewer/utils/get-entries';
-
 import { MetadataFormData } from '../../metadata-form';
 import { getChildrenTypes } from './get-children-types';
+import { getEntries } from './get-entries';
 import {
     MetadataViewExtension,
     getFirstDeterminedExtensionsResult,

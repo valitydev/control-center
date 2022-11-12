@@ -6,18 +6,7 @@
                 gdColumns="1fr"
                 gdGap="8px"
             >
-                <div class="cc-caption cc-secondary-text">
-                    <div *ngIf="item.path$ | async as path">
-                        <ng-container *ngFor="let pathItem of path; let idx = index">
-                            <cc-json-viewer
-                                *ngIf="pathItem.key$ | async as key"
-                                [data]="key.data$ | async"
-                                [value]="key.value$ | async"
-                            ></cc-json-viewer>
-                            {{ idx !== path.length - 1 ? ' / ' : '' }}
-                        </ng-container>
-                    </div>
-                </div>
+                <cc-key [keys]="item.path$ | async" class="cc-caption cc-secondary-text"></cc-key>
                 <div class="cc-body-1">
                     <cc-json-viewer
                         *ngIf="item.current$ | async as current"
@@ -29,16 +18,7 @@
         </div>
 
         <div *ngFor="let item of view?.nodes$ | async" gdColumns="1fr" gdGap="16px">
-            <div *ngIf="item.path$ | async as path" [class]="className">
-                <ng-container *ngFor="let pathItem of path; let idx = index">
-                    <cc-json-viewer
-                        *ngIf="pathItem.key$ | async as key"
-                        [data]="key.data$ | async"
-                        [value]="key.value$ | async"
-                    ></cc-json-viewer>
-                    {{ idx !== path.length - 1 ? ' / ' : '' }}
-                </ng-container>
-            </div>
+            <cc-key [class]="className" [keys]="item.path$ | async"></cc-key>
             <cc-json-viewer
                 *ngIf="item.current$ | async as current"
                 [data]="current.data$ | async"
