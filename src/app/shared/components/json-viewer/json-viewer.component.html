@@ -1,33 +1,41 @@
 <ng-container *ngIf="view?.items$ | async as items">
-    <div *ngIf="items?.length; else onlyValue" gdColumns="1fr" gdGap="16px">
-        <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+    <div *ngIf="!(view.isLeaf$ | async); else onlyValue" gdColumns="1fr" gdGap="16px">
+        <div *ngIf="(view.leaves$ | async)?.length" gdColumns="1fr 1fr 1fr" gdGap="16px">
             <div
                 *ngFor="let item of view.leaves$ | async; let i = index"
                 gdColumns="1fr"
                 gdGap="8px"
             >
                 <cc-key [keys]="item.path$ | async" class="cc-caption cc-secondary-text"></cc-key>
-                <div class="cc-body-1">
+                <div *ngIf="item.current$ | async as current" class="cc-body-1">
                     <cc-json-viewer
-                        *ngIf="item.current$ | async as current"
+                        *ngIf="current.value$ | async; else empty"
                         [data]="current.data$ | async"
                         [value]="current.value$ | async"
                     ></cc-json-viewer>
+                    <ng-template #empty>
+                        <mat-icon class="cc-secondary-text" inline>hide_source</mat-icon>
+                    </ng-template>
                 </div>
             </div>
         </div>
 
-        <div *ngFor="let item of view?.nodes$ | async" gdColumns="1fr" gdGap="16px">
+        <div
+            *ngFor="let item of view?.nodes$ | async"
+            [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
+            gdGap="16px"
+        >
             <cc-key [class]="className" [keys]="item.path$ | async"></cc-key>
             <cc-json-viewer
                 *ngIf="item.current$ | async as current"
                 [data]="current.data$ | async"
+                [level]="level + 1"
                 [value]="current.value$ | async"
             ></cc-json-viewer>
         </div>
     </div>
 
     <ng-template #onlyValue>
-        {{ view.value$ | async }}
+        {{ view.renderValue$ | async }}
     </ng-template>
 </ng-container>

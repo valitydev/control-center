@@ -1,6 +1,11 @@
 <div>
-    <ng-container *ngFor="let pathItem of keys; let idx = index">
-        {{ (pathItem.key$ | async)?.value$ | async | keyTitle | titlecase }}
-        {{ idx !== keys.length - 1 ? ' / ' : '' }}
-    </ng-container>
+    <ng-container *ngIf="numberKey$ | async as numberKey; else defKey"
+        >{{ numberKey }}.</ng-container
+    >
+    <ng-template #defKey>
+        <ng-container *ngFor="let pathItem of keys; let idx = index">
+            {{ (pathItem.key$ | async)?.renderValue$ | async | keyTitle | titlecase }}
+            {{ idx !== keys.length - 1 ? ' / ' : '' }}
+        </ng-container>
+    </ng-template>
 </div>
