@@ -2,10 +2,23 @@
     <ng-container *ngIf="numberKey$ | async as numberKey; else defKey"
         >{{ numberKey }}.</ng-container
     >
-    <ng-template #defKey>
-        <ng-container *ngFor="let pathItem of keys; let idx = index">
-            {{ (pathItem.key$ | async)?.renderValue$ | async | keyTitle | titlecase }}
-            {{ idx !== keys.length - 1 ? ' / ' : '' }}
+    <ng-template #defKey
+        ><ng-container *ngFor="let pathItem of keys; let idx = index">
+            <span
+                [class]="
+                    (pathItem?.data$ | async)?.trueParent?.objectType !== 'union'
+                        ? 'cc-secondary-text'
+                        : 'bold'
+                "
+                >{{ (pathItem.key$ | async)?.renderValue$ | async | keyTitle | titlecase
+                }}{{
+                    idx !== keys.length - 1
+                        ? (pathItem?.data$ | async)?.trueTypeNode?.data?.objectType === 'union'
+                            ? ': '
+                            : ' / '
+                        : ''
+                }}</span
+            >
         </ng-container>
     </ng-template>
 </div>

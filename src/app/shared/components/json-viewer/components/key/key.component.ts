@@ -7,6 +7,7 @@ import { MetadataViewItem } from '../../utils/metadata-view';
 @Component({
     selector: 'cc-key',
     templateUrl: './key.component.html',
+    styleUrls: ['./key.component.scss'],
 })
 export class KeyComponent {
     @Input() keys?: MetadataViewItem[];

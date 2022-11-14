@@ -72,7 +72,13 @@ export class MetadataViewItem {
                         (data?.objectType === 'union' && isEmpty(childValue))
                     )
                         return of([]);
-                    return item.inline$.pipe(map((childInline) => [item, ...childInline]));
+                    return item.data$.pipe(
+                        switchMap((itemData) => {
+                            if (data?.objectType === 'union' && itemData?.objectType !== 'union')
+                                return of([item]);
+                            return item.inline$.pipe(map((childInline) => [item, ...childInline]));
+                        })
+                    );
                 })
             );
         })
