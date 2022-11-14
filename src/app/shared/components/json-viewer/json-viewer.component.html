@@ -3,8 +3,8 @@
         <div *ngIf="(view.leaves$ | async)?.length" gdColumns="1fr 1fr 1fr" gdGap="16px">
             <div
                 *ngFor="let item of view.leaves$ | async; let i = index"
-                gdColumns="1fr"
                 gdGap="8px"
+                gdRows="auto 1fr"
             >
                 <cc-key [keys]="item.path$ | async" class="cc-caption cc-secondary-text"></cc-key>
                 <div *ngIf="item.current$ | async as current" class="cc-body-1">
@@ -23,10 +23,11 @@
         </div>
 
         <div
-            *ngFor="let item of view?.nodes$ | async"
+            *ngFor="let item of view?.nodes$ | async; let idx = index"
             [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
             gdGap="16px"
         >
+            <mat-divider *ngIf="idx > 0 || (view.leaves$ | async)?.length"></mat-divider>
             <cc-key [class]="className" [keys]="item.path$ | async"></cc-key>
             <cc-json-viewer
                 *ngIf="item.current$ | async as current"
