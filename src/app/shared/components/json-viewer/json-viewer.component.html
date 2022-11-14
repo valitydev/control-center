@@ -1,5 +1,5 @@
 <ng-container *ngIf="view?.items$ | async as items">
-    <div *ngIf="!(view.isLeaf$ | async); else onlyValue" gdColumns="1fr" gdGap="16px">
+    <div *ngIf="!(view.isValue$ | async); else onlyValue" gdColumns="1fr" gdGap="16px">
         <div
             *ngIf="(view.leaves$ | async)?.length as count"
             [gdColumns]="count === 1 ? '1fr' : count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'"

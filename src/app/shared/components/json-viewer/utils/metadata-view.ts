@@ -97,6 +97,20 @@ export class MetadataViewItem {
         })
     );
 
+    isValue$ = combineLatest([
+        this.current$.pipe(switchMap((c) => c.items$)),
+        this.data$,
+        this.value$,
+        this.current$.pipe(map((c) => c.key)),
+    ]).pipe(
+        map(([items, data, value, key]) => {
+            return (
+                (!items.length && !key) ||
+                (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
+            );
+        })
+    );
+
     leaves$ = this.items$.pipe(
         switchMap((items) =>
             combineLatest(
