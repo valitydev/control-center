@@ -52,7 +52,15 @@ export class MetadataViewItem {
         this.key$.pipe(switchMap((key) => key?.value$ || of(null))),
     ]).pipe(
         switchMap(([items, key, data, keyValue]) => {
-            if (!items.length || items.length > 1 || isObject(keyValue) || key?.data) return of([]);
+            if (
+                !items.length ||
+                items.length > 1 ||
+                isObject(keyValue) ||
+                key?.data ||
+                (data?.trueTypeNode?.data as MetadataFormData<SetType | ListType | MapType>)?.type
+                    ?.name
+            )
+                return of([]);
             const [item] = items;
             return combineLatest([
                 item.key$.pipe(switchMap((key) => key.value$)),
@@ -118,39 +126,39 @@ export class MetadataViewItem {
     private createItems(): Observable<MetadataViewItem[]> {
         return combineLatest([this.data$, this.value$]).pipe(
             map(([data, value]) => {
-                if (!data)
-                    return isObject(value)
-                        ? getEntries(value).map(
-                              ([k, v]) => new MetadataViewItem(v, new MetadataViewItem(k))
-                          )
-                        : [];
-                const trueData = this.data.trueTypeNode.data;
-                if (
-                    trueData.objectType === 'struct' ||
-                    trueData.objectType === 'union' ||
-                    (trueData as MetadataFormData<SetType | ListType | MapType>).type?.name
-                ) {
-                    const types = getChildrenTypes(trueData);
-                    return getEntries(value).map(([itemKey, itemValue]) => {
-                        return new MetadataViewItem(
-                            itemValue,
-                            types.keyType
-                                ? new MetadataViewItem(
-                                      itemKey,
-                                      undefined,
-                                      trueData.create({ type: types.keyType }),
-                                      this.extensions
-                                  )
-                                : new MetadataViewItem(itemKey),
-                            trueData.create({
-                                field: types.fields?.find((f) => f.name === itemKey),
-                                type: types.valueType,
-                            }),
-                            this.extensions
-                        );
-                    });
+                if (data) {
+                    const trueData = this.data.trueTypeNode.data;
+                    if (
+                        trueData.objectType === 'struct' ||
+                        trueData.objectType === 'union' ||
+                        (trueData as MetadataFormData<SetType | ListType | MapType>).type?.name
+                    ) {
+                        const types = getChildrenTypes(trueData);
+                        return getEntries(value).map(([itemKey, itemValue]) => {
+                            return new MetadataViewItem(
+                                itemValue,
+                                types.keyType
+                                    ? new MetadataViewItem(
+                                          itemKey,
+                                          undefined,
+                                          trueData.create({ type: types.keyType }),
+                                          this.extensions
+                                      )
+                                    : new MetadataViewItem(itemKey),
+                                trueData.create({
+                                    field: types.fields?.find((f) => f.name === itemKey),
+                                    type: types.valueType,
+                                }),
+                                this.extensions
+                            );
+                        });
+                    }
                 }
-                return [];
+                return isObject(value)
+                    ? getEntries(value).map(
+                          ([k, v]) => new MetadataViewItem(v, new MetadataViewItem(k))
+                      )
+                    : [];
             })
         );
     }

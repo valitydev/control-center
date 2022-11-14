@@ -1,12 +1,17 @@
 <ng-container *ngIf="view?.items$ | async as items">
     <div *ngIf="!(view.isLeaf$ | async); else onlyValue" gdColumns="1fr" gdGap="16px">
-        <div *ngIf="(view.leaves$ | async)?.length" gdColumns="1fr 1fr 1fr" gdGap="16px">
+        <div
+            *ngIf="(view.leaves$ | async)?.length as count"
+            [gdColumns]="count === 1 ? '1fr' : count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'"
+            gdGap="16px"
+        >
             <div
                 *ngFor="let item of view.leaves$ | async; let i = index"
                 gdGap="8px"
                 gdRows="auto 1fr"
             >
                 <cc-key [keys]="item.path$ | async" class="cc-caption cc-secondary-text"></cc-key>
+
                 <div *ngIf="item.current$ | async as current" class="cc-body-1">
                     <cc-json-viewer
                         *ngIf="current.value$ | async; else empty"
@@ -28,7 +33,21 @@
                 [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
                 gdGap="16px"
             >
-                <cc-key [class]="className" [keys]="item.path$ | async"></cc-key>
+                <cc-key
+                    *ngIf="!((item.current$ | async)?.key.data$ | async); else mapKey"
+                    [class]="className"
+                    [keys]="item.path$ | async"
+                ></cc-key>
+                <ng-template #mapKey>
+                    <cc-json-viewer
+                        *ngIf="(item.current$ | async)?.key as key"
+                        [data]="key.data$ | async"
+                        [extensions]="extensions"
+                        [level]="level + 1"
+                        [value]="key.value$ | async"
+                    ></cc-json-viewer
+                ></ng-template>
+
                 <cc-json-viewer
                     *ngIf="item.current$ | async as current"
                     [data]="current.data$ | async"
