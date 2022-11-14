@@ -6,6 +6,8 @@ import { MetadataFormData } from '../../metadata-form';
 export interface MetadataViewExtensionResult {
     key?: string;
     value: string;
+    tooltip?: any;
+    // link?: string;
 }
 
 export type MetadataViewExtension = {

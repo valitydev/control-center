@@ -2,7 +2,14 @@
     <cc-headline>Shop details</cc-headline>
     <mat-card>
         <mat-card-content>
-            <cc-json-viewer *ngIf="shop$ | async as shop" [json]="shop"></cc-json-viewer>
+            <cc-json-viewer
+                *ngIf="shop$ | async as shop"
+                [extensions]="extensions$ | async"
+                [metadata]="metadata$ | async"
+                [value]="shop"
+                namespace="domain"
+                type="Shop"
+            ></cc-json-viewer>
             <div *ngIf="inProgress$ | async" fxLayout fxLayoutAlign="center center">
                 <mat-spinner diameter="64"></mat-spinner>
             </div>
@@ -13,7 +20,11 @@
         <mat-card-content>
             <cc-json-viewer
                 *ngIf="contract$ | async as contract"
-                [json]="contract"
+                [extensions]="extensions$ | async"
+                [metadata]="metadata$ | async"
+                [value]="contract"
+                namespace="domain"
+                type="Contract"
             ></cc-json-viewer>
             <div *ngIf="inProgress$ | async" fxLayout fxLayoutAlign="center center">
                 <mat-spinner diameter="64"></mat-spinner>

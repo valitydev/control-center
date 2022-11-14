@@ -1,19 +1,25 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ValueType, Field } from '@vality/thrift-ts';
+import yaml from 'yaml';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { MetadataFormData } from '../metadata-form';
 import { MetadataViewItem } from './utils/metadata-view';
-import { MetadataViewExtension } from './utils/metadata-view-extension';
+import {
+    MetadataViewExtension,
+    MetadataViewExtensionResult,
+} from './utils/metadata-view-extension';
 
 @Component({
     selector: 'cc-json-viewer',
     templateUrl: './json-viewer.component.html',
+    styleUrls: ['./json-viewer.scss'],
 })
 export class JsonViewerComponent implements OnChanges {
     @Input() value: unknown;
     @Input() level = 0;
+    @Input() extension?: MetadataViewExtensionResult;
 
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;
@@ -57,5 +63,9 @@ export class JsonViewerComponent implements OnChanges {
             default:
                 return 'cc-body-2';
         }
+    }
+
+    getTooltip(tooltip: any) {
+        return yaml.stringify(tooltip);
     }
 }

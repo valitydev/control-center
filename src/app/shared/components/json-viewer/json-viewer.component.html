@@ -11,6 +11,8 @@
                     <cc-json-viewer
                         *ngIf="current.value$ | async; else empty"
                         [data]="current.data$ | async"
+                        [extension]="current.extension$ | async"
+                        [extensions]="extensions"
                         [value]="current.value$ | async"
                     ></cc-json-viewer>
                     <ng-template #empty>
@@ -29,6 +31,7 @@
             <cc-json-viewer
                 *ngIf="item.current$ | async as current"
                 [data]="current.data$ | async"
+                [extensions]="extensions"
                 [level]="level + 1"
                 [value]="current.value$ | async"
             ></cc-json-viewer>
@@ -36,6 +39,19 @@
     </div>
 
     <ng-template #onlyValue>
-        {{ view.renderValue$ | async }}
+        <span
+            *ngIf="extension?.tooltip; else simpleValue"
+            [matTooltip]="getTooltip(extension.tooltip)"
+            matBadge="ℹ"
+            matBadgeOverlap="false"
+            matBadgeSize="small"
+            matTooltipClass="tooltip"
+            style="cursor: default"
+        >
+            {{ view.renderValue$ | async }}
+        </span>
+        <ng-template #simpleValue>
+            {{ view.renderValue$ | async }}
+        </ng-template>
     </ng-template>
 </ng-container>
