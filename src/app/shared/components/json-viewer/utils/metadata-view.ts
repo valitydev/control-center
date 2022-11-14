@@ -1,8 +1,8 @@
 import { isEmpty } from '@vality/ng-core';
-import { SetType, ListType, MapType } from '@vality/thrift-ts';
+import { SetType, ListType, MapType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
-import { Observable, of, switchMap, combineLatest, defer } from 'rxjs';
+import { Observable, of, switchMap, combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormData } from '../../metadata-form';
@@ -17,6 +17,7 @@ export class MetadataViewItem {
     extension$ = getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value).pipe(
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+    data$ = this.extension$.pipe(map((ext) => (ext ? null : this.data)));
 
     key$ = this.extension$.pipe(
         map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key)))
@@ -27,15 +28,19 @@ export class MetadataViewItem {
             return isEmpty(value) ? null : value;
         })
     );
-    renderValue$ = combineLatest([this.value$, defer(() => this.data$)]).pipe(
+    renderValue$ = combineLatest([this.value$, this.data$]).pipe(
         map(([value, data]) => {
+            if (data?.trueTypeNode?.data?.objectType === 'enum')
+                return (
+                    (data.trueTypeNode.data as MetadataFormData<ValueType, 'enum'>).ast.items.find(
+                        (i) => i.value === value
+                    ).name ?? value
+                );
             if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
                 return getEntries(value)?.[0]?.[0];
             return value;
         })
     );
-
-    data$ = this.extension$.pipe(map((ext) => (ext ? null : this.data)));
 
     items$: Observable<MetadataViewItem[]> = this.createItems().pipe(
         shareReplay({ refCount: true, bufferSize: 1 })
@@ -44,9 +49,10 @@ export class MetadataViewItem {
         this.items$,
         this.key$,
         this.data$,
+        this.key$.pipe(switchMap((key) => key?.value$ || of(null))),
     ]).pipe(
-        switchMap(([items, key, data]) => {
-            if (!items.length || items.length > 1 || key?.data) return of([]);
+        switchMap(([items, key, data, keyValue]) => {
+            if (!items.length || items.length > 1 || isObject(keyValue) || key?.data) return of([]);
             const [item] = items;
             return combineLatest([
                 item.key$.pipe(switchMap((key) => key.value$)),
@@ -125,19 +131,19 @@ export class MetadataViewItem {
                     (trueData as MetadataFormData<SetType | ListType | MapType>).type?.name
                 ) {
                     const types = getChildrenTypes(trueData);
-                    return getEntries(this.value).map(([key, value]) => {
+                    return getEntries(value).map(([itemKey, itemValue]) => {
                         return new MetadataViewItem(
-                            value,
+                            itemValue,
                             types.keyType
                                 ? new MetadataViewItem(
-                                      value,
+                                      itemKey,
                                       undefined,
                                       trueData.create({ type: types.keyType }),
                                       this.extensions
                                   )
-                                : new MetadataViewItem(key),
+                                : new MetadataViewItem(itemKey),
                             trueData.create({
-                                field: types.fields?.find((f) => f.name === key),
+                                field: types.fields?.find((f) => f.name === itemKey),
                                 type: types.valueType,
                             }),
                             this.extensions

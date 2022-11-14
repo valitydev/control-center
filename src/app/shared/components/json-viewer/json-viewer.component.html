@@ -22,21 +22,22 @@
             </div>
         </div>
 
-        <div
-            *ngFor="let item of view?.nodes$ | async; let idx = index"
-            [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
-            gdGap="16px"
-        >
+        <ng-container *ngFor="let item of view?.nodes$ | async; let idx = index">
             <mat-divider *ngIf="idx > 0 || (view.leaves$ | async)?.length"></mat-divider>
-            <cc-key [class]="className" [keys]="item.path$ | async"></cc-key>
-            <cc-json-viewer
-                *ngIf="item.current$ | async as current"
-                [data]="current.data$ | async"
-                [extensions]="extensions"
-                [level]="level + 1"
-                [value]="current.value$ | async"
-            ></cc-json-viewer>
-        </div>
+            <div
+                [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
+                gdGap="16px"
+            >
+                <cc-key [class]="className" [keys]="item.path$ | async"></cc-key>
+                <cc-json-viewer
+                    *ngIf="item.current$ | async as current"
+                    [data]="current.data$ | async"
+                    [extensions]="extensions"
+                    [level]="level + 1"
+                    [value]="current.value$ | async"
+                ></cc-json-viewer>
+            </div>
+        </ng-container>
     </div>
 
     <ng-template #onlyValue>

@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
+
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { enumHasValue } from '../../../utils';
@@ -26,6 +29,8 @@ export class DomainInfoComponent {
     version$ = this.domainStoreService.version$;
     progress$ = this.domainStoreService.isLoading$;
     objWithRef: { obj: DomainObject; ref: Reference } = null;
+    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     get kind() {
         const kind = localStorage.getItem(VIEWER_KIND);
@@ -44,7 +49,8 @@ export class DomainInfoComponent {
         private domainStoreService: DomainStoreService,
         private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
     ) {}
 
     edit() {
