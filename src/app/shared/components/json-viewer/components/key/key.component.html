@@ -4,19 +4,10 @@
     >
     <ng-template #defKey
         ><ng-container *ngFor="let pathItem of keys; let idx = index">
-            <span
-                [class]="
-                    (pathItem?.data$ | async)?.trueParent?.objectType !== 'union'
-                        ? 'cc-secondary-text'
-                        : 'bold'
-                "
+            <span [class]="(isUnion(pathItem) | async) ? 'bold' : 'cc-secondary-text'"
                 >{{ (pathItem.key$ | async)?.renderValue$ | async | keyTitle | titlecase
                 }}{{
-                    idx !== keys.length - 1
-                        ? (pathItem?.data$ | async)?.trueTypeNode?.data?.objectType === 'union'
-                            ? ': '
-                            : ' / '
-                        : ''
+                    idx !== keys.length - 1 ? ((isUnion(pathItem) | async) ? ': ' : ' / ') : ''
                 }}</span
             >
         </ng-container>
