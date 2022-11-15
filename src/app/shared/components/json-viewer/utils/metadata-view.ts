@@ -18,9 +18,9 @@ export class MetadataViewItem {
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     data$ = this.extension$.pipe(map((ext) => (ext ? null : this.data)));
-
     key$ = this.extension$.pipe(
-        map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key)))
+        map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key))),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
     value$ = this.extension$.pipe(
         map((ext) => {
@@ -81,12 +81,14 @@ export class MetadataViewItem {
                     );
                 })
             );
-        })
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
     path$: Observable<MetadataViewItem[]> = this.inline$.pipe(
         map((inline) => {
             return [this, ...inline];
-        })
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
     current$ = this.path$.pipe(map((keys) => keys.at(-1)));
 
@@ -100,7 +102,8 @@ export class MetadataViewItem {
                 !items.length ||
                 (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
             );
-        })
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
 
     isValue$ = combineLatest([
@@ -123,7 +126,8 @@ export class MetadataViewItem {
                 items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? item : null))))
             )
         ),
-        map((items) => items.filter(Boolean))
+        map((items) => items.filter(Boolean)),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
     nodes$ = this.items$.pipe(
         switchMap((items) =>
@@ -131,7 +135,8 @@ export class MetadataViewItem {
                 items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? null : item))))
             )
         ),
-        map((items) => items.filter(Boolean))
+        map((items) => items.filter(Boolean)),
+        shareReplay({ refCount: true, bufferSize: 1 })
     );
 
     isNumberKey$ = this.key$.pipe(map(({ value }) => typeof value === 'number'));

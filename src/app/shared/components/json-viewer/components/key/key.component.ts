@@ -31,8 +31,13 @@ export class KeyComponent implements OnChanges {
         if (changes.keys) this.keys$.next(this.keys);
     }
 
-    isUnion(pathItem: MetadataViewItem) {
+    parentIsUnion(pathItem: MetadataViewItem) {
         if (!pathItem?.data$) return of(false);
         return pathItem.data$.pipe(map((data) => data?.trueParent?.objectType === 'union'));
+    }
+
+    isUnion(pathItem: MetadataViewItem) {
+        if (!pathItem?.data$) return of(false);
+        return pathItem.data$.pipe(map((data) => data?.trueTypeNode?.data?.objectType === 'union'));
     }
 }
