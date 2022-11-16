@@ -1,8 +1,11 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { ValueType } from '@vality/thrift-ts';
 import { ReplaySubject } from 'rxjs';
 
-import { objectToJSON } from '../../../api/utils';
+import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
+
+import { objectToJSON, ThriftAstMetadata } from '../../../api/utils';
 import { toMonacoFile } from '../../../domain/utils';
 import { ComponentChanges } from '../../utils';
 
@@ -22,6 +25,11 @@ export class ThriftViewerComponent<T> implements OnChanges {
     @Input() value: T;
     @Input() compared?: T;
 
+    @Input() metadata: ThriftAstMetadata[];
+    @Input() namespace: string;
+    @Input() type: ValueType;
+    @Input() extensions?: MetadataViewExtension[];
+
     @Output() changeKind = new EventEmitter<ViewerKind>();
 
     valueFile$ = new ReplaySubject(1);
@@ -29,10 +37,6 @@ export class ThriftViewerComponent<T> implements OnChanges {
 
     get isDiff() {
         return !!this.compared;
-    }
-
-    get json() {
-        return objectToJSON(this.value);
     }
 
     ngOnChanges(changes: ComponentChanges<ThriftViewerComponent<T>>) {

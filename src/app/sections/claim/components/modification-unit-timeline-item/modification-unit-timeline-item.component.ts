@@ -4,13 +4,13 @@ import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_manageme
 import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
-import { BehaviorSubject, switchMap } from 'rxjs';
+import { BehaviorSubject, switchMap, from } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
-import { Patch } from '@cc/app/shared/components/json-viewer';
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
@@ -33,11 +33,12 @@ export class ModificationUnitTimelineItemComponent {
     @Input() title?: string;
     @Input() icon?: string;
     @Input() color?: StatusColor | Color;
-    @Input() patches?: Patch[];
 
     @Output() claimChanged = new EventEmitter<void>();
 
     isLoading$ = inProgressFrom(() => this.progress$);
+    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     private progress$ = new BehaviorSubject(0);
 
@@ -45,19 +46,16 @@ export class ModificationUnitTimelineItemComponent {
         private partyManagementService: PartyManagementService,
         private baseDialogService: BaseDialogService,
         private claimManagementService: ClaimManagementService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
     ) {}
 
     get name() {
         return getModificationName(this.modificationUnit.modification);
     }
 
-    get modification() {
-        return getUnionValue(getUnionValue(this.modificationUnit?.modification));
-    }
-
     get hasModificationContent() {
-        return !isEmpty(this.modification);
+        return !isEmpty(getUnionValue(getUnionValue(this.modificationUnit?.modification)));
     }
 
     update() {

@@ -16,9 +16,13 @@
                 ></cc-thrift-editor>
                 <cc-thrift-viewer
                     *ngIf="review"
+                    [extensions]="viewerExtensions$ | async"
                     [kind]="reviewKind"
+                    [metadata]="metadata$ | async"
                     [value]="control.value"
                     class="editor"
+                    namespace="domain"
+                    type="DomainObject"
                     (changeKind)="reviewKind = $event"
                 ></cc-thrift-viewer>
             </mat-card-content>

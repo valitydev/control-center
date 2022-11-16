@@ -3,14 +3,19 @@ import { Validator, ValidationErrors, FormControl, Validators } from '@angular/f
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
-import { defer, switchMap, ReplaySubject, Observable } from 'rxjs';
+import { defer, switchMap, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { shareReplay, first, map } from 'rxjs/operators';
 
 import { createControlProviders } from '@cc/utils';
 
 import { ComponentChanges } from '../../../../utils';
 import { MetadataFormData } from '../../types/metadata-form-data';
-import { Converter } from '../../types/metadata-form-extension';
+import {
+    Converter,
+    MetadataFormExtension,
+    MetadataFormExtensionResult,
+    getFirstDeterminedExtensionsResult,
+} from '../../types/metadata-form-extension';
 
 @UntilDestroy()
 @Component({
@@ -23,15 +28,20 @@ export class ExtensionFieldComponent<T>
     implements Validator, OnChanges, OnInit
 {
     @Input() data: MetadataFormData<ThriftType>;
+    @Input() extensions: MetadataFormExtension[];
 
     control = new FormControl<T>(null);
 
-    extensionResult$ = defer(() => this.data$).pipe(
-        switchMap((data) => data.extensionResult$),
+    extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
+        defer(() => this.data$),
+        defer(() => this.extensions$),
+    ]).pipe(
+        switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
     private data$ = new ReplaySubject<MetadataFormData>(1);
+    private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
     private converter$: Observable<Converter> = this.extensionResult$.pipe(
         map(
             ({ converter }) =>
@@ -69,5 +79,6 @@ export class ExtensionFieldComponent<T>
             this.data$.next(this.data);
             this.control.setValidators(this.data.isRequired ? Validators.required : []);
         }
+        if (changes.extensions) this.extensions$.next(this.extensions);
     }
 }

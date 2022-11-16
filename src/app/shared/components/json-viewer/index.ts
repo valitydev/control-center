@@ -1,2 +1,2 @@
 export * from './json-viewer.module';
-export * from './types/patch';
+export * from './utils/metadata-view-extension';

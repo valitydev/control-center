@@ -36,7 +36,13 @@
                 <mat-expansion-panel-header>
                     {{ name | keyTitle | titlecase }}
                 </mat-expansion-panel-header>
-                <cc-json-viewer [json]="modification" [patches]="patches"></cc-json-viewer>
+                <cc-json-viewer
+                    [extensions]="extensions$ | async"
+                    [metadata]="metadata$ | async"
+                    [value]="modificationUnit?.modification"
+                    namespace="claim_management"
+                    type="Modification"
+                ></cc-json-viewer>
             </mat-expansion-panel>
         </ng-template>
     </cc-timeline-item-content>

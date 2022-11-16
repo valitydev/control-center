@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
-import { combineLatest, switchMap } from 'rxjs';
+import { combineLatest, switchMap, from } from 'rxjs';
 import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
+
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
@@ -16,7 +18,6 @@ import { FetchShopService } from './services/fetch-shop.service';
 @Component({
     templateUrl: 'shop-details.component.html',
     providers: [FetchShopService],
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopDetailsComponent {
     partyID$ = this.route.params.pipe(pluck('partyID'));
@@ -25,6 +26,8 @@ export class ShopDetailsComponent {
     shop$ = this.fetchShopService.shop$;
     contract$ = this.fetchShopService.contract$.pipe(map((c) => c?.contract));
     inProgress$ = this.fetchShopService.inProgress$;
+    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     constructor(
         private fetchShopService: FetchShopService,
@@ -32,7 +35,8 @@ export class ShopDetailsComponent {
         private partyManagementService: PartyManagementService,
         private baseDialogService: BaseDialogService,
         private errorService: ErrorService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
     ) {
         combineLatest([this.partyID$, this.shopID$]).subscribe(([partyID, shopID]) => {
             this.fetchShopService.getShop(partyID, shopID);

@@ -1,12 +1,17 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Validator } from '@angular/forms';
 import { Field, ValueType } from '@vality/thrift-ts';
+import { Observable } from 'rxjs';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from './types/metadata-form-data';
-import { MetadataFormExtension } from './types/metadata-form-extension';
+import {
+    MetadataFormExtension,
+    MetadataFormExtensionResult,
+    getFirstDeterminedExtensionsResult,
+} from './types/metadata-form-extension';
 
 @Component({
     selector: 'cc-metadata-form',
@@ -25,6 +30,7 @@ export class MetadataFormComponent<T>
     @Input() extensions?: MetadataFormExtension[];
 
     data: MetadataFormData;
+    extensionResult$: Observable<MetadataFormExtensionResult>;
 
     ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
@@ -34,8 +40,11 @@ export class MetadataFormComponent<T>
                     this.namespace,
                     this.type,
                     this.field,
-                    this.parent,
-                    this.extensions
+                    this.parent
+                );
+                this.extensionResult$ = getFirstDeterminedExtensionsResult(
+                    this.extensions,
+                    this.data
                 );
             } catch (err) {
                 this.data = undefined;

@@ -5,6 +5,8 @@ import { DomainObject } from '@vality/domain-proto/lib/domain';
 import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
+
 import { progressTo, getUnionKey, enumHasValue } from '../../../utils';
 import { EditorKind } from '../../shared/components/thrift-editor';
 import { ViewerKind } from '../../shared/components/thrift-viewer';
@@ -29,6 +31,7 @@ export class DomainObjCreationComponent {
 
     metadata$ = this.metadataService.metadata;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
+    viewerExtensions$ = this.domainMetadataViewExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
     get kind() {
@@ -57,6 +60,7 @@ export class DomainObjCreationComponent {
 
     constructor(
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
         private errorService: ErrorService,

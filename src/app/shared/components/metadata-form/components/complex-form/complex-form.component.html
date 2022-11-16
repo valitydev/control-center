@@ -48,7 +48,7 @@
                     <ng-container *ngIf="isKeyValue">
                         <span class="cc-body-2">Key</span>
                         <cc-metadata-form
-                            [extensions]="data.extensions"
+                            [extensions]="extensions"
                             [formControl]="keyControls.controls[i]"
                             [metadata]="data.metadata"
                             [namespace]="data.namespace"
@@ -58,7 +58,7 @@
                         <span class="cc-body-2">Value</span>
                     </ng-container>
                     <cc-metadata-form
-                        [extensions]="data.extensions"
+                        [extensions]="extensions"
                         [formControl]="valueControl"
                         [metadata]="data.metadata"
                         [namespace]="data.namespace"

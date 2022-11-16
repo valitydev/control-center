@@ -1,30 +1,80 @@
-<div gdColumns="1fr" gdGap="16px">
-    <div gdColumns="1fr 1fr 1fr" gdGap="16px">
-        <cc-details-item
-            *ngFor="let item of items; let i = index; trackBy: trackByFn"
-            [title]="item.key | keyTitle | titlecase"
+<ng-container *ngIf="view?.items$ | async as items">
+    <div *ngIf="!(view.isValue$ | async); else onlyValue" gdColumns="1fr" gdGap="16px">
+        <div
+            *ngIf="(view.leaves$ | async)?.length as count"
+            [gdColumns]="count === 1 ? '1fr' : count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'"
+            gdGap="16px"
         >
-            <span
-                *ngIf="!!item.value"
-                [matTooltip]="item.tooltip"
-                fxLayoutAlign=" center"
-                fxLayoutGap="4px"
+            <div
+                *ngFor="let item of view.leaves$ | async; let i = index"
+                gdGap="8px"
+                gdRows="auto 1fr"
             >
-                <span>{{ item.value }}</span>
-                <mat-icon *ngIf="item.tooltip" class="cc-secondary-text" inline>info</mat-icon>
-            </span>
-        </cc-details-item>
+                <cc-key [keys]="item.path$ | async" class="cc-caption cc-secondary-text"></cc-key>
+
+                <div *ngIf="item.current$ | async as current" class="cc-body-1">
+                    <cc-json-viewer
+                        *ngIf="current.value$ | async; else empty"
+                        [data]="current.data$ | async"
+                        [extension]="current.extension$ | async"
+                        [extensions]="extensions"
+                        [value]="current.value$ | async"
+                    ></cc-json-viewer>
+                    <ng-template #empty>
+                        <mat-icon class="cc-secondary-text" inline>hide_source</mat-icon>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let item of view?.nodes$ | async; let idx = index">
+            <mat-divider *ngIf="idx > 0 || (view.leaves$ | async)?.length"></mat-divider>
+            <div
+                [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
+                gdGap="16px"
+            >
+                <cc-key
+                    *ngIf="!((item.current$ | async)?.key.data$ | async); else mapKey"
+                    [class]="className"
+                    [keys]="item.path$ | async"
+                ></cc-key>
+                <ng-template #mapKey>
+                    <cc-json-viewer
+                        *ngIf="(item.current$ | async)?.key as key"
+                        [data]="key.data$ | async"
+                        [extensions]="extensions"
+                        [level]="level + 1"
+                        [value]="key.value$ | async"
+                    ></cc-json-viewer
+                ></ng-template>
+
+                <cc-json-viewer
+                    *ngIf="item.current$ | async as current"
+                    [data]="current.data$ | async"
+                    [extensions]="extensions"
+                    [level]="level + 1"
+                    [value]="current.value$ | async"
+                ></cc-json-viewer>
+            </div>
+        </ng-container>
     </div>
 
-    <!-- TODO: separate if 2 or more parents -->
-    <ng-container *ngFor="let item of objects; let i = index; trackBy: trackByFn">
-        <mat-divider *ngIf="i !== 0 || items.length"></mat-divider>
-        <span [class]="className">{{ item.key | keyTitle | titlecase }}</span>
-        <cc-json-viewer
-            *ngIf="!item.isEmpty"
-            [json]="item.sourceValue"
-            [patches]="patches"
-            [path]="item.path"
-        ></cc-json-viewer>
-    </ng-container>
-</div>
+    <ng-template #onlyValue>
+        <span class="cc-body-1">
+            <span
+                *ngIf="extension?.tooltip; else simpleValue"
+                [matTooltip]="getTooltip(extension.tooltip)"
+                matBadge="ℹ"
+                matBadgeOverlap="false"
+                matBadgeSize="small"
+                matTooltipClass="tooltip"
+                style="cursor: default"
+            >
+                {{ view.renderValue$ | async }}
+            </span>
+            <ng-template #simpleValue>
+                {{ view.renderValue$ | async }}
+            </ng-template>
+        </span>
+    </ng-template>
+</ng-container>

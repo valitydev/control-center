@@ -1,0 +1,15 @@
+<div>
+    <ng-container *ngIf="numberKey$ | async as numberKey; else defKey"
+        >{{ numberKey }}.</ng-container
+    >
+    <ng-template #defKey>
+        <ng-container *ngFor="let pathItem of keys; let idx = index">
+            <span [class]="(parentIsUnion(pathItem) | async) ? 'bold' : 'cc-secondary-text'"
+                >{{ (pathItem.key$ | async)?.renderValue$ | async | keyTitle | titlecase
+                }}{{
+                    idx !== keys.length - 1 ? ((isUnion(pathItem) | async) ? ': ' : ' / ') : ''
+                }}</span
+            >
+        </ng-container>
+    </ng-template>
+</div>

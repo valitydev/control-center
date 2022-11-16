@@ -1,50 +1,59 @@
-import { Component, Input } from '@angular/core';
-import isEqual from 'lodash-es/isEqual';
-import isObject from 'lodash-es/isObject';
+import { Component, Input, OnChanges } from '@angular/core';
+import { ValueType, Field } from '@vality/thrift-ts';
+import yaml from 'yaml';
 
-import { InlineItem } from './types/inline-item';
-import { Patch } from './types/patch';
-import { getInline } from './utils/get-inline';
+import { ThriftAstMetadata } from '@cc/app/api/utils';
+
+import { MetadataFormData } from '../metadata-form';
+import { MetadataViewItem } from './utils/metadata-view';
+import {
+    MetadataViewExtension,
+    MetadataViewExtensionResult,
+} from './utils/metadata-view-extension';
 
 @Component({
     selector: 'cc-json-viewer',
     templateUrl: './json-viewer.component.html',
+    styleUrls: ['./json-viewer.scss'],
 })
-export class JsonViewerComponent {
-    @Input() json: unknown;
-    @Input() path: string[] = [];
+export class JsonViewerComponent implements OnChanges {
+    @Input() value: unknown;
+    @Input() level = 0;
+    @Input() extension?: MetadataViewExtensionResult;
 
-    @Input() patches: Patch[] = [];
+    @Input() metadata: ThriftAstMetadata[];
+    @Input() namespace: string;
+    @Input() type: ValueType;
+    @Input() field?: Field;
+    @Input() parent?: MetadataFormData;
 
-    get inline(): InlineItem[] {
-        try {
-            return Object.entries(this.json)
-                .map(([k, v]) => getInline([k], v))
-                .filter(Boolean)
-                .map(
-                    ([path, value]): InlineItem =>
-                        new InlineItem(
-                            path,
-                            value,
-                            this.patches?.find((p) => isEqual(p.path, path))
-                        )
-                )
-                .sort(({ key: a }, { key: b }) => a.localeCompare(b));
-        } catch (err) {
-            return [];
+    @Input() data: MetadataFormData;
+    @Input() extensions: MetadataViewExtension[];
+
+    view: MetadataViewItem;
+    className = this.getClassName();
+
+    ngOnChanges() {
+        if (this.metadata && this.namespace && this.type) {
+            try {
+                this.data = new MetadataFormData(
+                    this.metadata,
+                    this.namespace,
+                    this.type,
+                    this.field,
+                    this.parent
+                );
+            } catch (err) {
+                this.data = undefined;
+                console.warn(err);
+            }
         }
+        this.view = new MetadataViewItem(this.value, undefined, this.data, this.extensions);
+        this.className = this.getClassName();
     }
 
-    get objects() {
-        return this.inline.filter(({ value }) => isObject(value));
-    }
-
-    get items() {
-        return this.inline.filter(({ value }) => !isObject(value));
-    }
-
-    get className() {
-        switch (this.path.length) {
+    getClassName() {
+        switch (this.level) {
             case 0:
                 return 'cc-title';
             case 1:
@@ -56,7 +65,7 @@ export class JsonViewerComponent {
         }
     }
 
-    trackByFn(idx: number, item: InlineItem) {
-        return item.path.join(';');
+    getTooltip(tooltip: any) {
+        return yaml.stringify(tooltip);
     }
 }
