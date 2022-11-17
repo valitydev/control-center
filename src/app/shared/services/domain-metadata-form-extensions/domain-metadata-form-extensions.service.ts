@@ -62,7 +62,7 @@ export class DomainMetadataFormExtensionsService {
                                               currency: { symbolic_code: cash.currencyCode },
                                           }
                                         : null,
-                                outputToInternal: (cash: Cash) =>
+                                outputToInternal: (cash: Cash): CashField =>
                                     cash
                                         ? {
                                               amount: toMajor(
@@ -73,7 +73,7 @@ export class DomainMetadataFormExtensionsService {
                                                           cash.currency.symbolic_code
                                                   )?.data?.exponent
                                               ),
-                                              currency: cash.currency.symbolic_code,
+                                              currencyCode: cash.currency.symbolic_code,
                                           }
                                         : null,
                             },
