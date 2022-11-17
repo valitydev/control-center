@@ -5,8 +5,8 @@
   "scripts": {
     "postinstall": "ngcc",
     "start": "concurrently -n LIB,APP -c magenta,cyan npm:dev-libs \"sleep 0.5 && npm run dev\"",
-    "dev": "ng serve --proxy-config proxy.conf.js --port 4201",
-    "stage": "cross-env NODE_ENV=stage npm run dev -- --configuration=stage",
+    "dev": "ng serve --proxy-config proxy.conf.js --port 4200",
+    "stage": "cross-env NODE_ENV=stage ng serve --proxy-config proxy.conf.js --port 4201 --configuration=stage",
     "dev-libs": "ng build ng-core --watch",
     "build-app": "ng build --extra-webpack-config webpack.extra.js",
     "build-libs": "ng build ng-core",

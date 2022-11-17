@@ -14,7 +14,7 @@
 
                 <div *ngIf="item.current$ | async as current" class="cc-body-1">
                     <cc-json-viewer
-                        *ngIf="current.value$ | async; else empty"
+                        *ngIf="!(current.isEmpty$ | async); else empty"
                         [data]="current.data$ | async"
                         [extension]="current.extension$ | async"
                         [extensions]="extensions"

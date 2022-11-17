@@ -1,6 +1,6 @@
 import { getCurrencySymbol } from '@angular/common';
 import { Component, Input, Injector, Inject, LOCALE_ID, OnInit } from '@angular/core';
-import { Validator, ValidationErrors, FormControl, FormBuilder } from '@angular/forms';
+import { Validator, ValidationErrors, FormControl } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
@@ -67,8 +67,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
     constructor(
         injector: Injector,
         @Inject(LOCALE_ID) private _locale: string,
-        private domainStoreService: DomainStoreService,
-        private fb: FormBuilder
+        private domainStoreService: DomainStoreService
     ) {
         super(injector);
     }

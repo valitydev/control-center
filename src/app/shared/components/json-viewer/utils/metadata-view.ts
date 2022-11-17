@@ -33,7 +33,10 @@ export class MetadataViewItem {
             if (data?.trueTypeNode?.data?.objectType === 'enum')
                 return (
                     (data.trueTypeNode.data as MetadataFormData<ValueType, 'enum'>).ast.items.find(
-                        (i) => i.value === value
+                        (i, idx) => {
+                            if ('value' in i) return i.value === value;
+                            return idx === value;
+                        }
                     ).name ?? value
                 );
             if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
@@ -41,6 +44,7 @@ export class MetadataViewItem {
             return value;
         })
     );
+    isEmpty$ = this.renderValue$.pipe(map((value) => isEmpty(value)));
 
     items$: Observable<MetadataViewItem[]> = this.createItems().pipe(
         shareReplay({ refCount: true, bufferSize: 1 })
