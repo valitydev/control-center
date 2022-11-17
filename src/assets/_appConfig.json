@@ -1,0 +1,9 @@
+{
+    "fileStorageEndpoint": "https://files.sample.vality.dev",
+    "constants": {
+        "currencies": [
+            { "source": "RUB_ID", "currency": "RUB" },
+            { "source": "USD_ID", "currency": "USD" }
+        ]
+    }
+}
