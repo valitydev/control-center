@@ -8,7 +8,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { PaymentProcessingService } from '../thrift-services/deprecated-damsel/payment-processing.service';
 import { RepairerService } from '../thrift-services/deprecated-fistful/repairer.service';
-import { AutomatonService } from '../thrift-services/machinegun/automaton.service';
+import { AutomatonService } from '../thrift-services/deprecated-machinegun/automaton.service';
 import { execute } from './execute';
 
 @Injectable()
