@@ -10,11 +10,11 @@ import { FetchResult } from '@cc/app/shared/services';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
 import { SEARCH_LIMIT, SMALL_SEARCH_LIMIT } from '../../tokens';
-import { ThriftService } from '../utils/deprecated-thrift-service';
+import { DeprecatedThriftService } from '../utils/deprecated-thrift-service';
 import { DepositParams } from './deposit-params';
 
 @Injectable()
-export class FistfulStatisticsService extends ThriftService {
+export class FistfulStatisticsService extends DeprecatedThriftService {
     constructor(
         injector: Injector,
         @Inject(SEARCH_LIMIT) private searchLimit: number,

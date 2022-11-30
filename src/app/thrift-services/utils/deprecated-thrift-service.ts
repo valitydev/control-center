@@ -14,7 +14,7 @@ type Exception<N = string, T = any> = {
     message: string;
 } & T;
 
-export class ThriftService {
+export class DeprecatedThriftService {
     protected realm = 'internal';
     private keycloakTokenInfoService = this.injector.get(KeycloakTokenInfoService);
     private zone = this.injector.get(NgZone);

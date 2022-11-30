@@ -8,10 +8,10 @@ import {
 } from '@vality/machinegun-proto/lib/state_processing/gen-nodejs/state_processing_types';
 import { Observable } from 'rxjs';
 
-import { ThriftService } from '../utils/deprecated-thrift-service';
+import { DeprecatedThriftService } from '../utils/deprecated-thrift-service';
 
 @Injectable()
-export class AutomatonService extends ThriftService {
+export class AutomatonService extends DeprecatedThriftService {
     constructor(injector: Injector) {
         super(injector, '/wachter', Automaton, 'Automaton');
     }

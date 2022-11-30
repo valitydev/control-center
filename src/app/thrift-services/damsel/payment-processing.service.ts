@@ -13,13 +13,13 @@ import {
 import { Observable, timer } from 'rxjs';
 import { first, share, switchMap } from 'rxjs/operators';
 
-import { ThriftService } from '../utils/deprecated-thrift-service';
+import { DeprecatedThriftService } from '../utils/deprecated-thrift-service';
 
 @Injectable()
 /**
  * @deprecated
  */
-export class PaymentProcessingService extends ThriftService {
+export class PaymentProcessingService extends DeprecatedThriftService {
     constructor(injector: Injector) {
         super(injector, '/wachter', Invoicing, 'Invoicing');
     }

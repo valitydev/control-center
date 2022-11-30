@@ -11,7 +11,7 @@ export const SUPPORTED_NAMESPACES = {
 /**
  * @deprecated use create-thrift-instance
  */
-export function getThriftInstance(namespace: string, name: string): any {
+export function deprecatedGetThriftInstance(namespace: string, name: string): any {
     try {
         return new SUPPORTED_NAMESPACES[namespace][name]();
     } catch (e) {
