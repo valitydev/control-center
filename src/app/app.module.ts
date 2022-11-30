@@ -28,7 +28,7 @@ import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
-import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
+import { ThemeManager, ThemeManagerModule, ThemeName } from './shared/services/theme-manager';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
