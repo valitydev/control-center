@@ -6,7 +6,7 @@ import { StatWallet } from '@vality/fistful-proto/lib/fistful_stat';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 
 import { ErrorService } from '../../../../shared/services/error';
-import { RoutingRulesService } from '../../../../thrift-services';
+import { RoutingRulesService } from '../../../../thrift-services/damsel';
 import { RoutingRulesType } from '../../types/routing-rules-type';
 
 @UntilDestroy()

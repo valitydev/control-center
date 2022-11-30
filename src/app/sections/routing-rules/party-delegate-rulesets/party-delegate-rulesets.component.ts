@@ -8,7 +8,7 @@ import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-r
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
-import { RoutingRulesService } from '../../../thrift-services';
+import { RoutingRulesService } from '../../../thrift-services/damsel';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
