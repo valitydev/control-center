@@ -18,7 +18,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { FistfulModule } from '../thrift-services/deprecated-fistful/fistful.module';
+import { DamselModule } from '@cc/app/api/deprecated-damsel';
+import { FistfulModule } from '@cc/app/api/deprecated-fistful';
+
 import { MachinegunModule } from '../thrift-services/deprecated-machinegun/machinegun.module';
 import { AddIdsInputComponent } from './add-ids-input/add-ids-input.component';
 import { RepairWithScenarioComponent } from './repair-with-scenario/repair-wirh-scenario.component';
@@ -54,6 +56,7 @@ import { SimpleRepairComponent } from './simple-repair/simple-repair.component';
         FistfulModule,
         MatDialogModule,
         MatCheckboxModule,
+        DamselModule,
     ],
     declarations: [
         RepairingComponent,

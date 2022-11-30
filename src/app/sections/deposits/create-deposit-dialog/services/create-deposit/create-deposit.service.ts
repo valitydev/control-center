@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { FistfulAdminService, FistfulStatisticsService } from '@cc/app/api/deprecated-fistful';
 import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
@@ -15,8 +16,6 @@ import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
 import { ConfigService } from '../../../../../core/config.service';
-import { FistfulAdminService } from '../../../../../thrift-services/deprecated-fistful/fistful-admin.service';
-import { FistfulStatisticsService } from '../../../../../thrift-services/deprecated-fistful/fistful-stat.service';
 import { SearchParams } from '../../../types/search-params';
 
 @Injectable()

@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { merge, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, switchMap, pluck, shareReplay } from 'rxjs/operators';
 
+import { FistfulStatisticsService } from '@cc/app/api/deprecated-fistful';
 import { progress } from '@cc/app/shared/custom-operators';
-
-import { FistfulStatisticsService } from '../../../../thrift-services/deprecated-fistful/fistful-stat.service';
 
 @Injectable()
 export class ReceiveDepositService {
