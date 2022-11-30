@@ -5,11 +5,10 @@ import * as FistfulStatistics from '@vality/fistful-proto/lib/fistful_stat/gen-n
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { DepositRevertParams, createDsl, QueryDsl } from '@cc/app/api/fistful-stat';
 import { FetchResult } from '@cc/app/shared/services';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
-import { createDsl, QueryDsl } from '../../query-dsl';
-import { DepositRevertParams } from '../../query-dsl/deposit-revert';
 import { SEARCH_LIMIT, SMALL_SEARCH_LIMIT } from '../../tokens';
 import { ThriftService } from '../services/thrift/thrift-service';
 import { DepositParams } from './deposit-params';

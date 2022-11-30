@@ -10,9 +10,10 @@ import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { Moment } from 'moment';
 import { map } from 'rxjs/operators';
 
+import { WithdrawalParams } from '@cc/app/api/fistful-stat';
+
 import { SELECT_COLUMN_NAME } from '../../../components/table';
 import { isNilOrEmptyString } from '../../../utils';
-import { WithdrawalParams } from '../../query-dsl';
 import { QueryParamsService } from '../../shared/services';
 import { ErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';

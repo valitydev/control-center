@@ -4,10 +4,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
-import { FistfulStatisticsService } from '@cc/app/api/fistful-stat';
+import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
-import { createDsl } from '../../../query-dsl';
 import { RoutingRulesService } from '../../../thrift-services';
 import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 
