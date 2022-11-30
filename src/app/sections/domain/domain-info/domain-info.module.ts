@@ -11,7 +11,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { PipesModule, ActionsModule } from '@vality/ng-core';
 
-import { MonacoEditorModule } from '../../../monaco-editor';
+import { MonacoEditorModule } from '@cc/components/monaco-editor';
+
 import { ThriftPipesModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 import { DamselModule } from '../../../thrift-services/damsel';

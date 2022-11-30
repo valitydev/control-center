@@ -6,8 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 
-import { MonacoEditorModule } from '@cc/app/monaco-editor';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { ThriftEditorComponent } from './thrift-editor.component';
 

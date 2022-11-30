@@ -5,8 +5,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
 import { first } from 'rxjs/operators';
 
+import { CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
+
 import { enumHasValue } from '../../../../utils';
-import { CodeLensProvider, CompletionProvider } from '../../../monaco-editor';
 import { EditorKind } from '../../../shared/components/thrift-editor';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { DomainNavigateService } from '../services/domain-navigate.service';

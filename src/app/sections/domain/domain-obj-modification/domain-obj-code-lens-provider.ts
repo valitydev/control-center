@@ -5,7 +5,7 @@ import {
     CodeLensProvider,
     ITextModel,
     ProviderResult,
-} from '../../../monaco-editor';
+} from '@cc/components/monaco-editor';
 
 export class DomainObjCodeLensProvider implements CodeLensProvider {
     get language() {
