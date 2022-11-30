@@ -4,7 +4,8 @@ import { UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { Machine } from '@vality/machinegun-proto';
 import { Observable } from 'rxjs';
 
-import { Namespace } from '../../thrift-services/deprecated-machinegun/model/namespace';
+import { Namespace } from '@cc/app/api/deprecated-machinegun';
+
 import { ExecStateType } from '../execute';
 import { RepairingStatusType } from '../repairing-status/repairing-status.component';
 import { RepairingService } from '../repairing.service';

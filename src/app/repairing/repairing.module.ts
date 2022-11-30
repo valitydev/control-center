@@ -20,8 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { DamselModule } from '@cc/app/api/deprecated-damsel';
 import { FistfulModule } from '@cc/app/api/deprecated-fistful';
+import { MachinegunModule } from '@cc/app/api/deprecated-machinegun';
 
-import { MachinegunModule } from '../thrift-services/deprecated-machinegun/machinegun.module';
 import { AddIdsInputComponent } from './add-ids-input/add-ids-input.component';
 import { RepairWithScenarioComponent } from './repair-with-scenario/repair-wirh-scenario.component';
 import { RepairWithScenarioSettingsComponent } from './repair-with-scenario/repair-with-scenario-settings/repair-with-scenario-settings.component';
