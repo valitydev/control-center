@@ -10,7 +10,7 @@ import { FetchResult } from '@cc/app/shared/services';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
 import { SEARCH_LIMIT, SMALL_SEARCH_LIMIT } from '../../tokens';
-import { ThriftService } from '../utils/thrift-service';
+import { ThriftService } from '../utils/deprecated-thrift-service';
 import { DepositParams } from './deposit-params';
 
 @Injectable()
