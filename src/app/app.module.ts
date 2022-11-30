@@ -22,7 +22,6 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { DomainModule } from './domain';
 import icons from './icons.json';
 import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
@@ -64,7 +63,6 @@ export let AppInjector: Injector;
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        DomainModule,
         RepairingModule,
         ThemeManagerModule,
         SearchPartiesModule,

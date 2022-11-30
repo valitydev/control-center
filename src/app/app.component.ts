@@ -3,8 +3,8 @@ import { KeycloakService } from 'keycloak-angular';
 
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
-import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './domain/routing-config';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
+import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './sections/domain/routing-config';
 import { ROUTING_CONFIG as PAYOUTS_ROUTING_CONFIG } from './sections/payouts/payouts/routing-config';
 import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing/routing-config';
 import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/search-claims/routing-config';

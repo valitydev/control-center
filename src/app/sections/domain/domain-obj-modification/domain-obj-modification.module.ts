@@ -12,7 +12,7 @@ import { ActionsModule } from '@vality/ng-core';
 
 import { ThriftEditorModule } from '@cc/app/shared/components/thrift-editor';
 
-import { MonacoEditorModule } from '../../monaco-editor';
+import { MonacoEditorModule } from '../../../monaco-editor';
 import { DomainObjModificationComponent } from './domain-obj-modification.component';
 
 @NgModule({

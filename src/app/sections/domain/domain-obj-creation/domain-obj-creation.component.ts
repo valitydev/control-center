@@ -7,13 +7,13 @@ import { withLatestFrom } from 'rxjs/operators';
 
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
-import { progressTo, getUnionKey, enumHasValue } from '../../../utils';
-import { EditorKind } from '../../shared/components/thrift-editor';
-import { ViewerKind } from '../../shared/components/thrift-viewer';
-import { DomainMetadataFormExtensionsService } from '../../shared/services';
-import { ErrorService } from '../../shared/services/error';
-import { NotificationService } from '../../shared/services/notification';
-import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
+import { progressTo, getUnionKey, enumHasValue } from '../../../../utils';
+import { EditorKind } from '../../../shared/components/thrift-editor';
+import { ViewerKind } from '../../../shared/components/thrift-viewer';
+import { DomainMetadataFormExtensionsService } from '../../../shared/services';
+import { ErrorService } from '../../../shared/services/error';
+import { NotificationService } from '../../../shared/services/notification';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { MetadataService } from '../services/metadata.service';
 

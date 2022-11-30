@@ -6,10 +6,10 @@ import { first, withLatestFrom } from 'rxjs/operators';
 
 import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
 
-import { getUnionKey } from '../../../utils';
-import { ErrorService } from '../../shared/services/error';
-import { NotificationService } from '../../shared/services/notification';
-import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
+import { getUnionKey } from '../../../../utils';
+import { ErrorService } from '../../../shared/services/error';
+import { NotificationService } from '../../../shared/services/notification';
+import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';

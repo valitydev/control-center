@@ -2,8 +2,8 @@ import { MatSort } from '@angular/material/sort';
 import groupBy from 'lodash-es/groupBy';
 import sortBy from 'lodash-es/sortBy';
 
-import { getUnionValue } from '../../../../../utils';
-import { objectToJSON } from '../../../../api/utils';
+import { getUnionValue } from '../../../../../../utils';
+import { objectToJSON } from '../../../../../api/utils';
 import { DataSourceItem } from '../types/data-source-item';
 
 export function sortData(data: DataSourceItem[], sort: MatSort): DataSourceItem[] {

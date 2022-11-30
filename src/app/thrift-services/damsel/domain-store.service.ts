@@ -11,7 +11,9 @@ import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionKey } from '@cc/utils/get-union-key';
 
 @UntilDestroy()
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class DomainStoreService {
     version$ = defer(() => this.snapshot$).pipe(pluck('version'));
     isLoading$ = inProgressFrom(

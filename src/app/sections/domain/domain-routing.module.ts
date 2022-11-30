@@ -13,7 +13,7 @@ import { ROUTING_CONFIG } from './routing-config';
     imports: [
         RouterModule.forChild([
             {
-                path: 'domain',
+                path: '',
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
                 children: [

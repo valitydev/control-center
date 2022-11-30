@@ -4,7 +4,7 @@ import {
     ITextModel,
     Position,
     ProviderResult,
-} from '../../monaco-editor';
+} from '../../../monaco-editor';
 
 export class DomainObjCompletionProvider implements CompletionProvider {
     get language() {

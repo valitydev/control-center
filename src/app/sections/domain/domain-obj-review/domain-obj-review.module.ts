@@ -4,35 +4,34 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ActionsModule } from '@vality/ng-core';
 
-import { ThriftEditorModule } from '@cc/app/shared/components/thrift-editor';
-
-import { MonacoEditorModule } from '../../monaco-editor';
-import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
-import { DomainObjCreationComponent } from './domain-obj-creation.component';
+import { MonacoEditorModule } from '../../../monaco-editor';
+import { ThriftEditorModule } from '../../../shared/components/thrift-editor';
+import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
+import { DomainObjReviewComponent } from './domain-obj-review.component';
 
 @NgModule({
-    declarations: [DomainObjCreationComponent],
+    declarations: [DomainObjReviewComponent],
     imports: [
         CommonModule,
         FlexLayoutModule,
         RouterModule,
-        MatProgressSpinnerModule,
         MatCardModule,
         MatButtonModule,
-        MatIconModule,
+        MatCheckboxModule,
         MonacoEditorModule,
-        MatDialogModule,
-        ReactiveFormsModule,
+        MatIconModule,
         ThriftEditorModule,
+        MatProgressSpinnerModule,
         ActionsModule,
+        ReactiveFormsModule,
         ThriftViewerModule,
     ],
-    exports: [DomainObjCreationComponent],
+    exports: [DomainObjReviewComponent],
 })
-export class DomainObjCreationModule {}
+export class DomainObjReviewModule {}
