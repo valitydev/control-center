@@ -6,8 +6,8 @@ import { timeout, first } from 'rxjs/operators';
 import {
     createWachterHeaders,
     createAuthorizationHeaders,
-} from '../../../api/utils/create-thrift-api/utils';
-import { KeycloakTokenInfoService, KeycloakToken } from '../../../shared/services';
+} from '../../api/utils/create-thrift-api/utils';
+import { KeycloakTokenInfoService, KeycloakToken } from '../../shared/services';
 
 type Exception<N = string, T = any> = {
     name: N;

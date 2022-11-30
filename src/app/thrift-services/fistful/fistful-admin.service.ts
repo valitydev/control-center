@@ -4,7 +4,7 @@ import { DepositParams as DepositParamsObject } from '@vality/fistful-proto/lib/
 import * as FistfulAdmin from '@vality/fistful-proto/lib/fistful_admin/gen-nodejs/FistfulAdmin';
 import { Observable } from 'rxjs';
 
-import { ThriftService } from '../services/thrift/thrift-service';
+import { ThriftService } from '../utils/thrift-service';
 
 @Injectable()
 export class FistfulAdminService extends ThriftService {

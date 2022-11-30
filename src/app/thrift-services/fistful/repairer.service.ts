@@ -4,7 +4,7 @@ import * as Repairer from '@vality/fistful-proto/lib/withdrawal_session/gen-node
 import { RepairScenario as RepairScenarioObject } from '@vality/fistful-proto/lib/withdrawal_session/gen-nodejs/withdrawal_session_types';
 import { Observable } from 'rxjs';
 
-import { ThriftService } from '../services/thrift/thrift-service';
+import { ThriftService } from '../utils/thrift-service';
 
 @Injectable()
 export class RepairerService extends ThriftService {

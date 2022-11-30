@@ -8,7 +8,7 @@ import {
 } from '@vality/machinegun-proto/lib/state_processing/gen-nodejs/state_processing_types';
 import { Observable } from 'rxjs';
 
-import { ThriftService } from '../services/thrift/thrift-service';
+import { ThriftService } from '../utils/thrift-service';
 
 @Injectable()
 export class AutomatonService extends ThriftService {
