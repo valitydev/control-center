@@ -19,9 +19,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 
+import { DamselModule } from '@cc/app/api/deprecated-damsel';
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
-import { DamselModule } from '../../../thrift-services/deprecated-damsel';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { AddRoutingRuleDialogModule } from './add-routing-rule-dialog';
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';

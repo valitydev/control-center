@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { InvoiceRepairScenario } from '@vality/domain-proto/lib/payment_processing';
 import { RepairScenario } from '@vality/fistful-proto/lib/withdrawal_session';
-import { KeycloakService } from 'keycloak-angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { PaymentProcessingService } from '../thrift-services/deprecated-damsel/payment-processing.service';
+import { PaymentProcessingService } from '@cc/app/api/deprecated-damsel';
+
 import { RepairerService } from '../thrift-services/deprecated-fistful/repairer.service';
 import { AutomatonService } from '../thrift-services/deprecated-machinegun/automaton.service';
 import { execute } from './execute';
@@ -17,7 +17,6 @@ export class RepairingService {
 
     constructor(
         private snackBar: MatSnackBar,
-        private keycloakService: KeycloakService,
         private automatonService: AutomatonService,
         private paymentProcessingService: PaymentProcessingService,
         private repairerService: RepairerService

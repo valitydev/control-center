@@ -9,7 +9,7 @@ import { DomainSecretService } from '@cc/app/shared/services/domain-secret-servi
 import { getUnionKey } from '../../../../utils';
 import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
-import { DomainStoreService } from '../../../thrift-services/deprecated-damsel/domain-store.service';
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';

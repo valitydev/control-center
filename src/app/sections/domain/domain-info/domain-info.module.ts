@@ -11,11 +11,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { PipesModule, ActionsModule } from '@vality/ng-core';
 
+import { DamselModule } from '@cc/app/api/deprecated-damsel';
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { ThriftPipesModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
-import { DamselModule } from '../../../thrift-services/deprecated-damsel';
 import { DomainGroupModule } from './domain-group';
 import { DomainInfoComponent } from './domain-info.component';
 

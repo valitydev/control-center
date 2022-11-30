@@ -14,10 +14,11 @@ import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { RoutingRulesService } from '@cc/app/api/deprecated-damsel';
+
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
-import { RoutingRulesService } from '../../../thrift-services/deprecated-damsel';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 

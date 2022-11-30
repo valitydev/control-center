@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { merge, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { progress } from '@cc/app/shared/custom-operators';
-
-import { DomainStoreService } from '../../../../thrift-services/deprecated-damsel/domain-store.service';
 
 @Injectable()
 export class FetchTerminalService {

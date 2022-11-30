@@ -9,10 +9,11 @@ import sortBy from 'lodash-es/sortBy';
 import { combineLatest, Observable, ReplaySubject, defer } from 'rxjs';
 import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
 import { Columns } from '../../../../../components/table';
 import { objectToJSON } from '../../../../api/utils';
 import { QueryParamsService } from '../../../../shared/services';
-import { DomainStoreService } from '../../../../thrift-services/deprecated-damsel/domain-store.service';
 import { MetadataService } from '../../services/metadata.service';
 import { DataSourceItem } from './types/data-source-item';
 import { filterPredicate } from './utils/filter-predicate';
