@@ -13,7 +13,7 @@ import {
 import { Observable, timer } from 'rxjs';
 import { first, share, switchMap } from 'rxjs/operators';
 
-import { DeprecatedThriftService } from '../utils/deprecated-thrift-service';
+import { DeprecatedThriftService } from '@cc/app/api/utils/deprecated-thrift-service';
 
 @Injectable()
 /**

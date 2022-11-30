@@ -6,11 +6,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DepositRevertParams, createDsl, QueryDsl } from '@cc/app/api/fistful-stat';
+import { DeprecatedThriftService } from '@cc/app/api/utils/deprecated-thrift-service';
 import { FetchResult } from '@cc/app/shared/services';
 import { removeEmptyProperties } from '@cc/utils/remove-empty-properties';
 
 import { SEARCH_LIMIT, SMALL_SEARCH_LIMIT } from '../../tokens';
-import { DeprecatedThriftService } from '../utils/deprecated-thrift-service';
 import { DepositParams } from './deposit-params';
 
 @Injectable()
