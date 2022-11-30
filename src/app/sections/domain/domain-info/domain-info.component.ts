@@ -14,7 +14,7 @@ import { enumHasValue } from '../../../../utils';
 import { ViewerKind } from '../../../shared/components/thrift-viewer';
 import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../thrift-services/deprecated-damsel/domain-store.service';
 
 const VIEWER_KIND = 'domain-info-kind';
 

@@ -15,7 +15,7 @@ import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { ThriftPipesModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
-import { DamselModule } from '../../../thrift-services/damsel';
+import { DamselModule } from '../../../thrift-services/deprecated-damsel';
 import { DomainGroupModule } from './domain-group';
 import { DomainInfoComponent } from './domain-info.component';
 

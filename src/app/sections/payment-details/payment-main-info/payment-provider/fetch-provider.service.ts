@@ -4,7 +4,7 @@ import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../../thrift-services/deprecated-damsel/domain-store.service';
 
 @Injectable()
 export class FetchProviderService {

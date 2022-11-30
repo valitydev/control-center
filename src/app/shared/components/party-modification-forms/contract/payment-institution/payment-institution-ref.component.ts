@@ -7,7 +7,7 @@ import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../../../thrift-services/deprecated-damsel/domain-store.service';
 
 @Component({
     selector: 'cc-payment-institution-ref',

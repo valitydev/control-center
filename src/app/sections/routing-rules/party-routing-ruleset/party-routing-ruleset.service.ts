@@ -7,8 +7,8 @@ import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
-import { RoutingRulesService } from '../../../thrift-services/damsel';
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { RoutingRulesService } from '../../../thrift-services/deprecated-damsel';
+import { DomainStoreService } from '../../../thrift-services/deprecated-damsel/domain-store.service';
 
 @UntilDestroy()
 @Injectable()

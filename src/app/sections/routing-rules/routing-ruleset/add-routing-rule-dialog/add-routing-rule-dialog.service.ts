@@ -6,7 +6,7 @@ import { BaseDialogResponseStatus } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
 
-import { RoutingRulesService } from '../../../../thrift-services/damsel';
+import { RoutingRulesService } from '../../../../thrift-services/deprecated-damsel';
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 
 export enum TerminalType {

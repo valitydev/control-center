@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { createNextId } from '../../../../thrift-services/damsel/routing-rules/utils/create-next-id';
+import { createNextId } from '../../../../thrift-services/deprecated-damsel/routing-rules/utils/create-next-id';
 import {
     isTypeWithAliases,
     MetadataFormExtension,

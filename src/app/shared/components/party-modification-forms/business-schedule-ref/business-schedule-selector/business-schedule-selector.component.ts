@@ -5,7 +5,7 @@ import { BusinessScheduleObject } from '@vality/domain-proto/lib/domain';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../../../thrift-services/deprecated-damsel/domain-store.service';
 
 @Component({
     selector: 'cc-business-schedule-selector',

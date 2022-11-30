@@ -14,8 +14,8 @@ import { map, startWith } from 'rxjs/operators';
 
 import { ComponentChanges } from '@cc/app/shared/utils';
 
-import { RoutingRulesService } from '../../../thrift-services/damsel';
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { RoutingRulesService } from '../../../thrift-services/deprecated-damsel';
+import { DomainStoreService } from '../../../thrift-services/deprecated-damsel/domain-store.service';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 import { Target } from './types/target';

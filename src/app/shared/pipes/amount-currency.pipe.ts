@@ -5,7 +5,7 @@ import { ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { toMajor } from '../../../utils';
-import { DomainStoreService } from '../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../thrift-services/deprecated-damsel/domain-store.service';
 
 @UntilDestroy()
 @Pipe({

@@ -11,8 +11,8 @@ import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-r
 import { NotificationService } from '@cc/app/shared/services/notification';
 
 import { ErrorService } from '../../../shared/services/error';
-import { damselInstanceToObject } from '../../../thrift-services/damsel';
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { damselInstanceToObject } from '../../../thrift-services/deprecated-damsel';
+import { DomainStoreService } from '../../../thrift-services/deprecated-damsel/domain-store.service';
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog';
 import { RoutingRulesetService } from './routing-ruleset.service';
 

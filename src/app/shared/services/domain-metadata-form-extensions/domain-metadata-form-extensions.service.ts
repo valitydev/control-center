@@ -9,7 +9,7 @@ import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { Cash as CashField } from '../../../../components/cash-field';
 import { toMajor, toMinor } from '../../../../utils';
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../thrift-services/deprecated-damsel/domain-store.service';
 import {
     MetadataFormData,
     MetadataFormExtension,

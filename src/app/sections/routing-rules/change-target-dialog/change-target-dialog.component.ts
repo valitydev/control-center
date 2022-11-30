@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 
 import { ErrorService } from '../../../shared/services/error';
-import { RoutingRulesService } from '../../../thrift-services/damsel';
+import { RoutingRulesService } from '../../../thrift-services/deprecated-damsel';
 import { TargetRuleset } from '../target-ruleset-form';
 
 @UntilDestroy()

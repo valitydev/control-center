@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 
-import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../../../thrift-services/deprecated-damsel/domain-store.service';
 
 @Injectable()
 export class OtherFiltersDialogService {

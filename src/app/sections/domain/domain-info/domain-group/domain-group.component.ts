@@ -12,7 +12,7 @@ import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 import { Columns } from '../../../../../components/table';
 import { objectToJSON } from '../../../../api/utils';
 import { QueryParamsService } from '../../../../shared/services';
-import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '../../../../thrift-services/deprecated-damsel/domain-store.service';
 import { MetadataService } from '../../services/metadata.service';
 import { DataSourceItem } from './types/data-source-item';
 import { filterPredicate } from './utils/filter-predicate';
