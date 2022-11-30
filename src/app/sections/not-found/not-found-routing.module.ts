@@ -7,12 +7,8 @@ import { NotFoundComponent } from './not-found.component';
     imports: [
         RouterModule.forChild([
             {
-                path: '404',
+                path: '',
                 component: NotFoundComponent,
-            },
-            {
-                path: '**',
-                redirectTo: '/404',
             },
         ]),
     ],

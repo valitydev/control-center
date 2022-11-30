@@ -23,7 +23,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import icons from './icons.json';
-import { NotFoundModule } from './not-found';
 import { RepairingModule } from './repairing/repairing.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
@@ -70,8 +69,6 @@ export let AppInjector: Injector;
         KeycloakTokenInfoModule,
         PayoutsModule,
         SectionsModule,
-        // It is important that NotFoundModule module should be last
-        NotFoundModule,
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },

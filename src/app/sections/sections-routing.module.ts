@@ -45,6 +45,14 @@ const ROUTES: Routes = [
         path: 'deposits',
         loadChildren: () => import('./deposits/deposits.module').then((m) => m.DepositsModule),
     },
+    {
+        path: '404',
+        loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
+    },
+    {
+        path: '**',
+        redirectTo: '/404',
+    },
 ];
 
 @NgModule({
