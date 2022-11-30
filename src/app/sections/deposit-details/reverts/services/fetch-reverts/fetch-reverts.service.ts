@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
-import { FistfulStatisticsService } from '../../../../../thrift-services/fistful/fistful-stat.service';
+import { FistfulStatisticsService } from '../../../../../thrift-services/deprecated-fistful/fistful-stat.service';
 import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 
 @Injectable()

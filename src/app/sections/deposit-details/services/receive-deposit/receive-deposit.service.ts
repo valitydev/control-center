@@ -4,7 +4,7 @@ import { catchError, switchMap, pluck, shareReplay } from 'rxjs/operators';
 
 import { progress } from '@cc/app/shared/custom-operators';
 
-import { FistfulStatisticsService } from '../../../../thrift-services/fistful/fistful-stat.service';
+import { FistfulStatisticsService } from '../../../../thrift-services/deprecated-fistful/fistful-stat.service';
 
 @Injectable()
 export class ReceiveDepositService {

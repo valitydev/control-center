@@ -15,8 +15,8 @@ import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
 import { ConfigService } from '../../../../../core/config.service';
-import { FistfulAdminService } from '../../../../../thrift-services/fistful/fistful-admin.service';
-import { FistfulStatisticsService } from '../../../../../thrift-services/fistful/fistful-stat.service';
+import { FistfulAdminService } from '../../../../../thrift-services/deprecated-fistful/fistful-admin.service';
+import { FistfulStatisticsService } from '../../../../../thrift-services/deprecated-fistful/fistful-stat.service';
 import { SearchParams } from '../../../types/search-params';
 
 @Injectable()

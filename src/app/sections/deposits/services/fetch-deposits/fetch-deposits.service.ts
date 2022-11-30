@@ -6,7 +6,7 @@ import { shareReplay } from 'rxjs/operators';
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 import { booleanDelay } from '@cc/utils/boolean-delay';
 
-import { FistfulStatisticsService } from '../../../../thrift-services/fistful/fistful-stat.service';
+import { FistfulStatisticsService } from '../../../../thrift-services/deprecated-fistful/fistful-stat.service';
 import { SearchParams } from '../../types/search-params';
 
 @Injectable()

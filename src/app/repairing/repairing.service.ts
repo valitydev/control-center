@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { PaymentProcessingService } from '../thrift-services/deprecated-damsel/payment-processing.service';
-import { RepairerService } from '../thrift-services/fistful/repairer.service';
+import { RepairerService } from '../thrift-services/deprecated-fistful/repairer.service';
 import { AutomatonService } from '../thrift-services/machinegun/automaton.service';
 import { execute } from './execute';
 

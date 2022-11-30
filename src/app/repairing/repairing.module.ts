@@ -18,7 +18,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { FistfulModule } from '../thrift-services/fistful/fistful.module';
+import { FistfulModule } from '../thrift-services/deprecated-fistful/fistful.module';
 import { MachinegunModule } from '../thrift-services/machinegun/machinegun.module';
 import { AddIdsInputComponent } from './add-ids-input/add-ids-input.component';
 import { RepairWithScenarioComponent } from './repair-with-scenario/repair-wirh-scenario.component';
