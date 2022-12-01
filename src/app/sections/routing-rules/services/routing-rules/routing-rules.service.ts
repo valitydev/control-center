@@ -11,11 +11,14 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../domain-store.service';
-import { createNextId } from '../../../../utils/create-next-id';
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { createNextId } from '@cc/utils/create-next-id';
+
 import { getDelegate } from './utils/get-delegate';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class RoutingRulesService {
     rulesets$: Observable<RoutingRulesObject[]> = this.domainStoreService
         .getObjects('routing_rules')

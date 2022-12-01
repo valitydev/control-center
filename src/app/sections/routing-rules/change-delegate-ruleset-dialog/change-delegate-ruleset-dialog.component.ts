@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
-import { RoutingRulesService } from '@cc/app/api/deprecated-damsel';
+import { RoutingRulesService } from '../services/routing-rules';
 
 @UntilDestroy()
 @Component({

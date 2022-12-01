@@ -12,9 +12,10 @@ import { PaymentInstitutionObject } from '@vality/domain-proto';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
-import { RoutingRulesService, DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { ComponentChanges } from '@cc/app/shared/utils';
 
+import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 import { Target } from './types/target';

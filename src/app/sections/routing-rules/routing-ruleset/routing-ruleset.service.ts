@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { RoutingRulesService as RoutingRulesDamselService } from '@cc/app/api/deprecated-damsel';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
+import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 
 @Injectable()
 export class RoutingRulesetService {

@@ -11,7 +11,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { PipesModule, ActionsModule } from '@vality/ng-core';
 
-import { DamselModule } from '@cc/app/api/deprecated-damsel';
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { ThriftPipesModule } from '../../../shared';
@@ -33,7 +32,6 @@ import { DomainInfoComponent } from './domain-info.component';
         MatInputModule,
         MatProgressSpinnerModule,
         MonacoEditorModule,
-        DamselModule,
         ThriftViewerModule,
         PipesModule,
         RouterModule,

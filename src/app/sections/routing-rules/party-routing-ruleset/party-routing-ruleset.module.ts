@@ -18,8 +18,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 
-import { DamselModule } from '@cc/app/api/deprecated-damsel';
-
 import { ChangeTargetDialogModule } from '../change-target-dialog';
 import { RoutingRulesListModule } from '../routing-rules-list';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
@@ -39,7 +37,6 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        DamselModule,
         RouterModule,
         MatTableModule,
         MatIconModule,
