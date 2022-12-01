@@ -1,9 +1,0 @@
-<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
-    <mat-form-field fxFlex>
-        <input [formControl]="idsControl" matInput placeholder="IDs" (keyup.enter)="emitAdd()" />
-        <mat-hint>Use any delimiter and press enter to add</mat-hint>
-    </mat-form-field>
-    <div>
-        <button [disabled]="disabled" color="primary" mat-button (click)="emitAdd()">ADD</button>
-    </div>
-</div>
