@@ -5,7 +5,8 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { Predicate, RiskScore } from '@vality/domain-proto/lib/domain';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 
-import { DomainStoreService } from '../../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
 import { AddRoutingRuleDialogService, TerminalType } from './add-routing-rule-dialog.service';
 
 @UntilDestroy()

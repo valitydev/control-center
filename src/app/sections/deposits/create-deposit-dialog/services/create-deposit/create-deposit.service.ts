@@ -3,11 +3,11 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { DepositParams } from '@vality/fistful-proto/lib/fistful_admin';
 import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import Int64 from '@vality/thrift-ts/lib/int64';
-import { KeycloakService } from 'keycloak-angular';
 import * as moment from 'moment';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { FistfulAdminService, FistfulStatisticsService } from '@cc/app/api/deprecated-fistful';
 import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
@@ -15,8 +15,6 @@ import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
 import { ConfigService } from '../../../../../core/config.service';
-import { FistfulAdminService } from '../../../../../thrift-services/fistful/fistful-admin.service';
-import { FistfulStatisticsService } from '../../../../../thrift-services/fistful/fistful-stat.service';
 import { SearchParams } from '../../../types/search-params';
 
 @Injectable()
@@ -78,7 +76,6 @@ export class CreateDepositService {
     constructor(
         private fistfulAdminService: FistfulAdminService,
         private fistfulStatisticsService: FistfulStatisticsService,
-        private keycloakService: KeycloakService,
         private fb: UntypedFormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private configService: ConfigService

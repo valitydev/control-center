@@ -5,8 +5,7 @@
 
 @import '../../sections/party/party-theme';
 @import '../../sections/routing-rules/routing-rules-theme';
-
-@import '../../not-found/not-found-theme';
+@import '../../sections/not-found/not-found-theme';
 
 @mixin cc-theme($theme) {
     body.#{map-get($theme, name)} {

@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const ROUTES: Routes = [
     {
+        path: 'domain',
+        loadChildren: () => import('./domain').then((m) => m.DomainModule),
+    },
+    {
         path: 'party',
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
     },
@@ -40,6 +44,14 @@ const ROUTES: Routes = [
     {
         path: 'deposits',
         loadChildren: () => import('./deposits/deposits.module').then((m) => m.DepositsModule),
+    },
+    {
+        path: '404',
+        loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
+    },
+    {
+        path: '**',
+        redirectTo: '/404',
     },
 ];
 

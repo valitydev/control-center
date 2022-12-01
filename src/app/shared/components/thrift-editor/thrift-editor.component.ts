@@ -5,9 +5,9 @@ import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
 import { ThriftAstMetadata, thriftInstanceToObject, objectToJSON } from '@cc/app/api/utils';
-import { toMonacoFile } from '@cc/app/domain/utils';
-import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/app/monaco-editor';
+import { toMonacoFile } from '@cc/app/sections/domain/utils';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
+import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
 import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/utils';
 
 import { MetadataFormExtension } from '../metadata-form';

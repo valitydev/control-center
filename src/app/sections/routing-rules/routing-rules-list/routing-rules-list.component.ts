@@ -17,9 +17,9 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ErrorService } from '../../../shared/services/error';
-import { RoutingRulesService } from '../../../thrift-services';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
+import { RoutingRulesService } from '../services/routing-rules';
 
 type DelegateId = {
     parentRefId: number;

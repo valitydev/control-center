@@ -3,11 +3,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
-import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-
 import { ErrorService } from '../../../shared/services/error';
-import { RoutingRulesService } from '../../../thrift-services';
+import { RoutingRulesService } from '../services/routing-rules';
 import { TargetRuleset } from '../target-ruleset-form';
+import { RoutingRulesType } from '../types/routing-rules-type';
 
 @UntilDestroy()
 @Component({

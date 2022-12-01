@@ -6,7 +6,7 @@ import { ReplaySubject } from 'rxjs';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 
 import { objectToJSON, ThriftAstMetadata } from '../../../api/utils';
-import { toMonacoFile } from '../../../domain/utils';
+import { toMonacoFile } from '../../../sections/domain/utils';
 import { ComponentChanges } from '../../utils';
 
 export enum ViewerKind {

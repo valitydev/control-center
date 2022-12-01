@@ -5,7 +5,8 @@ import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';

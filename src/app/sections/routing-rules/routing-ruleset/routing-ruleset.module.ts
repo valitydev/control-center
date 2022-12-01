@@ -21,7 +21,6 @@ import { RouterModule } from '@angular/router';
 
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
-import { DamselModule } from '../../../thrift-services';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { AddRoutingRuleDialogModule } from './add-routing-rule-dialog';
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
@@ -38,7 +37,6 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         ReactiveFormsModule,
         MatFormFieldModule,
         MatInputModule,
-        DamselModule,
         RouterModule,
         MatTableModule,
         MatIconModule,

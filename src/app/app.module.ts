@@ -22,15 +22,12 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { DomainModule } from './domain';
 import icons from './icons.json';
-import { NotFoundModule } from './not-found';
-import { RepairingModule } from './repairing/repairing.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
-import { ThemeManager, ThemeManagerModule, ThemeName } from './theme-manager';
+import { ThemeManager, ThemeManagerModule, ThemeName } from './shared/services/theme-manager';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
@@ -64,16 +61,12 @@ export let AppInjector: Injector;
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        DomainModule,
-        RepairingModule,
         ThemeManagerModule,
         SearchPartiesModule,
         SearchClaimsModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
         SectionsModule,
-        // It is important that NotFoundModule module should be last
-        NotFoundModule,
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },

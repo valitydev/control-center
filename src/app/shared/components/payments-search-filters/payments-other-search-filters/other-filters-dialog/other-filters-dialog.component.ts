@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/c
 import { PaymentToolType, InvoicePaymentStatus } from '@vality/magista-proto';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
 import { getEnumKeyValues } from '../../../../../../utils';
-import { DomainStoreService } from '../../../../../thrift-services/damsel/domain-store.service';
 import { SearchFiltersParams } from '../../search-filters-params';
 import { OtherFiltersDialogService } from './other-filters-dialog.service';
 

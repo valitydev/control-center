@@ -9,8 +9,9 @@ import {
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, startWith, switchMap } from 'rxjs/operators';
 
-import { RoutingRulesService } from '../../../thrift-services';
-import { DomainStoreService } from '../../../thrift-services/damsel/domain-store.service';
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
+import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 

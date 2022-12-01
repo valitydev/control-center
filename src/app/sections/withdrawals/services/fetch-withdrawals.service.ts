@@ -3,8 +3,8 @@ import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { FistfulStatisticsService } from '../../../api/fistful-stat';
-import { createDsl, WithdrawalParams } from '../../../query-dsl';
+import { createDsl, WithdrawalParams, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
+
 import { FetchResult, PartialFetcher } from '../../../shared/services';
 
 @Injectable()
