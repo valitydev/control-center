@@ -4,8 +4,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { toMajor } from '../../../utils';
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
+import { toMajor } from '../../../utils';
 
 @UntilDestroy()
 @Pipe({

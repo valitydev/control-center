@@ -4,12 +4,12 @@ import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
 import { first, withLatestFrom } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
 
 import { getUnionKey } from '../../../../utils';
 import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';

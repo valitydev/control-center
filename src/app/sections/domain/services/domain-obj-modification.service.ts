@@ -4,8 +4,8 @@ import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
 import { Observable, switchMap, BehaviorSubject, defer } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
-import { ErrorService } from '@cc/app/shared/services/error';
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel/domain-store.service';
+import { ErrorService } from '@cc/app/shared/services/error';
 import { toJson, getUnionValue, progressTo } from '@cc/utils';
 
 import { MetadataService } from './metadata.service';

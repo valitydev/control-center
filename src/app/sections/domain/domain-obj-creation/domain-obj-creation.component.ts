@@ -5,6 +5,7 @@ import { DomainObject } from '@vality/domain-proto/lib/domain';
 import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
 import { progressTo, getUnionKey, enumHasValue } from '../../../../utils';
@@ -13,7 +14,6 @@ import { ViewerKind } from '../../../shared/components/thrift-viewer';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { MetadataService } from '../services/metadata.service';
 

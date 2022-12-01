@@ -7,6 +7,7 @@ import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
@@ -14,7 +15,6 @@ import { enumHasValue } from '../../../../utils';
 import { ViewerKind } from '../../../shared/components/thrift-viewer';
 import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 
 const VIEWER_KIND = 'domain-info-kind';
 

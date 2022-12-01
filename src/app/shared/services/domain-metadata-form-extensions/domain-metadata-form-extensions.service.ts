@@ -5,11 +5,11 @@ import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { Cash as CashField } from '../../../../components/cash-field';
 import { toMajor, toMinor } from '../../../../utils';
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import {
     MetadataFormData,
     MetadataFormExtension,
