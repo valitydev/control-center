@@ -12,7 +12,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../domain-store.service';
-import { createNextId } from './utils/create-next-id';
+import { createNextId } from '../../../../utils/create-next-id';
 import { getDelegate } from './utils/get-delegate';
 
 @Injectable()

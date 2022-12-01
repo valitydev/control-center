@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { createNextId } from '@cc/app/api/deprecated-damsel';
+import { createNextId } from '@cc/utils/create-next-id';
 
 import {
     isTypeWithAliases,
