@@ -29,6 +29,7 @@ const GROUP_SEPARATOR = ' ';
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;
     @Input() @coerceBoolean required: boolean = false;
+    @Input() @coerceBoolean minor: boolean = false;
 
     amountControl = new FormControl<string>(null);
     currencyCodeControl = new FormControl<string>(null);
@@ -47,7 +48,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
 
     amountMask$ = getFormValueChanges(this.currencyCodeControl, true).pipe(
         switchMap((code) => this.getCurrencyByCode(code)),
-        map((c) => c?.data?.exponent || 2),
+        map((c) => (this.minor ? 0 : c?.data?.exponent || 2)),
         distinctUntilChanged(),
         map((digits) =>
             createMask({

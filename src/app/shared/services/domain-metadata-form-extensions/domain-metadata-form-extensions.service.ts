@@ -9,7 +9,6 @@ import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { Cash as CashField } from '../../../../components/cash-field';
-import { toMajor, toMinor } from '../../../../utils';
 import {
     MetadataFormData,
     MetadataFormExtension,
@@ -45,40 +44,25 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'domain')),
                 extension: () =>
-                    this.domainStoreService.getObjects('currency').pipe(
-                        map((currencies) => ({
-                            type: 'cash',
-                            converter: {
-                                internalToOutput: (cash: CashField): Cash =>
-                                    cash
-                                        ? {
-                                              amount: toMinor(
-                                                  cash.amount,
-                                                  currencies.find(
-                                                      (c) =>
-                                                          c.data.symbolic_code === cash.currencyCode
-                                                  )?.data?.exponent
-                                              ),
-                                              currency: { symbolic_code: cash.currencyCode },
-                                          }
-                                        : null,
-                                outputToInternal: (cash: Cash): CashField =>
-                                    cash
-                                        ? {
-                                              amount: toMajor(
-                                                  cash.amount,
-                                                  currencies.find(
-                                                      (c) =>
-                                                          c.data.symbolic_code ===
-                                                          cash.currency.symbolic_code
-                                                  )?.data?.exponent
-                                              ),
-                                              currencyCode: cash.currency.symbolic_code,
-                                          }
-                                        : null,
-                            },
-                        }))
-                    ),
+                    of({
+                        type: 'cash',
+                        converter: {
+                            internalToOutput: (cash: CashField): Cash =>
+                                cash
+                                    ? {
+                                          amount: cash.amount,
+                                          currency: { symbolic_code: cash.currencyCode },
+                                      }
+                                    : null,
+                            outputToInternal: (cash: Cash): CashField =>
+                                cash
+                                    ? {
+                                          amount: cash.amount,
+                                          currencyCode: cash.currency.symbolic_code,
+                                      }
+                                    : null,
+                        },
+                    }),
             },
             {
                 determinant: (data) =>
