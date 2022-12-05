@@ -67,15 +67,4 @@ export class DomainStoreService {
             })
         );
     }
-
-    sequenceCommits(
-        [commit, ...otherCommits]: Commit[],
-        version?: Version | number
-    ): Observable<number> {
-        return otherCommits.length
-            ? this.commit(commit, version, false).pipe(
-                  switchMap((v) => this.sequenceCommits(otherCommits, v))
-              )
-            : this.commit(commit, version);
-    }
 }

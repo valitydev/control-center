@@ -8,7 +8,7 @@ import {
 } from '@vality/domain-proto';
 import { Version } from '@vality/domain-proto/lib/domain_config';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, concat, Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
@@ -476,8 +476,8 @@ export class RoutingRulesService {
                 getDelegate(newMainRuleset, delegateIdx).ruleset.id = nextRefID;
                 const newDelegateRuleset = cloneDeep(delegateRuleset);
                 newDelegateRuleset.ref.id = nextRefID;
-                return this.domainStoreService.sequenceCommits([
-                    {
+                return concat(
+                    this.domainStoreService.commit({
                         ops: [
                             {
                                 insert: {
@@ -485,8 +485,8 @@ export class RoutingRulesService {
                                 },
                             },
                         ],
-                    },
-                    {
+                    }),
+                    this.domainStoreService.commit({
                         ops: [
                             {
                                 update: {
@@ -495,8 +495,8 @@ export class RoutingRulesService {
                                 },
                             },
                         ],
-                    },
-                ]);
+                    })
+                );
             }),
             pluck('1')
         );

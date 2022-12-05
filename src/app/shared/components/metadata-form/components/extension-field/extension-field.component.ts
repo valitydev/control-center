@@ -4,12 +4,13 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { defer, switchMap, ReplaySubject, Observable, combineLatest } from 'rxjs';
-import { shareReplay, first, map } from 'rxjs/operators';
+import { shareReplay, first, map, pluck } from 'rxjs/operators';
 
+import { getValueTypeTitle } from '@cc/app/shared/pipes';
 import { createControlProviders } from '@cc/utils';
 
 import { ComponentChanges } from '../../../../utils';
-import { MetadataFormData } from '../../types/metadata-form-data';
+import { getAliases, MetadataFormData } from '../../types/metadata-form-data';
 import {
     Converter,
     MetadataFormExtension,
@@ -39,6 +40,15 @@ export class ExtensionFieldComponent<T>
         switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+    generate$ = this.extensionResult$.pipe(pluck('generate'));
+
+    get aliases() {
+        return [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
+            .filter((d) => d.typeGroup !== 'primitive')
+            .map((d) => getValueTypeTitle(d.type))
+            .filter((t) => t !== this.data.field?.name)
+            .join(', ');
+    }
 
     private data$ = new ReplaySubject<MetadataFormData>(1);
     private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
@@ -80,5 +90,20 @@ export class ExtensionFieldComponent<T>
             this.control.setValidators(this.data.isRequired ? Validators.required : []);
         }
         if (changes.extensions) this.extensions$.next(this.extensions);
+    }
+
+    generate(event: MouseEvent) {
+        this.generate$
+            .pipe(
+                switchMap((generate) => generate()),
+                untilDestroyed(this)
+            )
+            .subscribe((value) => this.control.setValue(value as T));
+        event.stopPropagation();
+    }
+
+    clear(event: MouseEvent) {
+        this.control.reset(null);
+        event.stopPropagation();
     }
 }

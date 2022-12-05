@@ -17,12 +17,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@vality/ng-core';
 
-import { DatetimeComponent } from '@cc/app/shared/components/datetime/datetime.component';
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
 import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
+import { CashModule } from '@cc/components/cash-field';
 
-import { CashModule } from '../../../../components/cash-field';
+import { DatetimeComponent } from '../datetime';
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
 import { ExtensionFieldComponent } from './components/extension-field/extension-field.component';

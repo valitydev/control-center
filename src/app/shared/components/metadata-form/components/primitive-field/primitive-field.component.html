@@ -24,89 +24,63 @@
     </ng-container>
     <ng-template #input>
         <div fxLayoutGap="4px">
-            <ng-container *ngIf="(extensionResult$ | async)?.type === 'datetime'; else input">
-                <cc-datetime
+            <mat-form-field fxFlex>
+                <mat-label>
+                    <ng-container *ngIf="!(extensionResult$ | async)?.label; else extensionLabel">{{
+                        data.type | fieldLabel: data.field
+                    }}</ng-container>
+                    <ng-template #extensionLabel>{{
+                        (extensionResult$ | async).label
+                    }}</ng-template>
+                </mat-label>
+                <mat-hint>{{ aliases }}</mat-hint>
+                <input
+                    #trigger="matAutocompleteTrigger"
                     [formControl]="control"
-                    [hint]="aliases"
-                    [label]="
-                        (extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)
-                    "
-                    fxFlex
-                ></cc-datetime>
-                <button
-                    *ngIf="!data.isRequired && control.value"
-                    mat-icon-button
-                    (click)="clear($event)"
-                >
-                    <mat-icon>clear</mat-icon>
-                </button>
-                <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
-                    <mat-icon>loop</mat-icon>
-                </button>
-            </ng-container>
-            <ng-template #input>
-                <mat-form-field fxFlex>
-                    <mat-label>
-                        <ng-container
-                            *ngIf="!(extensionResult$ | async)?.label; else extensionLabel"
-                            >{{ data.type | fieldLabel: data.field }}</ng-container
+                    [matAutocomplete]="auto"
+                    [ngClass]="{ 'cc-code': (extensionResult$ | async)?.isIdentifier }"
+                    [required]="data.isRequired"
+                    [type]="inputType"
+                    matInput
+                />
+                <div fxLayoutGap="4px" matSuffix>
+                    <button
+                        *ngIf="!data.isRequired && control.value"
+                        mat-icon-button
+                        (click)="clear($event)"
+                    >
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                    <button
+                        *ngIf="(extensionResult$ | async)?.options?.length"
+                        mat-icon-button
+                        (click)="
+                            auto.isOpen ? trigger.closePanel() : trigger.openPanel();
+                            $event.stopPropagation()
+                        "
+                    >
+                        <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+                    </button>
+                </div>
+                <mat-autocomplete #auto="matAutocomplete">
+                    <ng-container *ngIf="extensionResult$ | async as extensionResult">
+                        <mat-option
+                            *ngFor="let option of filteredOptions$ | async"
+                            [value]="option.value"
                         >
-                        <ng-template #extensionLabel>{{
-                            (extensionResult$ | async).label
-                        }}</ng-template>
-                    </mat-label>
-                    <mat-hint>{{ aliases }}</mat-hint>
-                    <input
-                        #trigger="matAutocompleteTrigger"
-                        [formControl]="control"
-                        [matAutocomplete]="auto"
-                        [ngClass]="{ 'cc-code': (extensionResult$ | async)?.isIdentifier }"
-                        [required]="data.isRequired"
-                        [type]="inputType"
-                        matInput
-                    />
-                    <div fxLayoutGap="4px" matSuffix>
-                        <button
-                            *ngIf="!data.isRequired && control.value"
-                            mat-icon-button
-                            (click)="clear($event)"
-                        >
-                            <mat-icon>clear</mat-icon>
-                        </button>
-                        <button
-                            *ngIf="(extensionResult$ | async)?.options?.length"
-                            mat-icon-button
-                            (click)="
-                                auto.isOpen ? trigger.closePanel() : trigger.openPanel();
-                                $event.stopPropagation()
-                            "
-                        >
-                            <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
-                        </button>
-                    </div>
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <ng-container *ngIf="extensionResult$ | async as extensionResult">
-                            <mat-option
-                                *ngFor="let option of filteredOptions$ | async"
-                                [value]="option.value"
-                            >
-                                <div fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="8px">
-                                    <div [ngClass]="{ 'cc-code': extensionResult.isIdentifier }">
-                                        {{ option.value }}
-                                    </div>
-                                    <cc-label
-                                        [color]="option.color"
-                                        [label]="option.label"
-                                    ></cc-label>
+                            <div fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="8px">
+                                <div [ngClass]="{ 'cc-code': extensionResult.isIdentifier }">
+                                    {{ option.value }}
                                 </div>
-                            </mat-option>
-                        </ng-container>
-                    </mat-autocomplete>
-                </mat-form-field>
-                <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
-                    <mat-icon>loop</mat-icon>
-                </button>
-            </ng-template>
+                                <cc-label [color]="option.color" [label]="option.label"></cc-label>
+                            </div>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </mat-form-field>
+            <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
+                <mat-icon>loop</mat-icon>
+            </button>
         </div>
     </ng-template>
     <ng-container *ngIf="selected$ | async as selected">
