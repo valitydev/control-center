@@ -1,9 +1,6 @@
 <div *ngIf="data" [ngSwitch]="data?.typeGroup">
     <cc-extension-field
-        *ngIf="
-            (extensionResult$ | async)?.type && (extensionResult$ | async)?.type !== 'datetime';
-            else defaultFields
-        "
+        *ngIf="(extensionResult$ | async)?.type; else defaultFields"
         [data]="data"
         [extensions]="extensions"
         [formControl]="control"
