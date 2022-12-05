@@ -21,6 +21,7 @@ import { sortData } from './utils/sort-table-data';
 
 interface Params {
     types?: string[];
+    ref?: string;
 }
 
 @UntilDestroy()
@@ -85,8 +86,16 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.typesControl.valueChanges.subscribe((types) => {
-            void this.queryParamsService.set({ types });
+            void this.queryParamsService.patch({ types });
         });
+        const queryRef = this.queryParamsService.params.ref;
+        this.domainStoreService.getDomain().subscribe((d) =>
+            d.forEach((obj, ref) => {
+                if (queryRef === JSON.stringify(ref)) {
+                    this.refChange.emit({ ref, obj: obj });
+                }
+            })
+        );
     }
 
     ngAfterViewInit() {
@@ -95,6 +104,7 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
 
     openDetails(item: DataSourceItem) {
         this.refChange.emit({ ref: item.ref, obj: item.obj });
+        void this.queryParamsService.patch({ ref: JSON.stringify(item.ref) });
     }
 
     private createMatTableDataSource(
