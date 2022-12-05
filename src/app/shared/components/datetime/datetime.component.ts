@@ -7,8 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
-import moment from 'moment';
-import { Moment } from 'moment/moment';
+import moment, { Moment } from 'moment';
 
 import { createControlProviders } from '@cc/utils';
 
