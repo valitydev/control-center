@@ -11,7 +11,7 @@ function isEmptyObjectOrPrimitive(value: unknown): boolean {
     return isObject(value) ? isEmpty(value) : isEmptyPrimitive(value);
 }
 
-export function clean<T>(
+export function clean<T extends ReadonlyArray<any> | ArrayLike<any> | Record<any, any>>(
     value: T,
     allowRootRemoval = false,
     isNotDeep = false,
