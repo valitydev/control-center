@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Observable, combineLatest, switchMap, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -7,7 +8,7 @@ export interface MetadataViewExtensionResult {
     key?: string;
     value: string;
     tooltip?: any;
-    // link?: string;
+    link?: Parameters<Router['navigate']>;
 }
 
 export type MetadataViewExtension = {

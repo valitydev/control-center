@@ -7,7 +7,10 @@ import { map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
-import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
+import {
+    MetadataViewExtension,
+    MetadataViewExtensionResult,
+} from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases } from '@cc/app/shared/components/metadata-form';
 
 @Injectable({
@@ -18,9 +21,20 @@ export class DomainMetadataViewExtensionsService {
         {
             determinant: (data) => of(isTypeWithAliases(data, 'CategoryRef', 'domain')),
             extension: (_, value: CategoryRef) =>
-                this.dominantCacheService.GetCategories().pipe(
-                    map((categories) => categories.find((c) => c.ref === String(value.id))),
-                    map((category) => ({ value: category.name, tooltip: category }))
+                this.domainStoreService.getObjects('category').pipe(
+                    map((categories) => categories.find((c) => c.ref.id === value.id)),
+                    map((category) => ({
+                        value: category.data.name,
+                        tooltip: `#${category.ref.id}`,
+                        link: [
+                            ['/domain'],
+                            {
+                                queryParams: {
+                                    ref: JSON.stringify({ category: category.ref }),
+                                },
+                            },
+                        ],
+                    }))
                 ),
         },
         {
@@ -28,7 +42,20 @@ export class DomainMetadataViewExtensionsService {
             extension: (_, value: CriterionRef) =>
                 this.domainStoreService.getObjects('criterion').pipe(
                     map((criteries) => criteries.find((c) => c.ref.id === value.id)),
-                    map((critery) => ({ value: critery.data.name, tooltip: critery }))
+                    map(
+                        (critery): MetadataViewExtensionResult => ({
+                            value: critery.data.name,
+                            tooltip: `#${critery.ref.id}`,
+                            link: [
+                                ['/domain'],
+                                {
+                                    queryParams: {
+                                        ref: JSON.stringify({ criterion: critery.ref }),
+                                    },
+                                },
+                            ],
+                        })
+                    )
                 ),
         },
         {

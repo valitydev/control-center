@@ -66,6 +66,6 @@ export class JsonViewerComponent implements OnChanges {
     }
 
     getTooltip(tooltip: any) {
-        return yaml.stringify(tooltip);
+        return typeof tooltip === 'object' ? yaml.stringify(tooltip) : String(tooltip);
     }
 }

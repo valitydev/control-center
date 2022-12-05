@@ -60,21 +60,18 @@
     </div>
 
     <ng-template #onlyValue>
-        <span class="cc-body-1">
+        <span
+            [ngClass]="{'link': !!extension?.link?.[0], 'tooltip': !!extension?.tooltip, 'cc-body-1': true}"
+            [queryParams]="extension?.link?.[1]?.queryParams"
+            [routerLink]="extension?.link?.[0]"
+        >
             <span
                 *ngIf="extension?.tooltip; else simpleValue"
                 [matTooltip]="getTooltip(extension.tooltip)"
-                matBadge="ℹ"
-                matBadgeOverlap="false"
-                matBadgeSize="small"
                 matTooltipClass="tooltip"
-                style="cursor: default"
+                >{{ view.renderValue$ | async }}</span
             >
-                {{ view.renderValue$ | async }}
-            </span>
-            <ng-template #simpleValue>
-                {{ view.renderValue$ | async }}
-            </ng-template>
+            <ng-template #simpleValue>{{ view.renderValue$ | async }}</ng-template>
         </span>
     </ng-template>
 </ng-container>

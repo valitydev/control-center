@@ -52,7 +52,7 @@ export class DomainInfoComponent {
         private notificationService: NotificationService,
         private errorService: ErrorService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
-        private queryParamsService: QueryParamsService<{ ref?: string }>
+        private queryParamsService: QueryParamsService<{ ref?: Reference }>
     ) {}
 
     edit() {

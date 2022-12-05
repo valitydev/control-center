@@ -5,9 +5,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/lib/domain';
+import isEqual from 'lodash-es/isEqual';
 import sortBy from 'lodash-es/sortBy';
 import { combineLatest, Observable, ReplaySubject, defer } from 'rxjs';
-import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
+import { map, switchMap, startWith, shareReplay, withLatestFrom, filter } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 
@@ -21,7 +22,7 @@ import { sortData } from './utils/sort-table-data';
 
 interface Params {
     types?: string[];
-    ref?: string;
+    ref?: Reference;
 }
 
 @UntilDestroy()
@@ -88,14 +89,18 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
         this.typesControl.valueChanges.subscribe((types) => {
             void this.queryParamsService.patch({ types });
         });
-        const queryRef = this.queryParamsService.params.ref;
-        this.domainStoreService.getDomain().subscribe((d) =>
-            d.forEach((obj, ref) => {
-                if (queryRef === JSON.stringify(ref)) {
-                    this.refChange.emit({ ref, obj: obj });
-                }
-            })
-        );
+        this.queryParamsService.params$
+            .pipe(
+                filter((p) => !!p.ref),
+                withLatestFrom(this.domainStoreService.getDomain())
+            )
+            .subscribe(([params, domain]) => {
+                domain.forEach((obj, ref) => {
+                    if (isEqual(params.ref, ref)) {
+                        this.refChange.emit({ ref, obj: obj });
+                    }
+                });
+            });
     }
 
     ngAfterViewInit() {
@@ -103,8 +108,7 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
     }
 
     openDetails(item: DataSourceItem) {
-        this.refChange.emit({ ref: item.ref, obj: item.obj });
-        void this.queryParamsService.patch({ ref: JSON.stringify(item.ref) });
+        void this.queryParamsService.patch({ ref: item.ref });
     }
 
     private createMatTableDataSource(
