@@ -1,10 +1,11 @@
 import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { CategoryRef } from '@vality/domain-proto';
+import { CategoryRef, CriterionRef } from '@vality/domain-proto';
 import { Timestamp } from '@vality/domain-proto/lib/base';
 import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DominantCacheService } from '@cc/app/api/dominant-cache';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases } from '@cc/app/shared/components/metadata-form';
@@ -16,10 +17,18 @@ export class DomainMetadataViewExtensionsService {
     extensions$: Observable<MetadataViewExtension[]> = of([
         {
             determinant: (data) => of(isTypeWithAliases(data, 'CategoryRef', 'domain')),
-            extension: (data, value: CategoryRef) =>
+            extension: (_, value: CategoryRef) =>
                 this.dominantCacheService.GetCategories().pipe(
                     map((categories) => categories.find((c) => c.ref === String(value.id))),
                     map((category) => ({ value: category.name, tooltip: category }))
+                ),
+        },
+        {
+            determinant: (data) => of(isTypeWithAliases(data, 'CriterionRef', 'domain')),
+            extension: (_, value: CriterionRef) =>
+                this.domainStoreService.getObjects('criterion').pipe(
+                    map((criteries) => criteries.find((c) => c.ref.id === value.id)),
+                    map((critery) => ({ value: critery.data.name, tooltip: critery }))
                 ),
         },
         {
@@ -29,5 +38,8 @@ export class DomainMetadataViewExtensionsService {
         },
     ]);
 
-    constructor(private dominantCacheService: DominantCacheService) {}
+    constructor(
+        private dominantCacheService: DominantCacheService,
+        private domainStoreService: DomainStoreService
+    ) {}
 }
