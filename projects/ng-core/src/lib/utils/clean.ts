@@ -11,6 +11,7 @@ function isEmptyObjectOrPrimitive(value: unknown): boolean {
     return isObject(value) ? isEmpty(value) : isEmptyPrimitive(value);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function clean<T extends ReadonlyArray<any> | ArrayLike<any> | Record<any, any>>(
     value: T,
     allowRootRemoval = false,
