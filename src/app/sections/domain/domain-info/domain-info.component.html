@@ -19,7 +19,7 @@
                 (changeKind)="kind = $event"
             ></cc-thrift-viewer>
             <cc-actions>
-                <button mat-button (click)="objWithRef = null">CLOSE</button>
+                <button mat-button (click)="close()">CLOSE</button>
                 <button color="warn" mat-button (click)="delete()">DELETE</button>
                 <button color="primary" mat-button (click)="edit()">EDIT</button>
             </cc-actions>

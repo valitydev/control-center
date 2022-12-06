@@ -3,3 +3,15 @@
     unicode-bidi: embed;
     white-space: pre;
 }
+
+.link,
+.tooltip {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    cursor: default;
+}
+
+.link {
+    text-decoration-style: solid !important;
+    cursor: pointer !important;
+}

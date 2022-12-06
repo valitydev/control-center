@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ValueType, Field } from '@vality/thrift-ts';
+import { map } from 'rxjs';
 import yaml from 'yaml';
 
 import { ThriftAstMetadata } from '@cc/app/api/utils';
@@ -32,6 +34,11 @@ export class JsonViewerComponent implements OnChanges {
 
     view: MetadataViewItem;
     className = this.getClassName();
+    extensionQueryParams$ = this.route.queryParams.pipe(
+        map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams))
+    );
+
+    constructor(private route: ActivatedRoute) {}
 
     ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
@@ -66,6 +73,6 @@ export class JsonViewerComponent implements OnChanges {
     }
 
     getTooltip(tooltip: any) {
-        return yaml.stringify(tooltip);
+        return typeof tooltip === 'object' ? yaml.stringify(tooltip) : String(tooltip);
     }
 }

@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
 
 import { ThriftPipesModule } from '@cc/app/shared';
 import { DetailsItemModule } from '@cc/components/details-item';
@@ -29,6 +30,7 @@ import { JsonViewerComponent } from './json-viewer.component';
         MatTooltipModule,
         FlexModule,
         MatBadgeModule,
+        RouterModule,
     ],
 })
 export class JsonViewerModule {}

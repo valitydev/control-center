@@ -8,6 +8,7 @@ import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { QueryParamsService } from '@cc/app/shared/services';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
@@ -50,7 +51,8 @@ export class DomainInfoComponent {
         private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
         private errorService: ErrorService,
-        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
+        private queryParamsService: QueryParamsService<{ ref?: Reference }>
     ) {}
 
     edit() {
@@ -78,5 +80,10 @@ export class DomainInfoComponent {
                     this.errorService.error(err);
                 },
             });
+    }
+
+    close() {
+        this.objWithRef = null;
+        void this.queryParamsService.patch({ ref: null });
     }
 }
