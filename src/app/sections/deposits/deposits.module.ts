@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { FistfulModule } from '@cc/app/api/deprecated-fistful';
 import { DepositsTableModule } from '@cc/app/shared/components/deposits-table';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
@@ -25,6 +26,7 @@ import { SearchFiltersModule } from './search-filters/search-filters.module';
         DepositsTableModule,
         EmptySearchResultModule,
         MatProgressSpinnerModule,
+        FistfulModule,
     ],
     declarations: [DepositsComponent],
 })
