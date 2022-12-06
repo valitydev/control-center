@@ -4,42 +4,15 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DomainObject } from '@vality/domain-proto';
 import { Timestamp } from '@vality/domain-proto/lib/base';
 import isEqual from 'lodash-es/isEqual';
-import startCase from 'lodash-es/startCase';
 import { of, Observable, from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import { PickByValue } from 'utility-types';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 
-export type DomainRefDataObjects = PickByValue<DomainObject, { data: { name?: string } }>;
-export type OtherDomainObjects = Omit<DomainObject, keyof DomainRefDataObjects>;
-
-const UNNAMED_OBJECTS_LABEL_SELECTORS: {
-    [N in keyof OtherDomainObjects]: (obj: DomainObject[N]) => string;
-} = {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    dummy_link: (o) => o.data?.link?.id,
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    identity_provider: (o) => o.ref.id,
-};
-
-export function getObjectLabel(o: DomainObject[keyof DomainObject], objectKey: keyof DomainObject) {
-    let label = '';
-    if ('name' in o.data) label = o.data.name;
-    if (!label)
-        label = UNNAMED_OBJECTS_LABEL_SELECTORS[objectKey]
-            ? UNNAMED_OBJECTS_LABEL_SELECTORS[objectKey](o)
-            : '';
-    return (
-        label ||
-        startCase(objectKey.replaceAll('_', ' ')) +
-            ' Ref' +
-            ('id' in o.ref && typeof o.ref.id !== 'object' ? ` #${o.ref.id}` : '')
-    );
-}
+import { getObjectLabel } from './utils/get-object-label';
 
 @UntilDestroy()
 @Injectable({
