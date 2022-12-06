@@ -3,7 +3,7 @@ import { PickByValue } from 'utility-types';
 
 import { MetadataFormExtensionOption } from '../../../components/metadata-form';
 
-type DomainRefDataObjects = PickByValue<
+export type DomainRefDataObjects = PickByValue<
     DomainObject,
     {
         ref: { id: number | string };
