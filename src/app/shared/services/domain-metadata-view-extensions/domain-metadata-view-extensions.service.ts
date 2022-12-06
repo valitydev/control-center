@@ -4,6 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DomainObject } from '@vality/domain-proto';
 import { Timestamp } from '@vality/domain-proto/lib/base';
 import isEqual from 'lodash-es/isEqual';
+import startCase from 'lodash-es/startCase';
 import { of, Observable, from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { PickByValue } from 'utility-types';
@@ -23,12 +24,21 @@ const UNNAMED_OBJECTS_LABEL_SELECTORS: {
     dummy_link: (o) => o.data?.link?.id,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     identity_provider: (o) => o.ref.id,
-    globals: () => '',
 };
 
 export function getObjectLabel(o: DomainObject[keyof DomainObject], objectKey: keyof DomainObject) {
-    if ('name' in o.data) return o.data.name;
-    return UNNAMED_OBJECTS_LABEL_SELECTORS[objectKey](o);
+    let label = '';
+    if ('name' in o.data) label = o.data.name;
+    if (!label)
+        label = UNNAMED_OBJECTS_LABEL_SELECTORS[objectKey]
+            ? UNNAMED_OBJECTS_LABEL_SELECTORS[objectKey](o)
+            : '';
+    return (
+        label ||
+        startCase(objectKey.replaceAll('_', ' ')) +
+            ' Ref' +
+            ('id' in o.ref && typeof o.ref.id !== 'object' ? ` #${o.ref.id}` : '')
+    );
 }
 
 @UntilDestroy()
@@ -75,9 +85,7 @@ export class DomainMetadataViewExtensionsService {
                     this.domainStoreService.getObjects(objectKey).pipe(
                         map((objs) => objs.find((o) => isEqual(o.ref, value))),
                         map((obj) => ({
-                            value:
-                                getObjectLabel(obj, objectKey) ||
-                                objectKey[0].toUpperCase() + objectKey.slice(1),
+                            value: getObjectLabel(obj, objectKey),
                             tooltip: obj.ref,
                             link: [
                                 ['/domain'],
