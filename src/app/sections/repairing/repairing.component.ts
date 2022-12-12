@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogService, clean } from '@vality/ng-core';
-import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-proto';
+import { BaseDialogResponseStatus, BaseDialogService, clean, splitIds } from '@vality/ng-core';
+import { repairer } from '@vality/repairer-proto';
+import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { splitIds } from '../../../../projects/ng-core/src/lib';
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
@@ -64,7 +64,7 @@ export class RepairingComponent implements OnInit {
         'status',
         'history'
     );
-    status = RepairStatus;
+    status = repairer.RepairStatus;
 
     constructor(
         private machinesService: MachinesService,
@@ -123,7 +123,7 @@ export class RepairingComponent implements OnInit {
             .pipe(
                 filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() =>
-                    this.repairManagementService.SimpleRepairAll(
+                    this.repairManagementService.simpleRepairAll(
                         this.selection.selected.map(({ id, ns }) => ({ id, ns }))
                     )
                 ),

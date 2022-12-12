@@ -3,7 +3,11 @@ import { Validators } from '@angular/forms';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
-import { RepairInvoicesRequest, RepairWithdrawalsRequest, Machine } from '@vality/repairer-proto';
+import {
+    RepairInvoicesRequest,
+    RepairWithdrawalsRequest,
+    Machine,
+} from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
 
@@ -42,7 +46,7 @@ export class RepairByScenarioDialogComponent
         null,
         Validators.required
     );
-    metadata$ = from(import('@vality/repairer-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/repairer-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
@@ -79,8 +83,8 @@ export class RepairByScenarioDialogComponent
                 ? this.form.value
                 : this.dialogData.machines.map(({ id }) => ({ id, scenario: this.sameForm.value }));
         (this.nsControl.value === Namespace.Invoice
-            ? this.repairManagementService.RepairInvoices(value as RepairInvoicesRequest)
-            : this.repairManagementService.RepairWithdrawals(value as RepairWithdrawalsRequest)
+            ? this.repairManagementService.repairInvoices(value as RepairInvoicesRequest)
+            : this.repairManagementService.repairWithdrawals(value as RepairWithdrawalsRequest)
         )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({

@@ -52,7 +52,7 @@
     "@vality/magista-proto": "1.0.1-5352f74.0",
     "@vality/messages-proto": "1.0.1-8c5435c.0",
     "@vality/payout-manager-proto": "1.0.1-dbed280.0",
-    "@vality/repairer-proto": "1.0.1-675b6f4.0",
+    "@vality/repairer-proto": "1.0.1-af183ce.0",
     "@vality/thrift-ts": "2.4.1-8ad5123.0",
     "@vality/woody": "0.1.1",
     "angular-file": "3.6.0",

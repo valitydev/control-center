@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Machine, SearchRequest } from '@vality/repairer-proto';
+import { Machine, SearchRequest } from '@vality/repairer-proto/repairer';
 import { map } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../../api/repairer';
@@ -13,7 +13,7 @@ export class MachinesService extends PartialFetcher<Machine, SearchRequest> {
 
     protected fetch(params: SearchRequest, continuationToken: string) {
         return this.repairManagementService
-            .Search({ limit: 100, continuation_token: continuationToken, ...params })
+            .search({ limit: 100, continuation_token: continuationToken, ...params })
             .pipe(
                 map(({ machines, continuation_token }) => ({
                     result: machines,
