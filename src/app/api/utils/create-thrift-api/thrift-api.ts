@@ -91,7 +91,9 @@ export class ThriftApi {
                             err
                         );
                     if (err === 403) {
-                        throw new ThriftError('Access is denied');
+                        throw new ThriftError(
+                            `Access denied to the "${methodName}" method of "${this.options.serviceName}" service`
+                        );
                     }
                     throw err;
                 })
