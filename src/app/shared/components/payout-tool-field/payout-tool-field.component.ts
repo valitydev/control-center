@@ -4,12 +4,14 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
-import { catchError, map, pluck, shareReplay, startWith } from 'rxjs/operators';
+import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
+
+import { handleError, NotificationErrorService } from '../../services/notification-error';
 
 @UntilDestroy()
 @Component({
@@ -58,11 +60,11 @@ export class PayoutToolFieldComponent
                           pluck('payout_tools')
                       )
                       .pipe(
-                          catchError((err) => {
-                              this.notificationService.error('Error when getting shop or contract');
-                              console.error(err);
-                              return of<PayoutTool[]>([]);
-                          })
+                          handleError(
+                              this.notificationErrorService.error,
+                              null,
+                              of<PayoutTool[]>([])
+                          )
                       )
                 : of<PayoutTool[]>([])
         ),
@@ -72,7 +74,8 @@ export class PayoutToolFieldComponent
     constructor(
         injector: Injector,
         private partyManagementService: PartyManagementService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }

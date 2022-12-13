@@ -2,27 +2,19 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
-import {
-    BehaviorSubject,
-    combineLatest,
-    defer,
-    EMPTY,
-    merge,
-    Observable,
-    Subject,
-    switchMap,
-} from 'rxjs';
-import { catchError, first, map, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
+import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { ChangeStatusDialogComponent } from '@cc/app/sections/claim/components/change-status-dialog/change-status-dialog.component';
-import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
-import { UploadFileService } from '@cc/app/sections/claim/services/upload-file.service';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
+import { NotificationErrorService, handleError } from '../../shared/services/notification-error';
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
+import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
+import { AllowedClaimStatusesService } from './services/allowed-claim-statuses.service';
+import { UploadFileService } from './services/upload-file.service';
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 
 @UntilDestroy()
@@ -35,14 +27,9 @@ import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 export class ClaimComponent {
     party$ = (this.route.params as Observable<Record<string, string>>).pipe(
         switchMap(({ partyID }) =>
-            this.partyManagementService.Get(partyID).pipe(
-                progressTo(this.progress$),
-                catchError((err) => {
-                    this.notificationService.error('The party was not loaded');
-                    console.error(err);
-                    return EMPTY;
-                })
-            )
+            this.partyManagementService
+                .Get(partyID)
+                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error))
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
@@ -52,14 +39,9 @@ export class ClaimComponent {
     ).pipe(
         map(() => this.route.snapshot.params as Record<string, string>),
         switchMap(({ partyID, claimID }) =>
-            this.claimManagementService.GetClaim(partyID, Number(claimID)).pipe(
-                progressTo(this.progress$),
-                catchError((err) => {
-                    this.notificationService.error('The claim was not loaded');
-                    console.error(err);
-                    return EMPTY;
-                })
-            )
+            this.claimManagementService
+                .GetClaim(partyID, Number(claimID))
+                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error))
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
@@ -84,7 +66,8 @@ export class ClaimComponent {
         private notificationService: NotificationService,
         private uploadFileService: UploadFileService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private baseDialogService: BaseDialogService
+        private baseDialogService: BaseDialogService,
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     reloadClaim() {
@@ -121,10 +104,7 @@ export class ClaimComponent {
                     this.reloadClaim();
                     this.notificationService.success('Uploaded successfully');
                 },
-                error: (err) => {
-                    console.error(err);
-                    this.notificationService.error('Uploading error');
-                },
+                error: (err) => this.notificationErrorService.error(err, 'Uploading error'),
             });
     }
 

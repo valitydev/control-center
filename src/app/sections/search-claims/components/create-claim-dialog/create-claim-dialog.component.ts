@@ -6,8 +6,8 @@ import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { ErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { progressTo } from '@cc/utils';
 
 @UntilDestroy()
@@ -26,7 +26,7 @@ export class CreateClaimDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private claimService: ClaimManagementService,
         private notificationService: NotificationService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private router: Router
     ) {
         super(injector);
@@ -43,7 +43,10 @@ export class CreateClaimDialogComponent extends BaseDialogSuperclass<
                     this.closeWithSuccess();
                 },
                 error: (err) => {
-                    this.errorService.error(err, 'An error occurred while claim creation');
+                    this.notificationErrorService.error(
+                        err,
+                        'An error occurred while claim creation'
+                    );
                 },
             });
     }

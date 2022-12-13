@@ -5,8 +5,8 @@ import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { ErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../services/routing-rules';
 import { TargetRuleset } from '../../target-ruleset-form';
 
@@ -33,7 +33,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
-        private errorService: ErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -50,7 +50,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: () => this.dialogRef.close(),
-                error: (err) => this.errorService.error(err),
+                error: (err) => this.notificationErrorService.error(err),
             });
     }
 }

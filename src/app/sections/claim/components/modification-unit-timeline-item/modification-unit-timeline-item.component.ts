@@ -17,6 +17,7 @@ import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dial
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
+import { NotificationErrorService } from '../../../../shared/services/notification-error';
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
 
 @UntilDestroy()
@@ -47,7 +48,8 @@ export class ModificationUnitTimelineItemComponent {
         private baseDialogService: BaseDialogService,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
-        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     get name() {
@@ -102,9 +104,7 @@ export class ModificationUnitTimelineItemComponent {
                     this.notificationService.success();
                     this.claimChanged.emit();
                 },
-                error: () => {
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

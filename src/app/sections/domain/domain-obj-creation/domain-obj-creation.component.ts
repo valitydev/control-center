@@ -12,8 +12,8 @@ import { progressTo, getUnionKey, enumHasValue } from '../../../../utils';
 import { EditorKind } from '../../../shared/components/thrift-editor';
 import { ViewerKind } from '../../../shared/components/thrift-viewer';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
-import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
+import { NotificationErrorService } from '../../../shared/services/notification-error';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { MetadataService } from '../services/metadata.service';
 
@@ -63,7 +63,7 @@ export class DomainObjCreationComponent {
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService
     ) {}
@@ -87,9 +87,7 @@ export class DomainObjCreationComponent {
                     this.notificationService.success('Successfully created');
                     void this.domainNavigateService.toType(String(field.type));
                 },
-                error: (err) => {
-                    this.errorService.error(err);
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

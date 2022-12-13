@@ -8,10 +8,10 @@ import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { progressTo, getFormValueChanges } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
-import { ErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 
 enum Types {
@@ -56,7 +56,7 @@ export class RepairByScenarioDialogComponent
     constructor(
         injector: Injector,
         private repairManagementService: RepairManagementService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
@@ -88,10 +88,7 @@ export class RepairByScenarioDialogComponent
                     this.notificationService.success();
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
-                error: (err) => {
-                    this.errorService.error(err);
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

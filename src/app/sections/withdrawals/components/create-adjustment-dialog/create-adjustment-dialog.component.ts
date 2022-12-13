@@ -11,9 +11,9 @@ import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { ManagementService } from '../../../../api/withdrawal';
-import { ErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 
 @UntilDestroy()
@@ -46,7 +46,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private managementService: ManagementService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService
     ) {
         super(injector);
@@ -63,8 +63,9 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                         external_id: this.externalIdControl.value,
                     })
                     .pipe(
-                        catchError(() => {
-                            this.notificationService.error(
+                        catchError((err) => {
+                            this.notificationErrorService.error(
+                                err,
                                 `Error when creating adjustment for withdrawal ${w.id}`
                             );
                             return of(null);
@@ -82,10 +83,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                         this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                     }
                 },
-                error: (err) => {
-                    this.errorService.error(err);
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
                 complete: () => {
                     this.progress = -1;
                 },

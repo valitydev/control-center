@@ -4,13 +4,17 @@ import {
     CommentModification,
     ModificationUnit,
 } from '@vality/domain-proto/lib/claim_management';
-import { defer, ReplaySubject, switchMap, BehaviorSubject, EMPTY } from 'rxjs';
-import { catchError, pluck, shareReplay } from 'rxjs/operators';
+import { defer, ReplaySubject, switchMap, BehaviorSubject } from 'rxjs';
+import { pluck, shareReplay } from 'rxjs/operators';
 
 import { MessageService } from '@cc/app/api/messages';
 import { ComponentChanges } from '@cc/app/shared';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { inProgressFrom, progressTo } from '@cc/utils/operators';
+
+import {
+    handleError,
+    NotificationErrorService,
+} from '../../../../shared/services/notification-error';
 
 @Component({
     selector: 'cc-comment-modification-timeline-item',
@@ -41,14 +45,9 @@ export class CommentModificationTimelineItemComponent implements OnChanges {
 
     private conversations$ = defer(() => this.modificationUnit$).pipe(
         switchMap(() =>
-            this.messageService.GetConversations([this.commentModification.id], {}).pipe(
-                catchError((err) => {
-                    this.notificationService.error('Conversations were not loaded');
-                    console.error(err);
-                    return EMPTY;
-                }),
-                progressTo(this.progress$)
-            )
+            this.messageService
+                .GetConversations([this.commentModification.id], {})
+                .pipe(handleError(this.notificationErrorService.error), progressTo(this.progress$))
         ),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
@@ -57,7 +56,7 @@ export class CommentModificationTimelineItemComponent implements OnChanges {
 
     constructor(
         private messageService: MessageService,
-        private notificationService: NotificationService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     ngOnChanges({ modificationUnit }: ComponentChanges<CommentModificationTimelineItemComponent>) {

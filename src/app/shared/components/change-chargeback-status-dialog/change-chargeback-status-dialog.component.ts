@@ -12,8 +12,8 @@ import { from, BehaviorSubject, Observable } from 'rxjs';
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { EnumKeysPipe, EnumKeyPipe } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { ErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { progressTo } from '@cc/utils';
 
 import { MetadataFormModule } from '../metadata-form';
@@ -67,7 +67,7 @@ export class ChangeChargebackStatusDialogComponent
         injector: Injector,
         private invoicingService: InvoicingService,
         private notificationService: NotificationService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
         super(injector);
@@ -106,7 +106,7 @@ export class ChangeChargebackStatusDialogComponent
                 this.notificationService.success();
             },
             error: (err) => {
-                this.errorService.error(err);
+                this.notificationErrorService.error(err);
             },
         });
     }

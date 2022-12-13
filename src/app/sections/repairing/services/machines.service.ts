@@ -4,10 +4,14 @@ import { map } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../../api/repairer';
 import { PartialFetcher } from '../../../shared/services';
+import { NotificationErrorService } from '../../../shared/services/notification-error';
 
 @Injectable()
 export class MachinesService extends PartialFetcher<Machine, SearchRequest> {
-    constructor(private repairManagementService: RepairManagementService) {
+    constructor(
+        private repairManagementService: RepairManagementService,
+        private notificationErrorService: NotificationErrorService
+    ) {
         super();
     }
 
@@ -20,5 +24,9 @@ export class MachinesService extends PartialFetcher<Machine, SearchRequest> {
                     continuationToken: continuation_token,
                 }))
             );
+    }
+
+    protected handleError(err) {
+        this.notificationErrorService.error(err);
     }
 }

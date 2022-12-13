@@ -6,9 +6,9 @@ import { first, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { handleError } from '../../../../utils/operators/handle-error';
-import { ErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../services/routing-rules';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
@@ -60,7 +60,7 @@ export class PartyDelegateRulesetsComponent {
         private router: Router,
         private baseDialogService: BaseDialogService,
         private domainStoreService: DomainStoreService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private route: ActivatedRoute
     ) {}
 
@@ -71,7 +71,7 @@ export class PartyDelegateRulesetsComponent {
                 type: this.route.snapshot.params.type,
             })
             .afterClosed()
-            .pipe(handleError(this.errorService.error), untilDestroyed(this))
+            .pipe(handleError(this.notificationErrorService.error), untilDestroyed(this))
             .subscribe();
     }
 

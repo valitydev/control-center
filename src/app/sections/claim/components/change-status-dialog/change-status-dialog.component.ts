@@ -10,6 +10,8 @@ import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/all
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
+import { NotificationErrorService } from '../../../../shared/services/notification-error';
+
 @UntilDestroy()
 @Component({
     selector: 'cc-change-status-dialog',
@@ -36,7 +38,8 @@ export class ChangeStatusDialogComponent extends BaseDialogSuperclass<
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
-        private allowedClaimStatusesService: AllowedClaimStatusesService
+        private allowedClaimStatusesService: AllowedClaimStatusesService,
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -66,12 +69,9 @@ export class ChangeStatusDialogComponent extends BaseDialogSuperclass<
         result$.pipe(progressTo(this.progress$), untilDestroyed(this)).subscribe({
             next: () => {
                 this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
-                this.notificationService.error('Status successfully changed');
+                this.notificationService.success('Status successfully changed');
             },
-            error: (err) => {
-                console.error(err);
-                this.notificationService.error('Status change error');
-            },
+            error: this.notificationErrorService.error,
         });
     }
 }

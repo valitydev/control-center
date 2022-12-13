@@ -75,7 +75,7 @@ export abstract class PartialFetcher<R, P> {
         ).pipe(shareReplay(SHARE_REPLAY_CONF));
         this.errors$ = fetchResult$.pipe(
             switchMap(({ error }) => (error ? of(error) : EMPTY)),
-            tap((error) => console.error('Partial fetcher error: ', error)),
+            tap((error) => this.handleError(error)),
             share()
         );
 
@@ -101,6 +101,10 @@ export abstract class PartialFetcher<R, P> {
 
     fetchMore() {
         this.action$.next({ type: 'fetchMore' });
+    }
+
+    protected handleError(error: unknown): void {
+        console.error('Partial fetcher error: ', error);
     }
 
     protected abstract fetch(...args: Parameters<FetchFn<P, R>>): ReturnType<FetchFn<P, R>>;

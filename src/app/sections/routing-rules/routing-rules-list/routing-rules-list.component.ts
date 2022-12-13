@@ -14,9 +14,10 @@ import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
-import { ErrorService } from '../../../shared/services/error';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 import { RoutingRulesService } from '../services/routing-rules';
@@ -76,7 +77,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute
     ) {}
@@ -88,7 +89,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
                 delegateIdx: delegateId.delegateIdx,
             })
             .afterClosed()
-            .pipe(handleError(this.errorService.error), untilDestroyed(this))
+            .pipe(handleError(this.notificationErrorService.error), untilDestroyed(this))
             .subscribe();
     }
 
@@ -101,7 +102,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
             })
             .afterClosed()
             .pipe(untilDestroyed(this))
-            .subscribe({ error: this.errorService.error });
+            .subscribe({ error: this.notificationErrorService.error });
     }
 
     cloneDelegateRuleset(delegateId: DelegateId) {
@@ -118,7 +119,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
                 ),
                 untilDestroyed(this)
             )
-            .subscribe({ error: this.errorService.error });
+            .subscribe({ error: this.notificationErrorService.error });
     }
 
     delete(delegateId: DelegateId) {
@@ -135,6 +136,6 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
                 ),
                 untilDestroyed(this)
             )
-            .subscribe({ error: this.errorService.error });
+            .subscribe({ error: this.notificationErrorService.error });
     }
 }

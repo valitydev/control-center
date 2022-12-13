@@ -5,7 +5,7 @@ import { Observable, switchMap, BehaviorSubject, defer } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel/domain-store.service';
-import { ErrorService } from '@cc/app/shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { toJson, getUnionValue, progressTo } from '@cc/utils';
 
 import { MetadataService } from './metadata.service';
@@ -29,7 +29,7 @@ export class DomainObjModificationService {
             try {
                 return JSON.parse(ref as string) as Reference;
             } catch (err) {
-                this.errorService.error(err, 'Malformed domain object ref');
+                this.notificationErrorService.error(err, 'Malformed domain object ref');
                 return null;
             }
         })
@@ -39,7 +39,7 @@ export class DomainObjModificationService {
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private errorService: ErrorService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     private getDomainObject(ref: Reference, rawDomain: boolean): Observable<DomainObject> {

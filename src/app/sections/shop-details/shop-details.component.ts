@@ -6,11 +6,11 @@ import { combineLatest, switchMap, from } from 'rxjs';
 import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
 
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
 import { PartyManagementService } from '../../api/payment-processing';
-import { ErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { FetchShopService } from './services/fetch-shop.service';
 
@@ -34,7 +34,7 @@ export class ShopDetailsComponent {
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
         private baseDialogService: BaseDialogService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
     ) {
@@ -72,7 +72,7 @@ export class ShopDetailsComponent {
                     this.notificationService.success();
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }
@@ -105,7 +105,7 @@ export class ShopDetailsComponent {
                     this.notificationService.success();
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }

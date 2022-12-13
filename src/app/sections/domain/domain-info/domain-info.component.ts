@@ -14,8 +14,8 @@ import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/dom
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { enumHasValue } from '../../../../utils';
 import { ViewerKind } from '../../../shared/components/thrift-viewer';
-import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
+import { NotificationErrorService } from '../../../shared/services/notification-error';
 
 const VIEWER_KIND = 'domain-info-kind';
 
@@ -50,7 +50,7 @@ export class DomainInfoComponent {
         private domainStoreService: DomainStoreService,
         private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
         private queryParamsService: QueryParamsService<{ ref?: Reference }>
     ) {}
@@ -76,9 +76,7 @@ export class DomainInfoComponent {
                 next: () => {
                     this.notificationService.success('Successfully removed');
                 },
-                error: (err) => {
-                    this.errorService.error(err);
-                },
+                error: this.notificationErrorService.error,
             });
     }
 
