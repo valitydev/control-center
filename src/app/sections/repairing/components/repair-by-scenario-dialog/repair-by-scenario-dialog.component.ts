@@ -88,10 +88,7 @@ export class RepairByScenarioDialogComponent
                     this.notificationService.success();
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
-                error: (err) => {
-                    this.notificationErrorService.error(err);
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

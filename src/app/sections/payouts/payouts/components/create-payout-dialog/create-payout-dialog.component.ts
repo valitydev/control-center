@@ -12,6 +12,8 @@ import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils/operators';
 import { toMinor } from '@cc/utils/to-minor';
 
+import { NotificationErrorService } from '../../../../../shared/services/notification-error';
+
 interface CreatePayoutDialogForm {
     partyId: string;
     shopId: string;
@@ -40,7 +42,8 @@ export class CreatePayoutDialogComponent extends BaseDialogSuperclass<CreatePayo
         injector: Injector,
         private fb: FormBuilder,
         private payoutManagementService: PayoutManagementService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -67,13 +70,10 @@ export class CreatePayoutDialogComponent extends BaseDialogSuperclass<CreatePayo
             .pipe(untilDestroyed(this), progressTo(this.progress$))
             .subscribe({
                 next: () => {
-                    this.notificationService.error('Payout created successfully');
+                    this.notificationService.success('Payout created successfully');
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
-                error: (err) => {
-                    console.error(err);
-                    this.notificationService.error('Payout creation error');
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }
