@@ -29,7 +29,7 @@ export class DomainObjModificationService {
             try {
                 return JSON.parse(ref as string) as Reference;
             } catch (err) {
-                this.errorService.error(err, 'Malformed domain object ref');
+                this.notificationErrorService.error(err, 'Malformed domain object ref');
                 return null;
             }
         })
@@ -39,7 +39,7 @@ export class DomainObjModificationService {
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     private getDomainObject(ref: Reference, rawDomain: boolean): Observable<DomainObject> {

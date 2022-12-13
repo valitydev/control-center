@@ -74,7 +74,7 @@ export class RepairingComponent implements OnInit {
         private baseDialogService: BaseDialogService,
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     ngOnInit() {
@@ -136,7 +136,7 @@ export class RepairingComponent implements OnInit {
                 },
                 error: (err) => {
                     this.notificationService.error();
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }

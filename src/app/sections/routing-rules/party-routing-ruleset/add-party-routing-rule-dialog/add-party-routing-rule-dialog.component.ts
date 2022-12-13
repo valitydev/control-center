@@ -29,7 +29,7 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: FormBuilder,
         private routingRulesService: RoutingRulesService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -55,7 +55,7 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: () => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }),
-                error: this.errorService.error,
+                error: this.notificationErrorService.error,
             });
     }
 }

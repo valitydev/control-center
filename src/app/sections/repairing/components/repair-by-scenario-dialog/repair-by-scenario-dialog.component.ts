@@ -56,7 +56,7 @@ export class RepairByScenarioDialogComponent
     constructor(
         injector: Injector,
         private repairManagementService: RepairManagementService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
@@ -89,7 +89,7 @@ export class RepairByScenarioDialogComponent
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                     this.notificationService.error();
                 },
             });

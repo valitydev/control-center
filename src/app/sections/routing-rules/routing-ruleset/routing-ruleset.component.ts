@@ -46,7 +46,7 @@ export class RoutingRulesetComponent {
         private baseDialogService: BaseDialogService,
         private routingRulesetService: RoutingRulesetService,
         private domainStoreService: DomainStoreService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private route: ActivatedRoute
     ) {}
@@ -70,7 +70,7 @@ export class RoutingRulesetComponent {
                     }
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                     this.notificationService.success('Error while adding routing rule');
                 },
             });

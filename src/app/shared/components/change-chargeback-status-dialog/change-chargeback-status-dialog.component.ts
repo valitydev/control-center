@@ -67,7 +67,7 @@ export class ChangeChargebackStatusDialogComponent
         injector: Injector,
         private invoicingService: InvoicingService,
         private notificationService: NotificationService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
         super(injector);
@@ -106,7 +106,7 @@ export class ChangeChargebackStatusDialogComponent
                 this.notificationService.success();
             },
             error: (err) => {
-                this.errorService.error(err);
+                this.notificationErrorService.error(err);
             },
         });
     }

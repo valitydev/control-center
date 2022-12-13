@@ -46,7 +46,7 @@ export class RoutingRulesetService {
         private routingRulesService: RoutingRulesDamselService,
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     removeShopRule(candidateIdx: number) {
@@ -59,7 +59,7 @@ export class RoutingRulesetService {
                         candidateIdx,
                     })
                 ),
-                handleError(this.errorService.error)
+                handleError(this.notificationErrorService.error)
             )
             .subscribe();
     }

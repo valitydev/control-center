@@ -46,7 +46,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private managementService: ManagementService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService
     ) {
         super(injector);
@@ -83,7 +83,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                     }
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                     this.notificationService.error();
                 },
                 complete: () => {

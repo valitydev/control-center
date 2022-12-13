@@ -33,7 +33,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -50,7 +50,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: () => this.dialogRef.close(),
-                error: (err) => this.errorService.error(err),
+                error: (err) => this.notificationErrorService.error(err),
             });
     }
 }

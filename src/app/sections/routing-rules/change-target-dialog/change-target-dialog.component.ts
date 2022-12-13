@@ -25,7 +25,7 @@ export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private routingRulesService: RoutingRulesService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
         this.routingRulesService
@@ -52,6 +52,6 @@ export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
                 delegateIdx,
             })
             .pipe(untilDestroyed(this))
-            .subscribe(() => this.dialogRef.close(), this.errorService.error);
+            .subscribe(() => this.dialogRef.close(), this.notificationErrorService.error);
     }
 }

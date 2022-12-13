@@ -30,7 +30,7 @@ export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private invoicingService: InvoicingService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService
     ) {
         super(injector);
@@ -50,7 +50,7 @@ export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
                     this.closeWithSuccess(res);
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                     this.notificationService.error();
                 },
             });

@@ -78,7 +78,7 @@ export class WithdrawalsComponent implements OnInit {
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     ngOnInit() {
@@ -119,7 +119,7 @@ export class WithdrawalsComponent implements OnInit {
                     }
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                     this.notificationService.error();
                 },
             });

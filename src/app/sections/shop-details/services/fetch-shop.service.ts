@@ -14,7 +14,10 @@ export class FetchShopService {
             this.partyManagementService.GetShop(partyID, shopID).pipe(
                 progressTo(this.progress$),
                 catchError((err) => {
-                    this.errorService.error(err, 'An error occurred while fetching shop');
+                    this.notificationErrorService.error(
+                        err,
+                        'An error occurred while fetching shop'
+                    );
                     return EMPTY;
                 })
             )
@@ -26,7 +29,10 @@ export class FetchShopService {
             this.partyManagementService.GetShopContract(partyID, shopID).pipe(
                 progressTo(this.progress$),
                 catchError((err) => {
-                    this.errorService.error(err, 'An error occurred while fetching shop contract');
+                    this.notificationErrorService.error(
+                        err,
+                        'An error occurred while fetching shop contract'
+                    );
                     return EMPTY;
                 })
             )
@@ -41,7 +47,7 @@ export class FetchShopService {
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private errorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     getShop(partyID: PartyID, shopID: ShopID) {

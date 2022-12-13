@@ -60,7 +60,7 @@ export class PartyDelegateRulesetsComponent {
         private router: Router,
         private baseDialogService: BaseDialogService,
         private domainStoreService: DomainStoreService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private route: ActivatedRoute
     ) {}
 
@@ -71,7 +71,7 @@ export class PartyDelegateRulesetsComponent {
                 type: this.route.snapshot.params.type,
             })
             .afterClosed()
-            .pipe(handleError(this.errorService.error), untilDestroyed(this))
+            .pipe(handleError(this.notificationErrorService.error), untilDestroyed(this))
             .subscribe();
     }
 

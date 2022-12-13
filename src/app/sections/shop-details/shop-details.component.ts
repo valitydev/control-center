@@ -34,7 +34,7 @@ export class ShopDetailsComponent {
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
         private baseDialogService: BaseDialogService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
     ) {
@@ -72,7 +72,7 @@ export class ShopDetailsComponent {
                     this.notificationService.success();
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }
@@ -105,7 +105,7 @@ export class ShopDetailsComponent {
                     this.notificationService.success();
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }

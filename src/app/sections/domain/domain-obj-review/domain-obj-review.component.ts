@@ -33,7 +33,7 @@ export class DomainObjReviewComponent {
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
-        private errorService: NotificationErrorService,
+        private notificationErrorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
         private domainSecretService: DomainSecretService
     ) {
@@ -70,7 +70,7 @@ export class DomainObjReviewComponent {
                     void this.domainNavigateService.toType(type);
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }
