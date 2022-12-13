@@ -49,10 +49,7 @@ export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
                     this.notificationService.success('Chargeback created');
                     this.closeWithSuccess(res);
                 },
-                error: (err) => {
-                    this.notificationErrorService.error(err);
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

@@ -134,10 +134,7 @@ export class RepairingComponent implements OnInit {
                 next: () => {
                     this.notificationService.success();
                 },
-                error: (err) => {
-                    this.notificationService.error();
-                    this.notificationErrorService.error(err);
-                },
+                error: this.notificationErrorService.error,
             });
     }
 
