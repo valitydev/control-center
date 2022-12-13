@@ -10,6 +10,8 @@ import { DomainSecretService } from '@cc/app/shared/services/domain-secret-servi
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionKey } from '@cc/utils/get-union-key';
 
+import { handleError, NotificationErrorService } from '../../shared/services/notification-error';
+
 @UntilDestroy()
 @Injectable({
     providedIn: 'root',
@@ -24,7 +26,9 @@ export class DomainStoreService {
     private snapshot$: Observable<Snapshot> = defer(() => this.reload$).pipe(
         startWith(undefined),
         switchMap(() =>
-            this.repositoryService.Checkout({ head: {} }).pipe(progressTo(this.progress$))
+            this.repositoryService
+                .Checkout({ head: {} })
+                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error))
         ),
         untilDestroyed(this),
         shareReplay(1)
@@ -34,7 +38,8 @@ export class DomainStoreService {
 
     constructor(
         private repositoryService: RepositoryService,
-        private domainSecretService: DomainSecretService
+        private domainSecretService: DomainSecretService,
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     forceReload(): void {
