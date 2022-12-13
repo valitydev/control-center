@@ -6,10 +6,14 @@ import { map } from 'rxjs/operators';
 import { createDsl, WithdrawalParams, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
 
 import { FetchResult, PartialFetcher } from '../../../shared/services';
+import { NotificationErrorService } from '../../../shared/services/notification-error';
 
 @Injectable()
 export class FetchWithdrawalsService extends PartialFetcher<StatWithdrawal, WithdrawalParams> {
-    constructor(private fistfulStatisticsService: FistfulStatisticsService) {
+    constructor(
+        private fistfulStatisticsService: FistfulStatisticsService,
+        private notificationErrorService: NotificationErrorService
+    ) {
         super();
     }
 
@@ -30,5 +34,9 @@ export class FetchWithdrawalsService extends PartialFetcher<StatWithdrawal, With
                     continuationToken: continuation_token,
                 }))
             );
+    }
+
+    protected handleError(error: unknown) {
+        this.notificationErrorService.error(error);
     }
 }

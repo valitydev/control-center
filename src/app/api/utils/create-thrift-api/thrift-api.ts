@@ -90,10 +90,15 @@ export class ThriftApi {
                             `😞 ${this.options.name}/${this.options.serviceName}/${methodName}`,
                             err
                         );
+                    const serviceMethodName = `the "${methodName}" method of "${
+                        this.options.wachterServiceName ?? this.options.serviceName
+                    }" service`;
+                    if (err instanceof TypeError) {
+                        if (err.message === 'Failed to fetch')
+                            throw new Error(`Failed to fetch ${serviceMethodName}`);
+                    }
                     if (err === 403) {
-                        throw new ThriftError(
-                            `Access denied to the "${methodName}" method of "${this.options.serviceName}" service`
-                        );
+                        throw new ThriftError(`Access denied to ${serviceMethodName}`);
                     }
                     throw err;
                 })
