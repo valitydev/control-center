@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { merge, NEVER, ReplaySubject, Subject } from 'rxjs';
+import { merge, ReplaySubject, Subject, EMPTY } from 'rxjs';
 import { catchError, switchMap, pluck, shareReplay } from 'rxjs/operators';
 
 import { FistfulStatisticsService } from '@cc/app/api/deprecated-fistful';
 import { progress } from '@cc/app/shared/custom-operators';
+
+import { NotificationErrorService } from '../../../../shared/services/notification-error';
 
 @Injectable()
 export class ReceiveDepositService {
@@ -14,9 +16,10 @@ export class ReceiveDepositService {
     deposit$ = this.receiveDeposit$.pipe(
         switchMap((depositId) =>
             this.fistfulStatisticsService.getDeposits({ depositId } as any, null).pipe(
-                catchError(() => {
+                catchError((err) => {
                     this.error$.next(true);
-                    return NEVER;
+                    this.notificationErrorService.error(err);
+                    return EMPTY;
                 })
             )
         ),
@@ -27,10 +30,10 @@ export class ReceiveDepositService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     isLoading$ = progress(this.receiveDeposit$, merge(this.deposit$, this.error$));
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    hasError$ = this.error$.asObservable();
-
-    constructor(private fistfulStatisticsService: FistfulStatisticsService) {}
+    constructor(
+        private fistfulStatisticsService: FistfulStatisticsService,
+        private notificationErrorService: NotificationErrorService
+    ) {}
 
     receiveDeposit(id: string) {
         this.receiveDeposit$.next(id);
