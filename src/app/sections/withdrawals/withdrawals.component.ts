@@ -118,10 +118,7 @@ export class WithdrawalsComponent implements OnInit {
                         this.notificationService.success();
                     }
                 },
-                error: (err) => {
-                    this.notificationErrorService.error(err);
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

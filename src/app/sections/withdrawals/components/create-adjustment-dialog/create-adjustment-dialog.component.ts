@@ -63,8 +63,9 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                         external_id: this.externalIdControl.value,
                     })
                     .pipe(
-                        catchError(() => {
-                            this.notificationService.error(
+                        catchError((err) => {
+                            this.notificationErrorService.error(
+                                err,
                                 `Error when creating adjustment for withdrawal ${w.id}`
                             );
                             return of(null);
@@ -82,10 +83,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
                         this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                     }
                 },
-                error: (err) => {
-                    this.notificationErrorService.error(err);
-                    this.notificationService.error();
-                },
+                error: this.notificationErrorService.error,
                 complete: () => {
                     this.progress = -1;
                 },

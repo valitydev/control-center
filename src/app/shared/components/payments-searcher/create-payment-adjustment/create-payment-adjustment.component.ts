@@ -12,6 +12,7 @@ import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
 import { InvoicingService } from '../../../../api/payment-processing';
 import { NotificationService } from '../../../services/notification';
+import { NotificationErrorService } from '../../../services/notification-error';
 
 @UntilDestroy()
 @Component({
@@ -33,7 +34,8 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
         injector: Injector,
         private invoicingService: InvoicingService,
         private notificationService: NotificationService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -71,8 +73,8 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
                         this.notificationService.success(`${payments.length} created successfully`);
                         this.closeWithSuccess();
                     } else {
-                        this.notificationService.error(
-                            `${this.withError.length} out of ${payments.length} failed`
+                        this.notificationErrorService.error(
+                            new Error(`${this.withError.length} out of ${payments.length} failed`)
                         );
                     }
                     this.progress$.next(0);
