@@ -5,7 +5,7 @@ import { Observable, switchMap, BehaviorSubject, defer } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel/domain-store.service';
-import { NotificationErrorService } from '@cc/app/shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { toJson, getUnionValue, progressTo } from '@cc/utils';
 
 import { MetadataService } from './metadata.service';

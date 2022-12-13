@@ -3,7 +3,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
-import { NotificationErrorService } from '../../../shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { RoutingRulesService } from '../services/routing-rules';
 import { TargetRuleset } from '../target-ruleset-form';
 import { RoutingRulesType } from '../types/routing-rules-type';

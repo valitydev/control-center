@@ -4,9 +4,9 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { handleError } from '../../../../utils/operators/handle-error';
-import { NotificationErrorService } from '../../../shared/services/error';
 import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 
 @Injectable()

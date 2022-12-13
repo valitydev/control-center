@@ -5,7 +5,8 @@ import { Shop } from '@vality/domain-proto/lib/domain';
 import { StatWallet } from '@vality/fistful-proto/lib/fistful_stat';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 
-import { NotificationErrorService } from '../../../../shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { RoutingRulesService } from '../../services/routing-rules';
 import { RoutingRulesType } from '../../types/routing-rules-type';
 

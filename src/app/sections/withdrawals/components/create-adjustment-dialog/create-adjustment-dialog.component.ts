@@ -11,9 +11,9 @@ import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { ManagementService } from '../../../../api/withdrawal';
-import { NotificationErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 
 @UntilDestroy()

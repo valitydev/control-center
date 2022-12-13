@@ -6,8 +6,8 @@ import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { NotificationErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { progressTo } from '@cc/utils';
 
 @UntilDestroy()

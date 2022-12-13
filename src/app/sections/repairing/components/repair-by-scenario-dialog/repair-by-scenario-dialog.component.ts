@@ -8,10 +8,10 @@ import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { progressTo, getFormValueChanges } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
-import { NotificationErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 
 enum Types {

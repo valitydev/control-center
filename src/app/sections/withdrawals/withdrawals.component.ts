@@ -11,11 +11,11 @@ import { Moment } from 'moment';
 import { map } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { SELECT_COLUMN_NAME } from '../../../components/table';
 import { isNilOrEmptyString } from '../../../utils';
 import { QueryParamsService } from '../../shared/services';
-import { NotificationErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';

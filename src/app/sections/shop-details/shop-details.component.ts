@@ -6,11 +6,11 @@ import { combineLatest, switchMap, from } from 'rxjs';
 import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
 
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
 import { PartyManagementService } from '../../api/payment-processing';
-import { NotificationErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { FetchShopService } from './services/fetch-shop.service';
 

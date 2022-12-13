@@ -9,8 +9,8 @@ import * as short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { NotificationErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 @UntilDestroy()
 @Component({

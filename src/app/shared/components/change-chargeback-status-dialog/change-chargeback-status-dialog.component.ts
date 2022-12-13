@@ -12,8 +12,8 @@ import { from, BehaviorSubject, Observable } from 'rxjs';
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { EnumKeysPipe, EnumKeyPipe } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { NotificationErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { progressTo } from '@cc/utils';
 
 import { MetadataFormModule } from '../metadata-form';

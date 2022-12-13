@@ -8,12 +8,13 @@ import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-p
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { splitIds } from '../../../../projects/ng-core/src/lib';
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
 import { QueryParamsService } from '../../shared/services';
-import { NotificationErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';

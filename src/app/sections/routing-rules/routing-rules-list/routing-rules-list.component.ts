@@ -14,9 +14,10 @@ import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
-import { NotificationErrorService } from '../../../shared/services/error';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 import { RoutingRulesService } from '../services/routing-rules';

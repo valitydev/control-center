@@ -6,9 +6,9 @@ import { first, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { handleError } from '../../../../utils/operators/handle-error';
-import { NotificationErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../services/routing-rules';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
