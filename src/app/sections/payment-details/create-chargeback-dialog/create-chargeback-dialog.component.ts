@@ -9,7 +9,7 @@ import * as short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { ErrorService } from '@cc/app/shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/error';
 import { NotificationService } from '@cc/app/shared/services/notification';
 
 @UntilDestroy()
@@ -30,7 +30,7 @@ export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private invoicingService: InvoicingService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private notificationService: NotificationService
     ) {
         super(injector);

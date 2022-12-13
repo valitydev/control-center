@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 
-import { ErrorService } from '../../../../shared/services/error';
+import { NotificationErrorService } from '../../../../shared/services/error';
 import { RoutingRulesService } from '../../services/routing-rules';
 import { TargetRuleset } from '../../target-ruleset-form';
 
@@ -33,7 +33,7 @@ export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
-        private errorService: ErrorService
+        private errorService: NotificationErrorService
     ) {
         super(injector);
     }

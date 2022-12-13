@@ -13,7 +13,7 @@ import { ConfirmActionDialogComponent } from '../../../components/confirm-action
 import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
 import { QueryParamsService } from '../../shared/services';
-import { ErrorService } from '../../shared/services/error';
+import { NotificationErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
@@ -73,7 +73,7 @@ export class RepairingComponent implements OnInit {
         private baseDialogService: BaseDialogService,
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
-        private errorService: ErrorService
+        private errorService: NotificationErrorService
     ) {}
 
     ngOnInit() {

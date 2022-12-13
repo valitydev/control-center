@@ -10,7 +10,7 @@ import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/dom
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
 import { PartyManagementService } from '../../api/payment-processing';
-import { ErrorService } from '../../shared/services/error';
+import { NotificationErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { FetchShopService } from './services/fetch-shop.service';
 
@@ -34,7 +34,7 @@ export class ShopDetailsComponent {
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
         private baseDialogService: BaseDialogService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
     ) {

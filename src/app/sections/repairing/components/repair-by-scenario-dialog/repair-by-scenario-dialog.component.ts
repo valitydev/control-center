@@ -11,7 +11,7 @@ import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
 import { progressTo, getFormValueChanges } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
-import { ErrorService } from '../../../../shared/services/error';
+import { NotificationErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 
 enum Types {
@@ -56,7 +56,7 @@ export class RepairByScenarioDialogComponent
     constructor(
         injector: Injector,
         private repairManagementService: RepairManagementService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {

@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, defer, EMPTY, merge } from 'rxjs';
 import { catchError, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { ErrorService } from '@cc/app/shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/error';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class FetchShopService {
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private errorService: ErrorService
+        private errorService: NotificationErrorService
     ) {}
 
     getShop(partyID: PartyID, shopID: ShopID) {

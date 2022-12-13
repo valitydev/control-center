@@ -6,7 +6,7 @@ import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { handleError } from '../../../../utils/operators/handle-error';
-import { ErrorService } from '../../../shared/services/error';
+import { NotificationErrorService } from '../../../shared/services/error';
 import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 
 @Injectable()
@@ -46,7 +46,7 @@ export class RoutingRulesetService {
         private routingRulesService: RoutingRulesDamselService,
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
-        private errorService: ErrorService
+        private errorService: NotificationErrorService
     ) {}
 
     removeShopRule(candidateIdx: number) {

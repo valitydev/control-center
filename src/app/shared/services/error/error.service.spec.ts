@@ -2,18 +2,18 @@ import { TestBed } from '@angular/core/testing';
 import { instance, mock, verify } from 'ts-mockito';
 
 import { NotificationService } from '../notification';
-import { ErrorService } from './error.service';
+import { NotificationErrorService } from './notification-error.service';
 
 describe('ErrorService', () => {
     let mockNotificationService: NotificationService;
-    let service: ErrorService;
+    let service: NotificationErrorService;
 
     beforeEach(() => {
         mockNotificationService = mock(NotificationService);
 
         TestBed.configureTestingModule({
             providers: [
-                ErrorService,
+                NotificationErrorService,
                 {
                     provide: NotificationService,
                     useValue: instance(mockNotificationService),
@@ -21,7 +21,7 @@ describe('ErrorService', () => {
             ],
         });
 
-        service = TestBed.inject(ErrorService);
+        service = TestBed.inject(NotificationErrorService);
     });
 
     it('should be created', () => {

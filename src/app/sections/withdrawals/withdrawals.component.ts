@@ -15,7 +15,7 @@ import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 import { SELECT_COLUMN_NAME } from '../../../components/table';
 import { isNilOrEmptyString } from '../../../utils';
 import { QueryParamsService } from '../../shared/services';
-import { ErrorService } from '../../shared/services/error';
+import { NotificationErrorService } from '../../shared/services/error';
 import { NotificationService } from '../../shared/services/notification';
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
@@ -78,7 +78,7 @@ export class WithdrawalsComponent implements OnInit {
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private baseDialogService: BaseDialogService,
         private notificationService: NotificationService,
-        private errorService: ErrorService
+        private errorService: NotificationErrorService
     ) {}
 
     ngOnInit() {

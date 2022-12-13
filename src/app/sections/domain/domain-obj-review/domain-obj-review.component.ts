@@ -8,7 +8,7 @@ import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
 
 import { getUnionKey } from '../../../../utils';
-import { ErrorService } from '../../../shared/services/error';
+import { NotificationErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
@@ -33,7 +33,7 @@ export class DomainObjReviewComponent {
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
         private domainSecretService: DomainSecretService
     ) {

@@ -8,7 +8,7 @@ import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 
 import { handleError } from '../../../../utils/operators/handle-error';
-import { ErrorService } from '../../../shared/services/error';
+import { NotificationErrorService } from '../../../shared/services/error';
 import { RoutingRulesService } from '../services/routing-rules';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
@@ -60,7 +60,7 @@ export class PartyDelegateRulesetsComponent {
         private router: Router,
         private baseDialogService: BaseDialogService,
         private domainStoreService: DomainStoreService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private route: ActivatedRoute
     ) {}
 

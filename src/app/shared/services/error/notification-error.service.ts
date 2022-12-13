@@ -4,7 +4,7 @@ import { NotificationService } from '../notification';
 
 // TODO: collect error information
 @Injectable({ providedIn: 'root' })
-export class ErrorService {
+export class NotificationErrorService {
     constructor(private notificationService: NotificationService) {}
 
     error = (error: any, message?: string) => {

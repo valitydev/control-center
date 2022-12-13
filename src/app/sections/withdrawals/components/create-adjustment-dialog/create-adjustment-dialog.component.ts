@@ -13,7 +13,7 @@ import * as short from 'short-uuid';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 
 import { ManagementService } from '../../../../api/withdrawal';
-import { ErrorService } from '../../../../shared/services/error';
+import { NotificationErrorService } from '../../../../shared/services/error';
 import { NotificationService } from '../../../../shared/services/notification';
 
 @UntilDestroy()
@@ -46,7 +46,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private managementService: ManagementService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private notificationService: NotificationService
     ) {
         super(injector);

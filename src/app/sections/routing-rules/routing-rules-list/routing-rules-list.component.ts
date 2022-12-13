@@ -16,7 +16,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
-import { ErrorService } from '../../../shared/services/error';
+import { NotificationErrorService } from '../../../shared/services/error';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 import { RoutingRulesService } from '../services/routing-rules';
@@ -76,7 +76,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
 
     constructor(
         private baseDialogService: BaseDialogService,
-        private errorService: ErrorService,
+        private errorService: NotificationErrorService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute
     ) {}
