@@ -18,7 +18,7 @@ import { handleError, NotificationErrorService } from '../../services/notificati
     selector: 'cc-payout-tool-field',
     templateUrl: 'payout-tool-field.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: createControlProviders(PayoutToolFieldComponent),
+    providers: createControlProviders(() => PayoutToolFieldComponent),
 })
 export class PayoutToolFieldComponent
     extends ValidatedControlSuperclass<PartyID>

@@ -15,7 +15,7 @@ import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/fo
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
     styleUrls: ['./shop-field.component.scss'],
-    providers: createControlProviders(ShopFieldComponent),
+    providers: createControlProviders(() => ShopFieldComponent),
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFieldComponent<M extends boolean = boolean>

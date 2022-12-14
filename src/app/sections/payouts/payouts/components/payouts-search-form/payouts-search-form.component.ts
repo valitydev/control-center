@@ -22,7 +22,7 @@ export interface PayoutsSearchForm {
 @Component({
     selector: 'cc-payouts-search-form',
     templateUrl: './payouts-search-form.component.html',
-    providers: createControlProviders(PayoutsSearchFormComponent),
+    providers: createControlProviders(() => PayoutsSearchFormComponent),
 })
 export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<PayoutsSearchForm> {
     control = this.fb.group({

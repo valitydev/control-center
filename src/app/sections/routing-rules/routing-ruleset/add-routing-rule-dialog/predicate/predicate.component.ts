@@ -8,7 +8,7 @@ import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/util
 @Component({
     selector: 'cc-predicate',
     templateUrl: 'predicate.component.html',
-    providers: createControlProviders(PredicateComponent),
+    providers: createControlProviders(() => PredicateComponent),
 })
 export class PredicateComponent
     extends ValidatedFormControlSuperclass<Predicate>

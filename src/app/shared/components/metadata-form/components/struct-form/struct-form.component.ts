@@ -15,7 +15,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
 @Component({
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
-    providers: createControlProviders(StructFormComponent),
+    providers: createControlProviders(() => StructFormComponent),
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
     extends ValidatedControlSuperclass<T>

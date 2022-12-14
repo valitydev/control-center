@@ -28,7 +28,7 @@ function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[
     selector: 'cc-complex-form',
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
-    providers: createControlProviders(ComplexFormComponent),
+    providers: createControlProviders(() => ComplexFormComponent),
 })
 export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | Set<unknown>>
     extends FormComponentSuperclass<T>

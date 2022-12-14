@@ -16,7 +16,7 @@ import { createControlProviders } from '@cc/utils';
     standalone: true,
     imports: [CommonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, FlexModule],
     templateUrl: './datetime.component.html',
-    providers: createControlProviders(DatetimeComponent),
+    providers: createControlProviders(() => DatetimeComponent),
 })
 export class DatetimeComponent extends FormComponentSuperclass<string> {
     @Input() label: string;

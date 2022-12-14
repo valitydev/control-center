@@ -14,7 +14,7 @@ import { createPartyClaimMetadataFormExtensions } from './utils/create-party-cla
 @Component({
     selector: 'cc-modification-form',
     templateUrl: './modification-form.component.html',
-    providers: createControlProviders(ModificationFormComponent),
+    providers: createControlProviders(() => ModificationFormComponent),
 })
 export class ModificationFormComponent
     extends ValidatedFormControlSuperclass<unknown>

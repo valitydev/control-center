@@ -15,7 +15,7 @@ import { progressTo } from '@cc/utils/operators';
 @Component({
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
-    providers: createControlProviders(MerchantFieldComponent),
+    providers: createControlProviders(() => MerchantFieldComponent),
 })
 export class MerchantFieldComponent
     extends ValidatedFormControlSuperclass<PartyID>

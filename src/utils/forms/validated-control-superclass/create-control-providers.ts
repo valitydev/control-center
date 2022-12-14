@@ -1,9 +1,9 @@
 import { Provider, Type } from '@angular/core';
-import { provideValueAccessor } from '@s-libs/ng-core';
 
-import { provideValidator } from './provide-validator';
+import { provideValidators } from './provide-validators';
+import { provideValueAccessor } from './provide-value-accessor';
 
-export const createControlProviders = (component: Type<unknown>): Provider[] => [
+export const createControlProviders = (component: () => Type<unknown>): Provider[] => [
     provideValueAccessor(component),
-    provideValidator(component),
+    provideValidators(component),
 ];

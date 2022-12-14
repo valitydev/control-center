@@ -9,7 +9,7 @@ import { createControlProviders, ValidatedControlSuperclass } from '../../../../
     selector: 'cc-date-range',
     templateUrl: './date-range.component.html',
     styleUrls: ['./date-range.component.scss'],
-    providers: createControlProviders(DateRangeComponent),
+    providers: createControlProviders(() => DateRangeComponent),
 })
 export class DateRangeComponent extends ValidatedControlSuperclass<DateRange<Moment>> {
     control = this.fb.group({
