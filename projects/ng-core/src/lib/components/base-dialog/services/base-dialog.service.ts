@@ -1,6 +1,10 @@
 import { ComponentType } from '@angular/cdk/overlay';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import {
+    MatLegacyDialog as MatDialog,
+    MatLegacyDialogConfig as MatDialogConfig,
+    MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 
 import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG, DialogConfig } from '../tokens';
 import { BaseDialogResponse } from '../types/base-dialog-response';

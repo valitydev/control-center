@@ -5,7 +5,7 @@
             mat-list-item
             (click)="select(contractorActions.type, contractorAction)"
         >
-            {{ contractorAction | ccModificationName: 'ContractorUnitContainer' }}
+            {{ contractorAction | ccModificationName : 'ContractorUnitContainer' }}
         </a>
     </div>
     <div *ngIf="data.type === unitActionType.AllActions"><mat-divider></mat-divider></div>
@@ -15,7 +15,7 @@
             mat-list-item
             (click)="select(contractActions.type, contractAction)"
         >
-            {{ contractAction | ccModificationName: 'ContractUnitContainer' }}
+            {{ contractAction | ccModificationName : 'ContractUnitContainer' }}
         </a>
     </div>
     <div *ngIf="data.type === unitActionType.AllActions"><mat-divider></mat-divider></div>
@@ -25,7 +25,7 @@
             mat-list-item
             (click)="select(shopActions.type, shopAction)"
         >
-            {{ shopAction | ccModificationName: 'ShopUnitContainer' }}
+            {{ shopAction | ccModificationName : 'ShopUnitContainer' }}
         </a>
     </div>
     <div *ngIf="data.type === unitActionType.AllActions"><mat-divider></mat-divider></div>

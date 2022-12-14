@@ -10,8 +10,8 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
 import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatSortModule } from '@angular/material/sort';
 import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
+import { MatSortModule } from '@angular/material/sort';
 import { BaseDialogModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';

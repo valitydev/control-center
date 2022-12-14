@@ -60,7 +60,7 @@
                     <ng-container matColumnDef="createdAt">
                         <th *matHeaderCellDef mat-header-cell>Created at</th>
                         <td *matCellDef="let w" mat-cell>
-                            {{ w.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
+                            {{ w.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="identityId">
@@ -83,14 +83,17 @@
                         <th *matHeaderCellDef mat-header-cell>Amount</th>
                         <td *matCellDef="let w" mat-cell>
                             {{
-                                w.amount / 100 | currency: w.currency_symbolic_code:'symbol-narrow'
+                                w.amount / 100
+                                    | currency : w.currency_symbolic_code : 'symbol-narrow'
                             }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="fee">
                         <th *matHeaderCellDef mat-header-cell>Fee</th>
                         <td *matCellDef="let w" mat-cell>
-                            {{ w.fee / 100 | currency: w.currency_symbolic_code:'symbol-narrow' }}
+                            {{
+                                w.fee / 100 | currency : w.currency_symbolic_code : 'symbol-narrow'
+                            }}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="status">

@@ -2,8 +2,8 @@
 <span [ngClass]="{ outdated: outdated, removed: removed }">
     {{ text }}
     <span *ngIf="createdAt"
-        >at {{ createdAt | date: 'dd.MM.yyyy HH:mm:ss' }} ({{
-            createdAt | humanizedDuration: { largest: 1, hasAgoEnding: true }
+        >at {{ createdAt | date : 'dd.MM.yyyy HH:mm:ss' }} ({{
+            createdAt | humanizedDuration : { largest: 1, hasAgoEnding: true }
         }})</span
     >
 </span>
