@@ -39,7 +39,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     @Output() changeKind = new EventEmitter<EditorKind>();
 
     file$ = merge(
-        this.control.value$.pipe(filter(() => this.kind !== EditorKind.Editor)),
+        this.control.valueChanges.pipe(filter(() => this.kind !== EditorKind.Editor)),
         defer(() => of(this.control.value)),
         defer(() => this.updateFile$)
     ).pipe(
