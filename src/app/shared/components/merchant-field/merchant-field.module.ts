@@ -20,6 +20,5 @@ import { MerchantFieldComponent } from './merchant-field.component';
     ],
     declarations: [MerchantFieldComponent],
     exports: [MerchantFieldComponent],
-    providers: [],
 })
 export class MerchantFieldModule {}
