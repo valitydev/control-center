@@ -18,7 +18,7 @@
             color: mat.get-color-from-palette($foreground, secondary-text) !important;
         }
 
-        @include mat.all-component-themes($theme);
+        @include mat.all-legacy-component-themes($theme);
         @include cc-party-theme($theme);
         @include cc-components-themes($theme);
         @include cc-shared-components-themes($theme);

@@ -3,7 +3,7 @@ import { Platform } from '@angular/cdk/platform';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 import { Component, ElementRef, OnInit, Optional, Self } from '@angular/core';
 import { UntypedFormControl, FormGroupDirective, NgControl, NgForm } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { debounceTime, take } from 'rxjs/operators';
 

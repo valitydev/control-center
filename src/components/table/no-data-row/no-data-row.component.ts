@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, ViewChild, Optional, OnInit, OnDestroy } from '@angular/core';
-import { MatTable, MatNoDataRow } from '@angular/material/table';
+import { MatLegacyTable as MatTable, MatLegacyNoDataRow as MatNoDataRow } from '@angular/material/legacy-table';
 
 @Component({
     selector: 'cc-no-data-row',

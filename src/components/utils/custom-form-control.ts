@@ -22,9 +22,9 @@ import {
     NgControl,
     NgForm,
 } from '@angular/forms';
-import { MatAutocompleteOrigin } from '@angular/material/autocomplete';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatLegacyAutocompleteOrigin as MatAutocompleteOrigin } from '@angular/material/legacy-autocomplete';
+import { MatLegacyFormFieldControl as MatFormFieldControl } from '@angular/material/legacy-form-field';
 import { Subject } from 'rxjs';
 import * as uuid from 'uuid';
 

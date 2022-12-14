@@ -6,7 +6,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatPayment } from '@vality/magista-proto';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
