@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
@@ -72,11 +72,10 @@ export class PayoutToolFieldComponent
     );
 
     constructor(
-        injector: Injector,
         private partyManagementService: PartyManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService
     ) {
-        super(injector);
+        super();
     }
 }

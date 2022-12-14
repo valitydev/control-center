@@ -1,11 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    Injector,
-    Input,
-    OnChanges,
-    OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormControl } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID, Shop, ShopID } from '@vality/domain-proto';
@@ -50,8 +43,8 @@ export class ShopFieldComponent<M extends boolean = boolean>
 
     private partyId$ = new BehaviorSubject<PartyID>(null);
 
-    constructor(injector: Injector, private partyManagementService: PartyManagementService) {
-        super(injector);
+    constructor(private partyManagementService: PartyManagementService) {
+        super();
     }
 
     ngOnChanges(changes: ComponentChanges<ShopFieldComponent>): void {

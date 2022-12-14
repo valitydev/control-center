@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto';
@@ -28,12 +28,8 @@ export class MerchantFieldComponent
     searchChange$ = new Subject<string>();
     progress$ = new BehaviorSubject(0);
 
-    constructor(
-        injector: Injector,
-        private deanonimusService: DeanonimusService,
-        private snackBar: MatSnackBar
-    ) {
-        super(injector);
+    constructor(private deanonimusService: DeanonimusService, private snackBar: MatSnackBar) {
+        super();
     }
 
     ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, Input, Injector, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
@@ -51,8 +51,8 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     private editorContent: string = null;
     private editorError: unknown = null;
 
-    constructor(injector: Injector, private baseDialogService: BaseDialogService) {
-        super(injector);
+    constructor(private baseDialogService: BaseDialogService) {
+        super();
     }
 
     validate(): ValidationErrors | null {

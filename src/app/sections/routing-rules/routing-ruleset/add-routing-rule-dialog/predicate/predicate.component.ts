@@ -1,4 +1,4 @@
-import { Component, Injector, OnChanges } from '@angular/core';
+import { Component, OnChanges } from '@angular/core';
 import { Predicate } from '@vality/domain-proto/lib/domain';
 import { from } from 'rxjs';
 
@@ -17,10 +17,7 @@ export class PredicateComponent
     metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
-    constructor(
-        injector: Injector,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
-    ) {
-        super(injector);
+    constructor(private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService) {
+        super();
     }
 }

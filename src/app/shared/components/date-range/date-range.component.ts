@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { DateRange } from '@angular/material/datepicker';
 import { FormBuilder } from '@ngneat/reactive-forms';
 import { Moment } from 'moment';
@@ -17,7 +17,7 @@ export class DateRangeComponent extends ValidatedControlSuperclass<DateRange<Mom
         end: null,
     });
 
-    constructor(injector: Injector, private fb: FormBuilder) {
-        super(injector);
+    constructor(private fb: FormBuilder) {
+        super();
     }
 }

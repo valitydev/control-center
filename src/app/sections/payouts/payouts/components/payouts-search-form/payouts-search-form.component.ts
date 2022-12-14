@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { PartyID, ShopID } from '@vality/domain-proto';
 import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
@@ -41,7 +41,7 @@ export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<Payou
     payoutToolType = PayoutToolType;
     payoutToolTypes = getEnumKeys(PayoutToolType);
 
-    constructor(private fb: FormBuilder, injector: Injector) {
-        super(injector);
+    constructor(private fb: FormBuilder) {
+        super();
     }
 }
