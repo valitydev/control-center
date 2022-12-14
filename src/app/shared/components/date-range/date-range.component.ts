@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { FormBuilder } from '@ngneat/reactive-forms';
 import { Moment } from 'moment';
 
 import { createControlProviders, ValidatedControlSuperclass } from '../../../../utils';

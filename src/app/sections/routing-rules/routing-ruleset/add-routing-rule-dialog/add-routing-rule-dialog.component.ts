@@ -1,6 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { FormBuilder } from '@ngneat/reactive-forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Predicate, RiskScore } from '@vality/domain-proto/lib/domain';
 import { BaseDialogSuperclass } from '@vality/ng-core';

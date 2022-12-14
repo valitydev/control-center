@@ -1,6 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
-import { FormArray, FormControl } from '@ngneat/reactive-forms';
+import {
+    ValidationErrors,
+    Validator,
+    FormArray,
+    FormControl,
+    AbstractControl,
+} from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
@@ -10,7 +15,7 @@ import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
-function updateFormArray<V>(formArray: FormArray<V>, values: V[]) {
+function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
     formArray.clear({ emitEvent: false });
     values.forEach((v) => {
         formArray.push(new FormControl(v) as never);

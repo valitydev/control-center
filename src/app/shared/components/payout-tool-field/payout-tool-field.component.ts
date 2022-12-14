@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@ngneat/reactive-forms';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
@@ -33,7 +33,7 @@ export class PayoutToolFieldComponent
         this.shopId$.next(shopId);
     }
 
-    control = new FormControl<PartyID>();
+    control = new FormControl() as FormControl<PartyID>;
 
     partyId$ = new BehaviorSubject<PartyID>(null);
     shopId$ = new BehaviorSubject<ShopID>(null);
