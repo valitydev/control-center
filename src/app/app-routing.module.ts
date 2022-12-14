@@ -15,7 +15,6 @@ import { AppAuthGuardService } from '@cc/app/shared/services';
             ],
             {
                 paramsInheritanceStrategy: 'always',
-                relativeLinkResolution: 'legacy',
             }
         ),
     ],
