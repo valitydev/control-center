@@ -9,6 +9,12 @@
 
 @mixin cc-theme($theme) {
     body.#{map-get($theme, name)} {
+        background-color: mat.get-color-from-palette(mat.$gray-palette, 50);
+
+        @include mat.core-theme($theme);
+        @include mat.button-theme($theme);
+        @include mat.all-legacy-component-themes($theme);
+
         $foreground: map-get($theme, foreground);
 
         .cc-primary-text {
@@ -18,7 +24,6 @@
             color: mat.get-color-from-palette($foreground, secondary-text) !important;
         }
 
-        @include mat.all-legacy-component-themes($theme);
         @include cc-party-theme($theme);
         @include cc-components-themes($theme);
         @include cc-shared-components-themes($theme);
