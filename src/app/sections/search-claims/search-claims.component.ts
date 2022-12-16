@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { PartyID } from '@vality/domain-proto';
+import { PartyID } from '@vality/domain-proto/domain';
 import { BaseDialogService, cleanPrimitiveProps, clean } from '@vality/ng-core';
 
 import { ClaimSearchForm } from '@cc/app/shared/components';

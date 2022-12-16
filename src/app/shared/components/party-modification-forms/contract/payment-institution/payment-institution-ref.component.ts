@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { PaymentInstitutionObject, PaymentInstitutionRef } from '@vality/domain-proto/lib/domain';
+import { PaymentInstitutionObject, PaymentInstitutionRef } from '@vality/domain-proto/domain';
 import get from 'lodash-es/get';
 import sortBy from 'lodash-es/sortBy';
 import { Observable } from 'rxjs';

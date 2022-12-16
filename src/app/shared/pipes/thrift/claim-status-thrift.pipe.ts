@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ClaimStatus as UnionClaimStatus } from '@vality/domain-proto/lib/claim_management';
+import { ClaimStatus as UnionClaimStatus } from '@vality/domain-proto/claim_management';
 
 import { extractClaimStatus } from '../../utils';
 

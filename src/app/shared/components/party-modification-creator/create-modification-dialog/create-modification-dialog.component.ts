@@ -9,7 +9,7 @@ import {
     Modification,
     PartyModification,
     ShopModificationUnit,
-} from '@vality/domain-proto/lib/claim_management';
+} from '@vality/domain-proto/claim_management';
 
 import { prepareModificationsToBackend } from '@cc/app/shared/components/party-modification-creator/create-modification-dialog/prepare-modifications-to-backend';
 

@@ -1,4 +1,3 @@
-import * as base from '@vality/domain-proto/lib/base';
 import {
     Amount,
     InvoiceID,
@@ -6,8 +5,8 @@ import {
     InvoicePaymentRefundID,
     PartyID,
     ShopID,
-} from '@vality/domain-proto/lib/domain';
-import { InvoicePaymentRefundStatus } from '@vality/domain-proto/lib/merch_stat';
+    InvoicePaymentRefundStatus,
+} from '@vality/domain-proto/domain';
 
 export interface Refund {
     id: InvoicePaymentRefundID;
@@ -16,7 +15,7 @@ export interface Refund {
     owner_id: PartyID;
     shop_id: ShopID;
     status: InvoicePaymentRefundStatus;
-    created_at: base.Timestamp;
+    created_at: any;
     amount: Amount;
     fee: Amount;
     currency_symbolic_code: string;

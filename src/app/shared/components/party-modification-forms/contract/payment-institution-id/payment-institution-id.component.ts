@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { ContractorID } from '@vality/domain-proto';
+import { ContractorID } from '@vality/domain-proto/payment_processing';
 
 @Component({
     selector: 'cc-payment-institution-id',

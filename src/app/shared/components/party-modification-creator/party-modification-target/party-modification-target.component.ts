@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatLegacyRadioChange as MatRadioChange } from '@angular/material/legacy-radio';
-import { Modification } from '@vality/domain-proto/lib/claim_management';
+import { Modification } from '@vality/domain-proto/claim_management';
 
 import { PartyTarget } from './party-target';
 import { TargetType } from './targe-type';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DomainObject } from '@vality/domain-proto/lib/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 

@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { Predicate, RiskScore } from '@vality/domain-proto/lib/domain';
+import { Predicate, RiskScore } from '@vality/domain-proto/domain';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';

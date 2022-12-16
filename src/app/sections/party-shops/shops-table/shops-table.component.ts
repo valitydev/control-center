@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/
 import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Shop } from '@vality/domain-proto/lib/domain';
+import { Shop } from '@vality/domain-proto/domain';
 import { pluck } from 'rxjs/operators';
 
 @Component({

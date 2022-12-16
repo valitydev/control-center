@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
@@ -38,7 +38,7 @@ export class ModificationUnitTimelineItemComponent {
     @Output() claimChanged = new EventEmitter<void>();
 
     isLoading$ = inProgressFrom(() => this.progress$);
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     private progress$ = new BehaviorSubject(0);

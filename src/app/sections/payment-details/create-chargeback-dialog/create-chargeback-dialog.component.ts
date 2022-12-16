@@ -1,8 +1,8 @@
 import { Component, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { InvoicePaymentChargeback } from '@vality/domain-proto';
-import { InvoicePaymentChargebackParams } from '@vality/domain-proto/lib/payment_processing';
+import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
+import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import { from } from 'rxjs';
 import * as short from 'short-uuid';
@@ -23,7 +23,7 @@ export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
     InvoicePaymentChargeback
 > {
     form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: short().generate() });
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     constructor(

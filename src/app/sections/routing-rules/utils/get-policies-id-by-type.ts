@@ -1,4 +1,4 @@
-import { PaymentInstitution, RoutingRules } from '@vality/domain-proto';
+import { PaymentInstitution, RoutingRules } from '@vality/domain-proto/domain';
 import { PickByValue } from 'utility-types';
 
 import { RoutingRulesType } from '../types/routing-rules-type';

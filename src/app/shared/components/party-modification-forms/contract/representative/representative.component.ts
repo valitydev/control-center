@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Representative } from '@vality/domain-proto/lib/domain';
+import { Representative } from '@vality/domain-proto/domain';
 import get from 'lodash-es/get';
 
 @Component({

@@ -1,4 +1,4 @@
-import { ClaimStatus as ClaimStatusUnion } from '@vality/domain-proto/lib/claim_management';
+import { ClaimStatus as ClaimStatusUnion } from '@vality/domain-proto/claim_management';
 
 import { enumerate } from '@cc/utils';
 

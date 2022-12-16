@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { PartyID } from '@vality/domain-proto';
-import { Modification } from '@vality/domain-proto/lib/claim_management';
+import { Modification } from '@vality/domain-proto/claim_management';
+import { PartyID } from '@vality/domain-proto/domain';
 import { Observable, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 

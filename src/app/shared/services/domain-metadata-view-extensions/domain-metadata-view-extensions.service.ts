@@ -1,8 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DomainObject } from '@vality/domain-proto';
-import { Timestamp } from '@vality/domain-proto/lib/base';
+import { DomainObject } from '@vality/domain-proto/domain';
 import isEqual from 'lodash-es/isEqual';
 import { of, Observable, from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -20,7 +19,7 @@ import { getObjectLabel } from './utils/get-object-label';
 })
 export class DomainMetadataViewExtensionsService {
     extensions$: Observable<MetadataViewExtension[]> = from(
-        import('@vality/domain-proto/lib/metadata.json').then(
+        import('@vality/domain-proto/metadata.json').then(
             (m) => m.default as never as ThriftAstMetadata[]
         )
     ).pipe(
@@ -28,7 +27,7 @@ export class DomainMetadataViewExtensionsService {
             ...this.createDomainObjectExtensions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
-                extension: (_, value: Timestamp) =>
+                extension: (_, value: any) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
             },
         ]),

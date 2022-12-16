@@ -6,8 +6,8 @@ import {
     ModificationUnit,
     PartyModification,
     PartyModificationChange,
-} from '@vality/domain-proto/lib/claim_management';
-import { Party } from '@vality/domain-proto/lib/domain';
+} from '@vality/domain-proto/claim_management';
+import { Party } from '@vality/domain-proto/domain';
 import {
     BaseDialogResponseStatus,
     BaseDialogSuperclass,

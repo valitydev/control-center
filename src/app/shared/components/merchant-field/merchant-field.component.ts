@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PartyID } from '@vality/domain-proto';
+import { PartyID } from '@vality/domain-proto/domain';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap, first, takeUntil } from 'rxjs/operators';

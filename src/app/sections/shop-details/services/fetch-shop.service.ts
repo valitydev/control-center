@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PartyID, ShopID, Shop } from '@vality/domain-proto';
+import { Shop } from '@vality/domain-proto/domain';
+import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
 import { BehaviorSubject, Observable, defer, EMPTY, merge } from 'rxjs';
 import { catchError, shareReplay, switchMap } from 'rxjs/operators';
 

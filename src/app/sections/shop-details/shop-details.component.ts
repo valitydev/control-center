@@ -26,7 +26,7 @@ export class ShopDetailsComponent {
     shop$ = this.fetchShopService.shop$;
     contract$ = this.fetchShopService.contract$.pipe(map((c) => c?.contract));
     inProgress$ = this.fetchShopService.inProgress$;
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     constructor(

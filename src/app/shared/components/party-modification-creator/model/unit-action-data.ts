@@ -1,4 +1,4 @@
-import { Modification } from '@vality/domain-proto/lib/claim_management';
+import { Modification } from '@vality/domain-proto/claim_management';
 
 export enum UnitActionType {
     AllActions = 'allActions',

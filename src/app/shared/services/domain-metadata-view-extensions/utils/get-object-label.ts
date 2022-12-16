@@ -1,4 +1,4 @@
-import { DomainObject } from '@vality/domain-proto';
+import { DomainObject } from '@vality/domain-proto/domain';
 import startCase from 'lodash-es/startCase';
 
 const LABEL_SELECTORS: {

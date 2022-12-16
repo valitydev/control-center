@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ShopContractModification } from '@vality/domain-proto/lib/payment_processing';
+import { ShopContractModification } from '@vality/domain-proto/payment_processing';
 import get from 'lodash-es/get';
 
 @Component({

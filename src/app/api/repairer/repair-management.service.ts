@@ -13,7 +13,7 @@ import {
 } from '@vality/repairer-proto/repairer';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
-import { KeycloakTokenInfoService, toWacherHeaders } from '@cc/app/shared/services';
+import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
 import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -22,7 +22,7 @@ export class RepairManagementService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWacherHeaders('RepairManagement'))
+            map(toWachterHeaders('RepairManagement'))
         );
         const metadata$ = from(
             import('@vality/repairer-proto/metadata.json').then(

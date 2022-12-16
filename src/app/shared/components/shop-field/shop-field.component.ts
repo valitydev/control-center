@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PartyID, Shop, ShopID } from '@vality/domain-proto';
+import { Shop } from '@vality/domain-proto/domain';
+import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
 import { filter, map, share, switchMap } from 'rxjs/operators';

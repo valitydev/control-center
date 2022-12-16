@@ -6,7 +6,6 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/magista-proto/lib/payment_processing';
 import { BaseDialogService } from '@vality/ng-core';
 
-import { InvoicingService } from '@cc/app/api/payment-processing';
 import { AmountCurrencyPipe, ThriftPipesModule } from '@cc/app/shared';
 import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog/details-dialog.component';
 import { TableModule, Columns } from '@cc/components/table';
@@ -34,10 +33,7 @@ export class ChargebacksComponent {
 
     cols = new Columns('id', 'status', 'created_at', 'body', 'levy', 'stage', 'actions');
 
-    constructor(
-        private invoicingService: InvoicingService,
-        private baseDialogService: BaseDialogService
-    ) {}
+    constructor(private baseDialogService: BaseDialogService) {}
 
     changeStatus(id: string) {
         this.baseDialogService.open(ChangeChargebackStatusDialogComponent, {

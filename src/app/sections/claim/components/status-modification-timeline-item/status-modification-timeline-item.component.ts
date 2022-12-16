@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Claim, ClaimStatus, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { Claim, ClaimStatus, ModificationUnit } from '@vality/domain-proto/claim_management';
 
 import { getUnionKey, getUnionValue } from '@cc/utils';
 

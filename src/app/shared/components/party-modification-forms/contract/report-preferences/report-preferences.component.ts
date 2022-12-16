@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { ReportPreferences } from '@vality/domain-proto/lib/domain';
+import { ReportPreferences } from '@vality/domain-proto/domain';
 import get from 'lodash-es/get';
 
 @Component({

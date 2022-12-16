@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Claim } from '@vality/domain-proto/lib/claim_management';
+import { Claim } from '@vality/domain-proto/claim_management';
 
 @Pipe({
     name: 'ccClaimMail',

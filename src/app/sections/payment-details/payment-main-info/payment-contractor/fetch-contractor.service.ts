@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ContractID, PartyID } from '@vality/domain-proto';
+import { ContractID, PartyID } from '@vality/domain-proto/domain';
 import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 

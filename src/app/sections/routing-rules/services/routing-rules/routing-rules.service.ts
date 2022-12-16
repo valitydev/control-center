@@ -5,8 +5,8 @@ import {
     RoutingCandidate,
     RoutingDelegate,
     RoutingRulesObject,
-} from '@vality/domain-proto';
-import { Version } from '@vality/domain-proto/lib/domain_config';
+} from '@vality/domain-proto/domain';
+import { Version } from '@vality/domain-proto/domain_config';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, concat, Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';

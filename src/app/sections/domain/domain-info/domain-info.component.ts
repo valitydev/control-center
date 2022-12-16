@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
+import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
@@ -30,7 +30,7 @@ export class DomainInfoComponent {
     version$ = this.domainStoreService.version$;
     progress$ = this.domainStoreService.isLoading$;
     objWithRef: { obj: DomainObject; ref: Reference } = null;
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     get kind() {

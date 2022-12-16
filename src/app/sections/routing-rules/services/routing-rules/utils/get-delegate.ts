@@ -1,4 +1,4 @@
-import { RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/lib/domain';
+import { RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/domain';
 
 export function getDelegate(
     ruleset: RoutingRulesObject,

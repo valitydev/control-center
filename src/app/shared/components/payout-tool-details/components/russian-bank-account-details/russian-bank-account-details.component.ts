@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RussianBankAccount } from '@vality/domain-proto';
+import { RussianBankAccount } from '@vality/domain-proto/domain';
 
 @Component({
     selector: 'cc-russian-bank-account-details',

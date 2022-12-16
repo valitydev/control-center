@@ -2,7 +2,7 @@ import {
     InvoicePaymentChargebackCategory,
     InvoicePaymentChargebackStage,
     InvoicePaymentChargebackStatus,
-} from '@vality/domain-proto/lib/domain';
+} from '@vality/domain-proto/domain';
 
 export const CHARGEBACK_STATUSES: (keyof InvoicePaymentChargebackStatus)[] = [
     'accepted',

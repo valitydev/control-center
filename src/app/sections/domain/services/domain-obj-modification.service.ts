@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DomainObject, Reference } from '@vality/domain-proto/lib/domain';
+import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Observable, switchMap, BehaviorSubject, defer } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 

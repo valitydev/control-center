@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { ContractAdjustmentModification } from '@vality/domain-proto/lib/payment_processing';
+import { ContractAdjustmentModification } from '@vality/domain-proto/payment_processing';
 
 @Component({
     selector: 'cc-adjustment-modification',

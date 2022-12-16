@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { Party, PartyID } from '@vality/domain-proto';
+import { Party, PartyID } from '@vality/domain-proto/domain';
 
 import { PartyActions } from './party-actions';
 import { PartyMenuItemEvent } from './party-menu-item-event';

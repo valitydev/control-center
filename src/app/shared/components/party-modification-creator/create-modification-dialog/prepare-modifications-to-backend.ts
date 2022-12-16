@@ -1,5 +1,5 @@
-import { CountryCode } from '@vality/domain-proto';
-import { PartyModification } from '@vality/domain-proto/lib/claim_management';
+import { PartyModification } from '@vality/domain-proto/claim_management';
+import { CountryCode } from '@vality/domain-proto/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 export const prepareModificationsToBackend = (

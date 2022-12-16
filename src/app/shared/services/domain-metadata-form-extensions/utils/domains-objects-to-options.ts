@@ -1,4 +1,4 @@
-import { DomainObject } from '@vality/domain-proto';
+import { DomainObject } from '@vality/domain-proto/domain';
 import { PickByValue } from 'utility-types';
 
 import { MetadataFormExtensionOption } from '../../../components/metadata-form';

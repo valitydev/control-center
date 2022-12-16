@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/lib/payment_processing';
+import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import chunk from 'lodash-es/chunk';
@@ -26,7 +26,7 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
 > {
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     withError: StatPayment[] = [];
 

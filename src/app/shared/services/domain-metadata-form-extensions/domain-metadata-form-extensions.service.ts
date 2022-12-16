@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomainObject, Cash } from '@vality/domain-proto/lib/domain';
+import { DomainObject, Cash } from '@vality/domain-proto/domain';
 import moment from 'moment';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -26,7 +26,7 @@ import {
 })
 export class DomainMetadataFormExtensionsService {
     extensions$: Observable<MetadataFormExtension[]> = from(
-        import('@vality/domain-proto/lib/metadata.json').then(
+        import('@vality/domain-proto/metadata.json').then(
             (m) => m.default as never as ThriftAstMetadata[]
         )
     ).pipe(

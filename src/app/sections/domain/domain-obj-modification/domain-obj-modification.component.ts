@@ -30,7 +30,7 @@ export class DomainObjModificationComponent implements OnInit {
     progress$ = this.domainObjModService.progress$;
     codeLensProviders: CodeLensProvider[] = [new DomainObjCodeLensProvider()];
     completionProviders: CompletionProvider[] = [new DomainObjCompletionProvider()];
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     object$ = this.domainObjModService.object$;
     type$ = this.domainObjModService.type$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;

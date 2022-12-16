@@ -5,7 +5,7 @@ import {
     DocumentModificationUnit,
     FileModificationUnit,
     ShopModificationUnit,
-} from '@vality/domain-proto/lib/claim_management';
+} from '@vality/domain-proto/claim_management';
 
 export class SelectableItem {
     id: string;

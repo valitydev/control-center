@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Reference } from '@vality/domain-proto/lib/domain';
+import { Reference } from '@vality/domain-proto/domain';
 import { Field } from '@vality/thrift-ts';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { ThriftAstMetadata } from '../../../api/utils';
 @Injectable()
 export class MetadataService {
     private metadata$: Observable<ThriftAstMetadata[]> = from(
-        import('@vality/domain-proto/lib/metadata.json').then((m) => m.default)
+        import('@vality/domain-proto/metadata.json').then((m) => m.default)
     ).pipe(shareReplay(1)) as Observable<ThriftAstMetadata[]>;
 
     get metadata() {

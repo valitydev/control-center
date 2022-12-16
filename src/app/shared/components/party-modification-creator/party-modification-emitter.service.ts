@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PartyModification } from '@vality/domain-proto/lib/claim_management';
+import { PartyModification } from '@vality/domain-proto/claim_management';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()

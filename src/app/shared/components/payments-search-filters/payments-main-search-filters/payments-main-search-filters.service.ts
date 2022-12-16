@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
-import { PartyID } from '@vality/domain-proto';
+import { PartyID } from '@vality/domain-proto/payment_processing';
 import * as moment from 'moment';
 import { ReplaySubject, defer } from 'rxjs';
 import { debounceTime, filter, map, shareReplay, switchMap } from 'rxjs/operators';

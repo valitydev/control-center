@@ -4,7 +4,7 @@ import {
     ContractorModificationUnit,
     PartyModification,
     ShopModificationUnit,
-} from '@vality/domain-proto/lib/claim_management';
+} from '@vality/domain-proto/claim_management';
 
 import { getUnionKey } from '@cc/utils/get-union-key';
 

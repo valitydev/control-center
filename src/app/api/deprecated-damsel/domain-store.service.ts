@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Domain, DomainObject } from '@vality/domain-proto/lib/domain';
-import { Commit, Snapshot, Version } from '@vality/domain-proto/lib/domain_config';
+import { Domain, DomainObject } from '@vality/domain-proto/domain';
+import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 

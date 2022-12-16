@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Predicate, TerminalObject } from '@vality/domain-proto/lib/domain';
+import { Predicate, TerminalObject } from '@vality/domain-proto/domain';
 import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap } from 'rxjs/operators';

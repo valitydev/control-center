@@ -1,4 +1,4 @@
-import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/lib/domain';
+import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domain';
 
 import { PaymentActions } from './payment-actions';
 

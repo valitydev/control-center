@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { ScheduleModification } from '@vality/domain-proto/lib/payment_processing';
+import { ScheduleModification } from '@vality/domain-proto/payment_processing';
 import get from 'lodash-es/get';
 
 @Component({
