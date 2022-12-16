@@ -1,5 +1,5 @@
+import { domain } from '@vality/domain-proto';
 import { PartyModification } from '@vality/domain-proto/claim_management';
-import { CountryCode } from '@vality/domain-proto/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 export const prepareModificationsToBackend = (
@@ -12,7 +12,7 @@ export const prepareModificationsToBackend = (
     if (countryCode && typeof countryCode === 'string') {
         prepared.contractor_modification.modification.creation.legal_entity.international_legal_entity.country =
             {
-                id: CountryCode[countryCode] as any,
+                id: domain.CountryCode[countryCode] as any,
             };
     }
     return prepared;

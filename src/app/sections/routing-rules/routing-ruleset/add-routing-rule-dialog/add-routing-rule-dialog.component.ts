@@ -1,7 +1,8 @@
 import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { Predicate, RiskScore } from '@vality/domain-proto/domain';
+import { domain } from '@vality/domain-proto';
+import { Predicate } from '@vality/domain-proto/domain';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
@@ -23,7 +24,7 @@ export class AddRoutingRuleDialogComponent extends BaseDialogSuperclass<
     predicateControl = this.fb.control<Predicate>(null, Validators.required);
 
     terminalType = TerminalType;
-    riskScore = RiskScore;
+    riskScore = domain.RiskScore;
     terminals$ = this.domainStoreService.getObjects('terminal');
 
     constructor(
