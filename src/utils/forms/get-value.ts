@@ -15,7 +15,7 @@ export function getValue<T extends AbstractControl>(control: T): T['value'] {
     }
     const result: Partial<T> = {};
     for (const [k, v] of Object.entries(control.controls)) {
-        result[k] = getValue(v as AbstractControl) as T;
+        result[k] = getValue(v) as T;
     }
     return result;
 }
