@@ -14,7 +14,10 @@ export class KeycloakTokenInfoService {
         this.keycloakService.isTokenExpired() ? this.keycloakService.updateToken() : of(null)
     ).pipe(switchMap(() => this.keycloakService.getToken()));
     decoded$: Observable<KeycloakToken> = this.token$.pipe(
-        map((token) => jwt_decode<KeycloakToken>(token)),
+        map((token) => ({
+            ...jwt_decode<KeycloakToken>(token),
+            token,
+        })),
         untilDestroyed(this),
         shareReplay(1)
     );

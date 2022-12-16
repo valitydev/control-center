@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Machine, SearchRequest } from '@vality/repairer-proto';
+import { Machine, SearchRequest } from '@vality/repairer-proto/repairer';
 import { map } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../../api/repairer';

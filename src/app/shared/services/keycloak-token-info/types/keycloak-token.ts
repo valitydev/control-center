@@ -21,4 +21,5 @@ export interface KeycloakToken {
     session_state: string;
     sub: string;
     typ: string;
+    token: string;
 }

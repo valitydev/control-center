@@ -2,7 +2,11 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
-import { RepairInvoicesRequest, RepairWithdrawalsRequest, Machine } from '@vality/repairer-proto';
+import {
+    RepairInvoicesRequest,
+    RepairWithdrawalsRequest,
+    Machine,
+} from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
 
@@ -41,7 +45,7 @@ export class RepairByScenarioDialogComponent
         null,
         Validators.required
     );
-    metadata$ = from(import('@vality/repairer-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/repairer-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
