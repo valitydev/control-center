@@ -1,6 +1,5 @@
 import { Directive } from '@angular/core';
-import { ValidationErrors } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
+import { ValidationErrors, FormControl } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import { EMPTY, Observable } from 'rxjs';
 
@@ -10,7 +9,7 @@ export class ValidatedFormControlSuperclass<
     InnerType = OuterType
 > extends WrappedControlSuperclass<OuterType, InnerType> {
     // TODO: Validation sometimes doesn't work (is not forwarded higher by nesting) with Angular FormControl
-    control = new FormControl<InnerType>();
+    control = new FormControl() as FormControl<InnerType>;
 
     validate(): ValidationErrors | null {
         return this.control.errors;

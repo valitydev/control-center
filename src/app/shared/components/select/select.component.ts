@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
+
+import { provideValueAccessor } from '../../../../utils';
 
 export interface Option<T> {
     label: string;
@@ -10,7 +12,7 @@ export interface Option<T> {
 @Component({
     selector: 'cc-select',
     templateUrl: './select.component.html',
-    providers: [provideValueAccessor(SelectComponent)],
+    providers: [provideValueAccessor(() => SelectComponent)],
 })
 export class SelectComponent<T> extends FormComponentSuperclass<T[]> {
     @Input() label: string;

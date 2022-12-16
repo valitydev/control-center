@@ -1,4 +1,4 @@
-import { Component, Input, Injector, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
@@ -21,7 +21,7 @@ export enum EditorKind {
     selector: 'cc-thrift-editor',
     templateUrl: './thrift-editor.component.html',
     styleUrls: ['./thrift-editor.component.scss'],
-    providers: createControlProviders(ThriftEditorComponent),
+    providers: createControlProviders(() => ThriftEditorComponent),
 })
 export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> {
     @Input() kind: EditorKind = EditorKind.Editor;
@@ -39,7 +39,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     @Output() changeKind = new EventEmitter<EditorKind>();
 
     file$ = merge(
-        this.control.value$.pipe(filter(() => this.kind !== EditorKind.Editor)),
+        this.control.valueChanges.pipe(filter(() => this.kind !== EditorKind.Editor)),
         defer(() => of(this.control.value)),
         defer(() => this.updateFile$)
     ).pipe(
@@ -51,8 +51,8 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     private editorContent: string = null;
     private editorError: unknown = null;
 
-    constructor(injector: Injector, private baseDialogService: BaseDialogService) {
-        super(injector);
+    constructor(private baseDialogService: BaseDialogService) {
+        super();
     }
 
     validate(): ValidationErrors | null {

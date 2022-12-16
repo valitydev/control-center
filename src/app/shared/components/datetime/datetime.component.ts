@@ -3,8 +3,8 @@ import { Component, Input } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout';
 import { ValidationErrors } from '@angular/forms';
 import { MatDatepickerModule, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import moment, { Moment } from 'moment';
@@ -16,7 +16,7 @@ import { createControlProviders } from '@cc/utils';
     standalone: true,
     imports: [CommonModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, FlexModule],
     templateUrl: './datetime.component.html',
-    providers: createControlProviders(DatetimeComponent),
+    providers: createControlProviders(() => DatetimeComponent),
 })
 export class DatetimeComponent extends FormComponentSuperclass<string> {
     @Input() label: string;

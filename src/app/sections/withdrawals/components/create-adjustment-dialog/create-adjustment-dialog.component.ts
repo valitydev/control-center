@@ -1,6 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
+import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ExternalID } from '@vality/fistful-proto/lib/base';
 import { ChangeRequest } from '@vality/fistful-proto/lib/deposit_adjustment';
@@ -32,7 +31,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
         },
         [Validators.required]
     );
-    externalIdControl = new FormControl<ExternalID>();
+    externalIdControl = new FormControl() as FormControl<ExternalID>;
     externalIdExtensions: MetadataFormExtension[] = [
         {
             determinant: () => of(true),

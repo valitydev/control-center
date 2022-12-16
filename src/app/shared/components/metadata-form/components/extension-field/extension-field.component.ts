@@ -22,7 +22,7 @@ import {
 @Component({
     selector: 'cc-extension-field',
     templateUrl: './extension-field.component.html',
-    providers: createControlProviders(ExtensionFieldComponent),
+    providers: createControlProviders(() => ExtensionFieldComponent),
 })
 export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>

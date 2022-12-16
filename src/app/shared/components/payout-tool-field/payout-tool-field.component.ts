@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { FormControl } from '@ngneat/reactive-forms';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
@@ -18,7 +18,7 @@ import { handleError, NotificationErrorService } from '../../services/notificati
     selector: 'cc-payout-tool-field',
     templateUrl: 'payout-tool-field.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: createControlProviders(PayoutToolFieldComponent),
+    providers: createControlProviders(() => PayoutToolFieldComponent),
 })
 export class PayoutToolFieldComponent
     extends ValidatedControlSuperclass<PartyID>
@@ -33,7 +33,7 @@ export class PayoutToolFieldComponent
         this.shopId$.next(shopId);
     }
 
-    control = new FormControl<PartyID>();
+    control = new FormControl() as FormControl<PartyID>;
 
     partyId$ = new BehaviorSubject<PartyID>(null);
     shopId$ = new BehaviorSubject<ShopID>(null);
@@ -72,11 +72,10 @@ export class PayoutToolFieldComponent
     );
 
     constructor(
-        injector: Injector,
         private partyManagementService: PartyManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService
     ) {
-        super(injector);
+        super();
     }
 }

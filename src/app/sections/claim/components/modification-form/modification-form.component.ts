@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Validator } from '@angular/forms';
 import { Claim } from '@vality/domain-proto/lib/claim_management';
 import { Party } from '@vality/domain-proto/lib/domain';
@@ -14,7 +14,7 @@ import { createPartyClaimMetadataFormExtensions } from './utils/create-party-cla
 @Component({
     selector: 'cc-modification-form',
     templateUrl: './modification-form.component.html',
-    providers: createControlProviders(ModificationFormComponent),
+    providers: createControlProviders(() => ModificationFormComponent),
 })
 export class ModificationFormComponent
     extends ValidatedFormControlSuperclass<unknown>
@@ -34,11 +34,8 @@ export class ModificationFormComponent
 
     private claimOrPartyChanged$ = new ReplaySubject<void>(1);
 
-    constructor(
-        injector: Injector,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
-    ) {
-        super(injector);
+    constructor(private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService) {
+        super();
     }
 
     ngOnChanges(changes: ComponentChanges<ModificationFormComponent>) {

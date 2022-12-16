@@ -1,5 +1,5 @@
-import { Component, Injector, Input, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
@@ -15,7 +15,7 @@ import { progressTo } from '@cc/utils/operators';
 @Component({
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
-    providers: createControlProviders(MerchantFieldComponent),
+    providers: createControlProviders(() => MerchantFieldComponent),
 })
 export class MerchantFieldComponent
     extends ValidatedFormControlSuperclass<PartyID>
@@ -28,12 +28,8 @@ export class MerchantFieldComponent
     searchChange$ = new Subject<string>();
     progress$ = new BehaviorSubject(0);
 
-    constructor(
-        injector: Injector,
-        private deanonimusService: DeanonimusService,
-        private snackBar: MatSnackBar
-    ) {
-        super(injector);
+    constructor(private deanonimusService: DeanonimusService, private snackBar: MatSnackBar) {
+        super();
     }
 
     ngOnInit() {

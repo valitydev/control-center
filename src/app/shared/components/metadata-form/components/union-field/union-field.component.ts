@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ValidationErrors, Validator } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
+import { ValidationErrors, Validator, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
@@ -17,7 +16,7 @@ import { getDefaultValue } from '../../utils/get-default-value';
 @Component({
     selector: 'cc-union-field',
     templateUrl: './union-field.component.html',
-    providers: createControlProviders(UnionFieldComponent),
+    providers: createControlProviders(() => UnionFieldComponent),
 })
 export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
@@ -26,8 +25,8 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     @Input() data: MetadataFormData<string, 'union'>;
     @Input() extensions: MetadataFormExtension[];
 
-    fieldControl = new FormControl<Field>();
-    internalControl = new FormControl<T[keyof T]>();
+    fieldControl = new FormControl() as FormControl<Field>;
+    internalControl = new FormControl() as FormControl<T[keyof T]>;
 
     ngOnInit() {
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)

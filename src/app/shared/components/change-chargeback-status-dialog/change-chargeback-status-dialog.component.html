@@ -25,7 +25,7 @@
             mat-raised-button
             (click)="confirm()"
         >
-            {{ (actionControl.value | enumKey: typeEnum) || 'CHANGE' | uppercase }}
+            {{ (actionControl.value | enumKey : typeEnum) || 'CHANGE' | uppercase }}
         </button>
     </cc-base-dialog-actions>
 </cc-base-dialog>

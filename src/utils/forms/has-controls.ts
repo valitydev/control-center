@@ -1,6 +1,5 @@
-import { AbstractControl } from '@angular/forms';
-import { FormArray, FormGroup } from '@ngneat/reactive-forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 
-export function hasControls<T>(control: AbstractControl): control is FormGroup<T> | FormArray<T> {
+export function hasControls(control: AbstractControl): control is FormGroup | FormArray {
     return 'controls' in control;
 }
