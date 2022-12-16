@@ -93,6 +93,7 @@
     "@types/uuid": "3.4.3",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
+    "@vality/repairer-proto": "2.0.1-7df4489.0",
     "concurrently": "7.3.0",
     "cross-env": "7.0.3",
     "dotenv": "16.0.0",
