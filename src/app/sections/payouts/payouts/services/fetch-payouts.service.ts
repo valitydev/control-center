@@ -7,6 +7,8 @@ import { Overwrite } from 'utility-types';
 import { MerchantStatisticsService } from '@cc/app/api/magista';
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
+import { NotificationErrorService } from '../../../../shared/services/notification-error';
+
 export type SearchParams = Overwrite<
     PayoutSearchQuery,
     {
@@ -19,7 +21,10 @@ export type SearchParams = Overwrite<
 
 @Injectable()
 export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams> {
-    constructor(private merchantStatisticsService: MerchantStatisticsService) {
+    constructor(
+        private merchantStatisticsService: MerchantStatisticsService,
+        private notificationErrorService: NotificationErrorService
+    ) {
         super();
     }
 
@@ -41,5 +46,9 @@ export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams
                     continuationToken: continuation_token,
                 }))
             );
+    }
+
+    protected handleError(error: unknown) {
+        this.notificationErrorService.error(error);
     }
 }

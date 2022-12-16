@@ -3,7 +3,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 
-import { ErrorService } from '../../../../shared/services/error';
+import { NotificationErrorService } from '../../../../shared/services/notification-error';
 import { RoutingRulesService } from '../../services/routing-rules';
 
 @UntilDestroy()
@@ -25,7 +25,7 @@ export class InitializeRoutingRulesDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
-        private errorService: ErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -41,6 +41,6 @@ export class InitializeRoutingRulesDialogComponent extends BaseDialogSuperclass<
                 delegateDescription,
             })
             .pipe(untilDestroyed(this))
-            .subscribe(() => this.dialogRef.close(), this.errorService.error);
+            .subscribe(() => this.dialogRef.close(), this.notificationErrorService.error);
     }
 }

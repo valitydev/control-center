@@ -6,9 +6,9 @@ import { first, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { getUnionKey } from '../../../../utils';
-import { ErrorService } from '../../../shared/services/error';
 import { NotificationService } from '../../../shared/services/notification';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
@@ -33,7 +33,7 @@ export class DomainObjReviewComponent {
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
         private domainSecretService: DomainSecretService
     ) {
@@ -70,7 +70,7 @@ export class DomainObjReviewComponent {
                     void this.domainNavigateService.toType(type);
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                 },
             });
     }

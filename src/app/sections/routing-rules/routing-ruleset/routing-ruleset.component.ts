@@ -10,8 +10,8 @@ import { damselInstanceToObject, DomainStoreService } from '@cc/app/api/deprecat
 import { objectToJSON } from '@cc/app/api/utils';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { NotificationService } from '@cc/app/shared/services/notification';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { ErrorService } from '../../../shared/services/error';
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog';
 import { RoutingRulesetService } from './routing-ruleset.service';
 
@@ -46,7 +46,7 @@ export class RoutingRulesetComponent {
         private baseDialogService: BaseDialogService,
         private routingRulesetService: RoutingRulesetService,
         private domainStoreService: DomainStoreService,
-        private errorService: ErrorService,
+        private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private route: ActivatedRoute
     ) {}
@@ -70,7 +70,7 @@ export class RoutingRulesetComponent {
                     }
                 },
                 error: (err) => {
-                    this.errorService.error(err);
+                    this.notificationErrorService.error(err);
                     this.notificationService.success('Error while adding routing rule');
                 },
             });

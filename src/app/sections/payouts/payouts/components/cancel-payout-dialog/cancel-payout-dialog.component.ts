@@ -9,6 +9,8 @@ import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils/operators';
 
+import { NotificationErrorService } from '../../../../../shared/services/notification-error';
+
 @UntilDestroy()
 @Component({
     selector: 'cc-cancel-payout-dialog',
@@ -24,7 +26,8 @@ export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private payoutManagementService: PayoutManagementService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -38,10 +41,7 @@ export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                     this.notificationService.success('Payout canceled successfully');
                 },
-                error: (err) => {
-                    this.notificationService.error('Payout cancellation error');
-                    console.error(err);
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

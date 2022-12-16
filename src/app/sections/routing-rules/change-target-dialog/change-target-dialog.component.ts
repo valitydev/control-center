@@ -3,7 +3,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
-import { ErrorService } from '../../../shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { RoutingRulesService } from '../services/routing-rules';
 import { TargetRuleset } from '../target-ruleset-form';
 import { RoutingRulesType } from '../types/routing-rules-type';
@@ -24,7 +25,7 @@ export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
     constructor(
         injector: Injector,
         private routingRulesService: RoutingRulesService,
-        private errorService: ErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
         this.routingRulesService
@@ -51,6 +52,6 @@ export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
                 delegateIdx,
             })
             .pipe(untilDestroyed(this))
-            .subscribe(() => this.dialogRef.close(), this.errorService.error);
+            .subscribe(() => this.dialogRef.close(), this.notificationErrorService.error);
     }
 }

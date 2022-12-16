@@ -8,6 +8,7 @@ import { filter } from 'rxjs/operators';
 import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { PayoutManagementService } from '../../../api/payout-manager';
 import { NotificationService } from '../../../shared/services/notification';
+import { NotificationErrorService } from '../../../shared/services/notification-error';
 import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout-dialog/cancel-payout-dialog.component';
 
 @UntilDestroy()
@@ -16,7 +17,8 @@ export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
         private baseDialogService: BaseDialogService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private notificationErrorService: NotificationErrorService
     ) {}
 
     canBeConfirmed(status: keyof PayoutStatus) {
@@ -41,10 +43,7 @@ export class PayoutActionsService {
                 untilDestroyed(this)
             )
             .subscribe({
-                error: (err) => {
-                    this.notificationService.error('Payout confirmation error');
-                    console.error(err);
-                },
+                error: this.notificationErrorService.error,
             });
     }
 }

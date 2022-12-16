@@ -5,7 +5,8 @@ import { Shop } from '@vality/domain-proto/lib/domain';
 import { StatWallet } from '@vality/fistful-proto/lib/fistful_stat';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 
-import { ErrorService } from '../../../../shared/services/error';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+
 import { RoutingRulesService } from '../../services/routing-rules';
 import { RoutingRulesType } from '../../types/routing-rules-type';
 
@@ -28,7 +29,7 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: FormBuilder,
         private routingRulesService: RoutingRulesService,
-        private errorService: ErrorService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -54,7 +55,7 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: () => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }),
-                error: this.errorService.error,
+                error: this.notificationErrorService.error,
             });
     }
 }

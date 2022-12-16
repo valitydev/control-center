@@ -1,3 +1,7 @@
+:host {
+    word-break: break-all;
+}
+
 ::ng-deep .tooltip {
     display: block;
     unicode-bidi: embed;

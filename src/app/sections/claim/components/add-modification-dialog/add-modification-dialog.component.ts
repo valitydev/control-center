@@ -20,6 +20,8 @@ import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { inProgressFrom, progressTo } from '@cc/utils';
 
+import { NotificationErrorService } from '../../../../shared/services/notification-error';
+
 @UntilDestroy()
 @Component({
     selector: 'cc-add-modification-dialog',
@@ -47,7 +49,8 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
         injector: Injector,
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }
@@ -64,10 +67,7 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
                     this.notificationService.success('Modification added successfully');
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
-                error: (err) => {
-                    console.error(err);
-                    this.notificationService.error('Error adding modification');
-                },
+                error: this.notificationErrorService.error,
             });
     }
 
@@ -87,10 +87,7 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
                     this.notificationService.success('Modification updated successfully');
                     this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
                 },
-                error: (err) => {
-                    console.error(err);
-                    this.notificationService.error('Error updating modification');
-                },
+                error: this.notificationErrorService.error,
             });
     }
 
