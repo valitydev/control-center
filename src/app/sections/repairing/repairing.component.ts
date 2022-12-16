@@ -10,7 +10,7 @@ import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-import { splitIds } from '../../../../projects/ng-core/src/lib';
+
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
@@ -124,7 +124,7 @@ export class RepairingComponent implements OnInit {
             .pipe(
                 filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() =>
-                    this.repairManagementService.simpleRepairAll(
+                    this.repairManagementService.SimpleRepairAll(
                         this.selection.selected.map(({ id, ns }) => ({ id, ns }))
                     )
                 ),

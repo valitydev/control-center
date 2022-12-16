@@ -17,7 +17,7 @@ export class MachinesService extends PartialFetcher<Machine, SearchRequest> {
 
     protected fetch(params: SearchRequest, continuationToken: string) {
         return this.repairManagementService
-            .search({ limit: 100, continuation_token: continuationToken, ...params })
+            .Search({ limit: 100, continuation_token: continuationToken, ...params })
             .pipe(
                 map(({ machines, continuation_token }) => ({
                     result: machines,

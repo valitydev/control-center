@@ -83,8 +83,8 @@ export class RepairByScenarioDialogComponent
                 ? this.form.value
                 : this.dialogData.machines.map(({ id }) => ({ id, scenario: this.sameForm.value }));
         (this.nsControl.value === Namespace.Invoice
-            ? this.repairManagementService.repairInvoices(value as RepairInvoicesRequest)
-            : this.repairManagementService.repairWithdrawals(value as RepairWithdrawalsRequest)
+            ? this.repairManagementService.RepairInvoices(value as RepairInvoicesRequest)
+            : this.repairManagementService.RepairWithdrawals(value as RepairWithdrawalsRequest)
         )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
