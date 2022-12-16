@@ -6,8 +6,8 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder } from '@ngneat/reactive-forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { coerceBoolean } from 'coerce-property';
 import { debounceTime, map, take } from 'rxjs/operators';

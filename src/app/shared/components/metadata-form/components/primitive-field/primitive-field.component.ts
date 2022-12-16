@@ -18,7 +18,7 @@ import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
 @Component({
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
-    providers: createControlProviders(PrimitiveFieldComponent),
+    providers: createControlProviders(() => PrimitiveFieldComponent),
 })
 export class PrimitiveFieldComponent<T>
     extends ValidatedFormControlSuperclass<T>

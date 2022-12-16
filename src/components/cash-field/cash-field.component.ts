@@ -24,7 +24,7 @@ const GROUP_SEPARATOR = ' ';
 @Component({
     selector: 'cc-cash-field',
     templateUrl: './cash-field.component.html',
-    providers: createControlProviders(CashFieldComponent),
+    providers: createControlProviders(() => CashFieldComponent),
 })
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;

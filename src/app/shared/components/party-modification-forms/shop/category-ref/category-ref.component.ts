@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { CategoryRef } from '@vality/domain-proto/lib/domain';
 import { Category } from '@vality/dominant-cache-proto';
 import isNil from 'lodash-es/isNil';

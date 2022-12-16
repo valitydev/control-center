@@ -1,6 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { FormControl } from '@ngneat/reactive-forms';
+import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import {

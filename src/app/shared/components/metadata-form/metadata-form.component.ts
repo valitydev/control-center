@@ -16,7 +16,7 @@ import {
 @Component({
     selector: 'cc-metadata-form',
     templateUrl: './metadata-form.component.html',
-    providers: createControlProviders(MetadataFormComponent),
+    providers: createControlProviders(() => MetadataFormComponent),
 })
 export class MetadataFormComponent<T>
     extends ValidatedFormControlSuperclass<T>

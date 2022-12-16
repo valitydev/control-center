@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { FormControl } from '@ngneat/reactive-forms';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { PayoutID } from '@vality/payout-manager-proto';
@@ -20,7 +20,7 @@ export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
     CancelPayoutDialogComponent,
     { id: PayoutID }
 > {
-    detailsControl = new FormControl<string>();
+    detailsControl = new FormControl() as FormControl<string>;
     progress$ = new BehaviorSubject(0);
 
     constructor(

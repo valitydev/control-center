@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/magista-proto/lib/payment_processing';
 import { BaseDialogService } from '@vality/ng-core';

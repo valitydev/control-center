@@ -1,6 +1,6 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, ValidationErrors } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { FormBuilder } from '@ngneat/reactive-forms';
 import { Moment } from 'moment';
 
 import { createControlProviders, ValidatedControlSuperclass } from '../../../../utils';
@@ -9,7 +9,7 @@ import { createControlProviders, ValidatedControlSuperclass } from '../../../../
     selector: 'cc-date-range',
     templateUrl: './date-range.component.html',
     styleUrls: ['./date-range.component.scss'],
-    providers: createControlProviders(DateRangeComponent),
+    providers: createControlProviders(() => DateRangeComponent),
 })
 export class DateRangeComponent extends ValidatedControlSuperclass<DateRange<Moment>> {
     control = this.fb.group({
@@ -17,7 +17,16 @@ export class DateRangeComponent extends ValidatedControlSuperclass<DateRange<Mom
         end: null,
     });
 
-    constructor(injector: Injector, private fb: FormBuilder) {
-        super(injector);
+    constructor(private fb: FormBuilder) {
+        super();
+    }
+
+    validate(): ValidationErrors | null {
+        return (
+            super.validate() ??
+            (!this.control.value.start || !this.control.value.end
+                ? { oneOfTheDatesIsEmpty: true }
+                : null)
+        );
     }
 }

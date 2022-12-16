@@ -1,12 +1,5 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    Injector,
-    Input,
-    OnChanges,
-    OnInit,
-} from '@angular/core';
-import { FormControl } from '@ngneat/reactive-forms';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID, Shop, ShopID } from '@vality/domain-proto';
 import { coerceBoolean } from 'coerce-property';
@@ -22,7 +15,7 @@ import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/fo
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
     styleUrls: ['./shop-field.component.scss'],
-    providers: createControlProviders(ShopFieldComponent),
+    providers: createControlProviders(() => ShopFieldComponent),
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFieldComponent<M extends boolean = boolean>
@@ -36,7 +29,7 @@ export class ShopFieldComponent<M extends boolean = boolean>
     @Input() @coerceBoolean multiple: M;
     @Input() @coerceBoolean required: boolean;
 
-    control = new FormControl<M extends true ? ShopID[] : ShopID>();
+    control = new FormControl() as FormControl<M extends true ? ShopID[] : ShopID>;
     shops$ = defer(() => this.partyId$).pipe(
         switchMap((partyId) =>
             partyId
@@ -50,8 +43,8 @@ export class ShopFieldComponent<M extends boolean = boolean>
 
     private partyId$ = new BehaviorSubject<PartyID>(null);
 
-    constructor(injector: Injector, private partyManagementService: PartyManagementService) {
-        super(injector);
+    constructor(private partyManagementService: PartyManagementService) {
+        super();
     }
 
     ngOnChanges(changes: ComponentChanges<ShopFieldComponent>): void {

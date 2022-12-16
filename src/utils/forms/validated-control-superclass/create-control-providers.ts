@@ -1,10 +1,9 @@
-import { ComponentType } from '@angular/cdk/overlay';
-import { Provider } from '@angular/core';
-import { provideValueAccessor } from '@s-libs/ng-core';
+import { Provider, Type } from '@angular/core';
 
-import { provideValidator } from './provide-validator';
+import { provideValidators } from './provide-validators';
+import { provideValueAccessor } from './provide-value-accessor';
 
-export const createControlProviders = (component: ComponentType<unknown>): Provider[] => [
+export const createControlProviders = (component: () => Type<unknown>): Provider[] => [
     provideValueAccessor(component),
-    provideValidator(component),
+    provideValidators(component),
 ];

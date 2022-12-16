@@ -5,17 +5,7 @@
     gdColumns.lt-sm="1fr"
     gdGap="16px"
 >
-    <mat-form-field>
-        <mat-label>Date Range</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-            <input formControlName="fromTime" matInput matStartDate placeholder="Start Date" />
-            <input formControlName="toTime" matEndDate matInput placeholder="End Date" />
-        </mat-date-range-input>
-        <mat-datepicker-toggle [for]="picker" matSuffix>
-            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-        </mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+    <cc-date-range formControlName="dateRange"></cc-date-range>
     <mat-form-field>
         <input autocomplete="off" formControlName="payoutId" matInput placeholder="Payout ID" />
     </mat-form-field>

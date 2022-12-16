@@ -6,7 +6,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatPayment } from '@vality/magista-proto';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
@@ -32,7 +32,6 @@ export class PaymentsSearcherComponent implements OnInit {
     doAction$ = this.fetchPaymentsService.doAction$;
     payments$ = this.fetchPaymentsService.searchResult$;
     hasMore$ = this.fetchPaymentsService.hasMore$;
-    params: SearchFiltersParams;
     searchParamsChange$ = new BehaviorSubject<SearchFiltersParams>({});
     selectedPayments: StatPayment[];
 
@@ -44,7 +43,6 @@ export class PaymentsSearcherComponent implements OnInit {
 
     ngOnInit() {
         this.searchParamsChange$.pipe(skip(1), untilDestroyed(this)).subscribe((params) => {
-            this.params = params;
             this.fetchPaymentsService.search(params);
             this.searchParamsChanged.emit(params);
         });

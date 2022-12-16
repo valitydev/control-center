@@ -1,6 +1,5 @@
-import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ValidationErrors, Validators } from '@angular/forms';
-import { FormBuilder } from '@ngneat/reactive-forms';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ValidationErrors, Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
@@ -16,7 +15,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
 @Component({
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
-    providers: createControlProviders(StructFormComponent),
+    providers: createControlProviders(() => StructFormComponent),
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
     extends ValidatedControlSuperclass<T>
@@ -36,8 +35,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         );
     }
 
-    constructor(injector: Injector, private fb: FormBuilder) {
-        super(injector);
+    constructor(private fb: FormBuilder) {
+        super();
     }
 
     ngOnInit() {

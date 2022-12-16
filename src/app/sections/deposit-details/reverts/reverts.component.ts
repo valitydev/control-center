@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DepositStatus, StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
 import { filter } from 'rxjs/operators';
 

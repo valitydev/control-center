@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto';
 
 import { FetchRefundsService } from './fetch-refunds.service';

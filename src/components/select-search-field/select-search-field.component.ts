@@ -9,15 +9,15 @@ import {
     EventEmitter,
     OnInit,
 } from '@angular/core';
-import { FormControl } from '@ngneat/reactive-forms';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormComponentSuperclass, provideValueAccessor } from '@s-libs/ng-core';
+import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { ComponentChanges } from '@cc/app/shared/utils';
-import { getFormValueChanges } from '@cc/utils/forms';
+import { getFormValueChanges, provideValueAccessor } from '@cc/utils/forms';
 
 import { SelectSearchFieldOptions, SELECT_SEARCH_FIELD_OPTIONS } from './tokens';
 import { Option } from './types';
@@ -28,7 +28,7 @@ import { filterOptions } from './utils';
     selector: 'cc-select-search-field',
     templateUrl: 'select-search-field.component.html',
     styleUrls: ['select-search-field.component.scss'],
-    providers: [provideValueAccessor(SelectSearchFieldComponent)],
+    providers: [provideValueAccessor(() => SelectSearchFieldComponent)],
 })
 export class SelectSearchFieldComponent<Value>
     extends FormComponentSuperclass<Value>

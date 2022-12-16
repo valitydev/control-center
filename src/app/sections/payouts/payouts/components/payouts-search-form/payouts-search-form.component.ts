@@ -1,10 +1,10 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
+import { DateRange } from '@angular/material/datepicker';
 import { PartyID, ShopID } from '@vality/domain-proto';
 import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
 import { Party, Shop } from '@vality/magista-proto/lib/domain';
 import { Moment } from 'moment';
-import * as moment from 'moment';
 
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 import { getEnumKeys } from '@cc/utils/get-enum-keys';
@@ -12,8 +12,7 @@ import { getEnumKeys } from '@cc/utils/get-enum-keys';
 export interface PayoutsSearchForm {
     payoutId: string;
     partyId: Party['id'];
-    fromTime: Moment;
-    toTime: Moment;
+    dateRange: DateRange<Moment>;
     shops: Shop['id'][];
     payoutStatusTypes: PayoutStatusType[];
     payoutToolType: PayoutToolType;
@@ -22,14 +21,13 @@ export interface PayoutsSearchForm {
 @Component({
     selector: 'cc-payouts-search-form',
     templateUrl: './payouts-search-form.component.html',
-    providers: createControlProviders(PayoutsSearchFormComponent),
+    providers: createControlProviders(() => PayoutsSearchFormComponent),
 })
 export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<PayoutsSearchForm> {
     control = this.fb.group({
         payoutId: null as string,
         partyId: null as PartyID,
-        fromTime: [moment().subtract(1, 'year').startOf('d'), Validators.required],
-        toTime: [moment().endOf('d'), Validators.required],
+        dateRange: [null, Validators.required],
         shops: null as ShopID[],
         payoutStatusTypes: null as PayoutStatusType[],
         payoutToolType: null as PayoutToolType,
@@ -41,7 +39,7 @@ export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<Payou
     payoutToolType = PayoutToolType;
     payoutToolTypes = getEnumKeys(PayoutToolType);
 
-    constructor(private fb: FormBuilder, injector: Injector) {
-        super(injector);
+    constructor(private fb: FormBuilder) {
+        super();
     }
 }

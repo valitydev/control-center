@@ -11,7 +11,7 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
-        "target": "es2020",
+        "target": "ES2022",
         "typeRoots": ["./node_modules/@types"],
         "lib": ["ESNext", "DOM"],
         "allowSyntheticDefaultImports": true,
@@ -21,7 +21,8 @@
             "@cc/*": ["src/*"],
             "@vality/ng-core": ["dist/ng-core"],
             "thrift": ["node_modules/@vality/woody/dist/thrift"]
-        }
+        },
+        "useDefineForClassFields": false
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,
