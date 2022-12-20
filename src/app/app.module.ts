@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InputMaskModule } from '@ngneat/input-mask';
 import * as moment from 'moment';
 
 import 'moment/locale/ru';
@@ -37,8 +38,6 @@ import {
     SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
 } from './tokens';
-
-import { InputMaskModule } from '@ngneat/input-mask';
 
 /**
  * For use in specific locations (for example, questionary PDF document)
