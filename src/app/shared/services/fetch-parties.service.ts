@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Party } from '@vality/deanonimus-proto';
+import { Party } from '@vality/deanonimus-proto/deanonimus';
 import { Observable, of, Subject, defer, BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 
