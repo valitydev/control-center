@@ -30,6 +30,7 @@ export class PartyManagementService {
                     metadata,
                     headers,
                     logging: environment.logging.requests,
+                    path: '/wachter',
                 })
             )
         );

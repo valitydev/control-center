@@ -25,6 +25,7 @@ export class RepositoryService {
                     metadata,
                     headers,
                     logging: environment.logging.requests,
+                    path: '/wachter',
                 })
             )
         );

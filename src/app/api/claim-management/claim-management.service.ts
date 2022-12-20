@@ -39,6 +39,7 @@ export class ClaimManagementService {
                     metadata,
                     headers,
                     logging: environment.logging.requests,
+                    path: '/wachter',
                 })
             )
         );
