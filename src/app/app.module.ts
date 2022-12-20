@@ -38,6 +38,8 @@ import {
     SMALL_SEARCH_LIMIT,
 } from './tokens';
 
+import { InputMaskModule } from '@ngneat/input-mask';
+
 /**
  * For use in specific locations (for example, questionary PDF document)
  */
@@ -70,6 +72,7 @@ export let AppInjector: Injector;
         SectionsModule,
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
+        InputMaskModule,
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
