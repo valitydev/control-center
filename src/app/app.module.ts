@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InputMaskModule } from '@ngneat/input-mask';
 import * as moment from 'moment';
 
 import 'moment/locale/ru';
@@ -70,6 +71,8 @@ export let AppInjector: Injector;
         SectionsModule,
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
+        // TODO: hack for cash field 😡
+        InputMaskModule,
     ],
     providers: [
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
