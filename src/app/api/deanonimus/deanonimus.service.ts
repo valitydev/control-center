@@ -1,23 +1,41 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-    codegenClientConfig,
-    CodegenClient,
-} from '@vality/deanonimus-proto/lib/deanonimus-Deanonimus';
-import context from '@vality/deanonimus-proto/lib/deanonimus/context';
-import * as service from '@vality/deanonimus-proto/lib/deanonimus/gen-nodejs/Deanonimus';
+    DeanonimusServiceCodegenClient,
+    ThriftAstMetadata,
+    DeanonimusService as DeanonimusServiceCodegen,
+} from '@vality/deanonimus-proto';
+import { SearchHit } from '@vality/deanonimus-proto/deanonimus';
+import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
-import { createThriftApi } from '@cc/app/api/utils';
+import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
+import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class DeanonimusService extends createThriftApi<CodegenClient>() {
-    constructor(injector: Injector) {
-        super(injector, {
-            service,
-            wachterServiceName: 'Deanonimus',
-            metadata: () =>
-                import('@vality/deanonimus-proto/lib/metadata.json').then((m) => m.default),
-            context,
-            ...codegenClientConfig,
-        });
+export class DeanonimusService {
+    private client$: Observable<DeanonimusServiceCodegenClient>;
+
+    constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
+        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+            map(toWachterHeaders('Deanonimus'))
+        );
+        const metadata$ = from(
+            import('@vality/deanonimus-proto/metadata.json').then(
+                (m) => m.default as ThriftAstMetadata[]
+            )
+        );
+        this.client$ = combineLatest([metadata$, headers$]).pipe(
+            switchMap(([metadata, headers]) =>
+                DeanonimusServiceCodegen({
+                    metadata,
+                    headers,
+                    logging: environment.logging.requests,
+                    path: '/wachter',
+                })
+            )
+        );
+    }
+
+    searchParty(text: string): Observable<SearchHit[]> {
+        return this.client$.pipe(switchMap((c) => c.searchParty(text)));
     }
 }
