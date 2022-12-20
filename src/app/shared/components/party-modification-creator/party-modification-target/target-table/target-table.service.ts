@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { Modification } from '@vality/domain-proto/lib/claim_management';
-import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/lib/domain';
+import { Modification } from '@vality/domain-proto/claim_management';
+import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/domain';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, tap, filter } from 'rxjs/operators';
 

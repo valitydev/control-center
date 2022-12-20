@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { ContractTemplateRef } from '@vality/domain-proto/lib/domain';
+import { ContractTemplateRef } from '@vality/domain-proto/domain';
 import { ContractTemplate } from '@vality/dominant-cache-proto';
 import isNil from 'lodash-es/isNil';
 import sortBy from 'lodash-es/sortBy';

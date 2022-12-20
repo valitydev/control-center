@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomainObject } from '@vality/domain-proto/lib/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 
 @Injectable()
 export class ModifiedDomainObjectService {

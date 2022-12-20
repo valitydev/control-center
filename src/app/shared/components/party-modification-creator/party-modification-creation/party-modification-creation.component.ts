@@ -13,12 +13,12 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { ContractorModification } from '@vality/domain-proto/lib/claim_management';
+import { ContractorModification } from '@vality/domain-proto/claim_management';
 import {
     ContractModification,
     PartyModification,
     ShopModification,
-} from '@vality/domain-proto/lib/payment_processing';
+} from '@vality/domain-proto/payment_processing';
 
 import {
     ActionType,

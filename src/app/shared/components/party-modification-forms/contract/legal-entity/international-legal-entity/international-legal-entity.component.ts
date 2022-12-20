@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { InternationalLegalEntity } from '@vality/domain-proto/lib/domain';
+import { InternationalLegalEntity } from '@vality/domain-proto/domain';
 
 @Component({
     selector: 'cc-international-legal-entity',

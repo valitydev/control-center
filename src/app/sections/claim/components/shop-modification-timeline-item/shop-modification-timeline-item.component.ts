@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
-import { Claim, ModificationUnit } from '@vality/domain-proto/lib/claim_management';
+import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { ReplaySubject } from 'rxjs';
 
 import { ComponentChanges } from '@cc/app/shared';

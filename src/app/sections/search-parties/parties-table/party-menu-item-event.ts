@@ -1,4 +1,4 @@
-import { PartyID } from '@vality/domain-proto';
+import { PartyID } from '@vality/domain-proto/domain';
 
 import { PartyActions } from './party-actions';
 

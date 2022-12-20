@@ -5,7 +5,7 @@ import {
     PaymentInstitutionObject,
     RoutingDelegate,
     RoutingRulesObject,
-} from '@vality/domain-proto';
+} from '@vality/domain-proto/domain';
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, startWith, switchMap } from 'rxjs/operators';
 

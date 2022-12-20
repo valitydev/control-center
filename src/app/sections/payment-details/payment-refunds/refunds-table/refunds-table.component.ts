@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { InvoicePaymentRefundStatus } from '@vality/domain-proto/lib/merch_stat';
+import { InvoicePaymentRefundStatus } from '@vality/domain-proto/domain';
 
 import { Refund } from '@cc/app/api/fistful-stat';
 

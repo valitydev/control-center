@@ -1,4 +1,4 @@
-import { ClaimStatus } from '@vality/domain-proto/lib/claim_management';
+import { ClaimStatus } from '@vality/domain-proto/claim_management';
 
 import { StatusColor } from '@cc/app/styles';
 

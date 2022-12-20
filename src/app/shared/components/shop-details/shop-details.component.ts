@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Shop } from '@vality/domain-proto';
+import { Shop } from '@vality/domain-proto/domain';
 
 @Component({
     selector: 'cc-shop-details',

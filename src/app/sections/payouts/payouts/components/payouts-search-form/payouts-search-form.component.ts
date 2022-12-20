@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { PartyID, ShopID } from '@vality/domain-proto';
+import { PartyID, ShopID } from '@vality/domain-proto/domain';
 import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
 import { Party, Shop } from '@vality/magista-proto/lib/domain';
 import { Moment } from 'moment';

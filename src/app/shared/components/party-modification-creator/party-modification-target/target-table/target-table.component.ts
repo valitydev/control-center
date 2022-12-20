@@ -10,7 +10,7 @@ import {
 import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
 import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { Modification } from '@vality/domain-proto/lib/claim_management';
+import { Modification } from '@vality/domain-proto/claim_management';
 
 import { PartyTarget } from '../party-target';
 import { itemsFilterPredicate } from './items-filter-predicate';

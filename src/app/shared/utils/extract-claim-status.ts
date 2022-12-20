@@ -1,4 +1,4 @@
-import { ClaimStatus as UnionClaimStatus } from '@vality/domain-proto/lib/claim_management';
+import { ClaimStatus as UnionClaimStatus } from '@vality/domain-proto/claim_management';
 
 import { ClaimStatus } from '@cc/app/api/claim-management';
 import { getUnionKey } from '@cc/utils/get-union-key';

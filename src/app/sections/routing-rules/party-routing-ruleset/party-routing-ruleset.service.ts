@@ -4,7 +4,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
@@ -55,7 +54,6 @@ export class PartyRoutingRulesetService {
     constructor(
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
-        private domainStoreService: DomainStoreService,
         private routingRulesService: RoutingRulesService,
         private fistfulStatistics: FistfulStatisticsService
     ) {}

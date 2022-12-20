@@ -1,4 +1,4 @@
-import { Reference, DomainObject } from '@vality/domain-proto/lib/domain';
+import { Reference, DomainObject } from '@vality/domain-proto/domain';
 
 export interface DataSourceItem {
     type: string;

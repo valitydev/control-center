@@ -50,7 +50,7 @@ export class ChangeChargebackStatusDialogComponent
     >
     implements OnInit
 {
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     control = new FormControl();
     actionControl = new FormControl<Action>(null, Validators.required);

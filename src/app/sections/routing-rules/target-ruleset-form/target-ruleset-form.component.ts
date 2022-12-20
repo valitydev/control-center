@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PaymentInstitutionObject } from '@vality/domain-proto';
+import { PaymentInstitutionObject } from '@vality/domain-proto/domain';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 

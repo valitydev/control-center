@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PartyID } from '@vality/domain-proto';
+import { PartyID } from '@vality/domain-proto/domain';
 import { shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 

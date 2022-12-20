@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ContractID, Contractor, PartyID } from '@vality/domain-proto/lib/domain';
+import { ContractID, Contractor, PartyID } from '@vality/domain-proto/domain';
 
 import { FetchContractorService } from './fetch-contractor.service';
 

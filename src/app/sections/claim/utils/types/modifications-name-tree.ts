@@ -13,7 +13,7 @@ import {
     ShopModificationUnit,
     StatusModificationUnit,
     WalletModificationUnit,
-} from '@vality/domain-proto/lib/claim_management';
+} from '@vality/domain-proto/claim_management';
 import { Overwrite } from 'utility-types';
 
 type OverwriteAll<T extends object, U extends { [N in keyof T]-?: unknown }> = U;

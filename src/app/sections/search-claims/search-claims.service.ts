@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Claim, ClaimSearchQuery } from '@vality/domain-proto/lib/claim_management';
+import { Claim, ClaimSearchQuery } from '@vality/domain-proto/claim_management';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

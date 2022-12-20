@@ -1,4 +1,4 @@
-import { Modification } from '@vality/domain-proto/lib/claim_management';
+import { Modification } from '@vality/domain-proto/claim_management';
 
 import { MODIFICATIONS_NAME_TREE } from './types/modifications-name-tree';
 

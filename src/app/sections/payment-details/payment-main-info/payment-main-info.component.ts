@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Shop } from '@vality/domain-proto/lib/domain';
+import { Shop } from '@vality/domain-proto/domain';
 import { Payer, StatPayment } from '@vality/magista-proto';
 import { InvoicePaymentStatus, PaymentTool } from '@vality/magista-proto/lib/domain';
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClaimStatus } from '@vality/domain-proto/lib/claim_management';
+import { ClaimStatus } from '@vality/domain-proto/claim_management';
 
 import { CLAIM_STATUSES } from '@cc/app/api/claim-management';
 import { AppAuthGuardService, ClaimManagementRole } from '@cc/app/shared/services';

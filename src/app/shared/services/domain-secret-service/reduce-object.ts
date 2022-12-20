@@ -1,4 +1,4 @@
-import { DomainObject } from '@vality/domain-proto';
+import { DomainObject } from '@vality/domain-proto/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isNil from 'lodash-es/isNil';
 

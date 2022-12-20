@@ -3,7 +3,7 @@ import {
     Claim,
     CommentModification,
     ModificationUnit,
-} from '@vality/domain-proto/lib/claim_management';
+} from '@vality/domain-proto/claim_management';
 import { defer, ReplaySubject, switchMap, BehaviorSubject } from 'rxjs';
 import { pluck, shareReplay } from 'rxjs/operators';
 

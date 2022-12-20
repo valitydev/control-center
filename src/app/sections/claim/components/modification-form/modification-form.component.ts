@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Validator } from '@angular/forms';
-import { Claim } from '@vality/domain-proto/lib/claim_management';
-import { Party } from '@vality/domain-proto/lib/domain';
+import { Claim } from '@vality/domain-proto/claim_management';
+import { Party } from '@vality/domain-proto/domain';
 import { from, combineLatest, ReplaySubject, defer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ export class ModificationFormComponent
     @Input() claim: Claim;
     @Input() type: string;
 
-    metadata$ = from(import('@vality/domain-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = combineLatest([
         defer(() => this.claimOrPartyChanged$).pipe(
             map(() => createPartyClaimMetadataFormExtensions(this.party, this.claim))

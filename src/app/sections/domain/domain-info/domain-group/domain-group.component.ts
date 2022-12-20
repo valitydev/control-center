@@ -4,7 +4,7 @@ import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-pag
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { MatSort } from '@angular/material/sort';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { Reference, DomainObject } from '@vality/domain-proto/lib/domain';
+import { Reference, DomainObject } from '@vality/domain-proto/domain';
 import isEqual from 'lodash-es/isEqual';
 import sortBy from 'lodash-es/sortBy';
 import { combineLatest, Observable, ReplaySubject, defer } from 'rxjs';

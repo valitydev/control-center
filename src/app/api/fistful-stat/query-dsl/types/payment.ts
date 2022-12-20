@@ -1,8 +1,4 @@
-import {
-    InvoicePaymentFlow,
-    InvoicePaymentStatus,
-    PaymentTool,
-} from '@vality/domain-proto/lib/merch_stat';
+import { InvoicePaymentFlow, InvoicePaymentStatus, PaymentTool } from '@vality/domain-proto/domain';
 
 export interface Payment {
     payment_id?: string;

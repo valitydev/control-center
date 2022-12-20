@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Domain, DomainObject } from '@vality/domain-proto';
+import { Domain, DomainObject } from '@vality/domain-proto/domain';
 import { KeycloakService } from 'keycloak-angular';
 import isNil from 'lodash-es/isNil';
 

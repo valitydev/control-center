@@ -1,5 +1,5 @@
-import { Claim } from '@vality/domain-proto/lib/claim_management';
-import { Party } from '@vality/domain-proto/lib/domain';
+import { Claim } from '@vality/domain-proto/claim_management';
+import { Party } from '@vality/domain-proto/domain';
 import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
 import uuid from 'uuid';

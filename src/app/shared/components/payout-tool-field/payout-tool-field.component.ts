@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { PartyID, PayoutTool, ShopID } from '@vality/domain-proto';
+import { PayoutTool } from '@vality/domain-proto/domain';
+import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { Option } from '@cc/components/select-search-field';
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 
@@ -73,7 +73,6 @@ export class PayoutToolFieldComponent
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService
     ) {
         super();

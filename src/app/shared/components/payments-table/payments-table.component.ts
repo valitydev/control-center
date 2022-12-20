@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/lib/domain';
+import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto';
 
 import { Columns, SELECT_COLUMN_NAME } from '../../../../components/table';

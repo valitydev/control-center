@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { ShopLocation } from '@vality/domain-proto/lib/domain';
+import { ShopLocation } from '@vality/domain-proto/domain';
 import get from 'lodash-es/get';
 
 @Component({

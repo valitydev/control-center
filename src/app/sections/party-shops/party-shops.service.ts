@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Party } from '@vality/domain-proto/lib/domain';
+import { Party } from '@vality/domain-proto/domain';
 import { defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 

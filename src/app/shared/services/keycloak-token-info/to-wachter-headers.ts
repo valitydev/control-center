@@ -1,6 +1,6 @@
 import { KeycloakToken } from './types';
 
-export const toWacherHeaders =
+export const toWachterHeaders =
     (service: string) =>
     ({ email, sub, preferred_username, token }: KeycloakToken) => ({
         service,

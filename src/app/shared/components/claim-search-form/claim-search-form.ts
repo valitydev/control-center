@@ -1,5 +1,5 @@
-import { PartyID } from '@vality/domain-proto';
-import { ClaimID, ClaimStatus } from '@vality/domain-proto/lib/claim_management';
+import { ClaimID, ClaimStatus } from '@vality/domain-proto/claim_management';
+import { PartyID } from '@vality/domain-proto/domain';
 
 export interface ClaimSearchForm {
     claim_id: ClaimID;
