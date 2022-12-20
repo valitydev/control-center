@@ -72,7 +72,7 @@ export let AppInjector: Injector;
         SectionsModule,
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
-        // TODO: hack for ?metadata cash field 😡
+        // TODO: hack for cash field 😡
         InputMaskModule,
     ],
     providers: [
