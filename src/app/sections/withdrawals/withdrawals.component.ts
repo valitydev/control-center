@@ -5,7 +5,7 @@ import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto/domain';
-import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
+import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { Moment } from 'moment';
 import { map } from 'rxjs/operators';

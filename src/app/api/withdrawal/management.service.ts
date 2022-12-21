@@ -5,6 +5,7 @@ import {
     withdrawal_Management,
 } from '@vality/fistful-proto';
 import { WithdrawalID, EventRange, WithdrawalState } from '@vality/fistful-proto/withdrawal';
+import { AdjustmentState, AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
@@ -33,6 +34,11 @@ export class ManagementService {
                 })
             )
         );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    CreateAdjustment(id: WithdrawalID, params: AdjustmentParams): Observable<AdjustmentState> {
+        return this.client$.pipe(switchMap((c) => c.CreateAdjustment(id, params)));
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention

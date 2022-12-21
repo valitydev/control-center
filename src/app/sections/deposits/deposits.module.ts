@@ -5,7 +5,6 @@ import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/lega
 import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 
-import { FistfulModule } from '@cc/app/api/deprecated-fistful';
 import { DepositsTableModule } from '@cc/app/shared/components/deposits-table';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
@@ -26,7 +25,6 @@ import { SearchFiltersModule } from './search-filters/search-filters.module';
         DepositsTableModule,
         EmptySearchResultModule,
         MatProgressSpinnerModule,
-        FistfulModule,
     ],
     declarations: [DepositsComponent],
 })

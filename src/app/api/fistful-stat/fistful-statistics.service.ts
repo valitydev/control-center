@@ -45,13 +45,11 @@ export class FistfulStatisticsService {
         return this.client$.pipe(switchMap((c) => c.GetWithdrawals(req)));
     }
 
-    // TODO use instead of deprecated
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GetDeposits(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetDeposits(req)));
     }
 
-    // TODO use instead of deprecated
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GetDepositReverts(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetDepositReverts(req)));

@@ -9,10 +9,9 @@ import { combineLatest, from, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
+import { ManagementService } from '@cc/app/api/withdrawal';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-
-import { ManagementService } from '../../../../api/withdrawal';
 
 @UntilDestroy()
 @Component({
