@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
+import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 

@@ -1,4 +1,4 @@
-import { DepositStatus } from '@vality/fistful-proto/lib/fistful_stat';
+import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
 
 export interface Deposit {
     amount_to?: number;

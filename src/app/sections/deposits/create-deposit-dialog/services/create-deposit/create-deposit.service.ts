@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { DepositParams } from '@vality/fistful-proto/lib/fistful_admin';
-import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
+import { DepositParams } from '@vality/fistful-proto/fistful_admin';
+import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
 import Int64 from '@vality/thrift-ts/lib/int64';
 import * as moment from 'moment';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';

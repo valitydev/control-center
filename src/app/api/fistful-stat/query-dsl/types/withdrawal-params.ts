@@ -1,5 +1,5 @@
 // https://github.com/valitydev/fistful-magista/blob/e29771c64115569caef2faac141dfa9b6963c555/src/main/java/dev/vality/fistful/magista/query/impl/WithdrawalFunction.java#L115
-import { WithdrawalStatus } from '@vality/fistful-proto/lib/fistful_stat';
+import { WithdrawalStatus } from '@vality/fistful-proto/fistful_stat';
 
 export interface WithdrawalParams {
     party_id?: string;
