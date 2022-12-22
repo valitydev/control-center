@@ -6,7 +6,7 @@ import { StatPayment } from '@vality/magista-proto';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import chunk from 'lodash-es/chunk';
 import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';
-import { catchError, finalize, delay } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
@@ -22,13 +22,13 @@ import { NotificationErrorService } from '../../../services/notification-error';
 export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
     CreatePaymentAdjustmentComponent,
     { payments: StatPayment[] },
-    { withError?: StatPayment[] }
+    { withError?: { payment: StatPayment; error: any }[] }
 > {
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
     metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
-    withError: StatPayment[] = [];
+    withError: { payment: StatPayment; error: any }[] = [];
 
     constructor(
         injector: Injector,
@@ -41,7 +41,9 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
     }
 
     create() {
-        const payments = this.withError.length ? this.withError : this.dialogData.payments;
+        const payments = this.withError.length
+            ? this.withError.map((w) => w.payment)
+            : this.dialogData.payments;
         this.withError = [];
         const progressStep = 100 / (payments.length + 1);
         this.progress$.next(progressStep);
@@ -53,10 +55,9 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
                             this.invoicingService
                                 .CreatePaymentAdjustment(p.invoice_id, p.id, this.control.value)
                                 .pipe(
-                                    delay(Math.random() * 10000),
-                                    catchError(() => {
-                                        this.withError.push(p);
-                                        return null;
+                                    catchError((error) => {
+                                        this.withError.push({ payment: p, error });
+                                        return of(null);
                                     }),
                                     finalize(() =>
                                         this.progress$.next(this.progress$.value + progressStep)
@@ -73,8 +74,18 @@ export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
                         this.notificationService.success(`${payments.length} created successfully`);
                         this.closeWithSuccess();
                     } else {
+                        const errors = this.withError
+                            .map((w) => {
+                                const error: string = w.error?.name || w.error?.message || '';
+                                if (error) return `${w.payment.id}: ${error}`;
+                                return null;
+                            })
+                            .filter(Boolean)
+                            .join(', ');
                         this.notificationErrorService.error(
-                            new Error(`${this.withError.length} out of ${payments.length} failed`)
+                            new Error(
+                                `${this.withError.length} out of ${payments.length} failed. Errors: ${errors}`
+                            )
                         );
                     }
                     this.progress$.next(0);
