@@ -42,6 +42,9 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
             .subscribe((value) => {
                 this.emitOutgoingValue(value);
             });
+        this.fieldControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
+            this.cleanInternal(true);
+        });
     }
 
     validate(): ValidationErrors | null {
@@ -62,7 +65,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         }
     }
 
-    cleanInternal() {
+    cleanInternal(emitEvent = false) {
         this.internalControl.reset(
             this.fieldControl.value
                 ? (getDefaultValue(
@@ -71,7 +74,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
                       this.fieldControl.value.type
                   ) as T[keyof T])
                 : null,
-            { emitEvent: false }
+            { emitEvent }
         );
     }
 }
