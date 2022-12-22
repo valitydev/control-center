@@ -78,7 +78,7 @@ export class PaymentsSearcherComponent implements OnInit {
                     this.searchParamsChanges();
                     this.selectedPayments = [];
                 } else if (res.data?.withError?.length) {
-                    this.selectedPayments = res.data.withError;
+                    this.selectedPayments = res.data.withError.map((w) => w.payment);
                 }
             });
     }
