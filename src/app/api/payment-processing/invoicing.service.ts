@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { InvoicingCodegenClient, ThriftAstMetadata, Invoicing } from '@vality/domain-proto';
+import {
+    payment_processing_InvoicingCodegenClient,
+    ThriftAstMetadata,
+    payment_processing_Invoicing,
+} from '@vality/domain-proto';
 import {
     InvoiceID,
     InvoicePaymentID,
@@ -23,7 +27,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class InvoicingService {
-    private client$: Observable<InvoicingCodegenClient>;
+    private client$: Observable<payment_processing_InvoicingCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -36,7 +40,7 @@ export class InvoicingService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                Invoicing({
+                payment_processing_Invoicing({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
