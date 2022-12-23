@@ -78,13 +78,6 @@
                             (claimChanged)="reloadClaim()"
                         >
                         </cc-status-modification-timeline-item>
-                        <cc-comment-modification-timeline-item
-                            *ngSwitchCase="'comment_modification'"
-                            [claim]="claim"
-                            [modificationUnit]="modificationUnit"
-                            (claimChanged)="reloadClaim()"
-                        >
-                        </cc-comment-modification-timeline-item>
                         <cc-modification-unit-timeline-item
                             *ngSwitchDefault
                             [claim]="claim"
@@ -100,10 +93,6 @@
                 <button color="primary" mat-button (click)="addModification()">
                     ADD PARTY MODIFICATION
                 </button>
-                <!--                TODO fix uploading-->
-                <!--                <div ngfSelect (filesChange)="attachFile($event)">-->
-                <!--                    <button mat-button color="primary">ATTACH FILE</button>-->
-                <!--                </div>-->
                 <button
                     [disabled]="(isAllowedChangeStatus$ | async) === false"
                     color="primary"
