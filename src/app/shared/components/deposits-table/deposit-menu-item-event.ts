@@ -1,4 +1,4 @@
-import { DepositID } from '@vality/fistful-proto/lib/deposit';
+import { DepositID } from '@vality/fistful-proto/deposit';
 
 import { DepositActions } from './deposit-actions';
 

@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 import {
-    wallet_ManagementCodegenClient,
+    fistful_admin_FistfulAdminCodegenClient,
     ThriftAstMetadata,
-    wallet_Management,
+    fistful_admin_FistfulAdmin,
 } from '@vality/fistful-proto';
-import { WalletID, EventRange, WalletState } from '@vality/fistful-proto/wallet';
+import { Deposit } from '@vality/fistful-proto/deposit';
+import { DepositParams } from '@vality/fistful-proto/fistful_admin';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
 import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class ManagementService {
-    private client$: Observable<wallet_ManagementCodegenClient>;
+export class FistfulAdminService {
+    private client$: Observable<fistful_admin_FistfulAdminCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('WalletManagement'))
+            map(toWachterHeaders('FistfulAdmin'))
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(
@@ -25,7 +26,7 @@ export class ManagementService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                wallet_Management({
+                fistful_admin_FistfulAdmin({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
@@ -36,7 +37,7 @@ export class ManagementService {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    Get(id: WalletID, range: EventRange): Observable<WalletState> {
-        return this.client$.pipe(switchMap((c) => c.Get(id, range)));
+    CreateDeposit(params: DepositParams): Observable<Deposit> {
+        return this.client$.pipe(switchMap((c) => c.CreateDeposit(params)));
     }
 }

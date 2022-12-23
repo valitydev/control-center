@@ -4,8 +4,6 @@ import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dia
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import { AppAuthGuardService } from '@cc/app/shared/services';
-
 import { ConfigService } from '../../../core/config.service';
 import { CreateDepositService } from './services/create-deposit/create-deposit.service';
 
@@ -31,7 +29,6 @@ export class CreateDepositDialogComponent implements OnInit {
         private createDepositService: CreateDepositService,
         private snackBar: MatSnackBar,
         private dialogRef: MatDialogRef<CreateDepositDialogComponent>,
-        private authGuardService: AppAuthGuardService,
         private configService: ConfigService
     ) {}
 

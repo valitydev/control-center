@@ -1,19 +1,17 @@
 import { Component, Injector } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ExternalID } from '@vality/fistful-proto/lib/base';
-import { ChangeRequest } from '@vality/fistful-proto/lib/deposit_adjustment';
-import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
+import { ChangeRequest } from '@vality/fistful-proto/deposit_adjustment';
+import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
+import { ExternalID } from '@vality/fistful-proto/withdrawal_adjustment';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 import { combineLatest, from, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
+import { ManagementService } from '@cc/app/api/withdrawal';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-
-import { ManagementService } from '../../../../api/withdrawal';
-import { NotificationService } from '../../../../shared/services/notification';
 
 @UntilDestroy()
 @Component({
@@ -39,14 +37,13 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
         },
     ];
     typeControl = new FormControl<number>(0);
-    metadata$ = from(import('@vality/fistful-proto/lib/metadata.json').then((m) => m.default));
+    metadata$ = from(import('@vality/fistful-proto/metadata.json').then((m) => m.default));
     progress = -1;
 
     constructor(
         injector: Injector,
         private managementService: ManagementService,
-        private notificationErrorService: NotificationErrorService,
-        private notificationService: NotificationService
+        private notificationErrorService: NotificationErrorService
     ) {
         super(injector);
     }

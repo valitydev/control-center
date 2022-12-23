@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { DepositParams } from '@vality/fistful-proto/lib/fistful_admin';
-import { StatDeposit } from '@vality/fistful-proto/lib/fistful_stat';
-import Int64 from '@vality/thrift-ts/lib/int64';
+import { DepositParams } from '@vality/fistful-proto/fistful_admin';
+import { StatDeposit, StatRequest } from '@vality/fistful-proto/fistful_stat';
 import * as moment from 'moment';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { FistfulAdminService, FistfulStatisticsService } from '@cc/app/api/deprecated-fistful';
+import { FistfulAdminService } from '@cc/app/api/fistful-admin';
+import { depositParamsToRequest, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
 import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
@@ -15,7 +15,6 @@ import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
 import { ConfigService } from '../../../../../core/config.service';
-import { SearchParams } from '../../../types/search-params';
 
 @Injectable()
 export class CreateDepositService {
@@ -24,15 +23,14 @@ export class CreateDepositService {
     private pollingErrorSubject$ = new Subject<boolean>();
     private pollingTimeoutSubject$ = new Subject<boolean>();
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
+    // eslint-disable-next-line @typescript-eslint/member-ordering, @typescript-eslint/no-unsafe-assignment
     depositCreated$: Observable<StatDeposit> = this.create$.pipe(
         map(() => this.getParams()),
         switchMap((params) =>
             forkJoin([
                 of(this.getPollingParams(params)),
-                this.fistfulAdminService.createDeposit(params).pipe(
-                    catchError((e) => {
-                        console.error(e);
+                this.fistfulAdminService.CreateDeposit(params).pipe(
+                    catchError(() => {
                         this.errorSubject$.next(true);
                         return EMPTY;
                     })
@@ -40,16 +38,14 @@ export class CreateDepositService {
             ])
         ),
         switchMap(([pollingParams]) =>
-            this.fistfulStatisticsService.getDeposits(pollingParams).pipe(
-                catchError((e) => {
-                    console.error(e);
+            this.fistfulStatisticsService.GetDeposits(pollingParams).pipe(
+                catchError(() => {
                     this.pollingErrorSubject$.next(true);
                     return EMPTY;
                 }),
-                map((res) => res.result[0]),
+                map((res) => res.data?.deposits[0]),
                 poll(createDepositStopPollingCondition),
-                catchError((e) => {
-                    console.error(e);
+                catchError(() => {
                     this.pollingTimeoutSubject$.next(true);
                     return EMPTY;
                 })
@@ -100,7 +96,7 @@ export class CreateDepositService {
             source: currency.source,
             destination,
             body: {
-                amount: new Int64(toMinor(amount)) as any,
+                amount: toMinor(amount),
                 currency: {
                     symbolic_code: currency.currency,
                 },
@@ -108,11 +104,12 @@ export class CreateDepositService {
         };
     }
 
-    private getPollingParams(params: DepositParams): SearchParams {
-        return {
+    private getPollingParams(params: DepositParams): StatRequest {
+        return depositParamsToRequest({
             fromTime: moment().startOf('d').toISOString(),
             toTime: moment().endOf('d').toISOString(),
+            size: 1,
             depositId: params.id,
-        };
+        });
     }
 }

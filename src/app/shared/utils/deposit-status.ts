@@ -1,4 +1,4 @@
-import { DepositStatus } from '@vality/fistful-proto/lib/fistful_stat';
+import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
 
 import { clearNullFields } from '@cc/utils/thrift-utils';
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { RevertParams } from '@vality/fistful-proto/lib/deposit_revert';
+import { RevertParams } from '@vality/fistful-proto/deposit_revert';
 import { EMPTY, merge, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
@@ -24,8 +24,7 @@ export class CreateRevertService {
         switchMap(([params, depositID]) =>
             this.depositManagementService.CreateRevert(depositID, params).pipe(
                 catchError((e) => {
-                    // eslint-disable-next-line no-console
-                    console.log(e);
+                    console.error(e);
                     this.errorSubject$.next(true);
                     return EMPTY;
                 })

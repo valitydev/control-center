@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RevertState } from '@vality/fistful-proto/lib/deposit_revert';
+import { RevertState } from '@vality/fistful-proto/deposit_revert';
 
 @Component({
     selector: 'cc-reverts-table',

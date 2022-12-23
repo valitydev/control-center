@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
-import { StatWallet } from '@vality/fistful-proto/lib/fistful_stat';
+import { StatWallet } from '@vality/fistful-proto/fistful_stat';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';

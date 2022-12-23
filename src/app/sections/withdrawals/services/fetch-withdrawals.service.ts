@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StatWithdrawal } from '@vality/fistful-proto/lib/fistful_stat';
+import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

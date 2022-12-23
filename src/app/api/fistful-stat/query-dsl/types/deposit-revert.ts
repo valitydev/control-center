@@ -1,5 +1,5 @@
-import { Status } from '@vality/fistful-proto/lib/deposit_revert_status';
-import { DepositStatus } from '@vality/fistful-proto/lib/fistful_stat';
+import { Status } from '@vality/fistful-proto/deposit_revert_status';
+import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
 
 export interface DepositRevertParams {
     party_id?: string;
