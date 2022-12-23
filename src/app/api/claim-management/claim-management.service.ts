@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    ClaimManagementCodegenClient,
+    claim_management_ClaimManagementCodegenClient,
     ThriftAstMetadata,
-    ClaimManagement,
+    claim_management_ClaimManagement,
 } from '@vality/domain-proto';
 import {
     Claim,
@@ -22,7 +22,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ClaimManagementService {
-    private client$: Observable<ClaimManagementCodegenClient>;
+    private client$: Observable<claim_management_ClaimManagementCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -35,7 +35,7 @@ export class ClaimManagementService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                ClaimManagement({
+                claim_management_ClaimManagement({
                     metadata,
                     headers,
                     logging: environment.logging.requests,

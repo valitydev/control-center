@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    PartyManagementCodegenClient,
+    payment_processing_PartyManagementCodegenClient,
     ThriftAstMetadata,
-    PartyManagement,
+    payment_processing_PartyManagement,
 } from '@vality/domain-proto';
 import { Party, Shop, Contract } from '@vality/domain-proto/domain';
 import { PartyID, ShopID, ContractID, ShopContract } from '@vality/domain-proto/payment_processing';
@@ -13,7 +13,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PartyManagementService {
-    private client$: Observable<PartyManagementCodegenClient>;
+    private client$: Observable<payment_processing_PartyManagementCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -26,7 +26,7 @@ export class PartyManagementService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                PartyManagement({
+                payment_processing_PartyManagement({
                     metadata,
                     headers,
                     logging: environment.logging.requests,

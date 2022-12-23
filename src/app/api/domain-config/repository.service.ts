@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { RepositoryCodegenClient, ThriftAstMetadata, Repository } from '@vality/domain-proto';
+import {
+    domain_config_RepositoryCodegenClient,
+    ThriftAstMetadata,
+    domain_config_Repository,
+} from '@vality/domain-proto';
 import { Version, Commit, Reference, Snapshot } from '@vality/domain-proto/domain_config';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
@@ -8,7 +12,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RepositoryService {
-    private client$: Observable<RepositoryCodegenClient>;
+    private client$: Observable<domain_config_RepositoryCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -21,7 +25,7 @@ export class RepositoryService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                Repository({
+                domain_config_Repository({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
