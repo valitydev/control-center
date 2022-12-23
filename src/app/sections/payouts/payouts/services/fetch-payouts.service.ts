@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StatPayout, PayoutSearchQuery } from '@vality/magista-proto';
+import { StatPayout, PayoutSearchQuery } from '@vality/magista-proto/magista';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';

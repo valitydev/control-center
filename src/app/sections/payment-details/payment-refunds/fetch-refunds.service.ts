@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StatRefund, RefundSearchQuery } from '@vality/magista-proto';
+import { StatRefund, RefundSearchQuery } from '@vality/magista-proto/magista';
 import { cleanPrimitiveProps } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';

@@ -1,4 +1,4 @@
-import { InvoicePaymentStatus, PaymentToolType } from '@vality/magista-proto';
+import { InvoicePaymentStatus, PaymentToolType } from '@vality/magista-proto/magista';
 
 export interface SearchFiltersParams {
     partyID?: string;

@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { InvoicePaymentChargeback } from '@vality/magista-proto/lib/payment_processing';
+import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { BaseDialogService } from '@vality/ng-core';
 
 import { AmountCurrencyPipe, ThriftPipesModule } from '@cc/app/shared';

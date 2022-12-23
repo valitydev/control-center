@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { PartyID, ShopID } from '@vality/domain-proto/domain';
-import { PayoutStatusType, PayoutToolType } from '@vality/magista-proto';
-import { Party, Shop } from '@vality/magista-proto/lib/domain';
+import { PartyID, ShopID, Party, Shop } from '@vality/domain-proto/domain';
+import { magista } from '@vality/magista-proto';
 import { Moment } from 'moment';
 
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
@@ -14,8 +13,8 @@ export interface PayoutsSearchForm {
     partyId: Party['id'];
     dateRange: DateRange<Moment>;
     shops: Shop['id'][];
-    payoutStatusTypes: PayoutStatusType[];
-    payoutToolType: PayoutToolType;
+    payoutStatusTypes: magista.PayoutStatusType[];
+    payoutToolType: magista.PayoutToolType;
 }
 
 @Component({
@@ -29,15 +28,15 @@ export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<Payou
         partyId: null as PartyID,
         dateRange: [null, Validators.required],
         shops: null as ShopID[],
-        payoutStatusTypes: null as PayoutStatusType[],
-        payoutToolType: null as PayoutToolType,
+        payoutStatusTypes: null as magista.PayoutStatusType[],
+        payoutToolType: null as magista.PayoutToolType,
     });
 
-    statusType = PayoutStatusType;
-    statusTypes = getEnumKeys(PayoutStatusType);
+    statusType = magista.PayoutStatusType;
+    statusTypes = getEnumKeys(magista.PayoutStatusType);
 
-    payoutToolType = PayoutToolType;
-    payoutToolTypes = getEnumKeys(PayoutToolType);
+    payoutToolType = magista.PayoutToolType;
+    payoutToolTypes = getEnumKeys(magista.PayoutToolType);
 
     constructor(private fb: FormBuilder) {
         super();

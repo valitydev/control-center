@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Shop } from '@vality/domain-proto/domain';
-import { Payer, StatPayment } from '@vality/magista-proto';
-import { InvoicePaymentStatus, PaymentTool } from '@vality/magista-proto/lib/domain';
+import { Shop, InvoicePaymentStatus, PaymentTool } from '@vality/domain-proto/domain';
+import { Payer, StatPayment } from '@vality/magista-proto/magista';
 
 import { getUnionKey } from '../../../../utils';
 

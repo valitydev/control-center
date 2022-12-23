@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StatPayment } from '@vality/magista-proto';
+import { StatPayment } from '@vality/magista-proto/magista';
 import { cleanPrimitiveProps, clean, splitIds } from '@vality/ng-core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';

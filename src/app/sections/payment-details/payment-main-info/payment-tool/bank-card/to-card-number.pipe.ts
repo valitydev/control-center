@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { BankCard } from '@vality/magista-proto/lib/domain';
+import { BankCard } from '@vality/domain-proto/domain';
 
 @Pipe({
     name: 'toCardNumber',

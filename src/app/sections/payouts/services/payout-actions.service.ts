@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { PayoutID, PayoutStatus } from '@vality/magista-proto';
+import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
 import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
