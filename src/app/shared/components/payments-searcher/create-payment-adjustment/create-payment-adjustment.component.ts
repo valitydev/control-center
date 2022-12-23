@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
-import { StatPayment } from '@vality/magista-proto';
+import { StatPayment } from '@vality/magista-proto/magista';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 import chunk from 'lodash-es/chunk';
 import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';

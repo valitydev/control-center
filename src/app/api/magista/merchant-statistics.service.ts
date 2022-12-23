@@ -1,23 +1,59 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-    codegenClientConfig,
-    CodegenClient,
-} from '@vality/magista-proto/lib/magista-MerchantStatisticsService';
-import context from '@vality/magista-proto/lib/magista/context';
-import * as ThriftMerchantStatisticsService from '@vality/magista-proto/lib/magista/gen-nodejs/MerchantStatisticsService';
+    magista_MerchantStatisticsServiceCodegenClient,
+    ThriftAstMetadata,
+    magista_MerchantStatisticsService,
+} from '@vality/magista-proto';
+import {
+    PaymentSearchQuery,
+    StatPaymentResponse,
+    RefundSearchQuery,
+    StatRefundResponse,
+    PayoutSearchQuery,
+    StatPayoutResponse,
+} from '@vality/magista-proto/magista';
+import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
-import { createThriftApi } from '@cc/app/api/utils';
+import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
+import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class MerchantStatisticsService extends createThriftApi<CodegenClient>() {
-    constructor(injector: Injector) {
-        super(injector, {
-            service: ThriftMerchantStatisticsService,
-            wachterServiceName: 'MerchantStatistics',
-            metadata: () =>
-                import('@vality/magista-proto/lib/metadata.json').then((m) => m.default),
-            context,
-            ...codegenClientConfig,
-        });
+export class MerchantStatisticsService {
+    private client$: Observable<magista_MerchantStatisticsServiceCodegenClient>;
+
+    constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
+        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+            map(toWachterHeaders('MerchantStatistics'))
+        );
+        const metadata$ = from(
+            import('@vality/magista-proto/metadata.json').then(
+                (m) => m.default as ThriftAstMetadata[]
+            )
+        );
+        this.client$ = combineLatest([metadata$, headers$]).pipe(
+            switchMap(([metadata, headers]) =>
+                magista_MerchantStatisticsService({
+                    metadata,
+                    headers,
+                    logging: environment.logging.requests,
+                    path: '/wachter',
+                })
+            )
+        );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    SearchPayments(paymentSearchQuery: PaymentSearchQuery): Observable<StatPaymentResponse> {
+        return this.client$.pipe(switchMap((c) => c.SearchPayments(paymentSearchQuery)));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    SearchRefunds(refundSearchQuery: RefundSearchQuery): Observable<StatRefundResponse> {
+        return this.client$.pipe(switchMap((c) => c.SearchRefunds(refundSearchQuery)));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    SearchPayouts(payoutSearchQuery: PayoutSearchQuery): Observable<StatPayoutResponse> {
+        return this.client$.pipe(switchMap((c) => c.SearchPayouts(payoutSearchQuery)));
     }
 }

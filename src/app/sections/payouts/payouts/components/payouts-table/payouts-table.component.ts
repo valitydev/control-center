@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { PayoutID, PayoutStatus, StatPayout } from '@vality/magista-proto';
+import { PayoutID, PayoutStatus, StatPayout } from '@vality/magista-proto/magista';
 
 import { StatusColor } from '@cc/app/styles';
 

@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
     FailureCode,
     FailureReason,
-    InvoicePaymentStatus,
     SubFailure,
-} from '@vality/magista-proto/lib/domain';
+    InvoicePaymentStatus,
+} from '@vality/domain-proto/domain';
 
 import { getUnionKey } from '@cc/utils/get-union-key';
 

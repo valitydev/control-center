@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PayoutID, PayoutStatus } from '@vality/magista-proto';
+import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
 import { combineLatest } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
 

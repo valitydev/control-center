@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
-import { PaymentToolType, InvoicePaymentStatus } from '@vality/magista-proto';
+import { magista } from '@vality/magista-proto';
 import { BaseDialogSuperclass } from '@vality/ng-core';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
@@ -21,8 +21,8 @@ export class OtherFiltersDialogComponent
     >
     implements OnInit
 {
-    paymentStatuses = getEnumKeyValues(InvoicePaymentStatus);
-    paymentMethods = getEnumKeyValues(PaymentToolType);
+    paymentStatuses = getEnumKeyValues(magista.InvoicePaymentStatus);
+    paymentMethods = getEnumKeyValues(magista.PaymentToolType);
     tokenProviders$ = this.domainStoreService.getObjects('payment_token');
     paymentSystems$ = this.domainStoreService.getObjects('payment_system');
 
