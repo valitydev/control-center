@@ -16,7 +16,6 @@ import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@ang
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
-import { ngfModule } from 'angular-file';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { StatusModule } from '@cc/app/shared/components/status';
@@ -29,7 +28,6 @@ import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
-import { CommentModificationTimelineItemComponent } from './components/comment-modification-timeline-item/comment-modification-timeline-item.component';
 import { ModificationFormComponent } from './components/modification-form/modification-form.component';
 import { ModificationUnitTimelineItemComponent } from './components/modification-unit-timeline-item/modification-unit-timeline-item.component';
 import { ShopModificationTimelineItemComponent } from './components/shop-modification-timeline-item/shop-modification-timeline-item.component';
@@ -42,7 +40,6 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         ClaimComponent,
         ModificationUnitTimelineItemComponent,
         StatusModificationTimelineItemComponent,
-        CommentModificationTimelineItemComponent,
         ShopModificationTimelineItemComponent,
         AddModificationDialogComponent,
         ChangeStatusDialogComponent,
@@ -71,7 +68,6 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         MatInputModule,
         MetadataFormModule,
         MatMenuModule,
-        ngfModule,
         MatDialogModule,
         MatProgressBarModule,
         BaseDialogModule,

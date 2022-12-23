@@ -14,7 +14,6 @@ import { NotificationErrorService, handleError } from '../../shared/services/not
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
 import { AllowedClaimStatusesService } from './services/allowed-claim-statuses.service';
-import { UploadFileService } from './services/upload-file.service';
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 
 @UntilDestroy()
@@ -22,7 +21,6 @@ import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
     selector: 'cc-claim',
     templateUrl: './claim.component.html',
     styleUrls: ['claim.component.scss'],
-    providers: [UploadFileService],
 })
 export class ClaimComponent {
     party$ = (this.route.params as Observable<Record<string, string>>).pipe(
@@ -64,7 +62,6 @@ export class ClaimComponent {
         private claimManagementService: ClaimManagementService,
         private partyManagementService: PartyManagementService,
         private notificationService: NotificationService,
-        private uploadFileService: UploadFileService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
         private baseDialogService: BaseDialogService,
         private notificationErrorService: NotificationErrorService
@@ -87,24 +84,6 @@ export class ClaimComponent {
             )
             .subscribe((result) => {
                 if (result.status === BaseDialogResponseStatus.Success) this.reloadClaim();
-            });
-    }
-
-    attachFile([file]: File[]) {
-        combineLatest([this.party$, this.claim$])
-            .pipe(
-                first(),
-                switchMap(([party, { id, revision }]) =>
-                    this.uploadFileService.upload(file, party.id, id, revision)
-                ),
-                untilDestroyed(this)
-            )
-            .subscribe({
-                next: () => {
-                    this.reloadClaim();
-                    this.notificationService.success('Uploaded successfully');
-                },
-                error: (err) => this.notificationErrorService.error(err, 'Uploading error'),
             });
     }
 
