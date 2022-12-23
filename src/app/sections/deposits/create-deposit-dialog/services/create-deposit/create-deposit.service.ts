@@ -48,7 +48,6 @@ export class CreateDepositService {
                 map((res) => res.data?.deposits[0]),
                 poll(createDepositStopPollingCondition),
                 catchError((e) => {
-                    console.error(e);
                     this.pollingTimeoutSubject$.next(true);
                     return EMPTY;
                 })
