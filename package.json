@@ -47,7 +47,7 @@
     "@vality/dominant-cache-proto": "2.0.1-9001474.0",
     "@vality/fistful-proto": "2.0.1-c214aba.0",
     "@vality/magista-proto": "2.0.1-cf0eff8.0",
-    "@vality/payout-manager-proto": "1.0.1-dbed280.0",
+    "@vality/payout-manager-proto": "2.0.1-b079679.0",
     "@vality/repairer-proto": "2.0.1-7df4489.0",
     "@vality/thrift-ts": "2.4.1-8ad5123.0",
     "@vality/woody": "0.1.1",

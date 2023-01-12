@@ -5,10 +5,10 @@ import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
-import { PayoutManagementService } from '../../../api/payout-manager';
-import { NotificationService } from '../../../shared/services/notification';
-import { NotificationErrorService } from '../../../shared/services/notification-error';
+import { PayoutManagementService } from '@cc/app/api/payout-manager';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
+
 import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout-dialog/cancel-payout-dialog.component';
 
 @UntilDestroy()
@@ -17,7 +17,6 @@ export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
         private baseDialogService: BaseDialogService,
-        private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService
     ) {}
 
