@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
-import { ThriftAstMetadata, thriftInstanceToObject, objectToJSON } from '@cc/app/api/utils';
+import { objectToJSON } from '@cc/app/api/utils';
 import { toMonacoFile } from '@cc/app/sections/domain/utils';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
@@ -48,7 +49,6 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     );
 
     private updateFile$ = new Subject<void>();
-    private editorContent: string = null;
     private editorError: unknown = null;
 
     constructor(private baseDialogService: BaseDialogService) {
@@ -63,16 +63,9 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     }
 
     fileChange($event: MonacoFile) {
-        this.editorContent = $event.content;
         try {
-            const value: T = thriftInstanceToObject<T>(
-                this.metadata,
-                this.namespace,
-                this.type,
-                JSON.parse($event.content)
-            );
             this.editorError = null;
-            this.control.setValue(value);
+            this.control.setValue($event.content as T);
         } catch (err) {
             console.warn(err);
             this.editorError = err;

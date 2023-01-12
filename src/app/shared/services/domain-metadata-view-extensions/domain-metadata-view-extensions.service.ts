@@ -1,13 +1,13 @@
 import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import isEqual from 'lodash-es/isEqual';
 import { of, Observable, from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { ThriftAstMetadata } from '@cc/app/api/utils';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 

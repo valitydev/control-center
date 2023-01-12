@@ -1,10 +1,9 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ValueType, Field } from '@vality/thrift-ts';
 import { map } from 'rxjs';
 import yaml from 'yaml';
-
-import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { MetadataFormData } from '../metadata-form';
 import { MetadataViewItem } from './utils/metadata-view';

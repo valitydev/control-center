@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
-import { ThriftError } from '../../../api/utils';
 import { ErrorService } from './types/error-service';
 
 const DEFAULT_DURATION_MS = 6000;
@@ -14,12 +13,8 @@ export class NotificationErrorService implements ErrorService {
         let result: string;
         const name = String((error as Record<PropertyKey, unknown>)?.name ?? '');
         const message = String((error as Record<PropertyKey, unknown>)?.message ?? '');
-        let duration = DEFAULT_DURATION_MS;
 
-        if (error instanceof ThriftError) {
-            result = error.message || 'Thrift connection error';
-            duration = Infinity;
-        } else if (clientMessage) {
+        if (clientMessage) {
             result = clientMessage;
         } else {
             result = message || name || 'Unknown error';
@@ -34,7 +29,7 @@ export class NotificationErrorService implements ErrorService {
                 .join(' ')
         );
         this.snackBar.open(result, 'OK', {
-            duration,
+            duration: DEFAULT_DURATION_MS,
         });
     };
 }

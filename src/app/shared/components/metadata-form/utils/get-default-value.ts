@@ -1,7 +1,6 @@
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ValueType } from '@vality/thrift-ts';
 import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
-
-import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { MetadataFormData, TypeGroup } from '../types/metadata-form-data';
 

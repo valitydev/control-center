@@ -1,3 +1,4 @@
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { JsonAST } from '@vality/thrift-ts/src/thrift-parser';
 import { ValuesType } from 'utility-types';
@@ -8,7 +9,6 @@ import {
     parseNamespaceObjectType,
     parseNamespaceType,
     StructureType,
-    ThriftAstMetadata,
 } from '@cc/app/api/utils';
 
 export enum TypeGroup {

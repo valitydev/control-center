@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject, Cash } from '@vality/domain-proto/domain';
 import moment from 'moment';
 import { from, Observable, of } from 'rxjs';
@@ -6,7 +7,6 @@ import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { ThriftAstMetadata } from '@cc/app/api/utils';
 
 import { Cash as CashField } from '../../../../components/cash-field';
 import {
