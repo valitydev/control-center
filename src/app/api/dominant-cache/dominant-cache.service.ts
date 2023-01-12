@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
     ThriftAstMetadata,
-    DominantCacheCodegenClient,
-    DominantCache,
+    dominant_cache_DominantCacheCodegenClient,
+    dominant_cache_DominantCache,
 } from '@vality/dominant-cache-proto';
 import { Category, ContractTemplate } from '@vality/dominant-cache-proto/dominant_cache';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
@@ -12,7 +12,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DominantCacheService {
-    private client$: Observable<DominantCacheCodegenClient>;
+    private client$: Observable<dominant_cache_DominantCacheCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -25,7 +25,7 @@ export class DominantCacheService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                DominantCache({
+                dominant_cache_DominantCache({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
