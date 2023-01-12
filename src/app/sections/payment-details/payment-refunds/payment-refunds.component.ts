@@ -14,7 +14,6 @@ export class PaymentRefundsComponent implements OnInit {
     @Input() partyID: PartyID;
 
     doAction$ = this.fetchRefundsService.doAction$;
-    isLoading$ = this.fetchRefundsService.isLoading$;
     hasMore$ = this.fetchRefundsService.hasMore$;
     refunds$ = this.fetchRefundsService.searchResult$;
 

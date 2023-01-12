@@ -5,8 +5,8 @@ import { ValueType } from '@vality/thrift-ts';
 import { ReplaySubject } from 'rxjs';
 
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
+import { objectToJSON } from '@cc/utils/thrift-instance';
 
-import { objectToJSON } from '../../../api/utils';
 import { toMonacoFile } from '../../../sections/domain/utils';
 import { ComponentChanges } from '../../utils';
 

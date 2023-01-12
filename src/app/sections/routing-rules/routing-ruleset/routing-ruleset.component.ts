@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { objectToJSON } from '@cc/app/api/utils';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog';
 import { RoutingRulesetService } from './routing-ruleset.service';

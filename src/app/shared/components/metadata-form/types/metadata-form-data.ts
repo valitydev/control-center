@@ -9,7 +9,7 @@ import {
     parseNamespaceObjectType,
     parseNamespaceType,
     StructureType,
-} from '@cc/app/api/utils';
+} from '@cc/utils/thrift-instance';
 
 export enum TypeGroup {
     Complex = 'complex',

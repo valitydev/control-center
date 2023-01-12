@@ -5,11 +5,11 @@ import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
-import { objectToJSON } from '@cc/app/api/utils';
 import { toMonacoFile } from '@cc/app/sections/domain/utils';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
 import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/utils';
+import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { MetadataFormExtension } from '../metadata-form';
 
