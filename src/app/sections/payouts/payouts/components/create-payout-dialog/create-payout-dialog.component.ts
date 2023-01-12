@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
-import { PayoutParams } from '@vality/payout-manager-proto';
+import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { BehaviorSubject } from 'rxjs';
