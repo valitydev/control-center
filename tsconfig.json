@@ -19,8 +19,7 @@
         "skipLibCheck": false,
         "paths": {
             "@cc/*": ["src/*"],
-            "@vality/ng-core": ["dist/ng-core"],
-            "thrift": ["node_modules/@vality/woody/dist/thrift"]
+            "@vality/ng-core": ["dist/ng-core"]
         },
         "useDefineForClassFields": false
     },
