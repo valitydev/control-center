@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    RepairManagement,
+    repairer_RepairManagementCodegenClient,
     ThriftAstMetadata,
-    RepairManagementCodegenClient,
+    repairer_RepairManagement,
 } from '@vality/repairer-proto';
 import {
     SearchRequest,
@@ -18,7 +18,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RepairManagementService {
-    private client$: Observable<RepairManagementCodegenClient>;
+    private client$: Observable<repairer_RepairManagementCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -31,10 +31,11 @@ export class RepairManagementService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                RepairManagement({
+                repairer_RepairManagement({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
+                    path: '/wachter',
                 })
             )
         );

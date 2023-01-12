@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    DeanonimusServiceCodegenClient,
+    deanonimus_DeanonimusCodegenClient,
     ThriftAstMetadata,
-    DeanonimusService as DeanonimusServiceCodegen,
+    deanonimus_Deanonimus,
 } from '@vality/deanonimus-proto';
 import { SearchHit } from '@vality/deanonimus-proto/deanonimus';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
@@ -12,7 +12,7 @@ import { environment } from '@cc/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DeanonimusService {
-    private client$: Observable<DeanonimusServiceCodegenClient>;
+    private client$: Observable<deanonimus_DeanonimusCodegenClient>;
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
@@ -25,7 +25,7 @@ export class DeanonimusService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                DeanonimusServiceCodegen({
+                deanonimus_Deanonimus({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
