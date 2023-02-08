@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import * as uuid from 'uuid/v4';
+import * as short from 'short-uuid';
 
 @Component({
     selector: 'cc-fill-in-unit-id',
@@ -25,6 +25,6 @@ export class FillInUnitIdComponent implements OnInit {
     }
 
     generate() {
-        this.form.patchValue({ unitID: uuid() });
+        this.form.patchValue({ unitID: short().uuid() });
     }
 }

@@ -4,7 +4,16 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
-import { catchError, debounceTime, filter, map, switchMap, first, takeUntil } from 'rxjs/operators';
+import {
+    catchError,
+    debounceTime,
+    filter,
+    map,
+    switchMap,
+    first,
+    takeUntil,
+    startWith,
+} from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
 import { Option } from '@cc/components/select-search-field';
@@ -35,7 +44,12 @@ export class MerchantFieldComponent
     ngOnInit() {
         merge(
             this.searchChange$,
-            this.control.valueChanges.pipe(filter(Boolean), first(), takeUntil(this.searchChange$))
+            this.control.valueChanges.pipe(
+                startWith(this.control.value),
+                filter(Boolean),
+                first(),
+                takeUntil(this.searchChange$)
+            )
         )
             .pipe(
                 filter(Boolean),

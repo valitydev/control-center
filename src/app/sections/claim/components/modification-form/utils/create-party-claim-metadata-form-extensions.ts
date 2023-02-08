@@ -2,7 +2,7 @@ import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
-import uuid from 'uuid';
+import * as short from 'short-uuid';
 
 import {
     isTypeWithAliases,
@@ -35,7 +35,7 @@ function createClaimOptions(
 }
 
 function generate() {
-    return of(uuid());
+    return of(short().uuid());
 }
 
 export function createPartyClaimMetadataFormExtensions(

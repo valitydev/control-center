@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PayoutToolModificationUnit } from '@vality/domain-proto/payment_processing';
 import get from 'lodash-es/get';
-import * as uuid from 'uuid/v4';
+import * as short from 'short-uuid';
 
 @Component({
     selector: 'cc-contract-payout-tool-modification-unit',
@@ -28,6 +28,6 @@ export class PayoutToolModificationUnitComponent implements OnInit {
     }
 
     generate() {
-        this.form.patchValue({ payout_tool_id: uuid() });
+        this.form.patchValue({ payout_tool_id: short().uuid() });
     }
 }
