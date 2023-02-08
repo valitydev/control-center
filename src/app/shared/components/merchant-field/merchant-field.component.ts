@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
@@ -28,7 +28,7 @@ import { progressTo } from '@cc/utils/operators';
 })
 export class MerchantFieldComponent
     extends ValidatedFormControlSuperclass<PartyID>
-    implements OnInit
+    implements AfterViewInit
 {
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
@@ -41,7 +41,7 @@ export class MerchantFieldComponent
         super();
     }
 
-    ngOnInit() {
+    ngAfterViewInit() {
         merge(
             this.searchChange$,
             this.control.valueChanges.pipe(
@@ -58,7 +58,6 @@ export class MerchantFieldComponent
                 untilDestroyed(this)
             )
             .subscribe((options) => this.options$.next(options));
-        super.ngOnInit();
     }
 
     private searchOptions(str: string): Observable<Option<PartyID>[]> {
