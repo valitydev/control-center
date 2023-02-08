@@ -13,7 +13,6 @@ import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 
 import { MerchantFieldModule } from '../../merchant-field';
-import { MerchantSearcherModule } from '../../merchant-searcher';
 import { PaymentsMainSearchFiltersComponent } from './payments-main-search-filters.component';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { PaymentsMainSearchFiltersComponent } from './payments-main-search-filte
         MatDividerModule,
         FlexLayoutModule,
         MatSelectModule,
-        MerchantSearcherModule,
         MerchantFieldModule,
     ],
     declarations: [PaymentsMainSearchFiltersComponent],

@@ -1,10 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
-import { catchError, debounceTime, filter, map, switchMap, first, takeUntil } from 'rxjs/operators';
+import {
+    catchError,
+    debounceTime,
+    filter,
+    map,
+    switchMap,
+    first,
+    takeUntil,
+    startWith,
+} from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
 import { Option } from '@cc/components/select-search-field';
@@ -19,7 +28,7 @@ import { progressTo } from '@cc/utils/operators';
 })
 export class MerchantFieldComponent
     extends ValidatedFormControlSuperclass<PartyID>
-    implements OnInit
+    implements AfterViewInit
 {
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
@@ -32,10 +41,15 @@ export class MerchantFieldComponent
         super();
     }
 
-    ngOnInit() {
+    ngAfterViewInit() {
         merge(
             this.searchChange$,
-            this.control.valueChanges.pipe(filter(Boolean), first(), takeUntil(this.searchChange$))
+            this.control.valueChanges.pipe(
+                startWith(this.control.value),
+                filter(Boolean),
+                first(),
+                takeUntil(this.searchChange$)
+            )
         )
             .pipe(
                 filter(Boolean),
@@ -44,7 +58,6 @@ export class MerchantFieldComponent
                 untilDestroyed(this)
             )
             .subscribe((options) => this.options$.next(options));
-        super.ngOnInit();
     }
 
     private searchOptions(str: string): Observable<Option<PartyID>[]> {

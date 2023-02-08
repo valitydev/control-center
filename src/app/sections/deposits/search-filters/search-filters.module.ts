@@ -13,8 +13,7 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 
-import { MerchantSearcherModule } from '@cc/app/shared/components/merchant-searcher';
-
+import { MerchantFieldModule } from '../../../shared/components/merchant-field';
 import { SearchFiltersComponent } from './search-filters.component';
 
 @NgModule({
@@ -32,7 +31,7 @@ import { SearchFiltersComponent } from './search-filters.component';
         FlexLayoutModule,
         MatSelectModule,
         MatCardModule,
-        MerchantSearcherModule,
+        MerchantFieldModule,
     ],
     declarations: [SearchFiltersComponent],
     exports: [SearchFiltersComponent],
