@@ -7,6 +7,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/domain';
 import isEqual from 'lodash-es/isEqual';
 import sortBy from 'lodash-es/sortBy';
+import startCase from 'lodash-es/startCase';
 import { combineLatest, Observable, ReplaySubject, defer } from 'rxjs';
 import { map, switchMap, startWith, shareReplay, withLatestFrom, filter } from 'rxjs/operators';
 
@@ -73,7 +74,7 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
         shareReplay({ refCount: true, bufferSize: 1 })
     );
     options$ = this.fields$.pipe(
-        map((fields) => fields.map(({ type }) => ({ label: type, value: type })))
+        map((fields) => fields.map(({ type }) => ({ label: startCase(String(type)), value: type })))
     );
     isLoading$ = this.domainStoreService.isLoading$;
 
