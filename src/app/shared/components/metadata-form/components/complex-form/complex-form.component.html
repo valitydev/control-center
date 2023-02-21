@@ -15,18 +15,19 @@
         >
             <mat-expansion-panel-header>
                 <mat-panel-title
-                    [gdColumns]="isKeyValue ? '1fr 2fr' : '1fr'"
+                    [gdColumns]="isKeyValue ? '1fr 1fr' : '1fr'"
                     class="panel-title"
+                    fxFlex="100"
                     gdGap="16px"
                 >
                     <div>
                         {{ i + 1 }}.
                         <ng-container *ngIf="!panel.expanded; else edited">
                             <span *ngIf="isKeyValue; else value" class="cc-secondary-text">
-                                {{ keyControls.controls[i].value | inlineJson }}
+                                {{ keyControls.controls[i].value | inlineJson : false }}
                             </span>
                             <ng-template #value>
-                                {{ valueControl.value | inlineJson }}
+                                {{ valueControl.value | inlineJson : false }}
                             </ng-template>
                         </ng-container>
                         <ng-template #edited>
@@ -34,7 +35,7 @@
                         </ng-template>
                     </div>
                     <div *ngIf="isKeyValue && !panel.expanded">
-                        {{ valueControl.value | inlineJson }}
+                        {{ valueControl.value | inlineJson : false }}
                     </div>
                 </mat-panel-title>
                 <mat-panel-description fxLayoutAlign="end">
