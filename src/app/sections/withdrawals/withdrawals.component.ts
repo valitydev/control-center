@@ -27,6 +27,7 @@ interface WithdrawalsForm {
     amountFrom: WithdrawalParams['amount_from'];
     amountTo: WithdrawalParams['amount_to'];
     withdrawalId: WithdrawalParams['withdrawal_id'];
+    walletId: WithdrawalParams['wallet_id'];
 }
 
 @UntilDestroy()
@@ -51,6 +52,7 @@ export class WithdrawalsComponent implements OnInit {
         amountFrom: null,
         amountTo: null,
         withdrawalId: null,
+        walletId: null,
         ...this.qp.params,
     });
 
@@ -90,16 +92,18 @@ export class WithdrawalsComponent implements OnInit {
             .subscribe((v) => void this.qp.set(omitBy(v, isNilOrEmptyString)));
         this.qp.params$
             .pipe(untilDestroyed(this))
-            .subscribe(({ dateRange, merchant, status, amountFrom, amountTo, withdrawalId }) =>
-                this.fetchWithdrawalsService.search({
-                    party_id: merchant,
-                    from_time: dateRange?.start?.toISOString(),
-                    to_time: dateRange?.end?.toISOString(),
-                    status: status,
-                    amount_from: amountFrom,
-                    amount_to: amountTo,
-                    withdrawal_id: withdrawalId,
-                })
+            .subscribe(
+                ({ dateRange, merchant, status, amountFrom, amountTo, withdrawalId, walletId }) =>
+                    this.fetchWithdrawalsService.search({
+                        party_id: merchant,
+                        from_time: dateRange?.start?.toISOString(),
+                        to_time: dateRange?.end?.toISOString(),
+                        status: status,
+                        amount_from: amountFrom,
+                        amount_to: amountTo,
+                        withdrawal_id: withdrawalId,
+                        wallet_id: walletId,
+                    })
             );
     }
 
