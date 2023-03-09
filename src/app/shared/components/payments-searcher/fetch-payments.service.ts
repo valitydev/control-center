@@ -10,7 +10,7 @@ import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
 
 import { SearchFiltersParams } from '../payments-search-filters';
 
-const SEARCH_LIMIT = 10;
+const SEARCH_LIMIT = 1000;
 
 @Injectable()
 export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFiltersParams> {
