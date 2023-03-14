@@ -13,6 +13,8 @@ import {
     ShopModificationUnit,
     StatusModificationUnit,
     WalletModificationUnit,
+    WalletModification,
+    IdentityModification,
 } from '@vality/domain-proto/claim_management';
 import { Overwrite } from 'utility-types';
 
@@ -59,6 +61,19 @@ type ModificationsNameTree = OverwriteAll<
                     }
                 >;
                 wallet_modification: ModificationUnitsName<WalletModificationUnit>;
+            }
+        >;
+        identity_modification: OverwriteAll<
+            IdentityModification,
+            {
+                creation: string;
+            }
+        >;
+        wallet_modification: OverwriteAll<
+            WalletModification,
+            {
+                creation: string;
+                account_creation: string;
             }
         >;
     }
@@ -143,5 +158,12 @@ export const MODIFICATIONS_NAME_TREE: ModificationsNameTree = {
                 account_creation: 'Wallet Account Creation',
             },
         },
+    },
+    identity_modification: {
+        creation: 'Identity Creation',
+    },
+    wallet_modification: {
+        creation: 'Wallet Creation',
+        account_creation: 'Wallet Account Creation',
     },
 };
