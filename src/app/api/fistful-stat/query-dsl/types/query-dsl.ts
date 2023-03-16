@@ -26,5 +26,6 @@ export interface QueryDsl {
         wallets?: WalletParams;
         deposit_reverts?: DepositRevertParams;
         withdrawals?: WithdrawalParams;
+        sources?: {};
     };
 }

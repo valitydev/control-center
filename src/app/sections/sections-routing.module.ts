@@ -46,6 +46,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./deposits/deposits.module').then((m) => m.DepositsModule),
     },
     {
+        path: 'sources',
+        loadChildren: () => import('./currencies/sources.module').then((m) => m.SourcesModule),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },

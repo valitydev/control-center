@@ -21,7 +21,7 @@ const SIDENAV_OPENED_KEY = 'sidenav-opened';
 })
 export class AppComponent implements OnInit {
     username: string;
-    menuItems: { name: string; route: string }[] = [];
+    menuItems: { name: string; route: string }[][] = [];
 
     get opened(): boolean {
         return localStorage.getItem(SIDENAV_OPENED_KEY) === String(true);
@@ -48,49 +48,62 @@ export class AppComponent implements OnInit {
 
     private getMenuItems() {
         const menuItems = [
-            {
-                name: 'Domain config',
-                route: '/domain',
-                services: DOMAIN_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Payouts',
-                route: '/payouts',
-                services: PAYOUTS_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Claims',
-                route: '/claims',
-                services: CLAIMS_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Merchants',
-                route: '/parties',
-                services: PARTIES_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Repairing',
-                route: '/repairing',
-                services: REPAIRING_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Payments',
-                route: '/payments',
-                services: PAYMENTS_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Deposits',
-                route: '/deposits',
-                services: DEPOSITS_ROUTING_CONFIG.services,
-            },
-            {
-                name: 'Withdrawals',
-                route: '/withdrawals',
-                services: WITHDRAWALS_ROUTING_CONFIG.services,
-            },
+            [
+                {
+                    name: 'Domain config',
+                    route: '/domain',
+                    services: DOMAIN_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Repairing',
+                    route: '/repairing',
+                    services: REPAIRING_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Sources',
+                    route: '/sources',
+                    services: REPAIRING_ROUTING_CONFIG.services,
+                },
+            ],
+            [
+                {
+                    name: 'Merchants',
+                    route: '/parties',
+                    services: PARTIES_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Claims',
+                    route: '/claims',
+                    services: CLAIMS_ROUTING_CONFIG.services,
+                },
+            ],
+            [
+                {
+                    name: 'Payments',
+                    route: '/payments',
+                    services: PAYMENTS_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Payouts',
+                    route: '/payouts',
+                    services: PAYOUTS_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Deposits',
+                    route: '/deposits',
+                    services: DEPOSITS_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Withdrawals',
+                    route: '/withdrawals',
+                    services: WITHDRAWALS_ROUTING_CONFIG.services,
+                },
+            ],
         ];
-        return menuItems.filter((item) =>
-            this.appAuthGuardService.userHasSomeServiceMethods(item.services)
+        return menuItems.map((group) =>
+            group.filter((item) =>
+                this.appAuthGuardService.userHasSomeServiceMethods(item.services)
+            )
         );
     }
 }
