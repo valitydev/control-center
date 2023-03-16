@@ -1,29 +1,38 @@
 import { Injectable } from '@angular/core';
 import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
-import { map } from 'rxjs/operators';
+import { Observable, switchMap, of, BehaviorSubject } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
+import { progressTo } from '../../../utils';
 import { FistfulStatisticsService, createDsl } from '../../api/fistful-stat';
-import { PartialFetcher } from '../../shared/services';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FetchSourcesService extends PartialFetcher<StatSource, object> {
-    constructor(private fistfulStatisticsService: FistfulStatisticsService) {
-        super();
-    }
+export class FetchSourcesService {
+    sources$: Observable<StatSource[]> = this.fetch().pipe(
+        progressTo(() => this.progress$),
+        shareReplay(1)
+    );
+    progress$ = new BehaviorSubject(0);
 
-    fetch(params: object, continuationToken: string) {
+    constructor(private fistfulStatisticsService: FistfulStatisticsService) {}
+
+    private fetch(
+        sources: StatSource[] = [],
+        continuationToken?: string
+    ): Observable<StatSource[]> {
         return this.fistfulStatisticsService
             .GetSources({
-                dsl: createDsl({ sources: params }),
-                continuation_token: continuationToken,
+                dsl: createDsl({ sources: {} }),
+                ...(continuationToken ? { continuation_token: continuationToken } : {}),
             })
             .pipe(
-                map((res) => ({
-                    result: res.data.sources,
-                    continuationToken: res.continuation_token,
-                }))
+                switchMap((res) =>
+                    res.continuation_token
+                        ? this.fetch([...sources, ...res.data.sources], res.continuation_token)
+                        : of([...sources, ...res.data.sources])
+                )
             );
     }
 }

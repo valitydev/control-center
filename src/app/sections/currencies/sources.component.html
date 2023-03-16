@@ -20,12 +20,6 @@
                 <tr *matHeaderRowDef="cols.list" mat-header-row></tr>
                 <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
             </table>
-
-            <cc-show-more-button
-                *ngIf="hasMore$ | async"
-                [inProgress]="inProgress$ | async"
-                (fetchMore)="fetchMore()"
-            ></cc-show-more-button>
         </mat-card>
     </div>
 </div>

@@ -1,10 +1,13 @@
-import { BehaviorSubject, defer, MonoTypeOperatorFunction } from 'rxjs';
+import { BehaviorSubject, defer, MonoTypeOperatorFunction, isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
-export function progressTo<T>(subject$: BehaviorSubject<number>): MonoTypeOperatorFunction<T> {
+export function progressTo<T>(
+    subject$: BehaviorSubject<number> | (() => BehaviorSubject<number>)
+): MonoTypeOperatorFunction<T> {
+    const getSub = () => (isObservable(subject$) ? subject$ : subject$());
     return (src$) =>
         defer(() => {
-            subject$.next(subject$.getValue() + 1);
-            return src$.pipe(finalize(() => subject$.next(subject$.getValue() - 1)));
+            getSub().next(getSub().getValue() + 1);
+            return src$.pipe(finalize(() => getSub().next(getSub().getValue() - 1)));
         });
 }

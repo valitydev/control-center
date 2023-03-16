@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Columns } from '../../../components/table';
 import { FetchSourcesService } from './fetch-sources.service';
@@ -14,23 +14,14 @@ import { FetchSourcesService } from './fetch-sources.service';
         `,
     ],
 })
-export class SourcesComponent implements OnInit {
-    sources$ = this.fetchSourcesService.searchResult$;
-    hasMore$ = this.fetchSourcesService.hasMore$;
-    inProgress$ = this.fetchSourcesService.doAction$;
+export class SourcesComponent {
+    sources$ = this.fetchSourcesService.sources$;
+    progress$ = this.fetchSourcesService.progress$;
     cols = new Columns('id', 'currency_symbolic_code');
 
     constructor(private fetchSourcesService: FetchSourcesService) {}
 
-    ngOnInit() {
-        this.fetchSourcesService.search({});
-    }
-
     create() {
         return null;
-    }
-
-    fetchMore() {
-        this.fetchSourcesService.fetchMore();
     }
 }
