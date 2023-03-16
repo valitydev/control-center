@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { BaseDialogService } from '@vality/ng-core';
 
 import { Columns } from '../../../components/table';
+import { CreateSourceComponent } from './create-source/create-source.component';
 import { FetchSourcesService } from './fetch-sources.service';
 
 @Component({
@@ -17,11 +19,14 @@ import { FetchSourcesService } from './fetch-sources.service';
 export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
-    cols = new Columns('id', 'currency_symbolic_code');
+    cols = new Columns('id', 'name', 'identity', 'currency_symbolic_code');
 
-    constructor(private fetchSourcesService: FetchSourcesService) {}
+    constructor(
+        private fetchSourcesService: FetchSourcesService,
+        private baseDialogService: BaseDialogService
+    ) {}
 
     create() {
-        return null;
+        this.baseDialogService.open(CreateSourceComponent);
     }
 }
