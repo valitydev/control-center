@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/fistful_admin';
 import { StatDeposit, StatRequest } from '@vality/fistful-proto/fistful_stat';
+import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
 import * as moment from 'moment';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, first } from 'rxjs/operators';
 
 import { FistfulAdminService } from '@cc/app/api/fistful-admin';
 import { depositParamsToRequest, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
@@ -15,6 +16,7 @@ import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
 import { ConfigService } from '../../../../../core/config.service';
+import { FetchSourcesService } from '../../../../currencies';
 
 @Injectable()
 export class CreateDepositService {
@@ -67,25 +69,30 @@ export class CreateDepositService {
     pollingTimeout$ = this.pollingTimeoutSubject$.asObservable();
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
-    form = this.initForm();
+    form = this.fb.group({
+        destination: ['', Validators.required],
+        amount: [null as number, [Validators.required, Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
+        currency: [null as StatSource, Validators.required],
+    });
 
     constructor(
         private fistfulAdminService: FistfulAdminService,
         private fistfulStatisticsService: FistfulStatisticsService,
-        private fb: UntypedFormBuilder,
+        private fb: FormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
-        private configService: ConfigService
-    ) {}
+        private configService: ConfigService,
+        private fetchSourcesService: FetchSourcesService
+    ) {
+        this.initForm();
+    }
 
     createDeposit() {
         this.create$.next();
     }
 
-    private initForm(): UntypedFormGroup {
-        return this.fb.group({
-            destination: ['', Validators.required],
-            amount: ['', [Validators.required, Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
-            currency: [this.configService.config.constants.currencies[0], Validators.required],
+    private initForm() {
+        this.fetchSourcesService.sources$.pipe(first()).subscribe((sources) => {
+            this.form.patchValue({ currency: sources[0] });
         });
     }
 
@@ -93,12 +100,12 @@ export class CreateDepositService {
         const { destination, amount, currency } = this.form.value;
         return {
             id: this.idGenerator.getUsernameBasedId(),
-            source: currency.source,
+            source: currency.id,
             destination,
             body: {
                 amount: toMinor(amount),
                 currency: {
-                    symbolic_code: currency.currency,
+                    symbolic_code: currency.currency_symbolic_code,
                 },
             },
         };

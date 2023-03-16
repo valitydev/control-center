@@ -19,7 +19,7 @@ import { FetchSourcesService } from './fetch-sources.service';
 export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
-    cols = new Columns('id', 'name', 'identity', 'currency_symbolic_code');
+    cols = new Columns('id', 'name', 'identity', 'currency_symbolic_code', 'created_at');
 
     constructor(
         private fetchSourcesService: FetchSourcesService,

@@ -36,8 +36,11 @@
                     <mat-label>Currency Code</mat-label>
                     <mat-select formControlName="currencyCode">
                         <mat-option [value]="null">any</mat-option>
-                        <mat-option *ngFor="let currency of currencies" [value]="currency.currency">
-                            {{ currency.currency }}
+                        <mat-option
+                            *ngFor="let source of sources$ | async"
+                            [value]="source.currency_symbolic_code"
+                        >
+                            {{ source.currency_symbolic_code }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

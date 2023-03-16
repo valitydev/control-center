@@ -3,8 +3,11 @@ import { UntypedFormGroup } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { switchMap } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 import { ConfigService } from '../../../core/config.service';
+import { FetchSourcesService } from '../../currencies';
 import { CreateDepositService } from './services/create-deposit/create-deposit.service';
 
 @UntilDestroy()
@@ -17,7 +20,7 @@ import { CreateDepositService } from './services/create-deposit/create-deposit.s
 export class CreateDepositDialogComponent implements OnInit {
     form: UntypedFormGroup;
 
-    currencies = this.configService.config.constants.currencies;
+    sources$ = this.fetchSourcesService.sources$;
 
     depositCreated$ = this.createDepositService.depositCreated$;
     isLoading$ = this.createDepositService.isLoading$;
@@ -29,15 +32,19 @@ export class CreateDepositDialogComponent implements OnInit {
         private createDepositService: CreateDepositService,
         private snackBar: MatSnackBar,
         private dialogRef: MatDialogRef<CreateDepositDialogComponent>,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private fetchSourcesService: FetchSourcesService
     ) {}
 
     ngOnInit() {
         this.form = this.createDepositService.form;
         this.dialogRef
             .afterClosed()
-            .pipe(untilDestroyed(this))
-            .subscribe(() => this.form.reset({ currency: this.currencies[0] }));
+            .pipe(
+                switchMap(() => this.sources$.pipe(first())),
+                untilDestroyed(this)
+            )
+            .subscribe((sources) => this.form.reset({ currency: sources[0] }));
         this.depositCreated$.subscribe((deposit) => {
             this.snackBar.open(`Deposit status successfully created`, 'OK', { duration: 3000 });
             this.dialogRef.close(deposit);
