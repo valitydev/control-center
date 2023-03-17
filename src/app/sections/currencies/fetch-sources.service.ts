@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
 import { Observable, switchMap, of, BehaviorSubject } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { shareReplay, map, catchError } from 'rxjs/operators';
 
 import { progressTo } from '../../../utils';
 import { FistfulStatisticsService, createDsl } from '../../api/fistful-stat';
+import { NotificationErrorService } from '../../shared/services/notification-error';
 
 @Injectable({
     providedIn: 'root',
@@ -17,7 +18,10 @@ export class FetchSourcesService {
     );
     progress$ = new BehaviorSubject(0);
 
-    constructor(private fistfulStatisticsService: FistfulStatisticsService) {}
+    constructor(
+        private fistfulStatisticsService: FistfulStatisticsService,
+        private errorService: NotificationErrorService
+    ) {}
 
     private fetch(
         sources: StatSource[] = [],
@@ -29,10 +33,16 @@ export class FetchSourcesService {
                 ...(continuationToken ? { continuation_token: continuationToken } : {}),
             })
             .pipe(
+                catchError((err) => {
+                    this.errorService.error(err);
+                    return of(null);
+                }),
                 switchMap((res) =>
-                    res.continuation_token
-                        ? this.fetch([...sources, ...res.data.sources], res.continuation_token)
-                        : of([...sources, ...res.data.sources])
+                    res
+                        ? res.continuation_token
+                            ? this.fetch([...sources, ...res.data.sources], res.continuation_token)
+                            : of([...sources, ...res.data.sources])
+                        : of(sources)
                 )
             );
     }
