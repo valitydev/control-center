@@ -10,6 +10,7 @@ import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing
 import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/search-claims/routing-config';
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/search-payments/routing-config';
+import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 
@@ -63,7 +64,7 @@ export class AppComponent implements OnInit {
                 {
                     name: 'Sources',
                     route: '/sources',
-                    services: REPAIRING_ROUTING_CONFIG.services,
+                    services: SOURCES_ROUTING_CONFIG.services,
                 },
             ],
             [

@@ -9,7 +9,7 @@ import {
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { ConfigService } from '../../../core/config.service';
-import { FetchSourcesService } from '../../currencies';
+import { FetchSourcesService } from '../../sources';
 import { SearchParams } from '../types/search-params';
 import { SearchFiltersService } from './services/search-filters/search-filters.service';
 
