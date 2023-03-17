@@ -21,6 +21,8 @@ export class CreateSourceComponent extends BaseDialogSuperclass<void> {
     }
 
     create() {
-        this.fistfulAdminService.CreateSource(this.control.value);
+        this.fistfulAdminService.CreateSource(this.control.value).subscribe(() => {
+            this.closeWithSuccess();
+        });
     }
 }
