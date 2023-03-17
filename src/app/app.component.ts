@@ -10,6 +10,7 @@ import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing
 import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/search-claims/routing-config';
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/search-payments/routing-config';
+import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 
 const SIDENAV_OPENED_KEY = 'sidenav-opened';
@@ -97,6 +98,11 @@ export class AppComponent implements OnInit {
                     name: 'Withdrawals',
                     route: '/withdrawals',
                     services: WITHDRAWALS_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Wallets',
+                    route: '/wallets',
+                    services: WALLETS_ROUTING_CONFIG.services,
                 },
             ],
         ];
