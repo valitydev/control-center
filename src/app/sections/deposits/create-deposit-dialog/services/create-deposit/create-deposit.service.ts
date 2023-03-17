@@ -16,7 +16,7 @@ import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
 import { ConfigService } from '../../../../../core/config.service';
-import { FetchSourcesService } from '../../../../currencies';
+import { FetchSourcesService } from '../../../../sources';
 
 @Injectable()
 export class CreateDepositService {

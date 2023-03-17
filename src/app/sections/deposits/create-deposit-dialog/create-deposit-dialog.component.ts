@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 import { ConfigService } from '../../../core/config.service';
-import { FetchSourcesService } from '../../currencies';
+import { FetchSourcesService } from '../../sources';
 import { CreateDepositService } from './services/create-deposit/create-deposit.service';
 
 @UntilDestroy()
