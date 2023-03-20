@@ -19,8 +19,8 @@
             <mat-form-field fxFlex>
                 <mat-label>Currency</mat-label>
                 <mat-select formControlName="currency" required>
-                    <mat-option *ngFor="let currency of currencies" [value]="currency">
-                        {{ currency.currency }}
+                    <mat-option *ngFor="let source of sources$ | async" [value]="source">
+                        {{ source.currency_symbolic_code }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

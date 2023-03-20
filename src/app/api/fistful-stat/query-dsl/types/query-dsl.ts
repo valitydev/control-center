@@ -5,6 +5,7 @@ import { ModelParams } from './model-params';
 import { Params } from './params';
 import { Payment } from './payment';
 import { Refund } from './refund';
+import { SourceParams } from './source';
 import { WalletParams } from './wallet';
 import { WithdrawalParams } from './withdrawal-params';
 
@@ -26,5 +27,6 @@ export interface QueryDsl {
         wallets?: WalletParams;
         deposit_reverts?: DepositRevertParams;
         withdrawals?: WithdrawalParams;
+        sources?: SourceParams;
     };
 }
