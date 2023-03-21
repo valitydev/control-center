@@ -8,6 +8,14 @@ import { Schema } from './simple-table/simple-table.component';
 @Component({
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
+    styles: [
+        `
+            :host {
+                display: block;
+                padding: 24px 16px;
+            }
+        `,
+    ],
 })
 export class WalletsComponent {
     wallets$ = this.fetchWalletsService.searchResult$;
