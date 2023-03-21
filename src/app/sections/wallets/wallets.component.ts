@@ -22,7 +22,7 @@ export class WalletsComponent {
     inProgress$ = this.fetchWalletsService.doAction$;
     hasMore$ = this.fetchWalletsService.hasMore$;
     schema = new Schema<StatWallet>([
-        { label: 'Name', value: 'name', description: 'id' },
+        { value: 'name', description: 'id' },
         'currency_symbolic_code',
         'identity_id',
         { value: 'created_at', type: 'datetime' },

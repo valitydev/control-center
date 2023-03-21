@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { coerceBoolean } from 'coerce-property';
+import startCase from 'lodash-es/startCase';
 
 export type Path<T> = ((p: T) => string) | keyof T;
 
@@ -15,26 +16,25 @@ function createGetValueFn<T>(v: ((d: T) => string) | keyof T): (d: T) => string 
     return (d) => d[v as any];
 }
 
+function createLabel(value: unknown): string {
+    return startCase(String(value));
+}
+
 export class Schema<T> {
     get renderedParams() {
         return this.params.map((p) => {
-            let label: string;
-            let value: (v: T) => string;
-            let description: (v: T) => string;
-            if (typeof p === 'object') {
-                label = p.label ?? (typeof p.value === 'object' ? '' : String(p.value));
-                value = createGetValueFn(p.value);
-                description = p.description ? createGetValueFn(p.description) : null;
-            } else {
-                label = String(p);
-                value = createGetValueFn(p);
-            }
+            if (typeof p === 'object')
+                return {
+                    def: p.label ?? String(p.value),
+                    label: p.label ?? createLabel(p.value),
+                    value: createGetValueFn(p.value),
+                    description: p.description ? createGetValueFn(p.description) : null,
+                    type: p?.type,
+                };
             return {
-                label,
-                value,
-                description,
-                def: label,
-                type: (p as any)?.type,
+                def: String(p),
+                label: createLabel(p),
+                value: createGetValueFn(p),
             };
         });
     }
