@@ -1,14 +1,17 @@
 <ng-container *ngIf="data; else init">
     <mat-card *ngIf="data.length; else empty" class="table-card">
         <table [dataSource]="data" mat-table>
-            <ng-container *ngFor="let p of schema.renderedParams" [matColumnDef]="p.def">
+            <ng-container *ngFor="let p of schema.params" [matColumnDef]="p.def">
                 <th *matHeaderCellDef mat-header-cell>{{ p.label }}</th>
                 <td *matCellDef="let i" mat-cell>
-                    {{
-                        p.type === 'datetime'
-                            ? (p.value(i) | date : 'dd.MM.yyyy HH:mm:ss')
-                            : p.value(i)
-                    }}
+                    <ng-container [ngSwitch]="p.type">
+                        <ng-template ngSwitchCase="datetime">
+                            {{ p.value(i) | date : 'dd.MM.yyyy HH:mm:ss' }}
+                        </ng-template>
+                        <ng-template ngSwitchDefault>
+                            {{ p.value(i) }}
+                        </ng-template>
+                    </ng-container>
                 </td>
             </ng-container>
             <tr *matHeaderRowDef="schema.list" mat-header-row></tr>

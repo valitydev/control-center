@@ -1,15 +1,24 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { coerceBoolean } from 'coerce-property';
 import startCase from 'lodash-es/startCase';
+import { Overwrite } from 'utility-types';
 
 export type Path<T> = ((p: T) => string) | keyof T;
 
-export type Param<T> = {
-    label?: string;
-    value: Path<T>;
-    description?: Path<T>;
+export interface BaseParam<T> {
+    def: string;
+    label: string;
+    value: (p: T) => string;
+    description?: (p: T) => string;
     type?: 'datetime';
-};
+}
+
+export type Param<T> = Overwrite<
+    Omit<BaseParam<T>, 'def'>,
+    {
+        label?: string;
+        value: Path<T>;
+        description?: Path<T>;
+    }
+>;
 
 function createGetValueFn<T>(v: ((d: T) => string) | keyof T): (d: T) => string {
     if (typeof v === 'function') return v;
@@ -21,8 +30,14 @@ function createLabel(value: unknown): string {
 }
 
 export class Schema<T> {
-    get renderedParams() {
-        return this.params.map((p) => {
+    params: BaseParam<T>[];
+
+    get list() {
+        return this.params.map((p) => p.def);
+    }
+
+    constructor(params: (Param<T> | keyof T)[]) {
+        this.params = params.map((p) => {
             if (typeof p === 'object')
                 return {
                     def: p.label ?? String(p.value),
@@ -38,25 +53,4 @@ export class Schema<T> {
             };
         });
     }
-
-    get list() {
-        return this.renderedParams.map((p) => p.def);
-    }
-
-    constructor(private params: (Param<T> | keyof T)[]) {}
-}
-
-@Component({
-    selector: 'cc-simple-table',
-    templateUrl: './simple-table.component.html',
-    styleUrls: ['./simple-table.component.scss'],
-})
-export class SimpleTableComponent<T> {
-    @Input() data: T[];
-    @Input() schema: Schema<T>;
-
-    @Input() @coerceBoolean hasMore = false;
-    @Input() @coerceBoolean inProgress = false;
-
-    @Output() fetchMore = new EventEmitter<void>();
 }

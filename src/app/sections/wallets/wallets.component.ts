@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
 
+import { Schema } from '@cc/components/simple-table';
+
 import { FetchWalletsService } from './fetch-wallets.service';
-import { Schema } from './simple-table/simple-table.component';
 
 @Component({
     selector: 'cc-wallets',
