@@ -5,12 +5,17 @@
                 <th *matHeaderCellDef mat-header-cell>{{ p.label }}</th>
                 <td *matCellDef="let i" mat-cell>
                     <ng-container [ngSwitch]="p.type">
-                        <ng-template ngSwitchCase="datetime">
-                            {{ p.value(i) | date : 'dd.MM.yyyy HH:mm:ss' }}
-                        </ng-template>
-                        <ng-template ngSwitchDefault>
-                            {{ p.value(i) }}
-                        </ng-template>
+                        <div>
+                            <ng-template ngSwitchCase="datetime">
+                                {{ p.value(i) | date : 'dd.MM.yyyy HH:mm:ss' }}
+                            </ng-template>
+                            <ng-template ngSwitchDefault>
+                                {{ p.value(i) }}
+                            </ng-template>
+                        </div>
+                        <div *ngIf="p.description" class="mat-caption cc-secondary-text">
+                            {{ p.description(i) }}
+                        </div>
                     </ng-container>
                 </td>
             </ng-container>
