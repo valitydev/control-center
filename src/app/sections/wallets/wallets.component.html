@@ -1,3 +1,25 @@
 <div fxLayout="column" fxLayoutGap="32px">
     <h1 class="cc-display-1">Wallets</h1>
+
+    <mat-card [formGroup]="control">
+        <mat-card-content gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
+            <cc-merchant-field></cc-merchant-field>
+            <mat-form-field>
+                <mat-label>Identity ID</mat-label>
+                <input formControlName="identity_id" matInput />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Currency</mat-label>
+                <input formControlName="currency_code" matInput />
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+
+    <cc-simple-table
+        [data]="wallets$ | async"
+        [hasMore]="hasMore$ | async"
+        [inProgress]="inProgress$ | async"
+        [schema]="schema"
+        (fetchMore)="fetchMore()"
+    ></cc-simple-table>
 </div>
