@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 
 import { TableModule } from '@cc/components/table';
@@ -19,6 +21,8 @@ import { SimpleTableComponent } from './simple-table.component';
         EmptySearchResultModule,
         MatProgressSpinnerModule,
         FlexModule,
+        MatInputModule,
+        MatSelectModule,
     ],
     declarations: [SimpleTableComponent],
     exports: [SimpleTableComponent],
