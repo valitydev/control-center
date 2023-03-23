@@ -7,9 +7,7 @@ import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { FistfulStatisticsService, createDsl } from '../../api/fistful-stat';
 import { PartialFetcher } from '../../shared/services';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class FetchWalletsService extends PartialFetcher<StatWallet, WalletParams> {
     constructor(private fistfulStatisticsService: FistfulStatisticsService) {
         super();

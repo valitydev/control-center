@@ -23,6 +23,7 @@ import { FetchWalletsService } from './fetch-wallets.service';
             }
         `,
     ],
+    providers: [FetchWalletsService],
 })
 export class WalletsComponent implements OnInit {
     wallets$ = this.fetchWalletsService.searchResult$;
