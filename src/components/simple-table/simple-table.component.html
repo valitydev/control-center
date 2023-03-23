@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutGap="32px">
     <ng-container *ngIf="data; else init">
-        <div fxLayout fxLayoutGap="16px">
+        <div *ngIf="!noUpdate" fxLayout fxLayoutGap="16px">
             <button
                 [disabled]="inProgress"
                 mat-stroked-button

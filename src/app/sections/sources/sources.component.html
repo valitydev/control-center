@@ -5,35 +5,10 @@
             <button color="primary" mat-raised-button (click)="create()">CREATE</button>
         </cc-actions>
     </div>
-    <div fxLayout="column" fxLayoutGap="24px">
-        <cc-empty-search-result *ngIf="!(sources$ | async)?.length"></cc-empty-search-result>
-        <mat-card *ngIf="(sources$ | async)?.length" fxLayout="column" fxLayoutGap="18px">
-            <table [dataSource]="sources$ | async" mat-table>
-                <ng-container [matColumnDef]="cols.def.id">
-                    <th *matHeaderCellDef mat-header-cell>ID</th>
-                    <td *matCellDef="let i" mat-cell>{{ i.id }}</td>
-                </ng-container>
-                <ng-container [matColumnDef]="cols.def.name">
-                    <th *matHeaderCellDef mat-header-cell>Name</th>
-                    <td *matCellDef="let i" mat-cell>{{ i.name }}</td>
-                </ng-container>
-                <ng-container [matColumnDef]="cols.def.identity">
-                    <th *matHeaderCellDef mat-header-cell>Identity</th>
-                    <td *matCellDef="let i" mat-cell>{{ i.identity }}</td>
-                </ng-container>
-                <ng-container [matColumnDef]="cols.def.currency_symbolic_code">
-                    <th *matHeaderCellDef mat-header-cell>Currency Symbolic Code</th>
-                    <td *matCellDef="let i" mat-cell>{{ i.currency_symbolic_code }}</td>
-                </ng-container>
-                <ng-container [matColumnDef]="cols.def.created_at">
-                    <th *matHeaderCellDef mat-header-cell>Created At</th>
-                    <td *matCellDef="let i" mat-cell>
-                        {{ i.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
-                    </td>
-                </ng-container>
-                <tr *matHeaderRowDef="cols.list" mat-header-row></tr>
-                <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
-            </table>
-        </mat-card>
-    </div>
+    <cc-simple-table
+        [data]="sources$ | async"
+        [inProgress]="!!(progress$ | async)"
+        [schema]="schema"
+        noUpdate
+    ></cc-simple-table>
 </div>

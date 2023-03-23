@@ -17,6 +17,7 @@ export class SimpleTableComponent<T> implements OnInit {
 
     @Input() @coerceBoolean hasMore = false;
     @Input() @coerceBoolean inProgress = false;
+    @Input() @coerceBoolean noUpdate = false;
 
     @Output() size = new EventEmitter<number>();
     @Output() update = new EventEmitter<{ size?: number }>();

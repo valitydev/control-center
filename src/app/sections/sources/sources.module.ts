@@ -8,6 +8,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 
+import { SimpleTableModule } from '@cc/components/simple-table';
+
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
@@ -30,6 +32,7 @@ import { SourcesComponent } from './sources.component';
         BaseDialogModule,
         MetadataFormModule,
         ReactiveFormsModule,
+        SimpleTableModule,
     ],
     declarations: [SourcesComponent, CreateSourceComponent],
 })
