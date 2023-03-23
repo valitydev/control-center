@@ -4,6 +4,8 @@ import {
     ThriftAstMetadata,
     wallet_Management,
 } from '@vality/fistful-proto';
+import { ContextSet } from '@vality/fistful-proto/internal/context';
+import { WalletParams } from '@vality/fistful-proto/internal/wallet';
 import { WalletID, EventRange, WalletState } from '@vality/fistful-proto/wallet';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
@@ -38,5 +40,10 @@ export class ManagementService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Get(id: WalletID, range: EventRange): Observable<WalletState> {
         return this.client$.pipe(switchMap((c) => c.Get(id, range)));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Create(params: WalletParams, context: ContextSet): Observable<WalletState> {
+        return this.client$.pipe(switchMap((c) => c.Create(params, context)));
     }
 }

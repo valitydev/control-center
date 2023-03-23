@@ -1,0 +1,64 @@
+<div fxLayout="column" fxLayoutGap="32px">
+    <ng-container *ngIf="data; else init">
+        <div *ngIf="!noUpdate" fxLayout fxLayoutGap="16px">
+            <button
+                [disabled]="inProgress"
+                mat-stroked-button
+                (click)="update.emit(this.size$.value ? { size: this.size$.value } : {})"
+            >
+                UPDATE
+            </button>
+            <button [disabled]="inProgress" [matMenuTriggerFor]="menu" mat-button>
+                {{ size$ | async }} <mat-icon>table_rows_narrow</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="size$.next(25)">25</button>
+                <button mat-menu-item (click)="size$.next(100)">100</button>
+                <button mat-menu-item (click)="size$.next(1000)">1000</button>
+            </mat-menu>
+        </div>
+
+        <mat-card *ngIf="data.length; else empty" class="table-card">
+            <table [dataSource]="data" mat-table>
+                <ng-container *ngFor="let p of schema.params" [matColumnDef]="p.def">
+                    <th *matHeaderCellDef mat-header-cell>{{ p.label }}</th>
+                    <td *matCellDef="let i" mat-cell>
+                        <ng-container [ngSwitch]="p.type">
+                            <div>
+                                <ng-template ngSwitchCase="datetime">
+                                    {{ p.value(i) | date : 'dd.MM.yyyy HH:mm:ss' }}
+                                </ng-template>
+                                <ng-template ngSwitchDefault>
+                                    {{ p.value(i) }}
+                                </ng-template>
+                            </div>
+                            <div *ngIf="p.description" class="mat-caption cc-secondary-text">
+                                {{ p.description(i) }}
+                            </div>
+                        </ng-container>
+                    </td>
+                </ng-container>
+                <tr *matHeaderRowDef="schema.list" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: schema.list" mat-row></tr>
+            </table>
+
+            <cc-show-more-button
+                *ngIf="hasMore"
+                [inProgress]="inProgress"
+                class="show-more"
+                style="width: 100%"
+                (fetchMore)="fetchMore.emit(this.size$.value ? { size: this.size$.value } : {})"
+            ></cc-show-more-button>
+        </mat-card>
+
+        <ng-template #empty
+            ><cc-empty-search-result style="width: 100%"></cc-empty-search-result
+        ></ng-template>
+    </ng-container>
+
+    <ng-template #init>
+        <div *ngIf="inProgress" fxFlex fxLayout="row" fxLayoutAlign="center center">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-template>
+</div>

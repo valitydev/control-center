@@ -3,8 +3,9 @@ import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
 import { Observable, switchMap, of, BehaviorSubject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 
-import { progressTo } from '../../../utils';
-import { FistfulStatisticsService, createDsl } from '../../api/fistful-stat';
+import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
+import { progressTo } from '@cc/utils';
+
 import { NotificationErrorService } from '../../shared/services/notification-error';
 
 @Injectable({
