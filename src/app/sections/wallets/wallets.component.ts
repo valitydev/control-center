@@ -62,7 +62,7 @@ export class WalletsComponent implements OnInit {
     }
 
     search(size: number) {
-        this.fetchWalletsService.search(this.filters.value, size);
+        this.fetchWalletsService.search(clean(this.filters.value), size);
     }
 
     fetchMore() {
