@@ -19,16 +19,20 @@ export const handleFetchResultError =
         );
 
 export const scanFetchResult =
-    <P, R>(fn: FetchFn<P, R>) =>
+    <P, R>(fn: FetchFn<P, R>, defSize: number) =>
     (s: Observable<FetchAction<P>>): Observable<FetchResult<R>> =>
         s.pipe(
             mergeScan<FetchAction<P>, FetchResult<R>>(
-                ({ result, continuationToken }, { type, value }) => {
+                ({ result, continuationToken }, { type, value, size }) => {
+                    size = size ?? defSize;
                     switch (type) {
                         case 'search':
-                            return fn(value).pipe(first(), handleFetchResultError());
+                            return fn(value, undefined, size).pipe(
+                                first(),
+                                handleFetchResultError()
+                            );
                         case 'fetchMore':
-                            return fn(value, continuationToken).pipe(
+                            return fn(value, continuationToken, size).pipe(
                                 first(),
                                 map((r) => ({
                                     result: result.concat(r.result),

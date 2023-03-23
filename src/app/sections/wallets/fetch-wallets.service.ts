@@ -15,10 +15,10 @@ export class FetchWalletsService extends PartialFetcher<StatWallet, WalletParams
         super();
     }
 
-    protected fetch(params: WalletParams, continuationToken?: string) {
+    protected fetch(params: WalletParams, continuationToken?: string, size?: number) {
         return this.fistfulStatisticsService
             .GetWallets({
-                dsl: createDsl({ wallets: { ...params, size: 10 } }),
+                dsl: createDsl({ wallets: { size, ...params } }),
                 continuation_token: continuationToken,
             })
             .pipe(

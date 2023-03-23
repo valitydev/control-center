@@ -21,5 +21,7 @@
         [inProgress]="inProgress$ | async"
         [schema]="schema"
         (fetchMore)="fetchMore()"
+        (size)="search($event)"
+        (update)="search($event.size)"
     ></cc-simple-table>
 </div>

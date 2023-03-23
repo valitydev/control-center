@@ -41,7 +41,7 @@ export abstract class PartialFetcher<R, P> {
     private action$ = new Subject<FetchAction<P>>();
 
     // TODO: make a dependency for DI
-    constructor(debounceActionTime: number = 300) {
+    constructor(debounceActionTime: number = 300, private size = 25) {
         const actionWithParams$ = this.getActionWithParams(debounceActionTime);
         const fetchResult$ = this.getFetchResult(actionWithParams$);
 
@@ -91,8 +91,8 @@ export abstract class PartialFetcher<R, P> {
             .subscribe();
     }
 
-    search(value: P) {
-        this.action$.next({ type: 'search', value });
+    search(value: P, size?: number) {
+        this.action$.next({ type: 'search', value, size });
     }
 
     refresh() {
@@ -121,6 +121,9 @@ export abstract class PartialFetcher<R, P> {
         actionWithParams$: Observable<FetchAction<P>>
     ): Observable<FetchResult<R>> {
         const fetchFn = this.fetch.bind(this) as FetchFn<P, R>;
-        return actionWithParams$.pipe(scanFetchResult(fetchFn), shareReplay(SHARE_REPLAY_CONF));
+        return actionWithParams$.pipe(
+            scanFetchResult(fetchFn, this.size),
+            shareReplay(SHARE_REPLAY_CONF)
+        );
     }
 }
