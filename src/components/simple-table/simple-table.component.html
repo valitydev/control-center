@@ -2,13 +2,14 @@
     <ng-container *ngIf="data; else init">
         <div fxLayout fxLayoutGap="16px">
             <button
+                [disabled]="inProgress"
                 mat-stroked-button
                 (click)="update.emit(this.size$.value ? { size: this.size$.value } : {})"
             >
                 UPDATE
             </button>
-            <button [matMenuTriggerFor]="menu" mat-button>
-                {{ (size$ | async) ?? 'Max' }} <mat-icon>table_rows_narrow</mat-icon>
+            <button [disabled]="inProgress" [matMenuTriggerFor]="menu" mat-button>
+                {{ size$ | async }} <mat-icon>table_rows_narrow</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item (click)="size$.next(25)">25</button>
