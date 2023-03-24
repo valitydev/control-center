@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
+import { MatDialogConfig } from '@angular/material/dialog';
 import { ValuesType } from 'utility-types';
 
 export type DialogConfig = Record<'small' | 'medium' | 'large', MatDialogConfig<undefined>>;

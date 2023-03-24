@@ -1,8 +1,8 @@
 import { Component, Output, EventEmitter, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/domain';
 import isEqual from 'lodash-es/isEqual';
