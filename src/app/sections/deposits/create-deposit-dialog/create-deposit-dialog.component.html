@@ -1,6 +1,5 @@
-<form *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="32px">
-    <h1 class="mat-headline">Create deposit</h1>
-    <mat-dialog-content fxLayout="column" fxLayoutGap="16px">
+<cc-base-dialog [inProgress]="isLoading$ | async" title="Create deposit">
+    <form *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
         <div fxLayout fxLayoutGap="24px">
             <mat-form-field fxFlex>
                 <input formControlName="destination" matInput placeholder="Destination" required />
@@ -26,9 +25,8 @@
             </mat-form-field>
             <div fxFlex></div>
         </div>
-    </mat-dialog-content>
-    <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-        <button [disabled]="isLoading$ | async" mat-button (click)="closeDialog()">CANCEL</button>
+    </form>
+    <cc-base-dialog-actions>
         <button
             [disabled]="(isLoading$ | async) || form.invalid"
             color="primary"
@@ -37,6 +35,5 @@
         >
             CREATE
         </button>
-        <mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
-    </mat-dialog-actions>
-</form>
+    </cc-base-dialog-actions>
+</cc-base-dialog>

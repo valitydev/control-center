@@ -71,8 +71,4 @@ export class CreateDepositDialogComponent implements OnInit {
         this.form.disable();
         this.createDepositService.createDeposit();
     }
-
-    closeDialog() {
-        this.dialogRef.close();
-    }
 }
