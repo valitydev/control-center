@@ -51,7 +51,12 @@
             <cc-empty-search-result
                 *ngIf="!(withdrawals$ | async)?.length"
             ></cc-empty-search-result>
-            <mat-card *ngIf="(withdrawals$ | async)?.length" fxLayout="column" fxLayoutGap="18px">
+            <mat-card
+                *ngIf="(withdrawals$ | async)?.length"
+                fxLayout="column"
+                fxLayoutGap="18px"
+                style="overflow: scroll"
+            >
                 <table [dataSource]="withdrawals$ | async" mat-table>
                     <cc-select-column
                         [dataSource]="withdrawals$ | async"
