@@ -5,10 +5,10 @@
                 [initParams]="initSearchParams"
                 (valueChanges)="searchParamsChanges($event)"
             ></cc-payments-main-search-filters>
-            <mat-card-footer *ngIf="doAction$ | async">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </mat-card-footer>
         </mat-card-content>
+        <mat-card-footer *ngIf="doAction$ | async">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
     </mat-card>
     <cc-actions>
         <button mat-button (click)="searchParamsChanges()">UPDATE</button>
