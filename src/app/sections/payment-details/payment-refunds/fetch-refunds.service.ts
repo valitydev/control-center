@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { StatRefund, RefundSearchQuery } from '@vality/magista-proto/magista';
 import { cleanPrimitiveProps } from '@vality/ng-core';
 import { Observable } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';
 
 import { MerchantStatisticsService } from '@cc/app/api/magista';
 import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
-import { booleanDelay } from '@cc/utils/boolean-delay';
 
 const SEARCH_LIMIT = 5;
 
@@ -16,8 +15,6 @@ export class FetchRefundsService extends PartialFetcher<
     StatRefund,
     DeepPartial<RefundSearchQuery>
 > {
-    isLoading$ = this.doAction$.pipe(booleanDelay(), shareReplay(1));
-
     constructor(private merchantStatisticsService: MerchantStatisticsService) {
         super();
     }

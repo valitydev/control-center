@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Reference } from '@vality/domain-proto/domain';
 import { Field } from '@vality/thrift-ts';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-
-import { ThriftAstMetadata } from '../../../api/utils';
 
 @Injectable()
 export class MetadataService {
