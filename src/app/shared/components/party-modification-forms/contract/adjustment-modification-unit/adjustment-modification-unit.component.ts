@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ContractAdjustmentModificationUnit } from '@vality/domain-proto/payment_processing';
 import get from 'lodash-es/get';
-import * as uuid from 'uuid/v4';
+import * as short from 'short-uuid';
 
 @Component({
     selector: 'cc-adjustment-modification-unit',
@@ -28,6 +28,6 @@ export class AdjustmentModificationUnitComponent implements OnInit {
     }
 
     generate() {
-        this.form.patchValue({ adjustment_id: uuid() });
+        this.form.patchValue({ adjustment_id: short().uuid() });
     }
 }

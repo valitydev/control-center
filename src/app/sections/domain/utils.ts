@@ -1,9 +1,9 @@
-import * as uuid from 'uuid/v4';
+import * as short from 'short-uuid';
 
 import { MonacoFile } from '@cc/components/monaco-editor';
 
 export const toMonacoFile = (content: string): MonacoFile => ({
-    uri: `${uuid()}.json`,
+    uri: `${short().uuid()}.json`,
     language: 'json',
     content,
 });

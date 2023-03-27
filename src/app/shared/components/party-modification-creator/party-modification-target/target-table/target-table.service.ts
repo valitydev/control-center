@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Modification } from '@vality/domain-proto/claim_management';
 import { Contract, Party, PartyContractor, Shop } from '@vality/domain-proto/domain';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';

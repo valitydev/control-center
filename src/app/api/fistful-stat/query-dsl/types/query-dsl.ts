@@ -1,15 +1,16 @@
 import { Chargebacks } from './chargebacks';
 import { Deposit } from './deposit';
 import { DepositRevertParams } from './deposit-revert';
-import { ModelParams } from './model-params';
+import { PagedBaseParameters } from './paged-base-parameters';
 import { Params } from './params';
 import { Payment } from './payment';
 import { Refund } from './refund';
+import { SourceParams } from './source';
 import { WalletParams } from './wallet';
 import { WithdrawalParams } from './withdrawal-params';
 
-export type ChargebacksParams = Params & ModelParams & Chargebacks;
-export type RefundsParams = Refund & ModelParams;
+export type ChargebacksParams = Params & PagedBaseParameters & Chargebacks;
+export type RefundsParams = Refund & PagedBaseParameters;
 
 /**
  * Available parameters:
@@ -19,12 +20,13 @@ export type RefundsParams = Refund & ModelParams;
  */
 export interface QueryDsl {
     query: {
-        payments?: Payment & Params & ModelParams;
-        deposits?: Deposit & Params & ModelParams;
+        payments?: Payment & Params & PagedBaseParameters;
+        deposits?: Deposit & Params & PagedBaseParameters;
         chargebacks?: ChargebacksParams;
         refunds?: RefundsParams;
         wallets?: WalletParams;
         deposit_reverts?: DepositRevertParams;
         withdrawals?: WithdrawalParams;
+        sources?: SourceParams;
     };
 }

@@ -20,6 +20,7 @@ export const DOMAIN_OBJECTS_TO_OPTIONS: {
     globals: null,
     identity_provider: (o) => ({ value: o.ref.id, details: o }),
     dummy_link: (o) => ({ value: o.ref.id, label: o.data.link.id, details: o }),
+    limit_config: (o) => ({ value: o.ref.id, label: o.data.description, details: o }),
     /* eslint-enable @typescript-eslint/naming-convention */
 };
 

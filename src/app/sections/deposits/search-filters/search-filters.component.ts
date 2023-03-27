@@ -9,6 +9,7 @@ import {
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 import { ConfigService } from '../../../core/config.service';
+import { FetchSourcesService } from '../../sources';
 import { SearchParams } from '../types/search-params';
 import { SearchFiltersService } from './services/search-filters/search-filters.service';
 
@@ -39,13 +40,14 @@ export class SearchFiltersComponent implements OnInit {
 
     depositStatuses = ['Pending', 'Succeeded', 'Failed'];
 
-    currencies = this.configService.config.constants.currencies;
+    sources$ = this.fetchSourcesService.sources$;
 
     form = this.searchFiltersService.form;
 
     constructor(
         private searchFiltersService: SearchFiltersService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private fetchSourcesService: FetchSourcesService
     ) {
         this.searchFiltersService.searchParamsChanges$.subscribe((params) =>
             this.valueChanges.emit(params)

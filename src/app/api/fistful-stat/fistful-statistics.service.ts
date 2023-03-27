@@ -54,4 +54,9 @@ export class FistfulStatisticsService {
     GetDepositReverts(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetDepositReverts(req)));
     }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GetSources(req: StatRequest): Observable<StatResponse> {
+        return this.client$.pipe(switchMap((c) => c.GetSources(req)));
+    }
 }

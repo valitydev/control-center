@@ -18,7 +18,7 @@ export class SearchFiltersService {
         depositId: '',
         identityId: '',
         walletId: '',
-        partyId: '',
+        partyId: null,
     });
 
     searchParamsChanges$ = this.form.valueChanges.pipe(

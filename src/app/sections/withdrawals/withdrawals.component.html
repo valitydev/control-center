@@ -2,7 +2,7 @@
     <h1 class="cc-display-1">Withdrawals</h1>
     <div fxLayout="column" fxLayoutGap="24px">
         <mat-card>
-            <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr" gdGap="16px">
+            <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
                 <cc-merchant-field formControlName="merchant"></cc-merchant-field>
                 <cc-date-range formControlName="dateRange"></cc-date-range>
                 <mat-form-field>
@@ -17,6 +17,10 @@
                 <mat-form-field>
                     <mat-label>Withdrawal ID</mat-label>
                     <input formControlName="withdrawalId" matInput />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Wallet ID</mat-label>
+                    <input formControlName="walletId" matInput />
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Amount from</mat-label>
@@ -47,7 +51,12 @@
             <cc-empty-search-result
                 *ngIf="!(withdrawals$ | async)?.length"
             ></cc-empty-search-result>
-            <mat-card *ngIf="(withdrawals$ | async)?.length" fxLayout="column" fxLayoutGap="18px">
+            <mat-card
+                *ngIf="(withdrawals$ | async)?.length"
+                fxLayout="column"
+                fxLayoutGap="18px"
+                style="overflow: scroll"
+            >
                 <table [dataSource]="withdrawals$ | async" mat-table>
                     <cc-select-column
                         [dataSource]="withdrawals$ | async"

@@ -7,9 +7,9 @@ import {
     QueryList,
     ViewChildren,
 } from '@angular/core';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Modification } from '@vality/domain-proto/claim_management';
 
 import { PartyTarget } from '../party-target';

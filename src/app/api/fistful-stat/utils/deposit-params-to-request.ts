@@ -26,7 +26,7 @@ export const depositParamsToRequest = (
                 deposits: {
                     from_time: fromTime,
                     to_time: toTime,
-                    size: size.toString(),
+                    size: size,
                     ...(amountTo ? { amount_to: amountTo } : {}),
                     ...(currencyCode ? { currency_code: currencyCode } : {}),
                     ...(depositId ? { deposit_id: depositId } : {}),

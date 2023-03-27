@@ -6,6 +6,7 @@ import {
 } from '@vality/fistful-proto';
 import { Deposit } from '@vality/fistful-proto/deposit';
 import { DepositParams } from '@vality/fistful-proto/fistful_admin';
+import { SourceParams } from '@vality/fistful-proto/internal/source';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
@@ -39,5 +40,10 @@ export class FistfulAdminService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     CreateDeposit(params: DepositParams): Observable<Deposit> {
         return this.client$.pipe(switchMap((c) => c.CreateDeposit(params)));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    CreateSource(params: SourceParams) {
+        return this.client$.pipe(switchMap((c) => c.CreateSource(params)));
     }
 }

@@ -1,9 +1,11 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <mat-card>
-        <cc-payments-main-search-filters
-            [initParams]="initSearchParams"
-            (valueChanges)="searchParamsChanges($event)"
-        ></cc-payments-main-search-filters>
+        <mat-card-content>
+            <cc-payments-main-search-filters
+                [initParams]="initSearchParams"
+                (valueChanges)="searchParamsChanges($event)"
+            ></cc-payments-main-search-filters>
+        </mat-card-content>
         <mat-card-footer *ngIf="doAction$ | async">
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </mat-card-footer>

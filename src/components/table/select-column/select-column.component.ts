@@ -10,12 +10,12 @@ import {
     ViewChild,
 } from '@angular/core';
 import {
-    MatLegacyCellDef as MatCellDef,
-    MatLegacyColumnDef as MatColumnDef,
-    MatLegacyFooterCellDef as MatFooterCellDef,
-    MatLegacyHeaderCellDef as MatHeaderCellDef,
-    MatLegacyTable as MatTable,
-} from '@angular/material/legacy-table';
+    MatCellDef,
+    MatColumnDef,
+    MatFooterCellDef,
+    MatHeaderCellDef,
+    MatTable,
+} from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { coerceBoolean } from 'coerce-property';
 
