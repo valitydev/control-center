@@ -15,11 +15,13 @@
 
         <ng-container *ngIf="hasNs">
             <ng-container *ngIf="typeControl.value === typesEnum.Same">
-                <mat-chip-list>
-                    <mat-chip *ngFor="let machine of dialogData.machines" class="cc-body-1">{{
-                        machine.id
-                    }}</mat-chip>
-                </mat-chip-list>
+                <mat-chip-listbox>
+                    <mat-chip-option
+                        *ngFor="let machine of dialogData.machines"
+                        class="cc-body-1"
+                        >{{ machine.id }}</mat-chip-option
+                    >
+                </mat-chip-listbox>
                 <cc-metadata-form
                     [extensions]="extensions$ | async"
                     [formControl]="sameForm"

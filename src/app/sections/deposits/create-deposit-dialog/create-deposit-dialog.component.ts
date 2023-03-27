@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -70,9 +70,5 @@ export class CreateDepositDialogComponent implements OnInit {
     createDeposit() {
         this.form.disable();
         this.createDepositService.createDeposit();
-    }
-
-    closeDialog() {
-        this.dialogRef.close();
     }
 }
