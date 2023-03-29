@@ -65,7 +65,9 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     fileChange($event: MonacoFile) {
         try {
             this.editorError = null;
-            this.control.setValue($event.content as T);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const parsed = JSON.parse($event.content);
+            this.control.setValue(parsed as T);
         } catch (err) {
             console.warn(err);
             this.editorError = err;
