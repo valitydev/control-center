@@ -15,7 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 
-import { EnumKeyPipe, EnumKeysPipe } from '@cc/app/shared';
+import { EnumKeyPipe, EnumKeysPipe, DomainObjectFieldComponent } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
@@ -50,6 +50,7 @@ import { RepairingComponent } from './repairing.component';
         MatChipsModule,
         EnumKeyPipe,
         EnumKeysPipe,
+        DomainObjectFieldComponent,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })

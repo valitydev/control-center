@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BaseDialogResponseStatus, BaseDialogService, clean, splitIds } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
+import isNil from 'lodash-es/isNil';
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
@@ -90,7 +91,7 @@ export class RepairingComponent implements OnInit {
                     clean({
                         ids: splitIds(ids),
                         ns,
-                        provider_id,
+                        provider_id: isNil(provider_id) ? null : String(provider_id),
                         status,
                         error_message,
                         timespan:

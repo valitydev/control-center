@@ -21,7 +21,10 @@
                 *ngFor="let option of isExternalSearch ? options : (filteredOptions$ | async)"
                 [value]="option.value"
             >
-                {{ option.label }}
+                <div class="label">{{ option.label }}</div>
+                <div *ngIf="option.description" class="mat-caption cc-secondary-text">
+                    {{ option.description }}
+                </div>
             </mat-option>
             <mat-option
                 *ngIf="
@@ -32,11 +35,14 @@
                 "
                 [value]="cachedOption.value"
             >
-                {{ cachedOption.label }}
+                <div class="label">{{ cachedOption.label }}</div>
+                <div *ngIf="cachedOption.description" class="mat-caption cc-secondary-text">
+                    {{ cachedOption.description }}
+                </div>
             </mat-option>
         </ng-container>
         <ng-template #progressBar>
-            <mat-option disabled>
+            <mat-option disabled fxLayout="column" fxLayoutAlign="center none">
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             </mat-option>
         </ng-template>
