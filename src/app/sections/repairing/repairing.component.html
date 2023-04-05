@@ -39,9 +39,18 @@
             </mat-card-footer>
         </mat-card>
 
-        <ng-container *ngIf="!(inProgress$ | async) || (machines$ | async)">
-            <cc-actions>
-                <button mat-button (click)="update()">UPDATE</button>
+        <cc-simple-table
+            [data]="machines$ | async"
+            [hasMore]="hasMore$ | async"
+            [inProgress]="inProgress$ | async"
+            [schema]="schema"
+            selectable
+            (fetchMore)="fetchMore()"
+            (selectionChange)="selection = $event"
+            (size)="update($event)"
+            (update)="update($event.size)"
+        >
+            <cc-simple-table-actions>
                 <button
                     [disabled]="!selection?.selected?.length"
                     color="primary"
@@ -58,75 +67,7 @@
                 >
                     SIMPLE REPAIR
                 </button>
-            </cc-actions>
-
-            <cc-empty-search-result *ngIf="!(machines$ | async)?.length"></cc-empty-search-result>
-            <mat-card *ngIf="(machines$ | async)?.length" fxLayout="column" fxLayoutGap="18px">
-                <table [dataSource]="machines$ | async" mat-table>
-                    <cc-select-column
-                        [dataSource]="machines$ | async"
-                        (changed)="selection = $event"
-                    ></cc-select-column>
-                    <ng-container [matColumnDef]="cols.def.id">
-                        <th *matHeaderCellDef mat-header-cell>ID</th>
-                        <td *matCellDef="let i" mat-cell>{{ i.id }}</td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.namespace">
-                        <th *matHeaderCellDef mat-header-cell>Namespace</th>
-                        <td *matCellDef="let i" mat-cell>{{ i.ns }}</td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.createdAt">
-                        <th *matHeaderCellDef mat-header-cell>Created at</th>
-                        <td *matCellDef="let i" mat-cell>
-                            {{ i.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
-                        </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.status">
-                        <th *matHeaderCellDef mat-header-cell matTooltip="Hover to view details">
-                            <span matBadge="ℹ" matBadgeOverlap="false" matBadgeSize="small">
-                                Status
-                            </span>
-                        </th>
-                        <td
-                            *matCellDef="let i"
-                            [matTooltip]="i.error_message"
-                            mat-cell
-                            matTooltipPosition="left"
-                        >
-                            {{ i.status | enumKey : status }}
-                        </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.provider">
-                        <th *matHeaderCellDef mat-header-cell>Provider</th>
-                        <td *matCellDef="let i" mat-cell>
-                            {{ i.provider_id }}
-                        </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.history">
-                        <th *matHeaderCellDef mat-header-cell matTooltip="Hover to view details">
-                            <span matBadge="ℹ" matBadgeOverlap="false" matBadgeSize="small"
-                                >History</span
-                            >
-                        </th>
-                        <td
-                            *matCellDef="let i"
-                            [matTooltip]="i.history?.length ? (i.history | json) : ''"
-                            mat-cell
-                            matTooltipPosition="left"
-                        >
-                            {{ i.history?.length || '' }}
-                        </td>
-                    </ng-container>
-                    <tr *matHeaderRowDef="cols.list" mat-header-row></tr>
-                    <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
-                </table>
-
-                <cc-show-more-button
-                    *ngIf="hasMore$ | async"
-                    [inProgress]="inProgress$ | async"
-                    (fetchMore)="fetchMore()"
-                ></cc-show-more-button>
-            </mat-card>
-        </ng-container>
+            </cc-simple-table-actions>
+        </cc-simple-table>
     </div>
 </div>

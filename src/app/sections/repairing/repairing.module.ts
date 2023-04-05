@@ -17,6 +17,7 @@ import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
 
 import { EnumKeyPipe, EnumKeysPipe, DomainObjectFieldComponent } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+import { SimpleTableModule } from '@cc/components/simple-table';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
@@ -51,6 +52,7 @@ import { RepairingComponent } from './repairing.component';
         EnumKeyPipe,
         EnumKeysPipe,
         DomainObjectFieldComponent,
+        SimpleTableModule,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })

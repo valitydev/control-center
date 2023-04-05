@@ -11,6 +11,8 @@ import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+import { Schema } from '@cc/components/simple-table';
+import { getEnumKey } from '@cc/utils';
 
 import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
@@ -67,6 +69,14 @@ export class RepairingComponent implements OnInit {
         'history'
     );
     status = repairer.RepairStatus;
+    schema = new Schema<Machine>([
+        'id',
+        { label: 'Namespace', value: 'ns' },
+        { value: 'created_at', type: 'datetime' },
+        'provider_id',
+        { label: 'Status', value: (v) => getEnumKey(repairer.RepairStatus, v.status) },
+        'history',
+    ]);
 
     constructor(
         private machinesService: MachinesService,
@@ -108,8 +118,8 @@ export class RepairingComponent implements OnInit {
             .subscribe((params) => this.machinesService.search(params));
     }
 
-    update() {
-        this.machinesService.refresh();
+    update(size: number) {
+        this.machinesService.refresh(size);
     }
 
     fetchMore() {

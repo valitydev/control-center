@@ -9,10 +9,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { ActionsModule } from '@vality/ng-core';
 
 import { TableModule } from '@cc/components/table';
 
 import { EmptySearchResultModule } from '../empty-search-result';
+import { SimpleTableActionsComponent } from './components/simple-table-actions.component';
 import { SimpleTableComponent } from './simple-table.component';
 
 @NgModule({
@@ -29,8 +31,9 @@ import { SimpleTableComponent } from './simple-table.component';
         MatIconModule,
         MatMenuModule,
         MatButtonModule,
+        ActionsModule,
     ],
-    declarations: [SimpleTableComponent],
-    exports: [SimpleTableComponent],
+    declarations: [SimpleTableComponent, SimpleTableActionsComponent],
+    exports: [SimpleTableComponent, SimpleTableActionsComponent],
 })
 export class SimpleTableModule {}
