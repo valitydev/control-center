@@ -10,6 +10,7 @@ import isNil from 'lodash-es/isNil';
 import { Moment } from 'moment';
 import { filter, map, switchMap } from 'rxjs/operators';
 
+import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { Schema } from '@cc/components/simple-table';
 import { getEnumKey } from '@cc/utils';
@@ -73,7 +74,20 @@ export class RepairingComponent implements OnInit {
         'id',
         { label: 'Namespace', value: 'ns' },
         { value: 'created_at', type: 'datetime' },
-        'provider_id',
+        {
+            label: 'Provider',
+            value: (v) =>
+                this.domainStoreService
+                    .getObjects('provider')
+                    .pipe(
+                        map(
+                            (providers) =>
+                                providers.find((p) => String(p.ref.id) === v.provider_id)?.data
+                                    ?.name
+                        )
+                    ),
+            description: 'provider_id',
+        },
         { label: 'Status', value: (v) => getEnumKey(repairer.RepairStatus, v.status) },
         'history',
     ]);
@@ -85,7 +99,8 @@ export class RepairingComponent implements OnInit {
         private baseDialogService: BaseDialogService,
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
+        private domainStoreService: DomainStoreService
     ) {}
 
     ngOnInit() {

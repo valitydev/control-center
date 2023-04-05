@@ -1,28 +1,32 @@
 import startCase from 'lodash-es/startCase';
-import { Overwrite } from 'utility-types';
+import { Observable, of, isObservable } from 'rxjs';
 
-export type Path<T> = ((p: T) => string) | keyof T;
+export type Path<T> = ((p: T) => string | Observable<string>) | keyof T;
+export type SchemaFn<T> = (p: T) => Observable<string>;
 
-export interface BaseParam<T> {
+export interface SchemaParam<T> {
     def: string;
     label: string;
-    value: (p: T) => string;
-    description?: (p: T) => string;
+    value: SchemaFn<T>;
+    description?: SchemaFn<T>;
     type?: 'datetime';
 }
 
-export type Param<T> = Overwrite<
-    Omit<BaseParam<T>, 'def'>,
-    {
-        label?: string;
-        value: Path<T>;
-        description?: Path<T>;
-    }
->;
+export interface Param<T> {
+    type?: 'datetime';
+    label?: string;
+    value: Path<T>;
+    description?: Path<T>;
+}
 
-function createGetValueFn<T>(v: ((d: T) => string) | keyof T): (d: T) => string {
-    if (typeof v === 'function') return v;
-    return (d) => d[v as any];
+function createGetValueFn<T>(v: Path<T>): SchemaFn<T> {
+    if (typeof v === 'function')
+        return (...args) => {
+            const res = v(...args);
+            if (isObservable(res)) return res;
+            return of(res);
+        };
+    return (d) => of(d[v as any]);
 }
 
 function createLabel(value: unknown): string {
@@ -30,7 +34,7 @@ function createLabel(value: unknown): string {
 }
 
 export class Schema<T> {
-    params: BaseParam<T>[];
+    params: SchemaParam<T>[];
 
     get list() {
         return this.params.map((p) => p.def);

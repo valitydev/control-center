@@ -34,14 +34,14 @@
                         <ng-container [ngSwitch]="p.type">
                             <div>
                                 <ng-template ngSwitchCase="datetime">
-                                    {{ p.value(i) | date : 'dd.MM.yyyy HH:mm:ss' }}
+                                    {{ p.value(i) | async | date : 'dd.MM.yyyy HH:mm:ss' }}
                                 </ng-template>
                                 <ng-template ngSwitchDefault>
-                                    {{ p.value(i) }}
+                                    {{ p.value(i) | async }}
                                 </ng-template>
                             </div>
                             <div *ngIf="p.description" class="mat-caption cc-secondary-text">
-                                {{ p.description(i) }}
+                                {{ p.description(i) | async }}
                             </div>
                         </ng-container>
                     </td>
