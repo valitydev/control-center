@@ -34,25 +34,24 @@
                     <input formControlName="error_message" matInput />
                 </mat-form-field>
             </mat-card-content>
-            <mat-card-footer *ngIf="inProgress$ | async">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </mat-card-footer>
         </mat-card>
 
         <cc-simple-table
+            [cellTemplate]="cellTemplate"
+            [columns]="columns$ | async"
             [data]="machines$ | async"
             [hasMore]="hasMore$ | async"
-            [inProgress]="inProgress$ | async"
-            [schema]="schema"
-            selectable
+            [loading]="(inProgress$ | async) && !!(columns$ | async)"
+            [trackBy]="trackById"
+            rowSelectable
             (fetchMore)="fetchMore()"
-            (selectionChange)="selection = $event"
+            (rowSelectionChange)="selected$.next($event)"
             (size)="update($event)"
             (update)="update($event.size)"
         >
             <cc-simple-table-actions>
                 <button
-                    [disabled]="!selection?.selected?.length"
+                    [disabled]="!(selected$ | async)?.length"
                     color="primary"
                     mat-button
                     (click)="repairByScenario()"
@@ -60,7 +59,7 @@
                     REPAIR BY SCENARIO
                 </button>
                 <button
-                    [disabled]="!selection?.selected?.length"
+                    [disabled]="!(selected$ | async)?.length"
                     color="primary"
                     mat-button
                     (click)="repair()"
@@ -68,6 +67,9 @@
                     SIMPLE REPAIR
                 </button>
             </cc-simple-table-actions>
+            <cc-simple-table-tooltip-cell-template
+                (template)="cellTemplate.status = cellTemplate.history = $event"
+            ></cc-simple-table-tooltip-cell-template>
         </cc-simple-table>
     </div>
 </div>

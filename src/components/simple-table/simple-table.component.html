@@ -1,78 +1,45 @@
 <div fxLayout="column" fxLayoutGap="32px">
-    <ng-container *ngIf="data; else init">
-        <div *ngIf="!noUpdate || actions" fxLayout fxLayoutAlign="space-between" fxLayoutGap="8px">
-            <div *ngIf="!noUpdate" fxLayout fxLayoutGap="16px">
-                <button
-                    [disabled]="inProgress"
-                    mat-stroked-button
-                    (click)="update.emit(this.size$.value ? { size: this.size$.value } : {})"
-                >
-                    UPDATE
-                </button>
-                <button [disabled]="inProgress" [matMenuTriggerFor]="menu" mat-button>
-                    {{ size$ | async }} <mat-icon>table_rows_narrow</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="size$.next(25)">25</button>
-                    <button mat-menu-item (click)="size$.next(100)">100</button>
-                    <button mat-menu-item (click)="size$.next(1000)">1000</button>
-                </mat-menu>
-            </div>
-            <ng-content select="cc-simple-table-actions"></ng-content>
+    <div *ngIf="!noUpdate || actions" fxLayout fxLayoutAlign="space-between" fxLayoutGap="8px">
+        <div *ngIf="!noUpdate" fxLayout fxLayoutGap="16px">
+            <button
+                [disabled]="loading"
+                mat-stroked-button
+                (click)="update.emit(this.size$.value ? { size: this.size$.value } : {})"
+            >
+                UPDATE
+            </button>
+            <button [disabled]="loading" [matMenuTriggerFor]="menu" mat-button>
+                {{ size$ | async }} <mat-icon>table_rows_narrow</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="size$.next(25)">25</button>
+                <button mat-menu-item (click)="size$.next(100)">100</button>
+                <button mat-menu-item (click)="size$.next(1000)">1000</button>
+            </mat-menu>
         </div>
+        <ng-content select="cc-simple-table-actions"></ng-content>
+    </div>
 
-        <mat-card *ngIf="data.length; else empty" class="table-card">
-            <table [dataSource]="data" mat-table>
-                <cc-select-column
-                    *ngIf="selectable"
-                    [dataSource]="data"
-                    (changed)="selectionChange.emit($event)"
-                ></cc-select-column>
-                <ng-container *ngFor="let p of schema.params" [matColumnDef]="p.def">
-                    <th *matHeaderCellDef mat-header-cell>{{ p.label }}</th>
-                    <td
-                        *matCellDef="let i"
-                        [matTooltip]="p.tooltip && (p.tooltip(i) | json)"
-                        [ngClass]="{ dashed: !!p.tooltip?.(i) }"
-                        mat-cell
-                        matTooltipPosition="right"
-                    >
-                        <ng-container [ngSwitch]="p.type">
-                            <div>
-                                <ng-template ngSwitchCase="datetime">
-                                    {{ p.value(i) | async | date : 'dd.MM.yyyy HH:mm:ss' }}
-                                </ng-template>
-                                <ng-template ngSwitchDefault>
-                                    {{ p.value(i) | async }}
-                                </ng-template>
-                            </div>
-                            <div *ngIf="p.description" class="mat-caption cc-secondary-text">
-                                {{ p.description(i) | async }}
-                            </div>
-                        </ng-container>
-                    </td>
-                </ng-container>
-                <tr *matHeaderRowDef="cols" mat-header-row></tr>
-                <tr *matRowDef="let row; columns: cols" mat-row></tr>
-            </table>
-
+    <mat-card class="table-card">
+        <mtx-grid
+            [cellSelectable]="false"
+            [cellTemplate]="cellTemplate"
+            [columns]="columns"
+            [data]="data"
+            [loading]="loading || !columns"
+            [paginationTemplate]="footerTpl"
+            [rowSelectable]="rowSelectable"
+            [trackBy]="trackBy"
+            (rowSelectionChange)="rowSelectionChange.emit($event)"
+        ></mtx-grid>
+        <ng-template #footerTpl>
             <cc-show-more-button
-                *ngIf="hasMore"
-                [inProgress]="inProgress"
+                *ngIf="hasMore && columns"
+                [inProgress]="loading"
                 class="show-more"
                 style="width: 100%"
                 (fetchMore)="fetchMore.emit(this.size$.value ? { size: this.size$.value } : {})"
             ></cc-show-more-button>
-        </mat-card>
-
-        <ng-template #empty
-            ><cc-empty-search-result style="width: 100%"></cc-empty-search-result
-        ></ng-template>
-    </ng-container>
-
-    <ng-template #init>
-        <div *ngIf="inProgress" fxFlex fxLayout="row" fxLayoutAlign="center center">
-            <mat-spinner></mat-spinner>
-        </div>
-    </ng-template>
+        </ng-template>
+    </mat-card>
 </div>

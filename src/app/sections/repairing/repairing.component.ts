@@ -1,5 +1,4 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -8,15 +7,20 @@ import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
 import { Moment } from 'moment';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { filter, map, switchMap, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-import { Schema } from '@cc/components/simple-table';
+import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
+import {
+    createGridColumns,
+    createDatetimeFormattedColumn,
+    createDescriptionFormattedColumn,
+} from '@cc/components/simple-table';
+import { createTooltipTemplateGridColumn } from '@cc/components/simple-table/components/simple-table-tooltip-cell-template.component';
 import { getEnumKey } from '@cc/utils';
 
-import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
-import { Columns, SELECT_COLUMN_NAME } from '../../../components/table';
 import { RepairManagementService } from '../../api/repairer';
 import { QueryParamsService } from '../../shared/services';
 import { NotificationService } from '../../shared/services/notification';
@@ -59,46 +63,41 @@ export class RepairingComponent implements OnInit {
         error_message: null,
         ...this.qp.params,
     });
-    selection: SelectionModel<Machine>;
-    cols = new Columns(
-        SELECT_COLUMN_NAME,
-        'id',
-        'namespace',
-        'createdAt',
-        'provider',
-        'status',
-        'history'
-    );
+    selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
-    schema = new Schema<Machine>([
-        'id',
-        { label: 'Namespace', value: 'ns' },
-        { value: 'created_at', type: 'datetime' },
-        {
-            label: 'Provider',
-            value: (v) =>
-                this.domainStoreService
-                    .getObjects('provider')
-                    .pipe(
-                        map(
-                            (providers) =>
-                                providers.find((p) => String(p.ref.id) === v.provider_id)?.data
-                                    ?.name
-                        )
-                    ),
-            description: 'provider_id',
-        },
-        {
-            label: 'Status',
-            value: (v) => getEnumKey(repairer.RepairStatus, v.status),
-            tooltip: (v) => v.error_message,
-        },
-        {
-            label: 'History',
-            value: (v) => (v.history?.length ? String(v.history.length) : ''),
-            tooltip: (v) => v.history,
-        },
-    ]);
+    columns$ = this.domainStoreService.getObjects('provider').pipe(
+        map((providers) =>
+            createGridColumns<Machine>([
+                'id',
+                { header: 'Namespace', field: 'ns' },
+                createDatetimeFormattedColumn('created_at'),
+                createDescriptionFormattedColumn<Machine>(
+                    'provider',
+                    (data) =>
+                        providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name,
+                    (data) => data.provider_id
+                ),
+                createTooltipTemplateGridColumn(
+                    {
+                        field: 'status',
+                        formatter: (data: Machine) =>
+                            getEnumKey(repairer.RepairStatus, data.status),
+                    },
+                    (d) => d.error_message
+                ),
+                createTooltipTemplateGridColumn(
+                    {
+                        field: 'history',
+                        formatter: (data: Machine) =>
+                            data.history?.length ? String(data.history.length) : '',
+                    },
+                    (d) => d.history
+                ),
+            ])
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    cellTemplate: Record<string, TemplateRef<any>> = {};
 
     constructor(
         private machinesService: MachinesService,
@@ -143,6 +142,7 @@ export class RepairingComponent implements OnInit {
 
     update(size: number) {
         this.machinesService.refresh(size);
+        this.selected$.next([]);
     }
 
     fetchMore() {
@@ -152,14 +152,14 @@ export class RepairingComponent implements OnInit {
     repair() {
         this.baseDialogService
             .open(ConfirmActionDialogComponent, {
-                title: `Simple repair ${this.selection.selected.length} machines`,
+                title: `Simple repair ${this.selected$.value.length} machines`,
             })
             .afterClosed()
             .pipe(
                 filter(({ status }) => status === BaseDialogResponseStatus.Success),
                 switchMap(() =>
                     this.repairManagementService.SimpleRepairAll(
-                        this.selection.selected.map(({ id, ns }) => ({ id, ns }))
+                        this.selected$.value.map(({ id, ns }) => ({ id, ns }))
                     )
                 ),
                 untilDestroyed(this)
@@ -174,9 +174,13 @@ export class RepairingComponent implements OnInit {
 
     repairByScenario() {
         this.baseDialogService
-            .open(RepairByScenarioDialogComponent, { machines: this.selection.selected })
+            .open(RepairByScenarioDialogComponent, { machines: this.selected$.value })
             .afterClosed()
             .pipe(untilDestroyed(this))
             .subscribe();
+    }
+
+    trackById(index: number, item: Machine) {
+        return item.id;
     }
 }

@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
 import { clean } from '@vality/ng-core';
 import { startWith, map } from 'rxjs/operators';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { QueryParamsService } from '@cc/app/shared/services';
-import { Schema } from '@cc/components/simple-table';
+import {
+    createDatetimeFormattedColumn,
+    createDescriptionFormattedColumn,
+    createGridColumns,
+} from '@cc/components/simple-table';
 
 import { FetchWalletsService } from './fetch-wallets.service';
 
@@ -29,11 +32,11 @@ export class WalletsComponent implements OnInit {
     wallets$ = this.fetchWalletsService.searchResult$;
     inProgress$ = this.fetchWalletsService.doAction$;
     hasMore$ = this.fetchWalletsService.hasMore$;
-    schema = new Schema<StatWallet>([
-        { value: 'name', description: 'id' },
+    columns = createGridColumns([
+        createDescriptionFormattedColumn('name', 'id'),
         'currency_symbolic_code',
         'identity_id',
-        { value: 'created_at', type: 'datetime' },
+        createDatetimeFormattedColumn('created_at'),
     ]);
     filters = this.fb.group<WalletParams>({
         party_id: null,

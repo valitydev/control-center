@@ -10,12 +10,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MtxGridModule } from '@ng-matero/extensions/grid';
 import { ActionsModule } from '@vality/ng-core';
 
 import { TableModule } from '@cc/components/table';
 
 import { EmptySearchResultModule } from '../empty-search-result';
 import { SimpleTableActionsComponent } from './components/simple-table-actions.component';
+import { SimpleTableTooltipCellTemplateComponent } from './components/simple-table-tooltip-cell-template.component';
 import { SimpleTableComponent } from './simple-table.component';
 
 @NgModule({
@@ -34,8 +36,17 @@ import { SimpleTableComponent } from './simple-table.component';
         MatButtonModule,
         ActionsModule,
         MatTooltipModule,
+        MtxGridModule,
     ],
-    declarations: [SimpleTableComponent, SimpleTableActionsComponent],
-    exports: [SimpleTableComponent, SimpleTableActionsComponent],
+    declarations: [
+        SimpleTableComponent,
+        SimpleTableActionsComponent,
+        SimpleTableTooltipCellTemplateComponent,
+    ],
+    exports: [
+        SimpleTableComponent,
+        SimpleTableActionsComponent,
+        SimpleTableTooltipCellTemplateComponent,
+    ],
 })
 export class SimpleTableModule {}
