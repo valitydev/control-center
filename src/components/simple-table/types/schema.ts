@@ -10,6 +10,7 @@ export interface SchemaParam<T> {
     value: SchemaFn<T>;
     description?: SchemaFn<T>;
     type?: 'datetime';
+    tooltip?: (p: T) => any;
 }
 
 export interface Param<T> {
@@ -17,6 +18,7 @@ export interface Param<T> {
     label?: string;
     value: Path<T>;
     description?: Path<T>;
+    tooltip?: (p: T) => any;
 }
 
 function createGetValueFn<T>(v: Path<T>): SchemaFn<T> {
@@ -48,7 +50,8 @@ export class Schema<T> {
                     label: p.label ?? createLabel(p.value),
                     value: createGetValueFn(p.value),
                     description: p.description ? createGetValueFn(p.description) : null,
-                    type: p?.type,
+                    type: p.type,
+                    tooltip: p.tooltip,
                 };
             return {
                 def: String(p),

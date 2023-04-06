@@ -88,8 +88,16 @@ export class RepairingComponent implements OnInit {
                     ),
             description: 'provider_id',
         },
-        { label: 'Status', value: (v) => getEnumKey(repairer.RepairStatus, v.status) },
-        'history',
+        {
+            label: 'Status',
+            value: (v) => getEnumKey(repairer.RepairStatus, v.status),
+            tooltip: (v) => v.error_message,
+        },
+        {
+            label: 'History',
+            value: (v) => (v.history?.length ? String(v.history.length) : ''),
+            tooltip: (v) => v.history,
+        },
     ]);
 
     constructor(

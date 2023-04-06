@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionsModule } from '@vality/ng-core';
 
 import { TableModule } from '@cc/components/table';
@@ -32,6 +33,7 @@ import { SimpleTableComponent } from './simple-table.component';
         MatMenuModule,
         MatButtonModule,
         ActionsModule,
+        MatTooltipModule,
     ],
     declarations: [SimpleTableComponent, SimpleTableActionsComponent],
     exports: [SimpleTableComponent, SimpleTableActionsComponent],

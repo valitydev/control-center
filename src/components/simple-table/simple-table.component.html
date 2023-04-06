@@ -30,7 +30,13 @@
                 ></cc-select-column>
                 <ng-container *ngFor="let p of schema.params" [matColumnDef]="p.def">
                     <th *matHeaderCellDef mat-header-cell>{{ p.label }}</th>
-                    <td *matCellDef="let i" mat-cell>
+                    <td
+                        *matCellDef="let i"
+                        [matTooltip]="p.tooltip && (p.tooltip(i) | json)"
+                        [ngClass]="{ dashed: !!p.tooltip?.(i) }"
+                        mat-cell
+                        matTooltipPosition="right"
+                    >
                         <ng-container [ngSwitch]="p.type">
                             <div>
                                 <ng-template ngSwitchCase="datetime">
