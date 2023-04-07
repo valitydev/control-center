@@ -39,7 +39,7 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
                     : defaultDomainObjectToOption;
             return objs
                 .map(domainObjectToOption)
-                .map((o) => ({ ...o, description: `#${o.value}` }));
+                .map((o) => ({ ...o, description: `#${String(o.value)}` }));
         }),
         shareReplay({ bufferSize: 1, refCount: true })
     );
