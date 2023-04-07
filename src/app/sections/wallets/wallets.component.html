@@ -16,10 +16,10 @@
     </mat-card>
 
     <cc-simple-table
+        [columns]="columns"
         [data]="wallets$ | async"
         [hasMore]="hasMore$ | async"
-        [inProgress]="inProgress$ | async"
-        [schema]="schema"
+        [loading]="inProgress$ | async"
         (fetchMore)="fetchMore()"
         (size)="search($event)"
         (update)="search($event.size)"

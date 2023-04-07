@@ -6,9 +6,9 @@
         </cc-actions>
     </div>
     <cc-simple-table
+        [columns]="columns"
         [data]="sources$ | async"
-        [inProgress]="!!(progress$ | async)"
-        [schema]="schema"
+        [loading]="!!(progress$ | async)"
         noUpdate
     ></cc-simple-table>
 </div>

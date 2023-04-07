@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use '@ng-matero/extensions' as mtx;
 
 @import '../../../components/components-themes';
 @import '../../shared/components/shared-components-themes';
@@ -14,6 +15,7 @@
         @include mat.core-theme($theme);
         @include mat.button-theme($theme);
         @include mat.all-legacy-component-themes($theme);
+        @include mtx.all-component-themes($theme);
 
         $foreground: map-get($theme, foreground);
 

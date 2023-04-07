@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +23,7 @@ import { SelectSearchFieldComponent } from './select-search-field.component';
         MatSelectModule,
         NgxMatSelectSearchModule,
         MatProgressBarModule,
+        FlexModule,
     ],
     declarations: [SelectSearchFieldComponent],
     exports: [SelectSearchFieldComponent],

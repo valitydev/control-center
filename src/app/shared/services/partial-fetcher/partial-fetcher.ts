@@ -95,8 +95,8 @@ export abstract class PartialFetcher<R, P> {
         this.action$.next({ type: 'search', value, size });
     }
 
-    refresh() {
-        this.action$.next({ type: 'search' });
+    refresh(size?: number) {
+        this.action$.next({ type: 'search', size });
     }
 
     fetchMore() {

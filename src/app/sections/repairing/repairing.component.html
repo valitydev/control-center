@@ -13,10 +13,10 @@
                     <input formControlName="ns" matInput />
                 </mat-form-field>
                 <cc-date-range formControlName="timespan"></cc-date-range>
-                <mat-form-field>
-                    <mat-label>Provider ID</mat-label>
-                    <input formControlName="provider_id" matInput />
-                </mat-form-field>
+                <cc-domain-object-field
+                    formControlName="provider_id"
+                    name="provider"
+                ></cc-domain-object-field>
                 <mat-form-field>
                     <mat-label>Status</mat-label>
                     <mat-select formControlName="status">
@@ -34,16 +34,24 @@
                     <input formControlName="error_message" matInput />
                 </mat-form-field>
             </mat-card-content>
-            <mat-card-footer *ngIf="inProgress$ | async">
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </mat-card-footer>
         </mat-card>
 
-        <ng-container *ngIf="!(inProgress$ | async) || (machines$ | async)">
-            <cc-actions>
-                <button mat-button (click)="update()">UPDATE</button>
+        <cc-simple-table
+            [cellTemplate]="cellTemplate"
+            [columns]="columns$ | async"
+            [data]="machines$ | async"
+            [hasMore]="hasMore$ | async"
+            [loading]="(inProgress$ | async) && !!(columns$ | async)"
+            [trackBy]="trackById"
+            rowSelectable
+            (fetchMore)="fetchMore()"
+            (rowSelectionChange)="selected$.next($event)"
+            (size)="update($event)"
+            (update)="update($event.size)"
+        >
+            <cc-simple-table-actions>
                 <button
-                    [disabled]="!selection?.selected?.length"
+                    [disabled]="!(selected$ | async)?.length"
                     color="primary"
                     mat-button
                     (click)="repairByScenario()"
@@ -51,82 +59,17 @@
                     REPAIR BY SCENARIO
                 </button>
                 <button
-                    [disabled]="!selection?.selected?.length"
+                    [disabled]="!(selected$ | async)?.length"
                     color="primary"
                     mat-button
                     (click)="repair()"
                 >
                     SIMPLE REPAIR
                 </button>
-            </cc-actions>
-
-            <cc-empty-search-result *ngIf="!(machines$ | async)?.length"></cc-empty-search-result>
-            <mat-card *ngIf="(machines$ | async)?.length" fxLayout="column" fxLayoutGap="18px">
-                <table [dataSource]="machines$ | async" mat-table>
-                    <cc-select-column
-                        [dataSource]="machines$ | async"
-                        (changed)="selection = $event"
-                    ></cc-select-column>
-                    <ng-container [matColumnDef]="cols.def.id">
-                        <th *matHeaderCellDef mat-header-cell>ID</th>
-                        <td *matCellDef="let i" mat-cell>{{ i.id }}</td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.namespace">
-                        <th *matHeaderCellDef mat-header-cell>Namespace</th>
-                        <td *matCellDef="let i" mat-cell>{{ i.ns }}</td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.createdAt">
-                        <th *matHeaderCellDef mat-header-cell>Created at</th>
-                        <td *matCellDef="let i" mat-cell>
-                            {{ i.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
-                        </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.status">
-                        <th *matHeaderCellDef mat-header-cell matTooltip="Hover to view details">
-                            <span matBadge="ℹ" matBadgeOverlap="false" matBadgeSize="small">
-                                Status
-                            </span>
-                        </th>
-                        <td
-                            *matCellDef="let i"
-                            [matTooltip]="i.error_message"
-                            mat-cell
-                            matTooltipPosition="left"
-                        >
-                            {{ i.status | enumKey : status }}
-                        </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.provider">
-                        <th *matHeaderCellDef mat-header-cell>Provider</th>
-                        <td *matCellDef="let i" mat-cell>
-                            {{ i.provider_id }}
-                        </td>
-                    </ng-container>
-                    <ng-container [matColumnDef]="cols.def.history">
-                        <th *matHeaderCellDef mat-header-cell matTooltip="Hover to view details">
-                            <span matBadge="ℹ" matBadgeOverlap="false" matBadgeSize="small"
-                                >History</span
-                            >
-                        </th>
-                        <td
-                            *matCellDef="let i"
-                            [matTooltip]="i.history?.length ? (i.history | json) : ''"
-                            mat-cell
-                            matTooltipPosition="left"
-                        >
-                            {{ i.history?.length || '' }}
-                        </td>
-                    </ng-container>
-                    <tr *matHeaderRowDef="cols.list" mat-header-row></tr>
-                    <tr *matRowDef="let row; columns: cols.list" mat-row></tr>
-                </table>
-
-                <cc-show-more-button
-                    *ngIf="hasMore$ | async"
-                    [inProgress]="inProgress$ | async"
-                    (fetchMore)="fetchMore()"
-                ></cc-show-more-button>
-            </mat-card>
-        </ng-container>
+            </cc-simple-table-actions>
+            <cc-simple-table-tooltip-cell-template
+                (template)="cellTemplate.status = cellTemplate.history = $event"
+            ></cc-simple-table-tooltip-cell-template>
+        </cc-simple-table>
     </div>
 </div>

@@ -1,6 +1,10 @@
 .table-card {
     width: 100%;
     overflow: hidden;
+
+    & > * {
+        border: none;
+    }
 }
 
 .show-more {

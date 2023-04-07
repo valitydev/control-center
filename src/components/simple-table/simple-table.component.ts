@@ -1,9 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ContentChild } from '@angular/core';
+import { MtxGridColumn } from '@ng-matero/extensions/grid';
+import { MtxGrid } from '@ng-matero/extensions/grid/grid';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject } from 'rxjs';
 
-import { Schema } from './types/schema';
+import { SimpleTableActionsComponent } from './components/simple-table-actions.component';
 
 @UntilDestroy()
 @Component({
@@ -13,15 +15,21 @@ import { Schema } from './types/schema';
 })
 export class SimpleTableComponent<T> implements OnInit {
     @Input() data: T[];
-    @Input() schema: Schema<T>;
+    @Input() columns: MtxGridColumn[];
+    @Input() cellTemplate?: MtxGrid['cellTemplate'];
+    @Input() trackBy?: MtxGrid['trackBy'];
+    @Input() @coerceBoolean loading = false;
+
+    @Input() @coerceBoolean rowSelectable = false;
+    @Output() rowSelectionChange = new EventEmitter<T[]>();
 
     @Input() @coerceBoolean hasMore = false;
-    @Input() @coerceBoolean inProgress = false;
     @Input() @coerceBoolean noUpdate = false;
-
     @Output() size = new EventEmitter<number>();
     @Output() update = new EventEmitter<{ size?: number }>();
     @Output() fetchMore = new EventEmitter<{ size?: number }>();
+
+    @ContentChild(SimpleTableActionsComponent) actions: SimpleTableActionsComponent;
 
     size$ = new BehaviorSubject<undefined | number>(25);
 
