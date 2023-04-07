@@ -73,9 +73,9 @@ export class RepairingComponent implements OnInit {
                 createDatetimeFormattedColumn('created_at'),
                 createDescriptionFormattedColumn<Machine>(
                     'provider',
+                    (data) => data.provider_id,
                     (data) =>
-                        providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name,
-                    (data) => data.provider_id
+                        providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name
                 ),
                 createTooltipTemplateGridColumn(
                     {
