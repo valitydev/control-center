@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { clean } from '@vality/ng-core';
+import { clean, splitIds } from '@vality/ng-core';
 import { startWith, map } from 'rxjs/operators';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
@@ -42,6 +42,7 @@ export class WalletsComponent implements OnInit {
         party_id: null,
         identity_id: null,
         currency_code: null,
+        wallet_id: null,
         ...this.qp.params,
     });
 
@@ -55,17 +56,19 @@ export class WalletsComponent implements OnInit {
         this.filters.valueChanges
             .pipe(
                 startWith(this.filters.value),
+                map((v) => ({ ...v, wallet_id: splitIds(v.wallet_id) })),
                 map((v) => clean(v)),
                 untilDestroyed(this)
             )
             .subscribe((value) => {
                 void this.qp.set(value);
-                this.fetchWalletsService.search(value);
+                this.search();
             });
     }
 
-    search(size: number) {
-        this.fetchWalletsService.search(clean(this.filters.value), size);
+    search(size?: number) {
+        const { wallet_id, ...v } = this.filters.value;
+        this.fetchWalletsService.search(clean({ ...v, wallet_id: splitIds(wallet_id) }), size);
     }
 
     fetchMore() {

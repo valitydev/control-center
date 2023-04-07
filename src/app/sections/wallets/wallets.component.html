@@ -2,7 +2,7 @@
     <h1 class="cc-display-1">Wallets</h1>
 
     <mat-card [formGroup]="filters">
-        <mat-card-content gdColumns="1fr 1fr 1fr" gdGap="16px">
+        <mat-card-content gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
             <mat-form-field>
                 <mat-label>Identity ID</mat-label>
@@ -11,6 +11,11 @@
             <mat-form-field>
                 <mat-label>Currency Code</mat-label>
                 <input formControlName="currency_code" matInput />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Wallet IDs</mat-label>
+                <input formControlName="wallet_id" matInput />
+                <mat-hint>id0,id1</mat-hint>
             </mat-form-field>
         </mat-card-content>
     </mat-card>

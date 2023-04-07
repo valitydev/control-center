@@ -5,4 +5,5 @@ export interface WalletParams extends PagedBaseParameters {
     party_id?: string;
     identity_id?: string;
     currency_code?: string;
+    wallet_id?: string[];
 }
