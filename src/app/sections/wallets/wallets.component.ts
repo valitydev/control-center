@@ -11,6 +11,7 @@ import { AccounterService } from '@cc/app/api/accounter';
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
 import { QueryParamsService } from '@cc/app/shared/services';
+import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import {
     createDatetimeFormattedColumn,
     createDescriptionFormattedColumn,
@@ -52,7 +53,8 @@ export class WalletsComponent implements OnInit {
         private qp: QueryParamsService<WalletParams>,
         private fb: FormBuilder,
         private walletManagementService: ManagementService,
-        private accounterService: AccounterService
+        private accounterService: AccounterService,
+        private errorService: NotificationErrorService
     ) {}
 
     ngOnInit() {
@@ -82,12 +84,10 @@ export class WalletsComponent implements OnInit {
     getBalance(walletId: string) {
         return this.walletManagementService.Get(walletId, {}).pipe(
             switchMap((wallet) => this.accounterService.GetAccountByID(Number(wallet.account.id))),
-            catchError(() =>
-                of({
-                    own_amount: '?',
-                    currency_sym_code: '',
-                })
-            ),
+            catchError((err) => {
+                this.errorService.error(err);
+                return of({});
+            }),
             shareReplay({ refCount: true, bufferSize: 1 })
         );
     }

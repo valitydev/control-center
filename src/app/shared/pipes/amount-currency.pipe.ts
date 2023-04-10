@@ -1,6 +1,7 @@
 import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import { Pipe, Inject, LOCALE_ID, DEFAULT_CURRENCY_CODE, PipeTransform } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import isNil from 'lodash-es/isNil';
 import { ReplaySubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -34,6 +35,8 @@ export class AmountCurrencyPipe implements PipeTransform {
         combineLatest([this.domainStoreService.getObjects('currency'), this.params$])
             .pipe(
                 map(([currencies, { amount, currencyCode, format }]) => {
+                    if (isNil(amount)) return '?';
+                    if (!currencyCode) return String(amount);
                     const exponent = currencies.find((c) => c.data.symbolic_code === currencyCode)
                         .data.exponent;
                     return formatCurrency(
