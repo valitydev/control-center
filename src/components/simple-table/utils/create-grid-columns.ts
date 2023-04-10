@@ -13,7 +13,8 @@ export type GridColumn<T> =
       > & {
           _data?: any;
       })
-    | keyof T;
+    | keyof T
+    | string;
 
 export function createGridColumn<T>(col: GridColumn<T>) {
     if (!isObject(col))
