@@ -83,7 +83,9 @@ export class WalletsComponent implements OnInit {
     @Memoize()
     getBalance(walletId: string) {
         return this.walletManagementService.Get(walletId, {}).pipe(
-            switchMap((wallet) => this.accounterService.GetAccountByID(Number(wallet.account.id))),
+            switchMap((wallet) =>
+                this.accounterService.GetAccountByID(Number(wallet.account.accounter_account_id))
+            ),
             catchError((err) => {
                 this.errorService.error(err);
                 return of({});
