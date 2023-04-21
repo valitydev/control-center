@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 import chunk from 'lodash-es/chunk';
 import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { NotificationErrorService } from '../../../services/notification-error';
     selector: 'cc-create-payment-adjustment',
     templateUrl: './create-payment-adjustment.component.html',
 })
-export class CreatePaymentAdjustmentComponent extends BaseDialogSuperclass<
+export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     CreatePaymentAdjustmentComponent,
     { payments: StatPayment[] },
     { withError?: { payment: StatPayment; error: any }[] }

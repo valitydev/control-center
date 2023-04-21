@@ -1,4 +1,4 @@
-<cc-base-dialog [inProgress]="isLoading$ | async" title="Create deposit">
+<v-dialog [inProgress]="isLoading$ | async" title="Create deposit">
     <form *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
         <div fxLayout fxLayoutGap="24px">
             <mat-form-field fxFlex>
@@ -26,7 +26,7 @@
             <div fxFlex></div>
         </div>
     </form>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="(isLoading$ | async) || form.invalid"
             color="primary"
@@ -35,5 +35,5 @@
         >
             CREATE
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout
 export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService
     ) {}
 
@@ -29,15 +29,15 @@ export class PayoutActionsService {
     }
 
     cancel(id: PayoutID) {
-        this.baseDialogService.open(CancelPayoutDialogComponent, { id });
+        this.dialogService.open(CancelPayoutDialogComponent, { id });
     }
 
     confirm(id: PayoutID) {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Confirm payout' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() => this.payoutManagementService.ConfirmPayout(id)),
                 untilDestroyed(this)
             )

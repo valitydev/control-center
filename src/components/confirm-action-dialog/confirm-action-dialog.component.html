@@ -1,4 +1,4 @@
-<cc-base-dialog
+<v-dialog
     [noContent]="!(dialogData && dialogData.hasReason)"
     [title]="dialogData?.['title'] ?? 'Confirm this action'"
 >
@@ -6,10 +6,10 @@
         <mat-label>Reason</mat-label>
         <input [formControl]="control" matInput />
     </mat-form-field>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button mat-button (click)="cancel()">CANCEL</button>
         <button color="primary" mat-raised-button (click)="confirm()">
             {{ dialogData?.['confirmLabel'] || 'CONFIRM' }}
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

@@ -10,7 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -76,14 +76,14 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     private paginator$ = new ReplaySubject<MatPaginator>(1);
 
     constructor(
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute
     ) {}
 
     changeDelegateRuleset(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ChangeDelegateRulesetDialogComponent, {
                 mainRulesetRefID: delegateId.parentRefId,
                 delegateIdx: delegateId.delegateIdx,
@@ -94,7 +94,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     changeTarget(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ChangeTargetDialogComponent, {
                 mainRulesetRefID: delegateId.parentRefId,
                 delegateIdx: delegateId.delegateIdx,
@@ -106,11 +106,11 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     cloneDelegateRuleset(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Clone delegate ruleset' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.routingRulesService.cloneDelegateRuleset({
                         mainRulesetRefID: delegateId.parentRefId,
@@ -123,11 +123,11 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     delete(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Delete delegate' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.routingRulesService.deleteDelegate({
                         mainRulesetRefID: delegateId.parentRefId,

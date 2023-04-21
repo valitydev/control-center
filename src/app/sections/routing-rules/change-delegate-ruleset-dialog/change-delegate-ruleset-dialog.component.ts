@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../services/routing-rules';
@@ -13,7 +13,7 @@ import { RoutingRulesService } from '../services/routing-rules';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangeDelegateRulesetDialogComponent
-    extends BaseDialogSuperclass<
+    extends DialogSuperclass<
         ChangeDelegateRulesetDialogComponent,
         { mainRulesetRefID: number; delegateIdx: number }
     >

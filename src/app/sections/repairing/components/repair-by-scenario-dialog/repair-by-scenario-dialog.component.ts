@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import {
     RepairInvoicesRequest,
     RepairWithdrawalsRequest,
@@ -32,7 +32,7 @@ enum Namespace {
     templateUrl: './repair-by-scenario-dialog.component.html',
 })
 export class RepairByScenarioDialogComponent
-    extends BaseDialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>
+    extends DialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>
     implements OnInit
 {
     nsControl = new FormControl<Namespace>(null, Validators.required);
@@ -89,7 +89,7 @@ export class RepairByScenarioDialogComponent
             .subscribe({
                 next: () => {
                     this.notificationService.success();
-                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
                 error: this.notificationErrorService.error,
             });

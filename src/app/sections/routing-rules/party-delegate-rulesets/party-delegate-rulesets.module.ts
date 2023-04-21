@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { BaseDialogModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/ng-core';
 
 import { DetailsItemModule } from '@cc/components/details-item';
 
@@ -51,7 +51,7 @@ const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetD
         ChangeTargetDialogModule,
         TargetRulesetFormModule,
         RoutingRulesListModule,
-        BaseDialogModule,
+        DialogModule,
     ],
     declarations: EXPORTED_DECLARATIONS,
     exports: EXPORTED_DECLARATIONS,

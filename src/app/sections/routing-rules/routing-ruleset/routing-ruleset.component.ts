@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Predicate, TerminalObject } from '@vality/domain-proto/domain';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { first, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
@@ -43,7 +43,7 @@ export class RoutingRulesetComponent {
     isLoading$ = this.domainStoreService.isLoading$;
 
     constructor(
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private routingRulesetService: RoutingRulesetService,
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
@@ -56,15 +56,13 @@ export class RoutingRulesetComponent {
             .pipe(
                 first(),
                 switchMap((refID) =>
-                    this.baseDialogService
-                        .open(AddRoutingRuleDialogComponent, { refID })
-                        .afterClosed()
+                    this.dialogService.open(AddRoutingRuleDialogComponent, { refID }).afterClosed()
                 )
             )
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: (res) => {
-                    if (res.status === BaseDialogResponseStatus.Success) {
+                    if (res.status === DialogResponseStatus.Success) {
                         this.domainStoreService.forceReload();
                         this.notificationService.success('Routing rule successfully added');
                     }

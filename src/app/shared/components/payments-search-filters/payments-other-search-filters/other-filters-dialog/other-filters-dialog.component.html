@@ -1,4 +1,4 @@
-<cc-base-dialog title="Other filters">
+<v-dialog title="Other filters">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <div fxLayout fxLayoutGap="16px">
             <mat-form-field fxFlex>
@@ -72,7 +72,7 @@
             </mat-form-field>
         </div>
     </div>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button [disabled]="form.invalid" color="primary" mat-button (click)="save()">SAVE</button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

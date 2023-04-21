@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
@@ -15,7 +15,7 @@ import { TargetRuleset } from '../../target-ruleset-form';
     templateUrl: 'attach-new-ruleset-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AttachNewRulesetDialogComponent extends BaseDialogSuperclass<
+export class AttachNewRulesetDialogComponent extends DialogSuperclass<
     AttachNewRulesetDialogComponent,
     { partyID: string; type: RoutingRulesType }
 > {

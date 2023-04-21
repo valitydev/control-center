@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogService } from '@vality/ng-core';
+import { DialogService } from '@vality/ng-core';
 import { first, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
@@ -58,14 +58,14 @@ export class PartyDelegateRulesetsComponent {
         private partyDelegateRulesetsService: PartyDelegateRulesetsService,
         private routingRulesService: RoutingRulesService,
         private router: Router,
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
         private route: ActivatedRoute
     ) {}
 
     attachNewRuleset() {
-        this.baseDialogService
+        this.dialogService
             .open(AttachNewRulesetDialogComponent, {
                 partyID: this.partyID,
                 type: this.route.snapshot.params.type,

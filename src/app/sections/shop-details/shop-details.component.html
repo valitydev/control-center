@@ -31,12 +31,12 @@
             </div>
         </mat-card-content>
     </mat-card>
-    <cc-actions *ngIf="shop$ | async as shop">
+    <v-actions *ngIf="shop$ | async as shop">
         <button mat-raised-button (click)="toggleSuspension()">
             {{ (shop.suspension | ccUnionKey) === 'active' ? 'SUSPEND' : 'ACTIVATE' }}
         </button>
         <button color="warn" mat-raised-button (click)="toggleBlocking()">
             {{ (shop.blocking | ccUnionKey) === 'unblocked' ? 'BLOCK' : 'UNBLOCK' }}
         </button>
-    </cc-actions>
+    </v-actions>
 </div>

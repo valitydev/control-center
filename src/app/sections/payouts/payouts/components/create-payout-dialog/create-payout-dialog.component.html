@@ -1,4 +1,4 @@
-<cc-base-dialog [inProgress]="!!(progress$ | async)" title="Create payout">
+<v-dialog [inProgress]="!!(progress$ | async)" title="Create payout">
     <div [formGroup]="control" gdColumns="1fr" gdGap="16px">
         <cc-merchant-field formControlName="partyId" required></cc-merchant-field>
         <cc-shop-field
@@ -32,7 +32,7 @@
             formControlName="payoutToolId"
         ></cc-payout-tool-field>
     </div>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="control.invalid || !!(progress$ | async)"
             color="primary"
@@ -41,5 +41,5 @@
         >
             CREATE
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

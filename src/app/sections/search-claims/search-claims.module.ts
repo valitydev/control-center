@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { ClaimSearchFormModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
@@ -53,7 +53,7 @@ import { SearchTableComponent } from './search-table/search-table.component';
         ThriftPipesModule,
         TableModule,
         ActionsModule,
-        BaseDialogModule,
+        DialogModule,
         MerchantFieldModule,
     ],
     declarations: [

@@ -1,4 +1,4 @@
-<cc-base-dialog title="Party routing rule params">
+<v-dialog title="Party routing rule params">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <mat-form-field *ngIf="dialogData.type === 'payment'">
             <mat-label>Shop</mat-label>
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button [disabled]="form.invalid" color="primary" mat-button (click)="add()">ADD</button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

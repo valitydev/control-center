@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BaseDialogModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/ng-core';
 
 import { ConfirmActionDialogComponent } from './confirm-action-dialog.component';
 
@@ -15,7 +15,7 @@ import { ConfirmActionDialogComponent } from './confirm-action-dialog.component'
         MatDialogModule,
         MatButtonModule,
         FlexLayoutModule,
-        BaseDialogModule,
+        DialogModule,
         MatFormFieldModule,
         CommonModule,
         MatInputModule,

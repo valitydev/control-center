@@ -6,7 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { Moment } from 'moment';
 import { map } from 'rxjs/operators';
 
@@ -78,7 +78,7 @@ export class WithdrawalsComponent implements OnInit {
         private fetchWithdrawalsService: FetchWithdrawalsService,
         private fb: FormBuilder,
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService
     ) {}
@@ -112,13 +112,13 @@ export class WithdrawalsComponent implements OnInit {
     }
 
     adjustment() {
-        this.baseDialogService
+        this.dialogService
             .open(CreateAdjustmentDialogComponent, { withdrawals: this.selection.selected })
             .afterClosed()
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: ({ status }) => {
-                    if (status === BaseDialogResponseStatus.Success) {
+                    if (status === DialogResponseStatus.Success) {
                         this.notificationService.success();
                     }
                 },

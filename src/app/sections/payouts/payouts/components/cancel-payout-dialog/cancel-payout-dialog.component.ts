@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import { PayoutID } from '@vality/payout-manager-proto/payout_manager';
 import { BehaviorSubject } from 'rxjs';
 
@@ -16,7 +16,7 @@ import { NotificationErrorService } from '../../../../../shared/services/notific
     selector: 'cc-cancel-payout-dialog',
     templateUrl: './cancel-payout-dialog.component.html',
 })
-export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
+export class CancelPayoutDialogComponent extends DialogSuperclass<
     CancelPayoutDialogComponent,
     { id: PayoutID }
 > {
@@ -38,7 +38,7 @@ export class CancelPayoutDialogComponent extends BaseDialogSuperclass<
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
-                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: DialogResponseStatus.Success });
                     this.notificationService.success('Payout canceled successfully');
                 },
                 error: this.notificationErrorService.error,

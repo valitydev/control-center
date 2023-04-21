@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
@@ -63,7 +63,7 @@ export class ClaimComponent {
         private partyManagementService: PartyManagementService,
         private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService
     ) {}
 
@@ -76,14 +76,14 @@ export class ClaimComponent {
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(AddModificationDialogComponent, { party, claim })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result.status === BaseDialogResponseStatus.Success) this.reloadClaim();
+                if (result.status === DialogResponseStatus.Success) this.reloadClaim();
             });
     }
 
@@ -92,14 +92,14 @@ export class ClaimComponent {
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(ChangeStatusDialogComponent, { partyID: party.id, claim })
                         .afterClosed()
                 ),
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result.status === BaseDialogResponseStatus.Success) this.reloadClaim();
+                if (result.status === DialogResponseStatus.Success) this.reloadClaim();
             });
     }
 }

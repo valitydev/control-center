@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
@@ -89,7 +89,7 @@ export class PartyRoutingRulesetComponent {
     );
 
     constructor(
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private partyRoutingRulesetService: PartyRoutingRulesetService,
         private router: Router,
         private route: ActivatedRoute,
@@ -104,7 +104,7 @@ export class PartyRoutingRulesetComponent {
             .pipe(
                 take(1),
                 switchMap(([partyID, refID]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(InitializeRoutingRulesDialogComponent, { partyID, refID })
                         .afterClosed()
                 ),
@@ -128,7 +128,7 @@ export class PartyRoutingRulesetComponent {
             .pipe(
                 take(1),
                 switchMap(([refID, shops, wallets, type, partyID]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(AddPartyRoutingRuleDialogComponent, {
                             refID,
                             shops,
@@ -142,7 +142,7 @@ export class PartyRoutingRulesetComponent {
             )
             .subscribe({
                 next: (res) => {
-                    if (res.status === BaseDialogResponseStatus.Success) {
+                    if (res.status === DialogResponseStatus.Success) {
                         this.partyRoutingRulesetService.reload();
                     }
                 },

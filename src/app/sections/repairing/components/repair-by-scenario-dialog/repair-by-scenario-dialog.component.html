@@ -1,4 +1,4 @@
-<cc-base-dialog gdColumn="1fr" title="Repair by scenario">
+<v-dialog gdColumn="1fr" title="Repair by scenario">
     <div gdGap="16px">
         <mat-form-field>
             <mat-label>Type</mat-label>
@@ -55,7 +55,7 @@
 
         <mat-progress-bar *ngIf="progress$ | async"></mat-progress-bar>
     </div>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="
                 typeControl.invalid ||
@@ -68,5 +68,5 @@
         >
             REPAIR
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

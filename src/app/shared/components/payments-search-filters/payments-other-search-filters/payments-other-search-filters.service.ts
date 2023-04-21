@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, switchMap, first } from 'rxjs/operators';
 
@@ -41,7 +41,7 @@ export class PaymentsOtherSearchFiltersService {
         shareReplay(1)
     );
 
-    constructor(private baseDialogService: BaseDialogService) {}
+    constructor(private dialogService: DialogService) {}
 
     init(params: SearchFiltersParams) {
         this.formParams.next(searchParamsToFormParams(params));
@@ -52,9 +52,9 @@ export class PaymentsOtherSearchFiltersService {
             .pipe(
                 first(),
                 switchMap((data) =>
-                    this.baseDialogService.open(OtherFiltersDialogComponent, data).afterClosed()
+                    this.dialogService.open(OtherFiltersDialogComponent, data).afterClosed()
                 ),
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 untilDestroyed(this)
             )
             .subscribe(({ data }) => this.formParams.next(data));

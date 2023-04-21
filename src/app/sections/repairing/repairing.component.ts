@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogService, clean, splitIds } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, clean, splitIds } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
@@ -103,7 +103,7 @@ export class RepairingComponent implements OnInit {
         private machinesService: MachinesService,
         private fb: FormBuilder,
         private qp: QueryParamsService<Filters>,
-        private baseDialogService: BaseDialogService,
+        private dialogService: DialogService,
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
@@ -150,13 +150,13 @@ export class RepairingComponent implements OnInit {
     }
 
     repair() {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, {
                 title: `Simple repair ${this.selected$.value.length} machines`,
             })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.repairManagementService.SimpleRepairAll(
                         this.selected$.value.map(({ id, ns }) => ({ id, ns }))
@@ -173,7 +173,7 @@ export class RepairingComponent implements OnInit {
     }
 
     repairByScenario() {
-        this.baseDialogService
+        this.dialogService
             .open(RepairByScenarioDialogComponent, { machines: this.selected$.value })
             .afterClosed()
             .pipe(untilDestroyed(this))

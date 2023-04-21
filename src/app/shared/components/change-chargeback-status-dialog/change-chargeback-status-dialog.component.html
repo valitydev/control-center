@@ -1,4 +1,4 @@
-<cc-base-dialog title="Change chargeback">
+<v-dialog title="Change chargeback">
     <div gdColumn="1fr" gdGap="16px">
         <mat-form-field style="width: 100%">
             <mat-label>Action</mat-label>
@@ -18,7 +18,7 @@
         ></cc-metadata-form>
     </div>
 
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="control.invalid || actionControl.invalid || !!(progress$ | async)"
             color="primary"
@@ -27,5 +27,5 @@
         >
             {{ (actionControl.value | enumKey : typeEnum) || 'CHANGE' | uppercase }}
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

@@ -1,4 +1,4 @@
-<cc-base-dialog
+<v-dialog
     [inProgress]="isLoading$ | async"
     [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
 >
@@ -8,7 +8,7 @@
         [party]="dialogData.party"
         [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
     ></cc-modification-form>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="control.invalid || (isLoading$ | async)"
             color="primary"
@@ -17,5 +17,5 @@
         >
             {{ isUpdate ? 'UPDATE' : 'ADD' }}
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

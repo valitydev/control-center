@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { BaseDialogModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/ng-core';
 
 import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-dialog.component';
 
@@ -18,7 +18,7 @@ import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-
         MatInputModule,
         MatButtonModule,
         MatSelectModule,
-        BaseDialogModule,
+        DialogModule,
     ],
     declarations: [ChangeDelegateRulesetDialogComponent],
     exports: [ChangeDelegateRulesetDialogComponent],

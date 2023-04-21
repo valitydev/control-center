@@ -15,7 +15,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { StatusModule } from '@cc/app/shared/components/status';
@@ -70,7 +70,7 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         MatMenuModule,
         MatDialogModule,
         MatProgressBarModule,
-        BaseDialogModule,
+        DialogModule,
         ActionsModule,
         HumanizeDurationModule,
     ],

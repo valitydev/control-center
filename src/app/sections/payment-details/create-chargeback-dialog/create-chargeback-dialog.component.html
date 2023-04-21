@@ -1,4 +1,4 @@
-<cc-base-dialog title="Create chargeback">
+<v-dialog title="Create chargeback">
     <cc-metadata-form
         [extensions]="extensions$ | async"
         [formControl]="form"
@@ -7,9 +7,9 @@
         type="InvoicePaymentChargebackParams"
     ></cc-metadata-form>
 
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button [disabled]="form.invalid" color="primary" mat-raised-button (click)="create()">
             CREATE
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

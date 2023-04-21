@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormArray, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '@vality/domain-proto/domain';
-import { BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogResponseStatus } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
 
@@ -86,7 +86,7 @@ export class AddRoutingRuleDialogService {
                     })
                 )
             )
-            .subscribe(() => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }));
+            .subscribe(() => this.dialogRef.close({ status: DialogResponseStatus.Success }));
     }
 
     addOption() {

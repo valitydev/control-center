@@ -1,4 +1,4 @@
-<cc-base-dialog title="Attach party delegate ruleset">
+<v-dialog title="Attach party delegate ruleset">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <cc-target-ruleset-form
             [type]="dialogData.type"
@@ -24,7 +24,7 @@
         </ng-container>
     </div>
 
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="form.invalid || !(targetRulesetValid$ | async)"
             color="primary"
@@ -33,5 +33,5 @@
         >
             ATTACH
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

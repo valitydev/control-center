@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
 import { magista } from '@vality/magista-proto';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 
@@ -14,11 +14,7 @@ import { OtherFiltersDialogService } from './other-filters-dialog.service';
     providers: [OtherFiltersDialogService],
 })
 export class OtherFiltersDialogComponent
-    extends BaseDialogSuperclass<
-        OtherFiltersDialogComponent,
-        SearchFiltersParams,
-        SearchFiltersParams
-    >
+    extends DialogSuperclass<OtherFiltersDialogComponent, SearchFiltersParams, SearchFiltersParams>
     implements OnInit
 {
     paymentStatuses = getEnumKeyValues(magista.InvoicePaymentStatus);

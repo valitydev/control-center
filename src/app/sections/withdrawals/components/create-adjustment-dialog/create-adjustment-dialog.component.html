@@ -1,4 +1,4 @@
-<cc-base-dialog gdColumn="1fr" title="Create Adjustment">
+<v-dialog gdColumn="1fr" title="Create Adjustment">
     <div gdGap="16px">
         <mat-radio-group [formControl]="typeControl" gdColumns="1fr 1fr" gdGap="8px">
             <mat-radio-button [value]="0">Use ID from withdrawal</mat-radio-button>
@@ -23,7 +23,7 @@
             mode="determinate"
         ></mat-progress-bar>
     </div>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="control.invalid"
             color="primary"
@@ -32,5 +32,5 @@
         >
             CREATE
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

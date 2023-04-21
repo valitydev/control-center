@@ -12,7 +12,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { BaseDialogModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
@@ -43,7 +43,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         TableModule,
         MatSortModule,
         MetadataFormModule,
-        BaseDialogModule,
+        DialogModule,
         MatFormFieldModule,
         MatSelectModule,
         MatInputModule,

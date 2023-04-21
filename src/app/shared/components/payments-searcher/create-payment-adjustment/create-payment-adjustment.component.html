@@ -1,4 +1,4 @@
-<cc-base-dialog
+<v-dialog
     [progress]="progress$ | async"
     title="Create payment adjustment ({{ dialogData.payments.length }})"
 >
@@ -9,7 +9,7 @@
         namespace="payment_processing"
         type="InvoicePaymentAdjustmentParams"
     ></cc-metadata-form>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             *ngIf="this.withError.length"
             [disabled]="control.invalid || !!(progress$ | async)"
@@ -26,5 +26,5 @@
         >
             {{ this.withError.length ? 'REPEAT FOR ' + this.withError.length : 'CREATE' }}
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

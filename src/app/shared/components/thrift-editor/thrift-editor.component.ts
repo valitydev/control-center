@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
@@ -51,7 +51,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     private updateFile$ = new Subject<void>();
     private editorError: unknown = null;
 
-    constructor(private baseDialogService: BaseDialogService) {
+    constructor(private dialogService: DialogService) {
         super();
     }
 
@@ -89,10 +89,10 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     }
 
     reset() {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Reset changes' })
             .afterClosed()
-            .pipe(filter(({ status }) => status === BaseDialogResponseStatus.Success))
+            .pipe(filter(({ status }) => status === DialogResponseStatus.Success))
             .subscribe(() => {
                 this.control.reset(this.defaultValue);
                 this.editorError = null;

@@ -10,7 +10,7 @@
             <mat-progress-bar mode="indeterminate"></mat-progress-bar>
         </mat-card-footer>
     </mat-card>
-    <cc-actions>
+    <v-actions>
         <button mat-button (click)="searchParamsChanges()">UPDATE</button>
         <cc-payments-other-search-filters
             [initParams]="initSearchParams"
@@ -26,7 +26,7 @@
                 selectedPayments?.length ? ' (' + selectedPayments?.length + ')' : ''
             }}
         </button>
-    </cc-actions>
+    </v-actions>
     <cc-empty-search-result
         *ngIf="!(doAction$ | async) && !(payments$ | async)?.length"
         label="Payments not found"

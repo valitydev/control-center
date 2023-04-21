@@ -1,4 +1,4 @@
-<cc-base-dialog title="Routing rule params">
+<v-dialog title="Routing rule params">
     <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
         <div fxLayout="column" fxLayoutGap="16px">
             <mat-form-field>
@@ -110,7 +110,7 @@
         </div>
     </div>
 
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="form.invalid || predicateControl.invalid"
             color="primary"
@@ -119,5 +119,5 @@
         >
             ADD
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

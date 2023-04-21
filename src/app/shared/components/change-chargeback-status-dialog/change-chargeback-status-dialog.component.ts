@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass, BaseDialogModule } from '@vality/ng-core';
+import { DialogSuperclass, DialogModule } from '@vality/ng-core';
 import { from, BehaviorSubject, Observable } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
@@ -32,7 +32,7 @@ enum Action {
     templateUrl: './change-chargeback-status-dialog.component.html',
     imports: [
         CommonModule,
-        BaseDialogModule,
+        DialogModule,
         MatButtonModule,
         MetadataFormModule,
         ReactiveFormsModule,
@@ -44,7 +44,7 @@ enum Action {
     ],
 })
 export class ChangeChargebackStatusDialogComponent
-    extends BaseDialogSuperclass<
+    extends DialogSuperclass<
         ChangeChargebackStatusDialogComponent,
         { id: string; paymentId: string; invoiceId: string }
     >
