@@ -33,10 +33,10 @@ export class ChargebacksComponent {
 
     cols = new Columns('id', 'status', 'created_at', 'body', 'levy', 'stage', 'actions');
 
-    constructor(private baseDialogService: DialogService) {}
+    constructor(private dialogService: DialogService) {}
 
     changeStatus(id: string) {
-        this.baseDialogService.open(ChangeChargebackStatusDialogComponent, {
+        this.dialogService.open(ChangeChargebackStatusDialogComponent, {
             paymentId: this.paymentId,
             invoiceId: this.invoiceId,
             id,
@@ -44,7 +44,7 @@ export class ChargebacksComponent {
     }
 
     showDetails(chargeback: InvoicePaymentChargeback) {
-        this.baseDialogService.open(DetailsDialogComponent, {
+        this.dialogService.open(DetailsDialogComponent, {
             title: 'Chargeback details',
             json: chargeback,
         });

@@ -33,7 +33,7 @@ export class PayoutsComponent implements OnInit {
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
         private qp: QueryParamsService<Partial<PayoutsSearchForm>>,
-        private baseDialogService: DialogService
+        private dialogService: DialogService
     ) {}
 
     ngOnInit() {
@@ -70,6 +70,6 @@ export class PayoutsComponent implements OnInit {
     }
 
     create() {
-        this.baseDialogService.open(CreatePayoutDialogComponent);
+        this.dialogService.open(CreatePayoutDialogComponent);
     }
 }

@@ -38,7 +38,7 @@ export class PaymentsSearcherComponent implements OnInit {
     constructor(
         private fetchPaymentsService: FetchPaymentsService,
         private snackBar: MatSnackBar,
-        private baseDialogService: DialogService
+        private dialogService: DialogService
     ) {}
 
     ngOnInit() {
@@ -68,7 +68,7 @@ export class PaymentsSearcherComponent implements OnInit {
     }
 
     createPaymentAdjustment() {
-        this.baseDialogService
+        this.dialogService
             .open(CreatePaymentAdjustmentComponent, {
                 payments: this.selectedPayments,
             })

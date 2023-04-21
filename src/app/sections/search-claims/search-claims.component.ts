@@ -21,7 +21,7 @@ export class SearchClaimsComponent implements OnInit {
     constructor(
         private searchClaimService: SearchClaimsService,
         private snackBar: MatSnackBar,
-        private baseDialogService: DialogService
+        private dialogService: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -42,6 +42,6 @@ export class SearchClaimsComponent implements OnInit {
     }
 
     create() {
-        this.baseDialogService.open(CreateClaimDialogComponent, { partyId: this.selectedPartyId });
+        this.dialogService.open(CreateClaimDialogComponent, { partyId: this.selectedPartyId });
     }
 }

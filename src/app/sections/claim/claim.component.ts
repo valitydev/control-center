@@ -63,7 +63,7 @@ export class ClaimComponent {
         private partyManagementService: PartyManagementService,
         private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService
     ) {}
 
@@ -76,7 +76,7 @@ export class ClaimComponent {
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(AddModificationDialogComponent, { party, claim })
                         .afterClosed()
                 ),
@@ -92,7 +92,7 @@ export class ClaimComponent {
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(ChangeStatusDialogComponent, { partyID: party.id, claim })
                         .afterClosed()
                 ),

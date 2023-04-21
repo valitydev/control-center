@@ -58,14 +58,14 @@ export class PartyDelegateRulesetsComponent {
         private partyDelegateRulesetsService: PartyDelegateRulesetsService,
         private routingRulesService: RoutingRulesService,
         private router: Router,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
         private route: ActivatedRoute
     ) {}
 
     attachNewRuleset() {
-        this.baseDialogService
+        this.dialogService
             .open(AttachNewRulesetDialogComponent, {
                 partyID: this.partyID,
                 type: this.route.snapshot.params.type,

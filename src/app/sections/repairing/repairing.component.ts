@@ -103,7 +103,7 @@ export class RepairingComponent implements OnInit {
         private machinesService: MachinesService,
         private fb: FormBuilder,
         private qp: QueryParamsService<Filters>,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
@@ -150,7 +150,7 @@ export class RepairingComponent implements OnInit {
     }
 
     repair() {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, {
                 title: `Simple repair ${this.selected$.value.length} machines`,
             })
@@ -173,7 +173,7 @@ export class RepairingComponent implements OnInit {
     }
 
     repairByScenario() {
-        this.baseDialogService
+        this.dialogService
             .open(RepairByScenarioDialogComponent, { machines: this.selected$.value })
             .afterClosed()
             .pipe(untilDestroyed(this))

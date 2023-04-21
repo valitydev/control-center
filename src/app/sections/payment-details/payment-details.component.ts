@@ -39,11 +39,11 @@ export class PaymentDetailsComponent {
         private paymentDetailsService: PaymentDetailsService,
         private route: ActivatedRoute,
         private invoicingService: InvoicingService,
-        private baseDialogService: DialogService
+        private dialogService: DialogService
     ) {}
 
     createChargeback() {
-        this.baseDialogService
+        this.dialogService
             .open(
                 CreateChargebackDialogComponent,
                 this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>

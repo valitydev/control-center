@@ -76,14 +76,14 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     private paginator$ = new ReplaySubject<MatPaginator>(1);
 
     constructor(
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute
     ) {}
 
     changeDelegateRuleset(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ChangeDelegateRulesetDialogComponent, {
                 mainRulesetRefID: delegateId.parentRefId,
                 delegateIdx: delegateId.delegateIdx,
@@ -94,7 +94,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     changeTarget(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ChangeTargetDialogComponent, {
                 mainRulesetRefID: delegateId.parentRefId,
                 delegateIdx: delegateId.delegateIdx,
@@ -106,7 +106,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     cloneDelegateRuleset(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Clone delegate ruleset' })
             .afterClosed()
             .pipe(
@@ -123,7 +123,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     }
 
     delete(delegateId: DelegateId) {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Delete delegate' })
             .afterClosed()
             .pipe(

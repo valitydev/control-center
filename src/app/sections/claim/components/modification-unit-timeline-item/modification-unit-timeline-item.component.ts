@@ -45,7 +45,7 @@ export class ModificationUnitTimelineItemComponent {
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
@@ -66,7 +66,7 @@ export class ModificationUnitTimelineItemComponent {
             .pipe(
                 first(),
                 switchMap((party) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(AddModificationDialogComponent, {
                             party,
                             claim: this.claim,
@@ -82,7 +82,7 @@ export class ModificationUnitTimelineItemComponent {
     }
 
     remove() {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Confirm deletion' })
             .afterClosed()
             .pipe(

@@ -43,7 +43,7 @@ export class RoutingRulesetComponent {
     isLoading$ = this.domainStoreService.isLoading$;
 
     constructor(
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private routingRulesetService: RoutingRulesetService,
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
@@ -56,9 +56,7 @@ export class RoutingRulesetComponent {
             .pipe(
                 first(),
                 switchMap((refID) =>
-                    this.baseDialogService
-                        .open(AddRoutingRuleDialogComponent, { refID })
-                        .afterClosed()
+                    this.dialogService.open(AddRoutingRuleDialogComponent, { refID }).afterClosed()
                 )
             )
             .pipe(untilDestroyed(this))

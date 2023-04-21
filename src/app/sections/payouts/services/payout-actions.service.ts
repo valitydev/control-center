@@ -16,7 +16,7 @@ import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout
 export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService
     ) {}
 
@@ -29,11 +29,11 @@ export class PayoutActionsService {
     }
 
     cancel(id: PayoutID) {
-        this.baseDialogService.open(CancelPayoutDialogComponent, { id });
+        this.dialogService.open(CancelPayoutDialogComponent, { id });
     }
 
     confirm(id: PayoutID) {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Confirm payout' })
             .afterClosed()
             .pipe(

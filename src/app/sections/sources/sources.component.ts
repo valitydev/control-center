@@ -33,10 +33,10 @@ export class SourcesComponent {
 
     constructor(
         private fetchSourcesService: FetchSourcesService,
-        private baseDialogService: DialogService
+        private dialogService: DialogService
     ) {}
 
     create() {
-        this.baseDialogService.open(CreateSourceComponent);
+        this.dialogService.open(CreateSourceComponent);
     }
 }

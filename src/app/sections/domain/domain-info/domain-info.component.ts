@@ -48,7 +48,7 @@ export class DomainInfoComponent {
     constructor(
         private router: Router,
         private domainStoreService: DomainStoreService,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
@@ -60,7 +60,7 @@ export class DomainInfoComponent {
     }
 
     delete() {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Delete object' })
             .afterClosed()
             .pipe(

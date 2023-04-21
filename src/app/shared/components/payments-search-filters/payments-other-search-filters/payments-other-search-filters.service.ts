@@ -41,7 +41,7 @@ export class PaymentsOtherSearchFiltersService {
         shareReplay(1)
     );
 
-    constructor(private baseDialogService: DialogService) {}
+    constructor(private dialogService: DialogService) {}
 
     init(params: SearchFiltersParams) {
         this.formParams.next(searchParamsToFormParams(params));
@@ -52,7 +52,7 @@ export class PaymentsOtherSearchFiltersService {
             .pipe(
                 first(),
                 switchMap((data) =>
-                    this.baseDialogService.open(OtherFiltersDialogComponent, data).afterClosed()
+                    this.dialogService.open(OtherFiltersDialogComponent, data).afterClosed()
                 ),
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 untilDestroyed(this)

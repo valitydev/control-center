@@ -51,7 +51,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     private updateFile$ = new Subject<void>();
     private editorError: unknown = null;
 
-    constructor(private baseDialogService: DialogService) {
+    constructor(private dialogService: DialogService) {
         super();
     }
 
@@ -89,7 +89,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     }
 
     reset() {
-        this.baseDialogService
+        this.dialogService
             .open(ConfirmActionDialogComponent, { title: 'Reset changes' })
             .afterClosed()
             .pipe(filter(({ status }) => status === DialogResponseStatus.Success))

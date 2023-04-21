@@ -89,7 +89,7 @@ export class PartyRoutingRulesetComponent {
     );
 
     constructor(
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private partyRoutingRulesetService: PartyRoutingRulesetService,
         private router: Router,
         private route: ActivatedRoute,
@@ -104,7 +104,7 @@ export class PartyRoutingRulesetComponent {
             .pipe(
                 take(1),
                 switchMap(([partyID, refID]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(InitializeRoutingRulesDialogComponent, { partyID, refID })
                         .afterClosed()
                 ),
@@ -128,7 +128,7 @@ export class PartyRoutingRulesetComponent {
             .pipe(
                 take(1),
                 switchMap(([refID, shops, wallets, type, partyID]) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(AddPartyRoutingRuleDialogComponent, {
                             refID,
                             shops,

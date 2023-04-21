@@ -33,7 +33,7 @@ export class ShopDetailsComponent {
         private fetchShopService: FetchShopService,
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
@@ -48,7 +48,7 @@ export class ShopDetailsComponent {
             .pipe(
                 first(),
                 switchMap((shop) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(ConfirmActionDialogComponent, {
                             title:
                                 getUnionKey(shop.blocking) === 'unblocked'
@@ -82,7 +82,7 @@ export class ShopDetailsComponent {
             .pipe(
                 first(),
                 switchMap((shop) =>
-                    this.baseDialogService
+                    this.dialogService
                         .open(ConfirmActionDialogComponent, {
                             title:
                                 getUnionKey(shop.suspension) === 'active'

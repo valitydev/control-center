@@ -78,7 +78,7 @@ export class WithdrawalsComponent implements OnInit {
         private fetchWithdrawalsService: FetchWithdrawalsService,
         private fb: FormBuilder,
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
-        private baseDialogService: DialogService,
+        private dialogService: DialogService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService
     ) {}
@@ -112,7 +112,7 @@ export class WithdrawalsComponent implements OnInit {
     }
 
     adjustment() {
-        this.baseDialogService
+        this.dialogService
             .open(CreateAdjustmentDialogComponent, { withdrawals: this.selection.selected })
             .afterClosed()
             .pipe(untilDestroyed(this))
