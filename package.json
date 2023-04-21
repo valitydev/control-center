@@ -4,21 +4,17 @@
   "private": true,
   "scripts": {
     "postinstall": "ngcc",
-    "start": "npm run dev",
-    "dev": "ng serve --proxy-config proxy.conf.js --port 4200",
+    "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "stage": "cross-env NODE_ENV=stage ng serve --proxy-config proxy.conf.js --port 4201 --configuration=stage",
-    "build-app": "ng build --extra-webpack-config webpack.extra.js",
-    "build": "npm run build-libs && npm run build-app",
+    "build": "ng build --extra-webpack-config webpack.extra.js",
     "test": "ng test",
     "lint": "eslint \"src/**/*.{ts,js,html}\" --max-warnings 420",
     "lint-fix": "npm run lint -- --fix",
     "lint-errors": "npm run lint -- --quiet",
-    "lint-libs": "eslint \"projects/**/*.{ts,js,html}\" --max-warnings 0",
-    "lint-libs-fix": "npm run lint-libs -- --fix",
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier-fix": "npm run prettier-preset -- --write",
-    "fix": "concurrently -n LIB,APP -c magenta,cyan npm:lint-libs-fix npm:lint-fix && npm run prettier-fix"
+    "fix": "npm:lint-fix && npm run prettier-fix"
   },
   "dependencies": {
     "@angular/animations": "15.0.3",
