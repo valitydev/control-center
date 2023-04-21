@@ -53,7 +53,7 @@
     "@vality/thrift-ts": "2.4.1-8ad5123.0",
     "@vality/woody": "0.1.1",
     "angular2-prettyjson": "3.0.1",
-    "coerce-property": "0.3.2",
+    "coerce-property": "15.0.1",
     "css-element-queries": "1.2.3",
     "element-resize-detector": "1.2.4",
     "humanize-duration": "3.21.0",
