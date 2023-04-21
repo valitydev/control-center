@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeRequest } from '@vality/fistful-proto/deposit_adjustment';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { ExternalID } from '@vality/fistful-proto/withdrawal_adjustment';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import { combineLatest, from, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import * as short from 'short-uuid';
@@ -17,7 +17,7 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',
 })
-export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
+export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     CreateAdjustmentDialogComponent,
     { withdrawals: StatWithdrawal[] }
 > {
@@ -76,7 +76,7 @@ export class CreateAdjustmentDialogComponent extends BaseDialogSuperclass<
             .subscribe({
                 next: (res) => {
                     if (!res.includes(null)) {
-                        this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                        this.dialogRef.close({ status: DialogResponseStatus.Success });
                     }
                 },
                 error: this.notificationErrorService.error,

@@ -4,7 +4,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
-import { BaseDialogService } from '@vality/ng-core';
+import { DialogService } from '@vality/ng-core';
 
 import { AmountCurrencyPipe, ThriftPipesModule } from '@cc/app/shared';
 import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog/details-dialog.component';
@@ -33,7 +33,7 @@ export class ChargebacksComponent {
 
     cols = new Columns('id', 'status', 'created_at', 'body', 'levy', 'stage', 'actions');
 
-    constructor(private baseDialogService: BaseDialogService) {}
+    constructor(private baseDialogService: DialogService) {}
 
     changeStatus(id: string) {
         this.baseDialogService.open(ChangeChargebackStatusDialogComponent, {

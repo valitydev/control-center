@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, switchMap, from } from 'rxjs';
 import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ export class ShopDetailsComponent {
         private fetchShopService: FetchShopService,
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
-        private baseDialogService: BaseDialogService,
+        private baseDialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
@@ -58,7 +58,7 @@ export class ShopDetailsComponent {
                         })
                         .afterClosed()
                 ),
-                filter((r) => r.status === BaseDialogResponseStatus.Success),
+                filter((r) => r.status === DialogResponseStatus.Success),
                 withLatestFrom(this.shop$, this.partyID$),
                 switchMap(([{ data }, shop, partyID]) =>
                     getUnionKey(shop.blocking) === 'unblocked'
@@ -91,7 +91,7 @@ export class ShopDetailsComponent {
                         })
                         .afterClosed()
                 ),
-                filter((r) => r.status === BaseDialogResponseStatus.Success),
+                filter((r) => r.status === DialogResponseStatus.Success),
                 withLatestFrom(this.shop$, this.partyID$),
                 switchMap(([, shop, partyID]) =>
                     getUnionKey(shop.suspension) === 'active'

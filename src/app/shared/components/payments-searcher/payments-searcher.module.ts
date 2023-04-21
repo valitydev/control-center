@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
@@ -45,7 +45,7 @@ import { PaymentsSearcherComponent } from './payments-searcher.component';
         PaymentsOtherSearchFiltersModule,
         EmptySearchResultModule,
         ActionsModule,
-        BaseDialogModule,
+        DialogModule,
         MetadataFormModule,
     ],
     declarations: [PaymentsSearcherComponent, CreatePaymentAdjustmentComponent],

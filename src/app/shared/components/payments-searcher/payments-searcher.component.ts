@@ -9,7 +9,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { BehaviorSubject, skip } from 'rxjs';
 
 import { SearchFiltersParams } from '../payments-search-filters';
@@ -38,7 +38,7 @@ export class PaymentsSearcherComponent implements OnInit {
     constructor(
         private fetchPaymentsService: FetchPaymentsService,
         private snackBar: MatSnackBar,
-        private baseDialogService: BaseDialogService
+        private baseDialogService: DialogService
     ) {}
 
     ngOnInit() {
@@ -74,7 +74,7 @@ export class PaymentsSearcherComponent implements OnInit {
             })
             .afterClosed()
             .subscribe((res) => {
-                if (res.status === BaseDialogResponseStatus.Success) {
+                if (res.status === DialogResponseStatus.Success) {
                     this.searchParamsChanges();
                     this.selectedPayments = [];
                 } else if (res.data?.withError?.length) {

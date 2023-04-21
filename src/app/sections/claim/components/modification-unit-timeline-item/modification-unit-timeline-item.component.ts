@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap, from } from 'rxjs';
@@ -45,7 +45,7 @@ export class ModificationUnitTimelineItemComponent {
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private baseDialogService: BaseDialogService,
+        private baseDialogService: DialogService,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
@@ -77,7 +77,7 @@ export class ModificationUnitTimelineItemComponent {
                 untilDestroyed(this)
             )
             .subscribe((result) => {
-                if (result.status === BaseDialogResponseStatus.Success) this.claimChanged.emit();
+                if (result.status === DialogResponseStatus.Success) this.claimChanged.emit();
             });
     }
 
@@ -86,7 +86,7 @@ export class ModificationUnitTimelineItemComponent {
             .open(ConfirmActionDialogComponent, { title: 'Confirm deletion' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() => this.partyManagementService.Get(this.claim.party_id)),
                 switchMap((party) =>
                     this.claimManagementService.RemoveModification(

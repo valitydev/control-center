@@ -1,4 +1,4 @@
-<cc-base-dialog title="Change main ruleset">
+<v-dialog title="Change main ruleset">
     <cc-target-ruleset-form
         [type]="dialogData.type"
         [value]="initValue"
@@ -6,7 +6,7 @@
         (valueChanges)="targetRuleset$.next($event)"
     ></cc-target-ruleset-form>
 
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="!(targetRulesetValid$ | async)"
             color="primary"
@@ -15,5 +15,5 @@
         >
             CHANGE TARGET
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

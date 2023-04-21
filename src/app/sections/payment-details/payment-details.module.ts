@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { StatusModule } from '@cc/app/shared/components';
 import { DetailsItemModule } from '@cc/components/details-item';
@@ -38,7 +38,7 @@ import { PaymentRefundsModule } from './payment-refunds';
         PaymentRefundsModule,
         ChargebacksComponent,
         ActionsModule,
-        BaseDialogModule,
+        DialogModule,
         MetadataFormModule,
         ReactiveFormsModule,
     ],

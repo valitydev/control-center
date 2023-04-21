@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
 import { StatWallet } from '@vality/fistful-proto/fistful_stat';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
@@ -14,7 +14,7 @@ import { RoutingRulesType } from '../../types/routing-rules-type';
 @Component({
     templateUrl: 'add-party-routing-rule-dialog.component.html',
 })
-export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
+export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     AddPartyRoutingRuleDialogComponent,
     { refID: number; partyID: string; shops: Shop[]; wallets: StatWallet[]; type: RoutingRulesType }
 > {
@@ -54,7 +54,7 @@ export class AddPartyRoutingRuleDialogComponent extends BaseDialogSuperclass<
         )
             .pipe(untilDestroyed(this))
             .subscribe({
-                next: () => this.dialogRef.close({ status: BaseDialogResponseStatus.Success }),
+                next: () => this.dialogRef.close({ status: DialogResponseStatus.Success }),
                 error: this.notificationErrorService.error,
             });
     }

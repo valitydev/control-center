@@ -1,6 +1,6 @@
-<cc-base-dialog title="Create claim">
+<v-dialog title="Create claim">
     <cc-merchant-field [formControl]="control"></cc-merchant-field>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="control.invalid || !!(progress$ | async)"
             color="primary"
@@ -9,5 +9,5 @@
         >
             CREATE
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

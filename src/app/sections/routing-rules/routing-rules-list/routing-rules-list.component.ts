@@ -10,7 +10,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -76,7 +76,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
     private paginator$ = new ReplaySubject<MatPaginator>(1);
 
     constructor(
-        private baseDialogService: BaseDialogService,
+        private baseDialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute
@@ -110,7 +110,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
             .open(ConfirmActionDialogComponent, { title: 'Clone delegate ruleset' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.routingRulesService.cloneDelegateRuleset({
                         mainRulesetRefID: delegateId.parentRefId,
@@ -127,7 +127,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
             .open(ConfirmActionDialogComponent, { title: 'Delete delegate' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.routingRulesService.deleteDelegate({
                         mainRulesetRefID: delegateId.parentRefId,

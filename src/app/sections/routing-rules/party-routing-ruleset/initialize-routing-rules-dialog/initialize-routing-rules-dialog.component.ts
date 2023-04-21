@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 
 import { NotificationErrorService } from '../../../../shared/services/notification-error';
 import { RoutingRulesService } from '../../services/routing-rules';
@@ -11,7 +11,7 @@ import { RoutingRulesService } from '../../services/routing-rules';
     selector: 'cc-initialize-routing-rules-dialog',
     templateUrl: 'initialize-routing-rules-dialog.component.html',
 })
-export class InitializeRoutingRulesDialogComponent extends BaseDialogSuperclass<
+export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
     InitializeRoutingRulesDialogComponent,
     { partyID: string; refID: number }
 > {

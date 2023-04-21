@@ -1,4 +1,4 @@
-<cc-base-dialog [inProgress]="inProgress$ | async" title="Change claim status">
+<v-dialog [inProgress]="inProgress$ | async" title="Change claim status">
     <div [formGroup]="form" gdColumns="1fr" gdGap="16px">
         <mat-form-field>
             <mat-select
@@ -42,7 +42,7 @@
             </mat-select>
         </mat-form-field>
     </div>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button
             [disabled]="form.invalid || (inProgress$ | async)"
             color="primary"
@@ -51,5 +51,5 @@
         >
             CONFIRM
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
@@ -17,7 +17,7 @@ import { NotificationErrorService } from '../../../../shared/services/notificati
     selector: 'cc-change-status-dialog',
     templateUrl: './change-status-dialog.component.html',
 })
-export class ChangeStatusDialogComponent extends BaseDialogSuperclass<
+export class ChangeStatusDialogComponent extends DialogSuperclass<
     ChangeStatusDialogComponent,
     { partyID: string; claim: Claim }
 > {
@@ -68,7 +68,7 @@ export class ChangeStatusDialogComponent extends BaseDialogSuperclass<
         }
         result$.pipe(progressTo(this.progress$), untilDestroyed(this)).subscribe({
             next: () => {
-                this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                this.dialogRef.close({ status: DialogResponseStatus.Success });
                 this.notificationService.success('Status successfully changed');
             },
             error: this.notificationErrorService.error,

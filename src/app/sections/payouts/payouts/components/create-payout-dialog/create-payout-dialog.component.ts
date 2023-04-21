@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogResponseStatus, BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
@@ -28,7 +28,7 @@ interface CreatePayoutDialogForm {
     templateUrl: './create-payout-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreatePayoutDialogComponent extends BaseDialogSuperclass<CreatePayoutDialogComponent> {
+export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDialogComponent> {
     progress$ = new BehaviorSubject(0);
     control = this.fb.group<CreatePayoutDialogForm>({
         partyId: null,
@@ -71,7 +71,7 @@ export class CreatePayoutDialogComponent extends BaseDialogSuperclass<CreatePayo
             .subscribe({
                 next: () => {
                     this.notificationService.success('Payout created successfully');
-                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
                 error: this.notificationErrorService.error,
             });

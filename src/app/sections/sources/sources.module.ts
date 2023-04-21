@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { SimpleTableModule } from '@cc/components/simple-table';
 
@@ -29,7 +29,7 @@ import { SourcesComponent } from './sources.component';
         EmptySearchResultModule,
         TableModule,
         MatTableModule,
-        BaseDialogModule,
+        DialogModule,
         MetadataFormModule,
         ReactiveFormsModule,
         SimpleTableModule,

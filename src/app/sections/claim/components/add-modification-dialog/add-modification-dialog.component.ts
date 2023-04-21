@@ -8,11 +8,7 @@ import {
     PartyModificationChange,
 } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
-import {
-    BaseDialogResponseStatus,
-    BaseDialogSuperclass,
-    DEFAULT_DIALOG_CONFIG,
-} from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
@@ -26,7 +22,7 @@ import { NotificationErrorService } from '../../../../shared/services/notificati
     selector: 'cc-add-modification-dialog',
     templateUrl: './add-modification-dialog.component.html',
 })
-export class AddModificationDialogComponent extends BaseDialogSuperclass<
+export class AddModificationDialogComponent extends DialogSuperclass<
     AddModificationDialogComponent,
     { party: Party; claim: Claim; modificationUnit?: ModificationUnit }
 > {
@@ -64,7 +60,7 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification added successfully');
-                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
                 error: this.notificationErrorService.error,
             });
@@ -84,13 +80,13 @@ export class AddModificationDialogComponent extends BaseDialogSuperclass<
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification updated successfully');
-                    this.dialogRef.close({ status: BaseDialogResponseStatus.Success });
+                    this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
                 error: this.notificationErrorService.error,
             });
     }
 
     cancel() {
-        this.dialogRef.close({ status: BaseDialogResponseStatus.Cancelled });
+        this.dialogRef.close({ status: DialogResponseStatus.Cancelled });
     }
 }

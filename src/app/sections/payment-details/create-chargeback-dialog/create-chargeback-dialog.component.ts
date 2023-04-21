@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 import { from } from 'rxjs';
 import * as short from 'short-uuid';
 
@@ -17,7 +17,7 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
     selector: 'cc-create-chargeback-dialog',
     templateUrl: './create-chargeback-dialog.component.html',
 })
-export class CreateChargebackDialogComponent extends BaseDialogSuperclass<
+export class CreateChargebackDialogComponent extends DialogSuperclass<
     CreateChargebackDialogComponent,
     { invoiceID: string; paymentID: string },
     InvoicePaymentChargeback

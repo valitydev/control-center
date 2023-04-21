@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
@@ -14,7 +14,7 @@ import { RoutingRulesType } from '../types/routing-rules-type';
     templateUrl: 'change-target-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChangeTargetDialogComponent extends BaseDialogSuperclass<
+export class ChangeTargetDialogComponent extends DialogSuperclass<
     ChangeTargetDialogComponent,
     { mainRulesetRefID: number; delegateIdx: number; type: RoutingRulesType }
 > {

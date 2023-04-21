@@ -1,13 +1,13 @@
-<cc-base-dialog title="Create Source">
+<v-dialog title="Create Source">
     <cc-metadata-form
         [formControl]="control"
         [metadata]="metadata$ | async"
         namespace="source"
         type="SourceParams"
     ></cc-metadata-form>
-    <cc-base-dialog-actions>
+    <v-dialog-actions>
         <button [disabled]="control.invalid" color="primary" mat-raised-button (click)="create()">
             CREATE
         </button>
-    </cc-base-dialog-actions>
-</cc-base-dialog>
+    </v-dialog-actions>
+</v-dialog>

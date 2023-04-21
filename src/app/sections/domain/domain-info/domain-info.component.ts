@@ -3,7 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export class DomainInfoComponent {
     constructor(
         private router: Router,
         private domainStoreService: DomainStoreService,
-        private baseDialogService: BaseDialogService,
+        private baseDialogService: DialogService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
@@ -65,7 +65,7 @@ export class DomainInfoComponent {
             .afterClosed()
             .pipe(
                 untilDestroyed(this),
-                filter(({ status }) => status === BaseDialogResponseStatus.Success),
+                filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.domainStoreService.commit({
                         ops: [{ remove: { object: this.objWithRef.obj } }],

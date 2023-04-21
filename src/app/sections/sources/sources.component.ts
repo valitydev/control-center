@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseDialogService } from '@vality/ng-core';
+import { DialogService } from '@vality/ng-core';
 
 import {
     createGridColumns,
@@ -33,7 +33,7 @@ export class SourcesComponent {
 
     constructor(
         private fetchSourcesService: FetchSourcesService,
-        private baseDialogService: BaseDialogService
+        private baseDialogService: DialogService
     ) {}
 
     create() {

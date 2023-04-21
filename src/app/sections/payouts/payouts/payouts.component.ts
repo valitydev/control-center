@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { BaseDialogService } from '@vality/ng-core';
+import { DialogService } from '@vality/ng-core';
 import omitBy from 'lodash-es/omitBy';
 import * as moment from 'moment/moment';
 
@@ -33,7 +33,7 @@ export class PayoutsComponent implements OnInit {
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
         private qp: QueryParamsService<Partial<PayoutsSearchForm>>,
-        private baseDialogService: BaseDialogService
+        private baseDialogService: DialogService
     ) {}
 
     ngOnInit() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PartyID } from '@vality/domain-proto/domain';
-import { BaseDialogService, cleanPrimitiveProps, clean } from '@vality/ng-core';
+import { DialogService, cleanPrimitiveProps, clean } from '@vality/ng-core';
 
 import { ClaimSearchForm } from '@cc/app/shared/components';
 
@@ -21,7 +21,7 @@ export class SearchClaimsComponent implements OnInit {
     constructor(
         private searchClaimService: SearchClaimsService,
         private snackBar: MatSnackBar,
-        private baseDialogService: BaseDialogService
+        private baseDialogService: DialogService
     ) {}
 
     ngOnInit(): void {

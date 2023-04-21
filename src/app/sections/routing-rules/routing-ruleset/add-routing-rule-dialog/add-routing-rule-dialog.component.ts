@@ -3,7 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { domain } from '@vality/domain-proto';
 import { Predicate } from '@vality/domain-proto/domain';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 
@@ -15,7 +15,7 @@ import { AddRoutingRuleDialogService, TerminalType } from './add-routing-rule-di
     styleUrls: ['add-routing-rule-dialog.component.scss'],
     providers: [AddRoutingRuleDialogService],
 })
-export class AddRoutingRuleDialogComponent extends BaseDialogSuperclass<
+export class AddRoutingRuleDialogComponent extends DialogSuperclass<
     AddRoutingRuleDialogComponent,
     { refID: number }
 > {

@@ -13,7 +13,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActionsModule, BaseDialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { EnumKeyPipe, EnumKeysPipe, DomainObjectFieldComponent } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
@@ -45,7 +45,7 @@ import { RepairingComponent } from './repairing.component';
         DateRangeModule,
         MatSelectModule,
         ActionsModule,
-        BaseDialogModule,
+        DialogModule,
         MetadataFormModule,
         MatRadioModule,
         MatChipsModule,

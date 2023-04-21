@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { BaseDialogService, BaseDialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { Subject, merge, defer } from 'rxjs';
 import { pluck, shareReplay, switchMap, map } from 'rxjs/operators';
 
@@ -39,7 +39,7 @@ export class PaymentDetailsComponent {
         private paymentDetailsService: PaymentDetailsService,
         private route: ActivatedRoute,
         private invoicingService: InvoicingService,
-        private baseDialogService: BaseDialogService
+        private baseDialogService: DialogService
     ) {}
 
     createChargeback() {
@@ -51,7 +51,7 @@ export class PaymentDetailsComponent {
             .afterClosed()
             .pipe(untilDestroyed(this))
             .subscribe(({ status }) => {
-                if (status === BaseDialogResponseStatus.Success) this.updateChargebacks$.next();
+                if (status === DialogResponseStatus.Success) this.updateChargebacks$.next();
             });
     }
 }

@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { BaseDialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
@@ -15,7 +15,7 @@ import { progressTo } from '@cc/utils';
     selector: 'cc-create-claim-dialog',
     templateUrl: './create-claim-dialog.component.html',
 })
-export class CreateClaimDialogComponent extends BaseDialogSuperclass<
+export class CreateClaimDialogComponent extends DialogSuperclass<
     CreateClaimDialogComponent,
     { partyId: string }
 > {

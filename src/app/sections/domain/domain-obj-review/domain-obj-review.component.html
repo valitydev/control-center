@@ -15,7 +15,7 @@
                     ></cc-thrift-viewer>
                 </mat-card-content>
             </mat-card>
-            <cc-actions>
+            <v-actions>
                 <button [disabled]="!!(progress$ | async)" mat-button (click)="back()">
                     <mat-icon>keyboard_arrow_left</mat-icon>
                     BACK TO EDIT
@@ -28,7 +28,7 @@
                 >
                     COMMIT
                 </button>
-            </cc-actions>
+            </v-actions>
         </div>
     </ng-template>
 </div>
