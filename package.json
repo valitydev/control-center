@@ -14,7 +14,7 @@
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier-fix": "npm run prettier-preset -- --write",
-    "fix": "npm:lint-fix && npm run prettier-fix"
+    "fix": "npm run lint-fix && npm run prettier-fix"
   },
   "dependencies": {
     "@angular/animations": "15.0.3",

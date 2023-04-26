@@ -42,7 +42,7 @@
                 </button>
                 <ng-template #balanceTpl>
                     <ng-container *ngIf="getBalance(row.id) | async as account; else spinner">
-                        {{ account.own_amount | amountCurrency : account.currency_sym_code }}
+                        {{ account.current | amountCurrency : account.currency.symbolic_code }}
                     </ng-container>
                     <ng-template #spinner>
                         <button [loading]="true" class="cell-button" mat-icon-button></button>

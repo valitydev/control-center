@@ -4,7 +4,7 @@ import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
 import { clean, splitIds } from '@vality/ng-core';
 import { of } from 'rxjs';
-import { startWith, map, shareReplay, switchMap, catchError } from 'rxjs/operators';
+import { startWith, map, shareReplay, catchError } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
 
 import { AccounterService } from '@cc/app/api/accounter';
@@ -82,10 +82,7 @@ export class WalletsComponent implements OnInit {
 
     @Memoize()
     getBalance(walletId: string) {
-        return this.walletManagementService.Get(walletId, {}).pipe(
-            switchMap((wallet) =>
-                this.accounterService.GetAccountByID(Number(wallet.account.accounter_account_id))
-            ),
+        return this.walletManagementService.GetAccountBalance(walletId).pipe(
             catchError((err) => {
                 this.errorService.error(err);
                 return of({});

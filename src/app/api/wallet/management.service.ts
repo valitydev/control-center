@@ -5,7 +5,7 @@ import {
     wallet_Management,
 } from '@vality/fistful-proto';
 import { ContextSet } from '@vality/fistful-proto/internal/context';
-import { WalletParams } from '@vality/fistful-proto/internal/wallet';
+import { AccountBalance, WalletParams } from '@vality/fistful-proto/internal/wallet';
 import { WalletID, EventRange, WalletState } from '@vality/fistful-proto/wallet';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
@@ -45,5 +45,10 @@ export class ManagementService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Create(params: WalletParams, context: ContextSet): Observable<WalletState> {
         return this.client$.pipe(switchMap((c) => c.Create(params, context)));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GetAccountBalance(id: WalletID): Observable<AccountBalance> {
+        return this.client$.pipe(switchMap((c) => c.GetAccountBalance(id)));
     }
 }

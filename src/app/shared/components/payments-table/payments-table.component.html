@@ -58,6 +58,13 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="terminal_id">
+        <th *matHeaderCellDef mat-header-cell>Terminal</th>
+        <td *matCellDef="let payment" mat-cell>
+            {{ payment.terminal_id.id }}
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="actions" stickyEnd>
         <th *matHeaderCellDef class="action-cell" mat-header-cell></th>
         <td *matCellDef="let payment" class="action-cell" mat-cell>

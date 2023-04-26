@@ -32,6 +32,7 @@ export class PaymentsTableComponent {
         'revision',
         'invoice',
         'party',
+        'terminal_id',
         'actions'
     );
     selection = new SelectionModel<StatPayment>();
