@@ -7,9 +7,9 @@
         <input [formControl]="control" matInput />
     </mat-form-field>
     <v-dialog-actions>
-        <button mat-button (click)="cancel()">CANCEL</button>
+        <button mat-button (click)="cancel()">Cancel</button>
         <button color="primary" mat-raised-button (click)="confirm()">
-            {{ dialogData?.['confirmLabel'] || 'CONFIRM' }}
+            {{ dialogData?.['confirmLabel'] || 'Confirm' }}
         </button>
     </v-dialog-actions>
 </v-dialog>

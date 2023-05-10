@@ -6,10 +6,10 @@
         (valueChange)="change($event)"
     >
         <mat-select-trigger>
-            {{ isAllSelected ? 'ALL SELECTED' : currentLabel }}
+            {{ isAllSelected ? 'All selected' : currentLabel }}
         </mat-select-trigger>
         <mat-option [value]="selectAllSymbol" (click)="toggle()">
-            {{ isAllSelected ? 'DESELECT ALL' : 'SELECT ALL' }}
+            {{ isAllSelected ? 'Deselect all' : 'Select all' }}
         </mat-option>
         <mat-option *ngFor="let option of options" [value]="option.value">
             {{ option.label }}
