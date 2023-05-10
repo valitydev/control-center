@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { PartyActions } from './party-actions';
 
 const PARTY_ACTION_NAMES: { [N in PartyActions]: string } = {
-    [PartyActions.NavigateToParty]: 'Merchant Details',
+    [PartyActions.NavigateToParty]: 'Merchant details',
 };
 
 @Pipe({
