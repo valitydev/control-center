@@ -35,7 +35,7 @@
                 routerLink="/domain"
             >
                 <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
-                BACK TO DOMAIN
+                Back to domain
             </button>
             <button
                 *ngIf="review"
@@ -44,7 +44,7 @@
                 (click)="review = false"
             >
                 <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
-                BACK TO EDIT
+                Back to edit
             </button>
 
             <button
@@ -53,7 +53,7 @@
                 mat-button
                 (click)="review ? commit() : reviewChanges()"
             >
-                {{ review ? 'COMMIT' : 'REVIEW' }}
+                {{ review ? 'Commit' : 'Review' }}
                 <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
             </button>
         </v-actions>
