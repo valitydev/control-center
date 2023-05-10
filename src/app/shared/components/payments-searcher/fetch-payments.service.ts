@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { cleanPrimitiveProps, clean, splitIds } from '@vality/ng-core';
+import { cleanPrimitiveProps, clean, splitBySeparators } from '@vality/ng-core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -54,7 +54,7 @@ export class FetchPaymentsService extends PartialFetcher<StatPayment, SearchFilt
                         party_id: partyID,
                         shop_ids: shopIDs,
                     }),
-                    invoice_ids: clean(splitIds(invoiceIDs), true),
+                    invoice_ids: clean(splitBySeparators(invoiceIDs), true),
                     payment_params: clean({
                         payment_status: paymentStatus,
                         payment_tool: paymentMethod,

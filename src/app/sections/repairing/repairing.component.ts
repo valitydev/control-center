@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogResponseStatus, DialogService, clean, splitIds } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, clean, splitBySeparators } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
@@ -121,7 +121,7 @@ export class RepairingComponent implements OnInit {
             .pipe(
                 map(({ ids, ns, timespan, provider_id, status, error_message }) =>
                     clean({
-                        ids: splitIds(ids),
+                        ids: splitBySeparators(ids),
                         ns,
                         provider_id: isNil(provider_id) ? null : String(provider_id),
                         status,

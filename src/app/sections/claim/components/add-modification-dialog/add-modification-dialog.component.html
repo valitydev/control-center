@@ -1,5 +1,5 @@
 <v-dialog
-    [inProgress]="isLoading$ | async"
+    [progress]="isLoading$ | async"
     [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
 >
     <cc-modification-form

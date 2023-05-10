@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
-import { clean, splitIds } from '@vality/ng-core';
+import { clean, splitBySeparators } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, map, shareReplay, catchError } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
@@ -61,7 +61,7 @@ export class WalletsComponent implements OnInit {
         this.filters.valueChanges
             .pipe(
                 startWith(this.filters.value),
-                map((v) => ({ ...v, wallet_id: splitIds(v.wallet_id) })),
+                map((v) => ({ ...v, wallet_id: splitBySeparators(v.wallet_id) })),
                 map((v) => clean(v)),
                 untilDestroyed(this)
             )
@@ -73,7 +73,7 @@ export class WalletsComponent implements OnInit {
 
     search(size?: number) {
         const { wallet_id, ...v } = this.filters.value;
-        this.fetchWalletsService.search(clean({ ...v, wallet_id: splitIds(wallet_id) }), size);
+        this.fetchWalletsService.search(clean({ ...v, wallet_id: splitBySeparators(wallet_id) }), size);
     }
 
     fetchMore() {
