@@ -36,7 +36,7 @@ export class TargetTableService {
                         return result;
                     }),
                     catchError(() => {
-                        this.snackBar.open('An error occured while fetching party', 'OK');
+                        this.snackBar.open('An error occurred while fetching party', 'OK');
                         this.hasError$.next(true);
                         return of('error');
                     }),

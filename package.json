@@ -14,6 +14,8 @@
     "prettier-preset": "prettier \"**/*.{html,js,ts,css,scss,md,json,prettierrc,svg,huskyrc,yml,yaml}\"",
     "prettier": "npm run prettier-preset -- --list-different",
     "prettier-fix": "npm run prettier-preset -- --write",
+    "spell": "cspell --no-progress **",
+    "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
     "fix": "npm run lint-fix && npm run prettier-fix"
   },
   "dependencies": {
@@ -85,7 +87,9 @@
     "@types/uuid": "3.4.3",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
+    "@vality/cspell-config": "0.1.1-bfb2c9e.0",
     "cross-env": "7.0.3",
+    "cspell": "6.31.1",
     "dotenv": "16.0.0",
     "eslint": "8.29.0",
     "eslint-config-prettier": "8.5.0",
