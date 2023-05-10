@@ -6,7 +6,7 @@
                 mat-stroked-button
                 (click)="update.emit(this.size$.value ? { size: this.size$.value } : {})"
             >
-                UPDATE
+                Update
             </button>
             <button [disabled]="loading" [matMenuTriggerFor]="menu" mat-button>
                 {{ size$ | async }} <mat-icon>table_rows_narrow</mat-icon>
