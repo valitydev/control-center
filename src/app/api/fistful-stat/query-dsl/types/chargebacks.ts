@@ -24,7 +24,7 @@ export const CHARGEBACK_STAGES: (keyof InvoicePaymentChargebackStage)[] = [
     'pre_arbitration',
 ];
 
-// https://github.com/rbkmoney/magista#chargebacks
+// https://github.com/valitydev/magista#chargebacks
 export interface Chargebacks {
     merchant_id?: string;
     shop_ids?: string;
