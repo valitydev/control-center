@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 
 import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout-dialog/cancel-payout-dialog.component';
 
@@ -34,7 +33,7 @@ export class PayoutActionsService {
 
     confirm(id: PayoutID) {
         this.dialogService
-            .open(ConfirmActionDialogComponent, { title: 'Confirm payout' })
+            .open(ConfirmDialogComponent, { title: 'Confirm payout' })
             .afterClosed()
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),

@@ -10,13 +10,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
 import { combineLatest, defer, ReplaySubject } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
@@ -107,7 +106,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
 
     cloneDelegateRuleset(delegateId: DelegateId) {
         this.dialogService
-            .open(ConfirmActionDialogComponent, { title: 'Clone delegate ruleset' })
+            .open(ConfirmDialogComponent, { title: 'Clone delegate ruleset' })
             .afterClosed()
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),
@@ -124,7 +123,7 @@ export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & D
 
     delete(delegateId: DelegateId) {
         this.dialogService
-            .open(ConfirmActionDialogComponent, { title: 'Delete delegate' })
+            .open(ConfirmDialogComponent, { title: 'Delete delegate' })
             .afterClosed()
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),

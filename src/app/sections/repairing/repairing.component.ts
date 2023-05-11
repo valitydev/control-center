@@ -11,6 +11,7 @@ import {
     createDescriptionFormatterColumn,
     createTooltipTemplateGridColumn,
     Column,
+    ConfirmDialogComponent,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -21,7 +22,6 @@ import { filter, map, switchMap, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
@@ -150,7 +150,7 @@ export class RepairingComponent implements OnInit {
 
     repair() {
         this.dialogService
-            .open(ConfirmActionDialogComponent, {
+            .open(ConfirmDialogComponent, {
                 title: `Simple repair ${this.selected$.value.length} machines`,
             })
             .afterClosed()
