@@ -73,7 +73,10 @@ export class WalletsComponent implements OnInit {
 
     search(size?: number) {
         const { wallet_id, ...v } = this.filters.value;
-        this.fetchWalletsService.search(clean({ ...v, wallet_id: splitBySeparators(wallet_id) }), size);
+        this.fetchWalletsService.search(
+            clean({ ...v, wallet_id: splitBySeparators(wallet_id) }),
+            size
+        );
     }
 
     fetchMore() {
