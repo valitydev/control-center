@@ -20,14 +20,14 @@
         </mat-card-content>
     </mat-card>
 
-    <cc-simple-table
+    <v-table
         [cellTemplate]="{ balance: balanceTpl }"
         [columns]="columns"
         [data]="wallets$ | async"
         [hasMore]="hasMore$ | async"
-        [loading]="inProgress$ | async"
-        (fetchMore)="fetchMore()"
-        (size)="search($event)"
+        [progress]="inProgress$ | async"
+        (more)="fetchMore()"
+        (sizeChange)="search($event)"
         (update)="search($event.size)"
     >
         <ng-template #balanceTpl let-col="colDef" let-index="index" let-row>
@@ -50,5 +50,5 @@
                 </ng-template>
             </ng-container>
         </ng-template>
-    </cc-simple-table>
+    </v-table>
 </div>

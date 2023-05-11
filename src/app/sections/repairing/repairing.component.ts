@@ -2,7 +2,16 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogResponseStatus, DialogService, clean, splitBySeparators } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogService,
+    clean,
+    splitBySeparators,
+    createDatetimeFormatterColumn,
+    createDescriptionFormatterColumn,
+    createTooltipTemplateGridColumn,
+    Column,
+} from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
@@ -13,12 +22,6 @@ import { filter, map, switchMap, shareReplay } from 'rxjs/operators';
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
-import {
-    createGridColumns,
-    createDatetimeFormattedColumn,
-    createDescriptionFormattedColumn,
-} from '@cc/components/simple-table';
-import { createTooltipTemplateGridColumn } from '@cc/components/simple-table/components/simple-table-tooltip-cell-template.component';
 import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
@@ -66,38 +69,34 @@ export class RepairingComponent implements OnInit {
     selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
     columns$ = this.domainStoreService.getObjects('provider').pipe(
-        map((providers) =>
-            createGridColumns<Machine>([
-                'id',
-                { header: 'Namespace', field: 'ns' },
-                createDatetimeFormattedColumn('created_at'),
-                createDescriptionFormattedColumn<Machine>(
-                    'provider',
-                    (data) => data.provider_id,
-                    (data) =>
-                        providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name
-                ),
-                createTooltipTemplateGridColumn(
-                    {
-                        field: 'status',
-                        formatter: (data: Machine) =>
-                            getEnumKey(repairer.RepairStatus, data.status),
-                    },
-                    (d) => d.error_message
-                ),
-                createTooltipTemplateGridColumn(
-                    {
-                        field: 'history',
-                        formatter: (data: Machine) =>
-                            data.history?.length ? String(data.history.length) : '',
-                    },
-                    (d) => d.history
-                ),
-            ])
-        ),
+        map((providers): Column<Machine>[] => [
+            'id',
+            { header: 'Namespace', field: 'ns' },
+            createDatetimeFormatterColumn('created_at'),
+            createDescriptionFormatterColumn<Machine>(
+                'provider',
+                (data) => data.provider_id,
+                (data) => providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name
+            ),
+            createTooltipTemplateGridColumn(
+                {
+                    field: 'status',
+                    formatter: (data: Machine) => getEnumKey(repairer.RepairStatus, data.status),
+                },
+                (d) => d.error_message
+            ),
+            createTooltipTemplateGridColumn(
+                {
+                    field: 'history',
+                    formatter: (data: Machine) =>
+                        data.history?.length ? String(data.history.length) : '',
+                },
+                (d) => d.history
+            ),
+        ]),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
-    cellTemplate: Record<string, TemplateRef<any>> = {};
+    cellTemplate: Record<string, TemplateRef<unknown>> = {};
 
     constructor(
         private machinesService: MachinesService,

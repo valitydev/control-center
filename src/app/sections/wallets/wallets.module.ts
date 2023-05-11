@@ -9,13 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
+import { TableModule } from '@vality/ng-core';
 
 import { AmountCurrencyPipe } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
-import { SimpleTableModule } from '@cc/components/simple-table';
-import { TableModule } from '@cc/components/table';
 
 import { WalletsRoutingModule } from './wallets-routing.module';
 import { WalletsComponent } from './wallets.component';
@@ -35,7 +34,6 @@ import { WalletsComponent } from './wallets.component';
         MatInputModule,
         MerchantFieldModule,
         GridModule,
-        SimpleTableModule,
         MatButtonModule,
         MatIconModule,
         MtxButtonModule,

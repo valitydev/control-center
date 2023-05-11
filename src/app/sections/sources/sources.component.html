@@ -5,10 +5,9 @@
             <button color="primary" mat-raised-button (click)="create()">Create</button>
         </v-actions>
     </div>
-    <cc-simple-table
+    <v-table
         [columns]="columns"
         [data]="sources$ | async"
-        [loading]="!!(progress$ | async)"
-        noUpdate
-    ></cc-simple-table>
+        [progress]="!!(progress$ | async)"
+    ></v-table>
 </div>
