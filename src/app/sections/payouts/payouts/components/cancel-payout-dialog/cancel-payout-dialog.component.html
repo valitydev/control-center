@@ -6,14 +6,14 @@
     </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-    <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>CANCEL</button>
+    <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>Cancel</button>
     <button
         [disabled]="detailsControl.invalid || !!(progress$ | async)"
         color="primary"
         mat-button
         (click)="accept()"
     >
-        ACCEPT
+        Accept
     </button>
     <mat-progress-bar *ngIf="progress$ | async" mode="indeterminate"></mat-progress-bar>
 </mat-dialog-actions>

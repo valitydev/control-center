@@ -2,7 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
-import { clean, splitIds } from '@vality/ng-core';
+import {
+    clean,
+    splitBySeparators,
+    Column,
+    createDatetimeFormatterColumn,
+    createDescriptionFormatterColumn,
+} from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, map, shareReplay, catchError } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
@@ -12,11 +18,6 @@ import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
 import { QueryParamsService } from '@cc/app/shared/services';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-import {
-    createDatetimeFormattedColumn,
-    createDescriptionFormattedColumn,
-    createGridColumns,
-} from '@cc/components/simple-table';
 
 import { FetchWalletsService } from './fetch-wallets.service';
 
@@ -31,13 +32,13 @@ export class WalletsComponent implements OnInit {
     wallets$ = this.fetchWalletsService.searchResult$;
     inProgress$ = this.fetchWalletsService.doAction$;
     hasMore$ = this.fetchWalletsService.hasMore$;
-    columns = createGridColumns<StatWallet>([
-        createDescriptionFormattedColumn('name', 'id'),
+    columns: Column<StatWallet>[] = [
+        createDescriptionFormatterColumn('name', 'id'),
         'currency_symbolic_code',
         'identity_id',
-        createDatetimeFormattedColumn('created_at'),
+        createDatetimeFormatterColumn('created_at'),
         'balance',
-    ]);
+    ];
     filters = this.fb.group<WalletParams>({
         party_id: null,
         identity_id: null,
@@ -45,8 +46,6 @@ export class WalletsComponent implements OnInit {
         wallet_id: null,
         ...this.qp.params,
     });
-
-    test$ = this.getBalance('294');
 
     constructor(
         private fetchWalletsService: FetchWalletsService,
@@ -61,7 +60,7 @@ export class WalletsComponent implements OnInit {
         this.filters.valueChanges
             .pipe(
                 startWith(this.filters.value),
-                map((v) => ({ ...v, wallet_id: splitIds(v.wallet_id) })),
+                map((v) => ({ ...v, wallet_id: splitBySeparators(v.wallet_id) })),
                 map((v) => clean(v)),
                 untilDestroyed(this)
             )
@@ -73,7 +72,10 @@ export class WalletsComponent implements OnInit {
 
     search(size?: number) {
         const { wallet_id, ...v } = this.filters.value;
-        this.fetchWalletsService.search(clean({ ...v, wallet_id: splitIds(wallet_id) }), size);
+        this.fetchWalletsService.search(
+            clean({ ...v, wallet_id: splitBySeparators(wallet_id) }),
+            size
+        );
     }
 
     fetchMore() {

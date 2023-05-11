@@ -6,7 +6,7 @@
             (valueChanges)="searchParamsUpdated($event)"
         ></cc-search-filters>
         <div fxFlexFill fxLayout fxLayoutAlign="end">
-            <button color="primary" mat-button (click)="createDeposit()">CREATE DEPOSIT</button>
+            <button color="primary" mat-button (click)="createDeposit()">Create deposit</button>
         </div>
         <ng-container *ngIf="deposits$ | async as deposits; else noDeposits">
             <cc-empty-search-result
@@ -24,7 +24,7 @@
                     mat-button
                     (click)="fetchMore()"
                 >
-                    {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
+                    {{ (doAction$ | async) ? 'Loading...' : 'Show more' }}
                 </button>
             </mat-card>
         </ng-container>

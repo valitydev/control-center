@@ -2,13 +2,12 @@
     <div fxLayout fxLayoutAlign="space-between">
         <h1 class="cc-display-1">Sources</h1>
         <v-actions>
-            <button color="primary" mat-raised-button (click)="create()">CREATE</button>
+            <button color="primary" mat-raised-button (click)="create()">Create</button>
         </v-actions>
     </div>
-    <cc-simple-table
+    <v-table
         [columns]="columns"
         [data]="sources$ | async"
-        [loading]="!!(progress$ | async)"
-        noUpdate
-    ></cc-simple-table>
+        [progress]="!!(progress$ | async)"
+    ></v-table>
 </div>

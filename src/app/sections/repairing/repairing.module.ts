@@ -13,14 +13,12 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActionsModule, DialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
 
 import { EnumKeyPipe, EnumKeysPipe, DomainObjectFieldComponent } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
-import { SimpleTableModule } from '@cc/components/simple-table';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
-import { TableModule } from '../../../components/table';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { RepairingRoutingModule } from './repairing-routing.module';
@@ -52,7 +50,6 @@ import { RepairingComponent } from './repairing.component';
         EnumKeyPipe,
         EnumKeysPipe,
         DomainObjectFieldComponent,
-        SimpleTableModule,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })

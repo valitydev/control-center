@@ -7,7 +7,7 @@ export class UserInfoBasedIdGeneratorService {
     constructor(private keycloakService: KeycloakService) {}
 
     getUsernameBasedId(): string {
-        // TODO: replace it by @rbkmoney/id-generator after fix
+        // TODO: replace it by id-generator after fix
         return `${this.getUsernameForId()}-${short().new()}`;
     }
 

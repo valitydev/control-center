@@ -1,4 +1,4 @@
-<v-dialog [inProgress]="inProgress$ | async" title="Change claim status">
+<v-dialog [progress]="inProgress$ | async" title="Change claim status">
     <div [formGroup]="form" gdColumns="1fr" gdGap="16px">
         <mat-form-field>
             <mat-select
@@ -49,7 +49,7 @@
             mat-raised-button
             (click)="confirm()"
         >
-            CONFIRM
+            Confirm
         </button>
     </v-dialog-actions>
 </v-dialog>

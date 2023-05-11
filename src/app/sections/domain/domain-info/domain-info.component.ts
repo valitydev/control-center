@@ -3,7 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
-import { DialogService, DialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@vality/ng-core';
 import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
@@ -11,7 +11,6 @@ import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { QueryParamsService } from '@cc/app/shared/services';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
-import { ConfirmActionDialogComponent } from '../../../../components/confirm-action-dialog';
 import { enumHasValue } from '../../../../utils';
 import { ViewerKind } from '../../../shared/components/thrift-viewer';
 import { NotificationService } from '../../../shared/services/notification';
@@ -61,7 +60,7 @@ export class DomainInfoComponent {
 
     delete() {
         this.dialogService
-            .open(ConfirmActionDialogComponent, { title: 'Delete object' })
+            .open(ConfirmDialogComponent, { title: 'Delete object' })
             .afterClosed()
             .pipe(
                 untilDestroyed(this),

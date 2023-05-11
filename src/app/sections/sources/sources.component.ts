@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { DialogService } from '@vality/ng-core';
-
 import {
+    DialogService,
     createGridColumns,
-    createDescriptionFormattedColumn,
-    createDatetimeFormattedColumn,
-} from '@cc/components/simple-table';
+    createDescriptionFormatterColumn,
+    createDatetimeFormatterColumn,
+} from '@vality/ng-core';
 
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { FetchSourcesService } from './fetch-sources.service';
@@ -25,10 +24,10 @@ export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
     columns = createGridColumns([
-        createDescriptionFormattedColumn('name', 'id'),
+        createDescriptionFormatterColumn('name', 'id'),
         'identity',
         'currency_symbolic_code',
-        createDatetimeFormattedColumn('created_at'),
+        createDatetimeFormatterColumn('created_at'),
     ]);
 
     constructor(

@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { DialogService, DialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@vality/ng-core';
 import { combineLatest, switchMap, from } from 'rxjs';
 import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
 
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { ConfirmActionDialogComponent } from '../../../components/confirm-action-dialog';
 import { getUnionKey } from '../../../utils';
 import { PartyManagementService } from '../../api/payment-processing';
 import { NotificationService } from '../../shared/services/notification';
@@ -49,7 +48,7 @@ export class ShopDetailsComponent {
                 first(),
                 switchMap((shop) =>
                     this.dialogService
-                        .open(ConfirmActionDialogComponent, {
+                        .open(ConfirmDialogComponent, {
                             title:
                                 getUnionKey(shop.blocking) === 'unblocked'
                                     ? 'Block shop'
@@ -83,7 +82,7 @@ export class ShopDetailsComponent {
                 first(),
                 switchMap((shop) =>
                     this.dialogService
-                        .open(ConfirmActionDialogComponent, {
+                        .open(ConfirmDialogComponent, {
                             title:
                                 getUnionKey(shop.suspension) === 'active'
                                     ? 'Suspend shop'

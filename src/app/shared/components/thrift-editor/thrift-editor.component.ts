@@ -1,12 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DialogService, DialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
 import { toMonacoFile } from '@cc/app/sections/domain/utils';
-import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { MonacoFile, CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
 import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/utils';
 import { objectToJSON } from '@cc/utils/thrift-instance';
@@ -90,7 +89,7 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
 
     reset() {
         this.dialogService
-            .open(ConfirmActionDialogComponent, { title: 'Reset changes' })
+            .open(ConfirmDialogComponent, { title: 'Reset changes' })
             .afterClosed()
             .pipe(filter(({ status }) => status === DialogResponseStatus.Success))
             .subscribe(() => {

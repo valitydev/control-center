@@ -6,12 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule, DialogModule } from '@vality/ng-core';
-
-import { SimpleTableModule } from '@cc/components/simple-table';
+import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
-import { TableModule } from '../../../components/table';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { SourcesRoutingModule } from './sources-routing.module';
@@ -32,7 +29,6 @@ import { SourcesComponent } from './sources.component';
         DialogModule,
         MetadataFormModule,
         ReactiveFormsModule,
-        SimpleTableModule,
     ],
     declarations: [SourcesComponent, CreateSourceComponent],
 })

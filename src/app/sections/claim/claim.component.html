@@ -91,7 +91,7 @@
         <mat-card>
             <mat-card-content fxLayout="row" fxLayoutGap="24px">
                 <button color="primary" mat-button (click)="addModification()">
-                    ADD PARTY MODIFICATION
+                    Add party modification
                 </button>
                 <button
                     [disabled]="(isAllowedChangeStatus$ | async) === false"
@@ -99,7 +99,7 @@
                     mat-button
                     (click)="changeStatus()"
                 >
-                    CHANGE STATUS
+                    Change status
                 </button>
             </mat-card-content>
         </mat-card>

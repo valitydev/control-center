@@ -8,7 +8,7 @@
                 mat-button
                 (click)="cancel(payout.id)"
             >
-                CANCEL
+                Cancel
             </button>
             <button
                 [disabled]="canBeConfirmed(payout.status | ccUnionKey)"
@@ -16,7 +16,7 @@
                 mat-button
                 (click)="confirm(payout.id)"
             >
-                CONFIRM
+                Confirm
             </button>
         </div>
     </div>

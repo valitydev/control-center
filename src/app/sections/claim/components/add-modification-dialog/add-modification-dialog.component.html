@@ -1,5 +1,5 @@
 <v-dialog
-    [inProgress]="isLoading$ | async"
+    [progress]="isLoading$ | async"
     [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
 >
     <cc-modification-form
@@ -15,7 +15,7 @@
             mat-raised-button
             (click)="isUpdate ? update() : add()"
         >
-            {{ isUpdate ? 'UPDATE' : 'ADD' }}
+            {{ isUpdate ? 'Update' : 'Add' }}
         </button>
     </v-dialog-actions>
 </v-dialog>

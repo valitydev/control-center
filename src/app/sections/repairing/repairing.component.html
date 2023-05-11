@@ -36,27 +36,28 @@
             </mat-card-content>
         </mat-card>
 
-        <cc-simple-table
+        <v-table
             [cellTemplate]="cellTemplate"
             [columns]="columns$ | async"
             [data]="machines$ | async"
             [hasMore]="hasMore$ | async"
-            [loading]="(inProgress$ | async) && !!(columns$ | async)"
+            [progress]="(inProgress$ | async) && !!(columns$ | async)"
+            [rowSelected]="selected$ | async"
             [trackBy]="trackById"
             rowSelectable
-            (fetchMore)="fetchMore()"
+            (more)="fetchMore()"
             (rowSelectionChange)="selected$.next($event)"
-            (size)="update($event)"
+            (sizeChange)="update($event)"
             (update)="update($event.size)"
         >
-            <cc-simple-table-actions>
+            <v-table-actions>
                 <button
                     [disabled]="!(selected$ | async)?.length"
                     color="primary"
                     mat-button
                     (click)="repairByScenario()"
                 >
-                    REPAIR BY SCENARIO
+                    Repair by scenario
                 </button>
                 <button
                     [disabled]="!(selected$ | async)?.length"
@@ -64,12 +65,12 @@
                     mat-button
                     (click)="repair()"
                 >
-                    SIMPLE REPAIR
+                    Simple repair
                 </button>
-            </cc-simple-table-actions>
-            <cc-simple-table-tooltip-cell-template
+            </v-table-actions>
+            <v-table-tooltip-cell-template
                 (template)="cellTemplate.status = cellTemplate.history = $event"
-            ></cc-simple-table-tooltip-cell-template>
-        </cc-simple-table>
+            ></v-table-tooltip-cell-template>
+        </v-table>
     </div>
 </div>

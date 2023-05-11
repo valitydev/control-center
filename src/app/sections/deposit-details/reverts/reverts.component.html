@@ -7,7 +7,7 @@
             mat-raised-button
             (click)="createRevert()"
         >
-            CREATE REVERT
+            Create revert
         </button>
     </mat-card-title>
     <ng-container *ngIf="reverts$ | async as reverts; else noReverts">
@@ -24,7 +24,7 @@
                 mat-button
                 (click)="fetchMore()"
             >
-                {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
+                {{ (doAction$ | async) ? 'Loading...' : 'Show more' }}
             </button>
         </mat-card-content>
     </ng-container>

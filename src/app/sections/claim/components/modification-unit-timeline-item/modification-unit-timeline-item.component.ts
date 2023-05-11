@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap, from } from 'rxjs';
@@ -13,7 +13,6 @@ import { getModificationName } from '@cc/app/sections/claim/utils/get-modificati
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
-import { ConfirmActionDialogComponent } from '@cc/components/confirm-action-dialog';
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
@@ -83,7 +82,7 @@ export class ModificationUnitTimelineItemComponent {
 
     remove() {
         this.dialogService
-            .open(ConfirmActionDialogComponent, { title: 'Confirm deletion' })
+            .open(ConfirmDialogComponent, { title: 'Confirm deletion' })
             .afterClosed()
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),

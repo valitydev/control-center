@@ -2,7 +2,7 @@
     <mat-form-field fxFlex>
         <input formControlName="adjustment_id" matInput placeholder="Adjustment ID" required />
     </mat-form-field>
-    <div><button mat-stroked-button (click)="generate()">GENERATE NEW VALUE</button></div>
+    <div><button mat-stroked-button (click)="generate()">Generate new value</button></div>
     <cc-adjustment-modification
         [form]="form.get('modification')"
         [initialValue]="initialValue?.modification"

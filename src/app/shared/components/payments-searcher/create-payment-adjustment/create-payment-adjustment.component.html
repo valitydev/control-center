@@ -16,7 +16,7 @@
             mat-raised-button
             (click)="closeAndSelectWithAnError()"
         >
-            CLOSE AND SELECT WITH AN ERROR
+            Close and select with an error
         </button>
         <button
             [disabled]="control.invalid || !!(progress$ | async)"
@@ -24,7 +24,7 @@
             mat-raised-button
             (click)="create()"
         >
-            {{ this.withError.length ? 'REPEAT FOR ' + this.withError.length : 'CREATE' }}
+            {{ this.withError.length ? 'Repeat for ' + this.withError.length : 'Create' }}
         </button>
     </v-dialog-actions>
 </v-dialog>

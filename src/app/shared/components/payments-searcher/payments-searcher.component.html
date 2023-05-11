@@ -11,7 +11,7 @@
         </mat-card-footer>
     </mat-card>
     <v-actions>
-        <button mat-button (click)="searchParamsChanges()">UPDATE</button>
+        <button mat-button (click)="searchParamsChanges()">Update</button>
         <cc-payments-other-search-filters
             [initParams]="initSearchParams"
             (valueChanges)="searchParamsChanges($event)"
@@ -22,7 +22,7 @@
             mat-button
             (click)="createPaymentAdjustment()"
         >
-            CREATE PAYMENT ADJUSTMENT{{
+            Create payment adjustment{{
                 selectedPayments?.length ? ' (' + selectedPayments?.length + ')' : ''
             }}
         </button>
@@ -45,7 +45,7 @@
             mat-button
             (click)="fetchMore()"
         >
-            {{ (doAction$ | async) ? 'LOADING...' : 'SHOW MORE' }}
+            {{ (doAction$ | async) ? 'Loading...' : 'Show more' }}
         </button>
     </mat-card>
 </div>
