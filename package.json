@@ -39,7 +39,7 @@
     "@s-libs/ng-core": "15.0.0",
     "@s-libs/rxjs-core": "15.0.0",
     "@vality/deanonimus-proto": "2.0.1-2a3d5ad.0",
-    "@vality/domain-proto": "2.0.1-e12c03c.0",
+    "@vality/domain-proto": "2.0.0",
     "@vality/dominant-cache-proto": "2.0.1-99f38c9.0",
     "@vality/fistful-proto": "2.0.1-4ff4ea3.0",
     "@vality/magista-proto": "2.0.1-cf0eff8.0",
