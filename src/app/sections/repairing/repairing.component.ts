@@ -7,11 +7,10 @@ import {
     DialogService,
     clean,
     splitBySeparators,
-    createDatetimeFormatterColumn,
-    createDescriptionFormatterColumn,
-    createTooltipTemplateGridColumn,
     Column,
     ConfirmDialogComponent,
+    createDescriptionColumn,
+    createTooltipColumn,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -72,20 +71,19 @@ export class RepairingComponent implements OnInit {
         map((providers): Column<Machine>[] => [
             'id',
             { header: 'Namespace', field: 'ns' },
-            createDatetimeFormatterColumn('created_at'),
-            createDescriptionFormatterColumn<Machine>(
-                'provider',
-                (data) => data.provider_id,
+            { field: 'created_at', type: 'date' },
+            createDescriptionColumn(
+                { field: 'provider_id', header: 'provider' },
                 (data) => providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name
             ),
-            createTooltipTemplateGridColumn(
+            createTooltipColumn(
                 {
                     field: 'status',
                     formatter: (data: Machine) => getEnumKey(repairer.RepairStatus, data.status),
                 },
                 (d) => d.error_message
             ),
-            createTooltipTemplateGridColumn(
+            createTooltipColumn(
                 {
                     field: 'history',
                     formatter: (data: Machine) =>

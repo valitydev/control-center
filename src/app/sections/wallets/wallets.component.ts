@@ -2,13 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
-import {
-    clean,
-    splitBySeparators,
-    Column,
-    createDatetimeFormatterColumn,
-    createDescriptionFormatterColumn,
-} from '@vality/ng-core';
+import { clean, splitBySeparators, Column, createDescriptionColumn } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, map, shareReplay, catchError } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
@@ -33,10 +27,10 @@ export class WalletsComponent implements OnInit {
     inProgress$ = this.fetchWalletsService.doAction$;
     hasMore$ = this.fetchWalletsService.hasMore$;
     columns: Column<StatWallet>[] = [
-        createDescriptionFormatterColumn('name', 'id'),
+        createDescriptionColumn('name', 'id'),
         'currency_symbolic_code',
         'identity_id',
-        createDatetimeFormatterColumn('created_at'),
+        { field: 'created_at', type: 'date' },
         'balance',
     ];
     filters = this.fb.group<WalletParams>({
