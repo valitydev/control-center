@@ -1,13 +1,13 @@
 <div class="content" gdColumns="1fr" gdGap="32px">
     <div gdColumns="1fr" gdGap="16px">
         <div fxLayoutAlign="space-between center">
-            <h1 class="cc-display-1">
+            <h1 class="mat-display-1">
                 Claim
                 <span *ngIf="claim$ | async as claim" class="mat-secondary-text"
                     >#{{ claim.id }}</span
                 >
             </h1>
-            <h1 *ngIf="claim$ | async as claim" class="cc-display-1">
+            <h1 *ngIf="claim$ | async as claim" class="mat-display-1">
                 <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
                     claim.status | ccUnionKey | keyTitle | titlecase
                 }}</cc-status>
