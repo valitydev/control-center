@@ -12,7 +12,7 @@
             >
                 <cc-key [keys]="item.path$ | async" class="cc-caption mat-secondary-text"></cc-key>
 
-                <div *ngIf="item.current$ | async as current" class="cc-body-1">
+                <div *ngIf="item.current$ | async as current" class="mat-body-1">
                     <cc-json-viewer
                         *ngIf="!(current.isEmpty$ | async); else empty"
                         [data]="current.data$ | async"
@@ -61,7 +61,7 @@
 
     <ng-template #onlyValue>
         <span
-            [ngClass]="{'link': !!extension?.link?.[0], 'tooltip': !!extension?.tooltip, 'cc-body-1': true}"
+            [ngClass]="{'link': !!extension?.link?.[0], 'tooltip': !!extension?.tooltip, 'mat-body-1': true}"
             [queryParams]="extensionQueryParams$ | async"
             [routerLink]="extension?.link?.[0]"
         >

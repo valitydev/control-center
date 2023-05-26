@@ -60,7 +60,7 @@
                             required
                         />
                     </mat-form-field>
-                    <div class="cc-body-1">Risk coverage:</div>
+                    <div class="mat-body-1">Risk coverage:</div>
                     <mat-radio-group formControlName="riskCoverage" fxLayout fxLayoutGap="8px">
                         <mat-radio-button [value]="riskScore.low" fxFlex>Low</mat-radio-button>
                         <mat-radio-button [value]="riskScore.high" fxFlex>High</mat-radio-button>
@@ -68,7 +68,7 @@
                     </mat-radio-group>
                 </div>
                 <div formArrayName="options" fxLayout="column" fxLayoutGap="8px">
-                    <div class="cc-body-1">Options:</div>
+                    <div class="mat-body-1">Options:</div>
                     <div
                         *ngFor="let optionForm of newTerminalOptionsForm.controls; let idx = index"
                         [formGroup]="optionForm"

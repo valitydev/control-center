@@ -1,7 +1,7 @@
 <div gdColumns="1fr" gdGap="16px">
     <ng-container *ngIf="data.type === 'bool'; else input">
         <div gdColumns="1fr" gdGap="16px">
-            <span class="cc-body-1">{{ data.type | fieldLabel : data.field }}</span>
+            <span class="mat-body-1">{{ data.type | fieldLabel : data.field }}</span>
             <div fxLayoutAlign=" center" fxLayoutGap="4px">
                 <mat-radio-group [formControl]="control" fxFlex gdColumns="1fr 1fr" gdGap="8px">
                     <mat-radio-button [value]="false">False</mat-radio-button>
