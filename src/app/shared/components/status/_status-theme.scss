@@ -3,15 +3,15 @@
 @mixin cc-status-theme($theme) {
     .cc-status {
         &-success {
-            color: v.get-color($theme, success);
+            color: v.get-color($theme, success, darker);
         }
 
         &-pending {
-            color: v.get-color($theme, pending);
+            color: v.get-color($theme, pending, darker);
         }
 
         &-warn {
-            color: v.get-color($theme, warn);
+            color: v.get-color($theme, warn, darker);
         }
     }
 }
