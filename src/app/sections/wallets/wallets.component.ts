@@ -54,8 +54,7 @@ export class WalletsComponent implements OnInit {
         this.filters.valueChanges
             .pipe(
                 startWith(this.filters.value),
-                map((v) => ({ ...v, wallet_id: splitBySeparators(v.wallet_id) })),
-                map((v) => clean(v)),
+                map((v) => clean({ ...v, wallet_id: splitBySeparators(v.wallet_id) })),
                 untilDestroyed(this)
             )
             .subscribe((value) => {
