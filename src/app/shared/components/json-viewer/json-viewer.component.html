@@ -10,7 +10,7 @@
                 gdGap="8px"
                 gdRows="auto 1fr"
             >
-                <cc-key [keys]="item.path$ | async" class="cc-caption cc-secondary-text"></cc-key>
+                <cc-key [keys]="item.path$ | async" class="cc-caption mat-secondary-text"></cc-key>
 
                 <div *ngIf="item.current$ | async as current" class="cc-body-1">
                     <cc-json-viewer
@@ -21,7 +21,7 @@
                         [value]="current.value$ | async"
                     ></cc-json-viewer>
                     <ng-template #empty>
-                        <mat-icon class="cc-secondary-text" inline>hide_source</mat-icon>
+                        <mat-icon class="mat-secondary-text" inline>hide_source</mat-icon>
                     </ng-template>
                 </div>
             </div>

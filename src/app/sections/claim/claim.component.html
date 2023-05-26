@@ -3,7 +3,7 @@
         <div fxLayoutAlign="space-between center">
             <h1 class="cc-display-1">
                 Claim
-                <span *ngIf="claim$ | async as claim" class="cc-secondary-text"
+                <span *ngIf="claim$ | async as claim" class="mat-secondary-text"
                     >#{{ claim.id }}</span
                 >
             </h1>
@@ -14,10 +14,10 @@
             </h1>
         </div>
         <div *ngIf="party$ | async as party" fxLayoutAlign="space-between center">
-            <span class="cc-subheading-2 cc-secondary-text">
-                <a class="cc-secondary-text" routerLink="/claims">Claims</a> / Claim details
+            <span class="cc-subheading-2 mat-secondary-text">
+                <a class="mat-secondary-text" routerLink="/claims">Claims</a> / Claim details
             </span>
-            <span class="cc-subheading-2 cc-secondary-text">
+            <span class="cc-subheading-2 mat-secondary-text">
                 {{ party.contact_info.email }} (#{{ party.id }})
             </span>
         </div>
