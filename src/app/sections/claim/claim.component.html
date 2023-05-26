@@ -14,10 +14,10 @@
             </h1>
         </div>
         <div *ngIf="party$ | async as party" fxLayoutAlign="space-between center">
-            <span class="cc-subheading-2 mat-secondary-text">
+            <span class="mat-subheading-2 mat-secondary-text">
                 <a class="mat-secondary-text" routerLink="/claims">Claims</a> / Claim details
             </span>
-            <span class="cc-subheading-2 mat-secondary-text">
+            <span class="mat-subheading-2 mat-secondary-text">
                 {{ party.contact_info.email }} (#{{ party.id }})
             </span>
         </div>
