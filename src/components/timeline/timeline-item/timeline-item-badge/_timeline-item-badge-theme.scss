@@ -1,45 +1,38 @@
-@use '@angular/material' as mat;
+@use '@vality/ng-core' as v;
 
 @mixin cc-timeline-item-badge-theme($theme) {
-    $blue: map-get($theme, blue);
-    $orange: map-get($theme, orange);
-    $red: map-get($theme, red);
-    $green: map-get($theme, green);
-    $white: map-get($theme, white);
-    $neutral: map-get($theme, neutral);
-
     .cc-timeline-item-badge {
-        background-color: mat.get-color-from-palette($neutral, 200);
+        background-color: v.get-color($theme, neutral, 200);
 
         &.primary {
-            background-color: $blue;
+            background-color: v.get-color($theme, primary, darker);
 
             mat-icon {
-                color: $white;
+                color: white;
             }
         }
 
         &.warn {
-            background-color: $orange;
+            background-color: v.get-color($theme, pending, darker);
 
             mat-icon {
-                color: $white;
+                color: white;
             }
         }
 
         &.error {
-            background-color: $red;
+            background-color: v.get-color($theme, warn, darker);
 
             mat-icon {
-                color: $white;
+                color: white;
             }
         }
 
         &.success {
-            background-color: $green;
+            background-color: v.get-color($theme, success, darker);
 
             mat-icon {
-                color: $white;
+                color: white;
             }
         }
     }

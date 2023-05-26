@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@use '@vality/ng-core' as v;
+@import './all-component-themes';
+
+@include v.core();
+
+$app-theme: v.create-light-theme();
+
+@include v.all-component-themes($app-theme);
+@include all-component-themes($app-theme);
+
+@include v.typography-hierarchy($app-theme);
+
+@include v.app($app-theme);
+
+.cc-code {
+    font-family: 'Roboto Mono', monospace;
+}
