@@ -1,27 +1,27 @@
 <table [dataSource]="refunds" mat-table>
     <ng-container matColumnDef="createdAt">
-        <th *matHeaderCellDef class="cc-caption" mat-header-cell>Created At</th>
+        <th *matHeaderCellDef class="mat-caption" mat-header-cell>Created At</th>
         <td *matCellDef="let refund" mat-cell>
             {{ refund.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
-        <th *matHeaderCellDef class="cc-caption" mat-header-cell>Status</th>
+        <th *matHeaderCellDef class="mat-caption" mat-header-cell>Status</th>
         <td *matCellDef="let refund" mat-cell>
             <cc-status>{{ refund.status | ccMapUnion : mapStatus }}</cc-status>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="amount">
-        <th *matHeaderCellDef class="cc-caption" mat-header-cell>Amount</th>
+        <th *matHeaderCellDef class="mat-caption" mat-header-cell>Amount</th>
         <td *matCellDef="let refund" mat-cell>
             {{ refund.amount | amountCurrency : refund.currency_symbolic_code }}
         </td>
     </ng-container>
 
     <ng-container matColumnDef="reason">
-        <th *matHeaderCellDef class="cc-caption" mat-header-cell>Reason</th>
+        <th *matHeaderCellDef class="mat-caption" mat-header-cell>Reason</th>
         <td *matCellDef="let refund" mat-cell>
             {{ refund.reason }}
         </td>

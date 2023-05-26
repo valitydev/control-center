@@ -10,7 +10,7 @@
                 gdGap="8px"
                 gdRows="auto 1fr"
             >
-                <cc-key [keys]="item.path$ | async" class="cc-caption mat-secondary-text"></cc-key>
+                <cc-key [keys]="item.path$ | async" class="mat-caption mat-secondary-text"></cc-key>
 
                 <div *ngIf="item.current$ | async as current" class="mat-body-1">
                     <cc-json-viewer
