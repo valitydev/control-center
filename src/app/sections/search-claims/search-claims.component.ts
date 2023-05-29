@@ -10,7 +10,6 @@ import { SearchClaimsService } from './search-claims.service';
 
 @Component({
     templateUrl: './search-claims.component.html',
-    styleUrls: ['./search-claims.component.scss'],
 })
 export class SearchClaimsComponent implements OnInit {
     doAction$ = this.searchClaimService.doAction$;

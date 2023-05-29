@@ -43,7 +43,7 @@
 
             <ng-container *ngIf="party$ | async as party">
                 <div><mat-divider></mat-divider></div>
-                <h2 class="mat-headline-1">Party</h2>
+                <h2 class="mat-headline-4">Party</h2>
                 <div gdColumns="1fr 1fr 1fr" gdGap="16px">
                     <cc-details-item title="ID">{{ payout.party_id }}</cc-details-item>
                     <cc-details-item title="Email">
@@ -53,12 +53,12 @@
             </ng-container>
 
             <div><mat-divider></mat-divider></div>
-            <h2 class="mat-headline-1">Shop</h2>
+            <h2 class="mat-headline-4">Shop</h2>
             <cc-shop-details [shop]="shop$ | async"></cc-shop-details>
 
             <ng-container *ngIf="payoutTool$ | async as payoutTool">
                 <div><mat-divider></mat-divider></div>
-                <h2 class="mat-headline-1">Payout Tool</h2>
+                <h2 class="mat-headline-4">Payout Tool</h2>
                 <cc-payout-tool-details [payoutTool]="payoutTool"></cc-payout-tool-details>
             </ng-container>
         </mat-card-content>
@@ -66,7 +66,7 @@
 
     <mat-card>
         <mat-card-content gdGap="24px">
-            <h2 class="mat-headline-1">Cash Flow</h2>
+            <h2 class="mat-headline-4">Cash Flow</h2>
             <div>
                 <table [dataSource]="payout.cash_flow" mat-table>
                     <ng-container matColumnDef="source">

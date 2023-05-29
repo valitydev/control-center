@@ -45,13 +45,13 @@
                         </div>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
-                        <div class="mat-headline-1">Predicate</div>
+                        <div class="mat-headline-4">Predicate</div>
                         <cc-pretty-json
                             [object]="predicateToObject(candidate?.allowed)"
                         ></cc-pretty-json>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
-                        <div class="mat-headline-1">Terminal</div>
+                        <div class="mat-headline-4">Terminal</div>
                         <cc-pretty-json
                             [object]="
                                 terminalToObject((terminalsMapID$ | async)[candidate.terminal.id])
