@@ -42,14 +42,6 @@ interface Filters {
 @Component({
     selector: 'cc-repairing',
     templateUrl: './repairing.component.html',
-    styles: [
-        `
-            :host {
-                display: block;
-                padding: 24px 16px;
-            }
-        `,
-    ],
     providers: [MachinesService],
 })
 export class RepairingComponent implements OnInit {
