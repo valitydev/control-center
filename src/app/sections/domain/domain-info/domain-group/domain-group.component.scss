@@ -1,5 +1,9 @@
 $offset: 16px;
 
+:host {
+    overflow: scroll;
+}
+
 .table-wrapper {
     $header-height: 64px;
     $title-height: 40px;

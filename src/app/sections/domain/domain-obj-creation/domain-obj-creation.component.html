@@ -1,61 +1,53 @@
-<div class="editor-container">
-    <div fxLayout="column" fxLayoutGap="24px">
-        <div class="mat-display-1">Create</div>
-        <mat-card>
-            <mat-card-content class="content">
-                <cc-thrift-editor
-                    *ngIf="!review"
-                    [extensions]="extensions$ | async"
-                    [formControl]="control"
-                    [kind]="kind"
-                    [metadata]="metadata$ | async"
-                    class="editor"
-                    namespace="domain"
-                    type="DomainObject"
-                    (changeKind)="kind = $event"
-                ></cc-thrift-editor>
-                <cc-thrift-viewer
-                    *ngIf="review"
-                    [extensions]="viewerExtensions$ | async"
-                    [kind]="reviewKind"
-                    [metadata]="metadata$ | async"
-                    [value]="control.value"
-                    class="editor"
-                    namespace="domain"
-                    type="DomainObject"
-                    (changeKind)="reviewKind = $event"
-                ></cc-thrift-viewer>
-            </mat-card-content>
-        </mat-card>
-        <v-actions>
-            <button
+<cc-page-layout title="Create">
+    <mat-card>
+        <mat-card-content class="content">
+            <cc-thrift-editor
                 *ngIf="!review"
-                [disabled]="!!(progress$ | async)"
-                mat-button
-                routerLink="/domain"
-            >
-                <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
-                Back to domain
-            </button>
-            <button
+                [extensions]="extensions$ | async"
+                [formControl]="control"
+                [kind]="kind"
+                [metadata]="metadata$ | async"
+                class="editor"
+                namespace="domain"
+                type="DomainObject"
+                (changeKind)="kind = $event"
+            ></cc-thrift-editor>
+            <cc-thrift-viewer
                 *ngIf="review"
-                [disabled]="!!(progress$ | async)"
-                mat-button
-                (click)="review = false"
-            >
-                <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
-                Back to edit
-            </button>
+                [extensions]="viewerExtensions$ | async"
+                [kind]="reviewKind"
+                [metadata]="metadata$ | async"
+                [value]="control.value"
+                class="editor"
+                namespace="domain"
+                type="DomainObject"
+                (changeKind)="reviewKind = $event"
+            ></cc-thrift-viewer>
+        </mat-card-content>
+    </mat-card>
+    <v-actions>
+        <button *ngIf="!review" [disabled]="!!(progress$ | async)" mat-button routerLink="/domain">
+            <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
+            Back to domain
+        </button>
+        <button
+            *ngIf="review"
+            [disabled]="!!(progress$ | async)"
+            mat-button
+            (click)="review = false"
+        >
+            <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
+            Back to edit
+        </button>
 
-            <button
-                [disabled]="control.invalid || !!(progress$ | async)"
-                color="primary"
-                mat-button
-                (click)="review ? commit() : reviewChanges()"
-            >
-                {{ review ? 'Commit' : 'Review' }}
-                <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
-            </button>
-        </v-actions>
-    </div>
-</div>
+        <button
+            [disabled]="control.invalid || !!(progress$ | async)"
+            color="primary"
+            mat-button
+            (click)="review ? commit() : reviewChanges()"
+        >
+            {{ review ? 'Commit' : 'Review' }}
+            <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
+        </button>
+    </v-actions>
+</cc-page-layout>

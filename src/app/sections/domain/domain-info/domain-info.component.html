@@ -26,23 +26,18 @@
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <div fxLayout="column" fxLayoutGap="24px" style="margin: 24px 16px 4px">
-            <div fxLayout="row" fxLayoutAlign="space-between">
-                <h1 class="mat-display-1">
-                    Domain config <span class="mat-secondary-text">#{{ version$ | async }}</span>
-                </h1>
-                <div>
-                    <button color="primary" mat-raised-button routerLink="/domain/create">
-                        Create object
-                    </button>
-                </div>
-            </div>
+        <cc-page-layout description="#{{ version$ | async }}" title="Domain config">
+            <cc-page-layout-actions>
+                <button color="primary" mat-raised-button routerLink="/domain/create">
+                    Create object
+                </button>
+            </cc-page-layout-actions>
             <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
                 <mat-spinner></mat-spinner>
             </div>
             <ng-template #content>
                 <cc-domain-group (refChange)="objWithRef = $event"></cc-domain-group>
             </ng-template>
-        </div>
+        </cc-page-layout>
     </mat-sidenav-content>
 </mat-sidenav-container>

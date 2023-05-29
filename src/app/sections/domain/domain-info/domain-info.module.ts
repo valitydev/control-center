@@ -13,7 +13,7 @@ import { PipesModule, ActionsModule } from '@vality/ng-core';
 
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
-import { ThriftPipesModule } from '../../../shared';
+import { ThriftPipesModule, PageLayoutModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 import { DomainGroupModule } from './domain-group';
 import { DomainInfoComponent } from './domain-info.component';
@@ -37,6 +37,7 @@ import { DomainInfoComponent } from './domain-info.component';
         RouterModule,
         ActionsModule,
         ThriftPipesModule,
+        PageLayoutModule,
     ],
 })
 export class DomainInfoModule {}
