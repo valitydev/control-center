@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { StatusModule } from '@cc/app/shared/components';
+import { StatusModule, PageLayoutModule } from '@cc/app/shared/components';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
@@ -29,6 +29,7 @@ import { RevertsModule } from './reverts/reverts.module';
         MatDialogModule,
         DepositMainInfoModule,
         RevertsModule,
+        PageLayoutModule,
     ],
     declarations: [DepositDetailsComponent],
 })

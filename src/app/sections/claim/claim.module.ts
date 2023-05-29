@@ -22,6 +22,7 @@ import { StatusModule } from '@cc/app/shared/components/status';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
 
+import { PageLayoutModule } from '../../shared';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { HumanizeDurationModule } from '../../shared/pipes/humanize-duration';
 import { ClaimRoutingModule } from './claim-routing.module';
@@ -73,6 +74,7 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         DialogModule,
         ActionsModule,
         HumanizeDurationModule,
+        PageLayoutModule,
     ],
 })
 export class ClaimModule {}

@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
+import { PageLayoutModule } from '../../shared';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { SourcesRoutingModule } from './sources-routing.module';
@@ -29,6 +30,7 @@ import { SourcesComponent } from './sources.component';
         DialogModule,
         MetadataFormModule,
         ReactiveFormsModule,
+        PageLayoutModule,
     ],
     declarations: [SourcesComponent, CreateSourceComponent],
 })

@@ -6,14 +6,6 @@ import { FetchSourcesService } from './fetch-sources.service';
 
 @Component({
     templateUrl: './sources.component.html',
-    styles: [
-        `
-            :host {
-                display: block;
-                padding: 24px 16px;
-            }
-        `,
-    ],
 })
 export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;

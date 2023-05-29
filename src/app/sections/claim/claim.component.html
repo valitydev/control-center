@@ -1,18 +1,11 @@
-<div class="content" gdColumns="1fr" gdGap="32px">
+<cc-page-layout *ngIf="claim$ | async as claim" description="#{{ claim.id }}" title="Claim">
+    <cc-page-layout-actions>
+        <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
+            claim.status | ccUnionKey | keyTitle | titlecase
+        }}</cc-status>
+    </cc-page-layout-actions>
+
     <div gdColumns="1fr" gdGap="16px">
-        <div fxLayoutAlign="space-between center">
-            <h1 class="mat-display-1">
-                Claim
-                <span *ngIf="claim$ | async as claim" class="mat-secondary-text"
-                    >#{{ claim.id }}</span
-                >
-            </h1>
-            <h1 *ngIf="claim$ | async as claim" class="mat-display-1">
-                <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
-                    claim.status | ccUnionKey | keyTitle | titlecase
-                }}</cc-status>
-            </h1>
-        </div>
         <div *ngIf="party$ | async as party" fxLayoutAlign="space-between center">
             <span class="mat-subheading-2 mat-secondary-text">
                 <a class="mat-secondary-text" routerLink="/claims">Claims</a> / Claim details
@@ -23,7 +16,7 @@
         </div>
     </div>
     <div *ngIf="claim$ | async as claim" gdColumns="1fr" gdGap="24px">
-        <h2 class="mat-headline-1">Changeset</h2>
+        <h2 class="mat-headline-5">Changeset</h2>
         <div *ngIf="isLoading$ | async; else timeline" fxLayoutAlign="center">
             <mat-progress-spinner
                 color="primary"
@@ -104,4 +97,4 @@
             </mat-card-content>
         </mat-card>
     </div>
-</div>
+</cc-page-layout>
