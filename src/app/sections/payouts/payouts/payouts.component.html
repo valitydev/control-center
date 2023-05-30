@@ -1,10 +1,7 @@
-<div fxLayout="column" fxLayoutGap="24px">
-    <div fxLayout="row" fxLayoutAlign="space-between">
-        <h1 class="mat-display-1">Payouts</h1>
-        <v-actions>
-            <button color="primary" mat-raised-button (click)="create()">Create</button>
-        </v-actions>
-    </div>
+<cc-page-layout title="Payouts">
+    <cc-page-layout-actions>
+        <button color="primary" mat-raised-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
     <mat-card>
         <mat-card-content>
             <cc-payouts-search-form [formControl]="control"></cc-payouts-search-form>
@@ -28,4 +25,4 @@
             </button>
         </mat-card>
     </ng-container>
-</div>
+</cc-page-layout>

@@ -16,6 +16,7 @@ import { DialogModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
+import { PageLayoutModule } from '../../shared';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
@@ -48,6 +49,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         MatSelectModule,
         MatInputModule,
         MatRadioModule,
+        PageLayoutModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })

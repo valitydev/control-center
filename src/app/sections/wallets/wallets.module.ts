@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { TableModule } from '@vality/ng-core';
 
-import { AmountCurrencyPipe } from '@cc/app/shared';
+import { AmountCurrencyPipe, PageLayoutModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
@@ -38,6 +38,7 @@ import { WalletsComponent } from './wallets.component';
         MatIconModule,
         MtxButtonModule,
         AmountCurrencyPipe,
+        PageLayoutModule,
     ],
     declarations: [WalletsComponent],
 })

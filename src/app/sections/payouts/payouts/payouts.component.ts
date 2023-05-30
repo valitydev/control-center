@@ -18,7 +18,6 @@ import { FetchPayoutsService, SearchParams } from './services/fetch-payouts.serv
 @Component({
     selector: 'cc-payouts',
     templateUrl: './payouts.component.html',
-    styleUrls: ['./payouts.component.scss'],
     providers: [FetchPayoutsService, PayoutActionsService],
 })
 export class PayoutsComponent implements OnInit {
