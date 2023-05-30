@@ -9,8 +9,6 @@ import {
     splitBySeparators,
     Column,
     ConfirmDialogComponent,
-    createDescriptionColumn,
-    createTooltipColumn,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -63,26 +61,23 @@ export class RepairingComponent implements OnInit {
         map((providers): Column<Machine>[] => [
             'id',
             { header: 'Namespace', field: 'ns' },
-            { field: 'created_at', type: 'date' },
-            createDescriptionColumn(
-                { field: 'provider_id', header: 'provider' },
-                (data) => providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name
-            ),
-            createTooltipColumn(
-                {
-                    field: 'status',
-                    formatter: (data: Machine) => getEnumKey(repairer.RepairStatus, data.status),
-                },
-                (d) => d.error_message
-            ),
-            createTooltipColumn(
-                {
-                    field: 'history',
-                    formatter: (data: Machine) =>
-                        data.history?.length ? String(data.history.length) : '',
-                },
-                (d) => d.history
-            ),
+            { field: 'created_at', type: 'datetime' },
+            {
+                field: 'provider_id',
+                header: 'provider',
+                description: (data) =>
+                    providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name,
+            },
+            {
+                field: 'status',
+                formatter: (data) => getEnumKey(repairer.RepairStatus, data.status),
+                tooltip: 'error_message',
+            },
+            {
+                field: 'history',
+                formatter: (data) => (data.history?.length ? String(data.history.length) : ''),
+                tooltip: 'history',
+            },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
