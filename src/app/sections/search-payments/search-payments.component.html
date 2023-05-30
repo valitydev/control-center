@@ -1,8 +1,7 @@
-<div fxLayout="column" fxLayoutGap="32px" style="margin: 24px 16px">
-    <div class="mat-display-1">Payments</div>
+<cc-page-layout title="Payments">
     <cc-payments-searcher
         [initSearchParams]="qp.params || {}"
         (paymentEventFired)="paymentEventFired($event)"
         (searchParamsChanged)="searchParamsUpdated($event)"
     ></cc-payments-searcher>
-</div>
+</cc-page-layout>
