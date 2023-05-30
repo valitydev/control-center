@@ -63,10 +63,10 @@ export class RepairingComponent implements OnInit {
             { header: 'Namespace', field: 'ns' },
             { field: 'created_at', type: 'datetime' },
             {
-                field: 'provider_id',
-                header: 'provider',
-                description: (data) =>
+                field: 'provider',
+                formatter: (data) =>
                     providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name,
+                description: 'provider_id',
             },
             {
                 field: 'status',
