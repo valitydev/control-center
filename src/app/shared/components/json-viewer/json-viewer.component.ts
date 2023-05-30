@@ -61,11 +61,11 @@ export class JsonViewerComponent implements OnChanges {
     getClassName() {
         switch (this.level) {
             case 0:
-                return 'mat-title';
+                return 'mat-h2';
             case 1:
-                return 'mat-subheading-2';
+                return 'mat-h3';
             case 2:
-                return 'mat-subheading-1';
+                return 'mat-h4';
             default:
                 return 'mat-body-2';
         }

@@ -7,10 +7,10 @@
 
     <div gdColumns="1fr" gdGap="16px">
         <div *ngIf="party$ | async as party" fxLayoutAlign="space-between center">
-            <span class="mat-subheading-2 mat-secondary-text">
+            <span class="mat-h3 mat-secondary-text">
                 <a class="mat-secondary-text" routerLink="/claims">Claims</a> / Claim details
             </span>
-            <span class="mat-subheading-2 mat-secondary-text">
+            <span class="mat-h3 mat-secondary-text">
                 {{ party.contact_info.email }} (#{{ party.id }})
             </span>
         </div>
