@@ -1,53 +1,74 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { Validators, NonNullableFormBuilder } from '@angular/forms';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
+import { DialogSuperclass, NotifyLogService, toMinor, clean } from '@vality/ng-core';
+import { BehaviorSubject } from 'rxjs';
 
-import { CreateRevertService } from './services/create-revert/create-revert.service';
+import { ManagementService } from '@cc/app/api/deposit';
+
+import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
 
+@UntilDestroy()
 @Component({
     templateUrl: 'create-revert-dialog.component.html',
     styleUrls: ['create-revert-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [CreateRevertService],
 })
-export class CreateRevertDialogComponent implements OnInit {
-    form: UntypedFormGroup;
-
-    revertCreated$ = this.createRevertService.revertCreated$;
-    isLoading$ = this.createRevertService.isLoading$;
-    error$ = this.createRevertService.error$;
+export class CreateRevertDialogComponent extends DialogSuperclass<
+    CreateRevertDialogComponent,
+    CreateRevertDialogConfig,
+    Revert
+> {
+    form = this.fb.group({
+        amount: [undefined as number, [Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
+        currency: this.dialogData.currency,
+        reason: undefined as string,
+        externalID: undefined as string,
+    });
+    progress$ = new BehaviorSubject(0);
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) private data: CreateRevertDialogConfig,
-        private createRevertService: CreateRevertService,
-        private snackBar: MatSnackBar,
-        private dialogRef: MatDialogRef<CreateRevertDialogComponent>
-    ) {}
-
-    ngOnInit() {
-        this.createRevertService.init(this.data);
-        this.form = this.createRevertService.form;
-        this.dialogRef.afterClosed().subscribe(() => this.form.reset());
-        this.revertCreated$.subscribe((revert) => {
-            this.snackBar.open(`Revert successfully created`, 'OK', { duration: 3000 });
-            this.dialogRef.close(revert);
-            this.form.enable();
-        });
-        this.error$.subscribe(() => {
-            this.snackBar.open('An error occurred while revert create', 'OK');
-            this.dialogRef.close();
-            this.form.enable();
-        });
+        injector: Injector,
+        private fb: NonNullableFormBuilder,
+        private depositManagementService: ManagementService,
+        private idGenerator: UserInfoBasedIdGeneratorService,
+        private log: NotifyLogService
+    ) {
+        super(injector);
     }
 
     createRevert() {
-        this.form.disable();
-        this.createRevertService.createRevert();
-    }
-
-    closeDialog() {
-        this.dialogRef.close();
+        const { reason, amount, currency, externalID } = this.form.value;
+        this.depositManagementService
+            .CreateRevert(
+                this.dialogData.depositID,
+                clean(
+                    {
+                        id: this.idGenerator.getUsernameBasedId(),
+                        body: {
+                            amount: toMinor(amount, currency),
+                            currency: {
+                                symbolic_code: currency,
+                            },
+                        },
+                        reason,
+                        external_id: externalID,
+                    },
+                    false,
+                    true
+                )
+            )
+            .pipe(untilDestroyed(this))
+            .subscribe({
+                next: (revert) => {
+                    this.log.successOperation('create', 'revert');
+                    this.closeWithSuccess(revert);
+                },
+                error: (err) => {
+                    this.log.errorOperation(err, 'create', 'revert');
+                },
+            });
     }
 }
