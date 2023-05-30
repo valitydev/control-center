@@ -30,7 +30,6 @@ import { PayoutsModule } from './sections/payouts';
 import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
-import { ThemeManager, ThemeManagerModule, ThemeName } from './shared/services/theme-manager';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
@@ -64,7 +63,6 @@ export let AppInjector: Injector;
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        ThemeManagerModule,
         SearchPartiesModule,
         SearchClaimsModule,
         KeycloakTokenInfoModule,
@@ -90,12 +88,10 @@ export let AppInjector: Injector;
 })
 export class AppModule {
     constructor(
-        private themeManager: ThemeManager,
         private matIconRegistry: MatIconRegistry,
         private domSanitizer: DomSanitizer,
         private injector: Injector
     ) {
-        this.themeManager.change(ThemeName.Light);
         this.registerIcons();
         AppInjector = this.injector;
     }
