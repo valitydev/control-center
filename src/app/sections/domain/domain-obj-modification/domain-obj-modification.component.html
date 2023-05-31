@@ -1,42 +1,39 @@
-<div class="editor-container">
+<cc-page-layout title="Edit {{ type$ | async }}">
     <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
         <mat-spinner></mat-spinner>
     </div>
     <ng-template #content>
-        <div fxLayout="column" fxLayoutGap="24px">
-            <div class="cc-display-1">Edit {{ type$ | async }}</div>
-            <mat-card>
-                <mat-card-content class="content">
-                    <cc-thrift-editor
-                        [codeLensProviders]="codeLensProviders"
-                        [completionProviders]="completionProviders"
-                        [defaultValue]="object$ | async"
-                        [extensions]="extensions$ | async"
-                        [formControl]="control"
-                        [kind]="kind"
-                        [metadata]="metadata$ | async"
-                        [type]="type$ | async"
-                        class="editor"
-                        namespace="domain"
-                        (changeKind)="kind = $event"
-                    ></cc-thrift-editor>
-                </mat-card-content>
-            </mat-card>
-            <v-actions>
-                <button mat-button (click)="backToDomain()">
-                    <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
-                    Back to domain
-                </button>
-                <button
-                    [disabled]="control.invalid"
-                    color="primary"
-                    mat-button
-                    (click)="reviewChanges()"
-                >
-                    Review changes
-                    <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
-                </button>
-            </v-actions>
-        </div>
+        <mat-card>
+            <mat-card-content class="content">
+                <cc-thrift-editor
+                    [codeLensProviders]="codeLensProviders"
+                    [completionProviders]="completionProviders"
+                    [defaultValue]="object$ | async"
+                    [extensions]="extensions$ | async"
+                    [formControl]="control"
+                    [kind]="kind"
+                    [metadata]="metadata$ | async"
+                    [type]="type$ | async"
+                    class="editor"
+                    namespace="domain"
+                    (changeKind)="kind = $event"
+                ></cc-thrift-editor>
+            </mat-card-content>
+        </mat-card>
+        <v-actions>
+            <button mat-button (click)="backToDomain()">
+                <mat-icon aria-label="Login">keyboard_arrow_left</mat-icon>
+                Back to domain
+            </button>
+            <button
+                [disabled]="control.invalid"
+                color="primary"
+                mat-button
+                (click)="reviewChanges()"
+            >
+                Review changes
+                <mat-icon aria-label="Login">keyboard_arrow_right</mat-icon>
+            </button>
+        </v-actions>
     </ng-template>
-</div>
+</cc-page-layout>

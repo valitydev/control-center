@@ -1,0 +1,19 @@
+:host {
+    display: grid;
+    gap: 24px;
+    padding: 24px;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        min-height: 48px;
+
+        .title {
+            margin: 0;
+        }
+
+        .actions {
+            margin: 0;
+        }
+    }
+}

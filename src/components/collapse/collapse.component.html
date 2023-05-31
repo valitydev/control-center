@@ -6,7 +6,7 @@
         fxLayoutGap="4px"
         (click)="toggle()"
     >
-        <div class="cc-subheading-2">{{ title }}</div>
+        <div class="mat-h3">{{ title }}</div>
         <mat-icon [@indicatorRotate]="animationState">expand_less</mat-icon>
     </div>
     <div *ngIf="expanded" @bodyExpansion class="cc-collapse-body">

@@ -7,9 +7,6 @@ import {
     DialogService,
     clean,
     splitBySeparators,
-    createDatetimeFormatterColumn,
-    createDescriptionFormatterColumn,
-    createTooltipTemplateGridColumn,
     Column,
     ConfirmDialogComponent,
 } from '@vality/ng-core';
@@ -43,14 +40,6 @@ interface Filters {
 @Component({
     selector: 'cc-repairing',
     templateUrl: './repairing.component.html',
-    styles: [
-        `
-            :host {
-                display: block;
-                padding: 24px 16px;
-            }
-        `,
-    ],
     providers: [MachinesService],
 })
 export class RepairingComponent implements OnInit {
@@ -72,27 +61,23 @@ export class RepairingComponent implements OnInit {
         map((providers): Column<Machine>[] => [
             'id',
             { header: 'Namespace', field: 'ns' },
-            createDatetimeFormatterColumn('created_at'),
-            createDescriptionFormatterColumn<Machine>(
-                'provider',
-                (data) => data.provider_id,
-                (data) => providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name
-            ),
-            createTooltipTemplateGridColumn(
-                {
-                    field: 'status',
-                    formatter: (data: Machine) => getEnumKey(repairer.RepairStatus, data.status),
-                },
-                (d) => d.error_message
-            ),
-            createTooltipTemplateGridColumn(
-                {
-                    field: 'history',
-                    formatter: (data: Machine) =>
-                        data.history?.length ? String(data.history.length) : '',
-                },
-                (d) => d.history
-            ),
+            { field: 'created_at', type: 'datetime' },
+            {
+                field: 'provider',
+                formatter: (data) =>
+                    providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name,
+                description: 'provider_id',
+            },
+            {
+                field: 'status',
+                formatter: (data) => getEnumKey(repairer.RepairStatus, data.status),
+                tooltip: 'error_message',
+            },
+            {
+                field: 'history',
+                formatter: (data) => (data.history?.length ? String(data.history.length) : ''),
+                tooltip: 'history',
+            },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 })
     );

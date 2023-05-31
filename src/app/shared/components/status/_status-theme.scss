@@ -1,21 +1,17 @@
+@use '@vality/ng-core' as v;
+
 @mixin cc-status-theme($theme) {
-    $foreground: map-get($theme, foreground);
-
-    $success-base: map-get($theme, success-base);
-    $pending-base: map-get($theme, pending-base);
-    $warn-base: map-get($theme, warn-base);
-
     .cc-status {
         &-success {
-            color: $success-base;
+            color: v.get-color($theme, success, darker);
         }
 
         &-pending {
-            color: $pending-base;
+            color: v.get-color($theme, pending, darker);
         }
 
         &-warn {
-            color: $warn-base;
+            color: v.get-color($theme, warn, darker);
         }
     }
 }

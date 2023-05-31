@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DepositsTableModule } from '@cc/app/shared/components/deposits-table';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
+import { PageLayoutModule } from '../../shared';
 import { CreateDepositDialogModule } from './create-deposit-dialog/create-deposit-dialog.module';
 import { DepositsRoutingModule } from './deposits-routing.module';
 import { DepositsComponent } from './deposits.component';
@@ -25,6 +26,7 @@ import { SearchFiltersModule } from './search-filters/search-filters.module';
         DepositsTableModule,
         EmptySearchResultModule,
         MatProgressSpinnerModule,
+        PageLayoutModule,
     ],
     declarations: [DepositsComponent],
 })

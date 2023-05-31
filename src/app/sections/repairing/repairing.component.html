@@ -1,76 +1,70 @@
-<div fxLayout="column" fxLayoutGap="32px">
-    <h1 class="cc-display-1">Repairing</h1>
-    <div fxLayout="column" fxLayoutGap="24px">
-        <mat-card>
-            <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr" gdGap="16px">
-                <mat-form-field>
-                    <mat-label>IDs</mat-label>
-                    <input formControlName="ids" matInput />
-                    <mat-hint>id0,id1</mat-hint>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Namespace</mat-label>
-                    <input formControlName="ns" matInput />
-                </mat-form-field>
-                <cc-date-range formControlName="timespan"></cc-date-range>
-                <cc-domain-object-field
-                    formControlName="provider_id"
-                    name="provider"
-                ></cc-domain-object-field>
-                <mat-form-field>
-                    <mat-label>Status</mat-label>
-                    <mat-select formControlName="status">
-                        <mat-option [value]="null">any</mat-option>
-                        <mat-option
-                            *ngFor="let statusName of status | enumKeys"
-                            [value]="status[statusName]"
-                        >
-                            {{ statusName }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Error message</mat-label>
-                    <input formControlName="error_message" matInput />
-                </mat-form-field>
-            </mat-card-content>
-        </mat-card>
+<cc-page-layout title="Repairing">
+    <mat-card>
+        <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr" gdGap="16px">
+            <mat-form-field>
+                <mat-label>IDs</mat-label>
+                <input formControlName="ids" matInput />
+                <mat-hint>id0,id1</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Namespace</mat-label>
+                <input formControlName="ns" matInput />
+            </mat-form-field>
+            <cc-date-range formControlName="timespan"></cc-date-range>
+            <cc-domain-object-field
+                formControlName="provider_id"
+                name="provider"
+            ></cc-domain-object-field>
+            <mat-form-field>
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option [value]="null">any</mat-option>
+                    <mat-option
+                        *ngFor="let statusName of status | enumKeys"
+                        [value]="status[statusName]"
+                    >
+                        {{ statusName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Error message</mat-label>
+                <input formControlName="error_message" matInput />
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
 
-        <v-table
-            [cellTemplate]="cellTemplate"
-            [columns]="columns$ | async"
-            [data]="machines$ | async"
-            [hasMore]="hasMore$ | async"
-            [progress]="(inProgress$ | async) && !!(columns$ | async)"
-            [rowSelected]="selected$ | async"
-            [trackBy]="trackById"
-            rowSelectable
-            (more)="fetchMore()"
-            (rowSelectionChange)="selected$.next($event)"
-            (sizeChange)="update($event)"
-            (update)="update($event.size)"
-        >
-            <v-table-actions>
-                <button
-                    [disabled]="!(selected$ | async)?.length"
-                    color="primary"
-                    mat-button
-                    (click)="repairByScenario()"
-                >
-                    Repair by scenario
-                </button>
-                <button
-                    [disabled]="!(selected$ | async)?.length"
-                    color="primary"
-                    mat-button
-                    (click)="repair()"
-                >
-                    Simple repair
-                </button>
-            </v-table-actions>
-            <v-table-tooltip-cell-template
-                (template)="cellTemplate.status = cellTemplate.history = $event"
-            ></v-table-tooltip-cell-template>
-        </v-table>
-    </div>
-</div>
+    <v-table
+        [cellTemplate]="cellTemplate"
+        [columns]="columns$ | async"
+        [data]="machines$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="(inProgress$ | async) && !!(columns$ | async)"
+        [rowSelected]="selected$ | async"
+        [trackBy]="trackById"
+        rowSelectable
+        (more)="fetchMore()"
+        (rowSelectionChange)="selected$.next($event)"
+        (sizeChange)="update($event)"
+        (update)="update($event.size)"
+    >
+        <v-table-actions>
+            <button
+                [disabled]="!(selected$ | async)?.length"
+                color="primary"
+                mat-button
+                (click)="repairByScenario()"
+            >
+                Repair by scenario
+            </button>
+            <button
+                [disabled]="!(selected$ | async)?.length"
+                color="primary"
+                mat-button
+                (click)="repair()"
+            >
+                Simple repair
+            </button>
+        </v-table-actions>
+    </v-table>
+</cc-page-layout>

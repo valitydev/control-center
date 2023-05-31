@@ -7,6 +7,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
+import { PageLayoutModule } from '../../shared';
 import { PaymentsSearcherModule } from '../../shared/components/payments-searcher';
 import { SearchPaymentsRoutingModule } from './search-payments-routing.module';
 import { SearchPaymentsComponent } from './search-payments.component';
@@ -21,6 +22,7 @@ import { SearchPaymentsComponent } from './search-payments.component';
         EmptySearchResultModule,
         MatButtonModule,
         PaymentsSearcherModule,
+        PageLayoutModule,
     ],
     declarations: [SearchPaymentsComponent],
 })

@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { DepositStatus, StatDeposit } from '@vality/fistful-proto/fistful_stat';
+import { DialogService } from '@vality/ng-core';
 import { filter } from 'rxjs/operators';
 
 import { getDepositStatus } from '@cc/app/shared/utils';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
-import { CreateRevertDialogConfig } from './create-revert-dialog/types/create-revert-dialog-config';
 import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.service';
 
 @Component({
@@ -24,7 +23,7 @@ export class RevertsComponent implements OnInit {
     hasMore$ = this.fetchRevertsService.hasMore$;
     doAction$ = this.fetchRevertsService.doAction$;
 
-    constructor(private fetchRevertsService: FetchRevertsService, private dialog: MatDialog) {}
+    constructor(private fetchRevertsService: FetchRevertsService, private dialog: DialogService) {}
 
     ngOnInit() {
         this.fetchRevertsService.search({ depositID: this.deposit.id });
@@ -32,19 +31,12 @@ export class RevertsComponent implements OnInit {
 
     createRevert() {
         this.dialog
-            .open<CreateRevertDialogComponent, CreateRevertDialogConfig>(
-                CreateRevertDialogComponent,
-                {
-                    width: '552px',
-                    disableClose: true,
-                    data: {
-                        depositID: this.deposit.id,
-                        currency: this.deposit.currency_symbolic_code,
-                    },
-                }
-            )
+            .open(CreateRevertDialogComponent, {
+                depositID: this.deposit.id,
+                currency: this.deposit.currency_symbolic_code,
+            })
             .afterClosed()
-            .pipe(filter((revert) => !!revert))
+            .pipe(filter((res) => res?.status === 'success'))
             .subscribe(() => {
                 this.fetchRevertsService.refresh();
             });

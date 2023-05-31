@@ -1,0 +1,10 @@
+<div class="header">
+    <h1 class="mat-headline-4 title">
+        {{ title }}
+        <span class="mat-secondary-text">{{ description }}</span>
+    </h1>
+    <div class="mat-headline-4 actions">
+        <ng-content select="cc-page-layout-actions"></ng-content>
+    </div>
+</div>
+<ng-content></ng-content>

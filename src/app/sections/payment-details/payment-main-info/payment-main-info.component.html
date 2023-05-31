@@ -25,35 +25,35 @@
             <div>
                 <mat-divider></mat-divider>
             </div>
-            <div class="cc-title">Shop</div>
+            <div class="mat-headline-4">Shop</div>
             <cc-shop-details [shop]="shop"></cc-shop-details>
         </div>
         <div *ngIf="hasError(payment.status)" fxLayout="column" fxLayoutGap="16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
-            <div class="cc-title">Failure</div>
+            <div class="mat-headline-4">Failure</div>
             <cc-payment-error [status]="payment.status"></cc-payment-error>
         </div>
         <div fxLayout="column" fxLayoutGap="16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
-            <div class="cc-title">Terminal</div>
+            <div class="mat-headline-4">Terminal</div>
             <cc-payment-terminal [terminalID]="payment.terminal_id.id"></cc-payment-terminal>
         </div>
         <div fxLayout="column" fxLayoutGap="16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
-            <div class="cc-title">Provider</div>
+            <div class="mat-headline-4">Provider</div>
             <cc-payment-provider [providerID]="payment.provider_id.id"></cc-payment-provider>
         </div>
         <div fxLayout="column" fxLayoutGap="16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
-            <div class="cc-title">Contractor</div>
+            <div class="mat-headline-4">Contractor</div>
             <cc-payment-contractor
                 *ngIf="payment && shop"
                 [contractID]="shop.contract_id"

@@ -4,7 +4,7 @@
     >
     <ng-template #defKey>
         <ng-container *ngFor="let pathItem of keys; let idx = index">
-            <span [class]="(parentIsUnion(pathItem) | async) ? 'bold' : 'cc-secondary-text'"
+            <span [class]="(parentIsUnion(pathItem) | async) ? 'bold' : 'mat-secondary-text'"
                 >{{ (pathItem.key$ | async)?.renderValue$ | async | keyTitle | titlecase
                 }}{{
                     idx !== keys.length - 1 ? ((isUnion(pathItem) | async) ? ': ' : ' / ') : ''

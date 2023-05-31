@@ -11,8 +11,8 @@
                         "
                         fxLayout="column"
                     >
-                        <div class="cc-body-1">{{ element[column.key]?.text || '&nbsp;' }}</div>
-                        <div class="cc-caption">
+                        <div class="mat-body-1">{{ element[column.key]?.text || '&nbsp;' }}</div>
+                        <div class="mat-caption">
                             {{ element[column.key]?.caption || '&nbsp;' }}
                         </div>
                     </div>
@@ -64,7 +64,7 @@
 </mat-card>
 
 <ng-template #empty>
-    <div class="cc-display-1" fxLayout="column" fxLayoutAlign=" center">
+    <div class="mat-display-1" fxLayout="column" fxLayoutAlign=" center">
         Routing rules not found
     </div>
 </ng-template>

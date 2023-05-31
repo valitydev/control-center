@@ -32,26 +32,26 @@
                 <div fxLayout="column" fxLayoutGap="24px">
                     <div fxLayout fxLayoutGap="8px">
                         <div fxFlex fxLayout="column" fxLayoutGap="8px">
-                            <div class="cc-caption cc-routing-rules-caption">Description</div>
+                            <div class="mat-caption cc-routing-rules-caption">Description</div>
                             <div>{{ candidate.description }}</div>
                         </div>
                         <div fxFlex fxLayout="column" fxLayoutGap="8px">
-                            <div class="cc-caption cc-routing-rules-caption">Weight</div>
+                            <div class="mat-caption cc-routing-rules-caption">Weight</div>
                             <div>{{ candidate.weight }}</div>
                         </div>
                         <div fxFlex fxLayout="column" fxLayoutGap="8px">
-                            <div class="cc-caption cc-routing-rules-caption">Priority</div>
+                            <div class="mat-caption cc-routing-rules-caption">Priority</div>
                             <div>{{ candidate.priority }}</div>
                         </div>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
-                        <div class="cc-title">Predicate</div>
+                        <div class="mat-headline-4">Predicate</div>
                         <cc-pretty-json
                             [object]="predicateToObject(candidate?.allowed)"
                         ></cc-pretty-json>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
-                        <div class="cc-title">Terminal</div>
+                        <div class="mat-headline-4">Terminal</div>
                         <cc-pretty-json
                             [object]="
                                 terminalToObject((terminalsMapID$ | async)[candidate.terminal.id])
@@ -67,7 +67,7 @@
         </mat-accordion>
 
         <ng-template #emptyShopRules>
-            <div class="cc-display-1" fxFlexAlign="center">Routing rules is empty</div>
+            <div class="mat-display-1" fxFlexAlign="center">Routing rules is empty</div>
         </ng-template>
     </div>
 </ng-template>

@@ -55,14 +55,7 @@
                                 "output": "libs/vs"
                             }
                         ],
-                        "styles": [
-                            "src/app/styles/core.scss",
-                            {
-                                "input": "src/app/styles/themes/light.scss",
-                                "bundleName": "light-theme",
-                                "inject": false
-                            }
-                        ],
+                        "styles": ["src/app/styles/styles.scss"],
                         "scripts": ["./node_modules/keycloak-js/dist/keycloak.js"]
                     },
                     "configurations": {
@@ -138,14 +131,7 @@
                                 "output": "libs/vs"
                             }
                         ],
-                        "styles": [
-                            "src/app/styles/core.scss",
-                            {
-                                "input": "src/app/styles/themes/light.scss",
-                                "bundleName": "light-theme",
-                                "inject": false
-                            }
-                        ],
+                        "styles": ["src/app/styles/styles.scss"],
                         "scripts": ["./node_modules/keycloak-js/dist/keycloak.js"]
                     },
                     "configurations": {

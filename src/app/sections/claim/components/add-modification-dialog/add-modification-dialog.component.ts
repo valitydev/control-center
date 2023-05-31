@@ -1,13 +1,9 @@
 import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import {
-    Claim,
-    ModificationUnit,
-    PartyModification,
-    PartyModificationChange,
-} from '@vality/domain-proto/claim_management';
+import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
+import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
 import { DialogResponseStatus, DialogSuperclass, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -28,8 +24,8 @@ export class AddModificationDialogComponent extends DialogSuperclass<
 > {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
-    control = this.fb.control<PartyModification | PartyModificationChange>(
-        this.dialogData.modificationUnit?.modification?.party_modification || null,
+    control = this.fb.control<Modification | ModificationChange>(
+        this.dialogData.modificationUnit?.modification || null,
         Validators.required
     );
     isLoading$ = inProgressFrom(() => this.progress$);
@@ -53,9 +49,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
     add() {
         const { party, claim } = this.dialogData;
         this.claimManagementService
-            .UpdateClaim(party.id, claim.id, claim.revision, [
-                { party_modification: this.control.value },
-            ])
+            .UpdateClaim(party.id, claim.id, claim.revision, [this.control.value])
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({
                 next: () => {
@@ -74,7 +68,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
                 claim.id,
                 claim.revision,
                 modificationUnit.modification_id,
-                { party_modification: this.control.value }
+                this.control.value
             )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({

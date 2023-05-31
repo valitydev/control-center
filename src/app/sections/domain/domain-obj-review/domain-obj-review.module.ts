@@ -12,6 +12,7 @@ import { ActionsModule } from '@vality/ng-core';
 
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
+import { PageLayoutModule } from '../../../shared';
 import { ThriftEditorModule } from '../../../shared/components/thrift-editor';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 import { DomainObjReviewComponent } from './domain-obj-review.component';
@@ -32,6 +33,7 @@ import { DomainObjReviewComponent } from './domain-obj-review.component';
         ActionsModule,
         ReactiveFormsModule,
         ThriftViewerModule,
+        PageLayoutModule,
     ],
     exports: [DomainObjReviewComponent],
 })

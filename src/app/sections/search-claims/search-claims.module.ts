@@ -16,7 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, DialogModule } from '@vality/ng-core';
 
-import { ClaimSearchFormModule } from '@cc/app/shared/components';
+import { ClaimSearchFormModule, PageLayoutModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
@@ -55,6 +55,7 @@ import { SearchTableComponent } from './search-table/search-table.component';
         ActionsModule,
         DialogModule,
         MerchantFieldModule,
+        PageLayoutModule,
     ],
     declarations: [
         SearchClaimsComponent,

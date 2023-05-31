@@ -1,12 +1,12 @@
 <v-dialog
     [progress]="isLoading$ | async"
-    [title]="isUpdate ? 'Update modification unit' : 'Add party modification unit '"
+    [title]="isUpdate ? 'Update modification unit' : 'Add modification unit'"
 >
     <cc-modification-form
         [claim]="dialogData.claim"
         [formControl]="control"
         [party]="dialogData.party"
-        [type]="isUpdate ? 'PartyModificationChange' : 'PartyModification'"
+        [type]="isUpdate ? 'Modification' : 'ModificationChange'"
     ></cc-modification-form>
     <v-dialog-actions>
         <button

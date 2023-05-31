@@ -1,34 +1,31 @@
-<div class="editor-container">
+<cc-page-layout title="Review changes of {{ type$ | async }}">
     <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
         <mat-spinner></mat-spinner>
     </div>
     <ng-template #content>
-        <div fxLayout="column" fxLayoutGap="24px">
-            <div class="cc-display-1">Review changes of {{ type$ | async }}</div>
-            <mat-card>
-                <mat-card-content class="content">
-                    <cc-thrift-viewer
-                        [compared]="modifiedObject"
-                        [value]="object$ | async"
-                        class="editor"
-                        kind="diff"
-                    ></cc-thrift-viewer>
-                </mat-card-content>
-            </mat-card>
-            <v-actions>
-                <button [disabled]="!!(progress$ | async)" mat-button (click)="back()">
-                    <mat-icon>keyboard_arrow_left</mat-icon>
-                    Back to edit
-                </button>
-                <button
-                    [disabled]="!!(progress$ | async)"
-                    color="primary"
-                    mat-button
-                    (click)="commit()"
-                >
-                    Commit
-                </button>
-            </v-actions>
-        </div>
+        <mat-card>
+            <mat-card-content class="content">
+                <cc-thrift-viewer
+                    [compared]="modifiedObject"
+                    [value]="object$ | async"
+                    class="editor"
+                    kind="diff"
+                ></cc-thrift-viewer>
+            </mat-card-content>
+        </mat-card>
+        <v-actions>
+            <button [disabled]="!!(progress$ | async)" mat-button (click)="back()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+                Back to edit
+            </button>
+            <button
+                [disabled]="!!(progress$ | async)"
+                color="primary"
+                mat-button
+                (click)="commit()"
+            >
+                Commit
+            </button>
+        </v-actions>
     </ng-template>
-</div>
+</cc-page-layout>

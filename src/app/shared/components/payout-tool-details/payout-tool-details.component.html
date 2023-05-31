@@ -8,14 +8,14 @@
     <ng-container
         *ngIf="(payoutTool.payout_tool_info | ccUnionKey) === 'international_bank_account'"
     >
-        <h2 class="cc-subheading-2">International bank account</h2>
+        <h2 class="mat-h3">International bank account</h2>
         <cc-international-bank-account-details
             [internationalBankAccount]="payoutTool.payout_tool_info.international_bank_account"
         ></cc-international-bank-account-details>
         <ng-container
             *ngIf="payoutTool.payout_tool_info.international_bank_account?.correspondent_account"
         >
-            <h2 class="cc-subheading-2">Correspondent account</h2>
+            <h2 class="mat-h3">Correspondent account</h2>
             <div gdColumns="1fr 1fr 1fr" gdGap="16px">
                 <cc-international-bank-account-details
                     [internationalBankAccount]="
@@ -27,14 +27,14 @@
     </ng-container>
 
     <ng-container *ngIf="(payoutTool.payout_tool_info | ccUnionKey) === 'russian_bank_account'">
-        <h2 class="cc-subheading-2">Russian bank account</h2>
+        <h2 class="mat-h3">Russian bank account</h2>
         <cc-russian-bank-account-details
             [russianBankAccount]="payoutTool.payout_tool_info.russian_bank_account"
         ></cc-russian-bank-account-details>
     </ng-container>
 
     <ng-container *ngIf="(payoutTool.payout_tool_info | ccUnionKey) === 'wallet_info'">
-        <h2 class="cc-subheading-2">Wallet</h2>
+        <h2 class="mat-h3">Wallet</h2>
         <cc-details-item title="Wallet ID">{{
             payoutTool.payout_tool_info.wallet_info.wallet_id
         }}</cc-details-item>
@@ -43,6 +43,6 @@
     <ng-container
         *ngIf="(payoutTool.payout_tool_info | ccUnionKey) === 'payment_institution_account'"
     >
-        <h2 class="cc-subheading-2">Payment institution account</h2>
+        <h2 class="mat-h3">Payment institution account</h2>
     </ng-container>
 </div>

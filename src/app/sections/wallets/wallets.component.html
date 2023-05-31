@@ -1,6 +1,4 @@
-<div fxLayout="column" fxLayoutGap="32px">
-    <h1 class="cc-display-1">Wallets</h1>
-
+<cc-page-layout title="Wallets">
     <mat-card [formGroup]="filters">
         <mat-card-content gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
@@ -51,4 +49,4 @@
             </ng-container>
         </ng-template>
     </v-table>
-</div>
+</cc-page-layout>

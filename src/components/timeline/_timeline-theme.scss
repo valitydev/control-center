@@ -1,12 +1,11 @@
-@use '@angular/material' as mat;
+@use '@vality/ng-core' as v;
 @import './timeline-item/timeline-item-badge/timeline-item-badge-theme';
 
 @mixin cc-timeline-theme($theme) {
-    $neutral: map-get($theme, neutral);
-    $line-color: mat.get-color-from-palette($neutral, 200);
+    $line-color: v.get-color($theme, neutral, 200);
 
     .cc-timeline {
-        border-bottom-color: $line-color;
+        border-bottom-color: $line-color !important;
 
         &::after {
             background-color: $line-color;

@@ -34,14 +34,6 @@ interface WithdrawalsForm {
 @Component({
     selector: 'cc-withdrawals',
     templateUrl: './withdrawals.component.html',
-    styles: [
-        `
-            :host {
-                display: block;
-                padding: 24px 16px;
-            }
-        `,
-    ],
     providers: [FetchWithdrawalsService],
 })
 export class WithdrawalsComponent implements OnInit {

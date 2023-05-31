@@ -1,7 +1,7 @@
 <div gdColumns="1fr" gdGap="16px">
-    <span *ngIf="hasLabel" class="cc-body-1">
+    <span *ngIf="hasLabel" class="mat-body-1">
         {{ data.type | fieldLabel : data.field }}
-        <span class="cc-secondary-text">
+        <span class="mat-secondary-text">
             ({{ data.type.name | titlecase }}:
             {{ isKeyValue ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
             {{ data.type.valueType | valueTypeTitle | titlecase }})
@@ -23,7 +23,7 @@
                     <div>
                         {{ i + 1 }}.
                         <ng-container *ngIf="!panel.expanded; else edited">
-                            <span *ngIf="isKeyValue; else value" class="cc-secondary-text">
+                            <span *ngIf="isKeyValue; else value" class="mat-secondary-text">
                                 {{ keyControls.controls[i].value | inlineJson : false }}
                             </span>
                             <ng-template #value>
@@ -47,7 +47,7 @@
             <ng-template matExpansionPanelContent>
                 <div gdColumns="1fr" gdGap="16px">
                     <ng-container *ngIf="isKeyValue">
-                        <span class="cc-body-2">Key</span>
+                        <span class="mat-body-2">Key</span>
                         <cc-metadata-form
                             [extensions]="extensions"
                             [formControl]="keyControls.controls[i]"
@@ -56,7 +56,7 @@
                             [parent]="data"
                             [type]="keyType"
                         ></cc-metadata-form>
-                        <span class="cc-body-2">Value</span>
+                        <span class="mat-body-2">Value</span>
                     </ng-container>
                     <cc-metadata-form
                         [extensions]="extensions"
