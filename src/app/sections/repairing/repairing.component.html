@@ -43,6 +43,7 @@
         [rowSelected]="selected$ | async"
         [trackBy]="trackById"
         rowSelectable
+        sizes
         (more)="fetchMore()"
         (rowSelectionChange)="selected$.next($event)"
         (sizeChange)="update($event)"
