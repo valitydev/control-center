@@ -24,6 +24,7 @@
         [data]="wallets$ | async"
         [hasMore]="hasMore$ | async"
         [progress]="inProgress$ | async"
+        sizes
         (more)="fetchMore()"
         (sizeChange)="search($event)"
         (update)="search($event.size)"
@@ -39,12 +40,14 @@
                     <mat-icon>sync</mat-icon>
                 </button>
                 <ng-template #balanceTpl>
-                    <ng-container *ngIf="getBalance(row.id) | async as account; else spinner">
-                        {{ account.current | amountCurrency : account.currency.symbolic_code }}
-                    </ng-container>
-                    <ng-template #spinner>
-                        <button [loading]="true" class="cell-button" mat-icon-button></button>
-                    </ng-template>
+                    <div style="white-space: nowrap">
+                        <ng-container *ngIf="getBalance(row.id) | async as account; else spinner">
+                            {{ account.current | amountCurrency : account.currency.symbolic_code }}
+                        </ng-container>
+                        <ng-template #spinner>
+                            <button [loading]="true" class="cell-button" mat-icon-button></button>
+                        </ng-template>
+                    </div>
                 </ng-template>
             </ng-container>
         </ng-template>
