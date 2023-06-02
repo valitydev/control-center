@@ -12,9 +12,9 @@ import { StatPayment } from '@vality/magista-proto/magista';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { BehaviorSubject, skip } from 'rxjs';
 
+import { CreatePaymentAdjustmentComponent } from '../../../sections/search-payments/components/create-payment-adjustment/create-payment-adjustment.component';
 import { SearchFiltersParams } from '../payments-search-filters';
 import { PaymentActions, PaymentMenuItemEvent } from '../payments-table';
-import { CreatePaymentAdjustmentComponent } from './create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './fetch-payments.service';
 
 @UntilDestroy()

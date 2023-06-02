@@ -15,6 +15,7 @@ import { ActionsModule, DialogModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
+import { CreatePaymentAdjustmentComponent } from '../../../sections/search-payments/components/create-payment-adjustment/create-payment-adjustment.component';
 import { MetadataFormModule } from '../metadata-form';
 import {
     PaymentsMainSearchFiltersModule,
@@ -22,7 +23,6 @@ import {
 } from '../payments-search-filters';
 import { PaymentsTableModule } from '../payments-table';
 import { StatusModule } from '../status';
-import { CreatePaymentAdjustmentComponent } from './create-payment-adjustment/create-payment-adjustment.component';
 import { PaymentsSearcherComponent } from './payments-searcher.component';
 
 @NgModule({
