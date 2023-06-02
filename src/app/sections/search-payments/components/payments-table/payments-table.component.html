@@ -1,0 +1,17 @@
+<v-table
+    [columns]="columns"
+    [data]="data"
+    [hasMore]="hasMore"
+    [progress]="isLoading"
+    [rowSelected]="selected"
+    rowSelectable
+    sizes
+    (more)="more.emit()"
+    (rowSelectionChange)="selectedChange.emit($event)"
+    (sizeChange)="update.emit({ size: $event })"
+    (update)="update.emit($event)"
+>
+    <v-table-actions>
+        <ng-content></ng-content>
+    </v-table-actions>
+</v-table>
