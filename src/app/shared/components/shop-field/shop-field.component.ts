@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@a
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
-import { createControlProviders, FormControlSuperclass, setDisabled } from '@vality/ng-core';
+import {
+    createControlProviders,
+    FormControlSuperclass,
+    setDisabled,
+    isEmpty,
+} from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
 import { filter, map, share, switchMap } from 'rxjs/operators';
@@ -62,7 +67,11 @@ export class ShopFieldComponent<M extends boolean = boolean>
         this.shops$
             .pipe(
                 filter(
-                    (shops) => this.control.value && !shops.find((s) => s.id === this.control.value)
+                    (shops) =>
+                        !isEmpty(this.control.value) &&
+                        (Array.isArray(this.control.value)
+                            ? !this.control.value.every((v) => shops.some((s) => s.id === v))
+                            : !shops.some((s) => s.id === this.control.value))
                 ),
                 untilDestroyed(this)
             )

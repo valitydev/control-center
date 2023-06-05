@@ -25,10 +25,10 @@ export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSe
             .SearchPayments({
                 payment_params: {},
                 ...params,
-                common_search_query_params: Object.assign(
-                    { continuation_token: continuationToken, limit: size },
-                    params.common_search_query_params
-                ),
+                common_search_query_params: Object.assign({}, params.common_search_query_params, {
+                    continuation_token: continuationToken,
+                    limit: size,
+                }),
             })
             .pipe(
                 map(({ payments, continuation_token }) => ({

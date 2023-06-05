@@ -13,6 +13,7 @@ import {
     DateRange,
 } from '@vality/ng-core';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
+import lodashMerge from 'lodash-es/merge';
 import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
@@ -81,25 +82,11 @@ export class SearchPaymentsComponent implements OnInit {
 
     ngOnInit() {
         this.filtersForm.patchValue(
-            clean({
-                ...(this.qp.params.filters || {}),
-                dateRange: this.qp.params.dateRange,
-            })
+            lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange }))
         );
         const otherFilters = this.otherFiltersControl.value;
         const otherFiltersParams: Partial<PaymentSearchQuery> = this.qp.params.otherFilters || {};
-        this.otherFiltersControl.patchValue({
-            ...otherFilters,
-            ...otherFiltersParams,
-            common_search_query_params: {
-                ...(otherFiltersParams.common_search_query_params || {}),
-                ...otherFilters.common_search_query_params,
-            },
-            payment_params: {
-                ...(otherFiltersParams.payment_params || {}),
-                ...otherFilters.payment_params,
-            },
-        });
+        this.otherFiltersControl.patchValue(lodashMerge({}, otherFilters, otherFiltersParams));
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
             .pipe(debounceTime(500), untilDestroyed(this))
             .subscribe(() => {
@@ -116,26 +103,24 @@ export class SearchPaymentsComponent implements OnInit {
         const otherFilters = clean(this.otherFiltersControl.value);
         void this.qp.set({ filters, otherFilters, dateRange });
         this.fetchPaymentsService.load(
-            {
+            clean({
                 ...otherFilters,
-                ...clean({
-                    common_search_query_params: {
-                        ...otherFilters.common_search_query_params,
-                        party_id: filters.party_id,
-                        shop_ids: filters.shop_ids,
-                        from_time: getNoTimeZoneIsoString(dateRange.start),
-                        to_time: getNoTimeZoneIsoString(dateRange.end),
-                    },
-                    payment_params: {
-                        ...otherFilters.payment_params,
-                        payment_email: filters.payment_email,
-                        payment_first6: filters.payment_first6,
-                        payment_last4: filters.payment_last4,
-                        payment_rrn: filters.payment_rrn,
-                    },
-                    invoice_ids: filters.invoice_ids,
-                }),
-            },
+                common_search_query_params: {
+                    ...(otherFilters.common_search_query_params || {}),
+                    party_id: filters.party_id,
+                    shop_ids: filters.shop_ids,
+                    from_time: getNoTimeZoneIsoString(dateRange.start),
+                    to_time: getNoTimeZoneIsoString(dateRange.end),
+                },
+                payment_params: {
+                    ...(otherFilters.payment_params || {}),
+                    payment_email: filters.payment_email,
+                    payment_first6: filters.payment_first6,
+                    payment_last4: filters.payment_last4,
+                    payment_rrn: filters.payment_rrn,
+                },
+                invoice_ids: filters.invoice_ids,
+            }),
             options
         );
         this.active =
