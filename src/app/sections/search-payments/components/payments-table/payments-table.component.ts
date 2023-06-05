@@ -24,7 +24,7 @@ export class PaymentsTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column<StatPayment>[] = [
-        'id',
+        { field: 'id', hide: true },
         'invoice_id',
         {
             field: 'amount',
