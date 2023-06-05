@@ -52,7 +52,7 @@ export class ShopFieldComponent<M extends boolean = boolean>
 
     ngOnChanges(changes: ComponentChanges<ShopFieldComponent>): void {
         super.ngOnChanges(changes);
-        if (changes.partyId) {
+        if (changes.partyId && this.partyId !== this.partyId$.value) {
             this.partyId$.next(changes.partyId.currentValue);
             setDisabled(this.control, !this.partyId);
         }
