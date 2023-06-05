@@ -1,3 +1,5 @@
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 import { LOCALE_ID, NgModule, Injector } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
@@ -39,6 +41,8 @@ import {
     SMALL_SEARCH_LIMIT,
 } from './tokens';
 
+registerLocaleData(localeRu);
+
 /**
  * For use in specific locations (for example, questionary PDF document)
  */
@@ -77,8 +81,8 @@ export let AppInjector: Injector;
         { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
-        { provide: MAT_DATE_LOCALE, useValue: 'ru' },
-        { provide: LOCALE_ID, useValue: 'en' },
+        { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+        { provide: LOCALE_ID, useValue: 'ru' },
         { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
