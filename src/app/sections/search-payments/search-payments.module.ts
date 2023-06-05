@@ -1,29 +1,47 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {
+    FiltersModule,
+    DateRangeFieldModule,
+    ListFieldModule,
+    TableModule,
+    DialogModule,
+    InputFieldModule,
+} from '@vality/ng-core';
 
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
+import { PageLayoutModule, ShopFieldModule } from '@cc/app/shared';
+import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
+import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
-import { PageLayoutModule } from '../../shared';
-import { PaymentsSearcherModule } from '../../shared/components/payments-searcher';
+import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
+import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import { SearchPaymentsRoutingModule } from './search-payments-routing.module';
 import { SearchPaymentsComponent } from './search-payments.component';
 
 @NgModule({
     imports: [
-        SearchPaymentsRoutingModule,
-        MatCardModule,
-        FlexModule,
-        MatProgressBarModule,
         CommonModule,
-        EmptySearchResultModule,
-        MatButtonModule,
-        PaymentsSearcherModule,
+        SearchPaymentsRoutingModule,
         PageLayoutModule,
+        FiltersModule,
+        DateRangeFieldModule,
+        ListFieldModule,
+        MerchantFieldModule,
+        ReactiveFormsModule,
+        TableModule,
+        DialogModule,
+        MetadataFormModule,
+        MatButtonModule,
+        ShopFieldModule,
+        InputFieldModule,
+        FormsModule,
     ],
-    declarations: [SearchPaymentsComponent],
+    declarations: [
+        SearchPaymentsComponent,
+        CreatePaymentAdjustmentComponent,
+        PaymentsTableComponent,
+    ],
 })
 export class SearchPaymentsModule {}
