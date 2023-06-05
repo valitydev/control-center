@@ -2,7 +2,7 @@
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
-    <v-filters #filters (clear)="filtersForm.reset()">
+    <v-filters #filters [active]="active" (clear)="allFiltersControl.reset()">
         <ng-template [formGroup]="filtersForm" vMainFilters>
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
             <v-list-field formControlName="invoice_ids" label="Invoice Ids"></v-list-field>
