@@ -8,15 +8,12 @@ import {
     DialogService,
     DialogResponseStatus,
     LoadOptions,
-    DateRange,
     getNoTimeZoneIsoString,
-    createDateFromNoTimeZoneString,
     clean,
+    DateRange,
 } from '@vality/ng-core';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
-import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, from, of } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
 import { QueryParamsService } from '../../shared/services';
@@ -33,7 +30,10 @@ export class SearchPaymentsComponent implements OnInit {
     hasMore$ = this.fetchPaymentsService.hasMore$;
     selected$ = new BehaviorSubject<StatPayment[]>([]);
     filtersForm = this.fb.group({
-        dateRange: undefined as DateRange,
+        dateRange: {
+            start: subDays(startOfDay(new Date()), 1),
+            end: endOfDay(new Date()),
+        } as DateRange,
         invoice_ids: [undefined as string[]],
         party_id: undefined as string,
         shop_ids: [undefined as string[]],
@@ -42,11 +42,8 @@ export class SearchPaymentsComponent implements OnInit {
         payment_rrn: undefined as string,
         payment_email: undefined as string,
     });
-    allFiltersControl = this.fb.control<PaymentSearchQuery>({
-        common_search_query_params: {
-            from_time: getNoTimeZoneIsoString(subDays(startOfDay(new Date()), 1)),
-            to_time: getNoTimeZoneIsoString(endOfDay(new Date())),
-        },
+    otherFiltersControl = this.fb.control({
+        common_search_query_params: {},
         payment_params: {},
     });
     metadata$ = from(
@@ -56,8 +53,14 @@ export class SearchPaymentsComponent implements OnInit {
         {
             determinant: (data) =>
                 of(
-                    isTypeWithAliases(data, 'ContinuationToken', 'magista') ||
-                        data?.field?.name === 'limit'
+                    isTypeWithAliases(data, 'CommonSearchQueryParams', 'magista') ||
+                        [
+                            'invoice_ids',
+                            'payment_email',
+                            'payment_first6',
+                            'payment_last4',
+                            'payment_rrn',
+                        ].includes(data?.field?.name)
                 ),
             extension: () => of({ hidden: true }),
         },
@@ -66,69 +69,40 @@ export class SearchPaymentsComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private qp: QueryParamsService<PaymentSearchQuery>,
+        private qp: QueryParamsService<{
+            filters: object;
+            otherFilters: object;
+            dateRange: DateRange;
+        }>,
         private fetchPaymentsService: FetchPaymentsService,
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder
     ) {}
 
     ngOnInit() {
-        this.allFiltersControl.patchValue({
-            ...this.allFiltersControl.value,
-            ...this.qp.params,
-            common_search_query_params:
-                this.qp.params.common_search_query_params ||
-                this.allFiltersControl.value.common_search_query_params,
-            payment_params:
-                this.qp.params.payment_params || this.allFiltersControl.value.payment_params || {},
+        this.filtersForm.patchValue(
+            clean({
+                ...(this.qp.params.filters || {}),
+                dateRange: this.qp.params.dateRange,
+            })
+        );
+        const otherFilters = this.otherFiltersControl.value;
+        const otherFiltersParams: Partial<PaymentSearchQuery> = this.qp.params.otherFilters || {};
+        this.otherFiltersControl.patchValue({
+            ...otherFilters,
+            ...otherFiltersParams,
+            common_search_query_params: {
+                ...(otherFiltersParams.common_search_query_params || {}),
+                ...otherFilters.common_search_query_params,
+            },
+            payment_params: {
+                ...(otherFiltersParams.payment_params || {}),
+                ...otherFilters.payment_params,
+            },
         });
-        this.filtersForm.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => {
-            const { dateRange, ...filters } = value;
-            const oldValue = this.allFiltersControl.value;
-            this.allFiltersControl.patchValue({
-                ...oldValue,
-                common_search_query_params: clean({
-                    ...oldValue.common_search_query_params,
-                    from_time: getNoTimeZoneIsoString(dateRange.start),
-                    to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
-                    party_id: filters.party_id,
-                    shop_ids: filters.shop_ids,
-                }),
-                payment_params: clean({
-                    ...oldValue.payment_params,
-                    payment_rrn: filters.payment_rrn,
-                    payment_email: filters.payment_email,
-                    payment_first6: filters.payment_first6,
-                    payment_last4: filters.payment_last4,
-                }),
-                ...clean({ invoice_ids: filters.invoice_ids }),
-            });
-        });
-        this.allFiltersControl.valueChanges
-            .pipe(
-                startWith(this.allFiltersControl.value),
-                debounceTime(500),
-                distinctUntilChanged(isEqual),
-                untilDestroyed(this)
-            )
-            .subscribe((filters) => {
-                this.filtersForm.patchValue({
-                    dateRange: {
-                        start: createDateFromNoTimeZoneString(
-                            filters.common_search_query_params.from_time
-                        ),
-                        end: createDateFromNoTimeZoneString(
-                            filters.common_search_query_params.to_time
-                        ),
-                    },
-                    invoice_ids: filters.invoice_ids,
-                    party_id: filters.common_search_query_params.party_id,
-                    shop_ids: filters.common_search_query_params.shop_ids,
-                    payment_first6: filters.payment_params.payment_first6,
-                    payment_last4: filters.payment_params.payment_last4,
-                    payment_rrn: filters.payment_params.payment_rrn,
-                    payment_email: filters.payment_params.payment_email,
-                });
+        merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
+            .pipe(debounceTime(500), untilDestroyed(this))
+            .subscribe(() => {
                 this.load();
             });
     }
@@ -138,14 +112,37 @@ export class SearchPaymentsComponent implements OnInit {
     }
 
     load(options?: LoadOptions) {
-        const filters = this.allFiltersControl.value;
-        void this.qp.set(filters);
-        this.fetchPaymentsService.load(filters, options);
+        const { dateRange, ...filters } = clean(this.filtersForm.value);
+        const otherFilters = clean(this.otherFiltersControl.value);
+        void this.qp.set({ filters, otherFilters, dateRange });
+        this.fetchPaymentsService.load(
+            {
+                ...otherFilters,
+                ...clean({
+                    common_search_query_params: {
+                        ...otherFilters.common_search_query_params,
+                        party_id: filters.party_id,
+                        shop_ids: filters.shop_ids,
+                        from_time: getNoTimeZoneIsoString(dateRange.start),
+                        to_time: getNoTimeZoneIsoString(dateRange.end),
+                    },
+                    payment_params: {
+                        ...otherFilters.payment_params,
+                        payment_email: filters.payment_email,
+                        payment_first6: filters.payment_first6,
+                        payment_last4: filters.payment_last4,
+                        payment_rrn: filters.payment_rrn,
+                    },
+                    invoice_ids: filters.invoice_ids,
+                }),
+            },
+            options
+        );
         this.active =
-            Object.keys(filters.payment_params).length +
-            Object.keys(filters.common_search_query_params).length +
-            Object.keys(filters).length -
-            2;
+            Object.keys(dateRange).length +
+            Object.keys(filters).length +
+            Object.keys(otherFilters.payment_params || {}).length +
+            Object.keys(otherFilters.common_search_query_params || {}).length;
     }
 
     createPaymentAdjustment() {

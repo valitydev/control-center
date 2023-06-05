@@ -2,7 +2,12 @@
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
-    <v-filters #filters [active]="active" (clear)="allFiltersControl.reset()">
+    <v-filters
+        #filters
+        [active]="active"
+        merge
+        (clear)="filtersForm.reset(); otherFiltersControl.reset()"
+    >
         <ng-template [formGroup]="filtersForm" vMainFilters>
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
             <v-list-field formControlName="invoice_ids" label="Invoice Ids"></v-list-field>
@@ -20,7 +25,7 @@
         <ng-template vOtherFilters>
             <cc-metadata-form
                 [extensions]="extensions"
-                [formControl]="allFiltersControl"
+                [formControl]="otherFiltersControl"
                 [metadata]="metadata$ | async"
                 namespace="magista"
                 type="PaymentSearchQuery"
