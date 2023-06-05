@@ -19,6 +19,7 @@
         </ng-template>
         <ng-template vOtherFilters>
             <cc-metadata-form
+                [extensions]="extensions"
                 [formControl]="allFiltersControl"
                 [metadata]="metadata$ | async"
                 namespace="magista"

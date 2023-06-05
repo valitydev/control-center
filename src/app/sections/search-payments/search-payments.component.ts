@@ -15,9 +15,10 @@ import {
 } from '@vality/ng-core';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, from } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, from, of } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
 import { QueryParamsService } from '../../shared/services';
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
@@ -51,6 +52,16 @@ export class SearchPaymentsComponent implements OnInit {
     metadata$ = from(
         import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
     );
+    extensions: MetadataFormExtension[] = [
+        {
+            determinant: (data) =>
+                of(
+                    isTypeWithAliases(data, 'ContinuationToken', 'magista') ||
+                        data?.field?.name === 'limit'
+                ),
+            extension: () => of({ hidden: true }),
+        },
+    ];
     active = 0;
 
     constructor(

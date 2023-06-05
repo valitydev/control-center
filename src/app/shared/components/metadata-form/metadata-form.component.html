@@ -1,4 +1,4 @@
-<div *ngIf="data" [ngSwitch]="data?.typeGroup">
+<div *ngIf="!(extensionResult$ | async)?.hidden" [ngSwitch]="data?.typeGroup">
     <cc-extension-field
         *ngIf="(extensionResult$ | async)?.type; else defaultFields"
         [data]="data"

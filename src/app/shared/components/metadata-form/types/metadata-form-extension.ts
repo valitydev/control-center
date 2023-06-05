@@ -21,6 +21,7 @@ export interface MetadataFormExtensionResult {
     label?: string;
     type?: 'datetime' | 'cash';
     converter?: Converter;
+    hidden?: boolean;
 }
 
 export interface MetadataFormExtensionOption {
