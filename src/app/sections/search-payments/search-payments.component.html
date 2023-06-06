@@ -36,7 +36,9 @@
         [data]="(payments$ | async) || []"
         [hasMore]="hasMore$ | async"
         [isLoading]="isLoading$ | async"
+        [selected]="selected$ | async"
         (more)="more()"
+        (selectedChange)="selected$.next($event)"
         (update)="load($event ?? {})"
     >
         <button
