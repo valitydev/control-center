@@ -38,8 +38,7 @@ const ROUTES: Routes = [
     },
     {
         path: 'payments',
-        loadChildren: () =>
-            import('./search-payments/search-payments.module').then((m) => m.SearchPaymentsModule),
+        loadChildren: () => import('./payments/payments.module').then((m) => m.PaymentsModule),
     },
     {
         path: 'deposits',

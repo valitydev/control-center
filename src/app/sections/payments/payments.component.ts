@@ -24,9 +24,9 @@ import { FetchPaymentsService } from './services/fetch-payments.service';
 
 @UntilDestroy()
 @Component({
-    templateUrl: 'search-payments.component.html',
+    templateUrl: 'payments.component.html',
 })
-export class SearchPaymentsComponent implements OnInit {
+export class PaymentsComponent implements OnInit {
     isLoading$ = this.fetchPaymentsService.isLoading$;
     payments$ = this.fetchPaymentsService.result$;
     hasMore$ = this.fetchPaymentsService.hasMore$;

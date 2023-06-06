@@ -17,13 +17,13 @@ import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
-import { SearchPaymentsRoutingModule } from './search-payments-routing.module';
-import { SearchPaymentsComponent } from './search-payments.component';
+import { PaymentsRoutingModule } from './payments-routing.module';
+import { PaymentsComponent } from './payments.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        SearchPaymentsRoutingModule,
+        PaymentsRoutingModule,
         PageLayoutModule,
         FiltersModule,
         DateRangeFieldModule,
@@ -38,10 +38,6 @@ import { SearchPaymentsComponent } from './search-payments.component';
         InputFieldModule,
         FormsModule,
     ],
-    declarations: [
-        SearchPaymentsComponent,
-        CreatePaymentAdjustmentComponent,
-        PaymentsTableComponent,
-    ],
+    declarations: [PaymentsComponent, CreatePaymentAdjustmentComponent, PaymentsTableComponent],
 })
-export class SearchPaymentsModule {}
+export class PaymentsModule {}
