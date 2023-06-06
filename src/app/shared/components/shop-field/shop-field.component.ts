@@ -1,15 +1,19 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
+import {
+    createControlProviders,
+    FormControlSuperclass,
+    setDisabled,
+    isEmpty,
+} from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
 import { filter, map, share, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { ComponentChanges } from '@cc/app/shared/utils';
-import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 
 @UntilDestroy()
 @Component({
@@ -20,7 +24,7 @@ import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/fo
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShopFieldComponent<M extends boolean = boolean>
-    extends ValidatedControlSuperclass<
+    extends FormControlSuperclass<
         M extends true ? Shop[] : Shop,
         M extends true ? ShopID[] : ShopID
     >
@@ -30,7 +34,6 @@ export class ShopFieldComponent<M extends boolean = boolean>
     @Input() @coerceBoolean multiple: M;
     @Input() @coerceBoolean required: boolean;
 
-    control = new FormControl() as FormControl<M extends true ? ShopID[] : ShopID>;
     shops$ = defer(() => this.partyId$).pipe(
         switchMap((partyId) =>
             partyId
@@ -48,10 +51,15 @@ export class ShopFieldComponent<M extends boolean = boolean>
         super();
     }
 
+    setDisabledState(isDisabled: boolean) {
+        super.setDisabledState(!this.partyId || isDisabled);
+    }
+
     ngOnChanges(changes: ComponentChanges<ShopFieldComponent>): void {
         super.ngOnChanges(changes);
-        if (changes.partyId) {
+        if (changes.partyId && this.partyId !== this.partyId$.value) {
             this.partyId$.next(changes.partyId.currentValue);
+            setDisabled(this.control, !this.partyId);
         }
     }
 
@@ -59,7 +67,11 @@ export class ShopFieldComponent<M extends boolean = boolean>
         this.shops$
             .pipe(
                 filter(
-                    (shops) => this.control.value && !shops.find((s) => s.id === this.control.value)
+                    (shops) =>
+                        !isEmpty(this.control.value) &&
+                        (Array.isArray(this.control.value)
+                            ? !this.control.value.every((v) => shops.some((s) => s.id === v))
+                            : !shops.some((s) => s.id === this.control.value))
                 ),
                 untilDestroyed(this)
             )

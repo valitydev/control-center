@@ -8,3 +8,4 @@ export * from './query-params';
 export * from './moment-utc-date-adapter';
 export * from './domain-metadata-form-extensions';
 export * from './domain-secret-service';
+export * from './amount-currency.service';

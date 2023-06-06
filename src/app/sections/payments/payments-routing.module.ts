@@ -3,15 +3,15 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
+import { PaymentsComponent } from './payments.component';
 import { ROUTING_CONFIG } from './routing-config';
-import { SearchPaymentsComponent } from './search-payments.component';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: '',
-                component: SearchPaymentsComponent,
+                component: PaymentsComponent,
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
             },
@@ -19,4 +19,4 @@ import { SearchPaymentsComponent } from './search-payments.component';
     ],
     exports: [RouterModule],
 })
-export class SearchPaymentsRoutingModule {}
+export class PaymentsRoutingModule {}

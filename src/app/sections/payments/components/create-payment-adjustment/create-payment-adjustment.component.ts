@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 import chunk from 'lodash-es/chunk';
 import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -11,8 +11,6 @@ import { catchError, finalize } from 'rxjs/operators';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
 import { InvoicingService } from '../../../../api/payment-processing';
-import { NotificationService } from '../../../services/notification';
-import { NotificationErrorService } from '../../../services/notification-error';
 
 @UntilDestroy()
 @Component({
@@ -33,9 +31,8 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private notificationService: NotificationService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private notificationErrorService: NotificationErrorService
+        private log: NotifyLogService,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
         super(injector);
     }
@@ -71,7 +68,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
             .subscribe({
                 complete: () => {
                     if (!this.withError.length) {
-                        this.notificationService.success(`${payments.length} created successfully`);
+                        this.log.success(`${payments.length} created successfully`);
                         this.closeWithSuccess();
                     } else {
                         const errors = this.withError
@@ -82,7 +79,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
                             })
                             .filter(Boolean)
                             .join(', ');
-                        this.notificationErrorService.error(
+                        this.log.error(
                             new Error(
                                 `${this.withError.length} out of ${payments.length} failed. Errors: ${errors}`
                             )

@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { MatDateFormats } from '@angular/material/core';
 import { DateRange } from '@angular/material/datepicker';
+import { DATE_QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
@@ -34,6 +35,7 @@ export const DEFAULT_QUERY_PARAMS_SERIALIZERS: Serializer[] = [
             return (!start || moment.isMoment(start)) && (!end || moment.isMoment(end));
         },
     },
+    ...DATE_QUERY_PARAMS_SERIALIZERS,
 ];
 
 export const DEFAULT_MAT_DATE_FORMATS: MatDateFormats = {

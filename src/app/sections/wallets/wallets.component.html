@@ -24,9 +24,7 @@
         [data]="wallets$ | async"
         [hasMore]="hasMore$ | async"
         [progress]="inProgress$ | async"
-        sizes
         (more)="fetchMore()"
-        (sizeChange)="search($event)"
         (update)="search($event.size)"
     >
         <ng-template #balanceTpl let-col="colDef" let-index="index" let-row>

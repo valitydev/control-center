@@ -9,6 +9,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
+import { merge } from 'rxjs';
 
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 import { createControlProviders, getErrorsTree } from '@cc/utils';
@@ -23,6 +24,8 @@ function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[
     formArray.patchValue(values);
 }
 
+type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
+
 @UntilDestroy()
 @Component({
     selector: 'cc-complex-form',
@@ -30,15 +33,15 @@ function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[
     styleUrls: ['complex-form.component.scss'],
     providers: createControlProviders(() => ComplexFormComponent),
 })
-export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | Set<unknown>>
-    extends FormComponentSuperclass<T>
+export class ComplexFormComponent<V, K = never>
+    extends FormComponentSuperclass<ComplexType<V, K>>
     implements OnInit, Validator
 {
     @Input() data: MetadataFormData<SetType | MapType | ListType>;
     @Input() extensions: MetadataFormExtension[];
 
-    valueControls = new FormArray([]);
-    keyControls = new FormArray([]);
+    valueControls = new FormArray<AbstractControl<V>>([]);
+    keyControls = new FormArray<AbstractControl<K>>([]);
 
     get hasLabel() {
         return !!this.data.trueParent;
@@ -53,31 +56,34 @@ export class ComplexFormComponent<T extends unknown[] | Map<unknown, unknown> | 
     }
 
     ngOnInit() {
-        this.valueControls.valueChanges.pipe(untilDestroyed(this)).subscribe((value) => {
-            switch (this.data.type.name) {
-                case 'list':
-                    this.emitOutgoingValue(value as never);
-                    break;
-                case 'map':
-                    this.emitOutgoingValue(
-                        new Map(value.map((v, idx) => [this.keyControls.value[idx], v])) as never
-                    );
-                    break;
-                case 'set':
-                    this.emitOutgoingValue(new Set(value) as never);
-                    break;
-            }
-        });
+        merge(this.valueControls.valueChanges, this.keyControls.valueChanges)
+            .pipe(untilDestroyed(this))
+            .subscribe(() => {
+                const values = this.valueControls.value;
+                switch (this.data.type.name) {
+                    case 'list':
+                        this.emitOutgoingValue(values);
+                        break;
+                    case 'map': {
+                        const keys = this.keyControls.value;
+                        this.emitOutgoingValue(new Map(values.map((v, idx) => [keys[idx], v])));
+                        break;
+                    }
+                    case 'set':
+                        this.emitOutgoingValue(new Set(values));
+                        break;
+                }
+            });
     }
 
-    handleIncomingValue(value: T) {
+    handleIncomingValue(value: ComplexType<V, K>) {
         if (this.isKeyValue) {
-            const keys = Array.from(value?.keys() || []);
+            const keys = Array.from((value as Map<K, V>)?.keys() || []);
             updateFormArray(this.keyControls, keys);
         }
         const values = this.isKeyValue
             ? Array.from(value?.values() || [])
-            : Array.from(value || []);
+            : Array.from((value as V[]) || []);
         updateFormArray(this.valueControls, values);
     }
 

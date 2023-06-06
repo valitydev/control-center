@@ -1,3 +1,8 @@
+:host {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 mat-form-field {
     width: 100%;
 }
