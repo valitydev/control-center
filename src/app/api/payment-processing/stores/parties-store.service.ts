@@ -11,7 +11,7 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 export class PartiesStoreService {
     constructor(private partyManagementService: PartyManagementService) {}
 
-    @MemoizeExpiring(30_000)
+    @MemoizeExpiring(5 * 60_000)
     get(partyId: PartyID) {
         return this.partyManagementService
             .Get(partyId)
