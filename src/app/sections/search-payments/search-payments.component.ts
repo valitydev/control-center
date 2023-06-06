@@ -15,6 +15,7 @@ import {
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import lodashMerge from 'lodash-es/merge';
 import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
 import { QueryParamsService } from '../../shared/services';
@@ -88,7 +89,7 @@ export class SearchPaymentsComponent implements OnInit {
         const otherFiltersParams: Partial<PaymentSearchQuery> = this.qp.params.otherFilters || {};
         this.otherFiltersControl.patchValue(lodashMerge({}, otherFilters, otherFiltersParams));
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
-            .pipe(debounceTime(500), untilDestroyed(this))
+            .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
             .subscribe(() => {
                 this.load();
             });
