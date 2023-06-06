@@ -43,10 +43,8 @@
         [rowSelected]="selected$ | async"
         [trackBy]="trackById"
         rowSelectable
-        sizes
         (more)="fetchMore()"
         (rowSelectionChange)="selected$.next($event)"
-        (sizeChange)="update($event)"
         (update)="update($event.size)"
     >
         <v-table-actions>

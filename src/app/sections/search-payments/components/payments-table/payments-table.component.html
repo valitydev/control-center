@@ -5,10 +5,8 @@
     [progress]="isLoading"
     [rowSelected]="selected"
     rowSelectable
-    sizes
     (more)="more.emit()"
     (rowSelectionChange)="selectedChange.emit($event)"
-    (sizeChange)="update.emit({ size: $event })"
     (update)="update.emit($event)"
 >
     <v-table-actions>
