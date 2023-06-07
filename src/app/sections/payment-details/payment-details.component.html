@@ -1,5 +1,8 @@
-<div fxLayout="column" fxLayoutGap="24px" style="margin: 24px">
-    <cc-headline>Payment details</cc-headline>
+<cc-page-layout
+    [progress]="isLoading$ | async"
+    description="#{{ (payment$ | async).id }} of Invoice #{{ (payment$ | async).invoice_id }}"
+    title="Payment"
+>
     <ng-container *ngIf="payment$ | async as payment">
         <mat-card>
             <mat-card-content>
@@ -7,10 +10,16 @@
                     [payment]="payment"
                     [shop]="shop$ | async"
                 ></cc-payment-main-info>
+                <!--                <cc-json-viewer-->
+                <!--                    [metadata]="metadata$ | async"-->
+                <!--                    [value]="payment"-->
+                <!--                    namespace="magista"-->
+                <!--                    type="StatPayment"-->
+                <!--                ></cc-json-viewer>-->
             </mat-card-content>
         </mat-card>
 
-        <h2 class="mat-headline-4">Refunds</h2>
+        <h2 class="mat-h1 mat-no-margin">Refunds</h2>
         <mat-card>
             <mat-card-content>
                 <cc-payment-refunds
@@ -22,7 +31,7 @@
         </mat-card>
 
         <div fxLayout fxLayoutAlign="space-between">
-            <h2 class="mat-headline-4">Chargebacks</h2>
+            <h2 class="mat-h1 mat-no-margin">Chargebacks</h2>
             <v-actions>
                 <button color="primary" mat-button (click)="createChargeback()">
                     Create chargeback
@@ -37,7 +46,4 @@
             ></cc-chargebacks>
         </mat-card>
     </ng-container>
-    <div *ngIf="isLoading$ | async" fxLayout fxLayoutAlign="center center">
-        <mat-spinner diameter="64"></mat-spinner>
-    </div>
-</div>
+</cc-page-layout>
