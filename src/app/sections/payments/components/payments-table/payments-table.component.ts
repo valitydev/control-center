@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { InvoicePaymentStatus } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
 import { Column, TagColumn, LoadOptions } from '@vality/ng-core';
@@ -25,7 +26,7 @@ export class PaymentsTableComponent {
 
     columns: Column<StatPayment>[] = [
         { field: 'id', hide: true },
-        'invoice_id',
+        { field: 'invoice_id', pinned: 'left' },
         {
             field: 'amount',
             type: 'currency',
@@ -81,10 +82,34 @@ export class PaymentsTableComponent {
         'domain_revision',
         { field: 'terminal_id.id', header: 'Terminal' },
         { field: 'provider_id.id', header: 'Provider' },
+        {
+            field: 'menu',
+            header: '',
+            pinned: 'right',
+            maxWidth: 0,
+            type: 'menu',
+            typeParameters: {
+                items: [
+                    {
+                        label: 'Details',
+                        click: (data) =>
+                            void this.router.navigate([
+                                'party',
+                                data.owner_id,
+                                'invoice',
+                                data.invoice_id,
+                                'payment',
+                                data.id,
+                            ]),
+                    },
+                ],
+            },
+        },
     ];
 
     constructor(
         private amountCurrencyService: AmountCurrencyService,
-        private partiesStoreService: PartiesStoreService
+        private partiesStoreService: PartiesStoreService,
+        private router: Router
     ) {}
 }
