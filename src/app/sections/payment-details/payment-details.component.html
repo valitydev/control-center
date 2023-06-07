@@ -1,6 +1,6 @@
 <cc-page-layout
     [progress]="isLoading$ | async"
-    description="#{{ (payment$ | async).id }} of Invoice #{{ (payment$ | async).invoice_id }}"
+    description="#{{ (payment$ | async).id }}"
     title="Payment"
 >
     <ng-container *ngIf="payment$ | async as payment">
