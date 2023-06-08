@@ -1,10 +1,23 @@
 <div class="header">
-    <h1 class="mat-headline-4 title">
-        {{ title }}
-        <span class="mat-secondary-text">{{ description }}</span>
+    <h1
+        class="mat-headline-4 mat-no-margin"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="8px"
+    >
+        <mat-icon *ngIf="isBackAvailable" class="back" (click)="back()">arrow_back</mat-icon>
+        <div>
+            {{ title }}
+            <span class="mat-secondary-text">{{ description }}</span>
+        </div>
     </h1>
-    <div class="mat-headline-4 actions">
+    <div class="mat-headline-4 mat-no-margin">
         <ng-content select="cc-page-layout-actions"></ng-content>
     </div>
 </div>
-<ng-content></ng-content>
+<div *ngIf="progress; else content" fxLayout fxLayoutAlign="center center">
+    <mat-spinner diameter="64"></mat-spinner>
+</div>
+<ng-template #content>
+    <ng-content></ng-content>
+</ng-template>

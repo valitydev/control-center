@@ -8,12 +8,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActionsModule, DialogModule } from '@vality/ng-core';
 
-import { StatusModule } from '@cc/app/shared/components';
+import { StatusModule, PageLayoutModule } from '@cc/app/shared/components';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
 import { ChargebacksComponent } from '../../shared/components/chargebacks/chargebacks.component';
+import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsRoutingModule } from './payment-details-routing.module';
 import { PaymentDetailsComponent } from './payment-details.component';
@@ -41,6 +43,9 @@ import { PaymentRefundsModule } from './payment-refunds';
         DialogModule,
         MetadataFormModule,
         ReactiveFormsModule,
+        PageLayoutModule,
+        ThriftViewerModule,
+        JsonViewerModule,
     ],
     declarations: [PaymentDetailsComponent, CreateChargebackDialogComponent],
 })

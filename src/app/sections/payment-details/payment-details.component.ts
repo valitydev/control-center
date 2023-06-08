@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
-import { Subject, merge, defer } from 'rxjs';
+import { Subject, merge, defer, from } from 'rxjs';
 import { pluck, shareReplay, switchMap, map } from 'rxjs/operators';
 
-import { InvoicingService } from '../../api/payment-processing/invoicing.service';
+import { InvoicingService } from '@cc/app/api/payment-processing';
+
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsService } from './payment-details.service';
 
@@ -31,6 +33,9 @@ export class PaymentDetailsComponent {
         ),
         map(({ chargebacks }) => chargebacks),
         shareReplay({ refCount: true, bufferSize: 1 })
+    );
+    metadata$ = from(
+        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
     );
 
     private updateChargebacks$ = new Subject<void>();
