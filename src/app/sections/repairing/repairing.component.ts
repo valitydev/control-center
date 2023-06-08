@@ -59,7 +59,7 @@ export class RepairingComponent implements OnInit {
     status = repairer.RepairStatus;
     columns$ = this.domainStoreService.getObjects('provider').pipe(
         map((providers): Column<Machine>[] => [
-            'id',
+            { field: 'id', pinned: 'left' },
             { header: 'Namespace', field: 'ns' },
             { field: 'created_at', type: 'datetime' },
             {
