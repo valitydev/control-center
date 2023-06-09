@@ -111,7 +111,7 @@ export class PaymentsComponent implements OnInit {
                     party_id: filters.party_id,
                     shop_ids: filters.shop_ids,
                     from_time: getNoTimeZoneIsoString(dateRange.start),
-                    to_time: getNoTimeZoneIsoString(dateRange.end),
+                    to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
                 },
                 payment_params: {
                     ...(otherFilters.payment_params || {}),
