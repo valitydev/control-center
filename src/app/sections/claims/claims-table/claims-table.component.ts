@@ -9,11 +9,11 @@ import { getUnionKey } from '../../../../utils';
 import { PartiesStoreService } from '../../../api/payment-processing';
 
 @Component({
-    selector: 'cc-search-table',
-    templateUrl: './search-table.component.html',
-    styleUrls: ['./search-table.component.scss'],
+    selector: 'cc-claims-table',
+    templateUrl: './claims-table.component.html',
+    styleUrls: ['./claims-table.component.scss'],
 })
-export class SearchTableComponent {
+export class ClaimsTableComponent {
     @Input() data!: Claim[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;

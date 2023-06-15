@@ -22,10 +22,9 @@ import { ApiModelPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { ClaimsComponentRouting } from './claims-routing.module';
+import { ClaimsTableComponent } from './claims-table/claims-table.component';
 import { ClaimsComponent } from './claims.component';
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
-import { ClaimMailPipePipe } from './search-table/claim-mail-pipe.pipe';
-import { SearchTableComponent } from './search-table/search-table.component';
 
 @NgModule({
     imports: [
@@ -56,11 +55,6 @@ import { SearchTableComponent } from './search-table/search-table.component';
         TableModule,
         FiltersModule,
     ],
-    declarations: [
-        ClaimsComponent,
-        SearchTableComponent,
-        ClaimMailPipePipe,
-        CreateClaimDialogComponent,
-    ],
+    declarations: [ClaimsComponent, ClaimsTableComponent, CreateClaimDialogComponent],
 })
 export class ClaimsModule {}

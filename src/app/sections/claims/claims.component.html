@@ -23,7 +23,7 @@
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
         </ng-template>
     </v-filters>
-    <cc-search-table
+    <cc-claims-table
         [data]="claims$ | async"
         [hasMore]="hasMore$ | async"
         [isLoading]="isLoading$ | async"
@@ -31,5 +31,5 @@
         (update)="load($event)"
     >
         <button color="primary" mat-raised-button (click)="create()">Create</button>
-    </cc-search-table>
+    </cc-claims-table>
 </cc-page-layout>
