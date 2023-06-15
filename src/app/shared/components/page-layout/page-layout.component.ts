@@ -13,7 +13,8 @@ export class PageLayoutComponent {
     @Input() progress?: boolean;
 
     // 1 and 2 is default history length
-    isBackAvailable = window.history.length > 2;
+    isBackAvailable =
+        window.history.length > 2 && window.location.pathname.split('/').slice(1).length > 1;
 
     constructor(private location: Location) {}
 
