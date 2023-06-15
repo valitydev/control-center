@@ -1,45 +1,63 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NonNullableFormBuilder } from '@angular/forms';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
-import { DialogService, cleanPrimitiveProps, clean } from '@vality/ng-core';
+import { DialogService, LoadOptions, QueryParamsService, clean } from '@vality/ng-core';
+import { debounceTime } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
-import { ClaimSearchForm } from '@cc/app/shared/components';
-
+import { CLAIM_STATUSES } from '../../api/claim-management';
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
-import { SearchClaimsService } from './search-claims.service';
+import { FetchClaimsService } from './fetch-claims.service';
 
+@UntilDestroy()
 @Component({
     templateUrl: './search-claims.component.html',
 })
 export class SearchClaimsComponent implements OnInit {
-    doAction$ = this.searchClaimService.doAction$;
-    claims$ = this.searchClaimService.searchResult$;
-    hasMore$ = this.searchClaimService.hasMore$;
+    isLoading$ = this.fetchClaimsService.isLoading$;
+    claims$ = this.fetchClaimsService.result$;
+    hasMore$ = this.fetchClaimsService.hasMore$;
+    claimStatuses = CLAIM_STATUSES;
+    filtersForm = this.fb.group({
+        party_id: undefined as string,
+        claim_id: undefined as number,
+        statuses: [[] as string[]],
+    });
+    active = 0;
+
     private selectedPartyId: PartyID;
 
     constructor(
-        private searchClaimService: SearchClaimsService,
-        private snackBar: MatSnackBar,
-        private dialogService: DialogService
+        private fetchClaimsService: FetchClaimsService,
+        private dialogService: DialogService,
+        private fb: NonNullableFormBuilder,
+        private qp: QueryParamsService<SearchClaimsComponent['filtersForm']['value']>
     ) {}
 
     ngOnInit(): void {
-        this.searchClaimService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search claims (${String(e)})`, 'OK')
+        this.filtersForm.patchValue(this.qp.params);
+        this.filtersForm.valueChanges
+            .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
+            .subscribe(() => {
+                this.load();
+            });
+    }
+
+    load(options?: LoadOptions): void {
+        const filters = clean(this.filtersForm.value);
+        void this.qp.set(filters);
+        this.fetchClaimsService.load(
+            { ...filters, statuses: filters.statuses?.map((status) => ({ [status]: {} })) || [] },
+            options
         );
+        this.active = Object.keys(filters).length;
     }
 
-    search(v: ClaimSearchForm): void {
-        this.selectedPartyId = v?.party_id;
-        this.searchClaimService.search(
-            cleanPrimitiveProps({ ...v, statuses: clean(v.statuses?.map((s) => ({ [s]: {} }))) })
-        );
+    more(): void {
+        this.fetchClaimsService.more();
     }
-
-    fetchMore(): void {
-        this.searchClaimService.fetchMore();
-    }
-
+    w;
     create() {
         this.dialogService.open(CreateClaimDialogComponent, { partyId: this.selectedPartyId });
     }

@@ -1,8 +1,8 @@
-import { ClaimStatus as ClaimStatusUnion } from '@vality/domain-proto/claim_management';
+import { ClaimStatus } from '@vality/domain-proto/claim_management';
 
 import { enumerate } from '@cc/utils';
 
-export const CLAIM_STATUSES = enumerate<keyof ClaimStatusUnion>()(
+export const CLAIM_STATUSES = enumerate<keyof ClaimStatus>()(
     'pending',
     'review',
     'pending_acceptance',
@@ -10,13 +10,3 @@ export const CLAIM_STATUSES = enumerate<keyof ClaimStatusUnion>()(
     'denied',
     'revoked'
 );
-
-/** @deprecated use CLAIM_STATUS - it checks for the occurrence of all elements */
-export enum ClaimStatus {
-    Pending = 'pending',
-    Review = 'review',
-    Denied = 'denied',
-    Revoked = 'revoked',
-    Accepted = 'accepted',
-    PendingAcceptance = 'pending_acceptance',
-}

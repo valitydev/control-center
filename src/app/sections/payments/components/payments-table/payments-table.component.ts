@@ -85,7 +85,7 @@ export class PaymentsTableComponent {
             field: 'menu',
             header: '',
             pinned: 'right',
-            maxWidth: 0,
+            width: '0',
             type: 'menu',
             typeParameters: {
                 items: [
