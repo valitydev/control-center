@@ -21,16 +21,16 @@ import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
+import { ClaimsComponentRouting } from './claims-routing.module';
+import { ClaimsComponent } from './claims.component';
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
-import { SearchClaimsComponentRouting } from './search-claims-routing.module';
-import { SearchClaimsComponent } from './search-claims.component';
 import { ClaimMailPipePipe } from './search-table/claim-mail-pipe.pipe';
 import { SearchTableComponent } from './search-table/search-table.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        SearchClaimsComponentRouting,
+        ClaimsComponentRouting,
         MatButtonModule,
         MatCardModule,
         MatDialogModule,
@@ -57,10 +57,10 @@ import { SearchTableComponent } from './search-table/search-table.component';
         FiltersModule,
     ],
     declarations: [
-        SearchClaimsComponent,
+        ClaimsComponent,
         SearchTableComponent,
         ClaimMailPipePipe,
         CreateClaimDialogComponent,
     ],
 })
-export class SearchClaimsModule {}
+export class ClaimsModule {}

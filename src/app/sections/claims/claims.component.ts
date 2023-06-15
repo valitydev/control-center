@@ -12,9 +12,9 @@ import { FetchClaimsService } from './fetch-claims.service';
 
 @UntilDestroy()
 @Component({
-    templateUrl: './search-claims.component.html',
+    templateUrl: './claims.component.html',
 })
-export class SearchClaimsComponent implements OnInit {
+export class ClaimsComponent implements OnInit {
     isLoading$ = this.fetchClaimsService.isLoading$;
     claims$ = this.fetchClaimsService.result$;
     hasMore$ = this.fetchClaimsService.hasMore$;
@@ -32,7 +32,7 @@ export class SearchClaimsComponent implements OnInit {
         private fetchClaimsService: FetchClaimsService,
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<SearchClaimsComponent['filtersForm']['value']>
+        private qp: QueryParamsService<ClaimsComponent['filtersForm']['value']>
     ) {}
 
     ngOnInit(): void {

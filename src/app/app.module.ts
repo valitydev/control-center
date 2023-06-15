@@ -28,7 +28,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import icons from './icons.json';
-import { SearchClaimsModule } from './sections/claims/search-claims.module';
+import { ClaimsModule } from './sections/claims/claims.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
@@ -68,7 +68,7 @@ export let AppInjector: Injector;
         MatSidenavModule,
         MatListModule,
         SearchPartiesModule,
-        SearchClaimsModule,
+        ClaimsModule,
         KeycloakTokenInfoModule,
         PayoutsModule,
         SectionsModule,
