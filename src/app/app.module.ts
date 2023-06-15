@@ -28,8 +28,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import icons from './icons.json';
+import { SearchClaimsModule } from './sections/claims/search-claims.module';
 import { PayoutsModule } from './sections/payouts';
-import { SearchClaimsModule } from './sections/search-claims/search-claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import {
