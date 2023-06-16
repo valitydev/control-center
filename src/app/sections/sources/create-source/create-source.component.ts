@@ -1,8 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { DialogSuperclass } from '@vality/ng-core';
-import { from } from 'rxjs';
 
 import { FistfulAdminService } from '../../../api/fistful-admin';
 import { NotificationService } from '../../../shared/services/notification';
@@ -14,9 +12,6 @@ import { NotificationErrorService } from '../../../shared/services/notification-
 })
 export class CreateSourceComponent extends DialogSuperclass<void> {
     control = new FormControl();
-    metadata$ = from(
-        import('@vality/fistful-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
-    );
 
     constructor(
         injector: Injector,

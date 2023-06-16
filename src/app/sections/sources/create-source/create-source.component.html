@@ -1,10 +1,9 @@
 <v-dialog title="Create Source">
-    <cc-metadata-form
+    <cc-fistful-thrift-form
         [formControl]="control"
-        [metadata]="metadata$ | async"
         namespace="source"
         type="SourceParams"
-    ></cc-metadata-form>
+    ></cc-fistful-thrift-form>
     <v-dialog-actions>
         <button [disabled]="control.invalid" color="primary" mat-raised-button (click)="create()">
             Create
