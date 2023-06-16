@@ -84,6 +84,13 @@
                             (claimChanged)="reloadClaim()"
                         ></cc-modification-unit-timeline-item>
                     </ng-container>
+                    <cc-modification-unit-timeline-item
+                        *ngSwitchDefault
+                        [claim]="claim"
+                        [modificationUnit]="modificationUnit"
+                        isChangeable
+                        (claimChanged)="reloadClaim()"
+                    ></cc-modification-unit-timeline-item>
                 </ng-container>
             </cc-timeline>
         </ng-template>
