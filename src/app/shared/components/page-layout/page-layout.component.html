@@ -22,6 +22,7 @@
         <div [matTooltip]="pathPart.tooltip">
             <a
                 *ngIf="pathPart.link; else onlyLabel"
+                [queryParams]="pathPart?.queryParams"
                 [routerLink]="pathPart.link"
                 class="mat-secondary-text"
                 >{{ pathPart.label }}</a

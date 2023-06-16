@@ -5,6 +5,11 @@
             label: (party$ | async)?.contact_info?.email,
             tooltip: (party$ | async)?.id,
             link: ['/party', (party$ | async)?.id]
+        },
+        {
+            label: 'Merchant claims',
+            link: '/claims',
+            queryParams: { party_id: '&quot;' + (party$ | async)?.id + '&quot;' }
         }
     ]"
     description="#{{ (claim$ | async)?.id }}"

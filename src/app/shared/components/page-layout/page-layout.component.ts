@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Params } from '@angular/router';
 
 @Component({
     selector: 'cc-page-layout',
@@ -14,6 +15,7 @@ export class PageLayoutComponent {
     @Input() path?: {
         label: string;
         link?: unknown[] | string | null | undefined;
+        queryParams?: Params | null;
         tooltip?: string;
     }[];
 
