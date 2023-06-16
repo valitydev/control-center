@@ -11,6 +11,11 @@ export class PageLayoutComponent {
     @Input() title!: string;
     @Input() description?: string;
     @Input() progress?: boolean;
+    @Input() path?: {
+        label: string;
+        link?: unknown[] | string | null | undefined;
+        tooltip?: string;
+    }[];
 
     // 1 and 2 is default history length
     isBackAvailable =

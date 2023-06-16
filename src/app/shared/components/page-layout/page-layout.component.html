@@ -3,9 +3,11 @@
         class="mat-headline-4 mat-no-margin"
         fxLayout="row"
         fxLayoutAlign="start center"
-        fxLayoutGap="8px"
+        fxLayoutGap="4px"
     >
-        <mat-icon *ngIf="isBackAvailable" class="back" (click)="back()">arrow_back</mat-icon>
+        <button *ngIf="isBackAvailable" mat-icon-button (click)="back()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
         <div>
             {{ title }}
             <span class="mat-secondary-text">{{ description }}</span>
@@ -15,6 +17,21 @@
         <ng-content select="cc-page-layout-actions"></ng-content>
     </div>
 </div>
+<div *ngIf="path?.length" class="mat-h3 mat-secondary-text" fxLayout fxLayoutGap="4px">
+    <ng-container *ngFor="let pathPart of path; let idx = index">
+        <div [matTooltip]="pathPart.tooltip">
+            <a
+                *ngIf="pathPart.link; else onlyLabel"
+                [routerLink]="pathPart.link"
+                class="mat-secondary-text"
+                >{{ pathPart.label }}</a
+            >
+            <ng-template #onlyLabel>{{ pathPart.label }}</ng-template>
+        </div>
+        <div *ngIf="idx !== path.length - 1">/</div></ng-container
+    >
+</div>
+
 <div *ngIf="progress; else content" fxLayout fxLayoutAlign="center center">
     <mat-spinner diameter="64"></mat-spinner>
 </div>
