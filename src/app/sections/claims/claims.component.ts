@@ -57,7 +57,7 @@ export class ClaimsComponent implements OnInit {
     more(): void {
         this.fetchClaimsService.more();
     }
-    w;
+
     create() {
         this.dialogService.open(CreateClaimDialogComponent, { partyId: this.selectedPartyId });
     }
