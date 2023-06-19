@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "ngcc",
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
     "stage": "cross-env NODE_ENV=stage ng serve --proxy-config proxy.conf.js --port 4201 --configuration=stage",
     "build": "ng build",
