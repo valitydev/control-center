@@ -1,6 +1,6 @@
 {
   "name": "control-center",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "postinstall": "ngcc",
@@ -65,13 +65,13 @@
     "zone.js": "0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "15.2.8",
+    "@angular-devkit/build-angular": "16.1.0",
     "@angular-eslint/builder": "15.1.0",
     "@angular-eslint/eslint-plugin": "15.1.0",
     "@angular-eslint/eslint-plugin-template": "15.1.0",
     "@angular-eslint/schematics": "15.1.0",
     "@angular-eslint/template-parser": "15.1.0",
-    "@angular/cli": "15.2.8",
+    "@angular/cli": "16.1.0",
     "@angular/compiler-cli": "15.2.9",
     "@types/element-resize-detector": "1.1.3",
     "@types/humanize-duration": "3.18.0",
