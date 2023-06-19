@@ -14,7 +14,7 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
     protected emptyValue: InnerType;
 
     ngOnInit() {
-        this.emptyValue = getValue(this.control) as InnerType;
+        this.emptyValue = getValue(this.control);
         super.ngOnInit();
     }
 

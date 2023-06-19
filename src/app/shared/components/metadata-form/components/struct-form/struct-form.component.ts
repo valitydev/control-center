@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ValidationErrors, Validators, FormBuilder } from '@angular/forms';
+import { ValidationErrors, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
@@ -24,7 +24,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     @Input() data: MetadataFormData<string, 'struct'>;
     @Input() extensions: MetadataFormExtension[];
 
-    control = this.fb.group<T>({} as never);
+    control: FormGroup = this.fb.group<T>({} as T);
     labelControl = this.fb.control(false);
 
     get hasLabel() {

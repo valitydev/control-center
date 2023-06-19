@@ -7,7 +7,7 @@ import { ProviderRegister } from './provider-register';
 export class CodeLensService extends ProviderRegister<CodeLensProvider> {
     protected registerProvider(provider: CodeLensProvider): IDisposable {
         if (!provider) {
-            return;
+            return undefined;
         }
         return monaco.languages.registerCodeLensProvider(provider.language, provider);
     }

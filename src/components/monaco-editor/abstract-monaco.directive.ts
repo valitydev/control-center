@@ -9,6 +9,7 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
+import { ComponentChanges } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 
 import { AbstractMonacoService } from './abstract-monaco.service';
@@ -47,7 +48,7 @@ export abstract class AbstractMonacoDirective implements OnInit, OnChanges, OnDe
         protected editorRef: ElementRef
     ) {}
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: ComponentChanges<AbstractMonacoDirective>) {
         this.childOnChanges(changes);
         if (!isNil(changes.options?.currentValue)) {
             this.monacoEditorService.updateOptions(changes.options.currentValue);

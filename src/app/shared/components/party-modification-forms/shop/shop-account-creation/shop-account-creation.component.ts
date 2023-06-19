@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ShopAccountParams } from '@vality/domain-proto/payment_processing';
-import get from 'lodash-es/get';
 
 @Component({
     selector: 'cc-shop-account-creation',
@@ -17,7 +16,7 @@ export class ShopAccountCreationComponent implements OnInit {
     constructor(private fb: UntypedFormBuilder) {}
 
     ngOnInit() {
-        const currency = get(this, 'initialValue.currency', '');
+        const currency = this.initialValue?.currency ?? {};
         this.form.registerControl('currency', this.fb.group(currency));
         this.form.updateValueAndValidity();
     }

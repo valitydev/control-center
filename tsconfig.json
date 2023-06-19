@@ -1,28 +1,32 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
     "compileOnSave": false,
     "compilerOptions": {
         "baseUrl": "./",
-        "downlevelIteration": true,
         "outDir": "./dist/out-tsc",
+        "forceConsistentCasingInFileNames": true,
+        "strict": false,
+        "noImplicitOverride": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "noImplicitReturns": false,
+        "noFallthroughCasesInSwitch": false,
         "sourceMap": true,
         "declaration": false,
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
+        "downlevelIteration": true,
         "experimentalDecorators": true,
+        "moduleResolution": "node",
         "importHelpers": true,
         "target": "ES2022",
-        "typeRoots": ["./node_modules/@types"],
+        "module": "ES2022",
+        "useDefineForClassFields": false,
         "lib": ["ESNext", "DOM"],
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
-        "skipLibCheck": false,
         "paths": {
             "@cc/*": ["src/*"],
             // necessary for local work with the library (ng-core), so that the node does not use the second angular from the local library node_modules
             "@angular/*": ["./node_modules/@angular/*"]
-        },
-        "useDefineForClassFields": false
+        }
     },
     "angularCompilerOptions": {
         "fullTemplateTypeCheck": true,

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { InternationalBankDetails } from '@vality/domain-proto/domain';
-import get from 'lodash-es/get';
 
 @Component({
     selector: 'cc-international-bank-details',
@@ -18,11 +17,11 @@ export class InternationalBankDetailsComponent implements OnInit {
 
     ngOnInit() {
         const control = (data = '') => this.fb.control(data);
-        const bic = get(this, 'initialValue.bic', '');
-        const country = get(this, 'initialValue.country', '');
-        const name = get(this, 'initialValue.name', '');
-        const address = get(this, 'initialValue.address', '');
-        const abaRtn = get(this, 'initialValue.aba_rtn', '');
+        const bic = this.initialValue?.bic;
+        const country = this.initialValue?.country as unknown as string;
+        const name = this.initialValue?.name;
+        const address = this.initialValue?.address;
+        const abaRtn = this.initialValue?.aba_rtn;
         this.form.registerControl('bic', control(bic));
         this.form.registerControl('country', control(country)); // Residence enum
         this.form.registerControl('name', control(name));

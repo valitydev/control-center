@@ -7,7 +7,7 @@ import { ProviderRegister } from './provider-register';
 export class CompletionService extends ProviderRegister<CompletionProvider> {
     protected registerProvider(provider: CompletionProvider): IDisposable {
         if (!provider) {
-            return;
+            return undefined;
         }
         return monaco.languages.registerCompletionItemProvider(provider.language, provider);
     }
