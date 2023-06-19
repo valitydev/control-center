@@ -1,0 +1,10 @@
+<v-table
+    [columns]="columns"
+    [data]="data"
+    [hasMore]="hasMore"
+    [progress]="isLoading"
+    (more)="more.emit()"
+    (update)="update.emit($event)"
+>
+    <v-table-actions><ng-content></ng-content></v-table-actions>
+</v-table>

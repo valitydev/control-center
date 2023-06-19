@@ -10,6 +10,7 @@ import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { PageLayoutModule } from '../../shared';
+import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { SourcesRoutingModule } from './sources-routing.module';
@@ -31,6 +32,7 @@ import { SourcesComponent } from './sources.component';
         MetadataFormModule,
         ReactiveFormsModule,
         PageLayoutModule,
+        FistfulThriftFormComponent,
     ],
     declarations: [SourcesComponent, CreateSourceComponent],
 })

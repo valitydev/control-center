@@ -3,15 +3,15 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
+import { ClaimsComponent } from './claims.component';
 import { ROUTING_CONFIG } from './routing-config';
-import { SearchClaimsComponent } from './search-claims.component';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: 'claims',
-                component: SearchClaimsComponent,
+                component: ClaimsComponent,
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
             },
@@ -19,4 +19,4 @@ import { SearchClaimsComponent } from './search-claims.component';
     ],
     exports: [RouterModule],
 })
-export class SearchClaimsComponentRouting {}
+export class ClaimsComponentRouting {}

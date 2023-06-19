@@ -48,14 +48,13 @@ export class PaymentsTableComponent {
         {
             field: 'status',
             type: 'tag',
-            formatter: (data) => startCase(getUnionKey(data.status)),
+            formatter: (data) => getUnionKey(data.status),
             typeParameters: {
-                value: (data) => getUnionKey(data.status),
+                label: (data) => startCase(getUnionKey(data.status)),
                 tags: {
                     pending: { color: 'pending' },
                     processed: { color: 'pending' },
                     captured: { color: 'success' },
-                    cancelled: {},
                     refunded: { color: 'success' },
                     failed: { color: 'warn' },
                     charged_back: { color: 'success' },
@@ -86,7 +85,7 @@ export class PaymentsTableComponent {
             field: 'menu',
             header: '',
             pinned: 'right',
-            maxWidth: 0,
+            width: '0',
             type: 'menu',
             typeParameters: {
                 items: [

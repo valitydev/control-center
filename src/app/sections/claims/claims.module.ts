@@ -14,25 +14,22 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule, DialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality/ng-core';
 
-import { ClaimSearchFormModule, PageLayoutModule } from '@cc/app/shared/components';
+import { PageLayoutModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ApiModelPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
-import { TableModule } from '@cc/components/table';
 
+import { ClaimsComponentRouting } from './claims-routing.module';
+import { ClaimsTableComponent } from './claims-table/claims-table.component';
+import { ClaimsComponent } from './claims.component';
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
-import { SearchClaimsComponentRouting } from './search-claims-routing.module';
-import { SearchClaimsComponent } from './search-claims.component';
-import { SearchClaimsService } from './search-claims.service';
-import { ClaimMailPipePipe } from './search-table/claim-mail-pipe.pipe';
-import { SearchTableComponent } from './search-table/search-table.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        SearchClaimsComponentRouting,
+        ClaimsComponentRouting,
         MatButtonModule,
         MatCardModule,
         MatDialogModule,
@@ -47,7 +44,6 @@ import { SearchTableComponent } from './search-table/search-table.component';
         ReactiveFormsModule,
         FlexLayoutModule,
         MatExpansionModule,
-        ClaimSearchFormModule,
         EmptySearchResultModule,
         ApiModelPipesModule,
         ThriftPipesModule,
@@ -56,13 +52,9 @@ import { SearchTableComponent } from './search-table/search-table.component';
         DialogModule,
         MerchantFieldModule,
         PageLayoutModule,
+        TableModule,
+        FiltersModule,
     ],
-    declarations: [
-        SearchClaimsComponent,
-        SearchTableComponent,
-        ClaimMailPipePipe,
-        CreateClaimDialogComponent,
-    ],
-    providers: [SearchClaimsService],
+    declarations: [ClaimsComponent, ClaimsTableComponent, CreateClaimDialogComponent],
 })
-export class SearchClaimsModule {}
+export class ClaimsModule {}

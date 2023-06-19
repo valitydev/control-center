@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Params } from '@angular/router';
 
 @Component({
     selector: 'cc-page-layout',
@@ -11,9 +12,16 @@ export class PageLayoutComponent {
     @Input() title!: string;
     @Input() description?: string;
     @Input() progress?: boolean;
+    @Input() path?: {
+        label: string;
+        link?: unknown[] | string | null | undefined;
+        queryParams?: Params | null;
+        tooltip?: string;
+    }[];
 
     // 1 and 2 is default history length
-    isBackAvailable = window.history.length > 2;
+    isBackAvailable =
+        window.history.length > 2 && window.location.pathname.split('/').slice(1).length > 1;
 
     constructor(private location: Location) {}
 

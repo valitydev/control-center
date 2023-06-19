@@ -1,22 +1,18 @@
 import { Modification } from '@vality/domain-proto/claim_management';
+import isObject from 'lodash-es/isObject';
 
+import { getUnionKey } from '../../../../utils';
 import { MODIFICATIONS_NAME_TREE } from './types/modifications-name-tree';
 
 export function getModificationName(modification: Modification) {
-    let value: unknown = modification;
-    let name: unknown = MODIFICATIONS_NAME_TREE;
-    while (value) {
-        if (typeof value === 'object') {
-            const key = Object.keys(value).find((k) => Object.keys(name).includes(k));
-            value = value[key];
-            name = name[key];
-        }
-        if (!name) {
-            console.error('Unknown modification:', modification);
-            return 'Unknown Modification';
-        }
-        if (typeof name === 'string') {
-            return name + ' Modification';
-        }
+    let currentValue: unknown = modification;
+    let currentName: unknown = MODIFICATIONS_NAME_TREE;
+    while (isObject(currentName) && isObject(currentValue)) {
+        const key = Object.keys(currentValue).find((k) => Object.keys(currentName).includes(k));
+        currentValue = currentValue?.[key];
+        currentName = currentName?.[key];
     }
+    return typeof currentName === 'string'
+        ? `${currentName} Modification`
+        : getUnionKey(modification);
 }
