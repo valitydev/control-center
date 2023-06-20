@@ -1,7 +1,0 @@
-@use '@vality/ng-core' as v;
-
-@mixin cc-target-table-theme($theme) {
-    .cc-target-table-from-claim {
-        color: v.get-color($theme, warn);
-    }
-}
