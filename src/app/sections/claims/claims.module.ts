@@ -13,7 +13,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality/ng-core';
 
 import { PageLayoutModule } from '@cc/app/shared/components';
@@ -40,14 +39,12 @@ import { CreateClaimDialogComponent } from './components/create-claim-dialog/cre
         MatProgressBarModule,
         MatSelectModule,
         MatSnackBarModule,
-        MatTableModule,
         ReactiveFormsModule,
         FlexLayoutModule,
         MatExpansionModule,
         EmptySearchResultModule,
         ApiModelPipesModule,
         ThriftPipesModule,
-        TableModule,
         ActionsModule,
         DialogModule,
         MerchantFieldModule,
