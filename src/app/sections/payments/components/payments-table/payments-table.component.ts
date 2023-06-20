@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { InvoicePaymentStatus } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { Column, TagColumn, LoadOptions } from '@vality/ng-core';
+import { Column, TagColumn, LoadOptions, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
@@ -81,29 +81,20 @@ export class PaymentsTableComponent {
         'domain_revision',
         { field: 'terminal_id.id', header: 'Terminal' },
         { field: 'provider_id.id', header: 'Provider' },
-        {
-            field: 'menu',
-            header: '',
-            pinned: 'right',
-            width: '0',
-            type: 'menu',
-            typeParameters: {
-                items: [
-                    {
-                        label: 'Details',
-                        click: (data) =>
-                            void this.router.navigate([
-                                'party',
-                                data.owner_id,
-                                'invoice',
-                                data.invoice_id,
-                                'payment',
-                                data.id,
-                            ]),
-                    },
-                ],
+        createOperationColumn([
+            {
+                label: 'Details',
+                click: (data) =>
+                    void this.router.navigate([
+                        'party',
+                        data.owner_id,
+                        'invoice',
+                        data.invoice_id,
+                        'payment',
+                        data.id,
+                    ]),
             },
-        },
+        ]),
     ];
 
     constructor(
