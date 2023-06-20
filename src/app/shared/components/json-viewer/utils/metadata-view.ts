@@ -147,7 +147,7 @@ export class MetadataViewItem {
     isNumberKey$ = this.key$.pipe(map(({ value }) => typeof value === 'number'));
 
     constructor(
-        private value: any,
+        private value: unknown,
         private key?: MetadataViewItem,
         private data?: MetadataFormData,
         private extensions?: MetadataViewExtension[]

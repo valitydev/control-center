@@ -7,13 +7,13 @@ import { MetadataFormData } from '../../metadata-form';
 export interface MetadataViewExtensionResult {
     key?: string;
     value: string;
-    tooltip?: any;
+    tooltip?: unknown;
     link?: Parameters<Router['navigate']>;
 }
 
 export type MetadataViewExtension = {
-    determinant: (data: MetadataFormData, value: any) => Observable<boolean>;
-    extension: (data: MetadataFormData, value: any) => Observable<MetadataViewExtensionResult>;
+    determinant: (data: MetadataFormData, value: unknown) => Observable<boolean>;
+    extension: (data: MetadataFormData, value: unknown) => Observable<MetadataViewExtensionResult>;
 };
 
 export function getFirstDeterminedExtensionsResult(
