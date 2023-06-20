@@ -11,6 +11,7 @@ import { NotificationService } from '@cc/app/shared/services/notification';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 import { NotificationErrorService, handleError } from '../../shared/services/notification-error';
+
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
 import { AllowedClaimStatusesService } from './services/allowed-claim-statuses.service';

@@ -14,6 +14,7 @@ import {
     MetadataFormExtension,
     isTypeWithAliases,
 } from '../../components/metadata-form';
+
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import {
     defaultDomainObjectToOption,

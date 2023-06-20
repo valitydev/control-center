@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 
 import { ComponentChanges } from '../../app/shared';
+
 import { AbstractMonacoDirective } from './abstract-monaco.directive';
 import { MonacoFile } from './model';
 import { MonacoEditorService } from './monaco-editor.service';

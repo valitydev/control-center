@@ -10,6 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
 import { DetailsItemModule } from '../../../../components/details-item';
+
 import { TargetRulesetFormComponent } from './target-ruleset-form.component';
 
 @NgModule({

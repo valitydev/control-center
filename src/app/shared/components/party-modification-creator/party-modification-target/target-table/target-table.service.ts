@@ -9,6 +9,7 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { PartyTarget } from '../party-target';
+
 import { modificationsToSelectableItems } from './modifications-to-selectable-items';
 import { SelectableItem } from './selectable-item';
 

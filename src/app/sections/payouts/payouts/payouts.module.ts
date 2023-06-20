@@ -26,6 +26,7 @@ import { ApiModelPipesModule, CommonPipesModule, ThriftPipesModule } from '@cc/a
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { DateRangeModule } from '../../../shared/components/date-range/date-range.module';
+
 import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchFormComponent } from './components/payouts-search-form/payouts-search-form.component';

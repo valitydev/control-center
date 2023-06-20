@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import yaml from 'yaml';
 
 import { MetadataFormData } from '../metadata-form';
+
 import { MetadataViewItem } from './utils/metadata-view';
 import {
     MetadataViewExtension,

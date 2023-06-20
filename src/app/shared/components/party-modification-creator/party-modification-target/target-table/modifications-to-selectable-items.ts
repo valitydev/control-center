@@ -4,6 +4,7 @@ import { getOr } from '@cc/utils/get-or';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
 import { PartyTarget } from '../party-target';
+
 import { SelectableItem } from './selectable-item';
 
 export const modificationsToSelectableItems = (

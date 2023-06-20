@@ -25,6 +25,7 @@ import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
+
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { RepairingRoutingModule } from './repairing-routing.module';
 import { RepairingComponent } from './repairing.component';

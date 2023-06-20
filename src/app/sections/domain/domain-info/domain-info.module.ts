@@ -15,6 +15,7 @@ import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { ThriftPipesModule, PageLayoutModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
+
 import { DomainGroupModule } from './domain-group';
 import { DomainInfoComponent } from './domain-info.component';
 

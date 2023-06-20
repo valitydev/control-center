@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Modification } from '@vality/domain-proto/claim_management';
 
 import { PartyTarget } from '../party-target';
+
 import { itemsFilterPredicate } from './items-filter-predicate';
 import { SelectableItem } from './selectable-item';
 import { TargetTableService } from './target-table.service';

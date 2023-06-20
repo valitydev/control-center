@@ -13,6 +13,7 @@ import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
+
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
 import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
 

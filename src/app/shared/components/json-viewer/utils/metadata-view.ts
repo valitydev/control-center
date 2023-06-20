@@ -6,6 +6,7 @@ import { Observable, of, switchMap, combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormData } from '../../metadata-form';
+
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';
 import {

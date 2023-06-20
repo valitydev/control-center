@@ -1,6 +1,7 @@
 import { StatRequest } from '@vality/fistful-proto/fistful_stat';
 
 import { QueryDsl } from '../query-dsl';
+
 import { DepositParams } from './deposit-params';
 
 export const depositParamsToRequest = (

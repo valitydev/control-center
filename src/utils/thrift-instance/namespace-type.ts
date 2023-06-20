@@ -1,6 +1,7 @@
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
 import { JsonAST } from '@vality/thrift-ts';
+
+import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
 
 export const PRIMITIVE_TYPES = [
     'int',

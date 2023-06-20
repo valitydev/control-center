@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CodeLensProvider, IDisposable } from '../model';
+
 import { ProviderRegister } from './provider-register';
 
 @Injectable()

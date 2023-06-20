@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CompletionProvider, IDisposable } from '../model';
+
 import { ProviderRegister } from './provider-register';
 
 @Injectable()

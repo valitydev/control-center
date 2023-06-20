@@ -8,6 +8,7 @@ import { ModificationNameModule } from '../modification-name';
 import { PartyModificationCreationModule } from '../party-modification-creation';
 import { PartyModificationEmitter } from '../party-modification-emitter.service';
 import { PartyModificationTargetModule } from '../party-modification-target';
+
 import { CreateModificationDialogComponent } from './create-modification-dialog.component';
 
 @NgModule({

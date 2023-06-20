@@ -27,6 +27,7 @@ import {
     ModificationAction,
     ShopModificationName,
 } from '../model';
+
 import { filterEmptyStringValues } from './filter-empty-string-value';
 import { toPartyModification } from './to-party-modification';
 

@@ -21,6 +21,7 @@ import { DateRangeModule } from '../../shared/components/date-range/date-range.m
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { ThriftPipesModule } from '../../shared/pipes/thrift';
+
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { WithdrawalsRoutingModule } from './withdrawals-routing.module';
 import { WithdrawalsComponent } from './withdrawals.component';

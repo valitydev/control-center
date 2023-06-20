@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ManagementService } from '@cc/app/api/deposit';
 
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
+
 import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
 
 @UntilDestroy()

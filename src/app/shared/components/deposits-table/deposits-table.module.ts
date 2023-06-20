@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 
 import { ApiModelPipesModule, CommonPipesModule } from '../../pipes';
 import { StatusModule } from '../status';
+
 import { DepositActionsPipe } from './deposit-actions.pipe';
 import { DepositsTableComponent } from './deposits-table.component';
 
