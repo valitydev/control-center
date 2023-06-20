@@ -1,4 +1,4 @@
-export function clearNullFields(union: any): any {
+export function clearNullFields(union: unknown): unknown {
     if (!union) {
         return;
     }

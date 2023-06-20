@@ -1,9 +1,11 @@
 import has from 'lodash-es/has';
 import isObject from 'lodash-es/isObject';
 
+import type { Int64 } from '@vality/thrift-ts';
+
 import { clearNullFields } from './thrift-utils';
 
-function resolveArray(arr: any[]): any[] {
+function resolveArray(arr: unknown[]): unknown[] {
     let result = [];
     for (const item of arr) {
         result = result.concat(toJson(item));
@@ -11,7 +13,7 @@ function resolveArray(arr: any[]): any[] {
     return result;
 }
 
-function resolveObject(obj: any): any {
+function resolveObject(obj: unknown): unknown {
     const sanitized = clearNullFields(obj);
     const entries = Object.entries(sanitized);
     let result = {};
@@ -24,7 +26,7 @@ function resolveObject(obj: any): any {
     return result;
 }
 
-function resolveMap(map: Map<any, any>): any {
+function resolveMap(map: Map<unknown, unknown>): unknown {
     let result = [];
     map.forEach((v, k) => {
         result = result.concat({
@@ -35,11 +37,11 @@ function resolveMap(map: Map<any, any>): any {
     return result;
 }
 
-function isI64(obj: any): boolean {
+function isI64(obj: unknown): obj is Int64 {
     return has(obj, 'buffer') && has(obj, 'offset');
 }
 
-export function toJson(thrift: any): any {
+export function toJson(thrift: unknown): unknown {
     if (!thrift) {
         return;
     }
