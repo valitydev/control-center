@@ -6,7 +6,7 @@ import { skipNullValues } from '@cc/utils/skip-null-values';
     name: 'ccJsonCleanLook',
 })
 export class JsonCleanLookPipe implements PipeTransform {
-    transform(obj: any, isActive: boolean): any {
+    transform(obj: unknown, isActive: boolean): unknown {
         return isActive ? skipNullValues(obj) : obj;
     }
 }

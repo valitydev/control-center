@@ -1,4 +1,4 @@
-export interface FetchAction<P = any> {
+export interface FetchAction<P = unknown> {
     type: 'search' | 'fetchMore';
     value?: P;
     size?: number;
