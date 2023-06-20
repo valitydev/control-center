@@ -18,13 +18,13 @@ import {
     CompletionProvider,
     IDisposable,
     IEditor,
-    IEditorOptions,
+    IDiffEditorOptions,
     MonacoFile,
 } from './model';
 
 @Directive()
 export abstract class AbstractMonacoDirective implements OnInit, OnChanges, OnDestroy {
-    @Input() options: IEditorOptions;
+    @Input() options: IDiffEditorOptions;
 
     @Input() set codeLensProviders(providers: CodeLensProvider[]) {
         if (!isNil(providers) && providers.length > 0) {
