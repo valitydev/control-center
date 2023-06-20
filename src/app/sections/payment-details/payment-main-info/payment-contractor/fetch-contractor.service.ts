@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ContractID, PartyID } from '@vality/domain-proto/domain';
-import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
+import { ContractID, PartyID, Party } from '@vality/domain-proto/domain';
+import { forkJoin, merge, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
@@ -13,20 +13,19 @@ export class FetchContractorService {
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     contractor$ = this.getContractor$.pipe(
-        switchMap(
-            ({ partyID, contractID }): Observable<[ContractID, any]> =>
-                forkJoin([
-                    of(contractID),
-                    this.partyManagementService.Get(partyID).pipe(
-                        catchError(() => {
-                            this.hasError$.next();
-                            return of('error');
-                        }),
-                        filter((result) => result !== 'error')
-                    ),
-                ])
+        switchMap(({ partyID, contractID }) =>
+            forkJoin([
+                of(contractID),
+                this.partyManagementService.Get(partyID).pipe(
+                    catchError(() => {
+                        this.hasError$.next();
+                        return of('error');
+                    }),
+                    filter((result) => result !== 'error')
+                ),
+            ])
         ),
-        map(([contractID, party]) => {
+        map(([contractID, party]: [ContractID, Party]) => {
             const contractorID = party.contracts.get(contractID)?.contractor_id;
             return party.contractors.get(contractorID)?.contractor;
         }),

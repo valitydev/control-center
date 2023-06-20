@@ -15,7 +15,7 @@ export interface Refund {
     owner_id: PartyID;
     shop_id: ShopID;
     status: InvoicePaymentRefundStatus;
-    created_at: any;
+    created_at: string;
     amount: Amount;
     fee: Amount;
     currency_symbolic_code: string;
