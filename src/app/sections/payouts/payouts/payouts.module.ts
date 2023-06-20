@@ -22,7 +22,7 @@ import {
     PageLayoutModule,
 } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { ApiModelPipesModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
+import { ShopNameModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { DateRangeModule } from '../../../shared/components/date-range/date-range.module';
@@ -60,7 +60,7 @@ import { PayoutsComponent } from './payouts.component';
         MatIconModule,
         MatTableModule,
         MatMenuModule,
-        ApiModelPipesModule,
+        ShopNameModule,
         CommonPipesModule,
         ThriftPipesModule,
         StatusModule,
