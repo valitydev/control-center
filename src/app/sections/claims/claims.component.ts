@@ -7,6 +7,7 @@ import { debounceTime } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { CLAIM_STATUSES } from '../../api/claim-management';
+
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
 import { FetchClaimsService } from './fetch-claims.service';
 

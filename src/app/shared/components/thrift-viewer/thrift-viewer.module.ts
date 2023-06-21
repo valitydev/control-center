@@ -10,6 +10,7 @@ import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { JsonViewerModule } from '../json-viewer';
+
 import { ThriftViewerComponent } from './thrift-viewer.component';
 
 @NgModule({

@@ -6,7 +6,10 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class AppAuthGuardService extends KeycloakAuthGuard {
-    constructor(protected router: Router, protected keycloakAngular: KeycloakService) {
+    constructor(
+        protected override router: Router,
+        protected override keycloakAngular: KeycloakService
+    ) {
         super(router, keycloakAngular);
     }
 
@@ -16,7 +19,7 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
         _state: RouterStateSnapshot
     ): Promise<boolean | UrlTree> {
         return (
-            this.userHasSomeServiceMethods(route.data.services) ||
+            this.userHasSomeServiceMethods(route.data['services']) ||
             this.router.createUrlTree(['404'])
         );
     }

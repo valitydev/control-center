@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
@@ -13,7 +13,7 @@ export class MomentUtcDateAdapter extends MomentDateAdapter {
         super(dateLocale);
     }
 
-    createDate(year: number, month: number, date: number): Moment {
+    override createDate(year: number, month: number, date: number): Moment {
         // Moment.js will create an invalid date if any of the components are out of bounds, but we
         // explicitly check each case so we can throw more descriptive errors.
         if (month < 0 || month > 11) {

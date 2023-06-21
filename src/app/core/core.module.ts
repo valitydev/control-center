@@ -4,6 +4,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../../environments/environment';
+
 import { ConfigService } from './config.service';
 
 const initializer = (keycloak: KeycloakService, configService: ConfigService) => () =>

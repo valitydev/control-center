@@ -13,7 +13,7 @@ export class PartiesSearchFiltersComponent implements OnInit {
     initParams: PartiesSearchFiltersParams;
 
     @Output()
-    searchParamsChanged$: EventEmitter<any> = new EventEmitter();
+    searchParamsChanged$ = new EventEmitter();
 
     form = this.partiesSearchFiltersService.form;
 

@@ -7,6 +7,7 @@ import { ReplaySubject } from 'rxjs';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
+import { MonacoFile } from '../../../../components/monaco-editor';
 import { toMonacoFile } from '../../../sections/domain/utils';
 import { ComponentChanges } from '../../utils';
 
@@ -33,8 +34,8 @@ export class ThriftViewerComponent<T> implements OnChanges {
 
     @Output() changeKind = new EventEmitter<ViewerKind>();
 
-    valueFile$ = new ReplaySubject(1);
-    comparedFile$ = new ReplaySubject(1);
+    valueFile$ = new ReplaySubject<MonacoFile>(1);
+    comparedFile$ = new ReplaySubject<MonacoFile>(1);
 
     get isDiff() {
         return !!this.compared;

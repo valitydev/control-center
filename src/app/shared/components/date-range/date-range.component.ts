@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ValidationErrors } from '@angular/forms';
+import { FormBuilder, ValidationErrors, FormGroup } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
 import { Moment } from 'moment';
 
@@ -12,7 +12,7 @@ import { createControlProviders, ValidatedControlSuperclass } from '../../../../
     providers: createControlProviders(() => DateRangeComponent),
 })
 export class DateRangeComponent extends ValidatedControlSuperclass<DateRange<Moment>> {
-    control = this.fb.group({
+    control: FormGroup = this.fb.group({
         start: null,
         end: null,
     });

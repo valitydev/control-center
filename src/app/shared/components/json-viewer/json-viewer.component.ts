@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import yaml from 'yaml';
 
 import { MetadataFormData } from '../metadata-form';
+
 import { MetadataViewItem } from './utils/metadata-view';
 import {
     MetadataViewExtension,
@@ -71,7 +72,7 @@ export class JsonViewerComponent implements OnChanges {
         }
     }
 
-    getTooltip(tooltip: any) {
+    getTooltip(tooltip: unknown) {
         return typeof tooltip === 'object' ? yaml.stringify(tooltip) : String(tooltip);
     }
 }

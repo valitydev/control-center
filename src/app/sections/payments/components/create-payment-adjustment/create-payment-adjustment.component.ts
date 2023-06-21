@@ -20,13 +20,13 @@ import { InvoicingService } from '../../../../api/payment-processing';
 export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     CreatePaymentAdjustmentComponent,
     { payments: StatPayment[] },
-    { withError?: { payment: StatPayment; error: any }[] }
+    { withError?: { payment: StatPayment; error: unknown }[] }
 > {
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
     metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
-    withError: { payment: StatPayment; error: any }[] = [];
+    withError: { payment: StatPayment; error: unknown }[] = [];
 
     constructor(
         injector: Injector,
@@ -73,7 +73,8 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
                     } else {
                         const errors = this.withError
                             .map((w) => {
-                                const error: string = w.error?.name || w.error?.message || '';
+                                const error: string =
+                                    w.error?.['name'] || w.error?.['message'] || '';
                                 if (error) return `${w.payment.id}: ${error}`;
                                 return null;
                             })

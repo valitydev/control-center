@@ -15,6 +15,7 @@ import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { PageLayoutModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
+
 import { DomainObjCreationComponent } from './domain-obj-creation.component';
 
 @NgModule({

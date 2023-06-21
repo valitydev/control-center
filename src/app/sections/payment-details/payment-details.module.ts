@@ -16,6 +16,7 @@ import { ChargebacksComponent } from '../../shared/components/chargebacks/charge
 import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
+
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsRoutingModule } from './payment-details-routing.module';
 import { PaymentDetailsComponent } from './payment-details.component';

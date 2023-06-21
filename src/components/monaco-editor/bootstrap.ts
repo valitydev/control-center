@@ -2,7 +2,9 @@ import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-declare const window: any;
+declare const window: {
+    require: { config: (arg: unknown) => unknown } & ((arg0: string[], arg1: unknown) => unknown);
+};
 
 export const BOOTSTRAP$ = new Observable<void>((observer) => {
     const script = document.createElement('script');

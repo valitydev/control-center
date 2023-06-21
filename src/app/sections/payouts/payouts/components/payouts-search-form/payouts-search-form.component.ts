@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { PartyID, ShopID, Party, Shop } from '@vality/domain-proto/domain';
+import { PartyID, Party, Shop, ShopID } from '@vality/domain-proto/domain';
 import { magista } from '@vality/magista-proto';
 import { Moment } from 'moment';
 
@@ -23,7 +23,7 @@ export interface PayoutsSearchForm {
     providers: createControlProviders(() => PayoutsSearchFormComponent),
 })
 export class PayoutsSearchFormComponent extends ValidatedControlSuperclass<PayoutsSearchForm> {
-    control = this.fb.group({
+    control: FormGroup = this.fb.group({
         payoutId: null as string,
         partyId: null as PartyID,
         dateRange: [null, Validators.required],

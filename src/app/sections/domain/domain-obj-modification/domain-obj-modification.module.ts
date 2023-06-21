@@ -14,6 +14,7 @@ import { ThriftEditorModule } from '@cc/app/shared/components/thrift-editor';
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { PageLayoutModule } from '../../../shared';
+
 import { DomainObjModificationComponent } from './domain-obj-modification.component';
 
 @NgModule({

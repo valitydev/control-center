@@ -25,6 +25,7 @@ import { TimelineModule } from '@cc/components/timeline';
 import { PageLayoutModule } from '../../shared';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { HumanizeDurationModule } from '../../shared/pipes/humanize-duration';
+
 import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';

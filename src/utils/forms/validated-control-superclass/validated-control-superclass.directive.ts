@@ -4,6 +4,7 @@ import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import { EMPTY, Observable } from 'rxjs';
 
 import { getValue } from '../get-value';
+
 import { getErrorsTree } from './utils/get-errors-tree';
 
 @Directive()
@@ -14,7 +15,7 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
     protected emptyValue: InnerType;
 
     ngOnInit() {
-        this.emptyValue = getValue(this.control) as InnerType;
+        this.emptyValue = getValue(this.control);
         super.ngOnInit();
     }
 

@@ -7,7 +7,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTableModule } from '@angular/material/table';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
 import { TableModule } from '@vality/ng-core';
 
@@ -25,7 +24,6 @@ import { WalletsComponent } from './wallets.component';
         WalletsRoutingModule,
         MatCardModule,
         FlexModule,
-        MatTableModule,
         TableModule,
         EmptySearchResultModule,
         MatProgressSpinnerModule,

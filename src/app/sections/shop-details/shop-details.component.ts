@@ -11,6 +11,7 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 import { getUnionKey } from '../../../utils';
 import { PartyManagementService } from '../../api/payment-processing';
 import { NotificationService } from '../../shared/services/notification';
+
 import { FetchShopService } from './services/fetch-shop.service';
 
 @UntilDestroy()

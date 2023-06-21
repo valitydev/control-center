@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DialogModule } from '@vality/ng-core';
 
 import { TargetRulesetFormModule } from '../target-ruleset-form';
+
 import { ChangeTargetDialogComponent } from './change-target-dialog.component';
 
 @NgModule({

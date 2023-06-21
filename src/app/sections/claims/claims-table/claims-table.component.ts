@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
-import { Column, LoadOptions, TagColumn } from '@vality/ng-core';
+import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
@@ -47,21 +47,12 @@ export class ClaimsTableComponent {
         'revision',
         { field: 'created_at', type: 'datetime' },
         { field: 'updated_at', type: 'datetime' },
-        {
-            field: 'operation',
-            header: '',
-            type: 'menu',
-            pinned: 'right',
-            width: '0',
-            typeParameters: {
-                items: [
-                    {
-                        label: 'Details',
-                        click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
-                    },
-                ],
+        createOperationColumn([
+            {
+                label: 'Details',
+                click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
             },
-        },
+        ]),
     ];
 
     constructor(private router: Router, private partiesStoreService: PartiesStoreService) {}

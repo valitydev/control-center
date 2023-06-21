@@ -32,7 +32,11 @@ type DelegateId = {
     templateUrl: 'routing-rules-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RoutingRulesListComponent<T extends { [N in PropertyKey]: any } & DelegateId = any> {
+export class RoutingRulesListComponent<
+    T extends { [N in PropertyKey]: unknown } & DelegateId = {
+        [N in PropertyKey]: unknown;
+    } & DelegateId
+> {
     @Input() displayedColumns: { key: keyof T; name: string }[];
 
     @Input() set data(data: T[]) {

@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 
 import { MerchantFieldModule } from '../../../shared/components/merchant-field';
+
 import { SearchFiltersComponent } from './search-filters.component';
 
 @NgModule({

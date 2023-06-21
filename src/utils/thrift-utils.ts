@@ -1,4 +1,4 @@
-export function clearNullFields(union: any): any {
+export function clearNullFields(union: unknown): unknown {
     if (!union) {
         return;
     }
@@ -11,16 +11,4 @@ export function clearNullFields(union: any): any {
         };
     }
     return result;
-}
-
-export function extract(domainObject: any): any {
-    if (!domainObject) {
-        return;
-    }
-    return Object.entries(domainObject).reduce((acc, [, v]) => {
-        if (v !== null) {
-            return v;
-        }
-        return acc;
-    }, null);
 }

@@ -40,7 +40,7 @@ export class SelectSearchFieldComponent<Value>
     @Input() options: Option<Value>[];
     @Input() svgIcon: string | null = this.fieldOptions?.svgIcon;
     @Input() hint: string | null;
-    @Input() @coerceBoolean isExternalSearch: boolean = false;
+    @Input() @coerceBoolean isExternalSearch: boolean | '' = false;
     @Input() @coerceBoolean progress: boolean = false;
 
     @Output() searchChange = new EventEmitter<string>();

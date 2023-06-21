@@ -8,7 +8,7 @@ import { Int64 } from '@vality/thrift-ts';
  * @deprecated
  */
 export class ThriftInt64Pipe implements PipeTransform {
-    transform(value: Int64 | number): any {
+    transform(value: Int64 | number): number {
         return typeof value === 'number' ? value : value.toNumber();
     }
 }

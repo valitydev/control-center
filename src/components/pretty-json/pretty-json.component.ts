@@ -42,7 +42,7 @@ import { coerceBoolean } from 'coerce-property';
 })
 export class PrettyJsonComponent {
     @Input()
-    object: any;
+    object: unknown;
 
     @Input()
     @coerceBoolean

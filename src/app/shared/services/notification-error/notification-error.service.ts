@@ -11,8 +11,8 @@ export class NotificationErrorService implements ErrorService {
 
     error = (error: unknown, clientMessage?: string): void => {
         let result: string;
-        const name = String((error as Record<PropertyKey, unknown>)?.name ?? '');
-        const message = String((error as Record<PropertyKey, unknown>)?.message ?? '');
+        const name = String((error as Record<PropertyKey, unknown>)?.['name'] ?? '');
+        const message = String((error as Record<PropertyKey, unknown>)?.['message'] ?? '');
 
         if (clientMessage) {
             result = clientMessage;

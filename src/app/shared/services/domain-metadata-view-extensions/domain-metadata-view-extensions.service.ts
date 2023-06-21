@@ -27,7 +27,7 @@ export class DomainMetadataViewExtensionsService {
             ...this.createDomainObjectExtensions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
-                extension: (_, value: any) =>
+                extension: (_, value) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
             },
         ]),

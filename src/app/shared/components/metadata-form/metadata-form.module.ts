@@ -23,6 +23,7 @@ import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
 import { CashModule } from '@cc/components/cash-field';
 
 import { DatetimeComponent } from '../datetime';
+
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
 import { ExtensionFieldComponent } from './components/extension-field/extension-field.component';

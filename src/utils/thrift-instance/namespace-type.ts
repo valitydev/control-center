@@ -1,6 +1,7 @@
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
 import { JsonAST } from '@vality/thrift-ts';
+
+import type { ListType, MapType, SetType, ThriftType, ValueType } from '@vality/thrift-ts';
 
 export const PRIMITIVE_TYPES = [
     'int',
@@ -14,8 +15,8 @@ export const PRIMITIVE_TYPES = [
     'binary',
 ] as const;
 
-export function isThriftObject(value: any): boolean {
-    return typeof value?.write === 'function' && typeof value?.read === 'function';
+export function isThriftObject(value: unknown): boolean {
+    return typeof value?.['write'] === 'function' && typeof value?.['read'] === 'function';
 }
 
 export function isComplexType(type: ValueType): type is SetType | ListType | MapType {

@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { startWith, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../../services/routing-rules';
+
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 
 export enum TerminalType {
