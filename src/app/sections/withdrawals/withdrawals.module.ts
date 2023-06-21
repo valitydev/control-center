@@ -12,7 +12,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { DialogModule } from '@vality/ng-core';
+import { DialogModule, ListFieldModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { TableModule } from '../../../components/table';
@@ -51,6 +51,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         MatInputModule,
         MatRadioModule,
         PageLayoutModule,
+        ListFieldModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })

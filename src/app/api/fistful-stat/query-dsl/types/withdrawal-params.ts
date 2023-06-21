@@ -5,6 +5,7 @@ export interface WithdrawalParams {
     party_id?: string;
     wallet_id?: string;
     withdrawal_id?: string;
+    withdrawal_ids?: string;
     identity_id?: string;
     destination_id?: string;
     status?: Capitalize<keyof WithdrawalStatus>;

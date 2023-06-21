@@ -36,7 +36,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
             extension: () => of({ label: 'External ID' }),
         },
     ];
-    typeControl = new FormControl<number>(0);
+    typeControl = new FormControl<number>(1);
     metadata$ = from(import('@vality/fistful-proto/metadata.json').then((m) => m.default));
     progress = -1;
 
