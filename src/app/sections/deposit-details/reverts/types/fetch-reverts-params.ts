@@ -1,3 +1,3 @@
 export interface FetchRevertsParams {
-    depositID: string;
+    deposit_id: string;
 }
