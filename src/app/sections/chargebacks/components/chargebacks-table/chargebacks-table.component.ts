@@ -89,6 +89,8 @@ export class ChargebacksTableComponent {
             field: 'invoice_id',
             header: 'Invoice Id (Payment Id)',
             description: 'payment_id',
+            link: (data) =>
+                `/party/${data.party_id}/invoice/${data.invoice_id}/payment/${data.payment_id}`,
         },
         {
             field: 'created_at',
@@ -112,7 +114,7 @@ export class ChargebacksTableComponent {
             header: 'Content',
             hide: true,
         },
-        createOperationColumn([
+        createOperationColumn<StatChargeback>([
             {
                 label: 'Details',
                 click: (data) => void this.router.navigate(['chargeback', data.chargeback_id]),

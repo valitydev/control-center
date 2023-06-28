@@ -12,8 +12,11 @@ import {
     clean,
     DateRange,
     QueryParamsService,
+    createDateRangeToToday,
+    countProps,
+    isEqualDateRange,
 } from '@vality/ng-core';
-import { endOfDay, startOfDay, subDays } from 'date-fns';
+import { endOfDay } from 'date-fns';
 import lodashMerge from 'lodash-es/merge';
 import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -33,10 +36,7 @@ export class PaymentsComponent implements OnInit {
     hasMore$ = this.fetchPaymentsService.hasMore$;
     selected$ = new BehaviorSubject<StatPayment[]>([]);
     filtersForm = this.fb.group({
-        dateRange: {
-            start: subDays(startOfDay(new Date()), 1),
-            end: endOfDay(new Date()),
-        } as DateRange,
+        dateRange: createDateRangeToToday(),
         invoice_ids: [undefined as string[]],
         party_id: undefined as string,
         shop_ids: [undefined as string[]],
@@ -126,10 +126,11 @@ export class PaymentsComponent implements OnInit {
             options
         );
         this.active =
-            Object.keys(dateRange).length +
-            Object.keys(filters).length +
-            Object.keys(otherFilters.payment_params || {}).length +
-            Object.keys(otherFilters.common_search_query_params || {}).length;
+            countProps(
+                filters,
+                otherFilters.payment_params,
+                otherFilters.common_search_query_params
+            ) + +!isEqualDateRange(dateRange, createDateRangeToToday());
     }
 
     createPaymentAdjustment() {

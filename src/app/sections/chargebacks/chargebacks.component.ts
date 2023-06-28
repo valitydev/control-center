@@ -8,8 +8,11 @@ import {
     QueryParamsService,
     LoadOptions,
     getNoTimeZoneIsoString,
+    createDateRangeToToday,
+    isEqualDateRange,
+    countProps,
 } from '@vality/ng-core';
-import { subDays, startOfDay, endOfDay } from 'date-fns';
+import { endOfDay } from 'date-fns';
 import lodashMerge from 'lodash-es/merge';
 import { merge, debounceTime } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -25,10 +28,7 @@ import { FetchChargebacksService } from './fetch-chargebacks.service';
 export class ChargebacksComponent implements OnInit {
     active = 0;
     filtersForm = this.fb.group({
-        dateRange: {
-            start: subDays(startOfDay(new Date()), 1),
-            end: endOfDay(new Date()),
-        },
+        dateRange: createDateRangeToToday(),
         party_id: undefined as string,
         shop_ids: [undefined as string[]],
     });
@@ -40,8 +40,8 @@ export class ChargebacksComponent implements OnInit {
     constructor(
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<{
-            filters: object;
-            otherFilters: object;
+            filters: ChargebacksComponent['filtersForm']['value'];
+            otherFilters: Partial<ChargebackSearchQuery>;
             dateRange: DateRange;
         }>,
         private fetchChargebacksService: FetchChargebacksService
@@ -52,8 +52,7 @@ export class ChargebacksComponent implements OnInit {
             lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange }))
         );
         const otherFilters = this.otherFiltersControl.value;
-        const otherFiltersParams: Partial<ChargebackSearchQuery> =
-            this.qp.params.otherFilters || {};
+        const otherFiltersParams = this.qp.params.otherFilters || {};
         this.otherFiltersControl.patchValue(lodashMerge({}, otherFilters, otherFiltersParams));
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
             .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
@@ -74,7 +73,7 @@ export class ChargebacksComponent implements OnInit {
             clean({
                 ...otherFilters,
                 common_search_query_params: {
-                    ...(otherFilters.common_search_query_params || {}),
+                    ...(otherFilters?.common_search_query_params || {}),
                     party_id: filters.party_id,
                     shop_ids: filters.shop_ids,
                     from_time: getNoTimeZoneIsoString(dateRange.start),
@@ -83,10 +82,12 @@ export class ChargebacksComponent implements OnInit {
             }),
             options
         );
+
         this.active =
-            Object.keys(dateRange).length +
-            Object.keys(filters).length +
-            Object.keys(otherFilters.payment_params || {}).length +
-            Object.keys(otherFilters.common_search_query_params || {}).length;
+            countProps(
+                filters,
+                otherFilters?.payment_params,
+                otherFilters?.common_search_query_params
+            ) + +!isEqualDateRange(createDateRangeToToday(), dateRange);
     }
 }

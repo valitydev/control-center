@@ -47,7 +47,7 @@ export class ClaimsTableComponent {
         'revision',
         { field: 'created_at', type: 'datetime' },
         { field: 'updated_at', type: 'datetime' },
-        createOperationColumn([
+        createOperationColumn<Claim>([
             {
                 label: 'Details',
                 click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
