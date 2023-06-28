@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
+import sortBy from 'lodash-es/sortBy';
 
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
@@ -79,33 +80,41 @@ export class AppComponent implements OnInit {
                     services: CLAIMS_ROUTING_CONFIG.services,
                 },
             ],
-            [
-                {
-                    name: 'Payments',
-                    route: '/payments',
-                    services: PAYMENTS_ROUTING_CONFIG.services,
-                },
-                {
-                    name: 'Payouts',
-                    route: '/payouts',
-                    services: PAYOUTS_ROUTING_CONFIG.services,
-                },
-                {
-                    name: 'Deposits',
-                    route: '/deposits',
-                    services: DEPOSITS_ROUTING_CONFIG.services,
-                },
-                {
-                    name: 'Withdrawals',
-                    route: '/withdrawals',
-                    services: WITHDRAWALS_ROUTING_CONFIG.services,
-                },
-                {
-                    name: 'Wallets',
-                    route: '/wallets',
-                    services: WALLETS_ROUTING_CONFIG.services,
-                },
-            ],
+            sortBy(
+                [
+                    {
+                        name: 'Payments',
+                        route: '/payments',
+                        services: PAYMENTS_ROUTING_CONFIG.services,
+                    },
+                    {
+                        name: 'Payouts',
+                        route: '/payouts',
+                        services: PAYOUTS_ROUTING_CONFIG.services,
+                    },
+                    {
+                        name: 'Chargebacks',
+                        route: '/chargebacks',
+                        services: WALLETS_ROUTING_CONFIG.services,
+                    },
+                    {
+                        name: 'Deposits',
+                        route: '/deposits',
+                        services: DEPOSITS_ROUTING_CONFIG.services,
+                    },
+                    {
+                        name: 'Withdrawals',
+                        route: '/withdrawals',
+                        services: WITHDRAWALS_ROUTING_CONFIG.services,
+                    },
+                    {
+                        name: 'Wallets',
+                        route: '/wallets',
+                        services: WALLETS_ROUTING_CONFIG.services,
+                    },
+                ],
+                'name'
+            ),
         ];
         return menuItems.map((group) =>
             group.filter((item) =>

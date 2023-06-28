@@ -1,0 +1,23 @@
+<cc-page-layout title="Chargebacks">
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters
+        #filters
+        [active]="active"
+        merge
+        (clear)="filtersForm.reset(); otherFiltersControl.reset()"
+    >
+        <ng-template [formGroup]="filtersForm" vMainFilters>
+            <v-date-range-field formControlName="dateRange"></v-date-range-field>
+        </ng-template>
+        <ng-template vOtherFilters></ng-template>
+    </v-filters>
+    <cc-chargebacks-table
+        [data]="chargebacks$ | async"
+        [hasMore]="hasMore$ | async"
+        [isLoading]="isLoading$ | async"
+        (more)="more()"
+        (update)="load($event)"
+    ></cc-chargebacks-table>
+</cc-page-layout>
