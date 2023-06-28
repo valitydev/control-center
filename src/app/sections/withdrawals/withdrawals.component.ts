@@ -6,7 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, QueryParamsService } from '@vality/ng-core';
 import { Moment } from 'moment';
 import { map } from 'rxjs/operators';
 
@@ -15,7 +15,6 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 
 import { SELECT_COLUMN_NAME } from '../../../components/table';
 import { isNilOrEmptyString } from '../../../utils';
-import { QueryParamsService } from '../../shared/services';
 import { NotificationService } from '../../shared/services/notification';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';

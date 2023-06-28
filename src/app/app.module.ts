@@ -18,11 +18,7 @@ import * as moment from 'moment';
 
 import 'moment/locale/ru';
 
-import {
-    KeycloakTokenInfoModule,
-    QUERY_PARAMS_SERIALIZERS,
-    MomentUtcDateAdapter,
-} from '@cc/app/shared/services';
+import { KeycloakTokenInfoModule, MomentUtcDateAdapter } from '@cc/app/shared/services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,6 +36,8 @@ import {
     SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
 } from './tokens';
+
+import { QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
 
 registerLocaleData(localeRu);
 

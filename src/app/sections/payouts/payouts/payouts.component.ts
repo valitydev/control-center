@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogService } from '@vality/ng-core';
+import { DialogService, QueryParamsService } from '@vality/ng-core';
 import omitBy from 'lodash-es/omitBy';
 import * as moment from 'moment/moment';
 
-import { QueryParamsService } from '@cc/app/shared/services';
 import { isNilOrEmptyString } from '@cc/utils/is-nil-or-empty-string';
 
 import { getValidValueChanges } from '../../../../utils';

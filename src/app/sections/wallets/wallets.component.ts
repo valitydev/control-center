@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
-import { clean, splitBySeparators, Column } from '@vality/ng-core';
+import { clean, splitBySeparators, Column, QueryParamsService } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { startWith, map, shareReplay, catchError } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
@@ -10,7 +10,6 @@ import { Memoize } from 'typescript-memoize';
 import { AccounterService } from '@cc/app/api/accounter';
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
-import { QueryParamsService } from '@cc/app/shared/services';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { FetchWalletsService } from './fetch-wallets.service';

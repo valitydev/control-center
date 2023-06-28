@@ -11,6 +11,7 @@ import {
     getNoTimeZoneIsoString,
     clean,
     DateRange,
+    QueryParamsService,
 } from '@vality/ng-core';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import lodashMerge from 'lodash-es/merge';
@@ -18,7 +19,6 @@ import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
-import { QueryParamsService } from '../../shared/services';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';

@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/domain';
+import { QueryParamsService } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
@@ -15,7 +16,6 @@ import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { Columns } from '../../../../../components/table';
-import { QueryParamsService } from '../../../../shared/services';
 import { MetadataService } from '../../services/metadata.service';
 
 import { DataSourceItem } from './types/data-source-item';
