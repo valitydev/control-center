@@ -13,9 +13,15 @@ import {
     countProps,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
-import lodashMerge from 'lodash-es/merge';
-import { merge, debounceTime } from 'rxjs';
+import merge from 'lodash-es/merge';
+import { debounceTime } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+
+import {
+    CHARGEBACK_STATUSES,
+    CHARGEBACK_STAGES,
+    CHARGEBACK_CATEGORIES,
+} from '@cc/app/api/fistful-stat';
 
 import { FetchChargebacksService } from './fetch-chargebacks.service';
 
@@ -29,19 +35,25 @@ export class ChargebacksComponent implements OnInit {
     active = 0;
     filtersForm = this.fb.group({
         dateRange: createDateRangeToToday(),
-        party_id: undefined as string,
-        shop_ids: [undefined as string[]],
+        party_id: undefined as ChargebackSearchQuery['common_search_query_params']['party_id'],
+        shop_ids: [undefined as ChargebackSearchQuery['common_search_query_params']['shop_ids']],
+        invoice_ids: [undefined as ChargebackSearchQuery['invoice_ids']],
+        chargeback_id: undefined as ChargebackSearchQuery['chargeback_id'],
+        chargeback_statuses: [undefined as string[]],
+        chargeback_stages: [undefined as string[]],
+        chargeback_categories: [undefined as string[]],
     });
-    otherFiltersControl = this.fb.control(undefined);
     chargebacks$ = this.fetchChargebacksService.result$;
     isLoading$ = this.fetchChargebacksService.isLoading$;
     hasMore$ = this.fetchChargebacksService.hasMore$;
+    statuses = CHARGEBACK_STATUSES;
+    stages = CHARGEBACK_STAGES;
+    categories = CHARGEBACK_CATEGORIES;
 
     constructor(
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<{
             filters: ChargebacksComponent['filtersForm']['value'];
-            otherFilters: Partial<ChargebackSearchQuery>;
             dateRange: DateRange;
         }>,
         private fetchChargebacksService: FetchChargebacksService
@@ -49,12 +61,9 @@ export class ChargebacksComponent implements OnInit {
 
     ngOnInit() {
         this.filtersForm.patchValue(
-            lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange }))
+            merge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange }))
         );
-        const otherFilters = this.otherFiltersControl.value;
-        const otherFiltersParams = this.qp.params.otherFilters || {};
-        this.otherFiltersControl.patchValue(lodashMerge({}, otherFilters, otherFiltersParams));
-        merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
+        this.filtersForm.valueChanges
             .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
             .subscribe(() => {
                 this.load();
@@ -67,27 +76,35 @@ export class ChargebacksComponent implements OnInit {
 
     load(options?: LoadOptions) {
         const { dateRange, ...filters } = clean(this.filtersForm.value);
-        const otherFilters = clean(this.otherFiltersControl.value);
-        void this.qp.set({ filters, otherFilters, dateRange });
+        void this.qp.set({ filters, dateRange });
+        const { party_id, shop_ids, ...rootParams } = filters;
+        const commonParams = clean({ party_id, shop_ids });
         this.fetchChargebacksService.load(
-            clean({
-                ...otherFilters,
+            {
+                ...rootParams,
                 common_search_query_params: {
-                    ...(otherFilters?.common_search_query_params || {}),
-                    party_id: filters.party_id,
-                    shop_ids: filters.shop_ids,
+                    ...commonParams,
                     from_time: getNoTimeZoneIsoString(dateRange.start),
                     to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
                 },
-            }),
+                ...clean(
+                    {
+                        chargeback_stages: rootParams.chargeback_stages?.map((s) => ({ [s]: {} })),
+                        chargeback_categories: rootParams.chargeback_categories?.map((s) => ({
+                            [s]: {},
+                        })),
+                        chargeback_statuses: rootParams.chargeback_statuses?.map((s) => ({
+                            [s]: {},
+                        })),
+                    },
+                    false,
+                    true
+                ),
+            },
             options
         );
-
         this.active =
-            countProps(
-                filters,
-                otherFilters?.payment_params,
-                otherFilters?.common_search_query_params
-            ) + +!isEqualDateRange(createDateRangeToToday(), dateRange);
+            countProps(rootParams, commonParams) +
+            +!isEqualDateRange(createDateRangeToToday(), dateRange);
     }
 }

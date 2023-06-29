@@ -2,16 +2,42 @@
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
-    <v-filters
-        #filters
-        [active]="active"
-        merge
-        (clear)="filtersForm.reset(); otherFiltersControl.reset()"
-    >
-        <ng-template [formGroup]="filtersForm" vMainFilters>
+    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
+            <v-list-field formControlName="invoice_ids" label="Invoice Ids"></v-list-field>
+            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+            <cc-shop-field
+                [partyId]="filtersForm.value.party_id"
+                formControlName="shop_ids"
+                multiple
+            ></cc-shop-field>
+            <v-input-field formControlName="chargeback_id" label="Id"></v-input-field>
+            <mat-form-field>
+                <mat-label>Statuses</mat-label>
+                <mat-select formControlName="chargeback_statuses" multiple>
+                    <mat-option *ngFor="let status of statuses" [value]="status">
+                        {{ status | keyTitle | titlecase }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Stages</mat-label>
+                <mat-select formControlName="chargeback_stages" multiple>
+                    <mat-option *ngFor="let stage of stages" [value]="stage">
+                        {{ stage | keyTitle | titlecase }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Categories</mat-label>
+                <mat-select formControlName="chargeback_categories" multiple>
+                    <mat-option *ngFor="let category of categories" [value]="category">
+                        {{ category | keyTitle | titlecase }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </ng-template>
-        <ng-template vOtherFilters></ng-template>
     </v-filters>
     <cc-chargebacks-table
         [data]="chargebacks$ | async"
