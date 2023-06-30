@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ComponentChanges } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
 import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
 
-import { ComponentChanges, getValueTypeTitle } from '@cc/app/shared';
+import { getValueTypeTitle } from '@cc/app/shared';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,

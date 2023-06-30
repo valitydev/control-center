@@ -12,11 +12,11 @@ import {
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
+import { ComponentChanges } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { ComponentChanges } from '@cc/app/shared/utils';
 import { getFormValueChanges, provideValueAccessor } from '@cc/utils/forms';
 
 import { SelectSearchFieldOptions, SELECT_SEARCH_FIELD_OPTIONS } from './tokens';

@@ -1,6 +1,5 @@
 import { Directive, ElementRef, Input } from '@angular/core';
-
-import { ComponentChanges } from '../../app/shared';
+import { ComponentChanges } from '@vality/ng-core';
 
 import { AbstractMonacoDirective } from './abstract-monaco.directive';
 import { MonacoFile } from './model';

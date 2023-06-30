@@ -53,6 +53,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./wallets/wallets.module').then((m) => m.WalletsModule),
     },
     {
+        path: 'chargebacks',
+        loadChildren: () => import('./chargebacks').then((m) => m.ChargebacksModule),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },

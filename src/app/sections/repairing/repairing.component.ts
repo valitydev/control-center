@@ -9,6 +9,7 @@ import {
     splitBySeparators,
     Column,
     ConfirmDialogComponent,
+    QueryParamsService,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -22,7 +23,6 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
-import { QueryParamsService } from '../../shared/services';
 import { NotificationService } from '../../shared/services/notification';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';

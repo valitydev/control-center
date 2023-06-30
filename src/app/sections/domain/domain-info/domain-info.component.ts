@@ -3,12 +3,16 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
-import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@vality/ng-core';
+import {
+    DialogService,
+    DialogResponseStatus,
+    ConfirmDialogComponent,
+    QueryParamsService,
+} from '@vality/ng-core';
 import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { QueryParamsService } from '@cc/app/shared/services';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
 
 import { enumHasValue } from '../../../../utils';

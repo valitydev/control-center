@@ -1,11 +1,9 @@
 import { InjectionToken } from '@angular/core';
 import { MatDateFormats } from '@angular/material/core';
 import { DateRange } from '@angular/material/datepicker';
-import { DATE_QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
+import { DATE_QUERY_PARAMS_SERIALIZERS, Serializer } from '@vality/ng-core';
 import { Moment } from 'moment';
 import * as moment from 'moment';
-
-import { Serializer } from '@cc/app/shared/services/query-params/types/serializer';
 
 export const SEARCH_LIMIT = new InjectionToken<number>('searchLimit');
 export const DEFAULT_SEARCH_LIMIT = 10;

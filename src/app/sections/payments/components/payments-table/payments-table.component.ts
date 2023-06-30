@@ -81,7 +81,7 @@ export class PaymentsTableComponent {
         'domain_revision',
         { field: 'terminal_id.id', header: 'Terminal' },
         { field: 'provider_id.id', header: 'Provider' },
-        createOperationColumn([
+        createOperationColumn<StatPayment>([
             {
                 label: 'Details',
                 click: (data) =>

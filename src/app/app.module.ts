@@ -14,15 +14,12 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapte
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
+import { QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
 import * as moment from 'moment';
 
 import 'moment/locale/ru';
 
-import {
-    KeycloakTokenInfoModule,
-    QUERY_PARAMS_SERIALIZERS,
-    MomentUtcDateAdapter,
-} from '@cc/app/shared/services';
+import { KeycloakTokenInfoModule, MomentUtcDateAdapter } from '@cc/app/shared/services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

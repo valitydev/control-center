@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
+import { ComponentChanges } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 import { ReplaySubject } from 'rxjs';
 
@@ -9,7 +10,6 @@ import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { MonacoFile } from '../../../../components/monaco-editor';
 import { toMonacoFile } from '../../../sections/domain/utils';
-import { ComponentChanges } from '../../utils';
 
 export enum ViewerKind {
     Editor = 'editor',

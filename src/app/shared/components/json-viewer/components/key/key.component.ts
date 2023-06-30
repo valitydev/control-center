@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { ComponentChanges } from '@vality/ng-core';
 import { of, switchMap, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { ComponentChanges } from '@cc/app/shared';
 
 import { MetadataViewItem } from '../../utils/metadata-view';
 
