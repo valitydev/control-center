@@ -14,6 +14,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapte
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
+import { QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
 import * as moment from 'moment';
 
 import 'moment/locale/ru';
@@ -36,8 +37,6 @@ import {
     SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
 } from './tokens';
-
-import { QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
 
 registerLocaleData(localeRu);
 
