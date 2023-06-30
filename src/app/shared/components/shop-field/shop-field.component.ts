@@ -7,13 +7,13 @@ import {
     FormControlSuperclass,
     setDisabled,
     isEmpty,
+    ComponentChanges,
 } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
 import { filter, map, share, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { ComponentChanges } from '@cc/app/shared/utils';
 
 @UntilDestroy()
 @Component({

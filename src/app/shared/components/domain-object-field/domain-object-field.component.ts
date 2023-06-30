@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DomainObject } from '@vality/domain-proto/internal/domain';
+import { ComponentChanges } from '@vality/ng-core';
 import { defer, switchMap, ReplaySubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { ComponentChanges } from '@cc/app/shared';
 import {
     DOMAIN_OBJECTS_TO_OPTIONS,
     OtherDomainObjects,

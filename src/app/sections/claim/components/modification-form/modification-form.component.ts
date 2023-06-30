@@ -2,10 +2,10 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Validator } from '@angular/forms';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
+import { ComponentChanges } from '@vality/ng-core';
 import { from, combineLatest, ReplaySubject, defer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ComponentChanges } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services/domain-metadata-form-extensions';
 import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 

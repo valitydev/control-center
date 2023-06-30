@@ -9,11 +9,11 @@ import {
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PaymentInstitutionObject } from '@vality/domain-proto/domain';
+import { ComponentChanges } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { ComponentChanges } from '@cc/app/shared/utils';
 
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';

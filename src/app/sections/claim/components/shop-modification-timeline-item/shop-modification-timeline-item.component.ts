@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
+import { ComponentChanges } from '@vality/ng-core';
 import { ReplaySubject } from 'rxjs';
-
-import { ComponentChanges } from '@cc/app/shared';
 
 @Component({
     selector: 'cc-shop-modification-timeline-item',
