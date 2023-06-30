@@ -1,0 +1,23 @@
+<v-dialog title="Create chargebacks">
+    <div fxLayout="column" fxLayoutGap="16px">
+        <v-input-field [formControl]="invoiceControl" label="Invoice Id" required></v-input-field>
+        <v-input-field [formControl]="paymentControl" label="Payment Id" required></v-input-field>
+        <cc-domain-thrift-form
+            [extensions]="extensions$ | async"
+            [formControl]="form"
+            namespace="payment_processing"
+            type="InvoicePaymentChargebackParams"
+        ></cc-domain-thrift-form>
+    </div>
+
+    <v-dialog-actions>
+        <button
+            [disabled]="form.invalid || paymentControl.invalid || invoiceControl.invalid"
+            color="primary"
+            mat-raised-button
+            (click)="create()"
+        >
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

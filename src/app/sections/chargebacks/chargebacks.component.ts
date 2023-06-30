@@ -11,6 +11,7 @@ import {
     createDateRangeToToday,
     isEqualDateRange,
     countProps,
+    DialogService,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import merge from 'lodash-es/merge';
@@ -23,6 +24,7 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
+import { CreateChargebackDialogComponent } from './components/create-chargeback-dialog/create-chargeback-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
 
 @UntilDestroy()
@@ -56,7 +58,8 @@ export class ChargebacksComponent implements OnInit {
             filters: ChargebacksComponent['filtersForm']['value'];
             dateRange: DateRange;
         }>,
-        private fetchChargebacksService: FetchChargebacksService
+        private fetchChargebacksService: FetchChargebacksService,
+        private dialog: DialogService
     ) {}
 
     ngOnInit() {
@@ -106,5 +109,9 @@ export class ChargebacksComponent implements OnInit {
         this.active =
             countProps(rootParams, commonParams) +
             +!isEqualDateRange(createDateRangeToToday(), dateRange);
+    }
+
+    create() {
+        this.dialog.open(CreateChargebackDialogComponent, {});
     }
 }

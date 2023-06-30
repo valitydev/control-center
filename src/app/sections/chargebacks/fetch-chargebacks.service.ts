@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StatChargeback, ChargebackSearchQuery } from '@vality/magista-proto/magista';
-import { FetchSuperclass, FetchOptions } from '@vality/ng-core';
-import { map } from 'rxjs/operators';
+import { FetchSuperclass, FetchOptions, NotifyLogService } from '@vality/ng-core';
+import { of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { MerchantStatisticsService } from '../../api/magista';
 
@@ -12,7 +13,10 @@ export class FetchChargebacksService extends FetchSuperclass<
     StatChargeback,
     ChargebackSearchQuery
 > {
-    constructor(private merchantStatisticsService: MerchantStatisticsService) {
+    constructor(
+        private merchantStatisticsService: MerchantStatisticsService,
+        private log: NotifyLogService
+    ) {
         super();
     }
 
@@ -30,7 +34,11 @@ export class FetchChargebacksService extends FetchSuperclass<
                 map((res) => ({
                     result: res.chargebacks,
                     continuationToken: res.continuation_token,
-                }))
+                })),
+                catchError((err) => {
+                    this.log.errorOperation(err, 'receive', 'chargebacks');
+                    return of({ result: [] });
+                })
             );
     }
 }
