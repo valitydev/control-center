@@ -24,7 +24,7 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
-import { CreateChargebackDialogComponent } from './components/create-chargeback-dialog/create-chargeback-dialog.component';
+import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
 
 @UntilDestroy()
@@ -112,6 +112,6 @@ export class ChargebacksComponent implements OnInit {
     }
 
     create() {
-        this.dialog.open(CreateChargebackDialogComponent, {});
+        this.dialog.open(CreateChargebacksByFileDialogComponent);
     }
 }

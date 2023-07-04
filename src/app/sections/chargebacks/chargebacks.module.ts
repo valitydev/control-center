@@ -4,7 +4,9 @@ import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import {
     TableModule,
@@ -14,6 +16,7 @@ import {
     InputFieldModule,
     SelectFieldModule,
     DialogModule,
+    FileUploadModule,
 } from '@vality/ng-core';
 
 import { PageLayoutModule, ShopFieldModule, ThriftPipesModule } from '../../shared';
@@ -26,12 +29,14 @@ import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
 import { ChargebacksTableComponent } from './components/chargebacks-table/chargebacks-table.component';
 import { CreateChargebackDialogComponent } from './components/create-chargeback-dialog/create-chargeback-dialog.component';
+import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 
 @NgModule({
     declarations: [
         ChargebacksComponent,
         ChargebacksTableComponent,
         CreateChargebackDialogComponent,
+        CreateChargebacksByFileDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -56,6 +61,9 @@ import { CreateChargebackDialogComponent } from './components/create-chargeback-
         DialogModule,
         DomainThriftFormComponent,
         FlexModule,
+        FileUploadModule,
+        MatExpansionModule,
+        MatInputModule,
     ],
 })
 export class ChargebacksModule {}

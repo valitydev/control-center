@@ -1,0 +1,27 @@
+<v-dialog title="Create chargebacks">
+    <div fxLayout="column" fxLayoutGap="16px">
+        <v-file-upload [extensions]="['csv']" (upload)="loadFile($event)"></v-file-upload>
+
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Default format</mat-panel-title>
+                </mat-expansion-panel-header>
+                <code style="word-wrap: break-word">{{ defaultFormat }}</code>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <v-table [columns]="columns" [data]="chargebacks$ | async" noActions></v-table>
+    </div>
+
+    <v-dialog-actions>
+        <button
+            [disabled]="!(chargebacks$ | async)?.length"
+            color="primary"
+            mat-raised-button
+            (click)="create()"
+        >
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>
