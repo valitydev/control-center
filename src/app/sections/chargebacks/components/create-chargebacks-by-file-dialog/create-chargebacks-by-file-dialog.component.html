@@ -1,5 +1,7 @@
 <v-dialog title="Create chargebacks">
     <div fxLayout="column" fxLayoutGap="16px">
+        <mat-checkbox [formControl]="hasHeaderControl">CSV with header</mat-checkbox>
+
         <v-file-upload [extensions]="['csv']" (upload)="loadFile($event)"></v-file-upload>
 
         <mat-accordion>
@@ -7,7 +9,11 @@
                 <mat-expansion-panel-header>
                     <mat-panel-title>Default format</mat-panel-title>
                 </mat-expansion-panel-header>
-                <code style="word-wrap: break-word">{{ defaultFormat }}</code>
+                <div class="mat-body-1">
+                    <code style="word-wrap: break-word">{{ defaultFormat }}</code>
+                </div>
+                <div class="mat-body-1">Starting with "body" optional</div>
+                <div class="mat-body-1">Separator dot comma (;)</div>
             </mat-expansion-panel>
         </mat-accordion>
 

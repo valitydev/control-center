@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -64,6 +65,7 @@ import { CreateChargebacksByFileDialogComponent } from './components/create-char
         FileUploadModule,
         MatExpansionModule,
         MatInputModule,
+        MatCheckboxModule,
     ],
 })
 export class ChargebacksModule {}

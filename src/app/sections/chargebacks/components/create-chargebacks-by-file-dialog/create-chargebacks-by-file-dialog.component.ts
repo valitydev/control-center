@@ -1,4 +1,5 @@
 import { Component, Injector } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
 import {
@@ -9,8 +10,8 @@ import {
     Column,
     clean,
 } from '@vality/ng-core';
-import { of, BehaviorSubject, merge } from 'rxjs';
-import { switchMap, map, shareReplay, first } from 'rxjs/operators';
+import { of, BehaviorSubject, merge, combineLatest } from 'rxjs';
+import { switchMap, map, shareReplay, first, tap, startWith } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
@@ -27,6 +28,7 @@ const CSV_PROPS_BY_ORDER = [
     'levy.amount',
     'levy.currency.symbolic_code',
 
+    // Optional
     'body.amount',
     'body.currency.symbolic_code',
 
@@ -92,6 +94,16 @@ function csvToThriftChargeback(c: CsvChargeback): InvoicePaymentChargebackParams
     );
 }
 
+function csvFormatChargeback(csv: CsvChargeback[] | string[][]): CsvChargeback[] {
+    if (!Array.isArray(csv)) return [];
+    if (Array.isArray(csv?.[0])) {
+        return csv.map((d) =>
+            Object.fromEntries(d.map((prop, idx) => [CSV_PROPS_BY_ORDER[idx], prop]))
+        ) as CsvChargeback[];
+    }
+    return csv as CsvChargeback[];
+}
+
 @UntilDestroy()
 @Component({
     selector: 'cc-create-chargebacks-by-file-dialog',
@@ -100,17 +112,33 @@ function csvToThriftChargeback(c: CsvChargeback): InvoicePaymentChargebackParams
 export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<CreateChargebacksByFileDialogComponent> {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
+    hasHeaderControl = new FormControl(true);
+
     extensions$ = of([]);
     upload$ = new BehaviorSubject<File | null>(null);
-    chargebacks$ = this.upload$.pipe(
-        switchMap((file) => loadFileContent(file)),
-        map((content) => parseCsv(content)),
-        map(
-            (d) =>
-                (d?.data || []).map((d) =>
-                    Object.fromEntries(d.map((prop, idx) => [CSV_PROPS_BY_ORDER[idx], prop]))
-                ) as CsvChargeback[]
+    chargebacks$ = combineLatest([
+        this.upload$,
+        this.hasHeaderControl.valueChanges.pipe(startWith(null)),
+    ]).pipe(
+        switchMap(([file]) => loadFileContent(file)),
+        map((content) =>
+            parseCsv(content, { header: this.hasHeaderControl.value || false, delimiter: ';' })
         ),
+        tap((d) => {
+            if (!d.errors.length) return;
+            if (d.errors.length === 1) this.log.error(d.errors[0]);
+            this.log.error(new Error(d.errors.map((e) => e.message).join('. ')));
+        }),
+        map((d) => {
+            const chargebacks = csvFormatChargeback(d?.data);
+            if (chargebacks[0].invoice_id) return chargebacks;
+            this.log.error(
+                new Error(
+                    'Perhaps you incorrectly checked the checkbox to have or not a header (the first element does not have at least an invoice ID)'
+                )
+            );
+            return [];
+        }),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
