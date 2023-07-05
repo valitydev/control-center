@@ -12,10 +12,11 @@ import {
     isEqualDateRange,
     countProps,
     DialogService,
+    DialogResponseStatus,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import merge from 'lodash-es/merge';
-import { debounceTime } from 'rxjs';
+import { debounceTime, filter } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import {
@@ -112,6 +113,15 @@ export class ChargebacksComponent implements OnInit {
     }
 
     create() {
-        this.dialog.open(CreateChargebacksByFileDialogComponent);
+        this.dialog
+            .open(CreateChargebacksByFileDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((res) => res.status === DialogResponseStatus.Success),
+                untilDestroyed(this)
+            )
+            .subscribe(() => {
+                this.load();
+            });
     }
 }

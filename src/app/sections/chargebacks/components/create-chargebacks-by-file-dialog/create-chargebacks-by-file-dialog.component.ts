@@ -1,173 +1,41 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
 import {
     DialogSuperclass,
     NotifyLogService,
     loadFileContent,
     DEFAULT_DIALOG_CONFIG,
     Column,
-    clean,
+    forkJoinToResult,
 } from '@vality/ng-core';
-import { of, BehaviorSubject, merge, combineLatest, Observable, scan, Subject } from 'rxjs';
-import {
-    switchMap,
-    map,
-    shareReplay,
-    first,
-    tap,
-    startWith,
-    catchError,
-    finalize,
-    takeLast,
-} from 'rxjs/operators';
-import * as short from 'short-uuid';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { switchMap, map, shareReplay, tap, startWith } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
-import { parseCsv } from '@cc/app/shared';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+import { parseCsv, unifyCsvItems } from '@cc/utils';
 
-const CSV_PROPS_BY_ORDER = [
-    'invoice_id',
-    'payment_id',
-
-    'reason.category',
-    'reason.code',
-
-    'levy.amount',
-    'levy.currency.symbolic_code',
-
-    // Optional
-    'body.amount',
-    'body.currency.symbolic_code',
-
-    'external_id',
-    'occurred_at',
-
-    'context.type',
-    'context.data',
-
-    'transaction_info.id',
-    'transaction_info.timestamp',
-    'transaction_info.extra',
-] as const;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type CsvChargeback = Record<(typeof CSV_PROPS_BY_ORDER)[number], any>;
-
-function csvToThriftChargeback(c: CsvChargeback): InvoicePaymentChargebackParams {
-    return clean(
-        {
-            id: short().uuid(),
-            reason: {
-                code: c['reason.code'],
-                category: { [c['reason.category']]: {} },
-            },
-            levy: {
-                amount: c['levy.amount'],
-                currency: {
-                    symbolic_code: c['levy.currency.symbolic_code'],
-                },
-            },
-            body: clean(
-                {
-                    amount: c['body.amount'],
-                    currency: {
-                        symbolic_code: c['body.currency.symbolic_code'],
-                    },
-                },
-                true
-            ),
-            transaction_info: clean(
-                {
-                    id: c['transaction_info.id'],
-                    timestamp: c['transaction_info.timestamp'],
-                    extra: c['transaction_info.extra'],
-                    additional_info: c['transaction_info.additional_info']
-                        ? JSON.parse(c['transaction_info.additional_info'])
-                        : undefined,
-                },
-                true
-            ),
-            external_id: c.external_id,
-            context: clean(
-                {
-                    type: c['context.type'],
-                    data: c['context.data'],
-                },
-                true
-            ),
-            occurred_at: c['occurred_at'],
-        },
-        false,
-        true
-    );
-}
-
-interface Result<T> {
-    result?: T;
-    error?: unknown;
-    hasError: boolean;
-}
-
-function mergeToResult<T>(
-    sources: Observable<T>[],
-    concurrency = 4,
-    progress$?: Subject<number>
-): Observable<Result<T>[]> {
-    const completed = 0;
-    this.progress$.next(0);
-    return merge(
-        ...sources.map((source, index) =>
-            source.pipe(
-                map((result) => ({
-                    result,
-                    hasError: false,
-                })),
-                catchError((err) => {
-                    return of({ error: err, index, hasError: true });
-                }),
-                finalize(() => {
-                    if (progress$) progress$.next(completed / sources.length);
-                })
-            )
-        ),
-        concurrency
-    ).pipe(
-        scan((acc, value) => {
-            acc.push(value);
-            return acc;
-        }, [] as Result<T>[]),
-        finalize(() => {
-            if (progress$) progress$.complete();
-        }),
-        takeLast(1)
-    );
-}
-
-function csvFormatChargeback(csv: CsvChargeback[] | string[][]): CsvChargeback[] {
-    if (!Array.isArray(csv)) return [];
-    if (Array.isArray(csv?.[0])) {
-        return csv.map((d) =>
-            Object.fromEntries(d.map((prop, idx) => [CSV_PROPS_BY_ORDER[idx], prop]))
-        ) as CsvChargeback[];
-    }
-    return csv as CsvChargeback[];
-}
+import { CsvChargeback } from './types/csv-chargeback';
+import { CSV_CHARGEBACK_PROPS } from './types/csv-chargeback-props';
+import { csvChargebacksToInvoicePaymentChargebackParams } from './utils/csv-chargebacks-to-invoice-payment-chargeback-params';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-create-chargebacks-by-file-dialog',
     templateUrl: './create-chargebacks-by-file-dialog.component.html',
 })
-export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<CreateChargebacksByFileDialogComponent> {
+export class CreateChargebacksByFileDialogComponent
+    extends DialogSuperclass<CreateChargebacksByFileDialogComponent>
+    implements OnInit
+{
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     hasHeaderControl = new FormControl(true);
     progress$ = new BehaviorSubject(0);
-
-    extensions$ = of([]);
     upload$ = new BehaviorSubject<File | null>(null);
+    columns: Column<CsvChargeback>[] = CSV_CHARGEBACK_PROPS.map((c) => ({ field: c, header: c }));
+    defaultFormat = CSV_CHARGEBACK_PROPS.join(';');
+    selectedChargebacks: CsvChargeback[] = [];
     chargebacks$ = combineLatest([
         this.upload$,
         this.hasHeaderControl.valueChanges.pipe(startWith(null)),
@@ -182,55 +50,61 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<Cre
             this.log.error(new Error(d.errors.map((e) => e.message).join('. ')));
         }),
         map((d) => {
-            const chargebacks = csvFormatChargeback(d?.data);
+            const chargebacks = unifyCsvItems(d?.data, CSV_CHARGEBACK_PROPS);
             if (chargebacks[0].invoice_id) return chargebacks;
             this.log.error(
-                new Error(
-                    'Perhaps you incorrectly checked the checkbox to have or not a header (the first element does not have at least an invoice ID)'
-                )
+                'Perhaps you incorrectly checked the checkbox to have or not a header (the first element does not have at least an invoice ID)'
             );
             return [];
         }),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
 
-    columns: Column<CsvChargeback>[] = CSV_PROPS_BY_ORDER.map((c) => ({ field: c, header: c }));
-    defaultFormat = CSV_PROPS_BY_ORDER.join(';');
-
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private notificationErrorService: NotificationErrorService,
         private log: NotifyLogService
     ) {
         super(injector);
     }
 
+    ngOnInit() {
+        this.chargebacks$.pipe(untilDestroyed(this)).subscribe((c) => {
+            this.selectedChargebacks = c || [];
+        });
+    }
+
     create() {
-        this.chargebacks$
-            .pipe(
-                first(),
-                switchMap((chargebacks) =>
-                    mergeToResult(
-                        chargebacks.map((c) =>
-                            this.invoicingService.CreateChargeback(
-                                c.invoice_id,
-                                c.payment_id,
-                                csvToThriftChargeback(c)
-                            )
-                        ),
-                        4,
-                        this.progress$
-                    )
-                ),
-                untilDestroyed(this)
-            )
+        const selected = this.selectedChargebacks;
+        forkJoinToResult(
+            selected.map((c) =>
+                this.invoicingService.CreateChargeback(
+                    c.invoice_id,
+                    c.payment_id,
+                    csvChargebacksToInvoicePaymentChargebackParams(c)
+                )
+            ),
+            2,
+            this.progress$
+        )
+            .pipe(untilDestroyed(this))
             .subscribe({
                 next: (res) => {
-                    if (res) this.log.successOperation('create', 'chargebacks');
+                    const chargebacksWithError = res.filter((c) => c.hasError);
+                    if (chargebacksWithError.length) {
+                        this.log.error(
+                            chargebacksWithError.map((c) => c.error),
+                            `Creating ${chargebacksWithError.length} chargebacks ended in an error. They were re-selected in the table.`
+                        );
+                        this.selectedChargebacks = chargebacksWithError.map(
+                            (c) => selected[c.index]
+                        );
+                        return;
+                    }
+                    this.log.successOperation('create', 'chargebacks');
                     this.closeWithSuccess();
                 },
-                error: this.notificationErrorService.error,
+                error: (err) => this.log.error(err),
             });
     }
 
