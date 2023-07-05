@@ -10,8 +10,18 @@ import {
     Column,
     clean,
 } from '@vality/ng-core';
-import { of, BehaviorSubject, merge, combineLatest } from 'rxjs';
-import { switchMap, map, shareReplay, first, tap, startWith } from 'rxjs/operators';
+import { of, BehaviorSubject, merge, combineLatest, Observable, scan, Subject } from 'rxjs';
+import {
+    switchMap,
+    map,
+    shareReplay,
+    first,
+    tap,
+    startWith,
+    catchError,
+    finalize,
+    takeLast,
+} from 'rxjs/operators';
 import * as short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
@@ -94,6 +104,47 @@ function csvToThriftChargeback(c: CsvChargeback): InvoicePaymentChargebackParams
     );
 }
 
+interface Result<T> {
+    result?: T;
+    error?: unknown;
+    hasError: boolean;
+}
+
+function mergeToResult<T>(
+    sources: Observable<T>[],
+    concurrency = 4,
+    progress$?: Subject<number>
+): Observable<Result<T>[]> {
+    const completed = 0;
+    this.progress$.next(0);
+    return merge(
+        ...sources.map((source, index) =>
+            source.pipe(
+                map((result) => ({
+                    result,
+                    hasError: false,
+                })),
+                catchError((err) => {
+                    return of({ error: err, index, hasError: true });
+                }),
+                finalize(() => {
+                    if (progress$) progress$.next(completed / sources.length);
+                })
+            )
+        ),
+        concurrency
+    ).pipe(
+        scan((acc, value) => {
+            acc.push(value);
+            return acc;
+        }, [] as Result<T>[]),
+        finalize(() => {
+            if (progress$) progress$.complete();
+        }),
+        takeLast(1)
+    );
+}
+
 function csvFormatChargeback(csv: CsvChargeback[] | string[][]): CsvChargeback[] {
     if (!Array.isArray(csv)) return [];
     if (Array.isArray(csv?.[0])) {
@@ -113,6 +164,7 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<Cre
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     hasHeaderControl = new FormControl(true);
+    progress$ = new BehaviorSubject(0);
 
     extensions$ = of([]);
     upload$ = new BehaviorSubject<File | null>(null);
@@ -159,22 +211,23 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<Cre
             .pipe(
                 first(),
                 switchMap((chargebacks) =>
-                    merge(
-                        ...chargebacks.map((c) =>
+                    mergeToResult(
+                        chargebacks.map((c) =>
                             this.invoicingService.CreateChargeback(
                                 c.invoice_id,
                                 c.payment_id,
                                 csvToThriftChargeback(c)
                             )
                         ),
-                        4
+                        4,
+                        this.progress$
                     )
                 ),
                 untilDestroyed(this)
             )
             .subscribe({
-                next: () => {
-                    this.log.success('Chargeback created');
+                next: (res) => {
+                    if (res) this.log.successOperation('create', 'chargebacks');
                     this.closeWithSuccess();
                 },
                 error: this.notificationErrorService.error,

@@ -1,4 +1,4 @@
-<v-dialog title="Create chargebacks">
+<v-dialog [progress]="progress$ | async" title="Create chargebacks">
     <div fxLayout="column" fxLayoutGap="16px">
         <mat-checkbox [formControl]="hasHeaderControl">CSV with header</mat-checkbox>
 
