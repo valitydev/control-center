@@ -52,7 +52,8 @@
                             "@vality/repairer-proto",
                             "@vality/fistful-proto",
                             "@vality/file-storage-proto",
-                            "@vality/thrift-ts"
+                            "@vality/thrift-ts",
+                            "papaparse"
                         ]
                     },
                     "configurations": {
