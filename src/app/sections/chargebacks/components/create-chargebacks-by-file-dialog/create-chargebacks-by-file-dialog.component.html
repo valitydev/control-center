@@ -1,0 +1,43 @@
+<v-dialog [progress]="progress$ | async" title="Create chargebacks">
+    <div fxLayout="column" fxLayoutGap="16px">
+        <mat-checkbox [formControl]="hasHeaderControl">CSV with header</mat-checkbox>
+
+        <v-file-upload [extensions]="['csv']" (upload)="loadFile($event)"></v-file-upload>
+
+        <mat-accordion>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Default format</mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="mat-body-1">
+                    <code style="word-wrap: break-word">{{ defaultFormat }}</code>
+                </div>
+                <div class="mat-body-1">
+                    Categories: fraud, dispute, authorisation, processing_error
+                </div>
+                <div class="mat-body-1">Starting with "body" optional</div>
+                <div class="mat-body-1">Separator dot comma (;)</div>
+            </mat-expansion-panel>
+        </mat-accordion>
+
+        <v-table
+            [columns]="columns"
+            [data]="chargebacks$ | async"
+            [rowSelected]="selectedChargebacks"
+            noActions
+            rowSelectable
+            (rowSelectionChange)="selectedChargebacks = $event"
+        ></v-table>
+    </div>
+
+    <v-dialog-actions>
+        <button
+            [disabled]="!selectedChargebacks?.length"
+            color="primary"
+            mat-raised-button
+            (click)="create()"
+        >
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

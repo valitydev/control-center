@@ -12,10 +12,11 @@ import {
     isEqualDateRange,
     countProps,
     DialogService,
+    DialogResponseStatus,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import merge from 'lodash-es/merge';
-import { debounceTime } from 'rxjs';
+import { debounceTime, filter } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import {
@@ -24,7 +25,7 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
-import { CreateChargebackDialogComponent } from './components/create-chargeback-dialog/create-chargeback-dialog.component';
+import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
 
 @UntilDestroy()
@@ -112,6 +113,15 @@ export class ChargebacksComponent implements OnInit {
     }
 
     create() {
-        this.dialog.open(CreateChargebackDialogComponent, {});
+        this.dialog
+            .open(CreateChargebacksByFileDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((res) => res.status === DialogResponseStatus.Success),
+                untilDestroyed(this)
+            )
+            .subscribe(() => {
+                this.load();
+            });
     }
 }
