@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { StatChargeback } from '@vality/magista-proto/internal/magista';
 import {
     DialogSuperclass,
     NotifyLogService,
@@ -8,11 +9,13 @@ import {
     DEFAULT_DIALOG_CONFIG,
     Column,
     forkJoinToResult,
+    DialogService,
 } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map, shareReplay, tap, startWith } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
+import { ChangeChargebacksStatusDialogComponent } from '@cc/app/shared/components/change-chargebacks-status-dialog';
 import { parseCsv, unifyCsvItems } from '@cc/utils';
 
 import { CsvChargeback } from './types/csv-chargeback';
@@ -59,11 +62,14 @@ export class CreateChargebacksByFileDialogComponent
         }),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
+    successfullyChargebacks: Pick<StatChargeback, 'payment_id' | 'invoice_id' | 'chargeback_id'>[] =
+        [];
 
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
+        private dialog: DialogService
     ) {
         super(injector);
     }
@@ -90,6 +96,18 @@ export class CreateChargebacksByFileDialogComponent
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: (res) => {
+                    this.successfullyChargebacks.push(
+                        ...res
+                            .filter((c) => !c.hasError)
+                            .map((c) => {
+                                const source = selected[c.index];
+                                return {
+                                    chargeback_id: c.result.id,
+                                    invoice_id: source.invoice_id,
+                                    payment_id: source.payment_id,
+                                };
+                            })
+                    );
                     const chargebacksWithError = res.filter((c) => c.hasError);
                     if (chargebacksWithError.length) {
                         this.log.error(
@@ -99,10 +117,10 @@ export class CreateChargebacksByFileDialogComponent
                         this.selectedChargebacks = chargebacksWithError.map(
                             (c) => selected[c.index]
                         );
-                        return;
+                    } else {
+                        this.log.successOperation('create', 'chargebacks');
+                        this.closeWithSuccess();
                     }
-                    this.log.successOperation('create', 'chargebacks');
-                    this.closeWithSuccess();
                 },
                 error: (err) => this.log.error(err),
             });
@@ -110,5 +128,12 @@ export class CreateChargebacksByFileDialogComponent
 
     async loadFile(file: File) {
         this.upload$.next(file);
+    }
+
+    changeStatus() {
+        this.closeWithCancellation();
+        this.dialog.open(ChangeChargebacksStatusDialogComponent, {
+            chargebacks: this.successfullyChargebacks,
+        });
     }
 }
