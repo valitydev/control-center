@@ -116,16 +116,7 @@ export class ChargebacksComponent implements OnInit {
     }
 
     create() {
-        this.dialog
-            .open(CreateChargebacksByFileDialogComponent)
-            .afterClosed()
-            .pipe(
-                filter((res) => res.status === DialogResponseStatus.Success),
-                untilDestroyed(this)
-            )
-            .subscribe(() => {
-                this.load();
-            });
+        this.dialog.open(CreateChargebacksByFileDialogComponent);
     }
 
     changeStatuses() {

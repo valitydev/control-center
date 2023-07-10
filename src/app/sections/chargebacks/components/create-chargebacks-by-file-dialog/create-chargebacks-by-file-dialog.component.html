@@ -31,7 +31,7 @@
     </div>
 
     <v-dialog-actions>
-        <button *ngIf="successfullyChargebacks" mat-button (click)="changeStatus()">
+        <button *ngIf="successfullyChargebacks?.length" mat-button (click)="changeStatus()">
             Go to change the status of {{ successfullyChargebacks.length }} successful chargebacks
         </button>
         <button

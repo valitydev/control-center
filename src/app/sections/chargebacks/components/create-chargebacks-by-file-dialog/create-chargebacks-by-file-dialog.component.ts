@@ -119,7 +119,7 @@ export class CreateChargebacksByFileDialogComponent
                         );
                     } else {
                         this.log.successOperation('create', 'chargebacks');
-                        this.closeWithSuccess();
+                        this.changeStatus();
                     }
                 },
                 error: (err) => this.log.error(err),
