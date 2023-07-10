@@ -40,13 +40,16 @@
         </ng-template>
     </v-filters>
     <cc-chargebacks-table
+        [(selected)]="selected"
         [data]="chargebacks$ | async"
         [hasMore]="hasMore$ | async"
         [isLoading]="isLoading$ | async"
         (more)="more()"
         (update)="load($event)"
     >
-        <!--        <button color="primary" mat-button>Change statuses</button>-->
+        <button [disabled]="!selected.length" color="primary" mat-button (click)="changeStatuses()">
+            Change statuses
+        </button>
         <button color="primary" mat-button (click)="create()">Create by file</button>
     </cc-chargebacks-table>
 </cc-page-layout>

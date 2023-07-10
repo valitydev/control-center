@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { ChargebackSearchQuery } from '@vality/magista-proto/magista';
+import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
 import {
     DateRange,
     clean,
@@ -24,6 +24,8 @@ import {
     CHARGEBACK_STAGES,
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
+
+import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
@@ -52,6 +54,7 @@ export class ChargebacksComponent implements OnInit {
     statuses = CHARGEBACK_STATUSES;
     stages = CHARGEBACK_STAGES;
     categories = CHARGEBACK_CATEGORIES;
+    selected: StatChargeback[] = [];
 
     constructor(
         private fb: NonNullableFormBuilder,
@@ -115,6 +118,19 @@ export class ChargebacksComponent implements OnInit {
     create() {
         this.dialog
             .open(CreateChargebacksByFileDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((res) => res.status === DialogResponseStatus.Success),
+                untilDestroyed(this)
+            )
+            .subscribe(() => {
+                this.load();
+            });
+    }
+
+    changeStatuses() {
+        this.dialog
+            .open(ChangeChargebacksStatusDialogComponent, { chargebacks: this.selected })
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),

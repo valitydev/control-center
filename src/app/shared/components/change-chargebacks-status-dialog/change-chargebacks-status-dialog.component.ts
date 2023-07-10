@@ -6,15 +6,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { DialogSuperclass, DialogModule } from '@vality/ng-core';
-import { from, BehaviorSubject, Observable } from 'rxjs';
+import { StatChargeback } from '@vality/magista-proto/internal/magista';
+import {
+    DialogSuperclass,
+    DialogModule,
+    forkJoinToResult,
+    NotifyLogService,
+} from '@vality/ng-core';
+import { from, BehaviorSubject } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { EnumKeysPipe, EnumKeyPipe } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { NotificationService } from '@cc/app/shared/services/notification';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
-import { progressTo } from '@cc/utils';
 
 import { MetadataFormModule } from '../metadata-form';
 
@@ -25,11 +28,17 @@ enum Action {
     Cancel,
 }
 
+const CHANGE_STATUS_METHODS = {
+    [Action.Accept]: 'AcceptChargeback',
+    [Action.Reject]: 'RejectChargeback',
+    [Action.Reopen]: 'ReopenChargeback',
+    [Action.Cancel]: 'CancelChargeback',
+} as const;
+
 @UntilDestroy()
 @Component({
     standalone: true,
-    selector: 'cc-change-chargeback-status-dialog',
-    templateUrl: './change-chargeback-status-dialog.component.html',
+    templateUrl: './change-chargebacks-status-dialog.component.html',
     imports: [
         CommonModule,
         DialogModule,
@@ -43,10 +52,10 @@ enum Action {
         EnumKeyPipe,
     ],
 })
-export class ChangeChargebackStatusDialogComponent
+export class ChangeChargebacksStatusDialogComponent
     extends DialogSuperclass<
-        ChangeChargebackStatusDialogComponent,
-        { id: string; paymentId: string; invoiceId: string }
+        ChangeChargebacksStatusDialogComponent,
+        { chargebacks: Pick<StatChargeback, 'chargeback_id' | 'invoice_id' | 'payment_id'>[] }
     >
     implements OnInit
 {
@@ -66,8 +75,7 @@ export class ChangeChargebackStatusDialogComponent
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
     ) {
         super(injector);
@@ -80,34 +88,34 @@ export class ChangeChargebackStatusDialogComponent
     }
 
     confirm() {
-        let action$: Observable<void>;
-        const args = [
-            this.dialogData.invoiceId,
-            this.dialogData.paymentId,
-            this.dialogData.id,
-            this.control.value,
-        ] as const;
-        switch (this.actionControl.value) {
-            case Action.Accept:
-                action$ = this.invoicingService.AcceptChargeback(...args);
-                break;
-            case Action.Reject:
-                action$ = this.invoicingService.RejectChargeback(...args);
-                break;
-            case Action.Reopen:
-                action$ = this.invoicingService.ReopenChargeback(...args);
-                break;
-            case Action.Cancel:
-                action$ = this.invoicingService.CancelChargeback(...args);
-                break;
-        }
-        action$.pipe(progressTo(this.progress$), untilDestroyed(this)).subscribe({
-            next: () => {
-                this.notificationService.success();
-            },
-            error: (err) => {
-                this.notificationErrorService.error(err);
-            },
-        });
+        forkJoinToResult(
+            this.dialogData.chargebacks.map((c) =>
+                this.invoicingService[CHANGE_STATUS_METHODS[this.actionControl.value]](
+                    c.invoice_id,
+                    c.payment_id,
+                    c.chargeback_id,
+                    this.control.value
+                )
+            ),
+            4,
+            this.progress$
+        )
+            .pipe(untilDestroyed(this))
+            .subscribe({
+                next: (res) => {
+                    const withErrors = res.filter((r) => r.hasError);
+                    if (withErrors.length) {
+                        this.log.error(
+                            withErrors.map((e) => e.error),
+                            `Error changing the status of ${withErrors.length} chargebacks`
+                        );
+                    } else {
+                        this.log.success('Chargebacks status changed successfully');
+                    }
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
     }
 }
