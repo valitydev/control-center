@@ -32,9 +32,17 @@
 
     <v-dialog-actions>
         <button
-            [disabled]="!selectedChargebacks?.length"
+            *ngIf="successfullyChargebacks?.length"
+            [disabled]="!!(progress$ | async)"
+            mat-button
+            (click)="changeStatus()"
+        >
+            Go to change the status of {{ successfullyChargebacks.length }} successful chargebacks
+        </button>
+        <button
+            [disabled]="!selectedChargebacks?.length || !!(progress$ | async)"
             color="primary"
-            mat-raised-button
+            mat-button
             (click)="create()"
         >
             Create

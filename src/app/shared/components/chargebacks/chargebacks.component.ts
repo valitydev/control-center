@@ -10,7 +10,7 @@ import { AmountCurrencyPipe, ThriftPipesModule } from '@cc/app/shared';
 import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog/details-dialog.component';
 import { TableModule, Columns } from '@cc/components/table';
 
-import { ChangeChargebackStatusDialogComponent } from '../change-chargeback-status-dialog/change-chargeback-status-dialog.component';
+import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
 @UntilDestroy()
 @Component({
@@ -36,10 +36,14 @@ export class ChargebacksComponent {
     constructor(private dialogService: DialogService) {}
 
     changeStatus(id: string) {
-        this.dialogService.open(ChangeChargebackStatusDialogComponent, {
-            paymentId: this.paymentId,
-            invoiceId: this.invoiceId,
-            id,
+        this.dialogService.open(ChangeChargebacksStatusDialogComponent, {
+            chargebacks: [
+                {
+                    payment_id: this.paymentId,
+                    invoice_id: this.invoiceId,
+                    chargeback_id: id,
+                },
+            ],
         });
     }
 

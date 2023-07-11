@@ -1,4 +1,11 @@
-<v-dialog title="Change chargeback">
+<v-dialog
+    [progress]="progress$ | async"
+    title="Change {{
+        dialogData.chargebacks.length === 1
+            ? 'chargeback'
+            : dialogData.chargebacks.length + ' chargebacks'
+    }} status"
+>
     <div gdColumn="1fr" gdGap="16px">
         <mat-form-field style="width: 100%">
             <mat-label>Action</mat-label>
@@ -17,7 +24,6 @@
             namespace="payment_processing"
         ></cc-metadata-form>
     </div>
-
     <v-dialog-actions>
         <button
             [disabled]="control.invalid || actionControl.invalid || !!(progress$ | async)"
