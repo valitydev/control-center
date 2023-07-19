@@ -57,7 +57,10 @@ export class ChargebacksTableComponent {
             field: 'levy_amount',
             type: 'currency',
             formatter: (data) =>
-                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
+                this.amountCurrencyService.toMajor(
+                    data.levy_amount,
+                    data.levy_currency_code.symbolic_code
+                ),
             typeParameters: {
                 currencyCode: (data) => data.levy_currency_code.symbolic_code,
             },
@@ -66,7 +69,7 @@ export class ChargebacksTableComponent {
             field: 'fee',
             type: 'currency',
             formatter: (data) =>
-                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
+                this.amountCurrencyService.toMajor(data.fee, data.currency_code.symbolic_code),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
@@ -75,7 +78,10 @@ export class ChargebacksTableComponent {
             field: 'provider_fee',
             type: 'currency',
             formatter: (data) =>
-                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
+                this.amountCurrencyService.toMajor(
+                    data.provider_fee,
+                    data.currency_code.symbolic_code
+                ),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
@@ -84,7 +90,10 @@ export class ChargebacksTableComponent {
             field: 'external_fee',
             type: 'currency',
             formatter: (data) =>
-                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
+                this.amountCurrencyService.toMajor(
+                    data.external_fee,
+                    data.currency_code.symbolic_code
+                ),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
