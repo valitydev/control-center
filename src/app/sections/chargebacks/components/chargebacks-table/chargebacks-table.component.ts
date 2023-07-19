@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { InvoicePaymentChargebackStatus } from '@vality/magista-proto/internal/proto/domain';
 import { StatChargeback } from '@vality/magista-proto/magista';
-import { LoadOptions, Column, TagColumn, DialogService } from '@vality/ng-core';
+import { LoadOptions, Column, TagColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 
 import { getUnionKey } from '../../../../../utils';
+import { AmountCurrencyService } from '../../../../shared/services';
 
 @Component({
     selector: 'cc-chargebacks-table',
@@ -46,6 +47,8 @@ export class ChargebacksTableComponent {
         {
             field: 'amount',
             type: 'currency',
+            formatter: (data) =>
+                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
@@ -53,6 +56,8 @@ export class ChargebacksTableComponent {
         {
             field: 'levy_amount',
             type: 'currency',
+            formatter: (data) =>
+                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
             typeParameters: {
                 currencyCode: (data) => data.levy_currency_code.symbolic_code,
             },
@@ -60,6 +65,8 @@ export class ChargebacksTableComponent {
         {
             field: 'fee',
             type: 'currency',
+            formatter: (data) =>
+                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
@@ -67,6 +74,8 @@ export class ChargebacksTableComponent {
         {
             field: 'provider_fee',
             type: 'currency',
+            formatter: (data) =>
+                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
@@ -74,6 +83,8 @@ export class ChargebacksTableComponent {
         {
             field: 'external_fee',
             type: 'currency',
+            formatter: (data) =>
+                this.amountCurrencyService.toMajor(data.amount, data.currency_code.symbolic_code),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
             },
@@ -119,5 +130,5 @@ export class ChargebacksTableComponent {
         // ]),
     ];
 
-    constructor(private dialog: DialogService) {}
+    constructor(private amountCurrencyService: AmountCurrencyService) {}
 }
