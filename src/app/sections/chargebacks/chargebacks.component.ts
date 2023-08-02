@@ -25,6 +25,7 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
+import { createUnion } from '../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
@@ -96,13 +97,9 @@ export class ChargebacksComponent implements OnInit {
                 },
                 ...clean(
                     {
-                        chargeback_stages: rootParams.chargeback_stages?.map((s) => ({ [s]: {} })),
-                        chargeback_categories: rootParams.chargeback_categories?.map((s) => ({
-                            [s]: {},
-                        })),
-                        chargeback_statuses: rootParams.chargeback_statuses?.map((s) => ({
-                            [s]: {},
-                        })),
+                        chargeback_stages: rootParams.chargeback_stages?.map(createUnion),
+                        chargeback_categories: rootParams.chargeback_categories?.map(createUnion),
+                        chargeback_statuses: rootParams.chargeback_statuses?.map(createUnion),
                     },
                     false,
                     true
