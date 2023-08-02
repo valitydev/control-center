@@ -44,7 +44,7 @@ export class ChargebacksComponent implements OnInit {
         party_id: undefined as ChargebackSearchQuery['common_search_query_params']['party_id'],
         shop_ids: [undefined as ChargebackSearchQuery['common_search_query_params']['shop_ids']],
         invoice_ids: [undefined as ChargebackSearchQuery['invoice_ids']],
-        chargeback_id: undefined as ChargebackSearchQuery['chargeback_id'],
+        chargeback_ids: [undefined as ChargebackSearchQuery['chargeback_ids']],
         chargeback_statuses: [undefined as string[]],
         chargeback_stages: [undefined as string[]],
         chargeback_categories: [undefined as string[]],
