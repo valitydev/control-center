@@ -45,7 +45,6 @@
     "coerce-property": "15.0.1",
     "css-element-queries": "1.2.3",
     "date-fns": "2.30.0",
-    "element-resize-detector": "1.2.4",
     "humanize-duration": "3.21.0",
     "inputmask": "5.0.7",
     "keycloak-angular": "14.0.0",
