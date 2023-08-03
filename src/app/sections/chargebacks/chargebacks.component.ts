@@ -113,7 +113,19 @@ export class ChargebacksComponent implements OnInit {
     }
 
     create() {
-        this.dialog.open(CreateChargebacksByFileDialogComponent);
+        this.dialog
+            .open(CreateChargebacksByFileDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((res) => res.status === DialogResponseStatus.Success),
+                untilDestroyed(this)
+            )
+            .subscribe((res) => {
+                this.filtersForm.reset({
+                    dateRange: createDateRangeToToday(),
+                    chargeback_ids: res.data.map((c) => c.id),
+                });
+            });
     }
 
     changeStatuses() {

@@ -35,9 +35,9 @@
             *ngIf="successfullyChargebacks?.length"
             [disabled]="!!(progress$ | async)"
             mat-button
-            (click)="changeStatus()"
+            (click)="closeWithSuccess()"
         >
-            Go to change the status of {{ successfullyChargebacks.length }} successful chargebacks
+            Close and find {{ successfullyChargebacks.length }} successful chargebacks
         </button>
         <button
             [disabled]="!selectedChargebacks?.length || !!(progress$ | async)"
