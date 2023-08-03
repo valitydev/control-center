@@ -25,6 +25,7 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
+import { createUnion } from '../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
@@ -43,7 +44,7 @@ export class ChargebacksComponent implements OnInit {
         party_id: undefined as ChargebackSearchQuery['common_search_query_params']['party_id'],
         shop_ids: [undefined as ChargebackSearchQuery['common_search_query_params']['shop_ids']],
         invoice_ids: [undefined as ChargebackSearchQuery['invoice_ids']],
-        chargeback_id: undefined as ChargebackSearchQuery['chargeback_id'],
+        chargeback_ids: [undefined as ChargebackSearchQuery['chargeback_ids']],
         chargeback_statuses: [undefined as string[]],
         chargeback_stages: [undefined as string[]],
         chargeback_categories: [undefined as string[]],
@@ -96,13 +97,9 @@ export class ChargebacksComponent implements OnInit {
                 },
                 ...clean(
                     {
-                        chargeback_stages: rootParams.chargeback_stages?.map((s) => ({ [s]: {} })),
-                        chargeback_categories: rootParams.chargeback_categories?.map((s) => ({
-                            [s]: {},
-                        })),
-                        chargeback_statuses: rootParams.chargeback_statuses?.map((s) => ({
-                            [s]: {},
-                        })),
+                        chargeback_stages: rootParams.chargeback_stages?.map(createUnion),
+                        chargeback_categories: rootParams.chargeback_categories?.map(createUnion),
+                        chargeback_statuses: rootParams.chargeback_statuses?.map(createUnion),
                     },
                     false,
                     true
@@ -116,7 +113,19 @@ export class ChargebacksComponent implements OnInit {
     }
 
     create() {
-        this.dialog.open(CreateChargebacksByFileDialogComponent);
+        this.dialog
+            .open(CreateChargebacksByFileDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((res) => res.status === DialogResponseStatus.Success),
+                untilDestroyed(this)
+            )
+            .subscribe((res) => {
+                this.filtersForm.reset({
+                    dateRange: createDateRangeToToday(),
+                    chargeback_ids: res.data.map((c) => c.id),
+                });
+            });
     }
 
     changeStatuses() {

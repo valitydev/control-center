@@ -6,7 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
-import { DialogResponseStatus, DialogService, QueryParamsService } from '@vality/ng-core';
+import { DialogService, QueryParamsService } from '@vality/ng-core';
 import { Moment } from 'moment';
 import { map } from 'rxjs/operators';
 
@@ -104,17 +104,8 @@ export class WithdrawalsComponent implements OnInit {
     }
 
     adjustment() {
-        this.dialogService
-            .open(CreateAdjustmentDialogComponent, { withdrawals: this.selection.selected })
-            .afterClosed()
-            .pipe(untilDestroyed(this))
-            .subscribe({
-                next: ({ status }) => {
-                    if (status === DialogResponseStatus.Success) {
-                        this.notificationService.success();
-                    }
-                },
-                error: this.notificationErrorService.error,
-            });
+        this.dialogService.open(CreateAdjustmentDialogComponent, {
+            withdrawals: this.selection.selected,
+        });
     }
 }

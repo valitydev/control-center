@@ -15,3 +15,4 @@ export * from './is-nil-or-empty-string';
 export * from './enumerate';
 export * from './thrift-instance';
 export * from './csv';
+export * from './thrift';

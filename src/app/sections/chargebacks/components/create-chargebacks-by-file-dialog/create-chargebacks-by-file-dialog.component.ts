@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StatChargeback } from '@vality/magista-proto/internal/magista';
+import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import {
     DialogSuperclass,
     NotifyLogService,
@@ -9,13 +9,11 @@ import {
     DEFAULT_DIALOG_CONFIG,
     Column,
     forkJoinToResult,
-    DialogService,
 } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map, shareReplay, tap, startWith } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
-import { ChangeChargebacksStatusDialogComponent } from '@cc/app/shared/components/change-chargebacks-status-dialog';
 import { parseCsv, unifyCsvItems } from '@cc/utils';
 
 import { CsvChargeback } from './types/csv-chargeback';
@@ -28,7 +26,11 @@ import { csvChargebacksToInvoicePaymentChargebackParams } from './utils/csv-char
     templateUrl: './create-chargebacks-by-file-dialog.component.html',
 })
 export class CreateChargebacksByFileDialogComponent
-    extends DialogSuperclass<CreateChargebacksByFileDialogComponent>
+    extends DialogSuperclass<
+        CreateChargebacksByFileDialogComponent,
+        void,
+        InvoicePaymentChargeback[]
+    >
     implements OnInit
 {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
@@ -62,14 +64,12 @@ export class CreateChargebacksByFileDialogComponent
         }),
         shareReplay({ refCount: true, bufferSize: 1 })
     );
-    successfullyChargebacks: Pick<StatChargeback, 'payment_id' | 'invoice_id' | 'chargeback_id'>[] =
-        [];
+    successfullyChargebacks: InvoicePaymentChargeback[] = [];
 
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private log: NotifyLogService,
-        private dialog: DialogService
+        private log: NotifyLogService
     ) {
         super(injector);
     }
@@ -97,16 +97,7 @@ export class CreateChargebacksByFileDialogComponent
             .subscribe({
                 next: (res) => {
                     this.successfullyChargebacks.push(
-                        ...res
-                            .filter((c) => !c.hasError)
-                            .map((c) => {
-                                const source = selected[c.index];
-                                return {
-                                    chargeback_id: c.result.id,
-                                    invoice_id: source.invoice_id,
-                                    payment_id: source.payment_id,
-                                };
-                            })
+                        ...res.filter((c) => !c.hasError).map((c) => c.result)
                     );
                     const chargebacksWithError = res.filter((c) => c.hasError);
                     if (chargebacksWithError.length) {
@@ -119,7 +110,7 @@ export class CreateChargebacksByFileDialogComponent
                         );
                     } else {
                         this.log.successOperation('create', 'chargebacks');
-                        this.changeStatus();
+                        this.closeWithSuccess();
                     }
                 },
                 error: (err) => this.log.error(err),
@@ -130,10 +121,7 @@ export class CreateChargebacksByFileDialogComponent
         this.upload$.next(file);
     }
 
-    changeStatus() {
-        this.closeWithCancellation();
-        this.dialog.open(ChangeChargebacksStatusDialogComponent, {
-            chargebacks: this.successfullyChargebacks,
-        });
+    override closeWithSuccess() {
+        super.closeWithSuccess(this.successfullyChargebacks);
     }
 }
