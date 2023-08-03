@@ -4,14 +4,12 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeRequest } from '@vality/fistful-proto/deposit_adjustment';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { ExternalID } from '@vality/fistful-proto/withdrawal_adjustment';
-import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
-import { combineLatest, from, of } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { DialogSuperclass, forkJoinToResult, NotifyLogService } from '@vality/ng-core';
+import { from, of, BehaviorSubject } from 'rxjs';
 import * as short from 'short-uuid';
 
 import { ManagementService } from '@cc/app/api/withdrawal';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 @UntilDestroy()
 @Component({
@@ -38,51 +36,40 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     ];
     typeControl = new FormControl<number>(1);
     metadata$ = from(import('@vality/fistful-proto/metadata.json').then((m) => m.default));
-    progress = -1;
+    progress$ = new BehaviorSubject(0);
 
     constructor(
         injector: Injector,
         private managementService: ManagementService,
-        private notificationErrorService: NotificationErrorService
+        private log: NotifyLogService
     ) {
         super(injector);
     }
 
     createAdjustment() {
-        this.progress = 0;
-        combineLatest(
+        forkJoinToResult(
             this.dialogData.withdrawals.map((w) =>
-                this.managementService
-                    .CreateAdjustment(w.id, {
-                        id: this.typeControl.value === 0 ? w.id : short().uuid(),
-                        change: this.control.value,
-                        external_id: this.externalIdControl.value,
-                    })
-                    .pipe(
-                        catchError((err) => {
-                            this.notificationErrorService.error(
-                                err,
-                                `Error when creating adjustment for withdrawal ${w.id}`
-                            );
-                            return of(null);
-                        }),
-                        finalize(() => {
-                            this.progress += 1;
-                        })
-                    )
-            )
+                this.managementService.CreateAdjustment(w.id, {
+                    id: this.typeControl.value === 0 ? w.id : short().uuid(),
+                    change: this.control.value,
+                    external_id: this.externalIdControl.value,
+                })
+            ),
+            4,
+            this.progress$
         )
             .pipe(untilDestroyed(this))
-            .subscribe({
-                next: (res) => {
-                    if (!res.includes(null)) {
-                        this.dialogRef.close({ status: DialogResponseStatus.Success });
-                    }
-                },
-                error: this.notificationErrorService.error,
-                complete: () => {
-                    this.progress = -1;
-                },
+            .subscribe((res) => {
+                const withError = res.filter((e) => e.hasError);
+                if (withError.length) {
+                    this.log.error(
+                        withError.map((c) => c.error),
+                        `Adjustment of ${withError.length} withdrawals ended in an error`
+                    );
+                } else {
+                    this.log.successOperation('create', 'adjustments');
+                    this.closeWithSuccess();
+                }
             });
     }
 }
