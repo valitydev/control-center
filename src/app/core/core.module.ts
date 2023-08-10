@@ -23,7 +23,7 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
                         bearerPrefix: 'Bearer',
                     })
                     .then(() => keycloak.getToken()),
-            ])
+            ]),
         ),
     ]);
 

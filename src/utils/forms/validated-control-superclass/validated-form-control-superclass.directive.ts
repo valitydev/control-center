@@ -6,7 +6,7 @@ import { EMPTY, Observable } from 'rxjs';
 @Directive()
 export class ValidatedFormControlSuperclass<
     OuterType,
-    InnerType = OuterType
+    InnerType = OuterType,
 > extends WrappedControlSuperclass<OuterType, InnerType> {
     // TODO: Validation sometimes doesn't work (is not forwarded higher by nesting) with Angular FormControl
     control = new FormControl() as FormControl<InnerType>;
@@ -16,13 +16,13 @@ export class ValidatedFormControlSuperclass<
     }
 
     protected setUpOuterToInnerErrors$(
-        _outer$: Observable<ValidationErrors>
+        _outer$: Observable<ValidationErrors>,
     ): Observable<ValidationErrors> {
         return EMPTY;
     }
 
     protected setUpInnerToOuterErrors$(
-        _inner$: Observable<ValidationErrors>
+        _inner$: Observable<ValidationErrors>,
     ): Observable<ValidationErrors> {
         return EMPTY;
     }

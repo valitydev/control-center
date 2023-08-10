@@ -16,12 +16,12 @@ export class FistfulStatisticsService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('FistfulStatistics'))
+            map(toWachterHeaders('FistfulStatistics')),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[]
-            )
+                (m) => m.default as ThriftAstMetadata[],
+            ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
@@ -30,8 +30,8 @@ export class FistfulStatisticsService {
                     headers,
                     logging: environment.logging.requests,
                     path: '/wachter',
-                })
-            )
+                }),
+            ),
         );
     }
 

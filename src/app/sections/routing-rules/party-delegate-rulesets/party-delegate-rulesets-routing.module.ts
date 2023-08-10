@@ -22,7 +22,7 @@ import { ROUTING_CONFIG } from './routing-config';
                         path: '',
                         loadChildren: () =>
                             import('../party-routing-ruleset').then(
-                                (m) => m.PartyRoutingRulesetModule
+                                (m) => m.PartyRoutingRulesetModule,
                             ),
                     },
                     {

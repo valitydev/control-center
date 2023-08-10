@@ -27,7 +27,7 @@ export class ModificationFormComponent
     metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = combineLatest([
         defer(() => this.claimOrPartyChanged$).pipe(
-            map(() => createPartyClaimMetadataFormExtensions(this.party, this.claim))
+            map(() => createPartyClaimMetadataFormExtensions(this.party, this.claim)),
         ),
         this.domainMetadataFormExtensionsService.extensions$,
     ]).pipe(map((extensionGroups) => extensionGroups.flat()));

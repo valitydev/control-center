@@ -28,8 +28,8 @@ import {
 export class DomainMetadataFormExtensionsService {
     extensions$: Observable<MetadataFormExtension[]> = from(
         import('@vality/domain-proto/metadata.json').then(
-            (m) => m.default as never as ThriftAstMetadata[]
-        )
+            (m) => m.default as never as ThriftAstMetadata[],
+        ),
     ).pipe(
         map((metadata): MetadataFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
@@ -69,7 +69,7 @@ export class DomainMetadataFormExtensionsService {
                 determinant: (data) =>
                     of(
                         isTypeWithAliases(data, 'FailureCode', 'domain') ||
-                            isTypeWithAliases(data, 'FailureCode', 'base')
+                            isTypeWithAliases(data, 'FailureCode', 'base'),
                     ),
                 extension: () =>
                     of({
@@ -96,7 +96,7 @@ export class DomainMetadataFormExtensionsService {
                     }),
             },
         ]),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(private domainStoreService: DomainStoreService) {}
@@ -105,21 +105,21 @@ export class DomainMetadataFormExtensionsService {
         const domainFields = new MetadataFormData<string, 'struct'>(
             metadata,
             'domain',
-            'DomainObject'
+            'DomainObject',
         ).ast;
         return domainFields
             .filter(
-                (f) => !(f.name in DOMAIN_OBJECTS_TO_OPTIONS) || DOMAIN_OBJECTS_TO_OPTIONS[f.name]
+                (f) => !(f.name in DOMAIN_OBJECTS_TO_OPTIONS) || DOMAIN_OBJECTS_TO_OPTIONS[f.name],
             )
             .map((f) =>
-                this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject)
+                this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
             );
     }
 
     private createFieldOptions(
         metadata: ThriftAstMetadata[],
         objectType: string,
-        objectKey: keyof DomainObject
+        objectKey: keyof DomainObject,
     ): MetadataFormExtension {
         const objectFields = new MetadataFormData<string, 'struct'>(metadata, 'domain', objectType)
             .ast;
@@ -132,8 +132,8 @@ export class DomainMetadataFormExtensionsService {
                             ? DOMAIN_OBJECTS_TO_OPTIONS[objectKey as keyof OtherDomainObjects]
                             : defaultDomainObjectToOption;
                     return objects.map(domainObjectToOption);
-                })
-            )
+                }),
+            ),
         );
     }
 }

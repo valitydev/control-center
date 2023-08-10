@@ -30,12 +30,12 @@ export class DepositsComponent implements OnInit {
         private paramsStoreService: ParamsStoreService,
         private fetchDepositsService: FetchDepositsService,
         private snackBar: MatSnackBar,
-        private router: Router
+        private router: Router,
     ) {}
 
     ngOnInit() {
         this.fetchDepositsService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search deposits (${String(e)})`, 'OK')
+            this.snackBar.open(`An error occurred while search deposits (${String(e)})`, 'OK'),
         );
     }
 
@@ -45,7 +45,7 @@ export class DepositsComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((deposit) => !!deposit),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe(() => {
                 this.refresh();

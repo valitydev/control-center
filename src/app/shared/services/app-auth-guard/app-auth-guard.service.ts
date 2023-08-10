@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 export class AppAuthGuardService extends KeycloakAuthGuard {
     constructor(
         protected override router: Router,
-        protected override keycloakAngular: KeycloakService
+        protected override keycloakAngular: KeycloakService,
     ) {
         super(router, keycloakAngular);
     }
@@ -16,7 +16,7 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
     // eslint-disable-next-line @typescript-eslint/require-await
     async isAccessAllowed(
         route: ActivatedRouteSnapshot,
-        _state: RouterStateSnapshot
+        _state: RouterStateSnapshot,
     ): Promise<boolean | UrlTree> {
         return (
             this.userHasSomeServiceMethods(route.data['services']) ||
@@ -33,7 +33,7 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
         return serviceMethods.some((serviceMethod) => {
             const [service, method] = serviceMethod.split(':');
             return allowedServiceMethods.some(
-                ([s, m]) => service === s && (!method || method === m)
+                ([s, m]) => service === s && (!method || method === m),
             );
         });
     }

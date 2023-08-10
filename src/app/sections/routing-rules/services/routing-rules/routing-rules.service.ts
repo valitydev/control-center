@@ -24,12 +24,12 @@ export class RoutingRulesService {
         .getObjects('routing_rules')
         .pipe(
             map((r) => r.sort((a, b) => a.ref.id - b.ref.id)),
-            shareReplay(1)
+            shareReplay(1),
         );
 
     nextRefID$ = this.rulesets$.pipe(
         map((rulesets) => rulesets.map(({ ref }) => ref.id)),
-        map(createNextId)
+        map(createNextId),
     );
 
     constructor(private domainStoreService: DomainStoreService) {}
@@ -90,7 +90,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -148,7 +148,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -206,7 +206,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -247,7 +247,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -295,7 +295,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -321,7 +321,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -347,7 +347,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -371,7 +371,7 @@ export class RoutingRulesService {
                 const newPreviousMainRuleset = cloneDeep(previousMainRuleset);
                 const [delegate] = newPreviousMainRuleset.data.decisions.delegates.splice(
                     delegateIdx,
-                    1
+                    1,
                 );
                 const newMainPaymentRoutingRuleset = cloneDeep(mainRuleset);
                 if (!newMainPaymentRoutingRuleset.data.decisions.delegates) {
@@ -397,7 +397,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -431,7 +431,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -452,7 +452,7 @@ export class RoutingRulesService {
                         },
                     ],
                 });
-            })
+            }),
         );
     }
 
@@ -466,7 +466,7 @@ export class RoutingRulesService {
         return combineLatest([
             this.getRuleset(mainRulesetRefID),
             this.getRuleset(mainRulesetRefID).pipe(
-                switchMap((r) => this.getRuleset(getDelegate(r, delegateIdx).ruleset.id))
+                switchMap((r) => this.getRuleset(getDelegate(r, delegateIdx).ruleset.id)),
             ),
             this.nextRefID$,
         ]).pipe(
@@ -495,10 +495,10 @@ export class RoutingRulesService {
                                 },
                             },
                         ],
-                    })
+                    }),
                 );
             }),
-            pluck('1')
+            pluck('1'),
         );
     }
 

@@ -16,20 +16,20 @@ export class ShopNamePipe implements PipeTransform, OnDestroy {
 
     constructor(
         private partyManagementService: PartiesStoreService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
     ) {
         combineLatest([
             this.partyIDChange$.pipe(
                 distinctUntilChanged(),
                 switchMap((id) => this.partyManagementService.get(id)),
-                map(({ shops }) => Array.from(shops.values()))
+                map(({ shops }) => Array.from(shops.values())),
             ),
             this.shopIDChange$.pipe(distinctUntilChanged()),
         ])
             .pipe(
                 takeUntil(this.destroy$),
                 map(([shops, shopID]) => shops.find((s) => s.id === shopID)),
-                pluck('details', 'name')
+                pluck('details', 'name'),
             )
             .subscribe((v) => {
                 this.shopName$.next(v);

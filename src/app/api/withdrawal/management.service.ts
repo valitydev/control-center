@@ -17,12 +17,12 @@ export class ManagementService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('WithdrawalManagement'))
+            map(toWachterHeaders('WithdrawalManagement')),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[]
-            )
+                (m) => m.default as ThriftAstMetadata[],
+            ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
@@ -31,8 +31,8 @@ export class ManagementService {
                     headers,
                     logging: environment.logging.requests,
                     path: '/wachter',
-                })
-            )
+                }),
+            ),
         );
     }
 

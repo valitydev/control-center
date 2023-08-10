@@ -59,7 +59,7 @@ export class ChargebacksTableComponent {
             formatter: (data) =>
                 this.amountCurrencyService.toMajor(
                     data.levy_amount,
-                    data.levy_currency_code.symbolic_code
+                    data.levy_currency_code.symbolic_code,
                 ),
             typeParameters: {
                 currencyCode: (data) => data.levy_currency_code.symbolic_code,
@@ -80,7 +80,7 @@ export class ChargebacksTableComponent {
             formatter: (data) =>
                 this.amountCurrencyService.toMajor(
                     data.provider_fee,
-                    data.currency_code.symbolic_code
+                    data.currency_code.symbolic_code,
                 ),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,
@@ -92,7 +92,7 @@ export class ChargebacksTableComponent {
             formatter: (data) =>
                 this.amountCurrencyService.toMajor(
                     data.external_fee,
-                    data.currency_code.symbolic_code
+                    data.currency_code.symbolic_code,
                 ),
             typeParameters: {
                 currencyCode: (data) => data.currency_code.symbolic_code,

@@ -12,10 +12,13 @@ export abstract class QueryParamsStore<D> {
     data$: Observable<Partial<D>> = this.route.queryParams.pipe(
         distinctUntilChanged(isEqual),
         map((p) => this.mapToData(p)),
-        shareReplay(1)
+        shareReplay(1),
     );
 
-    constructor(protected router: Router, protected route: ActivatedRoute) {}
+    constructor(
+        protected router: Router,
+        protected route: ActivatedRoute,
+    ) {}
 
     abstract mapToData(queryParams: Params): Partial<D>;
 

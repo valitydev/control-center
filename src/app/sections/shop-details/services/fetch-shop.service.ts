@@ -17,13 +17,13 @@ export class FetchShopService {
                 catchError((err) => {
                     this.notificationErrorService.error(
                         err,
-                        'An error occurred while fetching shop'
+                        'An error occurred while fetching shop',
                     );
                     return EMPTY;
-                })
-            )
+                }),
+            ),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     contract$ = defer(() => this.getShop$).pipe(
         switchMap(({ partyID, shopID }) =>
@@ -32,13 +32,13 @@ export class FetchShopService {
                 catchError((err) => {
                     this.notificationErrorService.error(
                         err,
-                        'An error occurred while fetching shop contract'
+                        'An error occurred while fetching shop contract',
                     );
                     return EMPTY;
-                })
-            )
+                }),
+            ),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     inProgress$ = inProgressFrom(() => this.progress$, merge(this.shop$, this.contract$));
@@ -48,7 +48,7 @@ export class FetchShopService {
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     getShop(partyID: PartyID, shopID: ShopID) {

@@ -14,14 +14,14 @@ import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 export class FetchRevertsService extends PartialFetcher<StatDepositRevert, FetchRevertsParams> {
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number
+        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number,
     ) {
         super();
     }
 
     fetch(
         params: FetchRevertsParams,
-        continuationToken: string
+        continuationToken: string,
     ): Observable<FetchResult<StatDepositRevert>> {
         return this.fistfulStatisticsService
             .GetDepositReverts({
@@ -37,7 +37,7 @@ export class FetchRevertsService extends PartialFetcher<StatDepositRevert, Fetch
                 map((res) => ({
                     result: res.data.deposit_reverts,
                     continuationToken: res.continuation_token,
-                }))
+                })),
             );
     }
 }

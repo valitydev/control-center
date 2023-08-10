@@ -33,7 +33,7 @@ export class ClaimsComponent implements OnInit {
         private fetchClaimsService: FetchClaimsService,
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<ClaimsComponent['filtersForm']['value']>
+        private qp: QueryParamsService<ClaimsComponent['filtersForm']['value']>,
     ) {}
 
     ngOnInit(): void {
@@ -50,7 +50,7 @@ export class ClaimsComponent implements OnInit {
         void this.qp.set(filters);
         this.fetchClaimsService.load(
             { ...filters, statuses: filters.statuses?.map((status) => ({ [status]: {} })) || [] },
-            options
+            options,
         );
         this.active = Object.keys(filters).length;
     }

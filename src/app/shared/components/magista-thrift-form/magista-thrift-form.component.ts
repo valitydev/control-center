@@ -19,7 +19,7 @@ export class MagistaThriftFormComponent extends FormControlSuperclass<unknown> {
     @Input() type: string;
 
     metadata$ = from(
-        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
+        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
     );
     extensions: MetadataFormExtension[] = [];
 }

@@ -31,7 +31,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
         private invoicingService: InvoicingService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
         private notificationErrorService: NotificationErrorService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
     ) {
         super(injector);
     }
@@ -41,7 +41,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
             .CreateChargeback(
                 this.dialogData.invoiceID,
                 this.dialogData.paymentID,
-                this.form.value as InvoicePaymentChargebackParams
+                this.form.value as InvoicePaymentChargebackParams,
             )
             .pipe(untilDestroyed(this))
             .subscribe({

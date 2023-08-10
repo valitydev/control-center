@@ -48,7 +48,7 @@ export class ModificationUnitTimelineItemComponent {
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     get name() {
@@ -71,9 +71,9 @@ export class ModificationUnitTimelineItemComponent {
                             claim: this.claim,
                             modificationUnit: this.modificationUnit,
                         })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((result) => {
                 if (result.status === DialogResponseStatus.Success) this.claimChanged.emit();
@@ -92,11 +92,11 @@ export class ModificationUnitTimelineItemComponent {
                         party.id,
                         this.claim.id,
                         this.claim.revision,
-                        this.modificationUnit.modification_id
-                    )
+                        this.modificationUnit.modification_id,
+                    ),
                 ),
                 progressTo(this.progress$),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 next: () => {

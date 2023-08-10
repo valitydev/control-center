@@ -10,7 +10,7 @@ export function getValueTypeTitle(valueType: ValueType): string {
     if (isComplexType(valueType)) {
         if (valueType.name === 'map') {
             return `${valueType.name}: ${getValueTypeTitle(
-                valueType.keyType
+                valueType.keyType,
             )} - ${getValueTypeTitle(valueType.valueType)}`;
         }
         return `${valueType.name}: ${getValueTypeTitle(valueType.valueType)}`;

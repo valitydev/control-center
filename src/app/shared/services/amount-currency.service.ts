@@ -13,7 +13,7 @@ export class AmountCurrencyService {
     toMajor(amount: number, symbolicCode: string) {
         return this.getCurrency(symbolicCode).pipe(
             first(),
-            map((currency) => toMajorByExponent(amount, currency.data.exponent))
+            map((currency) => toMajorByExponent(amount, currency.data.exponent)),
         );
     }
 
@@ -21,7 +21,7 @@ export class AmountCurrencyService {
         return this.domainStoreService
             .getObjects('currency')
             .pipe(
-                map((currencies) => currencies.find((c) => c.ref.symbolic_code === symbolicCode))
+                map((currencies) => currencies.find((c) => c.ref.symbolic_code === symbolicCode)),
             );
     }
 }

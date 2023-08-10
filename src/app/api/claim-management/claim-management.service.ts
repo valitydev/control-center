@@ -26,12 +26,12 @@ export class ClaimManagementService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('ClaimManagement'))
+            map(toWachterHeaders('ClaimManagement')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[]
-            )
+                (m) => m.default as ThriftAstMetadata[],
+            ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
@@ -40,8 +40,8 @@ export class ClaimManagementService {
                     headers,
                     logging: environment.logging.requests,
                     path: '/wachter',
-                })
-            )
+                }),
+            ),
         );
     }
 
@@ -70,7 +70,7 @@ export class ClaimManagementService {
         partyId: PartyID,
         id: ClaimID,
         revision: ClaimRevision,
-        changeset: ModificationChangeset
+        changeset: ModificationChangeset,
     ): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.UpdateClaim(partyId, id, revision, changeset)));
     }
@@ -81,12 +81,12 @@ export class ClaimManagementService {
         id: ClaimID,
         revision: ClaimRevision,
         modificationId: ModificationID,
-        modificationChange: ModificationChange
+        modificationChange: ModificationChange,
     ): Observable<void> {
         return this.client$.pipe(
             switchMap((c) =>
-                c.UpdateModification(partyId, id, revision, modificationId, modificationChange)
-            )
+                c.UpdateModification(partyId, id, revision, modificationId, modificationChange),
+            ),
         );
     }
 
@@ -95,10 +95,10 @@ export class ClaimManagementService {
         partyId: PartyID,
         id: ClaimID,
         revision: ClaimRevision,
-        modificationId: ModificationID
+        modificationId: ModificationID,
     ): Observable<void> {
         return this.client$.pipe(
-            switchMap((c) => c.RemoveModification(partyId, id, revision, modificationId))
+            switchMap((c) => c.RemoveModification(partyId, id, revision, modificationId)),
         );
     }
 
@@ -117,7 +117,7 @@ export class ClaimManagementService {
         partyId: PartyID,
         id: ClaimID,
         revision: ClaimRevision,
-        reason: string
+        reason: string,
     ): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.DenyClaim(partyId, id, revision, reason)));
     }
@@ -127,7 +127,7 @@ export class ClaimManagementService {
         partyId: PartyID,
         id: ClaimID,
         revision: ClaimRevision,
-        reason: string
+        reason: string,
     ): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.RevokeClaim(partyId, id, revision, reason)));
     }

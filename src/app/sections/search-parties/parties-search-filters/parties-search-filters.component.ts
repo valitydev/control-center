@@ -19,7 +19,7 @@ export class PartiesSearchFiltersComponent implements OnInit {
 
     constructor(private partiesSearchFiltersService: PartiesSearchFiltersService) {
         this.partiesSearchFiltersService.searchParamsChanged$.subscribe((params) =>
-            this.searchParamsChanged$.emit(params)
+            this.searchParamsChanged$.emit(params),
         );
     }
 

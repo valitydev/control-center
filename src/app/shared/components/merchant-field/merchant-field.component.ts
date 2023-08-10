@@ -37,7 +37,10 @@ export class MerchantFieldComponent
     searchChange$ = new Subject<string>();
     progress$ = new BehaviorSubject(0);
 
-    constructor(private deanonimusService: DeanonimusService, private snackBar: MatSnackBar) {
+    constructor(
+        private deanonimusService: DeanonimusService,
+        private snackBar: MatSnackBar,
+    ) {
         super();
     }
 
@@ -48,14 +51,14 @@ export class MerchantFieldComponent
                 startWith(this.control.value),
                 filter(Boolean),
                 first(),
-                takeUntil(this.searchChange$)
-            )
+                takeUntil(this.searchChange$),
+            ),
         )
             .pipe(
                 filter(Boolean),
                 debounceTime(600),
                 switchMap((str) => this.searchOptions(str)),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((options) => this.options$.next(options));
     }
@@ -68,7 +71,7 @@ export class MerchantFieldComponent
                 this.snackBar.open('Search error', 'OK', { duration: 2000 });
                 console.error(err);
                 return of([]);
-            })
+            }),
         );
     }
 }

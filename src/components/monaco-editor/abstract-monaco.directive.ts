@@ -45,7 +45,7 @@ export abstract class AbstractMonacoDirective implements OnInit, OnChanges, OnDe
 
     constructor(
         protected monacoEditorService: AbstractMonacoService,
-        protected editorRef: ElementRef
+        protected editorRef: ElementRef,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<AbstractMonacoDirective>) {

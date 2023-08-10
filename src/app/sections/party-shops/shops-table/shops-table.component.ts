@@ -17,7 +17,10 @@ export class ShopsTableComponent implements OnChanges {
     dataSource: MatTableDataSource<Shop> = new MatTableDataSource();
     displayedColumns = ['id', 'name', 'url', 'actions'];
 
-    constructor(private router: Router, private route: ActivatedRoute) {}
+    constructor(
+        private router: Router,
+        private route: ActivatedRoute,
+    ) {}
 
     ngOnChanges({ shops }: SimpleChanges) {
         if (shops.currentValue) {

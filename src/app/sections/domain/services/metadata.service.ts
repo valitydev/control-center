@@ -8,7 +8,7 @@ import { map, shareReplay } from 'rxjs/operators';
 @Injectable()
 export class MetadataService {
     private metadata$: Observable<ThriftAstMetadata[]> = from(
-        import('@vality/domain-proto/metadata.json').then((m) => m.default)
+        import('@vality/domain-proto/metadata.json').then((m) => m.default),
     ).pipe(shareReplay(1)) as Observable<ThriftAstMetadata[]>;
 
     get metadata() {
@@ -28,19 +28,19 @@ export class MetadataService {
             map((d) => {
                 const found = d.find(({ name }) => name === searchName);
                 return found ? (found.type as string) : null;
-            })
+            }),
         );
     }
 
     getDomainFieldByFieldName(fieldName: string): Observable<Field> {
         return this.getDomainFields().pipe(
-            map((fields) => fields.find((f) => f.name === fieldName))
+            map((fields) => fields.find((f) => f.name === fieldName)),
         );
     }
 
     getDomainFields(): Observable<Field[]> {
         return this.metadata$.pipe(
-            map((m) => m.find(({ name }) => name === 'domain').ast.union.DomainObject)
+            map((m) => m.find(({ name }) => name === 'domain').ast.union.DomainObject),
         );
     }
 }

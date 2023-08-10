@@ -21,7 +21,7 @@ export class FetchRefundsService extends PartialFetcher<
 
     protected fetch(
         params: DeepPartial<RefundSearchQuery>,
-        continuationToken: string
+        continuationToken: string,
     ): Observable<FetchResult<StatRefund>> {
         return this.merchantStatisticsService
             .SearchRefunds(
@@ -34,15 +34,15 @@ export class FetchRefundsService extends PartialFetcher<
                             from_time: new Date('01.01.2020').toISOString(), // TODO
                             to_time: new Date().toISOString(),
                         },
-                        params.common_search_query_params
+                        params.common_search_query_params,
                     ),
-                })
+                }),
             )
             .pipe(
                 map(({ refunds, continuation_token }) => ({
                     result: refunds,
                     continuationToken: continuation_token,
-                }))
+                })),
             );
     }
 }

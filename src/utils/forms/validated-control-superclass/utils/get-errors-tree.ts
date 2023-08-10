@@ -20,7 +20,7 @@ export function getErrorsTree(control: AbstractControl): ValidationErrors | null
             errors['formGroupErrors'] = Object.fromEntries(
                 Array.from(Object.entries(control.controls))
                     .map(([k, c]) => [k, getErrorsTree(c)])
-                    .filter(([, v]) => !!v)
+                    .filter(([, v]) => !!v),
             ) as ValidationErrors;
         }
     }

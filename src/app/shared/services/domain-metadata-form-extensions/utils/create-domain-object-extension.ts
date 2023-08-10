@@ -11,7 +11,7 @@ import {
 
 export function createDomainObjectExtension(
     refType: string,
-    options: () => Observable<MetadataFormExtensionOption[]>
+    options: () => Observable<MetadataFormExtensionOption[]>,
 ): MetadataFormExtension {
     return {
         determinant: (data) =>
@@ -19,7 +19,7 @@ export function createDomainObjectExtension(
                 isTypeWithAliases(data?.trueParent, refType, 'domain') &&
                     (isTypeWithAliases(data, 'ObjectID', 'domain') ||
                         // TODO: 'field.name' must be passed as an argument
-                        ['id', 'symbolic_code'].includes(data.field?.name))
+                        ['id', 'symbolic_code'].includes(data.field?.name)),
             ),
         extension: (data) =>
             options().pipe(
@@ -27,7 +27,7 @@ export function createDomainObjectExtension(
                     options: objects.sort((a, b) =>
                         typeof a.value === 'number' && typeof b.value === 'number'
                             ? a.value - b.value
-                            : 0
+                            : 0,
                     ),
                     isIdentifier: true,
                     generate: isTypeWithAliases(data, 'ObjectID', 'domain')
@@ -35,12 +35,12 @@ export function createDomainObjectExtension(
                               of(
                                   createNextId(
                                       objects.map((o) =>
-                                          typeof o.value === 'number' ? o.value : 0
-                                      )
-                                  )
+                                          typeof o.value === 'number' ? o.value : 0,
+                                      ),
+                                  ),
                               )
                         : undefined,
-                }))
+                })),
             ),
     };
 }

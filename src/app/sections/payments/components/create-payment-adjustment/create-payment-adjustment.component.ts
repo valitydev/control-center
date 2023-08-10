@@ -32,7 +32,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
         injector: Injector,
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {
         super(injector);
     }
@@ -57,13 +57,13 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
                                         return of(null);
                                     }),
                                     finalize(() =>
-                                        this.progress$.next(this.progress$.value + progressStep)
-                                    )
-                                )
-                        )
-                    )
+                                        this.progress$.next(this.progress$.value + progressStep),
+                                    ),
+                                ),
+                        ),
+                    ),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 complete: () => {
@@ -82,8 +82,8 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
                             .join(', ');
                         this.log.error(
                             new Error(
-                                `${this.withError.length} out of ${payments.length} failed. Errors: ${errors}`
-                            )
+                                `${this.withError.length} out of ${payments.length} failed. Errors: ${errors}`,
+                            ),
                         );
                     }
                     this.progress$.next(0);

@@ -45,7 +45,7 @@ export class PayoutToolFieldComponent
     ]).pipe(
         map(([str, payoutTools]) => payoutTools.filter((t) => t.id.includes(str))),
         map((payoutTools) => payoutTools.map((t) => ({ label: t.id, value: t.id }))),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     private payoutTools$ = combineLatest([this.partyId$, this.shopId$]).pipe(
@@ -55,25 +55,25 @@ export class PayoutToolFieldComponent
                       .GetShop(partyId, shopId)
                       .pipe(
                           switchMap(({ contract_id }) =>
-                              this.partyManagementService.GetContract(partyId, contract_id)
+                              this.partyManagementService.GetContract(partyId, contract_id),
                           ),
-                          pluck('payout_tools')
+                          pluck('payout_tools'),
                       )
                       .pipe(
                           handleError(
                               this.notificationErrorService.error,
                               null,
-                              of<PayoutTool[]>([])
-                          )
+                              of<PayoutTool[]>([]),
+                          ),
                       )
-                : of<PayoutTool[]>([])
+                : of<PayoutTool[]>([]),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super();
     }

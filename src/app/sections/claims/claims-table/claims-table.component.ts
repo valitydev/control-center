@@ -55,7 +55,10 @@ export class ClaimsTableComponent {
         ]),
     ];
 
-    constructor(private router: Router, private partiesStoreService: PartiesStoreService) {}
+    constructor(
+        private router: Router,
+        private partiesStoreService: PartiesStoreService,
+    ) {}
 
     navigateToClaim(partyId: string, claimID: number) {
         void this.router.navigate([`/party/${partyId}/claim/${claimID}`]);

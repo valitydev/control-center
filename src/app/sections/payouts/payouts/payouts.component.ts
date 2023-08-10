@@ -32,7 +32,7 @@ export class PayoutsComponent implements OnInit {
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
         private qp: QueryParamsService<Partial<PayoutsSearchForm>>,
-        private dialogService: DialogService
+        private dialogService: DialogService,
     ) {}
 
     ngOnInit() {
@@ -57,14 +57,14 @@ export class PayoutsComponent implements OnInit {
                             party_id: value.partyId,
                             shop_ids: value.shops,
                         },
-                        isNilOrEmptyString
+                        isNilOrEmptyString,
                     ),
                     payout_id: value.payoutId,
                     payout_status_types: value.payoutStatusTypes,
                     payout_type: value.payoutToolType,
                 },
-                isNilOrEmptyString
-            ) as SearchParams
+                isNilOrEmptyString,
+            ) as SearchParams,
         );
     }
 

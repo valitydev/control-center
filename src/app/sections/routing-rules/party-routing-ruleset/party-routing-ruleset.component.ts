@@ -25,7 +25,7 @@ export class PartyRoutingRulesetComponent {
     partyID$ = this.partyRoutingRulesetService.partyID$;
     routingRulesType$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        pluck('type')
+        pluck('type'),
     ) as Observable<RoutingRulesType>;
     isLoading$ = this.domainStoreService.isLoading$;
 
@@ -56,10 +56,10 @@ export class PartyRoutingRulesetComponent {
                             caption: shopId,
                         },
                     };
-                })
+                }),
         ),
         untilDestroyed(this),
-        shareReplay(1)
+        shareReplay(1),
     );
     walletsData$ = combineLatest([
         this.partyRuleset$,
@@ -83,10 +83,10 @@ export class PartyRoutingRulesetComponent {
                             caption: walletId,
                         },
                     };
-                })
+                }),
         ),
         untilDestroyed(this),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(
@@ -94,7 +94,7 @@ export class PartyRoutingRulesetComponent {
         private partyRoutingRulesetService: PartyRoutingRulesetService,
         private router: Router,
         private route: ActivatedRoute,
-        private domainStoreService: DomainStoreService
+        private domainStoreService: DomainStoreService,
     ) {}
 
     initialize() {
@@ -107,9 +107,9 @@ export class PartyRoutingRulesetComponent {
                 switchMap(([partyID, refID]) =>
                     this.dialogService
                         .open(InitializeRoutingRulesDialogComponent, { partyID, refID })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 next: () => {
@@ -137,9 +137,9 @@ export class PartyRoutingRulesetComponent {
                             type,
                             partyID,
                         })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 next: (res) => {
@@ -162,7 +162,7 @@ export class PartyRoutingRulesetComponent {
                     parentRefId,
                     'delegate',
                     ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,
-                ])
+                ]),
             );
     }
 }

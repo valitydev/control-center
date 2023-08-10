@@ -3,14 +3,14 @@
         *ngSwitchCase="'cash'"
         [formControl]="control"
         [required]="data.isRequired"
-        label="{{ data.type | fieldLabel : data.field }} (amount)"
+        label="{{ data.type | fieldLabel: data.field }} (amount)"
         minor
     ></cc-cash-field>
     <div *ngSwitchCase="'datetime'" fxLayoutGap="4px">
         <cc-datetime
             [formControl]="control"
             [hint]="aliases"
-            [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel : data.field)"
+            [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
             fxFlex
         ></cc-datetime>
         <button *ngIf="!data.isRequired && control.value" mat-icon-button (click)="clear($event)">

@@ -2,7 +2,7 @@ import { BehaviorSubject, defer, MonoTypeOperatorFunction, isObservable } from '
 import { finalize } from 'rxjs/operators';
 
 export function progressTo<T>(
-    subject$: BehaviorSubject<number> | (() => BehaviorSubject<number>)
+    subject$: BehaviorSubject<number> | (() => BehaviorSubject<number>),
 ): MonoTypeOperatorFunction<T> {
     const getSub = () => (isObservable(subject$) ? subject$ : subject$());
     return (src$) =>

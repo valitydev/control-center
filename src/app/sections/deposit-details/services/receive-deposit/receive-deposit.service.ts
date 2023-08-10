@@ -22,11 +22,11 @@ export class ReceiveDepositService {
                         this.error$.next(true);
                         this.notificationErrorService.error(err);
                         return EMPTY;
-                    })
-                )
+                    }),
+                ),
         ),
         map(({ data }) => data?.deposits[0]),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -34,7 +34,7 @@ export class ReceiveDepositService {
 
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     receiveDeposit(id: string) {

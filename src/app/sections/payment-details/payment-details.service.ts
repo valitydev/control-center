@@ -30,7 +30,7 @@ export class PaymentDetailsService {
                             payment_id: paymentID,
                         },
                         invoice_ids: [invoiceID],
-                    })
+                    }),
                 )
                 .pipe(
                     map(({ payments }) => payments[0]),
@@ -38,10 +38,10 @@ export class PaymentDetailsService {
                         if (!payment) {
                             this.snackBar.open('An error occurred when receiving payment', 'OK');
                         }
-                    })
-                )
+                    }),
+                ),
         ),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -51,13 +51,13 @@ export class PaymentDetailsService {
     shop$ = this.payment$.pipe(
         switchMap((payment) => combineLatest([this.partyID$, of(payment.shop_id)])),
         switchMap(([partyID, shopID]) => this.partyManagementService.GetShop(partyID, shopID)),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(
         private partyManagementService: PartyManagementService,
         private merchantStatisticsService: MerchantStatisticsService,
         private route: ActivatedRoute,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
     ) {}
 }

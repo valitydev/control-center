@@ -55,7 +55,7 @@ export class DomainInfoComponent {
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
-        private queryParamsService: QueryParamsService<{ ref?: Reference }>
+        private queryParamsService: QueryParamsService<{ ref?: Reference }>,
     ) {}
 
     edit() {
@@ -72,8 +72,8 @@ export class DomainInfoComponent {
                 switchMap(() =>
                     this.domainStoreService.commit({
                         ops: [{ remove: { object: this.objWithRef.obj } }],
-                    })
-                )
+                    }),
+                ),
             )
             .subscribe({
                 next: () => {

@@ -20,7 +20,7 @@ export class PartyComponent {
         filter((e) => e instanceof NavigationEnd),
         startWith(undefined),
         map(() => this.findLinkWithMaxActiveFragments()),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     partyID$: Observable<string>;
@@ -30,7 +30,7 @@ export class PartyComponent {
         private route: ActivatedRoute,
         private router: Router,
         private appAuthGuardService: AppAuthGuardService,
-        private deanonimusService: DeanonimusService
+        private deanonimusService: DeanonimusService,
     ) {
         this.partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
         this.merchantEmail$ = this.partyID$.pipe(
@@ -41,7 +41,7 @@ export class PartyComponent {
                 console.error(err);
                 return of('--/--');
             }),
-            shareReplay(1)
+            shareReplay(1),
         );
     }
 
@@ -65,7 +65,7 @@ export class PartyComponent {
             },
         ];
         return links.filter((item) =>
-            this.appAuthGuardService.userHasSomeServiceMethods(item.services)
+            this.appAuthGuardService.userHasSomeServiceMethods(item.services),
         );
     }
 

@@ -64,12 +64,12 @@ export class ChargebacksComponent implements OnInit {
             dateRange: DateRange;
         }>,
         private fetchChargebacksService: FetchChargebacksService,
-        private dialog: DialogService
+        private dialog: DialogService,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(
-            merge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange }))
+            merge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
         );
         this.filtersForm.valueChanges
             .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
@@ -102,10 +102,10 @@ export class ChargebacksComponent implements OnInit {
                         chargeback_statuses: rootParams.chargeback_statuses?.map(createUnion),
                     },
                     false,
-                    true
+                    true,
                 ),
             },
-            options
+            options,
         );
         this.active =
             countProps(rootParams, commonParams) +
@@ -118,7 +118,7 @@ export class ChargebacksComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((res) => {
                 this.filtersForm.reset({
@@ -134,7 +134,7 @@ export class ChargebacksComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe(() => {
                 this.load();

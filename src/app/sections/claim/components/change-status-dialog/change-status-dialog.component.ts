@@ -27,7 +27,7 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
         denyReason: null as string,
     });
     statuses = this.allowedClaimStatusesService.getAllowedStatuses(
-        getUnionKey(this.dialogData.claim.status)
+        getUnionKey(this.dialogData.claim.status),
     );
     inProgress$ = inProgressFrom(() => this.progress$);
 
@@ -39,7 +39,7 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
     }

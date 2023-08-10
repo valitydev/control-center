@@ -23,7 +23,7 @@ export class FetchWalletsService extends PartialFetcher<StatWallet, WalletParams
                 map((res) => ({
                     result: res.data.wallets,
                     continuationToken: res.continuation_token,
-                }))
+                })),
             );
     }
 }

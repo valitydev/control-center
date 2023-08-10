@@ -17,11 +17,11 @@ export class DomainObjModificationService {
     object$ = defer(() => this.ref$).pipe(
         switchMap((ref) => this.getDomainObject(ref, false).pipe(progressTo(this.progress$))),
         map((obj) => getUnionValue(obj)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     type$ = defer(() => this.ref$).pipe(
         switchMap((ref) => this.metadataService.getDomainObjectType(ref)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     private ref$ = this.route.params.pipe(
@@ -32,14 +32,14 @@ export class DomainObjModificationService {
                 this.notificationErrorService.error(err, 'Malformed domain object ref');
                 return null;
             }
-        })
+        }),
     );
 
     constructor(
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     private getDomainObject(ref: Reference, rawDomain: boolean): Observable<DomainObject> {
@@ -48,9 +48,9 @@ export class DomainObjModificationService {
             map((domain) => {
                 const searchRef = JSON.stringify(ref);
                 return domain.get(
-                    Array.from(domain.keys()).find((k) => JSON.stringify(toJson(k)) === searchRef)
+                    Array.from(domain.keys()).find((k) => JSON.stringify(toJson(k)) === searchRef),
                 );
-            })
+            }),
         );
     }
 }

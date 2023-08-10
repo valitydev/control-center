@@ -23,14 +23,14 @@ export type SearchParams = Overwrite<
 export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams> {
     constructor(
         private merchantStatisticsService: MerchantStatisticsService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super();
     }
 
     protected fetch(
         params: SearchParams,
-        continuationToken: string
+        continuationToken: string,
     ): Observable<FetchResult<StatPayout>> {
         return this.merchantStatisticsService
             .SearchPayouts({
@@ -44,7 +44,7 @@ export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams
                 map(({ continuation_token, payouts }) => ({
                     result: payouts,
                     continuationToken: continuation_token,
-                }))
+                })),
             );
     }
 

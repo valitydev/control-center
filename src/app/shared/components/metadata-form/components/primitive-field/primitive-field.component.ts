@@ -33,11 +33,11 @@ export class PrimitiveFieldComponent<T>
         defer(() => this.extensions$),
     ]).pipe(
         switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(pluck('generate'));
     selected$ = combineLatest([this.extensionResult$, this.control.valueChanges]).pipe(
-        map(([extensionResult, value]) => extensionResult?.options?.find((o) => o.value === value))
+        map(([extensionResult, value]) => extensionResult?.options?.find((o) => o.value === value)),
     );
     filteredOptions$ = combineLatest([
         this.control.valueChanges.pipe(startWith('')),
@@ -48,10 +48,10 @@ export class PrimitiveFieldComponent<T>
             return extensionResult.options?.filter(
                 (option) =>
                     String(option.value).toLowerCase().includes(filterValue) ||
-                    (option.label && option.label.toLowerCase().includes(filterValue))
+                    (option.label && option.label.toLowerCase().includes(filterValue)),
             );
         }),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     get inputType(): string {
@@ -90,7 +90,7 @@ export class PrimitiveFieldComponent<T>
         this.generate$
             .pipe(
                 switchMap((generate) => generate()),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((value) => this.control.setValue(value as T));
         event.stopPropagation();

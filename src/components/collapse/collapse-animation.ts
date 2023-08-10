@@ -9,7 +9,7 @@ export const INDICATOR_ROTATE = trigger('indicatorRotate', [
     state('expanded', style({ transform: 'rotate(180deg)' })),
     transition(
         'expanded <=> collapsed, void => collapsed',
-        animate(EXPANSION_PANEL_ANIMATION_TIMING)
+        animate(EXPANSION_PANEL_ANIMATION_TIMING),
     ),
 ]);
 

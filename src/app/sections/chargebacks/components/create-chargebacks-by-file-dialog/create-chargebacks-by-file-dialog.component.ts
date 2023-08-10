@@ -47,7 +47,7 @@ export class CreateChargebacksByFileDialogComponent
     ]).pipe(
         switchMap(([file]) => loadFileContent(file)),
         map((content) =>
-            parseCsv(content, { header: this.hasHeaderControl.value || false, delimiter: ';' })
+            parseCsv(content, { header: this.hasHeaderControl.value || false, delimiter: ';' }),
         ),
         tap((d) => {
             if (!d.errors.length) return;
@@ -58,18 +58,18 @@ export class CreateChargebacksByFileDialogComponent
             const chargebacks = unifyCsvItems(d?.data, CSV_CHARGEBACK_PROPS);
             if (chargebacks[0].invoice_id) return chargebacks;
             this.log.error(
-                'Perhaps you incorrectly checked the checkbox to have or not a header (the first element does not have at least an invoice ID)'
+                'Perhaps you incorrectly checked the checkbox to have or not a header (the first element does not have at least an invoice ID)',
             );
             return [];
         }),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     successfullyChargebacks: InvoicePaymentChargeback[] = [];
 
     constructor(
         injector: Injector,
         private invoicingService: InvoicingService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
     ) {
         super(injector);
     }
@@ -87,26 +87,26 @@ export class CreateChargebacksByFileDialogComponent
                 this.invoicingService.CreateChargeback(
                     c.invoice_id,
                     c.payment_id,
-                    csvChargebacksToInvoicePaymentChargebackParams(c)
-                )
+                    csvChargebacksToInvoicePaymentChargebackParams(c),
+                ),
             ),
             2,
-            this.progress$
+            this.progress$,
         )
             .pipe(untilDestroyed(this))
             .subscribe({
                 next: (res) => {
                     this.successfullyChargebacks.push(
-                        ...res.filter((c) => !c.hasError).map((c) => c.result)
+                        ...res.filter((c) => !c.hasError).map((c) => c.result),
                     );
                     const chargebacksWithError = res.filter((c) => c.hasError);
                     if (chargebacksWithError.length) {
                         this.log.error(
                             chargebacksWithError.map((c) => c.error),
-                            `Creating ${chargebacksWithError.length} chargebacks ended in an error. They were re-selected in the table.`
+                            `Creating ${chargebacksWithError.length} chargebacks ended in an error. They were re-selected in the table.`,
                         );
                         this.selectedChargebacks = chargebacksWithError.map(
-                            (c) => selected[c.index]
+                            (c) => selected[c.index],
                         );
                     } else {
                         this.log.successOperation('create', 'chargebacks');

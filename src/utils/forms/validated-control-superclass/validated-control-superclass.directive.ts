@@ -24,13 +24,13 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
     }
 
     protected setUpOuterToInnerErrors$(
-        _outer$: Observable<ValidationErrors>
+        _outer$: Observable<ValidationErrors>,
     ): Observable<ValidationErrors> {
         return EMPTY;
     }
 
     protected setUpInnerToOuterErrors$(
-        _inner$: Observable<ValidationErrors>
+        _inner$: Observable<ValidationErrors>,
     ): Observable<ValidationErrors> {
         return EMPTY;
     }

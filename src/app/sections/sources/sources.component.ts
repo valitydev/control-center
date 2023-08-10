@@ -20,7 +20,7 @@ export class SourcesComponent {
 
     constructor(
         private fetchSourcesService: FetchSourcesService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
     ) {}
 
     create() {

@@ -29,7 +29,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
         injector: Injector,
         private fb: FormBuilder,
         private routingRulesService: RoutingRulesService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
     }

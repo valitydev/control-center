@@ -26,7 +26,7 @@ export class NotificationErrorService implements ErrorService {
                 message && `Message: ${message}.`,
             ]
                 .filter(Boolean)
-                .join(' ')
+                .join(' '),
         );
         this.snackBar.open(result, 'OK', {
             duration: DEFAULT_DURATION_MS,

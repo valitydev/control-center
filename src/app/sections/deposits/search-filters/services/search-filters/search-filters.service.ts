@@ -25,7 +25,7 @@ export class SearchFiltersService {
         debounceTime(600),
         filter(() => this.form.valid),
         map(formValueToSearchParams),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(private fb: UntypedFormBuilder) {}

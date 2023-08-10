@@ -17,12 +17,12 @@ export class PartyManagementService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('PartyManagement'))
+            map(toWachterHeaders('PartyManagement')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[]
-            )
+                (m) => m.default as ThriftAstMetadata[],
+            ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
@@ -31,8 +31,8 @@ export class PartyManagementService {
                     headers,
                     logging: environment.logging.requests,
                     path: '/wachter',
-                })
-            )
+                }),
+            ),
         );
     }
 

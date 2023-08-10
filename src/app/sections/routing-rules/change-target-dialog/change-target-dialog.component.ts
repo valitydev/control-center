@@ -25,7 +25,7 @@ export class ChangeTargetDialogComponent extends DialogSuperclass<
     constructor(
         injector: Injector,
         private routingRulesService: RoutingRulesService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
         this.routingRulesService

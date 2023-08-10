@@ -40,11 +40,11 @@ export class MetadataFormComponent<T>
                     this.namespace,
                     this.type,
                     this.field,
-                    this.parent
+                    this.parent,
                 );
                 this.extensionResult$ = getFirstDeterminedExtensionsResult(
                     this.extensions,
-                    this.data
+                    this.data,
                 );
             } catch (err) {
                 this.data = undefined;

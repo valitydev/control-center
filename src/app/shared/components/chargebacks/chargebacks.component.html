@@ -10,14 +10,14 @@
     <ng-container [matColumnDef]="cols.def.created_at">
         <th *matHeaderCellDef mat-header-cell>Created At</th>
         <td *matCellDef="let c" mat-cell>
-            {{ c.chargeback.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
+            {{ c.chargeback.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
         </td>
     </ng-container>
     <ng-container [matColumnDef]="cols.def.body">
         <th *matHeaderCellDef mat-header-cell>Body</th>
         <td *matCellDef="let c" mat-cell>
             {{
-                c.chargeback.body.amount | amountCurrency : c.chargeback.body.currency.symbolic_code
+                c.chargeback.body.amount | amountCurrency: c.chargeback.body.currency.symbolic_code
             }}
         </td>
     </ng-container>
@@ -25,7 +25,7 @@
         <th *matHeaderCellDef mat-header-cell>Levy</th>
         <td *matCellDef="let c" mat-cell>
             {{
-                c.chargeback.levy.amount | amountCurrency : c.chargeback.levy.currency.symbolic_code
+                c.chargeback.levy.amount | amountCurrency: c.chargeback.levy.currency.symbolic_code
             }}
         </td>
     </ng-container>

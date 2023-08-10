@@ -6,7 +6,7 @@ import { DepositParams } from './deposit-params';
 
 export const depositParamsToRequest = (
     params: DepositParams,
-    continuationToken?: string
+    continuationToken?: string,
 ): StatRequest => {
     const {
         fromTime,

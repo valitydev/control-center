@@ -46,7 +46,7 @@ export class WalletsComponent implements OnInit {
         private fb: FormBuilder,
         private walletManagementService: ManagementService,
         private accounterService: AccounterService,
-        private errorService: NotificationErrorService
+        private errorService: NotificationErrorService,
     ) {}
 
     ngOnInit() {
@@ -54,7 +54,7 @@ export class WalletsComponent implements OnInit {
             .pipe(
                 startWith(this.filters.value),
                 map((v) => clean({ ...v, wallet_id: splitBySeparators(v.wallet_id) })),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((value) => {
                 void this.qp.set(value);
@@ -66,7 +66,7 @@ export class WalletsComponent implements OnInit {
         const { wallet_id, ...v } = this.filters.value;
         this.fetchWalletsService.search(
             clean({ ...v, wallet_id: splitBySeparators(wallet_id) }),
-            size
+            size,
         );
     }
 
@@ -81,7 +81,7 @@ export class WalletsComponent implements OnInit {
                 this.errorService.error(err);
                 return of({});
             }),
-            shareReplay({ refCount: true, bufferSize: 1 })
+            shareReplay({ refCount: true, bufferSize: 1 }),
         );
     }
 }

@@ -16,12 +16,12 @@ export class PayoutManagementService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('PayoutManagement'))
+            map(toWachterHeaders('PayoutManagement')),
         );
         const metadata$ = from(
             import('@vality/payout-manager-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[]
-            )
+                (m) => m.default as ThriftAstMetadata[],
+            ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
@@ -30,8 +30,8 @@ export class PayoutManagementService {
                     headers,
                     logging: environment.logging.requests,
                     path: '/wachter',
-                })
-            )
+                }),
+            ),
         );
     }
 

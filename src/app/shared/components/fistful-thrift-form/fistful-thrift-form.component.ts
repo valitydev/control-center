@@ -20,7 +20,7 @@ export class FistfulThriftFormComponent extends FormControlSuperclass<unknown> {
     @Input() type: string;
 
     metadata$ = from(
-        import('@vality/fistful-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
+        import('@vality/fistful-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
     );
     extensions: MetadataFormExtension[] = [
         {

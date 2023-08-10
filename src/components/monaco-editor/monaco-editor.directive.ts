@@ -11,7 +11,10 @@ import { MonacoEditorService } from './monaco-editor.service';
 export class MonacoEditorDirective extends AbstractMonacoDirective {
     @Input() file: MonacoFile;
 
-    constructor(protected editorService: MonacoEditorService, protected editorRef: ElementRef) {
+    constructor(
+        protected editorService: MonacoEditorService,
+        protected editorRef: ElementRef,
+    ) {
         super(editorService, editorRef);
     }
 

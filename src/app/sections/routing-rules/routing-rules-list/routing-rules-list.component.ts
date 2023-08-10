@@ -35,7 +35,7 @@ type DelegateId = {
 export class RoutingRulesListComponent<
     T extends { [N in PropertyKey]: unknown } & DelegateId = {
         [N in PropertyKey]: unknown;
-    } & DelegateId
+    } & DelegateId,
 > {
     @Input() displayedColumns: { key: keyof T; name: string }[];
 
@@ -58,7 +58,7 @@ export class RoutingRulesListComponent<
             data.paginator = paginator;
             return data;
         }),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     get allDisplayedColumns() {
@@ -82,7 +82,7 @@ export class RoutingRulesListComponent<
         private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private routingRulesService: RoutingRulesService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {}
 
     changeDelegateRuleset(delegateId: DelegateId) {
@@ -118,9 +118,9 @@ export class RoutingRulesListComponent<
                     this.routingRulesService.cloneDelegateRuleset({
                         mainRulesetRefID: delegateId.parentRefId,
                         delegateIdx: delegateId.delegateIdx,
-                    })
+                    }),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({ error: this.notificationErrorService.error });
     }
@@ -135,9 +135,9 @@ export class RoutingRulesListComponent<
                     this.routingRulesService.deleteDelegate({
                         mainRulesetRefID: delegateId.parentRefId,
                         delegateIdx: delegateId.delegateIdx,
-                    })
+                    }),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({ error: this.notificationErrorService.error });
     }

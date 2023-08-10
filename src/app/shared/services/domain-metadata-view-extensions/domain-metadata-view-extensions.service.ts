@@ -20,8 +20,8 @@ import { getObjectLabel } from './utils/get-object-label';
 export class DomainMetadataViewExtensionsService {
     extensions$: Observable<MetadataViewExtension[]> = from(
         import('@vality/domain-proto/metadata.json').then(
-            (m) => m.default as never as ThriftAstMetadata[]
-        )
+            (m) => m.default as never as ThriftAstMetadata[],
+        ),
     ).pipe(
         map((metadata) => [
             ...this.createDomainObjectExtensions(metadata),
@@ -32,7 +32,7 @@ export class DomainMetadataViewExtensionsService {
             },
         ]),
         untilDestroyed(this),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(private domainStoreService: DomainStoreService) {}
@@ -41,14 +41,14 @@ export class DomainMetadataViewExtensionsService {
         const domainFields = new MetadataFormData<string, 'struct'>(
             metadata,
             'domain',
-            'DomainObject'
+            'DomainObject',
         ).ast;
         return domainFields.map((f) => {
             const objectKey = f.name as keyof DomainObject;
             const objectFields = new MetadataFormData<string, 'struct'>(
                 metadata,
                 'domain',
-                f.type as string
+                f.type as string,
             ).ast;
             const refType = objectFields.find((n) => n.name === 'ref').type as string;
             return {
@@ -67,7 +67,7 @@ export class DomainMetadataViewExtensionsService {
                                     },
                                 },
                             ],
-                        }))
+                        })),
                     ),
             };
         });

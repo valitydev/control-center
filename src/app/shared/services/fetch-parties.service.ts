@@ -15,14 +15,14 @@ export class FetchPartiesService {
             this.deanonimusService.searchParty(text).pipe(
                 map((hits) => hits.map((hit) => hit.party)),
                 handleError(this.notificationErrorService.error, null, of<Party[]>([])),
-                progressTo(this.progress$)
-            )
+                progressTo(this.progress$),
+            ),
         ),
-        shareReplay(1)
+        shareReplay(1),
     );
     inProgress$ = inProgressFrom(
         () => this.progress$,
-        () => this.parties$
+        () => this.parties$,
     );
 
     private progress$ = new BehaviorSubject(0);
@@ -30,7 +30,7 @@ export class FetchPartiesService {
 
     constructor(
         private deanonimusService: DeanonimusService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     searchParties(text: string) {

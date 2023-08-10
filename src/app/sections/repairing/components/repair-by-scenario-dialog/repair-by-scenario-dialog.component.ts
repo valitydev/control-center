@@ -39,11 +39,11 @@ export class RepairByScenarioDialogComponent
     typeControl = new FormControl<Types>(Types.Same, Validators.required);
     form = new FormControl<RepairInvoicesRequest | RepairWithdrawalsRequest>(
         [],
-        Validators.required
+        Validators.required,
     );
     sameForm = new FormControl<RepairInvoicesRequest | RepairWithdrawalsRequest>(
         null,
-        Validators.required
+        Validators.required,
     );
     metadata$ = from(import('@vality/repairer-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
@@ -61,7 +61,7 @@ export class RepairByScenarioDialogComponent
         private repairManagementService: RepairManagementService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {
         super(injector);
     }
@@ -71,7 +71,7 @@ export class RepairByScenarioDialogComponent
             .pipe(untilDestroyed(this))
             .subscribe(() => {
                 this.form.setValue(
-                    this.dialogData.machines.map(({ id }) => ({ id, scenario: {} }))
+                    this.dialogData.machines.map(({ id }) => ({ id, scenario: {} })),
                 );
             });
     }

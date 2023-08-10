@@ -33,7 +33,7 @@ export class PartyDelegateRulesetsComponent {
             rules.map(({ mainRoutingRule, partyDelegate, paymentInstitution }) => ({
                 parentRefId: mainRoutingRule?.ref?.id,
                 delegateIdx: mainRoutingRule?.data?.decisions?.delegates?.findIndex(
-                    (d) => d === partyDelegate
+                    (d) => d === partyDelegate,
                 ),
                 paymentInstitution: {
                     text: paymentInstitution?.data?.name,
@@ -47,8 +47,8 @@ export class PartyDelegateRulesetsComponent {
                     text: partyDelegate?.description,
                     caption: partyDelegate?.ruleset?.id,
                 },
-            }))
-        )
+            })),
+        ),
     );
 
     private get partyID() {
@@ -62,7 +62,7 @@ export class PartyDelegateRulesetsComponent {
         private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {}
 
     attachNewRuleset() {

@@ -16,7 +16,7 @@ const EXCLUDE_OBJECTS = ['terminal', 'provider', 'proxy'];
 export class DomainSecretService {
     private isDominantSecret = isDominantSecretRole(
         this.keycloakService.getUserRoles(),
-        DOMINANT_SECRETS_ROLE
+        DOMINANT_SECRETS_ROLE,
     );
 
     constructor(private keycloakService: KeycloakService) {}

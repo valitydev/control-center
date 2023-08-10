@@ -16,7 +16,7 @@ export function sortData(data: DataSourceItem[], sort: MatSort): DataSourceItem[
             break;
         case 'ref': {
             const groups = groupBy(data, (o) =>
-                typeof getUnionValue(o.ref)?.['id'] === 'number' ? 0 : 1
+                typeof getUnionValue(o.ref)?.['id'] === 'number' ? 0 : 1,
             );
 
             data = [

@@ -51,11 +51,11 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
                         ...data[idx],
                         type,
                         stringified: JSON.stringify(
-                            objectToJSON([data[idx].obj, data[idx].ref, type])
+                            objectToJSON([data[idx].obj, data[idx].ref, type]),
                         ),
-                    }))
-                )
-            )
+                    })),
+                ),
+            ),
         ),
         switchMap((data: DataSourceItem[]) =>
             combineLatest([
@@ -63,19 +63,21 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
                 this.typesControl.valueChanges.pipe(startWith(this.typesControl.value)),
             ]).pipe(
                 map(([searchStr, selectedTypes]) =>
-                    this.createMatTableDataSource(data, searchStr, selectedTypes)
-                )
-            )
+                    this.createMatTableDataSource(data, searchStr, selectedTypes),
+                ),
+            ),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     cols = new Columns('type', 'ref', 'obj', 'actions');
     fields$ = this.metadataService.getDomainFields().pipe(
         map((fields) => sortBy(fields, 'type')),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     options$ = this.fields$.pipe(
-        map((fields) => fields.map(({ type }) => ({ label: startCase(String(type)), value: type })))
+        map((fields) =>
+            fields.map(({ type }) => ({ label: startCase(String(type)), value: type })),
+        ),
     );
     isLoading$ = this.domainStoreService.isLoading$;
 
@@ -84,7 +86,7 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
     constructor(
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private queryParamsService: QueryParamsService<Params>
+        private queryParamsService: QueryParamsService<Params>,
     ) {}
 
     ngOnInit() {
@@ -94,7 +96,7 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
         this.queryParamsService.params$
             .pipe(
                 filter((p) => !!p.ref),
-                withLatestFrom(this.domainStoreService.getDomain())
+                withLatestFrom(this.domainStoreService.getDomain()),
             )
             .subscribe(([params, domain]) => {
                 domain.forEach((obj, ref) => {
@@ -116,10 +118,10 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
     private createMatTableDataSource(
         data: DataSourceItem[],
         searchStr: string,
-        selectedTypes: string[]
+        selectedTypes: string[],
     ) {
         const dataSource = new MatTableDataSource(
-            data.filter((d) => selectedTypes.includes(d.type))
+            data.filter((d) => selectedTypes.includes(d.type)),
         );
         dataSource.paginator = this.paginator;
         dataSource.sort = this.sort;

@@ -19,14 +19,14 @@ export class MonacoEditorService extends AbstractMonacoService {
         protected tokenCompletionProviders: CompletionProvider[],
         protected codeLensService: CodeLensService,
         protected completionService: CompletionService,
-        protected zone: NgZone
+        protected zone: NgZone,
     ) {
         super(
             zone,
             codeLensService,
             completionService,
             tokenCodeLensProviders,
-            tokenCompletionProviders
+            tokenCompletionProviders,
         );
     }
 
@@ -40,7 +40,7 @@ export class MonacoEditorService extends AbstractMonacoService {
 
     protected createEditor(
         el: HTMLElement,
-        options: IEditorOptions
+        options: IEditorOptions,
     ): monaco.editor.IStandaloneCodeEditor {
         return monaco.editor.create(el, {
             ...options,

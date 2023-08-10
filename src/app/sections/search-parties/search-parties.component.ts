@@ -21,7 +21,7 @@ export class SearchPartiesComponent {
     constructor(
         private partiesService: SearchPartiesService,
         private fetchPartiesService: FetchPartiesService,
-        private router: Router
+        private router: Router,
     ) {}
 
     searchParamsUpdated($event: PartiesSearchFiltersParams) {

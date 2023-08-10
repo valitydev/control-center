@@ -17,7 +17,7 @@ export class CreateSourceComponent extends DialogSuperclass<void> {
         injector: Injector,
         private fistfulAdminService: FistfulAdminService,
         private errorService: NotificationErrorService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
     ) {
         super(injector);
     }

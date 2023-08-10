@@ -41,7 +41,10 @@ export abstract class PartialFetcher<R, P> {
     private action$ = new Subject<FetchAction<P>>();
 
     // TODO: make a dependency for DI
-    constructor(debounceActionTime: number = 300, private size = 25) {
+    constructor(
+        debounceActionTime: number = 300,
+        private size = 25,
+    ) {
         const actionWithParams$ = this.getActionWithParams(debounceActionTime);
         const fetchResult$ = this.getFetchResult(actionWithParams$);
 
@@ -51,32 +54,32 @@ export abstract class PartialFetcher<R, P> {
                 continuationToken,
                 hasMore: !!continuationToken,
             })),
-            share()
+            share(),
         );
         this.searchResult$ = this.fetchResultChanges$.pipe(
             pluck('result'),
-            shareReplay(SHARE_REPLAY_CONF)
+            shareReplay(SHARE_REPLAY_CONF),
         );
 
         this.hasMore$ = this.fetchResultChanges$.pipe(
             pluck('hasMore'),
             startWith(null as boolean),
             distinctUntilChanged(),
-            shareReplay(SHARE_REPLAY_CONF)
+            shareReplay(SHARE_REPLAY_CONF),
         );
 
         this.doAction$ = progress(actionWithParams$, fetchResult$, false).pipe(
-            shareReplay(SHARE_REPLAY_CONF)
+            shareReplay(SHARE_REPLAY_CONF),
         );
         this.doSearchAction$ = progress(
             actionWithParams$.pipe(filter(({ type }) => type === 'search')),
             fetchResult$,
-            true
+            true,
         ).pipe(shareReplay(SHARE_REPLAY_CONF));
         this.errors$ = fetchResult$.pipe(
             switchMap(({ error }) => (error ? of(error) : EMPTY)),
             tap((error) => this.handleError(error)),
-            share()
+            share(),
         );
 
         merge(
@@ -85,7 +88,7 @@ export abstract class PartialFetcher<R, P> {
             this.doAction$,
             this.doSearchAction$,
             this.errors$,
-            this.fetchResultChanges$
+            this.fetchResultChanges$,
         )
             .pipe(untilDestroyed(this))
             .subscribe();
@@ -113,17 +116,17 @@ export abstract class PartialFetcher<R, P> {
         return this.action$.pipe(
             scanAction,
             debounceActionTime ? debounceTime(debounceActionTime) : tap(),
-            share()
+            share(),
         );
     }
 
     private getFetchResult(
-        actionWithParams$: Observable<FetchAction<P>>
+        actionWithParams$: Observable<FetchAction<P>>,
     ): Observable<FetchResult<R>> {
         const fetchFn = this.fetch.bind(this) as FetchFn<P, R>;
         return actionWithParams$.pipe(
             scanFetchResult(fetchFn, this.size),
-            shareReplay(SHARE_REPLAY_CONF)
+            shareReplay(SHARE_REPLAY_CONF),
         );
     }
 }

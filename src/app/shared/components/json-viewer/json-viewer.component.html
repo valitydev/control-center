@@ -61,7 +61,11 @@
 
     <ng-template #onlyValue>
         <span
-            [ngClass]="{'link': !!extension?.link?.[0], 'tooltip': !!extension?.tooltip, 'mat-body-1': true}"
+            [ngClass]="{
+                link: !!extension?.link?.[0],
+                tooltip: !!extension?.tooltip,
+                'mat-body-1': true
+            }"
             [queryParams]="extensionQueryParams$ | async"
             [routerLink]="extension?.link?.[0]"
         >

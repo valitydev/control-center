@@ -16,18 +16,18 @@ import {
 
 export class MetadataViewItem {
     extension$ = getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value).pipe(
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     data$ = this.extension$.pipe(map((ext) => (ext ? null : this.data)));
     key$ = this.extension$.pipe(
         map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key))),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     value$ = this.extension$.pipe(
         map((ext) => {
             const value = ext?.value ?? this.value;
             return isEmpty(value) ? null : value;
-        })
+        }),
     );
     renderValue$ = combineLatest([this.value$, this.data$]).pipe(
         map(([value, data]) => {
@@ -37,18 +37,18 @@ export class MetadataViewItem {
                         (i, idx) => {
                             if ('value' in i) return i.value === value;
                             return idx === value;
-                        }
+                        },
                     ).name ?? value
                 );
             if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
                 return getEntries(value)?.[0]?.[0];
             return value;
-        })
+        }),
     );
     isEmpty$ = this.renderValue$.pipe(map((value) => isEmpty(value)));
 
     items$: Observable<MetadataViewItem[]> = this.createItems().pipe(
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     inline$: Observable<MetadataViewItem[]> = combineLatest([
         this.items$,
@@ -82,18 +82,18 @@ export class MetadataViewItem {
                             if (data?.objectType === 'union' && itemData?.objectType !== 'union')
                                 return of([item]);
                             return item.inline$.pipe(map((childInline) => [item, ...childInline]));
-                        })
+                        }),
                     );
-                })
+                }),
             );
         }),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     path$: Observable<MetadataViewItem[]> = this.inline$.pipe(
         map((inline) => {
             return [this, ...inline];
         }),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     current$ = this.path$.pipe(map((keys) => keys.at(-1)));
 
@@ -108,7 +108,7 @@ export class MetadataViewItem {
                 (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
             );
         }),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     isValue$ = combineLatest([
@@ -122,26 +122,26 @@ export class MetadataViewItem {
                 (!items.length && !key) ||
                 (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
             );
-        })
+        }),
     );
 
     leaves$ = this.items$.pipe(
         switchMap((items) =>
             combineLatest(
-                items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? item : null))))
-            )
+                items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? item : null)))),
+            ),
         ),
         map((items) => items.filter(Boolean)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     nodes$ = this.items$.pipe(
         switchMap((items) =>
             combineLatest(
-                items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? null : item))))
-            )
+                items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? null : item)))),
+            ),
         ),
         map((items) => items.filter(Boolean)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     isNumberKey$ = this.key$.pipe(map(({ value }) => typeof value === 'number'));
@@ -150,7 +150,7 @@ export class MetadataViewItem {
         private value: unknown,
         private key?: MetadataViewItem,
         private data?: MetadataFormData,
-        private extensions?: MetadataViewExtension[]
+        private extensions?: MetadataViewExtension[],
     ) {}
 
     private createItems(): Observable<MetadataViewItem[]> {
@@ -172,24 +172,24 @@ export class MetadataViewItem {
                                           itemKey,
                                           undefined,
                                           trueData.create({ type: types.keyType }),
-                                          this.extensions
+                                          this.extensions,
                                       )
                                     : new MetadataViewItem(itemKey),
                                 trueData.create({
                                     field: types.fields?.find((f) => f.name === itemKey),
                                     type: types.valueType,
                                 }),
-                                this.extensions
+                                this.extensions,
                             );
                         });
                     }
                 }
                 return isObject(value)
                     ? getEntries(value).map(
-                          ([k, v]) => new MetadataViewItem(v, new MetadataViewItem(k))
+                          ([k, v]) => new MetadataViewItem(v, new MetadataViewItem(k)),
                       )
                     : [];
-            })
+            }),
         );
     }
 }

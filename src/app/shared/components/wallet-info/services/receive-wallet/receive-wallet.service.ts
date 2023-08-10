@@ -22,12 +22,12 @@ export class ReceiveWalletService {
                     this.loading$.next(false);
                     this.error$.next(true);
                     return NEVER;
-                })
-            )
+                }),
+            ),
         ),
         tap(() => this.loading$.next(false)),
         untilDestroyed(this),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering

@@ -10,17 +10,17 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 export class PartyShopsService {
     shops$ = defer(() => this.party$).pipe(
         pluck('shops'),
-        map((shops) => Array.from(shops.values()))
+        map((shops) => Array.from(shops.values())),
     );
 
     private party$: Observable<Party> = this.route.params.pipe(
         pluck('partyID'),
         switchMap((partyID) => this.partyManagementService.Get(partyID)),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {}
 }

@@ -32,6 +32,6 @@ export class DomainObjCodeLensProvider implements CodeLensProvider {
     resolveCodeLens?(
         model: ITextModel,
         codeLens: CodeLens,
-        token: CancellationToken
+        token: CancellationToken,
     ): ProviderResult<CodeLens>;
 }

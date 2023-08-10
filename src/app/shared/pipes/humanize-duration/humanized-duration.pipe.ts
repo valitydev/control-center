@@ -16,7 +16,7 @@ export class HumanizedDurationPipe implements OnDestroy, PipeTransform {
 
     constructor(
         private humanizeDurationService: HumanizeDurationService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
     ) {}
 
     transform(value: Value, { interval: inpIntervalMs, ...config }: HumanizeDurationConfig = {}) {
@@ -27,7 +27,7 @@ export class HumanizedDurationPipe implements OnDestroy, PipeTransform {
             if (!this.humanizeDurationService.isDiff(value)) {
                 this.subscription = interval(
                     inpIntervalMs ||
-                        this.humanizeDurationService.getOptimalUpdateInterval(value, config)
+                        this.humanizeDurationService.getOptimalUpdateInterval(value, config),
                 ).subscribe(() => this.updateValue(value, config));
             }
         }

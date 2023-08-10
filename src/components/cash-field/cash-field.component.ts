@@ -41,9 +41,9 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
         map(([code, currencies]) =>
             sortBy(currencies, 'data', 'symbolic_code').filter(
                 (c) =>
-                    c.data.symbolic_code.toUpperCase().includes(code) || c.data.name.includes(code)
-            )
-        )
+                    c.data.symbolic_code.toUpperCase().includes(code) || c.data.name.includes(code),
+            ),
+        ),
     );
 
     amountMask$ = getFormValueChanges(this.currencyCodeControl, true).pipe(
@@ -57,8 +57,8 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
                 digits,
                 digitsOptional: true,
                 placeholder: '',
-            })
-        )
+            }),
+        ),
     );
     currencyMask = createMask({ mask: 'AAA', placeholder: '' });
 
@@ -69,7 +69,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
     constructor(
         injector: Injector,
         @Inject(LOCALE_ID) private _locale: string,
-        private domainStoreService: DomainStoreService
+        private domainStoreService: DomainStoreService,
     ) {
         super(injector);
     }
@@ -81,7 +81,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
         ])
             .pipe(
                 switchMap(([currencyCode]) => this.getCurrencyByCode(currencyCode)),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((currency) => {
                 const amountStr = this.amountControl.value;
@@ -89,7 +89,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
                     const [whole, fractional] = amountStr.split('.');
                     if (fractional?.length > currency.data.exponent)
                         this.amountControl.setValue(
-                            `${whole}.${fractional.slice(0, currency.data.exponent)}`
+                            `${whole}.${fractional.slice(0, currency.data.exponent)}`,
                         );
                     const amount = Number(this.amountControl.value.replaceAll(GROUP_SEPARATOR, ''));
                     this.emitOutgoingValue({ amount, currencyCode: currency.data.symbolic_code });
@@ -107,7 +107,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
 
     handleIncomingValue(value: Cash) {
         this.amountControl.setValue(
-            typeof value?.amount === 'number' ? String(value.amount) : null
+            typeof value?.amount === 'number' ? String(value.amount) : null,
         );
         this.currencyCodeControl.setValue(value?.currencyCode);
     }
@@ -115,7 +115,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
     private getCurrencyByCode(currencyCode: string) {
         return this.domainStoreService.getObjects('currency').pipe(
             map((c) => c.find((v) => v.data.symbolic_code === currencyCode)),
-            first()
+            first(),
         );
     }
 }

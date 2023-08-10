@@ -37,7 +37,7 @@ export abstract class AbstractMonacoService {
         protected codeLensService: CodeLensService,
         protected completionService: CompletionService,
         protected tokenCodeLensProviders: CodeLensProvider[],
-        protected tokenCompletionProviders: CompletionProvider[]
+        protected tokenCompletionProviders: CompletionProvider[],
     ) {
         BOOTSTRAP$.pipe(first()).subscribe(() => {
             this.registerCodeLensListener();
@@ -56,7 +56,7 @@ export abstract class AbstractMonacoService {
                 this.completionService.add(this.tokenCompletionProviders);
                 this.openFile();
                 this.editorInitialized$.next();
-            })
+            }),
         );
     }
 
@@ -89,7 +89,7 @@ export abstract class AbstractMonacoService {
 
     protected abstract createEditor(
         el: HTMLElement,
-        options: IEditorOptions
+        options: IEditorOptions,
     ): monaco.editor.IEditor;
 
     protected abstract openFile();
@@ -125,13 +125,13 @@ export abstract class AbstractMonacoService {
 
     private registerCompletionListener() {
         this.completionService.providers.subscribe((providers) =>
-            this.completionService.register(providers)
+            this.completionService.register(providers),
         );
     }
 
     private registerCodeLensListener() {
         this.codeLensService.providers.subscribe((providers) =>
-            this.codeLensService.register(providers)
+            this.codeLensService.register(providers),
         );
     }
 
@@ -140,15 +140,15 @@ export abstract class AbstractMonacoService {
         fromDisposable(model.onDidChangeContent.bind(model))
             .pipe(
                 map(() => model.getValue()),
-                takeUntil(destroy)
+                takeUntil(destroy),
             )
             .subscribe((content: string) =>
                 this.zone.run(() =>
                     this.fileChange$.next({
                         ...file,
                         content,
-                    })
-                )
+                    }),
+                ),
             );
     }
 

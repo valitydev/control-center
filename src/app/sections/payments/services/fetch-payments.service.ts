@@ -12,14 +12,14 @@ import { MerchantStatisticsService } from '@cc/app/api/magista';
 export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSearchQuery> {
     constructor(
         private merchantStatisticsService: MerchantStatisticsService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
     ) {
         super();
     }
 
     protected fetch(
         params: PaymentSearchQuery,
-        { size, continuationToken }: FetchOptions
+        { size, continuationToken }: FetchOptions,
     ): Observable<FetchResult<StatPayment>> {
         return this.merchantStatisticsService
             .SearchPayments({
@@ -38,7 +38,7 @@ export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSe
                 catchError((err) => {
                     this.log.errorOperation(err, 'receive', 'payments');
                     return of({ result: [] });
-                })
+                }),
             );
     }
 }

@@ -28,29 +28,29 @@ export class ClaimComponent {
         switchMap(({ partyID }) =>
             this.partyManagementService
                 .Get(partyID)
-                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error))
+                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error)),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     claim$ = merge(
         this.route.params,
-        defer(() => this.loadClaim$)
+        defer(() => this.loadClaim$),
     ).pipe(
         map(() => this.route.snapshot.params as Record<string, string>),
         switchMap(({ partyID, claimID }) =>
             this.claimManagementService
                 .GetClaim(partyID, Number(claimID))
-                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error))
+                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error)),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isAllowedChangeStatus$ = this.claim$.pipe(
         map(
             (claim) =>
                 !!this.allowedClaimStatusesService.getAllowedStatuses(getUnionKey(claim.status))
-                    .length
+                    .length,
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isLoading$ = inProgressFrom(() => this.progress$, merge(this.claim$, this.party$));
     statusColor = CLAIM_STATUS_COLOR;
@@ -65,7 +65,7 @@ export class ClaimComponent {
         private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
         private dialogService: DialogService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     reloadClaim() {
@@ -79,9 +79,9 @@ export class ClaimComponent {
                 switchMap(([party, claim]) =>
                     this.dialogService
                         .open(AddModificationDialogComponent, { party, claim })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((result) => {
                 if (result.status === DialogResponseStatus.Success) this.reloadClaim();
@@ -95,9 +95,9 @@ export class ClaimComponent {
                 switchMap(([party, claim]) =>
                     this.dialogService
                         .open(ChangeStatusDialogComponent, { partyID: party.id, claim })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((result) => {
                 if (result.status === DialogResponseStatus.Success) this.reloadClaim();
