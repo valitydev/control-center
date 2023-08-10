@@ -1,6 +1,6 @@
 {
   "name": "control-center",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "ng serve --proxy-config proxy.conf.js --port 4200",
@@ -78,7 +78,7 @@
     "@vality/eslint-config": "1.0.1-pr-27-18c018c.0",
     "@vality/prettier-config": "0.1.1-pr-15-225ffc3.0",
     "cross-env": "7.0.3",
-    "cspell": "6.31.1",
+    "cspell": "7.0.0",
     "dotenv": "16.0.0",
     "eslint": "^8.39.0",
     "jasmine-core": "4.2.0",
