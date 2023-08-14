@@ -13,14 +13,14 @@ export class FetchClaimsService extends FetchSuperclass<
 > {
     constructor(
         private claimManagementService: ClaimManagementService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
     ) {
         super();
     }
 
     protected fetch(
         params: Omit<ClaimSearchQuery, 'continuation_token' | 'limit'>,
-        { size, continuationToken }: FetchOptions
+        { size, continuationToken }: FetchOptions,
     ): Observable<FetchResult<Claim>> {
         return this.claimManagementService
             .SearchClaims({
@@ -36,7 +36,7 @@ export class FetchClaimsService extends FetchSuperclass<
                 catchError((err) => {
                     this.log.errorOperation(err, 'receive', 'claims');
                     return of({ result: [] });
-                })
+                }),
             );
     }
 }

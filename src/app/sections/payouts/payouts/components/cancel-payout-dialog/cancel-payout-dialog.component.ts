@@ -27,7 +27,7 @@ export class CancelPayoutDialogComponent extends DialogSuperclass<
         injector: Injector,
         private payoutManagementService: PayoutManagementService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
     }

@@ -37,7 +37,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
                 }),
                 distinctUntilChanged(),
                 delay(0),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((value) => {
                 this.emitOutgoingValue(value);
@@ -56,7 +56,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
             const name: keyof T = Object.keys(value)[0];
             this.fieldControl.setValue(
                 this.data.ast.find((f) => f.name === name),
-                { emitEvent: false }
+                { emitEvent: false },
             );
             this.internalControl.setValue(value[name], { emitEvent: false });
         } else {
@@ -71,10 +71,10 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
                 ? (getDefaultValue(
                       this.data.metadata,
                       this.data.namespace,
-                      this.fieldControl.value.type
+                      this.fieldControl.value.type,
                   ) as T[keyof T])
                 : null,
-            { emitEvent }
+            { emitEvent },
         );
     }
 }

@@ -26,12 +26,12 @@ export const poll =
                             timer(POLLING_TIMEOUT).pipe(
                                 tap(() => {
                                     throw new PollingTimeoutError('Polling timeout');
-                                })
-                            )
-                        )
-                    )
-                )
+                                }),
+                            ),
+                        ),
+                    ),
+                ),
             ),
-            takeLast(1)
+            takeLast(1),
         );
     };

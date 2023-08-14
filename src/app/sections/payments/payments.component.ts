@@ -50,7 +50,7 @@ export class PaymentsComponent implements OnInit {
         payment_params: {},
     });
     metadata$ = from(
-        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
+        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
     );
     extensions: MetadataFormExtension[] = [
         {
@@ -63,7 +63,7 @@ export class PaymentsComponent implements OnInit {
                             'payment_first6',
                             'payment_last4',
                             'payment_rrn',
-                        ].includes(data?.field?.name)
+                        ].includes(data?.field?.name),
                 ),
             extension: () => of({ hidden: true }),
         },
@@ -79,12 +79,12 @@ export class PaymentsComponent implements OnInit {
         }>,
         private fetchPaymentsService: FetchPaymentsService,
         private dialogService: DialogService,
-        private fb: NonNullableFormBuilder
+        private fb: NonNullableFormBuilder,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(
-            lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange }))
+            lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
         );
         const otherFilters = this.otherFiltersControl.value;
         const otherFiltersParams: Partial<PaymentSearchQuery> = this.qp.params.otherFilters || {};
@@ -123,13 +123,13 @@ export class PaymentsComponent implements OnInit {
                 },
                 invoice_ids: filters.invoice_ids,
             }),
-            options
+            options,
         );
         this.active =
             countProps(
                 filters,
                 otherFilters.payment_params,
-                otherFilters.common_search_query_params
+                otherFilters.common_search_query_params,
             ) + +!isEqualDateRange(dateRange, createDateRangeToToday());
     }
 

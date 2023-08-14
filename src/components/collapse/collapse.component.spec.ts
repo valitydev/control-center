@@ -45,7 +45,7 @@ describe('CollapseComponent', () => {
         (mir: MatIconRegistry, sanitizer: DomSanitizer) => {
             const sanitizedUrl = sanitizer.bypassSecurityTrustResourceUrl('./test.svg');
             mir.addSvgIcon('keyboard_arrow_up', sanitizedUrl);
-        }
+        },
     ));
 
     it('should create', () => {

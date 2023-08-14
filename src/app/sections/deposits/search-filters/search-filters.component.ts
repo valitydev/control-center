@@ -48,10 +48,10 @@ export class SearchFiltersComponent implements OnInit {
     constructor(
         private searchFiltersService: SearchFiltersService,
         private configService: ConfigService,
-        private fetchSourcesService: FetchSourcesService
+        private fetchSourcesService: FetchSourcesService,
     ) {
         this.searchFiltersService.searchParamsChanges$.subscribe((params) =>
-            this.valueChanges.emit(params)
+            this.valueChanges.emit(params),
         );
     }
 

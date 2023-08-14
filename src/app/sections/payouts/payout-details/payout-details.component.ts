@@ -20,25 +20,27 @@ export class PayoutDetailsComponent {
         startWith(this.route.snapshot.params),
         pluck('payoutId'),
         switchMap((id: string) => this.payoutManagementService.GetPayout(id)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     shop$ = this.payout$.pipe(
         switchMap(({ party_id, shop_id }) =>
-            this.partyManagementService.GetShop(party_id, shop_id)
+            this.partyManagementService.GetShop(party_id, shop_id),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     party$ = this.payout$.pipe(
         switchMap(({ party_id }) => this.partyManagementService.Get(party_id)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     payoutTool$ = combineLatest([this.payout$, this.shop$]).pipe(
         switchMap(([{ party_id, payout_tool_id }, { contract_id }]) =>
             this.partyManagementService
                 .GetContract(party_id, contract_id)
-                .pipe(map((contract) => contract.payout_tools.find((t) => t.id === payout_tool_id)))
+                .pipe(
+                    map((contract) => contract.payout_tools.find((t) => t.id === payout_tool_id)),
+                ),
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     displayedColumns = ['source', 'destination', 'volume', 'details'];
 
@@ -46,7 +48,7 @@ export class PayoutDetailsComponent {
         private route: ActivatedRoute,
         private payoutManagementService: PayoutManagementService,
         private partyManagementService: PartyManagementService,
-        private payoutActionsService: PayoutActionsService
+        private payoutActionsService: PayoutActionsService,
     ) {}
 
     canBeConfirmed(status: keyof PayoutStatus) {

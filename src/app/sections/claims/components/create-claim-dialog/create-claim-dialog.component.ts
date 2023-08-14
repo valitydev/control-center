@@ -27,7 +27,7 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
         private claimService: ClaimManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
-        private router: Router
+        private router: Router,
     ) {
         super(injector);
     }
@@ -45,7 +45,7 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
                 error: (err) => {
                     this.notificationErrorService.error(
                         err,
-                        'An error occurred while claim creation'
+                        'An error occurred while claim creation',
                     );
                 },
             });

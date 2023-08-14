@@ -16,7 +16,7 @@ export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
         private dialogService: DialogService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     canBeConfirmed(status: keyof PayoutStatus) {
@@ -38,7 +38,7 @@ export class PayoutActionsService {
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() => this.payoutManagementService.ConfirmPayout(id)),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 error: this.notificationErrorService.error,

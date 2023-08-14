@@ -12,14 +12,14 @@ import { NotificationErrorService } from '../../../shared/services/notification-
 export class FetchWithdrawalsService extends PartialFetcher<StatWithdrawal, WithdrawalParams> {
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super();
     }
 
     fetch(
         params: WithdrawalParams,
-        continuationToken: string
+        continuationToken: string,
     ): Observable<FetchResult<StatWithdrawal>> {
         return this.fistfulStatisticsService
             .GetWithdrawals({
@@ -32,7 +32,7 @@ export class FetchWithdrawalsService extends PartialFetcher<StatWithdrawal, With
                 map(({ data, continuation_token }) => ({
                     result: data.withdrawals,
                     continuationToken: continuation_token,
-                }))
+                })),
             );
     }
 

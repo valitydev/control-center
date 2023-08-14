@@ -51,14 +51,14 @@ export class TargetRulesetFormComponent implements OnChanges {
     get policiesId() {
         return getPoliciesIdByType(
             (this.form.value.paymentInstitution as PaymentInstitutionObject)?.data,
-            this.type
+            this.type,
         );
     }
 
     constructor(
         private fb: UntypedFormBuilder,
         private domainStoreService: DomainStoreService,
-        private routingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService,
     ) {
         this.form.controls.target.valueChanges
             .pipe(startWith(this.form.value.target), untilDestroyed(this))
@@ -88,7 +88,7 @@ export class TargetRulesetFormComponent implements OnChanges {
                             target === Target.PaymentInstitution
                                 ? getPoliciesIdByType(
                                       (paymentInstitution as PaymentInstitutionObject)?.data,
-                                      this.type
+                                      this.type,
                                   )
                                 : mainRulesetRefID,
                         paymentInstitutionRefID:
@@ -96,16 +96,16 @@ export class TargetRulesetFormComponent implements OnChanges {
                                 ? paymentInstitution?.ref?.id
                                 : undefined,
                         mainDelegateDescription,
-                    })
+                    }),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((value) => this.valueChanges.emit(value));
         this.form.statusChanges
             .pipe(
                 startWith(this.form.valid),
                 map(() => this.form.valid),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((valid) => this.valid.emit(valid));
     }
@@ -117,8 +117,8 @@ export class TargetRulesetFormComponent implements OnChanges {
                 Object.assign(
                     {},
                     !!mainRulesetRefID && { mainRulesetRefID, target: Target.Manual },
-                    !!mainDelegateDescription && { mainDelegateDescription }
-                )
+                    !!mainDelegateDescription && { mainDelegateDescription },
+                ),
             );
         }
     }

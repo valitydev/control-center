@@ -91,7 +91,7 @@ export class AppModule {
     constructor(
         private matIconRegistry: MatIconRegistry,
         private domSanitizer: DomSanitizer,
-        private injector: Injector
+        private injector: Injector,
     ) {
         this.registerIcons();
         AppInjector = this.injector;
@@ -101,7 +101,7 @@ export class AppModule {
         for (const name of icons) {
             this.matIconRegistry.addSvgIcon(
                 name,
-                this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${name}.svg`)
+                this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${name}.svg`),
             );
         }
     }

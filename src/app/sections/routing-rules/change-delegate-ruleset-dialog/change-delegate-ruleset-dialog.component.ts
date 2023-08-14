@@ -29,7 +29,7 @@ export class ChangeDelegateRulesetDialogComponent
     constructor(
         injector: Injector,
         private fb: UntypedFormBuilder,
-        private routingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService,
     ) {
         super(injector);
     }
@@ -39,7 +39,7 @@ export class ChangeDelegateRulesetDialogComponent
             .getRuleset(this.dialogData.mainRulesetRefID)
             .pipe(
                 map((r) => r?.data?.decisions?.delegates?.[this.dialogData?.delegateIdx]),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((delegate) => {
                 this.form.patchValue({

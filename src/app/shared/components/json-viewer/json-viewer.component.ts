@@ -35,7 +35,7 @@ export class JsonViewerComponent implements OnChanges {
     view: MetadataViewItem;
     className = this.getClassName();
     extensionQueryParams$ = this.route.queryParams.pipe(
-        map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams))
+        map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams)),
     );
 
     constructor(private route: ActivatedRoute) {}
@@ -48,7 +48,7 @@ export class JsonViewerComponent implements OnChanges {
                     this.namespace,
                     this.type,
                     this.field,
-                    this.parent
+                    this.parent,
                 );
             } catch (err) {
                 this.data = undefined;

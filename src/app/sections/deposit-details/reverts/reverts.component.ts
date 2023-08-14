@@ -23,7 +23,10 @@ export class RevertsComponent implements OnInit {
     hasMore$ = this.fetchRevertsService.hasMore$;
     doAction$ = this.fetchRevertsService.doAction$;
 
-    constructor(private fetchRevertsService: FetchRevertsService, private dialog: DialogService) {}
+    constructor(
+        private fetchRevertsService: FetchRevertsService,
+        private dialog: DialogService,
+    ) {}
 
     ngOnInit() {
         this.fetchRevertsService.search({ deposit_id: this.deposit.id });

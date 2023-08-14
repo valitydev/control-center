@@ -59,7 +59,7 @@ export class SelectSearchFieldComponent<Value>
         injector: Injector,
         @Optional()
         @Inject(SELECT_SEARCH_FIELD_OPTIONS)
-        private fieldOptions: SelectSearchFieldOptions
+        private fieldOptions: SelectSearchFieldOptions,
     ) {
         super(injector);
     }

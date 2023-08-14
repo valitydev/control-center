@@ -20,7 +20,7 @@ export class DomainStoreService {
     version$ = defer(() => this.snapshot$).pipe(pluck('version'));
     isLoading$ = inProgressFrom(
         () => this.progress$,
-        defer(() => this.snapshot$)
+        defer(() => this.snapshot$),
     );
 
     private snapshot$: Observable<Snapshot> = defer(() => this.reload$).pipe(
@@ -28,10 +28,10 @@ export class DomainStoreService {
         switchMap(() =>
             this.repositoryService
                 .Checkout({ head: {} })
-                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error))
+                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error)),
         ),
         untilDestroyed(this),
-        shareReplay(1)
+        shareReplay(1),
     );
     private reload$ = new ReplaySubject<void>(1);
     private progress$ = new BehaviorSubject(0);
@@ -39,7 +39,7 @@ export class DomainStoreService {
     constructor(
         private repositoryService: RepositoryService,
         private domainSecretService: DomainSecretService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     forceReload(): void {
@@ -49,7 +49,7 @@ export class DomainStoreService {
     getDomain(raw = false): Observable<Domain> {
         return this.snapshot$.pipe(
             pluck('domain'),
-            map((d) => (raw ? d : this.domainSecretService.reduceDomain(d)))
+            map((d) => (raw ? d : this.domainSecretService.reduceDomain(d))),
         );
     }
 
@@ -58,8 +58,8 @@ export class DomainStoreService {
             map((d) =>
                 Array.from(d.values())
                     .filter((o) => getUnionKey(o) === objectType)
-                    .map((o) => o[objectType])
-            )
+                    .map((o) => o[objectType]),
+            ),
         );
     }
 
@@ -69,7 +69,7 @@ export class DomainStoreService {
             switchMap((v) => this.repositoryService.Commit(v, commit)),
             tap(() => {
                 if (reload) this.forceReload();
-            })
+            }),
         );
     }
 }

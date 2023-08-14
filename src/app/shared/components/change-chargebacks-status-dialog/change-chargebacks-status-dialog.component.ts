@@ -76,7 +76,7 @@ export class ChangeChargebacksStatusDialogComponent
         injector: Injector,
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {
         super(injector);
     }
@@ -94,11 +94,11 @@ export class ChangeChargebacksStatusDialogComponent
                     c.invoice_id,
                     c.payment_id,
                     c.chargeback_id,
-                    this.control.value
-                )
+                    this.control.value,
+                ),
             ),
             4,
-            this.progress$
+            this.progress$,
         )
             .pipe(untilDestroyed(this))
             .subscribe({
@@ -107,7 +107,7 @@ export class ChangeChargebacksStatusDialogComponent
                     if (withErrors.length) {
                         this.log.error(
                             withErrors.map((e) => e.error),
-                            `Error changing the status of ${withErrors.length} chargebacks`
+                            `Error changing the status of ${withErrors.length} chargebacks`,
                         );
                     } else {
                         this.log.success('Chargebacks status changed successfully');

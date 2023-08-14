@@ -25,7 +25,7 @@ export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
         injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
     }

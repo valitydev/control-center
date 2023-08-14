@@ -15,18 +15,18 @@ export class FetchSourcesService {
     sources$: Observable<StatSource[]> = this.fetch().pipe(
         map((s) => s.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at))),
         progressTo(() => this.progress$),
-        shareReplay(1)
+        shareReplay(1),
     );
     progress$ = new BehaviorSubject(0);
 
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        private errorService: NotificationErrorService
+        private errorService: NotificationErrorService,
     ) {}
 
     private fetch(
         sources: StatSource[] = [],
-        continuationToken?: string
+        continuationToken?: string,
     ): Observable<StatSource[]> {
         return this.fistfulStatisticsService
             .GetSources({
@@ -43,8 +43,8 @@ export class FetchSourcesService {
                         ? res.continuation_token
                             ? this.fetch([...sources, ...res.data.sources], res.continuation_token)
                             : of([...sources, ...res.data.sources])
-                        : of(sources)
-                )
+                        : of(sources),
+                ),
             );
     }
 }

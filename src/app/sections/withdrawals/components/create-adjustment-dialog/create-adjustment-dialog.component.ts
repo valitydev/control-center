@@ -25,7 +25,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
                 new_status: { failed: { failure: { code: 'account_limit_exceeded:unknown' } } },
             },
         },
-        [Validators.required]
+        [Validators.required],
     );
     externalIdControl = new FormControl() as FormControl<ExternalID>;
     externalIdExtensions: MetadataFormExtension[] = [
@@ -41,7 +41,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     constructor(
         injector: Injector,
         private managementService: ManagementService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
     ) {
         super(injector);
     }
@@ -53,10 +53,10 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
                     id: this.typeControl.value === 0 ? w.id : short().uuid(),
                     change: this.control.value,
                     external_id: this.externalIdControl.value,
-                })
+                }),
             ),
             4,
-            this.progress$
+            this.progress$,
         )
             .pipe(untilDestroyed(this))
             .subscribe((res) => {
@@ -64,7 +64,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
                 if (withError.length) {
                     this.log.error(
                         withError.map((c) => c.error),
-                        `Adjustment of ${withError.length} withdrawals ended in an error`
+                        `Adjustment of ${withError.length} withdrawals ended in an error`,
                     );
                 } else {
                     this.log.successOperation('create', 'adjustments');

@@ -46,7 +46,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
                 this.emitOutgoingValue(
                     this.control.value && this.labelControl.value
                         ? (omitBy(this.control.value, isNil) as T)
-                        : null
+                        : null,
                 );
             });
         return super.ngOnInit();
@@ -66,8 +66,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
                         this.data.ast.find((f) => f.name === name)?.option === 'required'
                             ? [Validators.required]
                             : [],
-                }) as never
-            )
+                }) as never,
+            ),
         );
         this.setLabelControl();
         super.ngOnChanges(changes);

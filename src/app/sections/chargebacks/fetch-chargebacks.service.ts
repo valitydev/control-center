@@ -15,7 +15,7 @@ export class FetchChargebacksService extends FetchSuperclass<
 > {
     constructor(
         private merchantStatisticsService: MerchantStatisticsService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
     ) {
         super();
     }
@@ -38,7 +38,7 @@ export class FetchChargebacksService extends FetchSuperclass<
                 catchError((err) => {
                     this.log.errorOperation(err, 'receive', 'chargebacks');
                     return of({ result: [] });
-                })
+                }),
             );
     }
 }

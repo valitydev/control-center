@@ -41,7 +41,7 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
                 .map(domainObjectToOption)
                 .map((o) => ({ ...o, description: `#${String(o.value)}` }));
         }),
-        shareReplay({ bufferSize: 1, refCount: true })
+        shareReplay({ bufferSize: 1, refCount: true }),
     );
     isLoading$ = this.domainStoreService.isLoading$;
 

@@ -31,12 +31,12 @@ export class InvoicingService {
 
     constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Invoicing'))
+            map(toWachterHeaders('Invoicing')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[]
-            )
+                (m) => m.default as ThriftAstMetadata[],
+            ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
@@ -45,8 +45,8 @@ export class InvoicingService {
                     headers,
                     logging: environment.logging.requests,
                     path: '/wachter',
-                })
-            )
+                }),
+            ),
         );
     }
 
@@ -59,10 +59,10 @@ export class InvoicingService {
     CreatePaymentAdjustment(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
-        params: InvoicePaymentAdjustmentParams
+        params: InvoicePaymentAdjustmentParams,
     ): Observable<InvoicePaymentAdjustment> {
         return this.client$.pipe(
-            switchMap((c) => c.CreatePaymentAdjustment(id, paymentId, params))
+            switchMap((c) => c.CreatePaymentAdjustment(id, paymentId, params)),
         );
     }
 
@@ -70,7 +70,7 @@ export class InvoicingService {
     CreateChargeback(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
-        params: InvoicePaymentChargebackParams
+        params: InvoicePaymentChargebackParams,
     ): Observable<InvoicePaymentChargeback> {
         return this.client$.pipe(switchMap((c) => c.CreateChargeback(id, paymentId, params)));
     }
@@ -80,10 +80,10 @@ export class InvoicingService {
         id: InvoiceID,
         paymentId: InvoicePaymentID,
         chargebackId: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackAcceptParams
+        params: InvoicePaymentChargebackAcceptParams,
     ): Observable<void> {
         return this.client$.pipe(
-            switchMap((c) => c.AcceptChargeback(id, paymentId, chargebackId, params))
+            switchMap((c) => c.AcceptChargeback(id, paymentId, chargebackId, params)),
         );
     }
 
@@ -92,10 +92,10 @@ export class InvoicingService {
         id: InvoiceID,
         paymentId: InvoicePaymentID,
         chargebackId: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackRejectParams
+        params: InvoicePaymentChargebackRejectParams,
     ): Observable<void> {
         return this.client$.pipe(
-            switchMap((c) => c.RejectChargeback(id, paymentId, chargebackId, params))
+            switchMap((c) => c.RejectChargeback(id, paymentId, chargebackId, params)),
         );
     }
 
@@ -104,10 +104,10 @@ export class InvoicingService {
         id: InvoiceID,
         paymentId: InvoicePaymentID,
         chargebackId: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackReopenParams
+        params: InvoicePaymentChargebackReopenParams,
     ): Observable<void> {
         return this.client$.pipe(
-            switchMap((c) => c.ReopenChargeback(id, paymentId, chargebackId, params))
+            switchMap((c) => c.ReopenChargeback(id, paymentId, chargebackId, params)),
         );
     }
 
@@ -116,10 +116,10 @@ export class InvoicingService {
         id: InvoiceID,
         paymentId: InvoicePaymentID,
         chargebackId: InvoicePaymentChargebackID,
-        params: InvoicePaymentChargebackCancelParams
+        params: InvoicePaymentChargebackCancelParams,
     ): Observable<void> {
         return this.client$.pipe(
-            switchMap((c) => c.CancelChargeback(id, paymentId, chargebackId, params))
+            switchMap((c) => c.CancelChargeback(id, paymentId, chargebackId, params)),
         );
     }
 }

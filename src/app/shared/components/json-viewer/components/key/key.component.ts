@@ -21,9 +21,9 @@ export class KeyComponent implements OnChanges {
                 map((value) => {
                     if (typeof value === 'number') return `${value + 1}`;
                     return null;
-                })
+                }),
             );
-        })
+        }),
     );
 
     ngOnChanges(changes: ComponentChanges<KeyComponent>) {

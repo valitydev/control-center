@@ -11,7 +11,10 @@ export class MonacoDiffEditorDirective extends AbstractMonacoDirective {
     @Input() original: MonacoFile;
     @Input() modified: MonacoFile;
 
-    constructor(protected editorService: MonacoDiffEditorService, protected editorRef: ElementRef) {
+    constructor(
+        protected editorService: MonacoDiffEditorService,
+        protected editorRef: ElementRef,
+    ) {
         super(editorService, editorRef);
     }
 

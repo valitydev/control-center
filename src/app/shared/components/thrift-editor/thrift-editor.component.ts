@@ -41,10 +41,10 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
     file$ = merge(
         this.control.valueChanges.pipe(filter(() => this.kind !== EditorKind.Editor)),
         defer(() => of(this.control.value)),
-        defer(() => this.updateFile$)
+        defer(() => this.updateFile$),
     ).pipe(
         map((value) => toMonacoFile(this.createMonacoContent(value))),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     private updateFile$ = new Subject<void>();

@@ -28,7 +28,7 @@ export class RoutingRulesetComponent {
     shop$ = this.routingRulesetService.shop$;
     candidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) => r.data.decisions.candidates),
-        shareReplay(1)
+        shareReplay(1),
     );
     terminalsMapID$ = this.domainStoreService
         .getObjects('terminal')
@@ -36,9 +36,9 @@ export class RoutingRulesetComponent {
             map((terminals) =>
                 terminals.reduce(
                     (acc, t) => ((acc[t.ref.id] = t), acc),
-                    {} as { [N in number]: TerminalObject }
-                )
-            )
+                    {} as { [N in number]: TerminalObject },
+                ),
+            ),
         );
     isLoading$ = this.domainStoreService.isLoading$;
 
@@ -48,7 +48,7 @@ export class RoutingRulesetComponent {
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {}
 
     addShopRule() {
@@ -56,8 +56,8 @@ export class RoutingRulesetComponent {
             .pipe(
                 first(),
                 switchMap((refID) =>
-                    this.dialogService.open(AddRoutingRuleDialogComponent, { refID }).afterClosed()
-                )
+                    this.dialogService.open(AddRoutingRuleDialogComponent, { refID }).afterClosed(),
+                ),
             )
             .pipe(untilDestroyed(this))
             .subscribe({

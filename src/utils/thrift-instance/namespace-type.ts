@@ -40,7 +40,7 @@ export function parseNamespaceObjectType(
     metadata: ThriftAstMetadata[],
     namespace: string,
     type: string,
-    include?: JsonAST['include']
+    include?: JsonAST['include'],
 ): NamespaceObjectType {
     // metadata reverse find - search for the last matching protocol if the names match (files are overwritten in the same order)
     let namespaceMetadata: ThriftAstMetadata;
@@ -49,7 +49,7 @@ export function parseNamespaceObjectType(
     if (!namespaceMetadata)
         namespaceMetadata = metadata.reverse().find((m) => m.name === namespace);
     const objectType = Object.keys(namespaceMetadata.ast).find(
-        (t) => namespaceMetadata.ast[t][type]
+        (t) => namespaceMetadata.ast[t][type],
     ) as StructureType;
     if (!objectType || !STRUCTURE_TYPES.includes(objectType)) {
         throw new Error(`Unknown thrift structure type: ${objectType}`);
@@ -71,7 +71,7 @@ export interface NamespaceType<T extends ValueType = ValueType> {
 
 export function parseNamespaceType<T extends ValueType>(
     type: T,
-    namespace?: string
+    namespace?: string,
 ): NamespaceType<T> {
     if (!isPrimitiveType(type) && !isComplexType(type) && type.includes('.')) {
         [namespace, type as unknown] = type.split('.');

@@ -16,7 +16,7 @@ export class DepositDetailsComponent implements OnInit {
 
     constructor(
         private fetchDepositService: ReceiveDepositService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
     ) {}
 
     ngOnInit() {

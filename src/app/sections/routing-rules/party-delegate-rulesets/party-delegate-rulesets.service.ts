@@ -19,17 +19,17 @@ import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 export class PartyDelegateRulesetsService {
     private partyID$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        pluck('partyID')
+        pluck('partyID'),
     ) as Observable<PartyID>;
     private routingRulesType$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        pluck('type')
+        pluck('type'),
     ) as Observable<RoutingRulesType>;
 
     constructor(
         private domainStoreService: DomainStoreService,
         private route: ActivatedRoute,
-        private routingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService,
     ) {}
 
     getDelegatesWithPaymentInstitution() {
@@ -41,7 +41,7 @@ export class PartyDelegateRulesetsService {
                         paymentInstitution,
                         delegates: mainRoutingRule?.data?.decisions?.delegates
                             ?.map((d) =>
-                                d?.allowed?.condition?.party?.id === partyID ? d : undefined
+                                d?.allowed?.condition?.party?.id === partyID ? d : undefined,
                             )
                             ?.filter((d) => d),
                     }))
@@ -57,9 +57,9 @@ export class PartyDelegateRulesetsService {
                             ...acc,
                             ...delegates.map((partyDelegate) => ({ ...rest, partyDelegate })),
                         ],
-                        []
-                    )
-            )
+                        [],
+                    ),
+            ),
         );
     }
 
@@ -73,17 +73,17 @@ export class PartyDelegateRulesetsService {
                     paymentInstitutions.map((paymentInstitution) =>
                         this.routingRulesService
                             .getRuleset(
-                                getPoliciesIdByType(paymentInstitution?.data, routingRulesType)
+                                getPoliciesIdByType(paymentInstitution?.data, routingRulesType),
                             )
                             .pipe(
                                 map((routingRule) => ({
                                     paymentInstitution,
                                     routingRule,
-                                }))
-                            )
-                    )
+                                })),
+                            ),
+                    ),
                 );
-            })
+            }),
         );
     }
 }

@@ -31,7 +31,7 @@ export class AddRoutingRuleDialogComponent extends DialogSuperclass<
         injector: Injector,
         private addShopRoutingRuleDialogService: AddRoutingRuleDialogService,
         private domainStoreService: DomainStoreService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
     ) {
         super(injector);
     }
@@ -39,7 +39,7 @@ export class AddRoutingRuleDialogComponent extends DialogSuperclass<
     add() {
         this.addShopRoutingRuleDialogService.add(
             this.predicateControl.value,
-            this.dialogData.refID
+            this.dialogData.refID,
         );
     }
 

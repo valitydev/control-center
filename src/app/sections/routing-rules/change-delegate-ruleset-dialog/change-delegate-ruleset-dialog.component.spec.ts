@@ -23,7 +23,7 @@ describe('ChangeDelegateRulesetDialogComponent', () => {
 
         fixture = TestBed.createComponent(HostComponent);
         debugElement = fixture.debugElement.query(
-            By.directive(ChangeDelegateRulesetDialogComponent)
+            By.directive(ChangeDelegateRulesetDialogComponent),
         );
         component = debugElement.componentInstance;
 

@@ -11,4 +11,4 @@ export const searchParamsToFormParams = (value: SearchParams): FormValue =>
         ...(value.fromTime ? { fromTime: moment(value.fromTime) } : {}),
         ...(value.toTime ? { toTime: moment(value.toTime) } : {}),
         ...(value.amountTo ? { amountTo: toMajor(value.amountTo) } : {}),
-    } as FormValue);
+    }) as FormValue;

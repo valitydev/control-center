@@ -30,7 +30,7 @@ export function getAliases(data: MetadataFormData): MetadataFormData[] {
 export function getByType(
     data: MetadataFormData,
     type: string,
-    namespace: string
+    namespace: string,
 ): MetadataFormData {
     return data
         ? [data, ...getAliases(data)].find((d) => d.type === type && d.namespace === namespace)
@@ -40,14 +40,14 @@ export function getByType(
 export function isTypeWithAliases(
     data: MetadataFormData,
     type: string,
-    namespace: string
+    namespace: string,
 ): boolean {
     return Boolean(getByType(data, type, namespace));
 }
 
 export class MetadataFormData<
     T extends ValueType = ValueType,
-    S extends StructureType = StructureType
+    S extends StructureType = StructureType,
 > {
     typeGroup: TypeGroup;
 
@@ -94,7 +94,7 @@ export class MetadataFormData<
         namespace: string,
         type: T,
         public field?: Field,
-        public parent?: MetadataFormData
+        public parent?: MetadataFormData,
     ) {
         this.setNamespaceType(namespace, type);
         this.setTypeGroup();
@@ -107,7 +107,7 @@ export class MetadataFormData<
             this.namespace,
             params.type ?? params.field?.type,
             params.field,
-            this as never
+            this as never,
         );
     }
 
@@ -130,7 +130,7 @@ export class MetadataFormData<
             this.metadata,
             this.namespace,
             this.type as string,
-            this.parent?.include
+            this.parent?.include,
         );
         this.objectType = objectType as never;
         this.ast = (namespaceMetadata.ast[this.objectType] as unknown)[this.type] as never;

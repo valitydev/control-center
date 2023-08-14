@@ -26,7 +26,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
 
     control = this.fb.control<Modification | ModificationChange>(
         this.dialogData.modificationUnit?.modification || null,
-        Validators.required
+        Validators.required,
     );
     isLoading$ = inProgressFrom(() => this.progress$);
 
@@ -41,7 +41,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
     }
@@ -68,7 +68,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
                 claim.id,
                 claim.revision,
                 modificationUnit.modification_id,
-                this.control.value
+                this.control.value,
             )
             .pipe(progressTo(this.progress$), untilDestroyed(this))
             .subscribe({

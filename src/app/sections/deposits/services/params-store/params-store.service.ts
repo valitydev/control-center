@@ -7,7 +7,10 @@ import { SearchParams } from '../../types/search-params';
 
 @Injectable()
 export class ParamsStoreService extends QueryParamsStore<SearchParams> {
-    constructor(protected route: ActivatedRoute, protected router: Router) {
+    constructor(
+        protected route: ActivatedRoute,
+        protected router: Router,
+    ) {
         super(router, route);
     }
 

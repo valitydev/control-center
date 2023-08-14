@@ -13,7 +13,7 @@ export class PartiesSearchFiltersService {
     searchParamsChanged$ = this.form.valueChanges.pipe(
         debounceTime(600),
         filter(() => this.form.valid),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(private fb: UntypedFormBuilder) {}

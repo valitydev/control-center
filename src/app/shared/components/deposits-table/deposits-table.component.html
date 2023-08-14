@@ -18,7 +18,7 @@
     <ng-container matColumnDef="createdAt">
         <th *matHeaderCellDef mat-header-cell>Created At</th>
         <td *matCellDef="let deposit" mat-cell>
-            {{ deposit.created_at | date : 'dd.MM.yyyy HH:mm:ss' }}
+            {{ deposit.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
         </td>
     </ng-container>
 

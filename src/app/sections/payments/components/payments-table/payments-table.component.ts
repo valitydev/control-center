@@ -100,6 +100,6 @@ export class PaymentsTableComponent {
     constructor(
         private amountCurrencyService: AmountCurrencyService,
         private partiesStoreService: PartiesStoreService,
-        private router: Router
+        private router: Router,
     ) {}
 }

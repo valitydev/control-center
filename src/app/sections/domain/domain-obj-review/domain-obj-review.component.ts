@@ -35,7 +35,7 @@ export class DomainObjReviewComponent {
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
-        private domainSecretService: DomainSecretService
+        private domainSecretService: DomainSecretService,
     ) {
         if (!modifiedDomainObjectService.domainObject) {
             this.back();
@@ -59,10 +59,10 @@ export class DomainObjReviewComponent {
                                 },
                             },
                         ],
-                    })
+                    }),
                 ),
                 withLatestFrom(this.type$),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 next: ([, type]) => {

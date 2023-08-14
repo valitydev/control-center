@@ -34,7 +34,7 @@ export class CreateDepositDialogComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialogRef: MatDialogRef<CreateDepositDialogComponent>,
         private configService: ConfigService,
-        private fetchSourcesService: FetchSourcesService
+        private fetchSourcesService: FetchSourcesService,
     ) {}
 
     ngOnInit() {
@@ -43,7 +43,7 @@ export class CreateDepositDialogComponent implements OnInit {
             .afterClosed()
             .pipe(
                 switchMap(() => this.sources$.pipe(first())),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((sources) => this.form.reset({ currency: sources[0] }));
         this.depositCreated$.subscribe((deposit) => {

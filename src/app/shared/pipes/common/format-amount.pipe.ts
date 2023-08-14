@@ -22,7 +22,7 @@ function format(
     decimalLength: number,
     wholeLength: number,
     delimiter: string,
-    decimalDelimiter: string
+    decimalDelimiter: string,
 ) {
     const exp =
         '\\d(?=(\\d{' + String(wholeLength || 3) + '})+' + (decimalLength > 0 ? '\\D' : '$') + ')';
@@ -30,6 +30,6 @@ function format(
     const num = value.toFixed(Math.max(0, ~~decimalLength));
     return (decimalDelimiter ? num.replace('.', decimalDelimiter) : num).replace(
         new RegExp(exp, 'g'),
-        '$&' + (delimiter || ',')
+        '$&' + (delimiter || ','),
     );
 }

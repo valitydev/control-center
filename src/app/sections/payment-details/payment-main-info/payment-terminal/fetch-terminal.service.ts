@@ -19,15 +19,15 @@ export class FetchTerminalService {
                     this.hasError$.next();
                     return of('error');
                 }),
-                filter((result) => result !== 'error')
-            )
+                filter((result) => result !== 'error'),
+            ),
         ),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     inProgress$ = progress(this.getTerminal$, merge(this.terminal$, this.hasError$)).pipe(
-        startWith(true)
+        startWith(true),
     );
 
     constructor(private domainStoreService: DomainStoreService) {

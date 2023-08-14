@@ -13,7 +13,7 @@ import { SearchParams } from '../../types/search-params';
 export class FetchDepositsService extends PartialFetcher<StatDeposit, SearchParams> {
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        @Inject(SEARCH_LIMIT) private searchLimit: number
+        @Inject(SEARCH_LIMIT) private searchLimit: number,
     ) {
         super();
     }
@@ -26,14 +26,14 @@ export class FetchDepositsService extends PartialFetcher<StatDeposit, SearchPara
                         ...params,
                         size: this.searchLimit,
                     },
-                    continuationToken
-                )
+                    continuationToken,
+                ),
             )
             .pipe(
                 map((res) => ({
                     result: res.data.deposits,
                     continuationToken: res.continuation_token,
-                }))
+                })),
             );
     }
 }

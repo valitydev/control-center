@@ -28,7 +28,7 @@ export class AmountCurrencyPipe implements PipeTransform {
     constructor(
         @Inject(LOCALE_ID) private _locale: string,
         @Inject(DEFAULT_CURRENCY_CODE) private _defaultCurrencyCode: string = 'USD',
-        private domainStoreService: DomainStoreService
+        private domainStoreService: DomainStoreService,
     ) {}
 
     init() {
@@ -48,17 +48,17 @@ export class AmountCurrencyPipe implements PipeTransform {
                             this._locale,
                             '',
                             '',
-                            format === 'short' ? '0.0-2' : undefined
+                            format === 'short' ? '0.0-2' : undefined,
                         );
                     return formatCurrency(
                         toMajor(amount, exponent),
                         this._locale,
                         getCurrencySymbol(currencyCode, 'narrow', this._locale),
                         currencyCode,
-                        format === 'short' ? '0.0-2' : undefined
+                        format === 'short' ? '0.0-2' : undefined,
                     );
                 }),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((value) => {
                 this.latestValue = value;
@@ -68,7 +68,7 @@ export class AmountCurrencyPipe implements PipeTransform {
     transform(
         amount: number,
         currencyCode: string = this._defaultCurrencyCode,
-        format: 'short' | 'long' = 'long'
+        format: 'short' | 'long' = 'long',
     ) {
         this.params$.next({ amount, currencyCode, format });
         if (!this.isInit) this.init();

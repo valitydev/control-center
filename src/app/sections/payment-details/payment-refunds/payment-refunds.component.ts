@@ -17,7 +17,10 @@ export class PaymentRefundsComponent implements OnInit {
     hasMore$ = this.fetchRefundsService.hasMore$;
     refunds$ = this.fetchRefundsService.searchResult$;
 
-    constructor(private fetchRefundsService: FetchRefundsService, private snackBar: MatSnackBar) {}
+    constructor(
+        private fetchRefundsService: FetchRefundsService,
+        private snackBar: MatSnackBar,
+    ) {}
 
     ngOnInit() {
         this.fetchRefundsService.search({
@@ -26,7 +29,7 @@ export class PaymentRefundsComponent implements OnInit {
             invoice_ids: [this.invoiceID],
         });
         this.fetchRefundsService.errors$.subscribe((e) =>
-            this.snackBar.open(`An error occurred while search refunds (${String(e)})`, 'OK')
+            this.snackBar.open(`An error occurred while search refunds (${String(e)})`, 'OK'),
         );
     }
 

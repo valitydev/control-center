@@ -11,7 +11,7 @@ import { KeycloakToken } from './types/keycloak-token';
 @Injectable({ providedIn: 'root' })
 export class KeycloakTokenInfoService {
     token$ = defer(() =>
-        this.keycloakService.isTokenExpired() ? this.keycloakService.updateToken() : of(null)
+        this.keycloakService.isTokenExpired() ? this.keycloakService.updateToken() : of(null),
     ).pipe(switchMap(() => this.keycloakService.getToken()));
     decoded$: Observable<KeycloakToken> = this.token$.pipe(
         map((token) => ({
@@ -19,7 +19,7 @@ export class KeycloakTokenInfoService {
             token,
         })),
         untilDestroyed(this),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     constructor(private keycloakService: KeycloakService) {}

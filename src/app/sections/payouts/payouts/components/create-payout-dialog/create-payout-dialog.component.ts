@@ -43,7 +43,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
         private fb: FormBuilder,
         private payoutManagementService: PayoutManagementService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super(injector);
     }
@@ -64,8 +64,8 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
                         },
                         payout_tool_id: value.payoutToolId,
                     },
-                    isNil
-                ) as PayoutParams
+                    isNil,
+                ) as PayoutParams,
             )
             .pipe(untilDestroyed(this), progressTo(this.progress$))
             .subscribe({

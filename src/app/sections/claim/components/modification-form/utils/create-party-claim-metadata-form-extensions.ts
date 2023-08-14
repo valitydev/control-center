@@ -11,7 +11,7 @@ import {
 } from '@cc/app/shared/components/metadata-form';
 
 function createPartyOptions(
-    values: IterableIterator<{ id: string }>
+    values: IterableIterator<{ id: string }>,
 ): MetadataFormExtensionOption[] {
     return Array.from(values).map((value) => ({
         label: 'from party',
@@ -21,7 +21,7 @@ function createPartyOptions(
 }
 
 function createClaimOptions(
-    modificationUnits: { id: string; modification: unknown }[]
+    modificationUnits: { id: string; modification: unknown }[],
 ): MetadataFormExtensionOption[] {
     return uniqBy(
         modificationUnits.filter(Boolean).map((unit) => ({
@@ -30,7 +30,7 @@ function createClaimOptions(
             value: unit.id,
             color: 'primary',
         })),
-        'value'
+        'value',
     );
 }
 
@@ -40,7 +40,7 @@ function generate() {
 
 export function createPartyClaimMetadataFormExtensions(
     party: Party,
-    claim: Claim
+    claim: Claim,
 ): MetadataFormExtension[] {
     return [
         {
@@ -51,8 +51,8 @@ export function createPartyClaimMetadataFormExtensions(
                         ...createClaimOptions(
                             claim.changeset.map(
                                 (unit) =>
-                                    unit.modification.party_modification?.contractor_modification
-                            )
+                                    unit.modification.party_modification?.contractor_modification,
+                            ),
                         ),
                         ...createPartyOptions(party.contractors.values()),
                     ],
@@ -68,8 +68,8 @@ export function createPartyClaimMetadataFormExtensions(
                         ...createClaimOptions(
                             claim.changeset.map(
                                 (unit) =>
-                                    unit.modification.party_modification?.contract_modification
-                            )
+                                    unit.modification.party_modification?.contract_modification,
+                            ),
                         ),
                         ...createPartyOptions(party.contracts.values()),
                     ],
@@ -84,8 +84,8 @@ export function createPartyClaimMetadataFormExtensions(
                     options: [
                         ...createClaimOptions(
                             claim.changeset.map(
-                                (unit) => unit.modification.party_modification?.shop_modification
-                            )
+                                (unit) => unit.modification.party_modification?.shop_modification,
+                            ),
                         ),
                         ...createPartyOptions(party.shops.values()),
                     ],
@@ -100,8 +100,8 @@ export function createPartyClaimMetadataFormExtensions(
                     options: [
                         ...createClaimOptions(
                             claim.changeset.map(
-                                (unit) => unit.modification.party_modification?.wallet_modification
-                            )
+                                (unit) => unit.modification.party_modification?.wallet_modification,
+                            ),
                         ),
                         ...createPartyOptions(party.wallets.values()),
                     ],

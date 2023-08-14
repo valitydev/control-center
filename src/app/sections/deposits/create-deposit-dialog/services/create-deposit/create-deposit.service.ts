@@ -35,9 +35,9 @@ export class CreateDepositService {
                     catchError(() => {
                         this.errorSubject$.next(true);
                         return EMPTY;
-                    })
+                    }),
                 ),
-            ])
+            ]),
         ),
         switchMap(([pollingParams]) =>
             this.fistfulStatisticsService.GetDeposits(pollingParams).pipe(
@@ -50,15 +50,15 @@ export class CreateDepositService {
                 catchError(() => {
                     this.pollingTimeoutSubject$.next(true);
                     return EMPTY;
-                })
-            )
-        )
+                }),
+            ),
+        ),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     isLoading$ = progress(
         this.create$,
-        merge([this.depositCreated$, this.errorSubject$, this.pollingErrorSubject$])
+        merge([this.depositCreated$, this.errorSubject$, this.pollingErrorSubject$]),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -81,7 +81,7 @@ export class CreateDepositService {
         private fb: FormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private configService: ConfigService,
-        private fetchSourcesService: FetchSourcesService
+        private fetchSourcesService: FetchSourcesService,
     ) {
         this.initForm();
     }

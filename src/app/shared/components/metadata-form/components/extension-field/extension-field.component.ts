@@ -38,7 +38,7 @@ export class ExtensionFieldComponent<T>
         defer(() => this.extensions$),
     ]).pipe(
         switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(pluck('generate'));
 
@@ -58,16 +58,16 @@ export class ExtensionFieldComponent<T>
                 converter || {
                     outputToInternal: (v: unknown) => v,
                     internalToOutput: (v: unknown) => v,
-                }
+                },
         ),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     ngOnInit() {
         this.control.valueChanges
             .pipe(
                 switchMap(() => this.converter$),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((converter) => {
                 this.emitOutgoingValue(converter.internalToOutput(this.control.value) as never);
@@ -96,7 +96,7 @@ export class ExtensionFieldComponent<T>
         this.generate$
             .pipe(
                 switchMap((generate) => generate()),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((value) => this.control.setValue(value as T));
         event.stopPropagation();

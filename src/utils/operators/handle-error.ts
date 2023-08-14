@@ -11,6 +11,6 @@ export function handleError(handle: (error: unknown) => void) {
             catchError((error) => {
                 handle(error);
                 return throwError(error);
-            })
+            }),
         );
 }

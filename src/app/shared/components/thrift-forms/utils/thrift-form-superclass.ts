@@ -26,7 +26,7 @@ export abstract class BaseThriftFormSuperclass
         this.externalExtensions$,
     ]).pipe(
         map(([internal, external]) => [...internal, ...external]),
-        shareReplay({ bufferSize: 1, refCount: true })
+        shareReplay({ bufferSize: 1, refCount: true }),
     );
 
     ngOnChanges(changes: ComponentChanges<BaseThriftFormSuperclass>) {

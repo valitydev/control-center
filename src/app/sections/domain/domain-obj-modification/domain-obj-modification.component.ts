@@ -54,7 +54,7 @@ export class DomainObjModificationComponent implements OnInit {
         private domainObjModService: DomainObjModificationService,
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private domainNavigateService: DomainNavigateService
+        private domainNavigateService: DomainNavigateService,
     ) {}
 
     ngOnInit() {

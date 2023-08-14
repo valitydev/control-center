@@ -19,12 +19,12 @@ export type MetadataViewExtension = {
 export function getFirstDeterminedExtensionsResult(
     sourceExtensions: MetadataViewExtension[],
     data: MetadataFormData,
-    value: unknown
+    value: unknown,
 ): Observable<MetadataViewExtensionResult> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data, value))).pipe(
               map((determined) => sourceExtensions.find((_, idx) => determined[idx])),
-              switchMap((extension) => extension?.extension(data, value) ?? of(null))
+              switchMap((extension) => extension?.extension(data, value) ?? of(null)),
           )
         : of(null);
 }

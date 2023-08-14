@@ -47,7 +47,7 @@ export class ThriftViewerComponent<T> implements OnChanges {
         }
         if (changes.compared) {
             this.comparedFile$.next(
-                toMonacoFile(JSON.stringify(objectToJSON(this.compared), null, 2))
+                toMonacoFile(JSON.stringify(objectToJSON(this.compared), null, 2)),
             );
         }
     }

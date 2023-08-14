@@ -35,7 +35,7 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
         private fb: NonNullableFormBuilder,
         private depositManagementService: ManagementService,
         private idGenerator: UserInfoBasedIdGeneratorService,
-        private log: NotifyLogService
+        private log: NotifyLogService,
     ) {
         super(injector);
     }
@@ -58,8 +58,8 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
                         external_id: externalID,
                     },
                     false,
-                    true
-                )
+                    true,
+                ),
             )
             .pipe(untilDestroyed(this))
             .subscribe({

@@ -80,7 +80,7 @@ export class RepairingComponent implements OnInit {
                 tooltip: 'history',
             },
         ]),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     cellTemplate: Record<string, TemplateRef<unknown>> = {};
 
@@ -92,14 +92,14 @@ export class RepairingComponent implements OnInit {
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
-        private domainStoreService: DomainStoreService
+        private domainStoreService: DomainStoreService,
     ) {}
 
     ngOnInit() {
         this.filters.valueChanges
             .pipe(
                 map(() => clean(this.filters.value)),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((v: Filters) => this.qp.set(v));
         this.qp.params$
@@ -118,9 +118,9 @@ export class RepairingComponent implements OnInit {
                                       to_time: timespan?.end?.toISOString(),
                                   }
                                 : null,
-                    })
+                    }),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((params) => this.machinesService.search(params));
     }
@@ -144,10 +144,10 @@ export class RepairingComponent implements OnInit {
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
                     this.repairManagementService.SimpleRepairAll(
-                        this.selected$.value.map(({ id, ns }) => ({ id, ns }))
-                    )
+                        this.selected$.value.map(({ id, ns }) => ({ id, ns })),
+                    ),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 next: () => {

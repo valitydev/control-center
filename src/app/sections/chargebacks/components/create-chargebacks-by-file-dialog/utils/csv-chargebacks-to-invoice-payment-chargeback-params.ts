@@ -5,7 +5,7 @@ import short from 'short-uuid';
 import { CsvChargeback } from '../types/csv-chargeback';
 
 export function csvChargebacksToInvoicePaymentChargebackParams(
-    c: CsvChargeback
+    c: CsvChargeback,
 ): InvoicePaymentChargebackParams {
     return clean(
         {
@@ -27,7 +27,7 @@ export function csvChargebacksToInvoicePaymentChargebackParams(
                         symbolic_code: c['body.currency.symbolic_code'],
                     },
                 },
-                true
+                true,
             ),
             transaction_info: clean(
                 {
@@ -38,7 +38,7 @@ export function csvChargebacksToInvoicePaymentChargebackParams(
                         ? JSON.parse(c['transaction_info.additional_info'])
                         : undefined,
                 },
-                true
+                true,
             ),
             external_id: c.external_id,
             context: clean(
@@ -46,11 +46,11 @@ export function csvChargebacksToInvoicePaymentChargebackParams(
                     type: c['context.type'],
                     data: c['context.data'],
                 },
-                true
+                true,
             ),
             occurred_at: c['occurred_at'],
         },
         false,
-        true
+        true,
     );
 }

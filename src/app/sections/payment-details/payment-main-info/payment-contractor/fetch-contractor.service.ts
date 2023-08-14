@@ -21,20 +21,20 @@ export class FetchContractorService {
                         this.hasError$.next();
                         return of('error');
                     }),
-                    filter((result) => result !== 'error')
+                    filter((result) => result !== 'error'),
                 ),
-            ])
+            ]),
         ),
         map(([contractID, party]: [ContractID, Party]) => {
             const contractorID = party.contracts.get(contractID)?.contractor_id;
             return party.contractors.get(contractorID)?.contractor;
         }),
-        shareReplay(1)
+        shareReplay(1),
     );
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     inProgress$ = progress(this.getContractor$, merge(this.contractor$, this.hasError$)).pipe(
-        startWith(true)
+        startWith(true),
     );
 
     constructor(private partyManagementService: PartyManagementService) {

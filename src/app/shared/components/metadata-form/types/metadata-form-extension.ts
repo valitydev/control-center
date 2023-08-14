@@ -33,12 +33,12 @@ export interface MetadataFormExtensionOption {
 
 export function getFirstDeterminedExtensionsResult(
     sourceExtensions: MetadataFormExtension[],
-    data: MetadataFormData
+    data: MetadataFormData,
 ): Observable<MetadataFormExtensionResult> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data))).pipe(
               map((determined) => sourceExtensions.find((_, idx) => determined[idx])),
-              switchMap((extension) => extension?.extension(data) ?? of(null))
+              switchMap((extension) => extension?.extension(data) ?? of(null)),
           )
         : of(null);
 }

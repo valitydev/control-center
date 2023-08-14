@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 
     constructor(
         private keycloakService: KeycloakService,
-        private appAuthGuardService: AppAuthGuardService
+        private appAuthGuardService: AppAuthGuardService,
     ) {}
 
     ngOnInit() {
@@ -113,13 +113,13 @@ export class AppComponent implements OnInit {
                         services: WALLETS_ROUTING_CONFIG.services,
                     },
                 ],
-                'name'
+                'name',
             ),
         ];
         return menuItems.map((group) =>
             group.filter((item) =>
-                this.appAuthGuardService.userHasSomeServiceMethods(item.services)
-            )
+                this.appAuthGuardService.userHasSomeServiceMethods(item.services),
+            ),
         );
     }
 }

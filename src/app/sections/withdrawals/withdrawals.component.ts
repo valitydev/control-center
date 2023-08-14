@@ -72,14 +72,14 @@ export class WithdrawalsComponent implements OnInit {
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private dialogService: DialogService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {}
 
     ngOnInit() {
         this.filters.valueChanges
             .pipe(
                 map((v) => omitBy(v, isNilOrEmptyString)),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe((v) => void this.qp.set(omitBy(v, isNilOrEmptyString)));
         this.qp.params$
@@ -95,7 +95,7 @@ export class WithdrawalsComponent implements OnInit {
                         amount_to: amountTo,
                         withdrawal_ids: withdrawalIds,
                         wallet_id: walletId,
-                    })
+                    }),
             );
     }
 

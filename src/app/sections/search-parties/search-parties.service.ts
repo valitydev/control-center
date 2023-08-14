@@ -7,7 +7,10 @@ import { PartiesSearchFiltersParams } from './parties-search-filters';
 
 @Injectable()
 export class SearchPartiesService extends QueryParamsStore<PartiesSearchFiltersParams> {
-    constructor(protected route: ActivatedRoute, protected router: Router) {
+    constructor(
+        protected route: ActivatedRoute,
+        protected router: Router,
+    ) {
         super(router, route);
     }
 

@@ -8,5 +8,5 @@ export const CLAIM_STATUSES = enumerate<keyof ClaimStatus>()(
     'pending_acceptance',
     'accepted',
     'denied',
-    'revoked'
+    'revoked',
 );

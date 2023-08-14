@@ -40,9 +40,9 @@ export class ShopFieldComponent<M extends boolean = boolean>
                 ? this.partyManagementService
                       .Get(partyId)
                       .pipe(map(({ shops }) => Array.from(shops.values())))
-                : of<Shop[]>([])
+                : of<Shop[]>([]),
         ),
-        share()
+        share(),
     );
 
     private partyId$ = new BehaviorSubject<PartyID>(null);
@@ -71,9 +71,9 @@ export class ShopFieldComponent<M extends boolean = boolean>
                         !isEmpty(this.control.value) &&
                         (Array.isArray(this.control.value)
                             ? !this.control.value.every((v) => shops.some((s) => s.id === v))
-                            : !shops.some((s) => s.id === this.control.value))
+                            : !shops.some((s) => s.id === this.control.value)),
                 ),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe(() => {
                 this.control.setValue(null);

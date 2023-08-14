@@ -10,7 +10,7 @@ import { NotificationErrorService } from '../../../shared/services/notification-
 export class MachinesService extends PartialFetcher<Machine, SearchRequest> {
     constructor(
         private repairManagementService: RepairManagementService,
-        private notificationErrorService: NotificationErrorService
+        private notificationErrorService: NotificationErrorService,
     ) {
         super();
     }
@@ -22,7 +22,7 @@ export class MachinesService extends PartialFetcher<Machine, SearchRequest> {
                 map(({ machines, continuation_token }) => ({
                     result: machines,
                     continuationToken: continuation_token,
-                }))
+                })),
             );
     }
 

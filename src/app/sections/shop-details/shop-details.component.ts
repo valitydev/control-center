@@ -36,7 +36,7 @@ export class ShopDetailsComponent {
         private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
-        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
     ) {
         combineLatest([this.partyID$, this.shopID$]).subscribe(([partyID, shopID]) => {
             this.fetchShopService.getShop(partyID, shopID);
@@ -56,15 +56,15 @@ export class ShopDetailsComponent {
                                     : 'Unblock shop',
                             hasReason: true,
                         })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
                 filter((r) => r.status === DialogResponseStatus.Success),
                 withLatestFrom(this.shop$, this.partyID$),
                 switchMap(([{ data }, shop, partyID]) =>
                     getUnionKey(shop.blocking) === 'unblocked'
                         ? this.partyManagementService.BlockShop(partyID, shop.id, data.reason)
-                        : this.partyManagementService.UnblockShop(partyID, shop.id, data.reason)
-                )
+                        : this.partyManagementService.UnblockShop(partyID, shop.id, data.reason),
+                ),
             )
             .subscribe({
                 next: () => {
@@ -89,15 +89,15 @@ export class ShopDetailsComponent {
                                     ? 'Suspend shop'
                                     : 'Activate shop',
                         })
-                        .afterClosed()
+                        .afterClosed(),
                 ),
                 filter((r) => r.status === DialogResponseStatus.Success),
                 withLatestFrom(this.shop$, this.partyID$),
                 switchMap(([, shop, partyID]) =>
                     getUnionKey(shop.suspension) === 'active'
                         ? this.partyManagementService.SuspendShop(partyID, shop.id)
-                        : this.partyManagementService.ActivateShop(partyID, shop.id)
-                )
+                        : this.partyManagementService.ActivateShop(partyID, shop.id),
+                ),
             )
             .subscribe({
                 next: () => {

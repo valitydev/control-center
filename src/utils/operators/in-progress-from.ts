@@ -8,6 +8,6 @@ export function inProgressFrom(progress: ObservableOrFn<number>, main?: Observab
         map(Boolean),
         // make async to bypass angular detect changes
         delay(0),
-        share()
+        share(),
     );
 }

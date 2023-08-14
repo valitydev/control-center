@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
                 path: 'payouts/:payoutId',
                 loadChildren: () =>
                     import('./payout-details/payout-details.module').then(
-                        (m) => m.PayoutDetailsModule
+                        (m) => m.PayoutDetailsModule,
                     ),
             },
         ]),

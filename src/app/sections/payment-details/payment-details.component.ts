@@ -25,17 +25,17 @@ export class PaymentDetailsComponent {
 
     chargebacks$ = merge(
         this.route.params,
-        defer(() => this.updateChargebacks$)
+        defer(() => this.updateChargebacks$),
     ).pipe(
         map(() => this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>),
         switchMap(({ invoiceID, paymentID }) =>
-            this.invoicingService.GetPayment(invoiceID, paymentID)
+            this.invoicingService.GetPayment(invoiceID, paymentID),
         ),
         map(({ chargebacks }) => chargebacks),
-        shareReplay({ refCount: true, bufferSize: 1 })
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     metadata$ = from(
-        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[])
+        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
     );
 
     private updateChargebacks$ = new Subject<void>();
@@ -44,14 +44,14 @@ export class PaymentDetailsComponent {
         private paymentDetailsService: PaymentDetailsService,
         private route: ActivatedRoute,
         private invoicingService: InvoicingService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
     ) {}
 
     createChargeback() {
         this.dialogService
             .open(
                 CreateChargebackDialogComponent,
-                this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>
+                this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>,
             )
             .afterClosed()
             .pipe(untilDestroyed(this))

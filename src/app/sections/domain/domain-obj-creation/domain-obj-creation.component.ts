@@ -65,7 +65,7 @@ export class DomainObjCreationComponent {
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
-        private metadataService: MetadataService
+        private metadataService: MetadataService,
     ) {}
 
     reviewChanges() {
@@ -77,10 +77,10 @@ export class DomainObjCreationComponent {
             .commit({ ops: [{ insert: { object: this.control.value } }] })
             .pipe(
                 withLatestFrom(
-                    this.metadataService.getDomainFieldByFieldName(getUnionKey(this.control.value))
+                    this.metadataService.getDomainFieldByFieldName(getUnionKey(this.control.value)),
                 ),
                 progressTo(this.progress$),
-                untilDestroyed(this)
+                untilDestroyed(this),
             )
             .subscribe({
                 next: ([, field]) => {

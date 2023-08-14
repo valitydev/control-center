@@ -38,7 +38,7 @@ export class AddRoutingRuleDialogService {
     constructor(
         private fb: UntypedFormBuilder,
         private dialogRef: MatDialogRef<AddRoutingRuleDialogComponent>,
-        private routingRulesService: RoutingRulesService
+        private routingRulesService: RoutingRulesService,
     ) {
         this.form
             .get('terminalType')
@@ -84,8 +84,8 @@ export class AddRoutingRuleDialogService {
                         terminalID,
                         refID,
                         predicate,
-                    })
-                )
+                    }),
+                ),
             )
             .subscribe(() => this.dialogRef.close({ status: DialogResponseStatus.Success }));
     }

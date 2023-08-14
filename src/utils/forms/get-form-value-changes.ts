@@ -6,10 +6,10 @@ import { getValue } from './get-value';
 
 export function getFormValueChanges<T>(
     form: AbstractControl<FormControlState<T> | T>,
-    hasStart = false
+    hasStart = false,
 ): Observable<T> {
     return form.valueChanges.pipe(
         ...((hasStart ? [startWith(form.value)] : []) as []),
-        map(() => getValue(form))
+        map(() => getValue(form)),
     ) as Observable<T>;
 }
