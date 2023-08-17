@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
@@ -27,6 +27,7 @@ import {
 
 import { createUnion } from '../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
+import { DATE_RANGE_DAYS } from '../../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
@@ -40,7 +41,7 @@ import { FetchChargebacksService } from './fetch-chargebacks.service';
 export class ChargebacksComponent implements OnInit {
     active = 0;
     filtersForm = this.fb.group({
-        dateRange: createDateRangeToToday(),
+        dateRange: createDateRangeToToday(this.dateRangeDays),
         party_id: undefined as ChargebackSearchQuery['common_search_query_params']['party_id'],
         shop_ids: [undefined as ChargebackSearchQuery['common_search_query_params']['shop_ids']],
         invoice_ids: [undefined as ChargebackSearchQuery['invoice_ids']],
@@ -65,6 +66,7 @@ export class ChargebacksComponent implements OnInit {
         }>,
         private fetchChargebacksService: FetchChargebacksService,
         private dialog: DialogService,
+        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
     ) {}
 
     ngOnInit() {
@@ -109,7 +111,7 @@ export class ChargebacksComponent implements OnInit {
         );
         this.active =
             countProps(rootParams, commonParams) +
-            +!isEqualDateRange(createDateRangeToToday(), dateRange);
+            +!isEqualDateRange(createDateRangeToToday(this.dateRangeDays), dateRange);
     }
 
     create() {
@@ -122,7 +124,7 @@ export class ChargebacksComponent implements OnInit {
             )
             .subscribe((res) => {
                 this.filtersForm.reset({
-                    dateRange: createDateRangeToToday(),
+                    dateRange: createDateRangeToToday(this.dateRangeDays),
                     chargeback_ids: res.data.map((c) => c.id),
                 });
             });

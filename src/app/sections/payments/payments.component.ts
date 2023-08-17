@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
@@ -22,6 +21,7 @@ import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
+import { DATE_RANGE_DAYS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
@@ -36,7 +36,7 @@ export class PaymentsComponent implements OnInit {
     hasMore$ = this.fetchPaymentsService.hasMore$;
     selected$ = new BehaviorSubject<StatPayment[]>([]);
     filtersForm = this.fb.group({
-        dateRange: createDateRangeToToday(),
+        dateRange: createDateRangeToToday(this.dateRangeDays),
         invoice_ids: [undefined as string[]],
         party_id: undefined as string,
         shop_ids: [undefined as string[]],
@@ -71,7 +71,6 @@ export class PaymentsComponent implements OnInit {
     active = 0;
 
     constructor(
-        private router: Router,
         private qp: QueryParamsService<{
             filters: object;
             otherFilters: object;
@@ -80,6 +79,7 @@ export class PaymentsComponent implements OnInit {
         private fetchPaymentsService: FetchPaymentsService,
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
+        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
     ) {}
 
     ngOnInit() {
@@ -130,7 +130,7 @@ export class PaymentsComponent implements OnInit {
                 filters,
                 otherFilters.payment_params,
                 otherFilters.common_search_query_params,
-            ) + +!isEqualDateRange(dateRange, createDateRangeToToday());
+            ) + +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
     createPaymentAdjustment() {
