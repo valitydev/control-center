@@ -15,14 +15,14 @@ export function csvChargebacksToInvoicePaymentChargebackParams(
                 category: { [c['reason.category']]: {} },
             },
             levy: {
-                amount: c['levy.amount'],
+                amount: Number(c['levy.amount']),
                 currency: {
                     symbolic_code: c['levy.currency.symbolic_code'],
                 },
             },
             body: clean(
                 {
-                    amount: c['body.amount'],
+                    amount: Number(c['body.amount']),
                     currency: {
                         symbolic_code: c['body.currency.symbolic_code'],
                     },
