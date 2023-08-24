@@ -20,15 +20,16 @@ export function csvChargebacksToInvoicePaymentChargebackParams(
                     symbolic_code: c['levy.currency.symbolic_code'],
                 },
             },
-            body: clean(
-                {
-                    amount: Number(c['body.amount']),
-                    currency: {
-                        symbolic_code: c['body.currency.symbolic_code'],
-                    },
-                },
-                true,
-            ),
+            body:
+                (c['body.amount'] || typeof c['body.amount'] === 'number') &&
+                c['body.currency.symbolic_code']
+                    ? {
+                          amount: Number(c['body.amount']),
+                          currency: {
+                              symbolic_code: c['body.currency.symbolic_code'],
+                          },
+                      }
+                    : undefined,
             transaction_info: clean(
                 {
                     id: c['transaction_info.id'],
