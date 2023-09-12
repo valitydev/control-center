@@ -1,14 +1,15 @@
-<div>
+<div fxLayout="column" fxLayoutGap="8px">
     <div gdColumns="1fr 1fr" gdGap="24px">
-        <cc-select
+        <v-select-field
             [formControl]="typesControl"
             [options]="options$ | async"
             label="Object types"
             multiple
-        ></cc-select>
+        ></v-select-field>
         <mat-form-field>
-            <mat-label>RegExp pattern</mat-label>
+            <mat-label>Search</mat-label>
             <input [formControl]="searchControl" matInput />
+            <mat-hint>RegExp pattern</mat-hint>
         </mat-form-field>
     </div>
     <mat-card>

@@ -76,7 +76,11 @@ export class DomainGroupComponent implements OnInit, AfterViewInit {
     );
     options$ = this.fields$.pipe(
         map((fields) =>
-            fields.map(({ type }) => ({ label: startCase(String(type)), value: type })),
+            fields.map(({ type }) => ({
+                label: startCase(String(type)),
+                value: type,
+                type: 'Domain object',
+            })),
         ),
     );
     isLoading$ = this.domainStoreService.isLoading$;
