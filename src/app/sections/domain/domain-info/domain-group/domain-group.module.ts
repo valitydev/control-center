@@ -14,13 +14,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { PipesModule } from '@vality/ng-core';
+import { PipesModule, SelectFieldModule } from '@vality/ng-core';
 
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
 import { TableModule } from '../../../../../components/table';
 import { ThriftPipesModule } from '../../../../shared';
-import { SelectModule } from '../../../../shared/components/select';
 
 import { DomainGroupComponent } from './domain-group.component';
 
@@ -45,9 +44,9 @@ import { DomainGroupComponent } from './domain-group.component';
         PipesModule,
         TableModule,
         ReactiveFormsModule,
-        SelectModule,
         MatProgressSpinnerModule,
         ThriftPipesModule,
+        SelectFieldModule,
     ],
     exports: [DomainGroupComponent],
 })
