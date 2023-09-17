@@ -25,8 +25,10 @@
                     <mat-panel-title>
                         {{ (terminalsMapID$ | async)[candidate.terminal.id]?.data?.name }}
                     </mat-panel-title>
-                    <mat-panel-description>
-                        #{{ (terminalsMapID$ | async)[candidate.terminal.id]?.ref?.id }}
+                    <mat-panel-description gdColumns="1fr 1fr 1fr">
+                        <div>#{{ (terminalsMapID$ | async)[candidate.terminal.id]?.ref?.id }}</div>
+                        <div>Weight: {{ candidate.weight }}</div>
+                        <div>Priority: {{ candidate.priority }}</div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div fxLayout="column" fxLayoutGap="24px">
