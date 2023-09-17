@@ -13,6 +13,14 @@ export class RoutingRulesetHeaderComponent {
 
     @Output() add = new EventEmitter();
 
+    get queryRef() {
+        return JSON.stringify({ routing_rules: { id: this.refID } });
+    }
+
+    get queryTypes() {
+        return JSON.stringify(['RoutingRulesObject']);
+    }
+
     constructor(private router: Router) {}
 
     navigateBack() {
