@@ -12,6 +12,9 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 import { SelectSearchFieldComponent } from './select-search-field.component';
 
+/**
+ * @deprecated
+ */
 @NgModule({
     imports: [
         CommonModule,
@@ -28,7 +31,4 @@ import { SelectSearchFieldComponent } from './select-search-field.component';
     declarations: [SelectSearchFieldComponent],
     exports: [SelectSearchFieldComponent],
 })
-/**
- * @deprecated
- */
 export class SelectSearchFieldModule {}

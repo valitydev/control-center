@@ -7,10 +7,10 @@ import { getValue } from '../get-value';
 
 import { getErrorsTree } from './utils/get-errors-tree';
 
-@Directive()
 /**
  * @deprecated
  */
+@Directive()
 export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterType>
     extends WrappedControlSuperclass<OuterType, InnerType>
     implements OnInit, Validator

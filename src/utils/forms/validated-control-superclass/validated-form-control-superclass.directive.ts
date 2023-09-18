@@ -3,10 +3,10 @@ import { ValidationErrors, FormControl } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
 import { EMPTY, Observable } from 'rxjs';
 
-@Directive()
 /**
  * @deprecated
  */
+@Directive()
 export class ValidatedFormControlSuperclass<
     OuterType,
     InnerType = OuterType,

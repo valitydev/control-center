@@ -23,6 +23,9 @@ import { SelectSearchFieldOptions, SELECT_SEARCH_FIELD_OPTIONS } from './tokens'
 import { Option } from './types';
 import { filterOptions } from './utils';
 
+/**
+ * @deprecated
+ */
 @UntilDestroy()
 @Component({
     selector: 'cc-select-search-field',
@@ -30,9 +33,6 @@ import { filterOptions } from './utils';
     styleUrls: ['select-search-field.component.scss'],
     providers: [provideValueAccessor(() => SelectSearchFieldComponent)],
 })
-/**
- * @deprecated
- */
 export class SelectSearchFieldComponent<Value>
     extends FormComponentSuperclass<Value>
     implements OnInit, OnChanges
