@@ -1,9 +1,9 @@
-<cc-select-search-field
+<v-select-field
     [formControl]="control"
     [label]="label || 'Merchant'"
     [options]="options$ | async"
     [progress]="!!(progress$ | async)"
     [required]="required"
-    isExternalSearch
+    externalSearch
     (searchChange)="this.searchChange$.next($event)"
-></cc-select-search-field>
+></v-select-field>
