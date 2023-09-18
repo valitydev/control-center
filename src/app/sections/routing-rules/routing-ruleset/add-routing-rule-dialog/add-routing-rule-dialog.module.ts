@@ -11,9 +11,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { DialogModule, SelectFieldModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/ng-core';
 
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+
+import { DomainObjectFieldComponent } from '../../../../shared';
 
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 import { ExpanderComponent } from './expander';
@@ -35,7 +37,7 @@ import { PredicateComponent } from './predicate';
         MatAutocompleteModule,
         MetadataFormModule,
         DialogModule,
-        SelectFieldModule,
+        DomainObjectFieldComponent,
     ],
     declarations: [AddRoutingRuleDialogComponent, PredicateComponent, ExpanderComponent],
     exports: [AddRoutingRuleDialogComponent],

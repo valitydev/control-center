@@ -95,13 +95,12 @@
                 </div>
             </div>
             <div *ngIf="form.value.terminalType === terminalType.Existent" fxLayout>
-                <v-select-field
-                    [options]="terminalOptions$ | async"
+                <cc-domain-object-field
                     formControlName="existentTerminalID"
                     fxFlex
-                    label="Terminal"
+                    name="terminal"
                     required
-                ></v-select-field>
+                ></cc-domain-object-field>
             </div>
         </div>
     </div>

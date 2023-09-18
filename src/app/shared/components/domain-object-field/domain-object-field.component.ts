@@ -19,6 +19,8 @@ import {
     defaultDomainObjectToOption,
 } from '@cc/app/shared/services/domain-metadata-form-extensions/utils/domains-objects-to-options';
 
+type DomainObjectID = unknown;
+
 @Component({
     standalone: true,
     selector: 'cc-domain-object-field',
@@ -27,7 +29,7 @@ import {
     imports: [CommonModule, ReactiveFormsModule, SelectFieldModule],
 })
 export class DomainObjectFieldComponent<T extends keyof DomainObject>
-    extends FormControlSuperclass<DomainObject[T]>
+    extends FormControlSuperclass<DomainObjectID>
     implements OnChanges
 {
     @Input() name: T;
@@ -40,9 +42,9 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
                     ? DOMAIN_OBJECTS_TO_OPTIONS[this.name as keyof OtherDomainObjects]
                     : defaultDomainObjectToOption;
             return objs.map(domainObjectToOption).map(
-                (o): Option<DomainObject[T]> => ({
+                (o): Option<DomainObjectID> => ({
                     label: o.label,
-                    value: o.value as DomainObject[T],
+                    value: o.value,
                     description: String(o.value),
                 }),
             );
