@@ -3,7 +3,9 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { domain } from '@vality/domain-proto';
 import { Predicate } from '@vality/domain-proto/domain';
-import { DialogSuperclass } from '@vality/ng-core';
+import { ObjectID } from '@vality/domain-proto/internal/domain';
+import { DialogSuperclass, Option } from '@vality/ng-core';
+import { map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 
@@ -25,7 +27,15 @@ export class AddRoutingRuleDialogComponent extends DialogSuperclass<
 
     terminalType = TerminalType;
     riskScore = domain.RiskScore;
-    terminals$ = this.domainStoreService.getObjects('terminal');
+    terminalOptions$ = this.domainStoreService.getObjects('terminal').pipe(
+        map((terminals): Option<ObjectID>[] =>
+            terminals.map((t) => ({
+                label: t.data.name,
+                value: t.ref.id,
+                description: String(t.ref.id),
+            })),
+        ),
+    );
 
     constructor(
         injector: Injector,

@@ -30,6 +30,9 @@ import { filterOptions } from './utils';
     styleUrls: ['select-search-field.component.scss'],
     providers: [provideValueAccessor(() => SelectSearchFieldComponent)],
 })
+/**
+ * @deprecated
+ */
 export class SelectSearchFieldComponent<Value>
     extends FormComponentSuperclass<Value>
     implements OnInit, OnChanges

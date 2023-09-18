@@ -95,17 +95,13 @@
                 </div>
             </div>
             <div *ngIf="form.value.terminalType === terminalType.Existent" fxLayout>
-                <mat-form-field fxFlex>
-                    <mat-label>Terminal</mat-label>
-                    <mat-select formControlName="existentTerminalID" required>
-                        <mat-option
-                            *ngFor="let terminal of terminals$ | async"
-                            [value]="terminal.ref.id"
-                        >
-                            {{ terminal.data.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <v-select-field
+                    [options]="terminalOptions$ | async"
+                    formControlName="existentTerminalID"
+                    fxFlex
+                    label="Terminal"
+                    required
+                ></v-select-field>
             </div>
         </div>
     </div>
