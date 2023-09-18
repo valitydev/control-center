@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
@@ -10,7 +10,7 @@ import {
 } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, debounceTime, map, switchMap, tap, startWith } from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
 
@@ -20,7 +20,10 @@ import { DeanonimusService } from '@cc/app/api/deanonimus';
     templateUrl: 'merchant-field.component.html',
     providers: createControlProviders(() => MerchantFieldComponent),
 })
-export class MerchantFieldComponent extends FormControlSuperclass<PartyID> implements OnInit {
+export class MerchantFieldComponent
+    extends FormControlSuperclass<PartyID>
+    implements AfterViewInit
+{
     @Input() label: string;
     @Input() @coerceBoolean required: boolean;
 
@@ -35,11 +38,11 @@ export class MerchantFieldComponent extends FormControlSuperclass<PartyID> imple
         super();
     }
 
-    ngOnInit() {
-        super.ngOnInit();
+    ngAfterViewInit() {
         this.searchChange$
             .pipe(
                 map((s) => s.term),
+                startWith(this.control.value || ''),
                 tap(() => {
                     this.options$.next([]);
                     this.progress$.next(true);
