@@ -3,7 +3,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
     Option,
-    Search,
     NotifyLogService,
     FormControlSuperclass,
     createControlProviders,
@@ -28,7 +27,7 @@ export class MerchantFieldComponent
     @Input() @coerceBoolean required: boolean;
 
     options$ = new ReplaySubject<Option<PartyID>[]>(1);
-    searchChange$ = new Subject<Search<PartyID>>();
+    searchChange$ = new Subject<string>();
     progress$ = new BehaviorSubject(false);
 
     constructor(
@@ -41,8 +40,7 @@ export class MerchantFieldComponent
     ngAfterViewInit() {
         this.searchChange$
             .pipe(
-                map((s) => s.term),
-                startWith(this.control.value || ''),
+                startWith(this.control.value),
                 tap(() => {
                     this.options$.next([]);
                     this.progress$.next(true);
