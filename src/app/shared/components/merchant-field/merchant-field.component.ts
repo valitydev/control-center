@@ -1,24 +1,17 @@
 import { Component, Input, AfterViewInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
-import { coerceBoolean } from 'coerce-property';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
 import {
-    catchError,
-    debounceTime,
-    filter,
-    map,
-    switchMap,
-    first,
-    takeUntil,
-    startWith,
-} from 'rxjs/operators';
+    Option,
+    NotifyLogService,
+    FormControlSuperclass,
+    createControlProviders,
+} from '@vality/ng-core';
+import { coerceBoolean } from 'coerce-property';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { catchError, debounceTime, map, switchMap, tap, startWith } from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
-import { Option } from '@cc/components/select-search-field';
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
-import { progressTo } from '@cc/utils/operators';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +20,7 @@ import { progressTo } from '@cc/utils/operators';
     providers: createControlProviders(() => MerchantFieldComponent),
 })
 export class MerchantFieldComponent
-    extends ValidatedFormControlSuperclass<PartyID>
+    extends FormControlSuperclass<PartyID>
     implements AfterViewInit
 {
     @Input() label: string;
@@ -35,41 +28,45 @@ export class MerchantFieldComponent
 
     options$ = new ReplaySubject<Option<PartyID>[]>(1);
     searchChange$ = new Subject<string>();
-    progress$ = new BehaviorSubject(0);
+    progress$ = new BehaviorSubject(false);
 
     constructor(
         private deanonimusService: DeanonimusService,
-        private snackBar: MatSnackBar,
+        private log: NotifyLogService,
     ) {
         super();
     }
 
     ngAfterViewInit() {
-        merge(
-            this.searchChange$,
-            this.control.valueChanges.pipe(
-                startWith(this.control.value),
-                filter(Boolean),
-                first(),
-                takeUntil(this.searchChange$),
-            ),
-        )
+        this.searchChange$
             .pipe(
-                filter(Boolean),
+                startWith(this.control.value),
+                tap(() => {
+                    this.options$.next([]);
+                    this.progress$.next(true);
+                }),
                 debounceTime(600),
-                switchMap((str) => this.searchOptions(str)),
+                switchMap((term) => this.searchOptions(term)),
                 untilDestroyed(this),
             )
-            .subscribe((options) => this.options$.next(options));
+            .subscribe((options) => {
+                this.options$.next(options);
+                this.progress$.next(false);
+            });
     }
 
     private searchOptions(str: string): Observable<Option<PartyID>[]> {
+        if (!str) return of([]);
         return this.deanonimusService.searchParty(str).pipe(
-            map((parties) => parties.map((p) => ({ label: p.party.email, value: p.party.id }))),
-            progressTo(this.progress$),
+            map((parties) =>
+                parties.map((p) => ({
+                    label: p.party.email,
+                    value: p.party.id,
+                    description: p.party.id,
+                })),
+            ),
             catchError((err) => {
-                this.snackBar.open('Search error', 'OK', { duration: 2000 });
-                console.error(err);
+                this.log.error(err, 'Search error');
                 return of([]);
             }),
         );

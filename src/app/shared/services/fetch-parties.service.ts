@@ -12,11 +12,13 @@ import { handleError, NotificationErrorService } from './notification-error';
 export class FetchPartiesService {
     parties$: Observable<Party[]> = defer(() => this.searchParties$).pipe(
         switchMap((text) =>
-            this.deanonimusService.searchParty(text).pipe(
-                map((hits) => hits.map((hit) => hit.party)),
-                handleError(this.notificationErrorService.error, null, of<Party[]>([])),
-                progressTo(this.progress$),
-            ),
+            text
+                ? this.deanonimusService.searchParty(text).pipe(
+                      map((hits) => hits.map((hit) => hit.party)),
+                      handleError(this.notificationErrorService.error, null, of<Party[]>([])),
+                      progressTo(this.progress$),
+                  )
+                : of([]),
         ),
         shareReplay(1),
     );

@@ -4,8 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-import { SelectSearchFieldModule } from '@cc/components/select-search-field';
+import { SelectFieldModule } from '@vality/ng-core';
 
 import { PayoutToolFieldComponent } from './payout-tool-field.component';
 
@@ -16,10 +15,9 @@ import { PayoutToolFieldComponent } from './payout-tool-field.component';
         MatAutocompleteModule,
         MatInputModule,
         CommonModule,
-        SelectSearchFieldModule,
+        SelectFieldModule,
     ],
     declarations: [PayoutToolFieldComponent],
     exports: [PayoutToolFieldComponent],
-    providers: [],
 })
 export class PayoutToolFieldModule {}

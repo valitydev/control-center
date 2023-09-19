@@ -1,9 +1,7 @@
-<cc-select-search-field
+<v-select-field
     [disabled]="!(partyId$ | async) || !(shopId$ | async)"
     [formControl]="control"
     [label]="label || 'Payout Tool'"
     [options]="options$ | async"
     [required]="required"
-    isExternalSearch
-    (searchChange)="searchChange$.next($event)"
-></cc-select-search-field>
+></v-select-field>

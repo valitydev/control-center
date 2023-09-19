@@ -15,6 +15,8 @@ import { DialogModule } from '@vality/ng-core';
 
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
+import { DomainObjectFieldComponent } from '../../../../shared';
+
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
 import { ExpanderComponent } from './expander';
 import { PredicateComponent } from './predicate';
@@ -35,6 +37,7 @@ import { PredicateComponent } from './predicate';
         MatAutocompleteModule,
         MetadataFormModule,
         DialogModule,
+        DomainObjectFieldComponent,
     ],
     declarations: [AddRoutingRuleDialogComponent, PredicateComponent, ExpanderComponent],
     exports: [AddRoutingRuleDialogComponent],

@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '@vality/domain-proto/domain';
 import { DialogResponseStatus } from '@vality/ng-core';
 import { of } from 'rxjs';
-import { startWith, switchMap, take } from 'rxjs/operators';
+import { startWith, take, switchMap } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../../services/routing-rules';
 
@@ -22,7 +22,7 @@ export class AddRoutingRuleDialogService {
         weight: '',
         priority: 1000,
         terminalType: [null, Validators.required],
-        existentTerminalID: ['', Validators.required],
+        existentTerminalID: [null, Validators.required],
         newTerminal: this.fb.group({
             name: ['', Validators.required],
             description: ['', Validators.required],

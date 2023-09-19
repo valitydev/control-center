@@ -1,15 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { PayoutTool } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
+import { createControlProviders, FormControlSuperclass, Option } from '@vality/ng-core';
 import { coerceBoolean } from 'coerce-property';
-import { BehaviorSubject, combineLatest, defer, Observable, of, Subject, switchMap } from 'rxjs';
-import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, defer, Observable, of, switchMap } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { Option } from '@cc/components/select-search-field';
-import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 
 import { handleError, NotificationErrorService } from '../../services/notification-error';
 
@@ -17,11 +15,10 @@ import { handleError, NotificationErrorService } from '../../services/notificati
 @Component({
     selector: 'cc-payout-tool-field',
     templateUrl: 'payout-tool-field.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     providers: createControlProviders(() => PayoutToolFieldComponent),
 })
 export class PayoutToolFieldComponent
-    extends ValidatedControlSuperclass<PartyID>
+    extends FormControlSuperclass<PayoutTool['id']>
     implements OnInit
 {
     @Input() label: string;
@@ -33,18 +30,12 @@ export class PayoutToolFieldComponent
         this.shopId$.next(shopId);
     }
 
-    control = new FormControl() as FormControl<PartyID>;
-
     partyId$ = new BehaviorSubject<PartyID>(null);
     shopId$ = new BehaviorSubject<ShopID>(null);
-
-    searchChange$ = new Subject<string>();
-    options$: Observable<Option<PayoutTool['id']>[]> = combineLatest([
-        this.searchChange$.pipe(map((str) => str?.trim()?.toLowerCase())).pipe(startWith('')),
-        defer(() => this.payoutTools$),
-    ]).pipe(
-        map(([str, payoutTools]) => payoutTools.filter((t) => t.id.includes(str))),
-        map((payoutTools) => payoutTools.map((t) => ({ label: t.id, value: t.id }))),
+    options$: Observable<Option<PayoutTool['id']>[]> = defer(() => this.payoutTools$).pipe(
+        map((payoutTools) =>
+            payoutTools.map((t) => ({ label: t.id, value: t.id, description: t.id })),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
@@ -57,7 +48,7 @@ export class PayoutToolFieldComponent
                           switchMap(({ contract_id }) =>
                               this.partyManagementService.GetContract(partyId, contract_id),
                           ),
-                          pluck('payout_tools'),
+                          map((contract) => contract.payout_tools),
                       )
                       .pipe(
                           handleError(

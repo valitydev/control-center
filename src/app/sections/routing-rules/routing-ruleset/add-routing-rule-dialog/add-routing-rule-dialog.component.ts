@@ -5,8 +5,6 @@ import { domain } from '@vality/domain-proto';
 import { Predicate } from '@vality/domain-proto/domain';
 import { DialogSuperclass } from '@vality/ng-core';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-
 import { AddRoutingRuleDialogService, TerminalType } from './add-routing-rule-dialog.service';
 
 @UntilDestroy()
@@ -25,12 +23,10 @@ export class AddRoutingRuleDialogComponent extends DialogSuperclass<
 
     terminalType = TerminalType;
     riskScore = domain.RiskScore;
-    terminals$ = this.domainStoreService.getObjects('terminal');
 
     constructor(
         injector: Injector,
         private addShopRoutingRuleDialogService: AddRoutingRuleDialogService,
-        private domainStoreService: DomainStoreService,
         private fb: FormBuilder,
     ) {
         super(injector);

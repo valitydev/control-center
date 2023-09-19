@@ -3,6 +3,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { hasControls } from '../../has-controls';
 
 /**
+ * @deprecated
  * FormGroup/FormArray don't return internal control errors,
  * so you need to get internal errors manually
  */
