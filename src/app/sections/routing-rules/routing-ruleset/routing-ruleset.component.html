@@ -19,51 +19,53 @@
             Routing rules
         </cc-routing-ruleset-header>
 
-        <mat-accordion *ngIf="(candidates$ | async)?.length; else emptyShopRules">
-            <mat-expansion-panel *ngFor="let candidate of candidates$ | async; let idx = index">
+        <mat-accordion *ngIf="(idxCandidates$ | async)?.length; else emptyShopRules">
+            <mat-expansion-panel *ngFor="let c of idxCandidates$ | async">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{ (terminalsMapID$ | async)[candidate.terminal.id]?.data?.name }}
+                        {{ (terminalsMapID$ | async)[c.candidate.terminal.id]?.data?.name }}
                     </mat-panel-title>
                     <mat-panel-description gdColumns="1fr 1fr 1fr">
-                        <div>#{{ (terminalsMapID$ | async)[candidate.terminal.id]?.ref?.id }}</div>
-                        <div>Weight: {{ candidate.weight }}</div>
-                        <div>Priority: {{ candidate.priority }}</div>
+                        <div>
+                            #{{ (terminalsMapID$ | async)[c.candidate.terminal.id]?.ref?.id }}
+                        </div>
+                        <div>Weight: {{ c.candidate.weight }}</div>
+                        <div>Priority: {{ c.candidate.priority }}</div>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div fxLayout="column" fxLayoutGap="24px">
                     <div fxLayout fxLayoutGap="8px">
                         <div fxFlex fxLayout="column" fxLayoutGap="8px">
                             <div class="mat-caption cc-routing-rules-caption">Description</div>
-                            <div>{{ candidate.description }}</div>
+                            <div>{{ c.candidate.description }}</div>
                         </div>
                         <div fxFlex fxLayout="column" fxLayoutGap="8px">
                             <div class="mat-caption cc-routing-rules-caption">Weight</div>
-                            <div>{{ candidate.weight }}</div>
+                            <div>{{ c.candidate.weight }}</div>
                         </div>
                         <div fxFlex fxLayout="column" fxLayoutGap="8px">
                             <div class="mat-caption cc-routing-rules-caption">Priority</div>
-                            <div>{{ candidate.priority }}</div>
+                            <div>{{ c.candidate.priority }}</div>
                         </div>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
                         <div class="mat-headline-4">Predicate</div>
                         <cc-pretty-json
-                            [object]="predicateToObject(candidate?.allowed)"
+                            [object]="predicateToObject(c.candidate?.allowed)"
                         ></cc-pretty-json>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
                         <div class="mat-headline-4">Terminal</div>
                         <cc-pretty-json
                             [object]="
-                                terminalToObject((terminalsMapID$ | async)[candidate.terminal.id])
+                                terminalToObject((terminalsMapID$ | async)[c.candidate.terminal.id])
                                     ?.data
                             "
                         ></cc-pretty-json>
                     </div>
                 </div>
                 <mat-action-row fxLayoutAlign="start">
-                    <button color="warn" mat-button (click)="removeShopRule(idx)">Remove</button>
+                    <button color="warn" mat-button (click)="removeShopRule(c.idx)">Remove</button>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
