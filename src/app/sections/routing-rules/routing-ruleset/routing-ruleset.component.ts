@@ -29,7 +29,6 @@ export class RoutingRulesetComponent {
     idxCandidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) =>
             r.data.decisions.candidates
-                .slice()
                 .map((candidate, idx) => ({ candidate, idx }))
                 .sort((a, b) => b.candidate.priority - a.candidate.priority),
         ),
