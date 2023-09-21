@@ -26,8 +26,12 @@ export class RoutingRulesetComponent {
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
     routingRulesType$ = this.route.params.pipe(pluck('type')) as Observable<RoutingRulesType>;
     shop$ = this.routingRulesetService.shop$;
-    candidates$ = this.routingRulesetService.shopRuleset$.pipe(
-        map((r) => r.data.decisions.candidates.slice().sort((a, b) => b.priority - a.priority)),
+    idxCandidates$ = this.routingRulesetService.shopRuleset$.pipe(
+        map((r) =>
+            r.data.decisions.candidates
+                .map((candidate, idx) => ({ candidate, idx }))
+                .sort((a, b) => b.candidate.priority - a.candidate.priority),
+        ),
         shareReplay(1),
     );
     terminalsMapID$ = this.domainStoreService
