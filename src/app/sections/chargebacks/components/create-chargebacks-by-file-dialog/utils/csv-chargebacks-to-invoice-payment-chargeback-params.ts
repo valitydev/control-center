@@ -9,7 +9,7 @@ export function csvChargebacksToInvoicePaymentChargebackParams(
 ): InvoicePaymentChargebackParams {
     return clean(
         {
-            id: short().uuid(),
+            id: short().generate(),
             reason: {
                 code: c['reason.code'],
                 category: { [c['reason.category']]: {} },
