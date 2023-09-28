@@ -76,6 +76,9 @@ export class RoutingRulesetService {
                 untilDestroyed(this),
             )
             .subscribe({
+                next: () => {
+                    this.log.successOperation('delete', 'Shop routing candidate');
+                },
                 error: (err) => {
                     this.log.error(err);
                 },

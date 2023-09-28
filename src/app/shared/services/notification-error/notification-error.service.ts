@@ -5,6 +5,9 @@ import { ErrorService } from './types/error-service';
 
 const DEFAULT_DURATION_MS = 6000;
 
+/**
+ * @deprecated
+ */
 @Injectable({ providedIn: 'root' })
 export class NotificationErrorService implements ErrorService {
     constructor(private snackBar: MatSnackBar) {}

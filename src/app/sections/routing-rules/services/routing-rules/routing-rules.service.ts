@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
-import {
-    Terminal,
-    Predicate,
-    RoutingCandidate,
-    RoutingDelegate,
-    RoutingRulesObject,
-} from '@vality/domain-proto/domain';
+import { RoutingCandidate, RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { Version } from '@vality/domain-proto/domain_config';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, concat, Observable } from 'rxjs';
-import { first, map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { createNextId } from '@cc/utils/create-next-id';
@@ -210,33 +204,35 @@ export class RoutingRulesService {
         );
     }
 
-    addShopRule({
-        refID,
-        terminalID,
-        description,
-        weight,
-        priority,
-        predicate,
-    }: {
-        refID: number;
-        terminalID: number;
-        description: string;
-        weight: number;
-        priority: number;
-        predicate: Predicate;
-    }): Observable<Version> {
+    addShopRule(refID: number, params: RoutingCandidate): Observable<Version> {
         return this.getRuleset(refID).pipe(
             take(1),
             switchMap((ruleset) => {
-                const newShopRuleset = this.cloneRulesetAndPushCandidate(ruleset, {
-                    description,
-                    allowed: predicate,
-                    terminal: {
-                        id: terminalID,
-                    },
-                    weight,
-                    priority,
+                const newShopRuleset = this.cloneRulesetAndPushCandidate(ruleset, params);
+                return this.domainStoreService.commit({
+                    ops: [
+                        {
+                            update: {
+                                old_object: { routing_rules: ruleset },
+                                new_object: { routing_rules: newShopRuleset },
+                            },
+                        },
+                    ],
                 });
+            }),
+        );
+    }
+
+    updateShopRule(
+        refID: number,
+        candidateIdx: number,
+        shopCandidate: RoutingCandidate,
+    ): Observable<Version> {
+        return this.getRuleset(refID).pipe(
+            take(1),
+            switchMap((ruleset) => {
+                const newShopRuleset = cloneDeep(ruleset);
+                newShopRuleset.data.decisions.candidates.splice(candidateIdx, 1, shopCandidate);
                 return this.domainStoreService.commit({
                     ops: [
                         {
@@ -296,6 +292,13 @@ export class RoutingRulesService {
                     ],
                 });
             }),
+        );
+    }
+
+    getShopCandidate(refID: number, candidateIdx: number) {
+        return this.getRuleset(refID).pipe(
+            take(1),
+            map((shopRuleset) => cloneDeep(shopRuleset.data.decisions.candidates.at(candidateIdx))),
         );
     }
 
@@ -427,27 +430,6 @@ export class RoutingRulesService {
                             update: {
                                 old_object: { routing_rules: mainRuleset },
                                 new_object: { routing_rules: newMainRuleset },
-                            },
-                        },
-                    ],
-                });
-            }),
-        );
-    }
-
-    createTerminal(terminal: Terminal): Observable<Version> {
-        return this.domainStoreService.getObjects('terminal').pipe(
-            first(),
-            map((objs) => objs.map(({ ref }) => ref.id)),
-            map(createNextId),
-            switchMap((id) => {
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            insert: {
-                                object: {
-                                    terminal: { ref: { id }, data: terminal },
-                                },
                             },
                         },
                     ],

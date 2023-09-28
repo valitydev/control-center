@@ -64,7 +64,8 @@
                         ></cc-pretty-json>
                     </div>
                 </div>
-                <mat-action-row fxLayoutAlign="start">
+                <mat-action-row>
+                    <button mat-button (click)="editShopRule(c.idx)">Edit</button>
                     <button color="warn" mat-button (click)="removeShopRule(c.idx)">Remove</button>
                 </mat-action-row>
             </mat-expansion-panel>

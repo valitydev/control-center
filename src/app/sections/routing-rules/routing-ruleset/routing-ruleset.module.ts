@@ -23,7 +23,6 @@ import { PrettyJsonModule } from '@cc/components/pretty-json';
 
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
-import { AddRoutingRuleDialogModule } from './add-routing-rule-dialog';
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
 import { RoutingRulesetComponent } from './routing-ruleset.component';
 
@@ -49,7 +48,6 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         MatExpansionModule,
         RoutingRulesetHeaderModule,
         MatAutocompleteModule,
-        AddRoutingRuleDialogModule,
         PrettyJsonModule,
         MatProgressBarModule,
     ],
