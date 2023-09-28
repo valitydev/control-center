@@ -1,56 +1,7 @@
 <v-dialog title="Routing rule params">
-    <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
-        <div fxLayout="column" fxLayoutGap="16px">
-            <mat-form-field>
-                <input
-                    formControlName="description"
-                    matInput
-                    placeholder="Description (optional)"
-                />
-            </mat-form-field>
-            <mat-form-field>
-                <input
-                    formControlName="weight"
-                    matInput
-                    placeholder="Weight (optional)"
-                    type="number"
-                />
-            </mat-form-field>
-            <mat-form-field>
-                <input
-                    formControlName="priority"
-                    matInput
-                    placeholder="Priority"
-                    required
-                    type="number"
-                />
-            </mat-form-field>
-        </div>
-
-        <mat-divider></mat-divider>
-
-        <div class="mat-headline-4">Predicate</div>
-        <cc-predicate [formControl]="predicateControl"></cc-predicate>
-
-        <mat-divider></mat-divider>
-
-        <div class="mat-headline-4">Terminal</div>
-        <cc-domain-object-field
-            formControlName="existentTerminalID"
-            fxFlex
-            name="terminal"
-            required
-        ></cc-domain-object-field>
-    </div>
+    <cc-domain-thrift-form [formControl]="control" type="RoutingCandidate"></cc-domain-thrift-form>
 
     <v-dialog-actions>
-        <button
-            [disabled]="form.invalid || predicateControl.invalid"
-            color="primary"
-            mat-button
-            (click)="add()"
-        >
-            Add
-        </button>
+        <button [disabled]="control.invalid" color="primary" mat-button (click)="add()">Add</button>
     </v-dialog-actions>
 </v-dialog>

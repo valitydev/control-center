@@ -16,10 +16,9 @@ import { DialogModule } from '@vality/ng-core';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { DomainObjectFieldComponent } from '../../../../shared';
+import { DomainThriftFormComponent } from '../../../../shared/components/thrift-forms/domain-thrift-form';
 
 import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog.component';
-import { ExpanderComponent } from './expander';
-import { PredicateComponent } from './predicate';
 
 @NgModule({
     imports: [
@@ -38,8 +37,9 @@ import { PredicateComponent } from './predicate';
         MetadataFormModule,
         DialogModule,
         DomainObjectFieldComponent,
+        DomainThriftFormComponent,
     ],
-    declarations: [AddRoutingRuleDialogComponent, PredicateComponent, ExpanderComponent],
+    declarations: [AddRoutingRuleDialogComponent],
     exports: [AddRoutingRuleDialogComponent],
 })
 export class AddRoutingRuleDialogModule {}
