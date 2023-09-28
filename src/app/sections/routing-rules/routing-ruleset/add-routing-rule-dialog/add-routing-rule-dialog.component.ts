@@ -1,49 +1,54 @@
 import { Component, Injector } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { domain } from '@vality/domain-proto';
 import { Predicate } from '@vality/domain-proto/domain';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass, DialogResponseStatus } from '@vality/ng-core';
+import { of } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
 
-import { AddRoutingRuleDialogService, TerminalType } from './add-routing-rule-dialog.service';
+import { RoutingRulesService } from '../../services/routing-rules';
 
 @UntilDestroy()
 @Component({
     templateUrl: 'add-routing-rule-dialog.component.html',
     styleUrls: ['add-routing-rule-dialog.component.scss'],
-    providers: [AddRoutingRuleDialogService],
 })
 export class AddRoutingRuleDialogComponent extends DialogSuperclass<
     AddRoutingRuleDialogComponent,
-    { refID: number }
+    { refID: number; idx?: number }
 > {
-    form = this.addShopRoutingRuleDialogService.form;
-    newTerminalOptionsForm = this.addShopRoutingRuleDialogService.newTerminalOptionsForm;
+    form = this.fb.group({
+        description: '',
+        weight: null as number,
+        priority: 1000,
+        existentTerminalID: [null as number, Validators.required],
+    });
     predicateControl = this.fb.control<Predicate>(null, Validators.required);
-
-    terminalType = TerminalType;
-    riskScore = domain.RiskScore;
 
     constructor(
         injector: Injector,
-        private addShopRoutingRuleDialogService: AddRoutingRuleDialogService,
         private fb: FormBuilder,
+        private routingRulesService: RoutingRulesService,
     ) {
         super(injector);
     }
 
     add() {
-        this.addShopRoutingRuleDialogService.add(
-            this.predicateControl.value,
-            this.dialogData.refID,
-        );
-    }
-
-    addOption() {
-        this.addShopRoutingRuleDialogService.addOption();
-    }
-
-    removeOption(idx: number) {
-        this.addShopRoutingRuleDialogService.removeOption(idx);
+        const { description, weight, priority, existentTerminalID } = this.form.value;
+        of(existentTerminalID)
+            .pipe(
+                take(1),
+                switchMap((terminalID) =>
+                    this.routingRulesService.addShopRule({
+                        description,
+                        weight,
+                        priority,
+                        terminalID,
+                        refID: this.dialogData.refID,
+                        predicate: this.predicateControl.value,
+                    }),
+                ),
+            )
+            .subscribe(() => this.dialogRef.close({ status: DialogResponseStatus.Success }));
     }
 }
