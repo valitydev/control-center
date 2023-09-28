@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, Observable } from 'rxjs';
-import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import {
+    DialogService,
+    ConfirmDialogComponent,
+    DialogResponseStatus,
+    NotifyLogService,
+} from '@vality/ng-core';
+import { combineLatest, Observable, filter } from 'rxjs';
+import { map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { handleError } from '../../../../utils/operators/handle-error';
 import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 
+@UntilDestroy()
 @Injectable()
 export class RoutingRulesetService {
-    partyID$: Observable<string> = this.route.params.pipe(pluck('partyID'), shareReplay(1));
+    partyID$: Observable<string> = this.route.params.pipe(
+        map((r) => r.partyID),
+        shareReplay(1),
+    );
     partyRulesetRefID$: Observable<number> = this.route.params.pipe(
-        pluck('partyRefID'),
+        map((r) => r.partyRefID),
         map((p) => +p),
         shareReplay(1),
     );
     refID$: Observable<number> = this.route.params.pipe(
-        pluck('refID'),
+        map((r) => r.refID),
         map((p) => +p),
         shareReplay(1),
     );
@@ -46,21 +55,30 @@ export class RoutingRulesetService {
         private routingRulesService: RoutingRulesDamselService,
         private route: ActivatedRoute,
         private partyManagementService: PartyManagementService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
+        private dialog: DialogService,
     ) {}
 
     removeShopRule(candidateIdx: number) {
-        this.refID$
+        this.dialog
+            .open(ConfirmDialogComponent)
+            .afterClosed()
             .pipe(
+                filter((r) => r.status === DialogResponseStatus.Success),
+                withLatestFrom(this.refID$),
                 take(1),
-                switchMap((refID) =>
+                switchMap(([, refID]) =>
                     this.routingRulesService.removeShopRule({
                         refID,
                         candidateIdx,
                     }),
                 ),
-                handleError(this.notificationErrorService.error),
+                untilDestroyed(this),
             )
-            .subscribe();
+            .subscribe({
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
     }
 }
