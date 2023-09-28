@@ -1,0 +1,13 @@
+<v-dialog [title]="dialogData.title">
+    <cc-domain-thrift-form
+        [formControl]="control"
+        [namespace]="dialogData.namespace"
+        [type]="dialogData.type"
+    ></cc-domain-thrift-form>
+
+    <v-dialog-actions>
+        <button [disabled]="control.invalid" color="primary" mat-button (click)="upsert()">
+            {{ isUpdate ? 'Update' : 'Add' }}
+        </button>
+    </v-dialog-actions>
+</v-dialog>

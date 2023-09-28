@@ -2,17 +2,18 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Predicate, TerminalObject } from '@vality/domain-proto/domain';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { RoutingCandidate } from '@vality/domain-proto/internal/domain';
+import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/ng-core';
 import { Observable } from 'rxjs';
-import { first, map, pluck, shareReplay, switchMap } from 'rxjs/operators';
+import { first, map, pluck, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { NotificationService } from '@cc/app/shared/services/notification';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
-import { AddRoutingRuleDialogComponent } from './add-routing-rule-dialog';
+import { DomainThriftFormDialogComponent } from '../../../shared/components/thrift-forms-dialogs';
+import { RoutingRulesService } from '../services/routing-rules';
+
 import { RoutingRulesetService } from './routing-ruleset.service';
 
 @UntilDestroy()
@@ -47,11 +48,11 @@ export class RoutingRulesetComponent {
     isLoading$ = this.domainStoreService.isLoading$;
 
     constructor(
-        private dialogService: DialogService,
+        private dialog: DialogService,
         private routingRulesetService: RoutingRulesetService,
+        private routingRulesService: RoutingRulesService,
         private domainStoreService: DomainStoreService,
-        private notificationErrorService: NotificationErrorService,
-        private notificationService: NotificationService,
+        private log: NotifyLogService,
         private route: ActivatedRoute,
     ) {}
 
@@ -59,8 +60,14 @@ export class RoutingRulesetComponent {
         this.routingRulesetService.refID$
             .pipe(
                 first(),
-                switchMap((refID) =>
-                    this.dialogService.open(AddRoutingRuleDialogComponent, { refID }).afterClosed(),
+                switchMap((refId) =>
+                    this.dialog
+                        .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
+                            type: 'RoutingCandidate',
+                            title: 'Add shop routing candidate',
+                            action: (params) => this.routingRulesService.addShopRule(refId, params),
+                        })
+                        .afterClosed(),
                 ),
             )
             .pipe(untilDestroyed(this))
@@ -68,12 +75,43 @@ export class RoutingRulesetComponent {
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
                         this.domainStoreService.forceReload();
-                        this.notificationService.success('Routing rule successfully added');
+                        this.log.successOperation('update', 'Routing rule');
                     }
                 },
                 error: (err) => {
-                    this.notificationErrorService.error(err);
-                    this.notificationService.success('Error while adding routing rule');
+                    this.log.error(err, 'Error while adding routing rule');
+                },
+            });
+    }
+
+    editShopRule(idx: number) {
+        this.routingRulesetService.refID$
+            .pipe(
+                first(),
+                switchMap((refId) => this.routingRulesService.getShopCandidate(refId, idx)),
+                withLatestFrom(this.routingRulesetService.refID$),
+                switchMap(([shopCandidate, refId]) =>
+                    this.dialog
+                        .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
+                            type: 'RoutingCandidate',
+                            title: `Edit shop routing candidate #${idx + 1}`,
+                            object: shopCandidate,
+                            action: (params) =>
+                                this.routingRulesService.updateShopRule(refId, idx, params),
+                        })
+                        .afterClosed(),
+                ),
+            )
+            .pipe(untilDestroyed(this))
+            .subscribe({
+                next: (res) => {
+                    if (res.status === DialogResponseStatus.Success) {
+                        this.domainStoreService.forceReload();
+                        this.log.successOperation('update', 'Routing rule');
+                    }
+                },
+                error: (err) => {
+                    this.log.error(err);
                 },
             });
     }

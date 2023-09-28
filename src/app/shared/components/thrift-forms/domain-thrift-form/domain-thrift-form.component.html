@@ -1,5 +1,5 @@
 <cc-metadata-form
-    [extensions]="extensions"
+    [extensions]="extensions$ | async"
     [formControl]="control"
     [metadata]="metadata$ | async"
     [namespace]="namespace ?? defaultNamespace"

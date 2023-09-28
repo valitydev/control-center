@@ -39,14 +39,6 @@
                             <div class="mat-caption cc-routing-rules-caption">Description</div>
                             <div>{{ c.candidate.description }}</div>
                         </div>
-                        <div fxFlex fxLayout="column" fxLayoutGap="8px">
-                            <div class="mat-caption cc-routing-rules-caption">Weight</div>
-                            <div>{{ c.candidate.weight }}</div>
-                        </div>
-                        <div fxFlex fxLayout="column" fxLayoutGap="8px">
-                            <div class="mat-caption cc-routing-rules-caption">Priority</div>
-                            <div>{{ c.candidate.priority }}</div>
-                        </div>
                     </div>
                     <div fxLayout="column" fxLayoutGap="16px">
                         <div class="mat-headline-4">Predicate</div>
@@ -64,7 +56,8 @@
                         ></cc-pretty-json>
                     </div>
                 </div>
-                <mat-action-row fxLayoutAlign="start">
+                <mat-action-row>
+                    <button mat-button (click)="editShopRule(c.idx)">Edit</button>
                     <button color="warn" mat-button (click)="removeShopRule(c.idx)">Remove</button>
                 </mat-action-row>
             </mat-expansion-panel>
