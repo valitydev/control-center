@@ -5,7 +5,7 @@ import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { FormControlSuperclass, createControlProviders } from '@vality/ng-core';
 import { from } from 'rxjs';
 
-import { MetadataFormModule, MetadataFormExtension } from '../metadata-form';
+import { MetadataFormModule, MetadataFormExtension } from '../../../metadata-form';
 
 @Component({
     standalone: true,
