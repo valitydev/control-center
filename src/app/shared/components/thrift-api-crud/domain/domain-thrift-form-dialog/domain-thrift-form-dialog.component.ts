@@ -6,7 +6,7 @@ import { DialogSuperclass, DialogModule } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 
-import { DomainThriftFormComponent } from '../../thrift-forms/domain-thrift-form';
+import { DomainThriftFormComponent } from '../domain-thrift-form';
 
 @UntilDestroy()
 @Component({

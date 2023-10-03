@@ -14,9 +14,9 @@ import { first, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operato
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
-import { DomainThriftFormDialogComponent } from '../../../shared/components/thrift-forms-dialogs';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { RoutingRulesetService } from './routing-ruleset.service';

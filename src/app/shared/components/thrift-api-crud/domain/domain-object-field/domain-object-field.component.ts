@@ -13,11 +13,12 @@ import { defer, switchMap, ReplaySubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+
 import {
     DOMAIN_OBJECTS_TO_OPTIONS,
     OtherDomainObjects,
     defaultDomainObjectToOption,
-} from '@cc/app/shared/services/domain-metadata-form-extensions/utils/domains-objects-to-options';
+} from '../../../../services/domain-metadata-form-extensions/utils/domains-objects-to-options';
 
 type DomainObjectID = unknown;
 
