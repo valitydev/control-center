@@ -41,6 +41,7 @@ export class ChargebacksTableComponent {
                     pending: { color: 'pending' },
                     accepted: { color: 'success' },
                     rejected: { color: 'warn' },
+                    cancelled: { color: 'neutral' },
                 },
             },
         } as TagColumn<StatChargeback, keyof InvoicePaymentChargebackStatus>,
