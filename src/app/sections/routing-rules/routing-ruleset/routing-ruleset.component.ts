@@ -1,16 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Predicate, TerminalObject } from '@vality/domain-proto/domain';
-import { RoutingCandidate } from '@vality/domain-proto/internal/domain';
-import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/ng-core';
+import { ThriftAstMetadata } from '@vality/domain-proto';
+import { Predicate, TerminalObject, RoutingCandidate } from '@vality/domain-proto/domain';
+import {
+    DialogResponseStatus,
+    DialogService,
+    NotifyLogService,
+    Column,
+    createOperationColumn,
+    getImportValue,
+} from '@vality/ng-core';
 import { Observable } from 'rxjs';
-import { first, map, pluck, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import { first, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
+import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainThriftFormDialogComponent } from '../../../shared/components/thrift-forms-dialogs';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -22,11 +30,17 @@ import { RoutingRulesetService } from './routing-ruleset.service';
     providers: [RoutingRulesetService],
 })
 export class RoutingRulesetComponent {
+    @ViewChild('terminalTpl') terminalTpl: TemplateRef<unknown>;
+    @ViewChild('candidateTpl') candidateTpl: TemplateRef<unknown>;
+
     shopRuleset$ = this.routingRulesetService.shopRuleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
-    routingRulesType$ = this.route.params.pipe(pluck('type')) as Observable<RoutingRulesType>;
+    routingRulesType$ = this.route.params.pipe(map((p) => p.type)) as Observable<RoutingRulesType>;
     shop$ = this.routingRulesetService.shop$;
+    candidates$ = this.routingRulesetService.shopRuleset$.pipe(
+        map((r) => r.data.decisions.candidates),
+    );
     idxCandidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) =>
             r.data.decisions.candidates
@@ -46,6 +60,50 @@ export class RoutingRulesetComponent {
             ),
         );
     isLoading$ = this.domainStoreService.isLoading$;
+    columns: Column<RoutingCandidate>[] = [
+        {
+            field: 'index',
+            formatter: (d, idx) => `${idx + 1}`,
+            click: (d) => {
+                this.openedCandidate = d;
+                this.sidenavInfoService.toggle(this.candidateTpl, 'Candidate', d);
+            },
+        },
+        {
+            field: 'terminal.id',
+            header: 'Terminal',
+            formatter: (d) =>
+                this.domainStoreService
+                    .getObjects('terminal')
+                    .pipe(
+                        map(
+                            (terminals) =>
+                                terminals.find((t) => t.ref.id === d.terminal.id).data.name,
+                        ),
+                    ),
+            click: (d) => {
+                this.openedCandidate = d;
+                this.sidenavInfoService.toggle(this.terminalTpl, `Terminal`, d.terminal.id);
+            },
+        },
+        'description',
+        { field: 'allowed', formatter: (d) => JSON.stringify(d.allowed) },
+        'priority',
+        'weight',
+        { field: 'pin', formatter: (d) => JSON.stringify(Array.from(d.pin?.features || [])) },
+        createOperationColumn<RoutingCandidate>([
+            {
+                label: 'Edit',
+                click: (d, idx) => void this.editShopRule(idx),
+            },
+            {
+                label: 'Remove',
+                click: (d, idx) => void this.removeShopRule(idx),
+            },
+        ]),
+    ];
+    openedCandidate?: RoutingCandidate;
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
 
     constructor(
         private dialog: DialogService,
@@ -54,6 +112,7 @@ export class RoutingRulesetComponent {
         private domainStoreService: DomainStoreService,
         private log: NotifyLogService,
         private route: ActivatedRoute,
+        private sidenavInfoService: SidenavInfoService,
     ) {}
 
     addShopRule() {

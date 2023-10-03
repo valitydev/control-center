@@ -18,9 +18,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
+import { TableModule } from '@vality/ng-core';
 
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
+import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
@@ -50,6 +52,8 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         MatAutocompleteModule,
         PrettyJsonModule,
         MatProgressBarModule,
+        TableModule,
+        ThriftViewerModule,
     ],
     declarations: [RoutingRulesetComponent],
 })

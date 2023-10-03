@@ -14,6 +14,7 @@ import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-part
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
+import { SidenavInfoService } from './shared/components/sidenav-info/sidenav-info.service';
 
 const SIDENAV_OPENED_KEY = 'sidenav-opened';
 
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
     constructor(
         private keycloakService: KeycloakService,
         private appAuthGuardService: AppAuthGuardService,
+        public sidenavInfoService: SidenavInfoService,
     ) {}
 
     ngOnInit() {

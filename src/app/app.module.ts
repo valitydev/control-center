@@ -29,6 +29,7 @@ import { ClaimsModule } from './sections/claims/claims.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
+import { SidenavInfoComponent } from './shared/components/sidenav-info';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
@@ -71,6 +72,7 @@ export let AppInjector: Injector;
         KeycloakTokenInfoModule,
         PayoutsModule,
         SectionsModule,
+        SidenavInfoComponent,
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
         // TODO: hack for cash field 😡
