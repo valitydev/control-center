@@ -10,7 +10,7 @@ import { filter, first } from 'rxjs/operators';
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
-import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
 import { inProgressFrom, progressTo } from '@cc/utils';

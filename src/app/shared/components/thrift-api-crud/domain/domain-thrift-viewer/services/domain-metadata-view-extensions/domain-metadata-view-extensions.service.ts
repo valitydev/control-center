@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
+import { getImportValue } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
-import { of, Observable, from } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
@@ -18,10 +19,8 @@ import { getObjectLabel } from './utils/get-object-label';
     providedIn: 'root',
 })
 export class DomainMetadataViewExtensionsService {
-    extensions$: Observable<MetadataViewExtension[]> = from(
-        import('@vality/domain-proto/metadata.json').then(
-            (m) => m.default as never as ThriftAstMetadata[],
-        ),
+    extensions$: Observable<MetadataViewExtension[]> = getImportValue<ThriftAstMetadata[]>(
+        import('@vality/domain-proto/metadata.json'),
     ).pipe(
         map((metadata) => [
             ...this.createDomainObjectExtensions(metadata),

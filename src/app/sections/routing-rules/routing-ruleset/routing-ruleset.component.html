@@ -23,19 +23,15 @@
 </div>
 
 <ng-template #terminalTpl>
-    <cc-thrift-viewer
-        [metadata]="metadata$ | async"
+    <cc-domain-thrift-viewer
         [value]="(terminalsMapID$ | async)[openedCandidate.terminal.id]"
-        namespace="domain"
         type="TerminalObject"
-    ></cc-thrift-viewer>
+    ></cc-domain-thrift-viewer>
 </ng-template>
 
 <ng-template #candidateTpl>
-    <cc-thrift-viewer
-        [metadata]="metadata$ | async"
+    <cc-domain-thrift-viewer
         [value]="openedCandidate"
-        namespace="domain"
         type="RoutingCandidate"
-    ></cc-thrift-viewer>
+    ></cc-domain-thrift-viewer>
 </ng-template>

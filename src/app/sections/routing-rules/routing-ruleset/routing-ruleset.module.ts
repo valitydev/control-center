@@ -13,16 +13,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { TableModule } from '@vality/ng-core';
 
+import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
 import { PrettyJsonModule } from '@cc/components/pretty-json';
 
-import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
@@ -51,9 +50,8 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         RoutingRulesetHeaderModule,
         MatAutocompleteModule,
         PrettyJsonModule,
-        MatProgressBarModule,
         TableModule,
-        ThriftViewerModule,
+        DomainThriftViewerComponent,
     ],
     declarations: [RoutingRulesetComponent],
 })

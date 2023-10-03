@@ -1,22 +1,19 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ThriftAstMetadata } from '@vality/domain-proto';
-import { Predicate, TerminalObject, RoutingCandidate } from '@vality/domain-proto/domain';
+import { TerminalObject, RoutingCandidate } from '@vality/domain-proto/domain';
 import {
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
     Column,
     createOperationColumn,
-    getImportValue,
 } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { first, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainThriftFormDialogComponent } from '../../../shared/components/thrift-forms-dialogs';
@@ -64,9 +61,9 @@ export class RoutingRulesetComponent {
         {
             field: 'index',
             formatter: (d, idx) => `${idx + 1}`,
-            click: (d) => {
+            click: (d, idx) => {
                 this.openedCandidate = d;
-                this.sidenavInfoService.toggle(this.candidateTpl, 'Candidate', d);
+                this.sidenavInfoService.toggle(this.candidateTpl, `Candidate #${idx + 1}`, d);
             },
         },
         {
@@ -83,7 +80,11 @@ export class RoutingRulesetComponent {
                     ),
             click: (d) => {
                 this.openedCandidate = d;
-                this.sidenavInfoService.toggle(this.terminalTpl, `Terminal`, d.terminal.id);
+                this.sidenavInfoService.toggle(
+                    this.terminalTpl,
+                    `Terminal #${d.terminal.id}`,
+                    d.terminal.id,
+                );
             },
         },
         'description',
@@ -103,7 +104,6 @@ export class RoutingRulesetComponent {
         ]),
     ];
     openedCandidate?: RoutingCandidate;
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
 
     constructor(
         private dialog: DialogService,
@@ -177,13 +177,5 @@ export class RoutingRulesetComponent {
 
     removeShopRule(idx: number) {
         this.routingRulesetService.removeShopRule(idx);
-    }
-
-    terminalToObject(terminal: TerminalObject) {
-        return objectToJSON(terminal);
-    }
-
-    predicateToObject(predicate: Predicate) {
-        return objectToJSON(predicate);
     }
 }
