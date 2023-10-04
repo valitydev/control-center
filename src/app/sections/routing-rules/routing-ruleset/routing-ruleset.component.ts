@@ -55,6 +55,7 @@ export class RoutingRulesetComponent {
         {
             pinned: 'left',
             field: 'index',
+            header: 'Candidate',
             formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
             click: (d) => {
                 this.getCandidateIdx(d)
