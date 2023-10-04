@@ -10,7 +10,7 @@ import {
     Column,
     createOperationColumn,
 } from '@vality/ng-core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
@@ -96,13 +96,18 @@ export class RoutingRulesetComponent {
         {
             field: 'global_allow',
             formatter: (d) =>
-                this.domainStoreService.getObjects('terminal').pipe(
-                    map(
-                        (terminals) =>
-                            terminals.find((t) => t.ref.id === d.terminal.id).data?.terms?.payments
-                                ?.global_allow,
-                    ),
-                    map((globalAllow) => JSON.stringify(objectToJSON(globalAllow))),
+                combineLatest([
+                    this.domainStoreService.getObjects('terminal'),
+                    this.routingRulesType$,
+                ]).pipe(
+                    map(([terminals, type]) => {
+                        const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
+                        const globalAllow =
+                            type === RoutingRulesType.Payment
+                                ? terms?.payments?.global_allow
+                                : terms?.wallet?.withdrawals?.global_allow;
+                        return JSON.stringify(objectToJSON(globalAllow));
+                    }),
                 ),
         },
         { field: 'allowed', formatter: (d) => JSON.stringify(objectToJSON(d.allowed)) },
