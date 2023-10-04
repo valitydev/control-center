@@ -93,6 +93,18 @@ export class RoutingRulesetComponent {
             },
         },
         'description',
+        {
+            field: 'global_allow',
+            formatter: (d) =>
+                this.domainStoreService.getObjects('terminal').pipe(
+                    map(
+                        (terminals) =>
+                            terminals.find((t) => t.ref.id === d.terminal.id).data?.terms?.payments
+                                ?.global_allow,
+                    ),
+                    map((globalAllow) => JSON.stringify(objectToJSON(globalAllow))),
+                ),
+        },
         { field: 'allowed', formatter: (d) => JSON.stringify(objectToJSON(d.allowed)) },
         { field: 'priority', sortable: true },
         { field: 'weight', sortable: true },
