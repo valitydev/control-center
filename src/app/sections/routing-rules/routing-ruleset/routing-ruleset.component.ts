@@ -1,17 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Predicate, TerminalObject } from '@vality/domain-proto/domain';
-import { RoutingCandidate } from '@vality/domain-proto/internal/domain';
-import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/ng-core';
-import { Observable } from 'rxjs';
-import { first, map, pluck, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import { TerminalObject, RoutingCandidate } from '@vality/domain-proto/domain';
+import {
+    DialogResponseStatus,
+    DialogService,
+    NotifyLogService,
+    Column,
+    createOperationColumn,
+} from '@vality/ng-core';
+import { Observable, combineLatest } from 'rxjs';
+import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { objectToJSON } from '@cc/utils/thrift-instance';
+import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 
-import { DomainThriftFormDialogComponent } from '../../../shared/components/thrift-forms-dialogs';
+import { objectToJSON } from '../../../../utils';
+import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
@@ -22,18 +29,16 @@ import { RoutingRulesetService } from './routing-ruleset.service';
     providers: [RoutingRulesetService],
 })
 export class RoutingRulesetComponent {
+    @ViewChild('terminalTpl') terminalTpl: TemplateRef<unknown>;
+    @ViewChild('candidateTpl') candidateTpl: TemplateRef<unknown>;
+
     shopRuleset$ = this.routingRulesetService.shopRuleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
-    routingRulesType$ = this.route.params.pipe(pluck('type')) as Observable<RoutingRulesType>;
+    routingRulesType$ = this.route.params.pipe(map((p) => p.type)) as Observable<RoutingRulesType>;
     shop$ = this.routingRulesetService.shop$;
-    idxCandidates$ = this.routingRulesetService.shopRuleset$.pipe(
-        map((r) =>
-            r.data.decisions.candidates
-                .map((candidate, idx) => ({ candidate, idx }))
-                .sort((a, b) => b.candidate.priority - a.candidate.priority),
-        ),
-        shareReplay(1),
+    candidates$ = this.routingRulesetService.shopRuleset$.pipe(
+        map((r) => r.data.decisions.candidates),
     );
     terminalsMapID$ = this.domainStoreService
         .getObjects('terminal')
@@ -46,6 +51,97 @@ export class RoutingRulesetComponent {
             ),
         );
     isLoading$ = this.domainStoreService.isLoading$;
+    columns: Column<RoutingCandidate>[] = [
+        {
+            pinned: 'left',
+            field: 'index',
+            header: 'Candidate',
+            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
+            click: (d) => {
+                this.getCandidateIdx(d)
+                    .pipe(untilDestroyed(this))
+                    .subscribe((idx) => {
+                        this.openedCandidate = d;
+                        this.sidenavInfoService.toggle(
+                            this.candidateTpl,
+                            `Candidate #${idx + 1}`,
+                            d,
+                        );
+                    });
+            },
+        },
+        {
+            pinned: 'left',
+            field: 'terminal.id',
+            header: 'Terminal',
+            formatter: (d) =>
+                this.domainStoreService
+                    .getObjects('terminal')
+                    .pipe(
+                        map(
+                            (terminals) =>
+                                terminals.find((t) => t.ref.id === d.terminal.id).data.name,
+                        ),
+                    ),
+            click: (d) => {
+                this.openedCandidate = d;
+                this.sidenavInfoService.toggle(
+                    this.terminalTpl,
+                    `Terminal #${d.terminal.id}`,
+                    d.terminal.id,
+                );
+            },
+        },
+        'description',
+        {
+            field: 'global_allow',
+            formatter: (d) =>
+                combineLatest([
+                    this.domainStoreService.getObjects('terminal'),
+                    this.routingRulesType$,
+                ]).pipe(
+                    map(([terminals, type]) => {
+                        const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
+                        const globalAllow =
+                            type === RoutingRulesType.Payment
+                                ? terms?.payments?.global_allow
+                                : terms?.wallet?.withdrawals?.global_allow;
+                        return JSON.stringify(objectToJSON(globalAllow));
+                    }),
+                ),
+        },
+        { field: 'allowed', formatter: (d) => JSON.stringify(objectToJSON(d.allowed)) },
+        { field: 'priority', sortable: true },
+        { field: 'weight', sortable: true },
+        { field: 'pin', formatter: (d) => JSON.stringify(objectToJSON(d.pin?.features)) },
+        createOperationColumn<RoutingCandidate>([
+            {
+                label: 'Edit',
+                click: (d) => {
+                    this.getCandidateIdx(d)
+                        .pipe(untilDestroyed(this))
+                        .subscribe((idx) => {
+                            this.editShopRule(idx);
+                        });
+                },
+            },
+            {
+                label: 'Remove',
+                click: (d) => {
+                    this.getCandidateIdx(d)
+                        .pipe(untilDestroyed(this))
+                        .subscribe((idx) => {
+                            void this.removeShopRule(idx);
+                        });
+                },
+            },
+        ]),
+    ];
+    openedCandidate?: RoutingCandidate;
+    sort: Sort = {
+        active: 'priority',
+        direction: 'desc',
+    };
 
     constructor(
         private dialog: DialogService,
@@ -54,6 +150,7 @@ export class RoutingRulesetComponent {
         private domainStoreService: DomainStoreService,
         private log: NotifyLogService,
         private route: ActivatedRoute,
+        private sidenavInfoService: SidenavInfoService,
     ) {}
 
     addShopRule() {
@@ -120,11 +217,10 @@ export class RoutingRulesetComponent {
         this.routingRulesetService.removeShopRule(idx);
     }
 
-    terminalToObject(terminal: TerminalObject) {
-        return objectToJSON(terminal);
-    }
-
-    predicateToObject(predicate: Predicate) {
-        return objectToJSON(predicate);
+    getCandidateIdx(candidate: RoutingCandidate) {
+        return this.candidates$.pipe(
+            map((candidates) => candidates.findIndex((c) => c === candidate)),
+            first(),
+        );
     }
 }

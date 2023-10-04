@@ -5,7 +5,7 @@ import { ValueType } from '@vality/thrift-ts';
 import { of, Observable, BehaviorSubject, combineLatest, defer } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { MetadataFormExtension } from '../../metadata-form';
+import { MetadataFormExtension } from '../../../metadata-form';
 
 @Directive()
 export abstract class BaseThriftFormSuperclass

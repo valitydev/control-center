@@ -4,9 +4,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { createControlProviders, getImportValue } from '@vality/ng-core';
 
-import { DomainMetadataFormExtensionsService } from '../../../services';
-import { MetadataFormModule } from '../../metadata-form';
-import { BaseThriftFormSuperclass } from '../utils/thrift-form-superclass';
+import { DomainMetadataFormExtensionsService } from '../../../../services';
+import { MetadataFormModule } from '../../../metadata-form';
+import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
 @Component({
     standalone: true,

@@ -52,12 +52,13 @@ export class PaymentsTableComponent {
             typeParameters: {
                 label: (data) => startCase(getUnionKey(data.status)),
                 tags: {
-                    pending: { color: 'pending' },
-                    processed: { color: 'pending' },
                     captured: { color: 'success' },
                     refunded: { color: 'success' },
-                    failed: { color: 'warn' },
                     charged_back: { color: 'success' },
+                    pending: { color: 'pending' },
+                    processed: { color: 'pending' },
+                    failed: { color: 'warn' },
+                    cancelled: { color: 'neutral' },
                 },
             },
         } as TagColumn<StatPayment, keyof InvoicePaymentStatus>,

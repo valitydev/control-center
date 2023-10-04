@@ -15,13 +15,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
 
-import {
-    EnumKeyPipe,
-    EnumKeysPipe,
-    DomainObjectFieldComponent,
-    PageLayoutModule,
-} from '@cc/app/shared';
+import { EnumKeyPipe, EnumKeysPipe, PageLayoutModule } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';

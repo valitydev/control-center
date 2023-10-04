@@ -1,70 +1,42 @@
-<ng-container *ngIf="isLoading$ | async; else loaded">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-container>
-<ng-template #loaded>
-    <div fxLayout="column" fxLayoutGap="64px">
-        <cc-routing-ruleset-header
-            [backTo]="
-                'party/' +
-                (partyID$ | async) +
-                '/routing-rules/' +
-                (routingRulesType$ | async) +
-                '/' +
-                (partyRulesetRefID$ | async)
-            "
-            [description]="(shop$ | async)?.details?.name"
-            [refID]="(shopRuleset$ | async)?.ref?.id"
-            (add)="addShopRule()"
-        >
-            Routing rules
-        </cc-routing-ruleset-header>
+<div fxLayout="column" fxLayoutGap="24px">
+    <cc-routing-ruleset-header
+        [backTo]="
+            'party/' +
+            (partyID$ | async) +
+            '/routing-rules/' +
+            (routingRulesType$ | async) +
+            '/' +
+            (partyRulesetRefID$ | async)
+        "
+        [description]="(shop$ | async)?.details?.name"
+        [refID]="(shopRuleset$ | async)?.ref?.id"
+        (add)="addShopRule()"
+    >
+        Routing rules
+    </cc-routing-ruleset-header>
 
-        <mat-accordion *ngIf="(idxCandidates$ | async)?.length; else emptyShopRules">
-            <mat-expansion-panel *ngFor="let c of idxCandidates$ | async">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{ (terminalsMapID$ | async)[c.candidate.terminal.id]?.data?.name }}
-                    </mat-panel-title>
-                    <mat-panel-description gdColumns="1fr 1fr 1fr">
-                        <div>
-                            #{{ (terminalsMapID$ | async)[c.candidate.terminal.id]?.ref?.id }}
-                        </div>
-                        <div>Weight: {{ c.candidate.weight }}</div>
-                        <div>Priority: {{ c.candidate.priority }}</div>
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <div fxLayout="column" fxLayoutGap="24px">
-                    <div fxLayout fxLayoutGap="8px">
-                        <div fxFlex fxLayout="column" fxLayoutGap="8px">
-                            <div class="mat-caption cc-routing-rules-caption">Description</div>
-                            <div>{{ c.candidate.description }}</div>
-                        </div>
-                    </div>
-                    <div fxLayout="column" fxLayoutGap="16px">
-                        <div class="mat-headline-4">Predicate</div>
-                        <cc-pretty-json
-                            [object]="predicateToObject(c.candidate?.allowed)"
-                        ></cc-pretty-json>
-                    </div>
-                    <div fxLayout="column" fxLayoutGap="16px">
-                        <div class="mat-headline-4">Terminal</div>
-                        <cc-pretty-json
-                            [object]="
-                                terminalToObject((terminalsMapID$ | async)[c.candidate.terminal.id])
-                                    ?.data
-                            "
-                        ></cc-pretty-json>
-                    </div>
-                </div>
-                <mat-action-row>
-                    <button mat-button (click)="editShopRule(c.idx)">Edit</button>
-                    <button color="warn" mat-button (click)="removeShopRule(c.idx)">Remove</button>
-                </mat-action-row>
-            </mat-expansion-panel>
-        </mat-accordion>
+    <v-table
+        [columns]="columns"
+        [data]="(candidates$ | async) || []"
+        [progress]="isLoading$ | async"
+        [sortActive]="sort.active"
+        [sortDirection]="sort.direction"
+        noActions
+        sortOnFront
+        (sortChange)="sort = $event"
+    ></v-table>
+</div>
 
-        <ng-template #emptyShopRules>
-            <div class="mat-display-1" fxFlexAlign="center">Routing rules is empty</div>
-        </ng-template>
-    </div>
+<ng-template #terminalTpl>
+    <cc-domain-thrift-viewer
+        [value]="(terminalsMapID$ | async)[openedCandidate.terminal.id]"
+        type="TerminalObject"
+    ></cc-domain-thrift-viewer>
+</ng-template>
+
+<ng-template #candidateTpl>
+    <cc-domain-thrift-viewer
+        [value]="openedCandidate"
+        type="RoutingCandidate"
+    ></cc-domain-thrift-viewer>
 </ng-template>

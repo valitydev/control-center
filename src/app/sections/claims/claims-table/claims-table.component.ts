@@ -41,6 +41,7 @@ export class ClaimsTableComponent {
                     pending_acceptance: { color: 'pending' },
                     accepted: { color: 'success' },
                     denied: { color: 'warn' },
+                    revoked: { color: 'neutral' },
                 },
             },
         } as TagColumn<Claim, keyof ClaimStatus>,

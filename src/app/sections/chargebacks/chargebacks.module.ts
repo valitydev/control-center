@@ -20,11 +20,12 @@ import {
     FileUploadModule,
 } from '@vality/ng-core';
 
+import { MagistaThriftFormComponent } from '@cc/app/shared/components/thrift-api-crud';
+
 import { PageLayoutModule, ShopFieldModule, ThriftPipesModule } from '../../shared';
-import { MagistaThriftFormComponent } from '../../shared/components/magista-thrift-form';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
-import { DomainThriftFormComponent } from '../../shared/components/thrift-forms/domain-thrift-form';
+import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud/domain/domain-thrift-form';
 
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';

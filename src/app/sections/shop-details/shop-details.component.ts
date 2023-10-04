@@ -5,7 +5,7 @@ import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@va
 import { combineLatest, switchMap, from } from 'rxjs';
 import { pluck, filter, withLatestFrom, first, map } from 'rxjs/operators';
 
-import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { getUnionKey } from '../../../utils';

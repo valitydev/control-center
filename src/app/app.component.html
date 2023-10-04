@@ -30,4 +30,14 @@
     <mat-sidenav-content class="content" role="main">
         <router-outlet></router-outlet>
     </mat-sidenav-content>
+    <mat-sidenav
+        [opened]="sidenavInfoService.opened"
+        class="sidenav-info"
+        fixedInViewport="true"
+        fixedTopGap="64"
+        mode="side"
+        position="end"
+    >
+        <cc-sidenav-info></cc-sidenav-info>
+    </mat-sidenav>
 </mat-sidenav-container>

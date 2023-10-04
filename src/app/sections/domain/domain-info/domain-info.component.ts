@@ -13,7 +13,7 @@ import { from } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
-import { DomainMetadataViewExtensionsService } from '@cc/app/shared/services/domain-metadata-view-extensions';
+import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 
 import { enumHasValue } from '../../../../utils';
 import { ViewerKind } from '../../../shared/components/thrift-viewer';
