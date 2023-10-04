@@ -1,4 +1,5 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TerminalObject, RoutingCandidate } from '@vality/domain-proto/domain';
@@ -10,12 +11,13 @@ import {
     createOperationColumn,
 } from '@vality/ng-core';
 import { Observable } from 'rxjs';
-import { first, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 
+import { objectToJSON } from '../../../../utils';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -38,14 +40,6 @@ export class RoutingRulesetComponent {
     candidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) => r.data.decisions.candidates),
     );
-    idxCandidates$ = this.routingRulesetService.shopRuleset$.pipe(
-        map((r) =>
-            r.data.decisions.candidates
-                .map((candidate, idx) => ({ candidate, idx }))
-                .sort((a, b) => b.candidate.priority - a.candidate.priority),
-        ),
-        shareReplay(1),
-    );
     terminalsMapID$ = this.domainStoreService
         .getObjects('terminal')
         .pipe(
@@ -59,14 +53,24 @@ export class RoutingRulesetComponent {
     isLoading$ = this.domainStoreService.isLoading$;
     columns: Column<RoutingCandidate>[] = [
         {
+            pinned: 'left',
             field: 'index',
-            formatter: (d, idx) => `${idx + 1}`,
-            click: (d, idx) => {
-                this.openedCandidate = d;
-                this.sidenavInfoService.toggle(this.candidateTpl, `Candidate #${idx + 1}`, d);
+            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
+            click: (d) => {
+                this.getCandidateIdx(d)
+                    .pipe(untilDestroyed(this))
+                    .subscribe((idx) => {
+                        this.openedCandidate = d;
+                        this.sidenavInfoService.toggle(
+                            this.candidateTpl,
+                            `Candidate #${idx + 1}`,
+                            d,
+                        );
+                    });
             },
         },
         {
+            pinned: 'left',
             field: 'terminal.id',
             header: 'Terminal',
             formatter: (d) =>
@@ -88,22 +92,38 @@ export class RoutingRulesetComponent {
             },
         },
         'description',
-        { field: 'allowed', formatter: (d) => JSON.stringify(d.allowed) },
-        'priority',
-        'weight',
-        { field: 'pin', formatter: (d) => JSON.stringify(Array.from(d.pin?.features || [])) },
+        { field: 'allowed', formatter: (d) => JSON.stringify(objectToJSON(d.allowed)) },
+        { field: 'priority', sortable: true },
+        { field: 'weight', sortable: true },
+        { field: 'pin', formatter: (d) => JSON.stringify(objectToJSON(d.pin?.features)) },
         createOperationColumn<RoutingCandidate>([
             {
                 label: 'Edit',
-                click: (d, idx) => void this.editShopRule(idx),
+                click: (d) => {
+                    this.getCandidateIdx(d)
+                        .pipe(untilDestroyed(this))
+                        .subscribe((idx) => {
+                            this.editShopRule(idx);
+                        });
+                },
             },
             {
                 label: 'Remove',
-                click: (d, idx) => void this.removeShopRule(idx),
+                click: (d) => {
+                    this.getCandidateIdx(d)
+                        .pipe(untilDestroyed(this))
+                        .subscribe((idx) => {
+                            void this.removeShopRule(idx);
+                        });
+                },
             },
         ]),
     ];
     openedCandidate?: RoutingCandidate;
+    sort: Sort = {
+        active: 'priority',
+        direction: 'desc',
+    };
 
     constructor(
         private dialog: DialogService,
@@ -177,5 +197,12 @@ export class RoutingRulesetComponent {
 
     removeShopRule(idx: number) {
         this.routingRulesetService.removeShopRule(idx);
+    }
+
+    getCandidateIdx(candidate: RoutingCandidate) {
+        return this.candidates$.pipe(
+            map((candidates) => candidates.findIndex((c) => c === candidate)),
+            first(),
+        );
     }
 }

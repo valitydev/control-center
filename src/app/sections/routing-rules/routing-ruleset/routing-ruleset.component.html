@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="64px">
+<div fxLayout="column" fxLayoutGap="24px">
     <cc-routing-ruleset-header
         [backTo]="
             'party/' +
@@ -19,6 +19,11 @@
         [columns]="columns"
         [data]="(candidates$ | async) || []"
         [progress]="isLoading$ | async"
+        [sortActive]="sort.active"
+        [sortDirection]="sort.direction"
+        noActions
+        sortOnFront
+        (sortChange)="sort = $event"
     ></v-table>
 </div>
 
