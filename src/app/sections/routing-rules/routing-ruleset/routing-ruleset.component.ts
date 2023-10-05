@@ -2,7 +2,7 @@ import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TerminalObject, RoutingCandidate } from '@vality/domain-proto/domain';
+import { TerminalObject, RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
 import {
     DialogResponseStatus,
     DialogService,
@@ -17,7 +17,7 @@ import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 
-import { objectToJSON } from '../../../../utils';
+import { objectToJSON, getUnionKey } from '../../../../utils';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -56,6 +56,7 @@ export class RoutingRulesetComponent {
             pinned: 'left',
             field: 'index',
             header: 'Candidate',
+            description: 'description',
             formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
             click: (d) => {
                 this.getCandidateIdx(d)
@@ -72,8 +73,8 @@ export class RoutingRulesetComponent {
         },
         {
             pinned: 'left',
-            field: 'terminal.id',
-            header: 'Terminal',
+            field: 'terminal',
+            description: 'terminal.id',
             formatter: (d) =>
                 this.domainStoreService
                     .getObjects('terminal')
@@ -92,7 +93,6 @@ export class RoutingRulesetComponent {
                 );
             },
         },
-        'description',
         {
             field: 'global_allow',
             formatter: (d) =>
@@ -106,14 +106,18 @@ export class RoutingRulesetComponent {
                             type === RoutingRulesType.Payment
                                 ? terms?.payments?.global_allow
                                 : terms?.wallet?.withdrawals?.global_allow;
-                        return JSON.stringify(objectToJSON(globalAllow));
+                        return this.formatPredicate(globalAllow);
                     }),
                 ),
         },
-        { field: 'allowed', formatter: (d) => JSON.stringify(objectToJSON(d.allowed)) },
+        { field: 'allowed', formatter: (d) => this.formatPredicate(d.allowed) },
         { field: 'priority', sortable: true },
         { field: 'weight', sortable: true },
-        { field: 'pin', formatter: (d) => JSON.stringify(objectToJSON(d.pin?.features)) },
+        {
+            field: 'pin',
+            formatter: (d) => JSON.stringify(objectToJSON(d.pin?.features)),
+            hide: true,
+        },
         createOperationColumn<RoutingCandidate>([
             {
                 label: 'Edit',
@@ -222,5 +226,12 @@ export class RoutingRulesetComponent {
             map((candidates) => candidates.findIndex((c) => c === candidate)),
             first(),
         );
+    }
+
+    private formatPredicate(predicate: Predicate) {
+        if (getUnionKey(predicate) === 'constant') {
+            return JSON.stringify(predicate.constant);
+        }
+        return JSON.stringify(objectToJSON(predicate));
     }
 }
