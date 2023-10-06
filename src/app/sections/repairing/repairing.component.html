@@ -41,7 +41,6 @@
         [hasMore]="hasMore$ | async"
         [progress]="(inProgress$ | async) && !!(columns$ | async)"
         [rowSelected]="selected$ | async"
-        [trackBy]="trackById"
         rowSelectable
         (more)="fetchMore()"
         (rowSelectionChange)="selected$.next($event)"
