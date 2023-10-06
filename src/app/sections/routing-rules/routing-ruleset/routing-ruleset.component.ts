@@ -54,9 +54,9 @@ export class RoutingRulesetComponent {
     columns: Column<RoutingCandidate>[] = [
         {
             pinned: 'left',
-            field: 'index',
-            header: 'Candidate',
+            field: 'candidate',
             description: 'description',
+            sortable: true,
             formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
             click: (d) => {
                 this.getCandidateIdx(d)
@@ -229,9 +229,10 @@ export class RoutingRulesetComponent {
     }
 
     private formatPredicate(predicate: Predicate) {
+        if (!predicate) return '';
         if (getUnionKey(predicate) === 'constant') {
             return JSON.stringify(predicate.constant);
         }
-        return JSON.stringify(objectToJSON(predicate));
+        return getUnionKey(predicate);
     }
 }
