@@ -12,7 +12,7 @@ export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
     columns: Column<Source>[] = [
-        { field: 'name', description: 'id' },
+        { field: 'name', description: 'id', pinned: 'left' },
         'identity',
         'currency_symbolic_code',
         { field: 'created_at', type: 'datetime' },

@@ -164,8 +164,4 @@ export class RepairingComponent implements OnInit {
             .pipe(untilDestroyed(this))
             .subscribe();
     }
-
-    trackById(index: number, item: Machine) {
-        return item.id;
-    }
 }
