@@ -1,8 +1,8 @@
 **/*
 
-!*.iml
+#!*.iml
 !jsLinters
 !inspectionProfiles
-!modules.xml
+#!modules.xml
 !prettier.xml
-!vcs.xml
+#!vcs.xml
