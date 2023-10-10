@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ng serve --proxy-config proxy.conf.js --port 4200",
-    "stage": "cross-env NODE_ENV=stage ng serve --proxy-config proxy.conf.js --port 4201 --configuration=stage",
+    "start": "ng serve --port 4200",
+    "stage": "cross-env NODE_ENV=stage ng serve --port 4201 --configuration=stage",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint --max-warnings=0",
@@ -78,7 +78,6 @@
     "@vality/prettier-config": "3.0.1-pr-33-1086ab7.0",
     "cross-env": "7.0.3",
     "cspell": "^7.0.0",
-    "dotenv": "16.0.0",
     "eslint": "^8.39.0",
     "jasmine-core": "4.2.0",
     "jasmine-spec-reporter": "7.0.0",

@@ -4,9 +4,8 @@ Admin Dashboard
 
 ## ⚙️ Installation
 
-1. Add environment and configurations:
+1. Add configurations:
 
-    - [`.env`](./_.env)
     - [`src/assets/appConfig.json`](./src/assets/_appConfig.json)
     - [`src/assets/authConfig.json`](./src/assets/_authConfig.json)
 
@@ -21,7 +20,6 @@ You can copy from examples like this one: [`_appConfig.json`](./src/assets/_appC
 
 Running in stage mode needs files:
 
--   `.env.stage`
 -   `src/assets/appConfig.stage.json`
 -   `src/assets/authConfig.stage.json`
 
