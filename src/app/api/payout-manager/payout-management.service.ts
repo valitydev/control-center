@@ -10,11 +10,16 @@ import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
 import { environment } from '@cc/environments/environment';
 
+import { ConfigService } from '../../core/config.service';
+
 @Injectable({ providedIn: 'root' })
 export class PayoutManagementService {
     private client$: Observable<payout_manager_PayoutManagementCodegenClient>;
 
-    constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {
+    constructor(
+        private keycloakTokenInfoService: KeycloakTokenInfoService,
+        configService: ConfigService,
+    ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
             map(toWachterHeaders('PayoutManagement')),
         );
@@ -29,7 +34,7 @@ export class PayoutManagementService {
                     metadata,
                     headers,
                     logging: environment.logging.requests,
-                    path: '/wachter',
+                    ...configService.config.api.wachter,
                 }),
             ),
         );
