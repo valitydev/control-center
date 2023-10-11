@@ -57,7 +57,7 @@ export class RoutingRulesetComponent {
             field: 'candidate',
             description: 'description',
             sortable: true,
-            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
+            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `#${idx + 1}`)),
             click: (d) => {
                 this.getCandidateIdx(d)
                     .pipe(untilDestroyed(this))

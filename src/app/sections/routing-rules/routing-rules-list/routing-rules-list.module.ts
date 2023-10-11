@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { TableModule } from '@vality/ng-core';
 
 import { RoutingRulesListComponent } from './routing-rules-list.component';
 
@@ -15,12 +15,11 @@ import { RoutingRulesListComponent } from './routing-rules-list.component';
         CommonModule,
         MatMenuModule,
         MatCardModule,
-        MatTableModule,
         MatPaginatorModule,
-        MatTableModule,
         MatIconModule,
         FlexLayoutModule,
         MatButtonModule,
+        TableModule,
     ],
     declarations: [RoutingRulesListComponent],
     exports: [RoutingRulesListComponent],

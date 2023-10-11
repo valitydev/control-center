@@ -1,19 +1,13 @@
-<ng-container *ngIf="isLoading$ | async; else loaded">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-container>
-<ng-template #loaded>
-    <div [fxLayoutGap]="(data$ | async)?.length ? '24px' : '64px'" fxLayout="column">
-        <div fxLayout fxLayoutAlign="space-between center" fxLayoutGap="8px">
-            <div class="mat-headline-4 mat-no-margin">Party delegate rulesets</div>
-            <button color="primary" mat-button (click)="attachNewRuleset()">
-                Attach new ruleset
-            </button>
-        </div>
-
-        <cc-routing-rules-list
-            [data]="data$ | async"
-            [displayedColumns]="displayedColumns"
-            (toDetails)="navigateToPartyRuleset($event.parentRefId, $event.delegateIdx)"
-        ></cc-routing-rules-list>
+<div fxLayout="column" fxLayoutGap="24px">
+    <div fxLayout fxLayoutAlign="space-between center" fxLayoutGap="8px">
+        <div class="mat-headline-4 mat-no-margin">Party delegate rulesets</div>
+        <button color="primary" mat-button (click)="attachNewRuleset()">Attach new ruleset</button>
     </div>
-</ng-template>
+
+    <cc-routing-rules-list
+        [data]="data$ | async"
+        [displayedColumns]="displayedColumns"
+        [progress]="isLoading$ | async"
+        (toDetails)="navigateToPartyRuleset($event.parentRefId, $event.delegateIdx)"
+    ></cc-routing-rules-list>
+</div>
