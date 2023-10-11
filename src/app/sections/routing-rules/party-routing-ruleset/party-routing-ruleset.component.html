@@ -18,14 +18,14 @@
         </cc-routing-ruleset-header>
 
         <cc-routing-rules-list
-            *ngIf="(shopsData$ | async)?.length || !(walletsData$ | async)?.length"
+            *ngIf="(routingRulesType$ | async) === 'payment'"
             [data]="shopsData$ | async"
             [displayedColumns]="shopsDisplayedColumns"
             (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
         ></cc-routing-rules-list>
 
         <cc-routing-rules-list
-            *ngIf="(walletsData$ | async)?.length"
+            *ngIf="(routingRulesType$ | async) === 'withdrawal'"
             [data]="walletsData$ | async"
             [displayedColumns]="walletsDisplayedColumns"
             (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"

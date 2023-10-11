@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogSuperclass, DialogModule } from '@vality/ng-core';
+import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 
@@ -25,6 +25,8 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
     },
     { object?: T; result?: R; error?: unknown }
 > {
+    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+
     control = this.fb.control(this.dialogData.object ?? null);
 
     get isUpdate() {

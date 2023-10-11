@@ -37,7 +37,10 @@ export class PartyRoutingRulesetComponent {
         { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
         { key: 'wallet', name: 'Wallet' },
     ];
-    shopsData$ = combineLatest([this.partyRuleset$, this.partyRoutingRulesetService.shops$]).pipe(
+    shopsData$ = combineLatest([
+        this.partyRuleset$,
+        this.partyRoutingRulesetService.shops$.pipe(startWith([])),
+    ]).pipe(
         filter(([r]) => !!r),
         map(([ruleset, shops]) =>
             ruleset.data.decisions.delegates
@@ -63,7 +66,7 @@ export class PartyRoutingRulesetComponent {
     );
     walletsData$ = combineLatest([
         this.partyRuleset$,
-        this.partyRoutingRulesetService.wallets$,
+        this.partyRoutingRulesetService.wallets$.pipe(startWith([])),
     ]).pipe(
         filter(([r]) => !!r),
         map(([ruleset, wallets]) =>
