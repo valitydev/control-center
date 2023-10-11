@@ -29,7 +29,7 @@ export class DominantCacheService {
                     metadata,
                     headers,
                     logging: environment.logging.requests,
-                    path: '/wachter',
+                    ...configService.config.api.wachter,
                 }),
             ),
         );
