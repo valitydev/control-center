@@ -1,4 +1,15 @@
 <div fxLayout="column" fxLayoutGap="24px">
     <div class="mat-headline-4">Merchant's shops</div>
-    <v-table [columns]="columns" [data]="shops$ | async" noActions></v-table>
+    <div fxLayout="column" fxLayoutGap="24px">
+        <mat-card>
+            <mat-card-content>
+                <v-input-field
+                    [formControl]="filterControl"
+                    fxFlex="100"
+                    label="Filter"
+                ></v-input-field>
+            </mat-card-content>
+        </mat-card>
+        <v-table [columns]="columns" [data]="shops$ | async" noActions></v-table>
+    </div>
 </div>

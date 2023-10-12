@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Shop } from '@vality/domain-proto/domain';
 import { Column, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
+import { combineLatest, map } from 'rxjs';
+import { debounceTime, startWith } from 'rxjs/operators';
 
 import { getUnionKey } from '@cc/utils';
 
@@ -14,7 +17,18 @@ import { PartyShopsService } from './party-shops.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PartyShopsComponent {
-    shops$ = this.partyShopsService.shops$;
+    filterControl = new FormControl('');
+    shops$ = combineLatest([
+        this.partyShopsService.shops$,
+        this.filterControl.valueChanges.pipe(
+            startWith(this.filterControl.value),
+            debounceTime(200),
+        ),
+    ]).pipe(
+        map(([shops, searchStr]) =>
+            shops.filter((s) => JSON.stringify(s).toLowerCase().includes(searchStr.toLowerCase())),
+        ),
+    );
     columns: Column<Shop>[] = [
         {
             field: 'details.name',
