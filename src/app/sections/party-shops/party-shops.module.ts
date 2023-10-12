@@ -8,11 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { TableModule } from '@vality/ng-core';
 
 import { PartyShopsRoutingModule } from './party-shops-routing.module';
 import { PartyShopsComponent } from './party-shops.component';
-import { ShopsTableComponent } from './shops-table/shops-table.component';
 
 @NgModule({
     imports: [
@@ -20,14 +19,14 @@ import { ShopsTableComponent } from './shops-table/shops-table.component';
         CommonModule,
         FlexModule,
         MatPaginatorModule,
-        MatTableModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
         MatCardModule,
         MatIconModule,
         MatMenuModule,
+        TableModule,
     ],
-    declarations: [PartyShopsComponent, ShopsTableComponent],
+    declarations: [PartyShopsComponent],
 })
 export class PartyShopsModule {}
