@@ -22,6 +22,7 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
         action: (object: T) => Observable<R>;
         namespace?: string;
         object?: T;
+        actionType?: 'create' | 'update';
     },
     { object?: T; result?: R; error?: unknown }
 > {
@@ -29,8 +30,11 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
 
     control = this.fb.control(this.dialogData.object ?? null);
 
-    get isUpdate() {
-        return this.dialogData.object !== undefined;
+    get actionType() {
+        return (
+            this.dialogData.actionType ??
+            (this.dialogData.object !== undefined ? 'update' : 'create')
+        );
     }
 
     constructor(

@@ -7,7 +7,7 @@
 
     <v-dialog-actions>
         <button [disabled]="control.invalid" color="primary" mat-button (click)="upsert()">
-            {{ isUpdate ? 'Update' : 'Add' }}
+            {{ actionType === 'update' ? 'Update' : 'Add' }}
         </button>
     </v-dialog-actions>
 </v-dialog>
