@@ -66,9 +66,10 @@ export class RoutingRulesListComponent<
                         field: `${c.key as string}.text`,
                         formatter:
                             idx === 0
-                                ? (d) =>
-                                      (d?.[c.key] as any)?.text ||
-                                      `#${(d?.[c.key] as any)?.caption}`
+                                ? (d) => {
+                                      const v = d?.[c.key] as { caption: string; text: string };
+                                      return v?.text || `#${v?.caption}`;
+                                  }
                                 : undefined,
                         click:
                             idx === 0
