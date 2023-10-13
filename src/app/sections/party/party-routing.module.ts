@@ -21,11 +21,6 @@ import { ROUTING_CONFIG } from './routing-config';
                             import('../party-shops').then((m) => m.PartyShopsModule),
                     },
                     {
-                        path: 'shop/:shopID',
-                        loadChildren: () =>
-                            import('../shop-details').then((m) => m.ShopDetailsModule),
-                    },
-                    {
                         path: 'routing-rules',
                         loadChildren: () =>
                             import('../routing-rules').then((m) => m.RoutingRulesModule),

@@ -1,20 +1,25 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
-import { defer, Observable } from 'rxjs';
-import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
+import { defer, merge, Observable, Subject } from 'rxjs';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 @Injectable()
 export class PartyShopsService {
     shops$ = defer(() => this.party$).pipe(
-        pluck('shops'),
+        map((p) => p.shops),
         map((shops) => Array.from(shops.values())),
     );
 
-    private party$: Observable<Party> = this.route.params.pipe(
-        pluck('partyID'),
+    private reload$ = new Subject<void>();
+
+    private party$: Observable<Party> = merge(
+        this.route.params,
+        this.reload$.pipe(map(() => this.route.snapshot.params)),
+    ).pipe(
+        map((p) => p.partyID),
         switchMap((partyID) => this.partyManagementService.Get(partyID)),
         shareReplay(1),
     );
@@ -23,4 +28,8 @@ export class PartyShopsService {
         private partyManagementService: PartyManagementService,
         private route: ActivatedRoute,
     ) {}
+
+    reload() {
+        this.reload$.next();
+    }
 }

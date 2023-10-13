@@ -5,6 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { InputFieldModule, TableModule } from '@vality/ng-core';
 
+import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
+
 import { PartyShopsRoutingModule } from './party-shops-routing.module';
 import { PartyShopsComponent } from './party-shops.component';
 
@@ -17,6 +19,7 @@ import { PartyShopsComponent } from './party-shops.component';
         TableModule,
         ReactiveFormsModule,
         InputFieldModule,
+        DomainThriftViewerComponent,
     ],
     declarations: [PartyShopsComponent],
 })
