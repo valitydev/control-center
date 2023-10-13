@@ -57,7 +57,7 @@ export class RoutingRulesetComponent {
             field: 'candidate',
             description: 'description',
             sortable: true,
-            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `${idx + 1}`)),
+            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `#${idx + 1}`)),
             click: (d) => {
                 this.getCandidateIdx(d)
                     .pipe(untilDestroyed(this))
@@ -130,6 +130,16 @@ export class RoutingRulesetComponent {
                 },
             },
             {
+                label: 'Duplicate',
+                click: (d) => {
+                    this.getCandidateIdx(d)
+                        .pipe(untilDestroyed(this))
+                        .subscribe((idx) => {
+                            void this.duplicateShopRule(idx);
+                        });
+                },
+            },
+            {
                 label: 'Remove',
                 click: (d) => {
                     this.getCandidateIdx(d)
@@ -176,7 +186,7 @@ export class RoutingRulesetComponent {
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
                         this.domainStoreService.forceReload();
-                        this.log.successOperation('update', 'Routing rule');
+                        this.log.successOperation('create', 'Routing rule');
                     }
                 },
                 error: (err) => {
@@ -209,6 +219,38 @@ export class RoutingRulesetComponent {
                     if (res.status === DialogResponseStatus.Success) {
                         this.domainStoreService.forceReload();
                         this.log.successOperation('update', 'Routing rule');
+                    }
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
+    }
+
+    duplicateShopRule(idx: number) {
+        this.routingRulesetService.refID$
+            .pipe(
+                first(),
+                switchMap((refId) => this.routingRulesService.getShopCandidate(refId, idx)),
+                withLatestFrom(this.routingRulesetService.refID$),
+                switchMap(([shopCandidate, refId]) =>
+                    this.dialog
+                        .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
+                            type: 'RoutingCandidate',
+                            title: 'Add shop routing candidate',
+                            object: shopCandidate,
+                            actionType: 'create',
+                            action: (params) => this.routingRulesService.addShopRule(refId, params),
+                        })
+                        .afterClosed(),
+                ),
+            )
+            .pipe(untilDestroyed(this))
+            .subscribe({
+                next: (res) => {
+                    if (res.status === DialogResponseStatus.Success) {
+                        this.domainStoreService.forceReload();
+                        this.log.successOperation('create', 'Routing rule');
                     }
                 },
                 error: (err) => {

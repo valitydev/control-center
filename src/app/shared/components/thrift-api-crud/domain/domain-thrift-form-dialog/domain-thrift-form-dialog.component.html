@@ -1,4 +1,4 @@
-<v-dialog [title]="dialogData.title">
+<v-dialog [title]="dialogData.title" fullSize>
     <cc-domain-thrift-form
         [formControl]="control"
         [namespace]="dialogData.namespace"
@@ -7,7 +7,7 @@
 
     <v-dialog-actions>
         <button [disabled]="control.invalid" color="primary" mat-button (click)="upsert()">
-            {{ isUpdate ? 'Update' : 'Add' }}
+            {{ actionType === 'update' ? 'Update' : 'Add' }}
         </button>
     </v-dialog-actions>
 </v-dialog>

@@ -6,18 +6,12 @@
                 (searchParamsChanged$)="searchParamsUpdated($event)"
             ></cc-parties-search-filters>
         </mat-card-content>
-        <mat-card-footer *ngIf="inProgress$ | async">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </mat-card-footer>
     </mat-card>
 
-    <ng-container *ngIf="parties$ | async as parties">
-        <cc-empty-search-result *ngIf="parties.length === 0"></cc-empty-search-result>
-        <mat-card *ngIf="parties.length > 0" fxLayout="column" fxLayoutGap="16px">
-            <cc-parties-table
-                [parties]="parties"
-                (menuItemSelected$)="partyMenuItemSelected($event)"
-            ></cc-parties-table>
-        </mat-card>
-    </ng-container>
+    <v-table
+        [columns]="columns"
+        [data]="parties$ | async"
+        [progress]="inProgress$ | async"
+        noActions
+    ></v-table>
 </cc-page-layout>

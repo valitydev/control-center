@@ -1,32 +1,35 @@
-<div class="wrapper" gdColumns="1fr" gdGap="8px" gdRows="1fr auto">
-    <cc-monaco-diff-editor
-        *ngIf="isDiff; else standard"
-        [modified]="comparedFile$ | async"
-        [options]="{ renderSideBySide: true, readOnly: true }"
-        [original]="valueFile$ | async"
-        class="monaco-editor"
-    ></cc-monaco-diff-editor>
-    <ng-template #standard>
-        <cc-json-viewer
-            *ngIf="kind === 'component'"
-            [extensions]="extensions"
-            [metadata]="metadata"
-            [namespace]="namespace"
-            [type]="type"
-            [value]="value"
-        ></cc-json-viewer>
-        <cc-monaco-editor
-            *ngIf="kind === 'editor'"
-            [file]="valueFile$ | async"
-            [options]="{ readOnly: true }"
+<div *ngIf="progress; else loaded" fxLayoutAlign="center"><mat-spinner></mat-spinner></div>
+<ng-template #loaded>
+    <div class="wrapper" gdColumns="1fr" gdGap="8px" gdRows="1fr auto">
+        <cc-monaco-diff-editor
+            *ngIf="isDiff; else standard"
+            [modified]="comparedFile$ | async"
+            [options]="{ renderSideBySide: true, readOnly: true }"
+            [original]="valueFile$ | async"
             class="monaco-editor"
-        >
-        </cc-monaco-editor>
-        <div class="actions" fxLayout fxLayoutAlign="end center" fxLayoutGap="2px">
-            <button color="primary" mat-icon-button (click)="toggleKind()">
-                <mat-icon *ngIf="kind === 'component'">code_blocks</mat-icon>
-                <mat-icon *ngIf="kind === 'editor'">view_comfy_alt</mat-icon>
-            </button>
-        </div>
-    </ng-template>
-</div>
+        ></cc-monaco-diff-editor>
+        <ng-template #standard>
+            <cc-json-viewer
+                *ngIf="kind === 'component'"
+                [extensions]="extensions"
+                [metadata]="metadata"
+                [namespace]="namespace"
+                [type]="type"
+                [value]="value"
+            ></cc-json-viewer>
+            <cc-monaco-editor
+                *ngIf="kind === 'editor'"
+                [file]="valueFile$ | async"
+                [options]="{ readOnly: true }"
+                class="monaco-editor"
+            >
+            </cc-monaco-editor>
+            <div class="actions" fxLayout fxLayoutAlign="end center" fxLayoutGap="2px">
+                <button color="primary" mat-icon-button (click)="toggleKind()">
+                    <mat-icon *ngIf="kind === 'component'">code_blocks</mat-icon>
+                    <mat-icon *ngIf="kind === 'editor'">view_comfy_alt</mat-icon>
+                </button>
+            </div>
+        </ng-template>
+    </div>
+</ng-template>

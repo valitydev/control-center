@@ -6,6 +6,7 @@ import { createControlProviders, getImportValue } from '@vality/ng-core';
 
 import { DomainMetadataFormExtensionsService } from '../../../../services';
 import { MetadataFormModule } from '../../../metadata-form';
+import { ThriftEditorModule } from '../../../thrift-editor';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
 @Component({
@@ -13,7 +14,7 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     selector: 'cc-domain-thrift-form',
     templateUrl: './domain-thrift-form.component.html',
     providers: createControlProviders(() => DomainThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, MetadataFormModule],
+    imports: [CommonModule, ReactiveFormsModule, MetadataFormModule, ThriftEditorModule],
 })
 export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));

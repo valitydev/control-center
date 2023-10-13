@@ -4,15 +4,20 @@ import {
     EventEmitter,
     Input,
     Output,
-    ViewChild,
+    OnChanges,
 } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
-import { combineLatest, defer, ReplaySubject } from 'rxjs';
-import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import {
+    DialogResponseStatus,
+    DialogService,
+    ConfirmDialogComponent,
+    Column,
+    createOperationColumn,
+    ComponentChanges,
+} from '@vality/ng-core';
+import { coerceBoolean } from 'coerce-property';
+import { filter, switchMap } from 'rxjs/operators';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
@@ -36,47 +41,15 @@ export class RoutingRulesListComponent<
     T extends { [N in PropertyKey]: unknown } & DelegateId = {
         [N in PropertyKey]: unknown;
     } & DelegateId,
-> {
+> implements OnChanges
+{
+    @Input() data: T[];
     @Input() displayedColumns: { key: keyof T; name: string }[];
-
-    @Input() set data(data: T[]) {
-        this.data$.next(data);
-    }
+    @Input() @coerceBoolean progress: boolean | '' = false;
 
     @Output() toDetails = new EventEmitter<DelegateId>();
 
-    @ViewChild(MatPaginator) set paginator(paginator: MatPaginator) {
-        this.paginator$.next(paginator);
-    }
-
-    dataSource$ = combineLatest([
-        defer(() => this.data$),
-        defer(() => this.paginator$).pipe(startWith(null)),
-    ]).pipe(
-        map(([d, paginator]) => {
-            const data = new MatTableDataSource(d);
-            data.paginator = paginator;
-            return data;
-        }),
-        shareReplay(1),
-    );
-
-    get allDisplayedColumns() {
-        if (!this.displayedColumns) {
-            return [];
-        }
-        return this.displayedColumns
-            .concat([
-                {
-                    key: 'actions',
-                    name: 'Actions',
-                },
-            ])
-            .map(({ key }) => key);
-    }
-
-    private data$ = new ReplaySubject<T[]>(1);
-    private paginator$ = new ReplaySubject<MatPaginator>(1);
+    columns: Column<T>[] = [];
 
     constructor(
         private dialogService: DialogService,
@@ -84,6 +57,61 @@ export class RoutingRulesListComponent<
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute,
     ) {}
+
+    ngOnChanges(changes: ComponentChanges<RoutingRulesListComponent<T>>) {
+        if (changes.displayedColumns) {
+            this.columns = [
+                ...this.displayedColumns.map(
+                    (c, idx): Column<T> => ({
+                        field: `${c.key as string}.text`,
+                        formatter:
+                            idx === 0
+                                ? (d) => {
+                                      const v = d?.[c.key] as { caption: string; text: string };
+                                      return v?.text || `#${v?.caption}`;
+                                  }
+                                : undefined,
+                        click:
+                            idx === 0
+                                ? (d) =>
+                                      this.toDetails.emit({
+                                          parentRefId: d?.parentRefId,
+                                          delegateIdx: d?.delegateIdx,
+                                      })
+                                : undefined,
+                        header: c.name,
+                        description: `${c.key as string}.caption`,
+                    }),
+                ),
+                createOperationColumn([
+                    {
+                        label: 'Details',
+                        click: (d) =>
+                            this.toDetails.emit({
+                                parentRefId: d?.parentRefId,
+                                delegateIdx: d?.delegateIdx,
+                            }),
+                    },
+                    {
+                        label: 'Change delegate ruleset',
+                        click: (d) => this.changeDelegateRuleset(d),
+                    },
+                    {
+                        label: 'Change main ruleset',
+                        click: (d) => this.changeTarget(d),
+                    },
+                    {
+                        label: 'Clone delegate ruleset',
+                        click: (d) => this.cloneDelegateRuleset(d),
+                    },
+                    {
+                        label: 'Delete',
+                        click: (d) => this.delete(d),
+                    },
+                ]),
+            ];
+        }
+    }
 
     changeDelegateRuleset(delegateId: DelegateId) {
         this.dialogService

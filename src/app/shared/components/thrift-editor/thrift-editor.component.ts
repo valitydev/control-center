@@ -24,7 +24,7 @@ export enum EditorKind {
     providers: createControlProviders(() => ThriftEditorComponent),
 })
 export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> {
-    @Input() kind: EditorKind = EditorKind.Editor;
+    @Input() kind: EditorKind = EditorKind.Form;
 
     @Input() defaultValue?: T;
 

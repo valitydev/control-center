@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
@@ -27,6 +28,7 @@ import { ThriftViewerComponent } from './thrift-viewer.component';
         FlexModule,
         JsonViewerModule,
         GridModule,
+        MatProgressSpinnerModule,
     ],
 })
 export class ThriftViewerModule {}

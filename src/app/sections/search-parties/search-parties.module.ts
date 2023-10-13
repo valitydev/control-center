@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TableModule } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { PageLayoutModule } from '../../shared';
 
 import { PartiesSearchFiltersModule } from './parties-search-filters';
-import { PartiesTableModule } from './parties-table';
 import { SearchPartiesRoutingModule } from './search-parties-routing.module';
 import { SearchPartiesComponent } from './search-parties.component';
 
@@ -19,11 +19,11 @@ import { SearchPartiesComponent } from './search-parties.component';
         FlexModule,
         MatCardModule,
         PartiesSearchFiltersModule,
-        PartiesTableModule,
         CommonModule,
         EmptySearchResultModule,
         MatProgressBarModule,
         PageLayoutModule,
+        TableModule,
     ],
     declarations: [SearchPartiesComponent],
 })

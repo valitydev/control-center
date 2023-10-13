@@ -23,9 +23,9 @@ import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service'
 })
 export class PartyDelegateRulesetsComponent {
     displayedColumns = [
+        { key: 'partyDelegate', name: 'Party delegate' },
         { key: 'paymentInstitution', name: 'Payment institution' },
         { key: 'mainRuleset', name: 'Main ruleset' },
-        { key: 'partyDelegate', name: 'Party delegate' },
     ];
     isLoading$ = this.domainStoreService.isLoading$;
     data$ = this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution().pipe(
