@@ -1,0 +1,15 @@
+<cc-page-layout title="Terminals">
+    <cc-page-layout-actions></cc-page-layout-actions>
+    <v-input-field [formControl]="searchControl" label="Search"></v-input-field>
+    <v-table
+        [columns]="columns"
+        [data]="data$ | async"
+        [progress]="progress$ | async"
+        size="100"
+        sortActive="data.name"
+        sortOnFront
+        (update)="update()"
+    >
+        <button color="primary" mat-raised-button (click)="create()">Create</button>
+    </v-table>
+</cc-page-layout>
