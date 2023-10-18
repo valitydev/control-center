@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TableModule, InputFieldModule } from '@vality/ng-core';
 
 import { PageLayoutModule } from '../../shared';
+import { DomainThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 
 import { TerminalsRoutingModule } from './terminals-routing.module';
 import { TerminalsComponent } from './terminals.component';
@@ -19,6 +20,7 @@ import { TerminalsComponent } from './terminals.component';
         PageLayoutModule,
         InputFieldModule,
         ReactiveFormsModule,
+        DomainThriftViewerComponent,
     ],
 })
 export class TerminalsModule {}
