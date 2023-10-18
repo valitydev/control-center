@@ -1,5 +1,4 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
-import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TerminalObject, RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
@@ -152,10 +151,6 @@ export class RoutingRulesetComponent {
         ]),
     ];
     openedCandidate?: RoutingCandidate;
-    sort: Sort = {
-        active: 'priority',
-        direction: 'desc',
-    };
 
     constructor(
         private dialog: DialogService,
