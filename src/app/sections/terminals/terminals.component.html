@@ -6,7 +6,7 @@
         [columns]="columns"
         [data]="data$ | async"
         [progress]="progress$ | async"
-        size="100"
+        size="50"
         sortOnFront
         (update)="update()"
     >
@@ -27,4 +27,30 @@
         [value]="openedProvider"
         type="ProviderObject"
     ></cc-domain-thrift-viewer>
+</ng-template>
+<ng-template #routingRulesTpl>
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let rule of openedRoutingRules">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ rule.data.name }}
+                </mat-panel-title>
+                <mat-panel-description>
+                    #{{ rule.ref.id
+                    }}<ng-container *ngIf="rule.data.description">
+                        ({{ rule.data.description }})</ng-container
+                    >
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <cc-domain-thrift-viewer
+                    [value]="rule"
+                    type="RoutingRulesObject"
+                ></cc-domain-thrift-viewer>
+            </ng-template>
+            <!--            <mat-action-row>-->
+            <!--                <button color="primary" mat-button (click)="()">Go to routing rules</button>-->
+            <!--            </mat-action-row>-->
+        </mat-expansion-panel>
+    </mat-accordion>
 </ng-template>

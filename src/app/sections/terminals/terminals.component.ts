@@ -3,8 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { TerminalObject } from '@vality/domain-proto/domain';
-import { ProviderObject } from '@vality/domain-proto/internal/domain';
+import { TerminalObject, ProviderObject, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { Column } from '@vality/ng-core';
 import { combineLatest } from 'rxjs';
 import { startWith, map, debounceTime, tap, take } from 'rxjs/operators';
@@ -40,17 +39,22 @@ export class TerminalsComponent {
             description: 'data.provider_ref.id',
             header: 'Provider',
             formatter: (d) =>
-                this.domainStoreService
-                    .getObjects('provider')
-                    .pipe(
-                        map(
-                            (providers) =>
-                                providers.find((p) => p.ref.id === d.data.provider_ref.id)?.data
-                                    ?.name,
-                        ),
-                    ),
+                d.data.provider_ref
+                    ? this.domainStoreService
+                          .getObjects('provider')
+                          .pipe(
+                              map(
+                                  (providers) =>
+                                      providers.find((p) => p.ref.id === d.data.provider_ref.id)
+                                          ?.data?.name,
+                              ),
+                          )
+                    : '',
             sortable: true,
             click: (d) => {
+                if (!d.data.provider_ref) {
+                    return;
+                }
                 this.domainStoreService
                     .getObjects('provider')
                     .pipe(
@@ -68,6 +72,50 @@ export class TerminalsComponent {
                                 provider.data.description ||
                                 `Provider #${provider.ref.id}`,
                             provider,
+                        );
+                    });
+            },
+        },
+        {
+            field: 'routing_rules',
+            formatter: (d) =>
+                this.domainStoreService
+                    .getObjects('routing_rules')
+                    .pipe(
+                        map(
+                            (rules) =>
+                                rules.filter(
+                                    (r) =>
+                                        r.data?.decisions?.candidates?.some?.(
+                                            (c) => c.terminal.id === d.ref.id,
+                                        ),
+                                ).length || '',
+                        ),
+                    ),
+            click: (d) => {
+                this.domainStoreService
+                    .getObjects('routing_rules')
+                    .pipe(
+                        map((rules) =>
+                            rules.filter(
+                                (r) =>
+                                    r.data?.decisions?.candidates?.some?.(
+                                        (c) => c.terminal.id === d.ref.id,
+                                    ),
+                            ),
+                        ),
+                        take(1),
+                        untilDestroyed(this),
+                    )
+                    .subscribe((rules) => {
+                        if (!rules.length) {
+                            return;
+                        }
+                        this.openedRoutingRules = rules;
+                        this.sidenavInfoService.toggle(
+                            this.routingRulesTpl,
+                            `Terminal #${d.ref.id} routing rules`,
+                            d,
                         );
                     });
             },
@@ -105,6 +153,8 @@ export class TerminalsComponent {
     @ViewChild('terminalTpl') terminalTpl: TemplateRef<unknown>;
     openedProvider?: ProviderObject;
     @ViewChild('providerTpl') providerTpl: TemplateRef<unknown>;
+    openedRoutingRules?: RoutingRulesObject[];
+    @ViewChild('routingRulesTpl') routingRulesTpl: TemplateRef<unknown>;
 
     constructor(
         private domainStoreService: DomainStoreService,
