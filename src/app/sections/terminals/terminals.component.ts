@@ -10,11 +10,13 @@ import {
     RoutingDelegate,
 } from '@vality/domain-proto/domain';
 import { Column } from '@vality/ng-core';
+import startCase from 'lodash-es/startCase';
 import { combineLatest } from 'rxjs';
 import { startWith, map, debounceTime, tap, take } from 'rxjs/operators';
 
 import { objectToJSON, createFullTextSearch, getUnionValue, getUnionKey } from '../../../utils';
 import { DomainStoreService } from '../../api/deprecated-damsel';
+import { PartiesStoreService } from '../../api/payment-processing';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 
 @UntilDestroy()
@@ -43,33 +45,15 @@ export class TerminalsComponent {
             field: 'data.provider_ref.id',
             description: 'data.provider_ref.id',
             header: 'Provider',
-            formatter: (d) =>
-                d.data.provider_ref
-                    ? this.domainStoreService
-                          .getObjects('provider')
-                          .pipe(
-                              map(
-                                  (providers) =>
-                                      providers.find((p) => p.ref.id === d.data.provider_ref.id)
-                                          ?.data?.name,
-                              ),
-                          )
-                    : '',
+            formatter: (d) => this.getProvider(d).pipe(map((p) => p?.data?.name || '')),
             sortable: true,
             click: (d) => {
-                if (!d.data.provider_ref) {
-                    return;
-                }
-                this.domainStoreService
-                    .getObjects('provider')
-                    .pipe(
-                        map((providers) =>
-                            providers.find((p) => p.ref.id === d.data.provider_ref.id),
-                        ),
-                        take(1),
-                        untilDestroyed(this),
-                    )
+                this.getProvider(d)
+                    .pipe(take(1), untilDestroyed(this))
                     .subscribe((provider) => {
+                        if (!provider) {
+                            return;
+                        }
                         this.openedProvider = provider;
                         this.sidenavInfoService.toggle(
                             this.providerTpl,
@@ -82,85 +66,14 @@ export class TerminalsComponent {
             },
         },
         {
-            field: 'routing_rules',
-            formatter: (d) =>
-                this.domainStoreService
-                    .getObjects('routing_rules')
-                    .pipe(
-                        map(
-                            (rules) =>
-                                rules.filter(
-                                    (r) =>
-                                        r.data?.decisions?.candidates?.some?.(
-                                            (c) => c.terminal.id === d.ref.id,
-                                        ),
-                                ).length || '',
-                        ),
-                    ),
-            click: (d) => {
-                this.domainStoreService
-                    .getObjects('routing_rules')
-                    .pipe(take(1), untilDestroyed(this))
-                    .subscribe((rules) => {
-                        this.openedTerminalRules = rules.filter(
-                            (r) =>
-                                r.data?.decisions?.candidates?.some?.(
-                                    (c) => c.terminal.id === d.ref.id,
-                                ),
-                        );
-                        this.sidenavInfoService.toggle(
-                            this.terminalRulesTpl,
-                            `Terminal #${d.ref.id} routing rules`,
-                            d,
-                        );
-                    });
-            },
-        },
-        {
             field: 'delegates',
             formatter: (d) =>
-                this.domainStoreService
-                    .getObjects('routing_rules')
-                    .pipe(
-                        map(
-                            (rules) =>
-                                rules.filter(
-                                    (r) =>
-                                        r.data?.decisions?.candidates?.some?.(
-                                            (c) => c.terminal.id === d.ref.id,
-                                        ),
-                                ).length || '',
-                        ),
-                    ),
+                this.getTerminalShopWalletDelegates(d).pipe(map((r) => r.length || '')),
             click: (d) => {
-                this.domainStoreService
-                    .getObjects('routing_rules')
+                this.getTerminalShopWalletDelegates(d)
                     .pipe(take(1), untilDestroyed(this))
                     .subscribe((rules) => {
-                        const terminalRules = rules.filter(
-                            (r) =>
-                                r.data?.decisions?.candidates?.some?.(
-                                    (c) => c.terminal.id === d.ref.id,
-                                ),
-                        );
-                        this.openedRoutingRules = terminalRules
-                            .map((terminalRule) =>
-                                rules.map((rule) =>
-                                    (
-                                        rule?.data?.decisions?.delegates?.filter?.(
-                                            (d) =>
-                                                d?.ruleset?.id === terminalRule.ref.id &&
-                                                !!d?.allowed?.condition?.party &&
-                                                ['wallet_is', 'shop_is'].includes(
-                                                    getUnionKey(
-                                                        d?.allowed?.condition?.party?.definition,
-                                                    ),
-                                                ),
-                                        ) || []
-                                    ).map((delegate) => ({ delegate, rule, terminalRule })),
-                                ),
-                            )
-                            .flat(2);
+                        this.openedRoutingRules = rules;
                         this.sidenavInfoService.toggle(
                             this.routingRulesTpl,
                             `Terminal #${d.ref.id} delegates`,
@@ -208,8 +121,6 @@ export class TerminalsComponent {
         terminalRule: RoutingRulesObject;
     }[];
     @ViewChild('routingRulesTpl') routingRulesTpl: TemplateRef<unknown>;
-    openedTerminalRules?: RoutingRulesObject[];
-    @ViewChild('terminalRulesTpl') terminalRulesTpl: TemplateRef<unknown>;
 
     routingRulesColumns: Column<{
         delegate: RoutingDelegate;
@@ -217,11 +128,9 @@ export class TerminalsComponent {
         terminalRule: RoutingRulesObject;
     }>[] = [
         {
-            field: 'terminalRule.ref.id',
-        },
-        {
+            header: 'Routing Rule',
             field: 'terminalRule.data.name',
-            description: 'terminalRule.data.description',
+            description: 'terminalRule.ref.id',
         },
         {
             header: 'Ruleset',
@@ -230,13 +139,42 @@ export class TerminalsComponent {
         },
         {
             field: 'party',
-            formatter: (d) => d.delegate.allowed.condition?.party?.id,
+            formatter: (d) =>
+                this.partiesStoreService
+                    .get(d.delegate.allowed.condition?.party?.id)
+                    .pipe(map((p) => p.contact_info.email)),
+            description: (d) => d.delegate.allowed.condition?.party?.id,
             link: (d) => `/party/${d.delegate.allowed.condition.party.id}`,
         },
         {
+            field: 'type',
+            formatter: (d) =>
+                startCase(
+                    getUnionKey(d.delegate.allowed.condition?.party?.definition).slice(0, -3),
+                ),
+        },
+        {
             field: 'definition',
-            formatter: (d) => getUnionValue(d.delegate.allowed.condition?.party?.definition),
-            description: (d) => getUnionKey(d.delegate.allowed.condition?.party?.definition),
+            formatter: (d) =>
+                this.partiesStoreService
+                    .get(d.delegate.allowed.condition?.party?.id)
+                    .pipe(
+                        map((p) =>
+                            getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
+                            'shop_is'
+                                ? p.shops.get(
+                                      getUnionValue(
+                                          d.delegate.allowed.condition?.party?.definition,
+                                      ),
+                                  ).details.name
+                                : p.wallets.get(
+                                      getUnionValue(
+                                          d.delegate.allowed.condition?.party?.definition,
+                                      ),
+                                  ).name,
+                        ),
+                    ),
+            description: (d) => getUnionValue(d.delegate.allowed.condition?.party?.definition),
             link: (d) =>
                 `/party/${d.delegate.allowed.condition.party.id}/routing-rules/${
                     getUnionKey(d.delegate.allowed.condition?.party?.definition) === 'shop_is'
@@ -245,20 +183,12 @@ export class TerminalsComponent {
                 }/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
         },
     ];
-    terminalRulesColumns: Column<RoutingRulesObject>[] = [
-        {
-            field: 'ref.id',
-        },
-        {
-            field: 'data.name',
-            description: 'data.description',
-        },
-    ];
 
     constructor(
         private domainStoreService: DomainStoreService,
         private router: Router,
         private sidenavInfoService: SidenavInfoService,
+        private partiesStoreService: PartiesStoreService,
     ) {}
 
     update() {
@@ -267,5 +197,44 @@ export class TerminalsComponent {
 
     create() {
         void this.router.navigate(['/domain/create']);
+    }
+
+    private getProvider(terminalObj: TerminalObject) {
+        return this.domainStoreService
+            .getObjects('provider')
+            .pipe(
+                map((providers) =>
+                    providers.find((p) => p.ref.id === terminalObj.data.provider_ref.id),
+                ),
+            );
+    }
+
+    private getTerminalShopWalletDelegates(terminalObj: TerminalObject) {
+        return this.domainStoreService.getObjects('routing_rules').pipe(
+            map((rules) => {
+                const terminalRules = rules.filter(
+                    (r) =>
+                        r.data?.decisions?.candidates?.some?.(
+                            (c) => c.terminal.id === terminalObj.ref.id,
+                        ),
+                );
+                return terminalRules
+                    .map((terminalRule) =>
+                        rules.map((rule) =>
+                            (
+                                rule?.data?.decisions?.delegates?.filter?.(
+                                    (d) =>
+                                        d?.ruleset?.id === terminalRule.ref.id &&
+                                        d?.allowed?.condition?.party &&
+                                        ['wallet_is', 'shop_is'].includes(
+                                            getUnionKey(d?.allowed?.condition?.party?.definition),
+                                        ),
+                                ) || []
+                            ).map((delegate) => ({ delegate, rule, terminalRule })),
+                        ),
+                    )
+                    .flat(2);
+            }),
+        );
     }
 }
