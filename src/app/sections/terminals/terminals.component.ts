@@ -15,7 +15,7 @@ import { combineLatest } from 'rxjs';
 import { startWith, map, debounceTime, tap, take } from 'rxjs/operators';
 
 import { objectToJSON, createFullTextSearch, getUnionValue, getUnionKey } from '../../../utils';
-import { DomainStoreService } from '../../api/deprecated-damsel';
+import { DomainStoreService } from '../../api/domain-config';
 import { PartiesStoreService } from '../../api/payment-processing';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 

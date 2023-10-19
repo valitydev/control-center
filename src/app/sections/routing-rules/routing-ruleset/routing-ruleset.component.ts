@@ -12,7 +12,7 @@ import {
 import { Observable, combineLatest } from 'rxjs';
 import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 

@@ -18,7 +18,7 @@ import { Moment } from 'moment';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, switchMap, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { getEnumKey } from '@cc/utils';
 

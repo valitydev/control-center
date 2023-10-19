@@ -4,7 +4,7 @@ import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
 import { first, withLatestFrom } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 

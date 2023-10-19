@@ -9,7 +9,7 @@ import sortBy from 'lodash-es/sortBy';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { createControlProviders, getFormValueChanges } from '../../utils';
 

@@ -5,7 +5,7 @@ import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { RoutingRulesType } from '../types/routing-rules-type';
 

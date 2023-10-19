@@ -6,7 +6,7 @@ import isNil from 'lodash-es/isNil';
 import { ReplaySubject, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { toMajor } from '../../../utils';
 

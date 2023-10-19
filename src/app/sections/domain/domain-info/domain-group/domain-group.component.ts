@@ -12,7 +12,7 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, Observable, ReplaySubject, defer } from 'rxjs';
 import { map, switchMap, startWith, shareReplay, withLatestFrom, filter } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { Columns } from '../../../../../components/table';

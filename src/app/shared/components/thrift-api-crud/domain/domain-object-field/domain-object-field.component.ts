@@ -12,7 +12,7 @@ import {
 import { defer, switchMap, ReplaySubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import {
     DOMAIN_OBJECTS_TO_OPTIONS,
