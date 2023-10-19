@@ -3,12 +3,17 @@ import { FormControl } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { TerminalObject, ProviderObject, RoutingRulesObject } from '@vality/domain-proto/domain';
+import {
+    TerminalObject,
+    ProviderObject,
+    RoutingRulesObject,
+    RoutingDelegate,
+} from '@vality/domain-proto/domain';
 import { Column } from '@vality/ng-core';
 import { combineLatest } from 'rxjs';
 import { startWith, map, debounceTime, tap, take } from 'rxjs/operators';
 
-import { objectToJSON, createFullTextSearch } from '../../../utils';
+import { objectToJSON, createFullTextSearch, getUnionValue, getUnionKey } from '../../../utils';
 import { DomainStoreService } from '../../api/deprecated-damsel';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 
@@ -95,26 +100,70 @@ export class TerminalsComponent {
             click: (d) => {
                 this.domainStoreService
                     .getObjects('routing_rules')
-                    .pipe(
-                        map((rules) =>
-                            rules.filter(
-                                (r) =>
-                                    r.data?.decisions?.candidates?.some?.(
-                                        (c) => c.terminal.id === d.ref.id,
-                                    ),
-                            ),
-                        ),
-                        take(1),
-                        untilDestroyed(this),
-                    )
+                    .pipe(take(1), untilDestroyed(this))
                     .subscribe((rules) => {
-                        if (!rules.length) {
-                            return;
-                        }
-                        this.openedRoutingRules = rules;
+                        this.openedTerminalRules = rules.filter(
+                            (r) =>
+                                r.data?.decisions?.candidates?.some?.(
+                                    (c) => c.terminal.id === d.ref.id,
+                                ),
+                        );
+                        this.sidenavInfoService.toggle(
+                            this.terminalRulesTpl,
+                            `Terminal #${d.ref.id} routing rules`,
+                            d,
+                        );
+                    });
+            },
+        },
+        {
+            field: 'delegates',
+            formatter: (d) =>
+                this.domainStoreService
+                    .getObjects('routing_rules')
+                    .pipe(
+                        map(
+                            (rules) =>
+                                rules.filter(
+                                    (r) =>
+                                        r.data?.decisions?.candidates?.some?.(
+                                            (c) => c.terminal.id === d.ref.id,
+                                        ),
+                                ).length || '',
+                        ),
+                    ),
+            click: (d) => {
+                this.domainStoreService
+                    .getObjects('routing_rules')
+                    .pipe(take(1), untilDestroyed(this))
+                    .subscribe((rules) => {
+                        const terminalRules = rules.filter(
+                            (r) =>
+                                r.data?.decisions?.candidates?.some?.(
+                                    (c) => c.terminal.id === d.ref.id,
+                                ),
+                        );
+                        this.openedRoutingRules = terminalRules
+                            .map((terminalRule) =>
+                                rules.map((rule) =>
+                                    (
+                                        rule?.data?.decisions?.delegates?.filter?.(
+                                            (d) =>
+                                                d?.ruleset?.id === terminalRule.ref.id &&
+                                                !!d?.allowed?.condition?.party &&
+                                                ['wallet_is', 'shop_is'].includes(
+                                                    getUnionKey(
+                                                        d?.allowed?.condition?.party?.definition,
+                                                    ),
+                                                ),
+                                        ) || []
+                                    ).map((delegate) => ({ delegate, rule, terminalRule })),
+                                ),
+                            )
+                            .flat(2);
                         this.sidenavInfoService.toggle(
                             this.routingRulesTpl,
-                            `Terminal #${d.ref.id} routing rules`,
+                            `Terminal #${d.ref.id} delegates`,
                             d,
                         );
                     });
@@ -153,8 +202,58 @@ export class TerminalsComponent {
     @ViewChild('terminalTpl') terminalTpl: TemplateRef<unknown>;
     openedProvider?: ProviderObject;
     @ViewChild('providerTpl') providerTpl: TemplateRef<unknown>;
-    openedRoutingRules?: RoutingRulesObject[];
+    openedRoutingRules?: {
+        delegate: RoutingDelegate;
+        rule: RoutingRulesObject;
+        terminalRule: RoutingRulesObject;
+    }[];
     @ViewChild('routingRulesTpl') routingRulesTpl: TemplateRef<unknown>;
+    openedTerminalRules?: RoutingRulesObject[];
+    @ViewChild('terminalRulesTpl') terminalRulesTpl: TemplateRef<unknown>;
+
+    routingRulesColumns: Column<{
+        delegate: RoutingDelegate;
+        rule: RoutingRulesObject;
+        terminalRule: RoutingRulesObject;
+    }>[] = [
+        {
+            field: 'terminalRule.ref.id',
+        },
+        {
+            field: 'terminalRule.data.name',
+            description: 'terminalRule.data.description',
+        },
+        {
+            header: 'Ruleset',
+            field: 'rule.data.name',
+            description: 'rule.ref.id',
+        },
+        {
+            field: 'party',
+            formatter: (d) => d.delegate.allowed.condition?.party?.id,
+            link: (d) => `/party/${d.delegate.allowed.condition.party.id}`,
+        },
+        {
+            field: 'definition',
+            formatter: (d) => getUnionValue(d.delegate.allowed.condition?.party?.definition),
+            description: (d) => getUnionKey(d.delegate.allowed.condition?.party?.definition),
+            link: (d) =>
+                `/party/${d.delegate.allowed.condition.party.id}/routing-rules/${
+                    getUnionKey(d.delegate.allowed.condition?.party?.definition) === 'shop_is'
+                        ? 'payment'
+                        : 'withdrawal'
+                }/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+        },
+    ];
+    terminalRulesColumns: Column<RoutingRulesObject>[] = [
+        {
+            field: 'ref.id',
+        },
+        {
+            field: 'data.name',
+            description: 'data.description',
+        },
+    ];
 
     constructor(
         private domainStoreService: DomainStoreService,
