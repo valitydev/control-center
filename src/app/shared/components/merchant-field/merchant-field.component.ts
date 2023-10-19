@@ -56,7 +56,9 @@ export class MerchantFieldComponent
     }
 
     private searchOptions(str: string): Observable<Option<PartyID>[]> {
-        if (!str) return of([]);
+        if (!str) {
+            return of([]);
+        }
         return this.deanonimusService.searchParty(str).pipe(
             map((parties) =>
                 parties.map((p) => ({

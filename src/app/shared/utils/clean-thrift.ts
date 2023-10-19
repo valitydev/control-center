@@ -2,7 +2,9 @@ import { clean, isEmpty } from '@vality/ng-core';
 import isObject from 'lodash-es/isObject';
 
 function isEmptyThrift(value: unknown): boolean {
-    if (isObject(value) && value.constructor === Object) return false;
+    if (isObject(value) && value.constructor === Object) {
+        return false;
+    }
     return isEmpty(value);
 }
 

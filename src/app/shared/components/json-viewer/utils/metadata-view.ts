@@ -31,17 +31,21 @@ export class MetadataViewItem {
     );
     renderValue$ = combineLatest([this.value$, this.data$]).pipe(
         map(([value, data]) => {
-            if (data?.trueTypeNode?.data?.objectType === 'enum')
+            if (data?.trueTypeNode?.data?.objectType === 'enum') {
                 return (
                     (data.trueTypeNode.data as MetadataFormData<ValueType, 'enum'>).ast.items.find(
                         (i, idx) => {
-                            if ('value' in i) return i.value === value;
+                            if ('value' in i) {
+                                return i.value === value;
+                            }
                             return idx === value;
                         },
                     ).name ?? value
                 );
-            if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
+            }
+            if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1])) {
                 return getEntries(value)?.[0]?.[0];
+            }
             return value;
         }),
     );
@@ -64,8 +68,9 @@ export class MetadataViewItem {
                 key?.data ||
                 (data?.trueTypeNode?.data as MetadataFormData<SetType | ListType | MapType>)?.type
                     ?.name
-            )
+            ) {
                 return of([]);
+            }
             const [item] = items;
             return combineLatest([
                 item.key$.pipe(switchMap((key) => key.value$)),
@@ -75,12 +80,14 @@ export class MetadataViewItem {
                     if (
                         typeof childKey === 'number' ||
                         (data?.objectType === 'union' && isEmpty(childValue))
-                    )
+                    ) {
                         return of([]);
+                    }
                     return item.data$.pipe(
                         switchMap((itemData) => {
-                            if (data?.objectType === 'union' && itemData?.objectType !== 'union')
+                            if (data?.objectType === 'union' && itemData?.objectType !== 'union') {
                                 return of([item]);
+                            }
                             return item.inline$.pipe(map((childInline) => [item, ...childInline]));
                         }),
                     );

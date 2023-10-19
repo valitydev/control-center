@@ -4,9 +4,13 @@ export function getEnumEntries<E extends Record<PropertyKey, unknown>>(
     srcEnum: E,
 ): [key: keyof E, value: ValuesType<E>][] {
     const entries = Object.entries(srcEnum);
-    if (!entries.length) return [];
+    if (!entries.length) {
+        return [];
+    }
     const isValueNumberEnum = entries.some(([, v]) => typeof v === 'number');
-    if (isValueNumberEnum) return entries.filter(([, v]) => typeof v === 'number') as never;
+    if (isValueNumberEnum) {
+        return entries.filter(([, v]) => typeof v === 'number') as never;
+    }
     return entries as never;
 }
 

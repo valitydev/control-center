@@ -28,8 +28,9 @@ export class AllowedClaimStatusesService {
         if (
             excludedStatuses.includes(status) ||
             !includedCurrentStatuses.includes(currentClaimStatus)
-        )
+        ) {
             return false;
+        }
         return this.appAuthGuardService.userHasRoles(CLAIM_STATUS_ROLES[status]);
     }
 }

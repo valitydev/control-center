@@ -25,8 +25,9 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
     }
 
     userHasSomeServiceMethods(serviceMethods: string[]): boolean {
-        if ((!environment.production && environment.ignoreRoles) || !serviceMethods?.length)
+        if ((!environment.production && environment.ignoreRoles) || !serviceMethods?.length) {
             return true;
+        }
         const allowedServiceMethods = this.keycloakAngular
             .getUserRoles(true)
             .map((r) => r.split(':'));

@@ -55,8 +55,11 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     ngOnChanges(changes: SimpleChanges) {
         const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
         Object.keys(this.control.controls).forEach((name) => {
-            if (newControlsNames.has(name)) newControlsNames.delete(name);
-            else this.control.removeControl(name as never);
+            if (newControlsNames.has(name)) {
+                newControlsNames.delete(name);
+            } else {
+                this.control.removeControl(name as never);
+            }
         });
         newControlsNames.forEach((name) =>
             this.control.addControl(
@@ -84,11 +87,19 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
 
     private setLabelControl(value: boolean = false) {
         if (!this.hasLabel || this.data.isRequired) {
-            if (!this.labelControl.value) this.labelControl.setValue(true);
-            if (this.labelControl.enabled) this.labelControl.disable();
+            if (!this.labelControl.value) {
+                this.labelControl.setValue(true);
+            }
+            if (this.labelControl.enabled) {
+                this.labelControl.disable();
+            }
         } else {
-            if (this.labelControl.value !== value) this.labelControl.setValue(value);
-            if (this.labelControl.disabled) this.labelControl.enable();
+            if (this.labelControl.value !== value) {
+                this.labelControl.setValue(value);
+            }
+            if (this.labelControl.disabled) {
+                this.labelControl.enable();
+            }
         }
     }
 }

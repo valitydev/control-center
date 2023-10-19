@@ -27,9 +27,13 @@ export const DEFAULT_QUERY_PARAMS_SERIALIZERS: Serializer[] = [
             return { start, end };
         },
         recognize: (value) => {
-            if (typeof value !== 'object') return false;
+            if (typeof value !== 'object') {
+                return false;
+            }
             const { start, end, ...other } = value as DateRange<Moment>;
-            if (Object.keys(other).length) return false;
+            if (Object.keys(other).length) {
+                return false;
+            }
             return (!start || moment.isMoment(start)) && (!end || moment.isMoment(end));
         },
     },

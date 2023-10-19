@@ -41,8 +41,11 @@ export class DatetimeComponent extends FormComponentSuperclass<string> {
 
     dateChanged(date: MatDatepickerInputEvent<Moment>) {
         const v = date.target.value;
-        if (!this.datetime) this.datetime = date.target.value;
-        else this.datetime.set({ date: v.date(), month: v.month(), year: v.year() });
+        if (!this.datetime) {
+            this.datetime = date.target.value;
+        } else {
+            this.datetime.set({ date: v.date(), month: v.month(), year: v.year() });
+        }
         this.emitOutgoingValue(this.datetime.toISOString());
     }
 

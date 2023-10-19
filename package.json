@@ -75,7 +75,7 @@
     "@types/lodash-es": "4.17.6",
     "@types/papaparse": "5.3.7",
     "@vality/cspell-config": "7.0.1-pr-33-8e9a771.0",
-    "@vality/eslint-config": "8.0.1-pr-33-541079b.0",
+    "@vality/eslint-config": "8.1.1-pr-40-c4e5174.0",
     "@vality/prettier-config": "3.0.1-pr-40-c4e5174.0",
     "cross-env": "7.0.3",
     "cspell": "^7.0.0",

@@ -75,7 +75,9 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
                             .map((w) => {
                                 const error: string =
                                     w.error?.['name'] || w.error?.['message'] || '';
-                                if (error) return `${w.payment.id}: ${error}`;
+                                if (error) {
+                                    return `${w.payment.id}: ${error}`;
+                                }
                                 return null;
                             })
                             .filter(Boolean)

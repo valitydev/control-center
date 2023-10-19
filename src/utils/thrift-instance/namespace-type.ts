@@ -44,10 +44,12 @@ export function parseNamespaceObjectType(
 ): NamespaceObjectType {
     // metadata reverse find - search for the last matching protocol if the names match (files are overwritten in the same order)
     let namespaceMetadata: ThriftAstMetadata;
-    if (include)
+    if (include) {
         namespaceMetadata = metadata.reverse().find((m) => m.path === include[namespace].path);
-    if (!namespaceMetadata)
+    }
+    if (!namespaceMetadata) {
         namespaceMetadata = metadata.reverse().find((m) => m.name === namespace);
+    }
     const objectType = Object.keys(namespaceMetadata.ast).find(
         (t) => namespaceMetadata.ast[t][type],
     ) as StructureType;

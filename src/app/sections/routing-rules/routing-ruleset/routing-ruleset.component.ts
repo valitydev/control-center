@@ -266,7 +266,9 @@ export class RoutingRulesetComponent {
     }
 
     private formatPredicate(predicate: Predicate) {
-        if (!predicate) return '';
+        if (!predicate) {
+            return '';
+        }
         if (getUnionKey(predicate) === 'constant') {
             return JSON.stringify(predicate.constant);
         }

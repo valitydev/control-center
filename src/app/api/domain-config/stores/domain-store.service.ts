@@ -67,7 +67,9 @@ export class DomainStoreService {
         return version$.pipe(
             switchMap((v) => this.repositoryService.Commit(v, commit)),
             tap(() => {
-                if (reload) this.forceReload();
+                if (reload) {
+                    this.forceReload();
+                }
             }),
         );
     }

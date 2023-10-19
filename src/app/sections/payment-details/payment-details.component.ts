@@ -56,7 +56,9 @@ export class PaymentDetailsComponent {
             .afterClosed()
             .pipe(untilDestroyed(this))
             .subscribe(({ status }) => {
-                if (status === DialogResponseStatus.Success) this.updateChargebacks$.next();
+                if (status === DialogResponseStatus.Success) {
+                    this.updateChargebacks$.next();
+                }
             });
     }
 }

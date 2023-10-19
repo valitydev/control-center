@@ -108,13 +108,19 @@ export class CreateChargebacksByFileDialogComponent
             parseCsv(content, { header: this.hasHeaderControl.value || false, delimiter: ';' }),
         ),
         tap((d) => {
-            if (!d.errors.length) return;
-            if (d.errors.length === 1) this.log.error(d.errors[0]);
+            if (!d.errors.length) {
+                return;
+            }
+            if (d.errors.length === 1) {
+                this.log.error(d.errors[0]);
+            }
             this.log.error(new Error(d.errors.map((e) => e.message).join('. ')));
         }),
         map((d) => {
             const chargebacks = unifyCsvItems(d?.data, CSV_CHARGEBACK_PROPS);
-            if (chargebacks[0].invoice_id) return chargebacks;
+            if (chargebacks[0].invoice_id) {
+                return chargebacks;
+            }
             this.log.error(
                 'Perhaps you incorrectly checked the checkbox to have or not a header (the first element does not have at least an invoice ID)',
             );
