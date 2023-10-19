@@ -10,7 +10,7 @@
     "lint": "ng lint --max-warnings=0",
     "lint:fix": "ng lint --fix",
     "format": "prettier * --list-different",
-    "format:fix": "prettier * --write --loglevel warn",
+    "format:fix": "prettier * --write --log-level=warn",
     "spell": "cspell --no-progress **",
     "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
     "fix": "npm run lint:fix && npm run format:fix"

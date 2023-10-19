@@ -8,3 +8,5 @@ LICENSE
 Dockerfile
 *.conf
 *.env
+.*ignore
+.npmrc

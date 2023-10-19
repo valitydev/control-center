@@ -1,1 +1,1 @@
-module.exports = require("@vality/prettier-config");
+module.exports = require('@vality/prettier-config');
