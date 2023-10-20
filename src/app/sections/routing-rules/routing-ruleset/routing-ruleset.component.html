@@ -19,11 +19,9 @@
         [columns]="columns"
         [data]="(candidates$ | async) || []"
         [progress]="isLoading$ | async"
-        [sortActive]="sort.active"
-        [sortDirection]="sort.direction"
+        [sort]="{ active: 'priority', direction: 'desc' }"
         noActions
         sortOnFront
-        (sortChange)="sort = $event"
     ></v-table>
 </div>
 

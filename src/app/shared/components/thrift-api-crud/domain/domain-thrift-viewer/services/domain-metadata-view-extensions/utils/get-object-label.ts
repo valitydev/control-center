@@ -12,8 +12,12 @@ const LABEL_SELECTORS: {
 };
 
 export function getObjectLabel(o: DomainObject[keyof DomainObject], objectKey: keyof DomainObject) {
-    if (LABEL_SELECTORS[objectKey]) return LABEL_SELECTORS[objectKey](o as never);
-    if ('name' in o.data && o.data.name) return o.data.name;
+    if (LABEL_SELECTORS[objectKey]) {
+        return LABEL_SELECTORS[objectKey](o as never);
+    }
+    if ('name' in o.data && o.data.name) {
+        return o.data.name;
+    }
     const id = 'id' in o.ref && typeof o.ref.id !== 'object' ? o.ref.id : '';
     return startCase([...objectKey.split('_'), 'ref', id && `#${id}`].filter(Boolean).join(' '));
 }

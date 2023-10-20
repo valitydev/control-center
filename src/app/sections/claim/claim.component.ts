@@ -84,7 +84,9 @@ export class ClaimComponent {
                 untilDestroyed(this),
             )
             .subscribe((result) => {
-                if (result.status === DialogResponseStatus.Success) this.reloadClaim();
+                if (result.status === DialogResponseStatus.Success) {
+                    this.reloadClaim();
+                }
             });
     }
 
@@ -100,7 +102,9 @@ export class ClaimComponent {
                 untilDestroyed(this),
             )
             .subscribe((result) => {
-                if (result.status === DialogResponseStatus.Success) this.reloadClaim();
+                if (result.status === DialogResponseStatus.Success) {
+                    this.reloadClaim();
+                }
             });
     }
 }

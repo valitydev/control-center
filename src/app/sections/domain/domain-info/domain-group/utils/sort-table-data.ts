@@ -26,6 +26,8 @@ export function sortData(data: DataSourceItem[], sort: MatSort): DataSourceItem[
             break;
         }
     }
-    if (sort.direction === 'desc') return data.reverse();
+    if (sort.direction === 'desc') {
+        return data.reverse();
+    }
     return data;
 }

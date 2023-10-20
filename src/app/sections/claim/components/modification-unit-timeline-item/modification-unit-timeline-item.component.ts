@@ -76,7 +76,9 @@ export class ModificationUnitTimelineItemComponent {
                 untilDestroyed(this),
             )
             .subscribe((result) => {
-                if (result.status === DialogResponseStatus.Success) this.claimChanged.emit();
+                if (result.status === DialogResponseStatus.Success) {
+                    this.claimChanged.emit();
+                }
             });
     }
 

@@ -9,7 +9,7 @@ import {
 import { combineLatest, Observable } from 'rxjs';
 import { map, pluck, startWith, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';

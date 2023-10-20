@@ -40,7 +40,11 @@ export class PartyShopsComponent {
         ),
     ]).pipe(
         map(([shops, searchStr]) =>
-            shops.filter((s) => JSON.stringify(s).toLowerCase().includes(searchStr.toLowerCase())),
+            searchStr
+                ? shops.filter((s) =>
+                      JSON.stringify(s).toLowerCase().includes(searchStr.toLowerCase()),
+                  )
+                : shops,
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -54,6 +58,7 @@ export class PartyShopsComponent {
                 this.selectedShop = d;
                 this.sidenavInfoService.toggle(this.shopTpl, d.details.name || `Shop #${d.id}`, d);
             },
+            sortable: true,
         },
         {
             field: 'contract_id',
@@ -114,6 +119,7 @@ export class PartyShopsComponent {
         ]),
     ];
     progress$ = new BehaviorSubject(0);
+    shopsProgress$ = this.partyShopsService.progress$;
 
     constructor(
         private partyShopsService: PartyShopsService,

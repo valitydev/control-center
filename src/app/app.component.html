@@ -1,5 +1,4 @@
 <mat-toolbar class="toolbar" color="primary">
-    <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     <span>Control Center</span> <span class="spacer"></span> <span>{{ username }}</span>
     <button [matMenuTriggerFor]="userMenu" mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </mat-toolbar>
@@ -7,14 +6,7 @@
 <mat-menu #userMenu="matMenu"> <button mat-menu-item (click)="logout()">Logout</button> </mat-menu>
 
 <mat-sidenav-container autosize class="container">
-    <mat-sidenav
-        #sidenav
-        [(opened)]="opened"
-        fixedInViewport="true"
-        fixedTopGap="64"
-        mode="side"
-        role="navigation"
-    >
+    <mat-sidenav fixedInViewport="true" fixedTopGap="64" mode="side" opened role="navigation">
         <mat-nav-list>
             <ng-container *ngFor="let group of menuItems; let i = index">
                 <mat-divider *ngIf="i !== 0"></mat-divider>

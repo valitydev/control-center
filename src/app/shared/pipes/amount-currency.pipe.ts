@@ -6,7 +6,7 @@ import isNil from 'lodash-es/isNil';
 import { ReplaySubject, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { toMajor } from '../../../utils';
 
@@ -39,10 +39,12 @@ export class AmountCurrencyPipe implements PipeTransform {
         ])
             .pipe(
                 map(([currencies, { amount, currencyCode, format }]) => {
-                    if (isNil(amount)) return '?';
+                    if (isNil(amount)) {
+                        return '?';
+                    }
                     const exponent = currencies.find((c) => c.data.symbolic_code === currencyCode)
                         ?.data?.exponent;
-                    if (!currencyCode || !exponent)
+                    if (!currencyCode || !exponent) {
                         return formatCurrency(
                             toMajor(amount, exponent),
                             this._locale,
@@ -50,6 +52,7 @@ export class AmountCurrencyPipe implements PipeTransform {
                             '',
                             format === 'short' ? '0.0-2' : undefined,
                         );
+                    }
                     return formatCurrency(
                         toMajor(amount, exponent),
                         this._locale,
@@ -71,7 +74,9 @@ export class AmountCurrencyPipe implements PipeTransform {
         format: 'short' | 'long' = 'long',
     ) {
         this.params$.next({ amount, currencyCode, format });
-        if (!this.isInit) this.init();
+        if (!this.isInit) {
+            this.init();
+        }
         return this.latestValue;
     }
 }

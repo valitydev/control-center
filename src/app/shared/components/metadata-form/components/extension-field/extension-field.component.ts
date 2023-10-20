@@ -89,7 +89,9 @@ export class ExtensionFieldComponent<T>
             this.data$.next(this.data);
             this.control.setValidators(this.data.isRequired ? Validators.required : []);
         }
-        if (changes.extensions) this.extensions$.next(this.extensions);
+        if (changes.extensions) {
+            this.extensions$.next(this.extensions);
+        }
     }
 
     generate(event: MouseEvent) {

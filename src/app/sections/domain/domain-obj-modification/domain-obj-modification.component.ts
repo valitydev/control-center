@@ -62,9 +62,11 @@ export class DomainObjModificationComponent implements OnInit {
             if (
                 this.modifiedDomainObjectService.domainObject &&
                 this.route.snapshot.params.ref === this.modifiedDomainObjectService.ref
-            )
+            ) {
                 this.control.setValue(this.modifiedDomainObjectService.domainObject);
-            else this.control.setValue(object);
+            } else {
+                this.control.setValue(object);
+            }
         });
     }
 

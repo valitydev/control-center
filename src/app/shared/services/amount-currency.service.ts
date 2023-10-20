@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { toMajorByExponent } from '@vality/ng-core';
 import { map, first } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 @Injectable({
     providedIn: 'root',

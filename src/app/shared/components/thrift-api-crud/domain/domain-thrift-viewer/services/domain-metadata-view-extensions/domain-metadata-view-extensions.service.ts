@@ -8,7 +8,7 @@ import isEqual from 'lodash-es/isEqual';
 import { of, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 

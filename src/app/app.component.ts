@@ -12,11 +12,10 @@ import { ROUTING_CONFIG as PAYOUTS_ROUTING_CONFIG } from './sections/payouts/pay
 import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing/routing-config';
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
+import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
-import { SidenavInfoService } from './shared/components/sidenav-info/sidenav-info.service';
-
-const SIDENAV_OPENED_KEY = 'sidenav-opened';
+import { SidenavInfoService } from './shared/components/sidenav-info';
 
 @Component({
     selector: 'cc-root',
@@ -26,13 +25,6 @@ const SIDENAV_OPENED_KEY = 'sidenav-opened';
 export class AppComponent implements OnInit {
     username: string;
     menuItems: { name: string; route: string }[][] = [];
-
-    get opened(): boolean {
-        return localStorage.getItem(SIDENAV_OPENED_KEY) === String(true);
-    }
-    set opened(opened: boolean) {
-        localStorage.setItem(SIDENAV_OPENED_KEY, String(opened));
-    }
 
     constructor(
         private keycloakService: KeycloakService,
@@ -58,6 +50,11 @@ export class AppComponent implements OnInit {
                     name: 'Domain config',
                     route: '/domain',
                     services: DOMAIN_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Terminals',
+                    route: '/terminals',
+                    services: TERMINALS_ROUTING_CONFIG.services,
                 },
                 {
                     name: 'Repairing',

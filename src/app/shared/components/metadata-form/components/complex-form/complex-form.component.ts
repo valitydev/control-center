@@ -52,7 +52,9 @@ export class ComplexFormComponent<V, K = never>
     }
 
     get keyType() {
-        if ('keyType' in this.data.type) return this.data.type.keyType;
+        if ('keyType' in this.data.type) {
+            return this.data.type.keyType;
+        }
     }
 
     ngOnInit() {
@@ -93,11 +95,15 @@ export class ComplexFormComponent<V, K = never>
 
     add() {
         this.valueControls.push(new FormControl());
-        if (this.isKeyValue) this.keyControls.push(new FormControl());
+        if (this.isKeyValue) {
+            this.keyControls.push(new FormControl());
+        }
     }
 
     delete(idx: number) {
         this.valueControls.removeAt(idx);
-        if (this.isKeyValue) this.keyControls.removeAt(idx);
+        if (this.isKeyValue) {
+            this.keyControls.removeAt(idx);
+        }
     }
 }

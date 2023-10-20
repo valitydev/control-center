@@ -1,0 +1,33 @@
+<cc-page-layout title="Terminals">
+    <cc-page-layout-actions></cc-page-layout-actions>
+    <v-input-field [formControl]="searchControl" label="Search"></v-input-field>
+    <v-table
+        [(sort)]="sort"
+        [columns]="columns"
+        [data]="data$ | async"
+        [progress]="progress$ | async"
+        size="50"
+        sortOnFront
+        (update)="update()"
+    >
+        <v-table-actions>
+            <button color="primary" mat-raised-button (click)="create()">Create</button>
+        </v-table-actions>
+    </v-table>
+</cc-page-layout>
+
+<ng-template #terminalTpl>
+    <cc-domain-thrift-viewer
+        [value]="openedTerminal"
+        type="TerminalObject"
+    ></cc-domain-thrift-viewer>
+</ng-template>
+<ng-template #providerTpl>
+    <cc-domain-thrift-viewer
+        [value]="openedProvider"
+        type="ProviderObject"
+    ></cc-domain-thrift-viewer>
+</ng-template>
+<ng-template #routingRulesTpl>
+    <v-table [columns]="routingRulesColumns" [data]="openedRoutingRules" noActions></v-table>
+</ng-template>

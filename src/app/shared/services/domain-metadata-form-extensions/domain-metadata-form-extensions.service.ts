@@ -6,7 +6,7 @@ import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { Cash as CashField } from '../../../../components/cash-field';
 import {

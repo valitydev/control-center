@@ -82,8 +82,12 @@ export class PrimitiveFieldComponent<T>
 
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
         super.ngOnChanges(changes);
-        if (changes.data) this.data$.next(this.data);
-        if (changes.extensions) this.extensions$.next(this.extensions);
+        if (changes.data) {
+            this.data$.next(this.data);
+        }
+        if (changes.extensions) {
+            this.extensions$.next(this.extensions);
+        }
     }
 
     generate(event: MouseEvent) {

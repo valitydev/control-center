@@ -1,5 +1,4 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
-import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TerminalObject, RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
@@ -13,7 +12,7 @@ import {
 import { Observable, combineLatest } from 'rxjs';
 import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 
@@ -152,10 +151,6 @@ export class RoutingRulesetComponent {
         ]),
     ];
     openedCandidate?: RoutingCandidate;
-    sort: Sort = {
-        active: 'priority',
-        direction: 'desc',
-    };
 
     constructor(
         private dialog: DialogService,
@@ -271,7 +266,9 @@ export class RoutingRulesetComponent {
     }
 
     private formatPredicate(predicate: Predicate) {
-        if (!predicate) return '';
+        if (!predicate) {
+            return '';
+        }
         if (getUnionKey(predicate) === 'constant') {
             return JSON.stringify(predicate.constant);
         }

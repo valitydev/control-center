@@ -5,12 +5,11 @@ import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
 import { map, pluck, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
-import { RepositoryService } from '@cc/app/api/domain-config';
-import { DomainSecretService } from '@cc/app/shared/services/domain-secret-service';
-import { inProgressFrom, progressTo } from '@cc/utils';
-import { getUnionKey } from '@cc/utils/get-union-key';
-
-import { handleError, NotificationErrorService } from '../../shared/services/notification-error';
+import { inProgressFrom, progressTo } from '../../../../utils';
+import { getUnionKey } from '../../../../utils/get-union-key';
+import { DomainSecretService } from '../../../shared/services/domain-secret-service';
+import { handleError, NotificationErrorService } from '../../../shared/services/notification-error';
+import { RepositoryService } from '../index';
 
 @UntilDestroy()
 @Injectable({
@@ -68,7 +67,9 @@ export class DomainStoreService {
         return version$.pipe(
             switchMap((v) => this.repositoryService.Commit(v, commit)),
             tap(() => {
-                if (reload) this.forceReload();
+                if (reload) {
+                    this.forceReload();
+                }
             }),
         );
     }

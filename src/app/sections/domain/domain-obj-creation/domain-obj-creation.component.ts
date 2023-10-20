@@ -5,7 +5,7 @@ import { DomainObject } from '@vality/domain-proto/domain';
 import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 
 import { progressTo, getUnionKey, enumHasValue } from '../../../../utils';

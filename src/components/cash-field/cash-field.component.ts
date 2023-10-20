@@ -9,7 +9,7 @@ import sortBy from 'lodash-es/sortBy';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { createControlProviders, getFormValueChanges } from '../../utils';
 
@@ -87,10 +87,11 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
                 const amountStr = this.amountControl.value;
                 if (amountStr && currency && !this.validate()) {
                     const [whole, fractional] = amountStr.split('.');
-                    if (fractional?.length > currency.data.exponent)
+                    if (fractional?.length > currency.data.exponent) {
                         this.amountControl.setValue(
                             `${whole}.${fractional.slice(0, currency.data.exponent)}`,
                         );
+                    }
                     const amount = Number(this.amountControl.value.replaceAll(GROUP_SEPARATOR, ''));
                     this.emitOutgoingValue({ amount, currencyCode: currency.data.symbolic_code });
                 } else {

@@ -15,11 +15,15 @@ export class KeyComponent implements OnChanges {
     keys$ = new ReplaySubject<MetadataViewItem[]>(1);
     numberKey$ = this.keys$.pipe(
         switchMap((keys) => {
-            if (keys.length !== 1) return of(null);
+            if (keys.length !== 1) {
+                return of(null);
+            }
             return this.keys[0].key$.pipe(
                 switchMap((key) => key.renderValue$),
                 map((value) => {
-                    if (typeof value === 'number') return `${value + 1}`;
+                    if (typeof value === 'number') {
+                        return `${value + 1}`;
+                    }
                     return null;
                 }),
             );
@@ -27,16 +31,22 @@ export class KeyComponent implements OnChanges {
     );
 
     ngOnChanges(changes: ComponentChanges<KeyComponent>) {
-        if (changes.keys) this.keys$.next(this.keys);
+        if (changes.keys) {
+            this.keys$.next(this.keys);
+        }
     }
 
     parentIsUnion(pathItem: MetadataViewItem) {
-        if (!pathItem?.data$) return of(false);
+        if (!pathItem?.data$) {
+            return of(false);
+        }
         return pathItem.data$.pipe(map((data) => data?.trueParent?.objectType === 'union'));
     }
 
     isUnion(pathItem: MetadataViewItem) {
-        if (!pathItem?.data$) return of(false);
+        if (!pathItem?.data$) {
+            return of(false);
+        }
         return pathItem.data$.pipe(map((data) => data?.trueTypeNode?.data?.objectType === 'union'));
     }
 }

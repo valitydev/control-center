@@ -10,7 +10,15 @@
                 ></v-input-field>
             </mat-card-content>
         </mat-card>
-        <v-table [columns]="columns" [data]="shops$ | async" noActions></v-table>
+        <v-table
+            [columns]="columns"
+            [data]="shops$ | async"
+            [progress]="shopsProgress$ | async"
+            [size]="100"
+            noActions
+            sortActive="details.name"
+            sortOnFront
+        ></v-table>
     </div>
 </div>
 

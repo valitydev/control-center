@@ -98,7 +98,9 @@ export class MetadataFormData<
     ) {
         this.setNamespaceType(namespace, type);
         this.setTypeGroup();
-        if (this.typeGroup === TypeGroup.Object) this.setNamespaceObjectType();
+        if (this.typeGroup === TypeGroup.Object) {
+            this.setNamespaceObjectType();
+        }
     }
 
     create(params: { type?: ValueType; field?: Field }): MetadataFormData {

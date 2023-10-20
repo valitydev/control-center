@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { merge, of, Subject } from 'rxjs';
 import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/deprecated-damsel';
+import { DomainStoreService } from '@cc/app/api/domain-config';
 import { progress } from '@cc/app/shared/custom-operators';
 
 @Injectable()

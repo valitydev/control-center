@@ -61,7 +61,9 @@ export abstract class AbstractMonacoService {
     }
 
     destroy() {
-        if (this.resizeDetector) this.resizeDetector.detach();
+        if (this.resizeDetector) {
+            this.resizeDetector.detach();
+        }
         this.destroy$.next();
     }
 
@@ -153,7 +155,9 @@ export abstract class AbstractMonacoService {
     }
 
     private registerResizeListener() {
-        if (this.resizeDetector) this.resizeDetector.detach();
+        if (this.resizeDetector) {
+            this.resizeDetector.detach();
+        }
         this.resizeDetector = new ResizeSensor(this.nativeElement, () => {
             this.updateLayoutSize();
         });

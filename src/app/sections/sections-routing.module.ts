@@ -57,6 +57,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./chargebacks').then((m) => m.ChargebacksModule),
     },
     {
+        path: 'terminals',
+        loadChildren: () => import('./terminals').then((m) => m.TerminalsModule),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },

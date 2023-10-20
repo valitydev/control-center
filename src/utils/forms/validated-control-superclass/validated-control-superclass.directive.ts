@@ -40,11 +40,14 @@ export abstract class ValidatedControlSuperclass<OuterType, InnerType = OuterTyp
 
     protected outerToInnerValue(outer: OuterType): InnerType {
         if ('controls' in this.control) {
-            if (!outer) return this.emptyValue;
+            if (!outer) {
+                return this.emptyValue;
+            }
             if (
                 Object.keys(outer).length < Object.keys((this.control as FormGroup).controls).length
-            )
+            ) {
                 return Object.assign({}, this.emptyValue, outer);
+            }
         }
         return outer as never;
     }
