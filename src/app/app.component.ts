@@ -11,6 +11,7 @@ import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/r
 import { ROUTING_CONFIG as PAYOUTS_ROUTING_CONFIG } from './sections/payouts/payouts/routing-config';
 import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing/routing-config';
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
+import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
@@ -72,6 +73,11 @@ export class AppComponent implements OnInit {
                     name: 'Merchants',
                     route: '/parties',
                     services: PARTIES_ROUTING_CONFIG.services,
+                },
+                {
+                    name: 'Shops',
+                    route: '/shops',
+                    services: SHOPS_ROUTING_CONFIG.services,
                 },
                 {
                     name: 'Claims',
