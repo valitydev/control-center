@@ -4,7 +4,6 @@ import {
     ThriftAstMetadata,
     deanonimus_Deanonimus,
 } from '@vality/deanonimus-proto';
-import { SearchHit } from '@vality/deanonimus-proto/deanonimus';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
@@ -40,7 +39,11 @@ export class DeanonimusService {
         );
     }
 
-    searchParty(text: string): Observable<SearchHit[]> {
+    searchParty(text: string) {
         return this.client$.pipe(switchMap((c) => c.searchParty(text)));
+    }
+
+    searchShopText(text: string) {
+        return this.client$.pipe(switchMap((c) => c.searchShopText(text)));
     }
 }

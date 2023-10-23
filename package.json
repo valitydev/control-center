@@ -32,7 +32,7 @@
     "@ngneat/input-mask": "6.0.0",
     "@ngneat/until-destroy": "9.2.2",
     "@s-libs/ng-core": "16.0.0",
-    "@vality/deanonimus-proto": "2.0.0",
+    "@vality/deanonimus-proto": "2.0.1-94fb655.0",
     "@vality/domain-proto": "2.0.1-f718741.0",
     "@vality/dominant-cache-proto": "2.0.0",
     "@vality/fistful-proto": "2.0.1-ed97a0e.0",
