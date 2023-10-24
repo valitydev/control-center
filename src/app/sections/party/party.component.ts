@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import maxBy from 'lodash-es/maxBy';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { NotifyLogService } from '@vality/ng-core';
+import { EMPTY } from 'rxjs';
+import { catchError, filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { DeanonimusService } from '@cc/app/api/deanonimus';
 import { AppAuthGuardService } from '@cc/app/shared/services';
 
+import { PartyManagementService } from '../../api/payment-processing';
 import { ROUTING_CONFIG as SHOPS_ROUTING_CONFIG } from '../party-shops/routing-config';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
 
@@ -22,28 +22,24 @@ export class PartyComponent {
         map(() => this.findLinkWithMaxActiveFragments()),
         shareReplay(1),
     );
-
-    partyID$: Observable<string>;
-    merchantEmail$: Observable<string>;
+    party$ = this.route.params.pipe(
+        startWith(this.route.snapshot.params),
+        switchMap(({ partyID }) => this.partyManagementService.Get(partyID)),
+        catchError((err) => {
+            this.log.error(err);
+            return EMPTY;
+        }),
+        startWith({ id: this.route.snapshot.params.partyID }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private appAuthGuardService: AppAuthGuardService,
-        private deanonimusService: DeanonimusService,
-    ) {
-        this.partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
-        this.merchantEmail$ = this.partyID$.pipe(
-            switchMap((partyID) => this.deanonimusService.searchParty(partyID)),
-            map((searchHits) => maxBy(searchHits, (searchHit) => searchHit.score)?.party),
-            pluck('email'),
-            catchError((err) => {
-                console.error(err);
-                return of('--/--');
-            }),
-            shareReplay(1),
-        );
-    }
+        private partyManagementService: PartyManagementService,
+        private log: NotifyLogService,
+    ) {}
 
     private getLinks() {
         const links = [
