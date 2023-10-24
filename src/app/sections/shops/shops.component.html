@@ -1,1 +1,10 @@
-<cc-page-layout title="Shops"> Shops </cc-page-layout>
+<cc-page-layout title="Shops">
+    <cc-page-layout-actions></cc-page-layout-actions>
+    <v-input-field [formControl]="searchControl" label="Search"></v-input-field>
+    <cc-shops-table
+        [progress]="progress$ | async"
+        [shops]="shops$ | async"
+        noSort
+        (update)="update()"
+    ></cc-shops-table>
+</cc-page-layout>

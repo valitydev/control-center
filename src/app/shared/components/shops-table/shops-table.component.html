@@ -1,0 +1,20 @@
+<v-table
+    [(sort)]="sort"
+    [columns]="columns"
+    [data]="shops"
+    [progress]="progress"
+    [size]="100"
+    sortOnFront
+    (update)="update.emit()"
+></v-table>
+
+<ng-template #shopTpl>
+    <cc-domain-thrift-viewer [value]="selectedShop" type="Shop"></cc-domain-thrift-viewer>
+</ng-template>
+<ng-template #contractTpl>
+    <cc-domain-thrift-viewer
+        [progress]="!!(contractProgress$ | async)"
+        [value]="getContract(selectedShop.id) | async"
+        type="Contract"
+    ></cc-domain-thrift-viewer>
+</ng-template>
