@@ -3,7 +3,7 @@
     <v-input-field [formControl]="searchControl" label="Search"></v-input-field>
     <cc-shops-table
         [progress]="progress$ | async"
-        [shops]="shops$ | async"
+        [shops]="shopsParty$ | async"
         noSort
         (update)="update()"
     ></cc-shops-table>

@@ -12,8 +12,7 @@ import {
 import { FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
-import { Shop } from '@vality/domain-proto/domain';
+import { Shop, Party, Contract } from '@vality/domain-proto/domain';
 import {
     InputFieldModule,
     TableModule,
@@ -28,13 +27,17 @@ import {
 } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map, switchMap, BehaviorSubject } from 'rxjs';
-import { shareReplay, filter } from 'rxjs/operators';
-import { Memoize } from 'typescript-memoize';
+import { filter } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../../utils';
 import { PartyManagementService } from '../../../api/payment-processing';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
+
+interface ShopParty {
+    shop: Shop;
+    party: Party;
+}
 
 @Component({
     selector: 'cc-shops-table',
@@ -50,7 +53,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
     templateUrl: './shops-table.component.html',
 })
 export class ShopsTableComponent implements OnChanges {
-    @Input() shops!: Shop[];
+    @Input() shops!: ShopParty[];
     @Input({ transform: booleanAttribute }) changed!: boolean;
     @Input() progress: number | boolean = false;
     @Input({ transform: booleanAttribute }) noSort: boolean = false;
@@ -60,7 +63,8 @@ export class ShopsTableComponent implements OnChanges {
     @ViewChild('contractTpl') contractTpl: TemplateRef<unknown>;
 
     selectedShop?: Shop;
-    columns: Column<Shop>[] = this.getColumns();
+    selectedContract?: Contract;
+    columns: Column<ShopParty>[] = this.getColumns();
     contractProgress$ = new BehaviorSubject(0);
     sort: Sort = {
         active: 'details.name',
@@ -68,7 +72,6 @@ export class ShopsTableComponent implements OnChanges {
     };
 
     constructor(
-        private route: ActivatedRoute,
         private sidenavInfoService: SidenavInfoService,
         private partyManagementService: PartyManagementService,
         private dialogService: DialogService,
@@ -82,19 +85,7 @@ export class ShopsTableComponent implements OnChanges {
         }
     }
 
-    @Memoize()
-    getContract(shopID: string) {
-        return this.partyManagementService
-            .GetShopContract(this.route.snapshot.params.partyID, shopID)
-            .pipe(
-                progressTo(this.contractProgress$),
-                map((c) => c.contract),
-                shareReplay({ refCount: true, bufferSize: 1 }),
-            );
-    }
-
-    toggleBlocking(shop: Shop) {
-        const partyID = this.route.snapshot.params.partyID;
+    toggleBlocking({ party, shop }: ShopParty) {
         this.dialogService
             .open(ConfirmDialogComponent, {
                 title: getUnionKey(shop.blocking) === 'unblocked' ? 'Block shop' : 'Unblock shop',
@@ -105,8 +96,8 @@ export class ShopsTableComponent implements OnChanges {
                 filter((r) => r.status === DialogResponseStatus.Success),
                 switchMap((r) =>
                     getUnionKey(shop.blocking) === 'unblocked'
-                        ? this.partyManagementService.BlockShop(partyID, shop.id, r.data.reason)
-                        : this.partyManagementService.UnblockShop(partyID, shop.id, r.data.reason),
+                        ? this.partyManagementService.BlockShop(party.id, shop.id, r.data.reason)
+                        : this.partyManagementService.UnblockShop(party.id, shop.id, r.data.reason),
                 ),
             )
             .subscribe({
@@ -120,8 +111,7 @@ export class ShopsTableComponent implements OnChanges {
             });
     }
 
-    toggleSuspension(shop: Shop) {
-        const partyID = this.route.snapshot.params.partyID;
+    toggleSuspension({ shop, party }: ShopParty) {
         this.dialogService
             .open(ConfirmDialogComponent, {
                 title: getUnionKey(shop.suspension) === 'active' ? 'Suspend shop' : 'Activate shop',
@@ -131,8 +121,8 @@ export class ShopsTableComponent implements OnChanges {
                 filter((r) => r.status === DialogResponseStatus.Success),
                 switchMap(() =>
                     getUnionKey(shop.suspension) === 'active'
-                        ? this.partyManagementService.SuspendShop(partyID, shop.id)
-                        : this.partyManagementService.ActivateShop(partyID, shop.id),
+                        ? this.partyManagementService.SuspendShop(party.id, shop.id)
+                        : this.partyManagementService.ActivateShop(party.id, shop.id),
                 ),
             )
             .subscribe({
@@ -146,46 +136,64 @@ export class ShopsTableComponent implements OnChanges {
             });
     }
 
-    private getColumns(): Column<Shop>[] {
+    private getColumns(): Column<ShopParty>[] {
         return [
             {
-                field: 'details.name',
-                description: 'id',
+                field: 'shop.details.name',
+                description: 'shop.id',
                 pinned: 'left',
                 click: (d) => {
-                    this.selectedShop = d;
+                    this.selectedShop = d.shop;
                     this.sidenavInfoService.toggle(
                         this.shopTpl,
-                        d.details.name || `Shop #${d.id}`,
-                        d,
+                        d.shop.details.name || `Shop #${d.shop.id}`,
+                        d.shop,
                     );
                 },
                 sortable: !this.noSort,
             },
             {
-                field: 'contract_id',
+                field: 'party.name',
+                header: 'Party',
+                description: 'party.id',
+                link: (d) => `/party/${d.party.id}`,
+            },
+            {
+                field: 'shop.contract_id',
                 header: 'Contract',
                 click: (d) => {
-                    this.selectedShop = d;
-                    this.sidenavInfoService.toggle(this.contractTpl, `Contract #${d.id}`, d);
+                    this.partyManagementService
+                        .GetShopContract(d.party.id, d.shop.id)
+                        .pipe(
+                            progressTo(this.contractProgress$),
+                            map((c) => c.contract),
+                        )
+                        .subscribe((contract) => {
+                            this.selectedContract = contract;
+                            this.sidenavInfoService.toggle(
+                                this.contractTpl,
+                                `Contract #${d.shop.id}`,
+                                d.shop,
+                            );
+                        });
                 },
             },
             {
-                field: 'details.description',
+                field: 'shop.details.description',
             },
             {
-                field: 'location.url',
+                field: 'shop.location.url',
             },
             {
-                field: 'account.currency.symbolic_code',
+                field: 'shop.account.currency.symbolic_code',
                 header: 'Currency',
             },
             {
-                field: 'blocking',
+                field: 'shop.blocking',
                 type: 'tag',
-                formatter: (shop) => getUnionKey(shop.blocking),
+                formatter: ({ shop }) => getUnionKey(shop.blocking),
                 typeParameters: {
-                    label: (shop) => startCase(getUnionKey(shop.blocking)),
+                    label: ({ shop }) => startCase(getUnionKey(shop.blocking)),
                     tags: {
                         blocked: { color: 'warn' },
                         unblocked: { color: 'success' },
@@ -193,11 +201,11 @@ export class ShopsTableComponent implements OnChanges {
                 },
             },
             {
-                field: 'suspension',
+                field: 'shop.suspension',
                 type: 'tag',
-                formatter: (shop) => getUnionKey(shop.suspension),
+                formatter: ({ shop }) => getUnionKey(shop.suspension),
                 typeParameters: {
-                    label: (shop) => startCase(getUnionKey(shop.suspension)),
+                    label: ({ shop }) => startCase(getUnionKey(shop.suspension)),
                     tags: {
                         suspended: { color: 'warn' },
                         active: { color: 'success' },
@@ -206,17 +214,17 @@ export class ShopsTableComponent implements OnChanges {
             },
             createOperationColumn([
                 {
-                    label: (shop) =>
+                    label: ({ shop }) =>
                         getUnionKey(shop.suspension) === 'suspended' ? 'Activate' : 'Suspend',
-                    click: (shop) => {
-                        this.toggleSuspension(shop);
+                    click: (d) => {
+                        this.toggleSuspension(d);
                     },
                 },
                 {
-                    label: (shop) =>
+                    label: ({ shop }) =>
                         getUnionKey(shop.blocking) === 'blocked' ? 'Unblock' : 'Block',
-                    click: (shop) => {
-                        this.toggleBlocking(shop);
+                    click: (d) => {
+                        this.toggleBlocking(d);
                     },
                 },
             ]),

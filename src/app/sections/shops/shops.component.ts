@@ -15,7 +15,7 @@ import { DeanonimusService } from '../../api/deanonimus';
 })
 export class ShopsComponent implements OnInit {
     searchControl = new FormControl(this.qp.params.search);
-    shops$ = merge(
+    shopsParty$ = merge(
         this.searchControl.valueChanges,
         defer(() => this.updateShops$),
     ).pipe(
@@ -29,7 +29,7 @@ export class ShopsComponent implements OnInit {
                       .pipe(progressTo(this.progress$))
                 : of<SearchShopHit[]>([]),
         ),
-        map((hits) => hits.map((h) => h.shop)),
+        map((hits) => hits.map((h) => ({ shop: h.shop, party: {} }))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     columns: Column<SearchShopHit>[] = [{ field: 'shop.details.name', description: 'shop.id' }];
