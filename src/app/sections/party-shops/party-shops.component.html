@@ -1,34 +1,10 @@
 <div fxLayout="column" fxLayoutGap="24px">
-    <div class="mat-headline-4">Merchant's shops</div>
-    <div fxLayout="column" fxLayoutGap="24px">
-        <mat-card>
-            <mat-card-content>
-                <v-input-field
-                    [formControl]="filterControl"
-                    fxFlex="100"
-                    label="Filter"
-                ></v-input-field>
-            </mat-card-content>
-        </mat-card>
-        <v-table
-            [columns]="columns"
-            [data]="shops$ | async"
-            [progress]="shopsProgress$ | async"
-            [size]="100"
-            noActions
-            sortActive="details.name"
-            sortOnFront
-        ></v-table>
-    </div>
+    <div class="mat-headline-4">Shops</div>
+    <v-input-field [formControl]="filterControl" fxFlex="100" label="Filter"></v-input-field>
+    <cc-shops-table
+        [progress]="progress$ | async"
+        [shops]="shopsParty$ | async"
+        noPartyColumn
+        (update)="update()"
+    ></cc-shops-table>
 </div>
-
-<ng-template #shopTpl>
-    <cc-domain-thrift-viewer [value]="selectedShop" type="Shop"></cc-domain-thrift-viewer>
-</ng-template>
-<ng-template #contractTpl>
-    <cc-domain-thrift-viewer
-        [progress]="!!(progress$ | async)"
-        [value]="getContract(selectedShop.id) | async"
-        type="Contract"
-    ></cc-domain-thrift-viewer>
-</ng-template>

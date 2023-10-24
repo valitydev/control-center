@@ -12,6 +12,7 @@ import {
 import { FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { Shop, Party, Contract } from '@vality/domain-proto/domain';
 import {
     InputFieldModule,
@@ -39,6 +40,7 @@ interface ShopParty {
     party: Party;
 }
 
+@UntilDestroy()
 @Component({
     selector: 'cc-shops-table',
     standalone: true,
@@ -56,8 +58,10 @@ export class ShopsTableComponent implements OnChanges {
     @Input() shops!: ShopParty[];
     @Input({ transform: booleanAttribute }) changed!: boolean;
     @Input() progress: number | boolean = false;
-    @Input({ transform: booleanAttribute }) noSort: boolean = false;
     @Output() update = new EventEmitter<void>();
+
+    @Input({ transform: booleanAttribute }) noSort: boolean = false;
+    @Input({ transform: booleanAttribute }) noPartyColumn: boolean = false;
 
     @ViewChild('shopTpl') shopTpl: TemplateRef<unknown>;
     @ViewChild('contractTpl') contractTpl: TemplateRef<unknown>;
@@ -79,9 +83,9 @@ export class ShopsTableComponent implements OnChanges {
     ) {}
 
     ngOnChanges(changes: ComponentChanges<ShopsTableComponent>) {
-        if (changes.noSort) {
-            this.columns = this.getColumns();
+        if (changes.noSort || changes.noPartyColumn) {
             this.sort = { active: '', direction: '' };
+            this.columns = this.getColumns();
         }
     }
 
@@ -153,10 +157,11 @@ export class ShopsTableComponent implements OnChanges {
                 sortable: !this.noSort,
             },
             {
-                field: 'party.name',
+                field: 'party.contact_info.email',
                 header: 'Party',
                 description: 'party.id',
                 link: (d) => `/party/${d.party.id}`,
+                hide: this.noPartyColumn,
             },
             {
                 field: 'shop.contract_id',
@@ -167,6 +172,7 @@ export class ShopsTableComponent implements OnChanges {
                         .pipe(
                             progressTo(this.contractProgress$),
                             map((c) => c.contract),
+                            untilDestroyed(this),
                         )
                         .subscribe((contract) => {
                             this.selectedContract = contract;

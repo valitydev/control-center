@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { InputFieldModule, TableModule } from '@vality/ng-core';
+import { InputFieldModule } from '@vality/ng-core';
 
-import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
+import { ShopsTableComponent } from '../../shared/components/shops-table';
 
 import { PartyShopsRoutingModule } from './party-shops-routing.module';
 import { PartyShopsComponent } from './party-shops.component';
@@ -15,11 +14,9 @@ import { PartyShopsComponent } from './party-shops.component';
         PartyShopsRoutingModule,
         CommonModule,
         FlexModule,
-        MatCardModule,
-        TableModule,
         ReactiveFormsModule,
         InputFieldModule,
-        DomainThriftViewerComponent,
+        ShopsTableComponent,
     ],
     declarations: [PartyShopsComponent],
 })

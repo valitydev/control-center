@@ -14,7 +14,7 @@
 <ng-template #contractTpl>
     <cc-domain-thrift-viewer
         [progress]="!!(contractProgress$ | async)"
-        [value]="getContract(selectedShop.id) | async"
+        [value]="selectedContract"
         type="Contract"
     ></cc-domain-thrift-viewer>
 </ng-template>
