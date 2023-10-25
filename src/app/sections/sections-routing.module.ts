@@ -61,6 +61,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./terminals').then((m) => m.TerminalsModule),
     },
     {
+        path: 'shops',
+        loadChildren: () => import('./shops').then((m) => m.ShopsModule),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },

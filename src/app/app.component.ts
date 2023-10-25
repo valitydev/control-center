@@ -73,6 +73,12 @@ export class AppComponent implements OnInit {
                     route: '/parties',
                     services: PARTIES_ROUTING_CONFIG.services,
                 },
+                // TODO
+                // {
+                //     name: 'Shops',
+                //     route: '/shops',
+                //     services: SHOPS_ROUTING_CONFIG.services,
+                // },
                 {
                     name: 'Claims',
                     route: '/claims',
