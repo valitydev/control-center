@@ -3,15 +3,9 @@ import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
-import {
-    clean,
-    splitBySeparators,
-    Column,
-    QueryParamsService,
-    NotifyLogService,
-} from '@vality/ng-core';
+import { clean, Column, QueryParamsService, NotifyLogService, countProps } from '@vality/ng-core';
 import { of, switchMap } from 'rxjs';
-import { startWith, map, shareReplay, catchError } from 'rxjs/operators';
+import { startWith, map, shareReplay, catchError, debounceTime } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
@@ -91,13 +85,14 @@ export class WalletsComponent implements OnInit {
             },
         },
     ];
-    filters = this.fb.group<WalletParams>({
-        party_id: null,
-        identity_id: null,
-        currency_code: null,
-        wallet_id: null,
-        ...this.qp.params,
+    filtersForm = this.fb.group({
+        party_id: null as string,
+        identity_id: null as string,
+        currency_code: null as string,
+        wallet_id: [null as string[]],
+        ...(this.qp.params as object),
     });
+    active = 0;
 
     constructor(
         private fetchWalletsService: FetchWalletsService,
@@ -109,24 +104,18 @@ export class WalletsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.filters.valueChanges
-            .pipe(
-                startWith(this.filters.value),
-                map((v) => clean({ ...v, wallet_id: splitBySeparators(v.wallet_id) })),
-                untilDestroyed(this),
-            )
+        this.filtersForm.valueChanges
+            .pipe(startWith(this.filtersForm.value), debounceTime(300), untilDestroyed(this))
             .subscribe((value) => {
-                void this.qp.set(value);
+                void this.qp.set(clean(value));
                 this.search();
             });
     }
 
     search(size?: number) {
-        const { wallet_id, ...v } = this.filters.value;
-        this.fetchWalletsService.search(
-            clean({ ...v, wallet_id: splitBySeparators(wallet_id) }),
-            size,
-        );
+        const props = clean(this.filtersForm.value);
+        this.fetchWalletsService.search(props, size);
+        this.active = countProps(props);
     }
 
     fetchMore() {
