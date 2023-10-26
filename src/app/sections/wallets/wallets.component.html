@@ -19,35 +19,11 @@
     </mat-card>
 
     <v-table
-        [cellTemplate]="{ balance: balanceTpl }"
         [columns]="columns"
         [data]="wallets$ | async"
         [hasMore]="hasMore$ | async"
         [progress]="inProgress$ | async"
         (more)="fetchMore()"
         (update)="search($event.size)"
-    >
-        <ng-template #balanceTpl let-col="colDef" let-index="index" let-row>
-            <ng-container *ngIf="{ visible: false } as balance">
-                <button
-                    *ngIf="!balance.visible; else balanceTpl"
-                    class="cell-button"
-                    mat-icon-button
-                    (click)="balance.visible = true"
-                >
-                    <mat-icon>sync</mat-icon>
-                </button>
-                <ng-template #balanceTpl>
-                    <div style="white-space: nowrap">
-                        <ng-container *ngIf="getBalance(row.id) | async as account; else spinner">
-                            {{ account.current | amountCurrency: account.currency.symbolic_code }}
-                        </ng-container>
-                        <ng-template #spinner>
-                            <button [loading]="true" class="cell-button" mat-icon-button></button>
-                        </ng-template>
-                    </div>
-                </ng-template>
-            </ng-container>
-        </ng-template>
-    </v-table>
+    ></v-table>
 </cc-page-layout>
