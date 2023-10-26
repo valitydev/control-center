@@ -11,7 +11,6 @@ export * from './poll';
 export * from './forms';
 export * from './operators';
 export * from './get-enum-keys';
-export * from './is-nil-or-empty-string';
 export * from './enumerate';
 export * from './thrift-instance';
 export * from './csv';

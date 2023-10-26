@@ -4,6 +4,9 @@ import { startWith, map } from 'rxjs/operators';
 
 import { getValue } from './get-value';
 
+/**
+ * @deprecated
+ */
 export function getFormValueChanges<T>(
     form: AbstractControl<FormControlState<T> | T>,
     hasStart = false,

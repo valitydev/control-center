@@ -5,6 +5,9 @@ import { Moment } from 'moment';
 
 import { createControlProviders, ValidatedControlSuperclass } from '../../../../utils';
 
+/**
+ * @deprecated
+ */
 @Component({
     selector: 'cc-date-range',
     templateUrl: './date-range.component.html',
