@@ -1,42 +1,40 @@
 import { Injectable } from '@angular/core';
-import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { StatWithdrawal, StatResponse } from '@vality/fistful-proto/fistful_stat';
+import { FetchSuperclass, NotifyLogService, FetchResult, FetchOptions } from '@vality/ng-core';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import { createDsl, WithdrawalParams, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
 
-import { FetchResult, PartialFetcher } from '../../../shared/services';
-import { NotificationErrorService } from '../../../shared/services/notification-error';
-
 @Injectable()
-export class FetchWithdrawalsService extends PartialFetcher<StatWithdrawal, WithdrawalParams> {
+export class FetchWithdrawalsService extends FetchSuperclass<StatWithdrawal, WithdrawalParams> {
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {
         super();
     }
 
-    fetch(
+    protected fetch(
         params: WithdrawalParams,
-        continuationToken: string,
+        options: FetchOptions,
     ): Observable<FetchResult<StatWithdrawal>> {
         return this.fistfulStatisticsService
             .GetWithdrawals({
                 dsl: createDsl({
-                    withdrawals: params,
+                    withdrawals: { ...params, size: options.size },
                 }),
-                continuation_token: continuationToken,
+                continuation_token: options.continuationToken,
             })
             .pipe(
+                catchError((err) => {
+                    this.log.error(err);
+                    return of<StatResponse>({ data: { withdrawals: [] } });
+                }),
                 map(({ data, continuation_token }) => ({
                     result: data.withdrawals,
                     continuationToken: continuation_token,
                 })),
             );
-    }
-
-    protected handleError(error: unknown) {
-        this.notificationErrorService.error(error);
     }
 }

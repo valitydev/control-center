@@ -1,6 +1,9 @@
 <cc-page-layout title="Withdrawals">
-    <mat-card>
-        <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr 1fr" gdGap="16px">
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
             <cc-merchant-field formControlName="merchant"></cc-merchant-field>
             <cc-date-range formControlName="dateRange"></cc-date-range>
             <mat-form-field>
@@ -25,87 +28,28 @@
                 <mat-label>Amount to</mat-label>
                 <input formControlName="amountTo" matInput type="number" />
             </mat-form-field>
-        </mat-card-content>
-        <mat-card-footer *ngIf="inProgress$ | async">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </mat-card-footer>
-    </mat-card>
+        </ng-template>
+    </v-filters>
 
-    <ng-container *ngIf="!(inProgress$ | async) || (withdrawals$ | async)">
-        <div fxLayoutAlign="end">
+    <v-table
+        [(rowSelected)]="selected"
+        [columns]="columns"
+        [data]="withdrawals$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="inProgress$ | async"
+        rowSelectable
+        (more)="more()"
+        (update)="update($event)"
+    >
+        <v-table-actions>
             <button
-                [disabled]="!selection?.selected?.length"
+                [disabled]="!selected?.length"
                 color="primary"
                 mat-button
                 (click)="adjustment()"
             >
                 Create adjustment
             </button>
-        </div>
-
-        <cc-empty-search-result *ngIf="!(withdrawals$ | async)?.length"></cc-empty-search-result>
-        <mat-card
-            *ngIf="(withdrawals$ | async)?.length"
-            fxLayout="column"
-            fxLayoutGap="18px"
-            style="overflow: scroll"
-        >
-            <table [dataSource]="withdrawals$ | async" mat-table>
-                <cc-select-column
-                    [dataSource]="withdrawals$ | async"
-                    (changed)="selection = $event"
-                ></cc-select-column>
-                <ng-container matColumnDef="id">
-                    <th *matHeaderCellDef mat-header-cell>ID</th>
-                    <td *matCellDef="let w" mat-cell>{{ w.id }}</td>
-                </ng-container>
-                <ng-container matColumnDef="createdAt">
-                    <th *matHeaderCellDef mat-header-cell>Created at</th>
-                    <td *matCellDef="let w" mat-cell>
-                        {{ w.created_at | date: 'dd.MM.yyyy HH:mm:ss' }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="identityId">
-                    <th *matHeaderCellDef mat-header-cell>Identity ID</th>
-                    <td *matCellDef="let w" mat-cell>{{ w.identity_id }}</td>
-                </ng-container>
-                <ng-container matColumnDef="sourceId">
-                    <th *matHeaderCellDef mat-header-cell>Source ID</th>
-                    <td *matCellDef="let w" mat-cell>{{ w.source_id }}</td>
-                </ng-container>
-                <ng-container matColumnDef="destinationId">
-                    <th *matHeaderCellDef mat-header-cell>Destination ID</th>
-                    <td *matCellDef="let w" mat-cell>{{ w.destination_id }}</td>
-                </ng-container>
-                <ng-container matColumnDef="externalId">
-                    <th *matHeaderCellDef mat-header-cell>External ID</th>
-                    <td *matCellDef="let w" mat-cell>{{ w.external_id }}</td>
-                </ng-container>
-                <ng-container matColumnDef="amount">
-                    <th *matHeaderCellDef mat-header-cell>Amount</th>
-                    <td *matCellDef="let w" mat-cell>
-                        {{ w.amount / 100 | currency: w.currency_symbolic_code : 'symbol-narrow' }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="fee">
-                    <th *matHeaderCellDef mat-header-cell>Fee</th>
-                    <td *matCellDef="let w" mat-cell>
-                        {{ w.fee / 100 | currency: w.currency_symbolic_code : 'symbol-narrow' }}
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="status">
-                    <th *matHeaderCellDef mat-header-cell>Status</th>
-                    <td *matCellDef="let w" mat-cell>{{ w.status | ccUnionKey }}</td>
-                </ng-container>
-                <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-                <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
-            </table>
-
-            <cc-show-more-button
-                *ngIf="hasMore$ | async"
-                [inProgress]="inProgress$ | async"
-                (fetchMore)="fetchMore()"
-            ></cc-show-more-button>
-        </mat-card>
-    </ng-container>
+        </v-table-actions>
+    </v-table>
 </cc-page-layout>

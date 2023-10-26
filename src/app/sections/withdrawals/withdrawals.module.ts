@@ -12,10 +12,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { DialogModule, ListFieldModule } from '@vality/ng-core';
+import {
+    DialogModule,
+    ListFieldModule,
+    TableModule,
+    FiltersModule,
+    NumberRangeFieldModule,
+} from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
-import { TableModule } from '../../../components/table';
 import { PageLayoutModule } from '../../shared';
 import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
@@ -52,6 +57,8 @@ import { WithdrawalsComponent } from './withdrawals.component';
         MatRadioModule,
         PageLayoutModule,
         ListFieldModule,
+        FiltersModule,
+        NumberRangeFieldModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })
