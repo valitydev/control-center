@@ -72,6 +72,24 @@ export class WalletsComponent implements OnInit {
                     this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
             },
         },
+        {
+            field: 'expected_max',
+            type: 'currency',
+            lazy: true,
+            formatter: (d) =>
+                this.getBalance(d.id).pipe(
+                    switchMap((balance) =>
+                        this.amountCurrencyService.toMajor(
+                            balance.expected_max,
+                            balance.currency.symbolic_code,
+                        ),
+                    ),
+                ),
+            typeParameters: {
+                currencyCode: (d) =>
+                    this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
+            },
+        },
     ];
     filters = this.fb.group<WalletParams>({
         party_id: null,
