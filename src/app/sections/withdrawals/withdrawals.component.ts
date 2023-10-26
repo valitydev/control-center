@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { omitBy } from '@s-libs/micro-dash';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -12,21 +10,22 @@ import {
     countProps,
     clean,
     DialogService,
+    DateRange,
+    getNoTimeZoneIsoString,
 } from '@vality/ng-core';
+import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
-import { Moment } from 'moment';
-import { map } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
-import { isNilOrEmptyString, getUnionKey } from '../../../utils';
+import { getUnionKey } from '../../../utils';
 import { AmountCurrencyService } from '../../shared/services';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
 
 interface WithdrawalsForm {
-    dateRange: DateRange<Moment>;
+    dateRange: DateRange;
     merchant: PartyID;
     status: WithdrawalParams['status'];
     amountFrom: WithdrawalParams['amount_from'];
@@ -107,11 +106,8 @@ export class WithdrawalsComponent implements OnInit {
 
     ngOnInit() {
         this.filtersForm.valueChanges
-            .pipe(
-                map((v) => omitBy(v, isNilOrEmptyString)),
-                untilDestroyed(this),
-            )
-            .subscribe((v) => void this.qp.set(omitBy(v, isNilOrEmptyString)));
+            .pipe(untilDestroyed(this))
+            .subscribe((v) => void this.qp.set(clean(v)));
         this.qp.params$.pipe(untilDestroyed(this)).subscribe(() => this.update());
     }
 
@@ -119,16 +115,16 @@ export class WithdrawalsComponent implements OnInit {
         const { dateRange, merchant, status, amountFrom, amountTo, withdrawalIds, walletId } =
             this.qp.params;
         this.fetchWithdrawalsService.load(
-            {
+            clean({
                 party_id: merchant,
-                from_time: dateRange?.start?.toISOString(),
-                to_time: dateRange?.end?.toISOString(),
+                from_time: dateRange?.start && getNoTimeZoneIsoString(dateRange?.start),
+                to_time: dateRange?.end && getNoTimeZoneIsoString(endOfDay(dateRange?.end)),
                 status: status,
                 amount_from: amountFrom,
                 amount_to: amountTo,
                 withdrawal_ids: withdrawalIds,
                 wallet_id: walletId,
-            },
+            }),
             options,
         );
         this.active = countProps(clean(this.qp.params));

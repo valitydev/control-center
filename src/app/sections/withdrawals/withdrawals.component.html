@@ -5,7 +5,7 @@
     <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field formControlName="merchant"></cc-merchant-field>
-            <cc-date-range formControlName="dateRange"></cc-date-range>
+            <v-date-range-field formControlName="dateRange"></v-date-range-field>
             <mat-form-field>
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="status">

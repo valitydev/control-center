@@ -18,6 +18,7 @@ import {
     TableModule,
     FiltersModule,
     NumberRangeFieldModule,
+    DateRangeFieldModule,
 } from '@vality/ng-core';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
@@ -59,6 +60,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         ListFieldModule,
         FiltersModule,
         NumberRangeFieldModule,
+        DateRangeFieldModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })
