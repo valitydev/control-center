@@ -21,12 +21,11 @@
         </mat-accordion>
 
         <v-table
+            [(rowSelected)]="selectedChargebacks"
             [columns]="columns"
             [data]="chargebacks$ | async"
-            [rowSelected]="selectedChargebacks"
             noActions
             rowSelectable
-            (rowSelectionChange)="selectedChargebacks = $event"
         ></v-table>
     </div>
 

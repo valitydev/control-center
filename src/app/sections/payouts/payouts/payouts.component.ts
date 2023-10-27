@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { DialogService, QueryParamsService } from '@vality/ng-core';
-import omitBy from 'lodash-es/omitBy';
+import { DialogService, QueryParamsService, clean, getFormValueChanges } from '@vality/ng-core';
 import * as moment from 'moment/moment';
+import { filter } from 'rxjs/operators';
 
-import { isNilOrEmptyString } from '@cc/utils/is-nil-or-empty-string';
-
-import { getValidValueChanges } from '../../../../utils';
 import { PayoutActionsService } from '../services/payout-actions.service';
 
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchForm } from './components/payouts-search-form/payouts-search-form.component';
-import { FetchPayoutsService, SearchParams } from './services/fetch-payouts.service';
+import { FetchPayoutsService } from './services/fetch-payouts.service';
 
 @UntilDestroy()
 @Component({
@@ -36,9 +33,12 @@ export class PayoutsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        getValidValueChanges(this.control)
-            .pipe(untilDestroyed(this))
-            .subscribe((value) => void this.qp.set(value));
+        getFormValueChanges(this.control, true)
+            .pipe(
+                filter(() => this.control.valid),
+                untilDestroyed(this),
+            )
+            .subscribe((value) => void this.qp.set(clean(value)));
         this.qp.params$.pipe(untilDestroyed(this)).subscribe((value) => this.search(value));
     }
 
@@ -48,23 +48,17 @@ export class PayoutsComponent implements OnInit {
 
     search(value: Partial<PayoutsSearchForm>) {
         this.fetchPayoutsService.search(
-            omitBy(
-                {
-                    common_search_query_params: omitBy(
-                        {
-                            from_time: value.dateRange?.start?.utc()?.format(),
-                            to_time: value.dateRange?.end?.utc()?.format(),
-                            party_id: value.partyId,
-                            shop_ids: value.shops,
-                        },
-                        isNilOrEmptyString,
-                    ),
-                    payout_id: value.payoutId,
-                    payout_status_types: value.payoutStatusTypes,
-                    payout_type: value.payoutToolType,
-                },
-                isNilOrEmptyString,
-            ) as SearchParams,
+            clean({
+                common_search_query_params: clean({
+                    from_time: value.dateRange?.start?.utc()?.format(),
+                    to_time: value.dateRange?.end?.utc()?.format(),
+                    party_id: value.partyId,
+                    shop_ids: value.shops,
+                }),
+                payout_id: value.payoutId,
+                payout_status_types: value.payoutStatusTypes,
+                payout_type: value.payoutToolType,
+            }),
         );
     }
 

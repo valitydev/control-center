@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MtxButtonModule } from '@ng-matero/extensions/button';
-import { TableModule } from '@vality/ng-core';
+import { TableModule, ListFieldModule, FiltersModule } from '@vality/ng-core';
 
 import { AmountCurrencyPipe, PageLayoutModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
@@ -37,6 +37,8 @@ import { WalletsComponent } from './wallets.component';
         MtxButtonModule,
         AmountCurrencyPipe,
         PageLayoutModule,
+        ListFieldModule,
+        FiltersModule,
     ],
     declarations: [WalletsComponent],
 })
