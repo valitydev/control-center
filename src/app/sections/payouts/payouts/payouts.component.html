@@ -1,28 +1,19 @@
 <cc-page-layout title="Payouts">
-    <cc-page-layout-actions>
-        <button color="primary" mat-raised-button (click)="create()">Create</button>
-    </cc-page-layout-actions>
+    <cc-page-layout-actions></cc-page-layout-actions>
     <mat-card>
         <mat-card-content>
             <cc-payouts-search-form [formControl]="control"></cc-payouts-search-form>
         </mat-card-content>
-        <mat-card-footer *ngIf="inProgress$ | async">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </mat-card-footer>
     </mat-card>
-    <ng-container *ngIf="payouts$ | async as payouts">
-        <cc-empty-search-result *ngIf="payouts.length === 0"></cc-empty-search-result>
-        <mat-card *ngIf="payouts.length > 0" fxLayout="column" fxLayoutGap="18px">
-            <cc-payouts-table [payouts]="payouts"></cc-payouts-table>
-            <button
-                *ngIf="hasMore$ | async"
-                [disabled]="inProgress$ | async"
-                fxFlex="100"
-                mat-button
-                (click)="fetchMore()"
-            >
-                {{ (inProgress$ | async) ? 'Loading...' : 'Show more' }}
-            </button>
-        </mat-card>
-    </ng-container>
+    <v-table
+        [columns]="columns"
+        [data]="payouts$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="inProgress$ | async"
+        (more)="fetchMore()"
+    >
+        <v-table-actions>
+            <button color="primary" mat-raised-button (click)="create()">Create</button>
+        </v-table-actions>
+    </v-table>
 </cc-page-layout>

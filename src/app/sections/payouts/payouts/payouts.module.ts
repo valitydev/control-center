@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { DialogModule, ActionsModule, DateRangeFieldModule } from '@vality/ng-core';
+import { DialogModule, ActionsModule, DateRangeFieldModule, TableModule } from '@vality/ng-core';
 
 import {
     PayoutToolFieldModule,
@@ -22,20 +22,18 @@ import {
     PageLayoutModule,
 } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { ShopNameModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
+import { CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
 import { PayoutsSearchFormComponent } from './components/payouts-search-form/payouts-search-form.component';
-import { PayoutsTableComponent } from './components/payouts-table/payouts-table.component';
 import { PayoutsRoutingModule } from './payouts-routing.module';
 import { PayoutsComponent } from './payouts.component';
 
 @NgModule({
     declarations: [
         PayoutsComponent,
-        PayoutsTableComponent,
         PayoutsSearchFormComponent,
         CreatePayoutDialogComponent,
         CancelPayoutDialogComponent,
@@ -58,7 +56,6 @@ import { PayoutsComponent } from './payouts.component';
         MatIconModule,
         MatTableModule,
         MatMenuModule,
-        ShopNameModule,
         CommonPipesModule,
         ThriftPipesModule,
         StatusModule,
@@ -69,6 +66,7 @@ import { PayoutsComponent } from './payouts.component';
         ActionsModule,
         PageLayoutModule,
         DateRangeFieldModule,
+        TableModule,
     ],
 })
 export class PayoutsModule {}
