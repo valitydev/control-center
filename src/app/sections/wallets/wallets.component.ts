@@ -49,6 +49,24 @@ export class WalletsComponent implements OnInit {
             },
         },
         {
+            field: 'hold',
+            type: 'currency',
+            lazy: true,
+            formatter: (d) =>
+                this.getBalance(d.id).pipe(
+                    switchMap((balance) =>
+                        this.amountCurrencyService.toMajor(
+                            balance.current - balance.expected_min,
+                            balance.currency.symbolic_code,
+                        ),
+                    ),
+                ),
+            typeParameters: {
+                currencyCode: (d) =>
+                    this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
+            },
+        },
+        {
             field: 'expected_min',
             type: 'currency',
             lazy: true,
