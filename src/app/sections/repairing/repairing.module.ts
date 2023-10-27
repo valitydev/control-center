@@ -13,14 +13,19 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
+import {
+    ActionsModule,
+    DialogModule,
+    TableModule,
+    DateRangeFieldModule,
+    ListFieldModule,
+} from '@vality/ng-core';
 
 import { EnumKeyPipe, EnumKeysPipe, PageLayoutModule } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
-import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { RepairingRoutingModule } from './repairing-routing.module';
@@ -42,7 +47,7 @@ import { RepairingComponent } from './repairing.component';
         MatBadgeModule,
         MatFormFieldModule,
         MatInputModule,
-        DateRangeModule,
+        DateRangeFieldModule,
         MatSelectModule,
         ActionsModule,
         DialogModule,
@@ -53,6 +58,7 @@ import { RepairingComponent } from './repairing.component';
         EnumKeysPipe,
         DomainObjectFieldComponent,
         PageLayoutModule,
+        ListFieldModule,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })
