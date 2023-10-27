@@ -23,7 +23,6 @@ import {
 
 import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { PageLayoutModule } from '../../shared';
-import { DateRangeModule } from '../../shared/components/date-range/date-range.module';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { ThriftPipesModule } from '../../shared/pipes/thrift';
@@ -43,7 +42,6 @@ import { WithdrawalsComponent } from './withdrawals.component';
         MatButtonModule,
         MerchantFieldModule,
         GridModule,
-        DateRangeModule,
         ReactiveFormsModule,
         MatTableModule,
         ThriftPipesModule,

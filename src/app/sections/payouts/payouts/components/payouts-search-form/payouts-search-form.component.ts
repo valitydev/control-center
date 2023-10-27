@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { DateRange } from '@angular/material/datepicker';
 import { PartyID, Party, Shop, ShopID } from '@vality/domain-proto/domain';
 import { magista } from '@vality/magista-proto';
-import { Moment } from 'moment';
+import { DateRange } from '@vality/ng-core';
 
 import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils/forms';
 import { getEnumKeys } from '@cc/utils/get-enum-keys';
@@ -11,7 +10,7 @@ import { getEnumKeys } from '@cc/utils/get-enum-keys';
 export interface PayoutsSearchForm {
     payoutId: string;
     partyId: Party['id'];
-    dateRange: DateRange<Moment>;
+    dateRange: DateRange;
     shops: Shop['id'][];
     payoutStatusTypes: magista.PayoutStatusType[];
     payoutToolType: magista.PayoutToolType;

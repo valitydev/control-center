@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { DialogModule, ActionsModule } from '@vality/ng-core';
+import { DialogModule, ActionsModule, DateRangeFieldModule } from '@vality/ng-core';
 
 import {
     PayoutToolFieldModule,
@@ -24,8 +24,6 @@ import {
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ShopNameModule, CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
-
-import { DateRangeModule } from '../../../shared/components/date-range/date-range.module';
 
 import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
@@ -69,8 +67,8 @@ import { PayoutsComponent } from './payouts.component';
         PayoutToolFieldModule,
         DialogModule,
         ActionsModule,
-        DateRangeModule,
         PageLayoutModule,
+        DateRangeFieldModule,
     ],
 })
 export class PayoutsModule {}
