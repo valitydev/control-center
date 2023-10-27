@@ -1,10 +1,51 @@
 <cc-page-layout title="Payouts">
-    <cc-page-layout-actions></cc-page-layout-actions>
-    <mat-card>
-        <mat-card-content>
-            <cc-payouts-search-form [formControl]="control"></cc-payouts-search-form>
-        </mat-card-content>
-    </mat-card>
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
+            <v-date-range-field formControlName="dateRange" required></v-date-range-field>
+            <mat-form-field>
+                <input
+                    autocomplete="off"
+                    formControlName="payoutId"
+                    matInput
+                    placeholder="Payout ID"
+                />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select
+                    formControlName="payoutStatusTypes"
+                    multiple
+                    placeholder="Payout Status Type"
+                >
+                    <mat-option
+                        *ngFor="let type of statusTypeEnum | enumKeys"
+                        [value]="statusTypeEnum[type]"
+                    >
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select formControlName="payoutToolType" placeholder="Payout Tool Type">
+                    <mat-option [value]="null">any</mat-option>
+                    <mat-option
+                        *ngFor="let type of payoutToolTypeEnum | enumKeys"
+                        [value]="payoutToolTypeEnum[type]"
+                    >
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <cc-merchant-field formControlName="partyId"></cc-merchant-field>
+            <cc-shop-field
+                [partyId]="filtersForm.value.partyId"
+                formControlName="shops"
+                multiple
+            ></cc-shop-field>
+        </ng-template>
+    </v-filters>
     <v-table
         [columns]="columns"
         [data]="payouts$ | async"

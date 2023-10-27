@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Party, Shop, ShopID, PartyID } from '@vality/domain-proto/domain';
+import { magista } from '@vality/magista-proto';
 import { StatPayout } from '@vality/magista-proto/magista';
 import {
     DialogService,
@@ -11,8 +13,12 @@ import {
     createDateRangeToToday,
     Column,
     createOperationColumn,
+    DateRange,
+    countProps,
+    isEqualDateRange,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
+import omit from 'lodash-es/omit';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
@@ -22,8 +28,16 @@ import { DATE_RANGE_DAYS } from '../../../tokens';
 import { PayoutActionsService } from '../services/payout-actions.service';
 
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
-import { PayoutsSearchForm } from './components/payouts-search-form/payouts-search-form.component';
 import { FetchPayoutsService } from './services/fetch-payouts.service';
+
+interface PayoutsSearchForm {
+    payoutId: string;
+    partyId: Party['id'];
+    dateRange: DateRange;
+    shops: Shop['id'][];
+    payoutStatusTypes: magista.PayoutStatusType[];
+    payoutToolType: magista.PayoutToolType;
+}
 
 @UntilDestroy()
 @Component({
@@ -32,9 +46,13 @@ import { FetchPayoutsService } from './services/fetch-payouts.service';
     providers: [FetchPayoutsService, PayoutActionsService],
 })
 export class PayoutsComponent implements OnInit {
-    control = new FormControl<PayoutsSearchForm>({
+    filtersForm = this.fb.group({
+        payoutId: null as string,
+        partyId: null as PartyID,
         dateRange: createDateRangeToToday(this.dateRangeDays),
-        ...(this.qp.params as PayoutsSearchForm),
+        shops: [null as ShopID[]],
+        payoutStatusTypes: [null as magista.PayoutStatusType[]],
+        payoutToolType: [null as magista.PayoutToolType],
     });
     inProgress$ = this.fetchPayoutsService.doAction$;
     payouts$ = this.fetchPayoutsService.searchResult$;
@@ -82,6 +100,9 @@ export class PayoutsComponent implements OnInit {
             },
         ]),
     ];
+    statusTypeEnum = magista.PayoutStatusType;
+    payoutToolTypeEnum = magista.PayoutToolType;
+    active = 0;
 
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
@@ -89,12 +110,14 @@ export class PayoutsComponent implements OnInit {
         private dialogService: DialogService,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         private payoutActionsService: PayoutActionsService,
+        private fb: FormBuilder,
     ) {}
 
     ngOnInit() {
-        getFormValueChanges(this.control, true)
+        this.filtersForm.patchValue(this.qp.params);
+        getFormValueChanges(this.filtersForm, true)
             .pipe(
-                filter(() => this.control.valid),
+                filter(() => this.filtersForm.valid),
                 untilDestroyed(this),
             )
             .subscribe((value) => void this.qp.set(clean(value)));
@@ -122,6 +145,9 @@ export class PayoutsComponent implements OnInit {
                 payout_type: value.payoutToolType,
             }),
         );
+        this.active =
+            countProps(omit(value, 'dateRange')) +
+            +!isEqualDateRange(value.dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
     create() {

@@ -2,6 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { getEnumKeys } from '@cc/utils';
 
+/**
+ * @deprecated
+ */
 @Pipe({
     standalone: true,
     name: 'enumKeys',

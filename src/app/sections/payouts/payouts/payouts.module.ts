@@ -13,7 +13,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { DialogModule, ActionsModule, DateRangeFieldModule, TableModule } from '@vality/ng-core';
+import {
+    DialogModule,
+    ActionsModule,
+    DateRangeFieldModule,
+    TableModule,
+    FiltersModule,
+    EnumKeysPipe,
+} from '@vality/ng-core';
 
 import {
     PayoutToolFieldModule,
@@ -27,17 +34,11 @@ import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
-import { PayoutsSearchFormComponent } from './components/payouts-search-form/payouts-search-form.component';
 import { PayoutsRoutingModule } from './payouts-routing.module';
 import { PayoutsComponent } from './payouts.component';
 
 @NgModule({
-    declarations: [
-        PayoutsComponent,
-        PayoutsSearchFormComponent,
-        CreatePayoutDialogComponent,
-        CancelPayoutDialogComponent,
-    ],
+    declarations: [PayoutsComponent, CreatePayoutDialogComponent, CancelPayoutDialogComponent],
     imports: [
         CommonModule,
         PayoutsRoutingModule,
@@ -67,6 +68,8 @@ import { PayoutsComponent } from './payouts.component';
         PageLayoutModule,
         DateRangeFieldModule,
         TableModule,
+        FiltersModule,
+        EnumKeysPipe,
     ],
 })
 export class PayoutsModule {}
