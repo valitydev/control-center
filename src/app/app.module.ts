@@ -39,6 +39,8 @@ import {
     SMALL_SEARCH_LIMIT,
     DATE_RANGE_DAYS,
     DEFAULT_DATE_RANGE_DAYS,
+    DEBOUNCE_TIME_MS,
+    DEFAULT_DEBOUNCE_TIME_MS,
 } from './tokens';
 
 registerLocaleData(localeRu);
@@ -88,6 +90,7 @@ export let AppInjector: Injector;
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
+        { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
     ],
     bootstrap: [AppComponent],

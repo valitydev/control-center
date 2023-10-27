@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
@@ -12,6 +12,7 @@ import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
 
 import { AmountCurrencyService } from '../../shared/services';
+import { DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { FetchWalletsService } from './fetch-wallets.service';
 
@@ -108,7 +109,6 @@ export class WalletsComponent implements OnInit {
         identity_id: null as string,
         currency_code: null as string,
         wallet_id: [null as string[]],
-        ...(this.qp.params as object),
     });
     active = 0;
 
@@ -119,11 +119,17 @@ export class WalletsComponent implements OnInit {
         private walletManagementService: ManagementService,
         private log: NotifyLogService,
         private amountCurrencyService: AmountCurrencyService,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
+        this.filtersForm.patchValue(this.qp.params);
         this.filtersForm.valueChanges
-            .pipe(startWith(this.filtersForm.value), debounceTime(300), untilDestroyed(this))
+            .pipe(
+                startWith(this.filtersForm.value),
+                debounceTime(this.debounceTimeMs),
+                untilDestroyed(this),
+            )
             .subscribe((value) => {
                 void this.qp.set(clean(value));
                 this.search();
