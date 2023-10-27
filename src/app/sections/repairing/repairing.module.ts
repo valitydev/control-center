@@ -19,9 +19,11 @@ import {
     TableModule,
     DateRangeFieldModule,
     ListFieldModule,
+    EnumKeyPipe,
+    EnumKeysPipe,
 } from '@vality/ng-core';
 
-import { EnumKeyPipe, EnumKeysPipe, PageLayoutModule } from '@cc/app/shared';
+import { PageLayoutModule } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
