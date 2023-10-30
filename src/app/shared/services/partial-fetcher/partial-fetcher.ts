@@ -24,6 +24,9 @@ import { SHARE_REPLAY_CONF } from './utils/share-replay-conf';
 // TODO: make free of subscription & UntilDestroy
 // TODO: share public props together
 // TODO: make fetcher injectable
+/**
+ * @deprecated
+ */
 @UntilDestroy()
 export abstract class PartialFetcher<R, P> {
     readonly fetchResultChanges$: Observable<{

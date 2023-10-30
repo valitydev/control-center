@@ -16,6 +16,7 @@ import {
     DateRange,
     countProps,
     isEqualDateRange,
+    UpdateOptions,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import omit from 'lodash-es/omit';
@@ -54,8 +55,8 @@ export class PayoutsComponent implements OnInit {
         payoutStatusTypes: [null as magista.PayoutStatusType[]],
         payoutToolType: [null as magista.PayoutToolType],
     });
-    inProgress$ = this.fetchPayoutsService.doAction$;
-    payouts$ = this.fetchPayoutsService.searchResult$;
+    inProgress$ = this.fetchPayoutsService.isLoading$;
+    payouts$ = this.fetchPayoutsService.result$;
     hasMore$ = this.fetchPayoutsService.hasMore$;
     columns: Column<StatPayout>[] = [
         { field: 'id', pinned: 'left', link: (d) => `/payouts/${d.id}` },
@@ -121,15 +122,16 @@ export class PayoutsComponent implements OnInit {
                 untilDestroyed(this),
             )
             .subscribe((value) => void this.qp.set(clean(value)));
-        this.qp.params$.pipe(untilDestroyed(this)).subscribe((value) => this.search(value));
+        this.qp.params$.pipe(untilDestroyed(this)).subscribe(() => this.search());
     }
 
-    fetchMore() {
-        this.fetchPayoutsService.fetchMore();
+    more() {
+        this.fetchPayoutsService.more();
     }
 
-    search(value: Partial<PayoutsSearchForm>) {
-        this.fetchPayoutsService.search(
+    search(options?: UpdateOptions) {
+        const value = this.qp.params;
+        this.fetchPayoutsService.load(
             clean({
                 common_search_query_params: clean({
                     from_time:
@@ -144,6 +146,7 @@ export class PayoutsComponent implements OnInit {
                 payout_status_types: value.payoutStatusTypes,
                 payout_type: value.payoutToolType,
             }),
+            options,
         );
         this.active =
             countProps(omit(value, 'dateRange')) +

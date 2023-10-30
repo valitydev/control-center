@@ -51,7 +51,8 @@
         [data]="payouts$ | async"
         [hasMore]="hasMore$ | async"
         [progress]="inProgress$ | async"
-        (more)="fetchMore()"
+        (more)="more()"
+        (update)="search($event)"
     >
         <v-table-actions>
             <button color="primary" mat-raised-button (click)="create()">Create</button>
