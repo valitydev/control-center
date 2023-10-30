@@ -1,16 +1,12 @@
 <cc-page-layout title="Repairing">
     <mat-card>
         <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr" gdGap="16px">
-            <mat-form-field>
-                <mat-label>IDs</mat-label>
-                <input formControlName="ids" matInput />
-                <mat-hint>id0,id1</mat-hint>
-            </mat-form-field>
+            <v-list-field formControlName="ids" label="IDs"></v-list-field>
             <mat-form-field>
                 <mat-label>Namespace</mat-label>
                 <input formControlName="ns" matInput />
             </mat-form-field>
-            <cc-date-range formControlName="timespan"></cc-date-range>
+            <v-date-range-field formControlName="timespan"></v-date-range-field>
             <cc-domain-object-field
                 formControlName="provider_id"
                 name="provider"
@@ -35,11 +31,10 @@
     </mat-card>
 
     <v-table
-        [cellTemplate]="cellTemplate"
-        [columns]="columns$ | async"
+        [columns]="columns"
         [data]="machines$ | async"
         [hasMore]="hasMore$ | async"
-        [progress]="(inProgress$ | async) && !!(columns$ | async)"
+        [progress]="inProgress$ | async"
         [rowSelected]="selected$ | async"
         rowSelectable
         (more)="fetchMore()"

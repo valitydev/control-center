@@ -12,11 +12,12 @@ import {
     DialogModule,
     forkJoinToResult,
     NotifyLogService,
+    EnumKeysPipe,
+    EnumKeyPipe,
 } from '@vality/ng-core';
 import { from, BehaviorSubject } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
-import { EnumKeysPipe, EnumKeyPipe } from '@cc/app/shared';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
 import { MetadataFormModule } from '../metadata-form';

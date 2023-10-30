@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StatPayout, PayoutSearchQuery } from '@vality/magista-proto/magista';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { FetchSuperclass, NotifyLogService, FetchResult, FetchOptions } from '@vality/ng-core';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { MerchantStatisticsService } from '@cc/app/api/magista';
-import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
-
-import { NotificationErrorService } from '../../../../shared/services/notification-error';
 
 export type SearchParams = Overwrite<
     PayoutSearchQuery,
@@ -20,24 +18,27 @@ export type SearchParams = Overwrite<
 >;
 
 @Injectable()
-export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams> {
+export class FetchPayoutsService extends FetchSuperclass<StatPayout, SearchParams> {
     constructor(
         private merchantStatisticsService: MerchantStatisticsService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {
         super();
     }
 
     protected fetch(
         params: SearchParams,
-        continuationToken: string,
+        options: FetchOptions,
     ): Observable<FetchResult<StatPayout>> {
         return this.merchantStatisticsService
             .SearchPayouts({
                 ...params,
                 common_search_query_params: {
                     ...params.common_search_query_params,
-                    ...(continuationToken ? { continuation_token: continuationToken } : {}),
+                    ...(options.continuationToken
+                        ? { continuation_token: options.continuationToken }
+                        : {}),
+                    limit: options.size,
                 },
             })
             .pipe(
@@ -45,10 +46,10 @@ export class FetchPayoutsService extends PartialFetcher<StatPayout, SearchParams
                     result: payouts,
                     continuationToken: continuation_token,
                 })),
+                catchError((err) => {
+                    this.log.error(err);
+                    return of({ result: [] });
+                }),
             );
-    }
-
-    protected handleError(error: unknown) {
-        this.notificationErrorService.error(error);
     }
 }

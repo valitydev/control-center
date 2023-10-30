@@ -1,25 +1,25 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { DateRange } from '@angular/material/datepicker';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
     DialogResponseStatus,
     DialogService,
     clean,
-    splitBySeparators,
     Column,
     ConfirmDialogComponent,
     QueryParamsService,
+    NotifyLogService,
+    DateRange,
+    getNoTimeZoneIsoString,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
+import { endOfDay } from 'date-fns';
 import isNil from 'lodash-es/isNil';
-import { Moment } from 'moment';
 import { BehaviorSubject } from 'rxjs';
-import { filter, map, switchMap, shareReplay } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
@@ -29,9 +29,9 @@ import { RepairByScenarioDialogComponent } from './components/repair-by-scenario
 import { MachinesService } from './services/machines.service';
 
 interface Filters {
-    ids: string;
+    ids: string[];
     ns: Namespace;
-    timespan: DateRange<Moment>;
+    timespan: DateRange;
     provider_id: ProviderID;
     status: RepairStatus;
     error_message: string;
@@ -47,42 +47,45 @@ export class RepairingComponent implements OnInit {
     machines$ = this.machinesService.searchResult$;
     inProgress$ = this.machinesService.doAction$;
     hasMore$ = this.machinesService.hasMore$;
-    filters = this.fb.group<Filters>({
-        ids: null,
-        ns: null,
-        timespan: null,
-        provider_id: null,
-        status: null,
-        error_message: null,
-        ...this.qp.params,
+    filters = this.fb.group({
+        ids: [null as string[]],
+        ns: null as string,
+        timespan: null as DateRange,
+        provider_id: null as string,
+        status: null as RepairStatus,
+        error_message: null as string,
     });
     selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
-    columns$ = this.domainStoreService.getObjects('provider').pipe(
-        map((providers): Column<Machine>[] => [
-            { field: 'id', pinned: 'left' },
-            { header: 'Namespace', field: 'ns' },
-            { field: 'created_at', type: 'datetime' },
-            {
-                field: 'provider',
-                formatter: (data) =>
-                    providers.find((p) => String(p.ref.id) === data.provider_id)?.data?.name,
-                description: 'provider_id',
-            },
-            {
-                field: 'status',
-                formatter: (data) => getEnumKey(repairer.RepairStatus, data.status),
-                tooltip: 'error_message',
-            },
-            {
-                field: 'history',
-                formatter: (data) => (data.history?.length ? String(data.history.length) : ''),
-                tooltip: 'history',
-            },
-        ]),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-    cellTemplate: Record<string, TemplateRef<unknown>> = {};
+    columns: Column<Machine>[] = [
+        { field: 'id', pinned: 'left' },
+        { header: 'Namespace', field: 'ns' },
+        { field: 'created_at', type: 'datetime' },
+        {
+            field: 'provider',
+            formatter: (data) =>
+                this.domainStoreService
+                    .getObjects('provider')
+                    .pipe(
+                        map(
+                            (providers) =>
+                                providers.find((p) => String(p.ref.id) === data.provider_id)?.data
+                                    ?.name,
+                        ),
+                    ),
+            description: 'provider_id',
+        },
+        {
+            field: 'status',
+            formatter: (data) => getEnumKey(repairer.RepairStatus, data.status),
+            tooltip: 'error_message',
+        },
+        {
+            field: 'history',
+            formatter: (data) => (data.history?.length ? String(data.history.length) : ''),
+            tooltip: 'history',
+        },
+    ];
 
     constructor(
         private machinesService: MachinesService,
@@ -91,11 +94,12 @@ export class RepairingComponent implements OnInit {
         private dialogService: DialogService,
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private domainStoreService: DomainStoreService,
     ) {}
 
     ngOnInit() {
+        this.filters.patchValue(this.qp.params);
         this.filters.valueChanges
             .pipe(
                 map(() => clean(this.filters.value)),
@@ -106,7 +110,7 @@ export class RepairingComponent implements OnInit {
             .pipe(
                 map(({ ids, ns, timespan, provider_id, status, error_message }) =>
                     clean({
-                        ids: splitBySeparators(ids),
+                        ids,
                         ns,
                         provider_id: isNil(provider_id) ? null : String(provider_id),
                         status,
@@ -114,8 +118,8 @@ export class RepairingComponent implements OnInit {
                         timespan:
                             timespan?.start && timespan?.end
                                 ? {
-                                      from_time: timespan?.start?.toISOString(),
-                                      to_time: timespan?.end?.toISOString(),
+                                      from_time: getNoTimeZoneIsoString(timespan?.start),
+                                      to_time: getNoTimeZoneIsoString(endOfDay(timespan?.end)),
                                   }
                                 : null,
                     }),
@@ -153,7 +157,7 @@ export class RepairingComponent implements OnInit {
                 next: () => {
                     this.notificationService.success();
                 },
-                error: this.notificationErrorService.error,
+                error: (err) => this.log.error(err),
             });
     }
 
