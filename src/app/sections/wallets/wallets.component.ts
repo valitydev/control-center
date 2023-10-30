@@ -89,6 +89,7 @@ export class WalletsComponent implements OnInit {
             field: 'expected_max',
             type: 'currency',
             lazy: true,
+            hide: true,
             formatter: (d) =>
                 this.getBalance(d.id).pipe(
                     switchMap((balance) =>
