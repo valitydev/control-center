@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
 import { Column, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
+import { map } from 'rxjs/operators';
 
 import { FetchPartiesService } from '@cc/app/shared/services/fetch-parties.service';
 
 import { getUnionKey } from '../../../utils';
 
-import { PartiesSearchFiltersParams } from './parties-search-filters';
 import { SearchPartiesService } from './search-parties.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { SearchPartiesService } from './search-parties.service';
     providers: [SearchPartiesService, FetchPartiesService],
 })
 export class SearchPartiesComponent {
-    initSearchParams$ = this.partiesService.data$;
+    initSearchParams$ = this.partiesService.data$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchPartiesService.inProgress$;
     parties$ = this.fetchPartiesService.parties$;
     columns: Column<Party>[] = [
@@ -71,8 +71,8 @@ export class SearchPartiesComponent {
         private router: Router,
     ) {}
 
-    searchParamsUpdated($event: PartiesSearchFiltersParams) {
-        this.partiesService.preserve($event);
-        this.fetchPartiesService.searchParties($event.text);
+    searchParamsUpdated(filter: string) {
+        this.partiesService.preserve({ text: filter });
+        this.fetchPartiesService.searchParties(filter);
     }
 }

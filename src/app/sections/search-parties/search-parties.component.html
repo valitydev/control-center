@@ -1,17 +1,10 @@
 <cc-page-layout title="Search merchants">
-    <mat-card>
-        <mat-card-content>
-            <cc-parties-search-filters
-                [initParams]="initSearchParams$ | async"
-                (searchParamsChanged$)="searchParamsUpdated($event)"
-            ></cc-parties-search-filters>
-        </mat-card-content>
-    </mat-card>
-
     <v-table
         [columns]="columns"
         [data]="parties$ | async"
+        [filter]="initSearchParams$ | async"
         [progress]="inProgress$ | async"
         noActions
+        (filterChange)="searchParamsUpdated($event)"
     ></v-table>
 </cc-page-layout>
