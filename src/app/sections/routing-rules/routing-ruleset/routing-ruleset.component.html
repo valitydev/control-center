@@ -19,6 +19,7 @@
         [columns]="columns"
         [data]="(candidates$ | async) || []"
         [progress]="isLoading$ | async"
+        [size]="100"
         [sort]="{ active: 'priority', direction: 'desc' }"
         noActions
         sortOnFront
