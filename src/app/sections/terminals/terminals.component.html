@@ -1,6 +1,5 @@
 <cc-page-layout title="Terminals">
     <cc-page-layout-actions></cc-page-layout-actions>
-    <v-input-field [formControl]="searchControl" label="Search"></v-input-field>
     <v-table
         [(sort)]="sort"
         [columns]="columns"
@@ -8,6 +7,7 @@
         [progress]="progress$ | async"
         size="50"
         sortOnFront
+        standaloneFilter
         (update)="update()"
     >
         <v-table-actions>

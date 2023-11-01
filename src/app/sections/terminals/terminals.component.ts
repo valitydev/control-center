@@ -1,5 +1,4 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
@@ -11,10 +10,10 @@ import {
 } from '@vality/domain-proto/domain';
 import { Column } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
-import { combineLatest } from 'rxjs';
-import { startWith, map, debounceTime, tap, take } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
-import { objectToJSON, createFullTextSearch, getUnionValue, getUnionKey } from '../../../utils';
+import { getUnionValue, getUnionKey } from '../../../utils';
 import { DomainStoreService } from '../../api/domain-config';
 import { PartiesStoreService } from '../../api/payment-processing';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
@@ -25,7 +24,6 @@ import { SidenavInfoService } from '../../shared/components/sidenav-info';
     templateUrl: './terminals.component.html',
 })
 export class TerminalsComponent {
-    searchControl = new FormControl('');
     columns: Column<TerminalObject>[] = [
         { field: 'ref.id', sortable: true },
         {
@@ -83,32 +81,7 @@ export class TerminalsComponent {
             },
         },
     ];
-    data$ = combineLatest([
-        this.domainStoreService.getObjects('terminal').pipe(
-            map((objects) =>
-                createFullTextSearch(
-                    objects,
-                    objects.map((o) => ({
-                        ref: o.ref.id,
-                        data: JSON.stringify(objectToJSON(o.data)),
-                        name: o.data.name,
-                        description: o.data.description,
-                    })),
-                ),
-            ),
-        ),
-        this.searchControl.valueChanges.pipe(
-            startWith(this.searchControl.value),
-            debounceTime(100),
-        ),
-    ]).pipe(
-        tap(([, search]) => {
-            if (search) {
-                this.sort = { active: '', direction: '' };
-            }
-        }),
-        map(([fts, search]) => fts.search(search)),
-    );
+    data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
     sort: Sort = { active: 'data.name', direction: 'asc' };
     openedTerminal?: TerminalObject;
@@ -200,13 +173,15 @@ export class TerminalsComponent {
     }
 
     private getProvider(terminalObj: TerminalObject) {
-        return this.domainStoreService
-            .getObjects('provider')
-            .pipe(
-                map((providers) =>
-                    providers.find((p) => p.ref.id === terminalObj.data.provider_ref.id),
-                ),
-            );
+        return terminalObj.data.provider_ref
+            ? this.domainStoreService
+                  .getObjects('provider')
+                  .pipe(
+                      map((providers) =>
+                          providers.find((p) => p.ref.id === terminalObj.data.provider_ref.id),
+                      ),
+                  )
+            : of(null);
     }
 
     private getTerminalShopWalletDelegates(terminalObj: TerminalObject) {
