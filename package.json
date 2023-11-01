@@ -37,7 +37,7 @@
     "@vality/dominant-cache-proto": "2.0.0",
     "@vality/fistful-proto": "2.0.1-ed97a0e.0",
     "@vality/magista-proto": "2.0.2-37b81e6.0",
-    "@vality/ng-core": "16.2.1-pr-40-44df7b7.0",
+    "@vality/ng-core": "16.2.1-pr-40-dfa2f53.0",
     "@vality/payout-manager-proto": "2.0.0",
     "@vality/repairer-proto": "2.0.2-f5e3b7a.0",
     "@vality/thrift-ts": "2.4.1-8ad5123.0",
