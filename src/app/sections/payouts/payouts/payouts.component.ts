@@ -131,6 +131,9 @@ export class PayoutsComponent implements OnInit {
 
     search(options?: UpdateOptions) {
         const value = this.qp.params;
+        if (!value.dateRange) {
+            return;
+        }
         this.fetchPayoutsService.load(
             clean({
                 common_search_query_params: clean({
