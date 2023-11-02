@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
-import { Column, createOperationColumn } from '@vality/ng-core';
+import { Column, createOperationColumn, QueryParamsService } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
@@ -9,15 +9,13 @@ import { FetchPartiesService } from '@cc/app/shared/services/fetch-parties.servi
 
 import { getUnionKey } from '../../../utils';
 
-import { SearchPartiesService } from './search-parties.service';
-
 @Component({
     templateUrl: 'search-parties.component.html',
     styleUrls: ['search-parties.component.scss'],
-    providers: [SearchPartiesService, FetchPartiesService],
+    providers: [FetchPartiesService],
 })
 export class SearchPartiesComponent {
-    initSearchParams$ = this.partiesService.data$.pipe(map((p) => p?.text ?? ''));
+    initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchPartiesService.inProgress$;
     parties$ = this.fetchPartiesService.parties$;
     columns: Column<Party>[] = [
@@ -66,13 +64,13 @@ export class SearchPartiesComponent {
     ];
 
     constructor(
-        private partiesService: SearchPartiesService,
+        private qp: QueryParamsService<{ text: string }>,
         private fetchPartiesService: FetchPartiesService,
         private router: Router,
     ) {}
 
     searchParamsUpdated(filter: string) {
-        this.partiesService.preserve({ text: filter });
+        void this.qp.set({ text: filter });
         this.fetchPartiesService.searchParties(filter);
     }
 }
