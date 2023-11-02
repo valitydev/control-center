@@ -3,32 +3,17 @@
         [initParams]="initParams$ | async"
         (valueChanges)="searchParamsUpdated($event)"
     ></cc-search-filters>
-    <div fxFlexFill fxLayout fxLayoutAlign="end">
-        <button color="primary" mat-button (click)="createDeposit()">Create deposit</button>
-    </div>
-    <ng-container *ngIf="deposits$ | async as deposits; else noDeposits">
-        <cc-empty-search-result
-            *ngIf="!(doAction$ | async) && deposits.length === 0"
-        ></cc-empty-search-result>
-        <mat-card *ngIf="deposits.length > 0" fxLayout="column" fxLayoutGap="16px">
-            <cc-deposits-table
-                [deposits]="deposits"
-                (menuItemSelected$)="depositMenuItemSelected($event)"
-            ></cc-deposits-table>
-            <button
-                *ngIf="hasMore$ | async"
-                [disabled]="doAction$ | async"
-                fxFlex="100"
-                mat-button
-                (click)="fetchMore()"
-            >
-                {{ (doAction$ | async) ? 'Loading...' : 'Show more' }}
+    <v-table
+        [columns]="columns"
+        [data]="deposits$ | async"
+        [progress]="doAction$ | async"
+        (more)="fetchMore()"
+        (update)="refresh($event)"
+    >
+        <v-table-actions>
+            <button color="primary" mat-flat-button (click)="createDeposit()">
+                Create deposit
             </button>
-        </mat-card>
-    </ng-container>
-    <ng-template #noDeposits>
-        <div *ngIf="doAction$ | async" fxFlexFill fxLayoutAlign="center">
-            <mat-spinner diameter="64"></mat-spinner>
-        </div>
-    </ng-template>
+        </v-table-actions>
+    </v-table>
 </cc-page-layout>

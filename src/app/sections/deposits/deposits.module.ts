@@ -4,8 +4,8 @@ import { FlexModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TableModule } from '@vality/ng-core';
 
-import { DepositsTableModule } from '@cc/app/shared/components/deposits-table';
 import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { PageLayoutModule } from '../../shared';
@@ -24,10 +24,10 @@ import { SearchFiltersModule } from './search-filters/search-filters.module';
         MatButtonModule,
         CreateDepositDialogModule,
         SearchFiltersModule,
-        DepositsTableModule,
         EmptySearchResultModule,
         MatProgressSpinnerModule,
         PageLayoutModule,
+        TableModule,
     ],
     declarations: [DepositsComponent],
 })

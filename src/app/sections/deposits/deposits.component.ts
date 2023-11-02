@@ -3,9 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
+import { Column, createOperationColumn, UpdateOptions } from '@vality/ng-core';
+import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
-import { DepositActions, DepositMenuItemEvent } from '@cc/app/shared/components/deposits-table';
+import { getUnionKey } from '../../../utils';
+import { createCurrencyColumn } from '../../shared';
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog/create-deposit-dialog.component';
 import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.service';
@@ -24,6 +28,43 @@ export class DepositsComponent implements OnInit {
     deposits$ = this.fetchDepositsService.searchResult$;
     hasMore$ = this.fetchDepositsService.hasMore$;
     doAction$ = this.fetchDepositsService.doAction$;
+    columns: Column<StatDeposit>[] = [
+        {
+            field: 'id',
+            link: (d) => `/deposits/${d.id}`,
+        },
+        {
+            field: 'status',
+            type: 'tag',
+            formatter: (d) => getUnionKey(d.status),
+            typeParameters: {
+                label: (d) => startCase(getUnionKey(d.status)),
+                tags: {
+                    pending: { color: 'pending' },
+                    succeeded: { color: 'success' },
+                    failed: { color: 'warn' },
+                },
+            },
+        },
+        {
+            field: 'created_at',
+            type: 'datetime',
+        },
+        {
+            field: 'destination_id',
+        },
+        createCurrencyColumn(
+            'amount',
+            (d) => d.amount,
+            (d) => d.currency_symbolic_code,
+        ),
+        createOperationColumn([
+            {
+                label: 'Details',
+                click: (d) => this.router.navigate([`/deposits/${d.id}`]),
+            },
+        ]),
+    ];
 
     constructor(
         private dialog: MatDialog,
@@ -57,19 +98,11 @@ export class DepositsComponent implements OnInit {
         this.fetchDepositsService.search(params);
     }
 
-    refresh() {
+    refresh(_options?: UpdateOptions) {
         this.fetchDepositsService.refresh();
     }
 
     fetchMore() {
         this.fetchDepositsService.fetchMore();
-    }
-
-    depositMenuItemSelected(depositMenuItemEvent: DepositMenuItemEvent) {
-        switch (depositMenuItemEvent.action) {
-            case DepositActions.NavigateToDeposit:
-                void this.router.navigate([`deposits/${depositMenuItemEvent.depositID}`]);
-                break;
-        }
     }
 }
