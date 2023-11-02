@@ -44,8 +44,7 @@
         <v-table-actions>
             <button
                 [disabled]="!(selected$ | async)?.length"
-                color="primary"
-                mat-button
+                mat-raised-button
                 (click)="repairByScenario()"
             >
                 Repair by scenario
@@ -53,7 +52,7 @@
             <button
                 [disabled]="!(selected$ | async)?.length"
                 color="primary"
-                mat-button
+                mat-raised-button
                 (click)="repair()"
             >
                 Simple repair
