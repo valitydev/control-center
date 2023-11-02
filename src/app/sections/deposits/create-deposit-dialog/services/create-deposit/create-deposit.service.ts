@@ -8,7 +8,7 @@ import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, first } from 'rxjs/operators';
 
 import { FistfulAdminService } from '@cc/app/api/fistful-admin';
-import { depositParamsToRequest, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
+import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
 import { progress } from '@cc/app/shared/custom-operators';
 import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
@@ -112,11 +112,15 @@ export class CreateDepositService {
     }
 
     private getPollingParams(params: DepositParams): StatRequest {
-        return depositParamsToRequest({
-            fromTime: moment().startOf('d').toISOString(),
-            toTime: moment().endOf('d').toISOString(),
-            size: 1,
-            depositId: params.id,
-        });
+        return {
+            dsl: createDsl({
+                deposits: {
+                    from_time: moment().startOf('d').toISOString(),
+                    to_time: moment().endOf('d').toISOString(),
+                    size: 1,
+                    deposit_id: params.id,
+                },
+            }),
+        };
     }
 }

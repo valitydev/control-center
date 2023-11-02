@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { merge, ReplaySubject, Subject, EMPTY } from 'rxjs';
 import { catchError, switchMap, shareReplay, map } from 'rxjs/operators';
 
-import { depositParamsToRequest, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
+import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
 import { progress } from '@cc/app/shared/custom-operators';
 
 import { NotificationErrorService } from '../../../../shared/services/notification-error';
@@ -16,7 +16,7 @@ export class ReceiveDepositService {
     deposit$ = this.receiveDeposit$.pipe(
         switchMap((depositId) =>
             this.fistfulStatisticsService
-                .GetDeposits(depositParamsToRequest({ depositId, size: 1 }))
+                .GetDeposits({ dsl: createDsl({ deposits: { deposit_id: depositId, size: 1 } }) })
                 .pipe(
                     catchError((err) => {
                         this.error$.next(true);
