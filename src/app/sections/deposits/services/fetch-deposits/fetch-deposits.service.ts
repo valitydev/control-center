@@ -1,39 +1,46 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { FetchSuperclass, FetchResult, FetchOptions, NotifyLogService } from '@vality/ng-core';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
-import { depositParamsToRequest, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
-import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
-import { SEARCH_LIMIT } from '@cc/app/tokens';
-
-import { SearchParams } from '../../types/search-params';
+import { FistfulStatisticsService, createDsl, QueryDsl } from '@cc/app/api/fistful-stat';
 
 @Injectable()
-export class FetchDepositsService extends PartialFetcher<StatDeposit, SearchParams> {
+export class FetchDepositsService extends FetchSuperclass<
+    StatDeposit,
+    QueryDsl['query']['deposits']
+> {
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        @Inject(SEARCH_LIMIT) private searchLimit: number,
+        private log: NotifyLogService,
     ) {
         super();
     }
 
-    fetch(params: SearchParams, continuationToken: string): Observable<FetchResult<StatDeposit>> {
+    protected fetch(
+        params: QueryDsl['query']['deposits'],
+        options: FetchOptions,
+    ): Observable<FetchResult<StatDeposit>> {
         return this.fistfulStatisticsService
-            .GetDeposits(
-                depositParamsToRequest(
-                    {
+            .GetDeposits({
+                dsl: createDsl({
+                    deposits: {
                         ...params,
-                        size: this.searchLimit,
+                        size: options.size,
                     },
-                    continuationToken,
-                ),
-            )
+                }),
+                continuation_token: options.continuationToken,
+            })
             .pipe(
                 map((res) => ({
                     result: res.data.deposits,
                     continuationToken: res.continuation_token,
                 })),
+                catchError((err) => {
+                    this.log.error(err);
+                    return of({ result: [] });
+                }),
             );
     }
 }

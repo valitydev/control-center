@@ -5,9 +5,6 @@ import { DATE_QUERY_PARAMS_SERIALIZERS, Serializer } from '@vality/ng-core';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
-export const SEARCH_LIMIT = new InjectionToken<number>('searchLimit');
-export const DEFAULT_SEARCH_LIMIT = 10;
-
 export const SMALL_SEARCH_LIMIT = new InjectionToken<number>('smallSearchLimit');
 export const DEFAULT_SMALL_SEARCH_LIMIT = 5;
 

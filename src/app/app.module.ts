@@ -33,9 +33,7 @@ import { SidenavInfoComponent } from './shared/components/sidenav-info';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
-    DEFAULT_SEARCH_LIMIT,
     DEFAULT_SMALL_SEARCH_LIMIT,
-    SEARCH_LIMIT,
     SMALL_SEARCH_LIMIT,
     DATE_RANGE_DAYS,
     DEFAULT_DATE_RANGE_DAYS,
@@ -86,7 +84,6 @@ export let AppInjector: Injector;
         { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
         { provide: LOCALE_ID, useValue: 'ru' },
-        { provide: SEARCH_LIMIT, useValue: DEFAULT_SEARCH_LIMIT },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },

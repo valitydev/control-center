@@ -47,9 +47,14 @@
         (more)="more()"
         (update)="load($event)"
     >
-        <button [disabled]="!selected.length" color="primary" mat-button (click)="changeStatuses()">
+        <button
+            [disabled]="!selected.length"
+            color="primary"
+            mat-raised-button
+            (click)="changeStatuses()"
+        >
             Change statuses
         </button>
-        <button color="primary" mat-button (click)="create()">Create by file</button>
+        <button color="primary" mat-raised-button (click)="create()">Create by file</button>
     </cc-chargebacks-table>
 </cc-page-layout>

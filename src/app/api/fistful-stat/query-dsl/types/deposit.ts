@@ -7,6 +7,6 @@ export interface Deposit {
     identity_id?: string;
     party_id?: string;
     source_id?: string;
-    status?: DepositStatus;
+    status?: Capitalize<keyof DepositStatus>;
     wallet_id?: string;
 }
