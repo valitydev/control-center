@@ -23,7 +23,7 @@ export class ManagementService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('WalletManagement', true)),
+            map(toWachterHeaders('WalletManagement')),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(

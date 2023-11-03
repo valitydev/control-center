@@ -20,7 +20,7 @@ export class DeanonimusService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Deanonimus', true)),
+            map(toWachterHeaders('Deanonimus')),
         );
         const metadata$ = from(
             import('@vality/deanonimus-proto/metadata.json').then(

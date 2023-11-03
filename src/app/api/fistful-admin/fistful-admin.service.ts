@@ -23,7 +23,7 @@ export class FistfulAdminService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('FistfulAdmin', true)),
+            map(toWachterHeaders('FistfulAdmin')),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(

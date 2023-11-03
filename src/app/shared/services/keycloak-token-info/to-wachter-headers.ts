@@ -3,7 +3,7 @@ import { generateId } from '@vality/domain-proto';
 import { KeycloakToken } from './types';
 
 export const toWachterHeaders =
-    (service: string, isAddIdsHeaders = false) =>
+    (service: string) =>
     ({ email, sub, preferred_username, token }: KeycloakToken) => {
         const id = generateId();
         return {
@@ -13,10 +13,8 @@ export const toWachterHeaders =
             'woody.meta.user-identity.realm': 'internal',
             'woody.meta.user-identity.username': preferred_username,
             authorization: `Bearer ${token}`,
-            ...(isAddIdsHeaders && {
-                'woody.parent-id': undefined,
-                'woody.span-id': id,
-                'woody.trace-id': id,
-            }),
+            'woody.parent-id': undefined,
+            'woody.span-id': id,
+            'woody.trace-id': id,
         };
     };

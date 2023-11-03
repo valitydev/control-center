@@ -21,7 +21,7 @@ export class PayoutManagementService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('PayoutManagement', true)),
+            map(toWachterHeaders('PayoutManagement')),
         );
         const metadata$ = from(
             import('@vality/payout-manager-proto/metadata.json').then(

@@ -21,7 +21,7 @@ export class FistfulStatisticsService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('FistfulStatistics', true)),
+            map(toWachterHeaders('FistfulStatistics')),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(

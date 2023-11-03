@@ -29,7 +29,7 @@ export class MerchantStatisticsService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('MerchantStatistics', true)),
+            map(toWachterHeaders('MerchantStatistics')),
         );
         const metadata$ = from(
             import('@vality/magista-proto/metadata.json').then(

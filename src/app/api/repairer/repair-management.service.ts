@@ -27,7 +27,7 @@ export class RepairManagementService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('RepairManagement', true)),
+            map(toWachterHeaders('RepairManagement')),
         );
         const metadata$ = from(
             import('@vality/repairer-proto/metadata.json').then(
