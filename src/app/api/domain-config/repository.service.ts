@@ -21,7 +21,7 @@ export class RepositoryService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Domain', true)),
+            map(toWachterHeaders('Domain')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(

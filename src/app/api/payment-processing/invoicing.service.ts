@@ -36,7 +36,7 @@ export class InvoicingService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Invoicing', true)),
+            map(toWachterHeaders('Invoicing')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(

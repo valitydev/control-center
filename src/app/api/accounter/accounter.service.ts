@@ -22,7 +22,7 @@ export class AccounterService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Accounter', true)),
+            map(toWachterHeaders('Accounter')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(

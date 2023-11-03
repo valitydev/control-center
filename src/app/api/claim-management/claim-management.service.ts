@@ -31,7 +31,7 @@ export class ClaimManagementService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('ClaimManagement', true)),
+            map(toWachterHeaders('ClaimManagement')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(

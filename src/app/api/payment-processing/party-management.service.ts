@@ -22,7 +22,7 @@ export class PartyManagementService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('PartyManagement', true)),
+            map(toWachterHeaders('PartyManagement')),
         );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(
