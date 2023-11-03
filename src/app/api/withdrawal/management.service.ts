@@ -22,7 +22,7 @@ export class ManagementService {
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('WithdrawalManagement')),
+            map(toWachterHeaders('WithdrawalManagement', true)),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(
