@@ -79,7 +79,7 @@ export class ShopsTableComponent implements OnChanges {
         ),
         defer(() => this.updateColumns$).pipe(startWith(null)),
     ]).pipe(
-        map(([rules]): Column<ShopParty>[] => [
+        map(([delegatesWithPaymentInstitution]): Column<ShopParty>[] => [
             {
                 field: 'shop.details.name',
                 description: 'shop.id',
@@ -157,34 +157,35 @@ export class ShopsTableComponent implements OnChanges {
                 },
             },
             createOperationColumn([
-                ...rules.map((r) => ({
+                ...delegatesWithPaymentInstitution.map((rule) => ({
                     label:
                         'Routing rules' +
-                        (rules.length > 1 ? ` #${r.partyDelegate?.ruleset?.id}` : ''),
-                    click: (d) => {
+                        (delegatesWithPaymentInstitution.length > 1
+                            ? ` #${rule.partyDelegate?.ruleset?.id}`
+                            : ''),
+                    click: ({ shop, party }) => {
                         this.domainStoreService
                             .getObjects('routing_rules')
                             .pipe(
                                 take(1),
-                                map((x) =>
-                                    x.find((rs) => rs.ref.id === r.partyDelegate.ruleset.id),
+                                map((rules) =>
+                                    rules.find((r) => r.ref.id === rule.partyDelegate.ruleset.id),
                                 ),
                             )
                             .subscribe((ruleset) => {
                                 const delegates =
                                     ruleset.data?.decisions?.delegates?.filter?.(
                                         (delegate) =>
-                                            delegate?.allowed?.condition?.party?.id ===
-                                                d.party.id &&
+                                            delegate?.allowed?.condition?.party?.id === party.id &&
                                             delegate?.allowed?.condition?.party?.definition
-                                                ?.shop_is === d.shop.id,
+                                                ?.shop_is === shop.id,
                                     ) || [];
                                 const paymentRulesCommands = [
                                     '/party',
-                                    d?.party?.id,
+                                    party.id,
                                     'routing-rules',
                                     'payment',
-                                    r.partyDelegate?.ruleset?.id,
+                                    rule.partyDelegate?.ruleset?.id,
                                 ];
                                 if (delegates.length === 1) {
                                     void this.router.navigate([
@@ -199,7 +200,14 @@ export class ShopsTableComponent implements OnChanges {
                                         ? 'No routing rules'
                                         : `${delegates.length} routing rules`,
                                 );
-                                void this.router.navigate(paymentRulesCommands);
+                                void this.router.navigate(paymentRulesCommands, {
+                                    queryParams: {
+                                        routingRulesList: JSON.stringify({
+                                            filter: shop.id,
+                                            exact: true,
+                                        }),
+                                    },
+                                });
                             });
                     },
                 })),
