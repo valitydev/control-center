@@ -1,6 +1,6 @@
 <v-table
     [(sort)]="sort"
-    [columns]="columns"
+    [columns]="columns$ | async"
     [data]="shops"
     [progress]="progress"
     [size]="100"
