@@ -64,6 +64,7 @@ export class ShopsTableComponent implements OnChanges {
     @Input({ transform: booleanAttribute }) changed!: boolean;
     @Input() progress: number | boolean = false;
     @Output() update = new EventEmitter<void>();
+    @Output() filterChange = new EventEmitter<string>();
 
     @Input({ transform: booleanAttribute }) noSort: boolean = false;
     @Input({ transform: booleanAttribute }) noPartyColumn: boolean = false;

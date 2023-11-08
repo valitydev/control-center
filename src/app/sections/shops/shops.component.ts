@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { SearchShopHit } from '@vality/deanonimus-proto/internal/deanonimus';
 import { Column, progressTo, QueryParamsService } from '@vality/ng-core';
-import { BehaviorSubject, defer, merge, of } from 'rxjs';
+import { BehaviorSubject, defer, of, combineLatest } from 'rxjs';
 import { startWith, switchMap, map, shareReplay, debounceTime } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../api/deanonimus';
@@ -14,15 +13,11 @@ import { DeanonimusService } from '../../api/deanonimus';
     templateUrl: './shops.component.html',
 })
 export class ShopsComponent implements OnInit {
-    searchControl = new FormControl(this.qp.params.search);
-    shopsParty$ = merge(
-        this.searchControl.valueChanges,
-        defer(() => this.updateShops$),
-    ).pipe(
+    filterChange$ = new BehaviorSubject(this.qp.params.search);
+    shopsParty$ = combineLatest([this.filterChange$, defer(() => this.updateShops$)]).pipe(
         startWith(null),
         debounceTime(200),
-        map(() => this.searchControl.value),
-        switchMap((search) =>
+        switchMap(([search]) =>
             search
                 ? this.deanonimusService
                       .searchShopText(search.trim())
@@ -43,11 +38,9 @@ export class ShopsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.searchControl.valueChanges
-            .pipe(startWith(this.searchControl.value), untilDestroyed(this))
-            .subscribe((search) => {
-                this.qp.set({ search });
-            });
+        this.filterChange$.pipe(untilDestroyed(this)).subscribe((search) => {
+            this.qp.set({ search });
+        });
     }
 
     update() {
