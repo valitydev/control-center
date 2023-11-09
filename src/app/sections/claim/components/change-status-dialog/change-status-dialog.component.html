@@ -1,5 +1,5 @@
 <v-dialog [progress]="inProgress$ | async" title="Change claim status">
-    <div [formGroup]="form" gdColumns="1fr" gdGap="16px">
+    <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 16px">
         <mat-form-field>
             <mat-select
                 [disabled]="inProgress$ | async"
