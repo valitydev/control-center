@@ -2,11 +2,7 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-container>
 <ng-template #loaded>
-    <div
-        *ngIf="partyRuleset$ | async as partyRuleset; else emptyPartyDelegate"
-        fxLayout="column"
-        fxLayoutGap="24px"
-    >
+    <div *ngIf="partyRuleset$ | async as partyRuleset; else emptyPartyDelegate" class="content">
         <cc-routing-ruleset-header
             [backTo]="
                 'party/' + (partyID$ | async) + '/routing-rules/' + (routingRulesType$ | async)
@@ -33,12 +29,7 @@
     </div>
 
     <ng-template #emptyPartyDelegate>
-        <div
-            class="empty-party-delegate"
-            fxLayout="column"
-            fxLayoutAlign=" center"
-            fxLayoutGap="24px"
-        >
+        <div class="empty-party-delegate">
             <div class="mat-display-1">Routing rules not found</div>
             <button class="init" color="primary" mat-raised-button (click)="initialize()">
                 Initialize
