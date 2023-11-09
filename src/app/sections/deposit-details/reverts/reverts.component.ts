@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { DepositStatus, StatDeposit } from '@vality/fistful-proto/fistful_stat';
-import { DialogService } from '@vality/ng-core';
+import { DepositStatus, StatDeposit, StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
+import { DialogService, Column } from '@vality/ng-core';
+import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
-import { getDepositStatus } from '@cc/app/shared/utils';
+import { getDepositStatus, createCurrencyColumn } from '@cc/app/shared/utils';
+
+import { getUnionKey } from '../../../../utils';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
 import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.service';
@@ -16,12 +19,33 @@ import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.serv
     providers: [FetchRevertsService],
 })
 export class RevertsComponent implements OnInit {
-    @Input()
-    deposit: StatDeposit;
+    @Input() deposit: StatDeposit;
 
     reverts$ = this.fetchRevertsService.searchResult$;
     hasMore$ = this.fetchRevertsService.hasMore$;
     doAction$ = this.fetchRevertsService.doAction$;
+    columns: Column<StatDepositRevert>[] = [
+        { field: 'id' },
+        {
+            field: 'status',
+            type: 'tag',
+            formatter: (d) => getUnionKey(d.status),
+            typeParameters: {
+                label: (d) => startCase(getUnionKey(d.status)),
+                tags: {
+                    pending: { color: 'pending' },
+                    succeeded: { color: 'success' },
+                    failed: { color: 'warn' },
+                },
+            },
+        },
+        createCurrencyColumn(
+            'amount',
+            (d) => d.body.amount,
+            (d) => d.body.currency.symbolic_code,
+        ),
+        { field: 'created_at', type: 'datetime' },
+    ];
 
     constructor(
         private fetchRevertsService: FetchRevertsService,
@@ -47,6 +71,10 @@ export class RevertsComponent implements OnInit {
 
     isCreateRevertAvailable(status: DepositStatus): boolean {
         return getDepositStatus(status) !== 'succeeded';
+    }
+
+    update() {
+        this.fetchRevertsService.refresh();
     }
 
     fetchMore() {

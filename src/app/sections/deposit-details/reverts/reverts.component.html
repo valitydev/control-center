@@ -1,46 +1,22 @@
-<mat-card>
-    <mat-card-title
-        style="
-            display: flex;
-            place-content: center space-between;
-            align-items: center;
-            padding: 16px;
-        "
+<div style="display: flex; flex-direction: column; gap: 24px">
+    <h1 class="mat-headline-5">Reverts</h1>
+    <v-table
+        [columns]="columns"
+        [data]="reverts$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="doAction$ | async"
+        (more)="fetchMore()"
+        (update)="update()"
     >
-        <h1 class="mat-headline-5">Reverts</h1>
-        <button
-            [disabled]="isCreateRevertAvailable(deposit?.status)"
-            color="primary"
-            mat-raised-button
-            (click)="createRevert()"
-        >
-            Create revert
-        </button>
-    </mat-card-title>
-    <ng-container *ngIf="reverts$ | async as reverts; else noReverts">
-        <cc-empty-search-result
-            *ngIf="!(doAction$ | async) && reverts.length === 0"
-            unwrapped
-        ></cc-empty-search-result>
-        <mat-card-content
-            *ngIf="reverts.length > 0"
-            style="display: flex; flex-direction: column; gap: 16px"
-        >
-            <cc-reverts-table [reverts]="reverts"></cc-reverts-table>
+        <v-table-actions>
             <button
-                *ngIf="hasMore$ | async"
-                [disabled]="doAction$ | async"
-                fxFlex="100"
-                mat-button
-                (click)="fetchMore()"
+                [disabled]="isCreateRevertAvailable(deposit?.status)"
+                color="primary"
+                mat-raised-button
+                (click)="createRevert()"
             >
-                {{ (doAction$ | async) ? 'Loading...' : 'Show more' }}
+                Create revert
             </button>
-        </mat-card-content>
-    </ng-container>
-    <ng-template #noReverts>
-        <div *ngIf="doAction$ | async" fxFlexFill fxLayoutAlign="center">
-            <mat-spinner diameter="64"></mat-spinner>
-        </div>
-    </ng-template>
-</mat-card>
+        </v-table-actions>
+    </v-table>
+</div>
