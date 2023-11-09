@@ -4,6 +4,7 @@
         [data]="parties$ | async"
         [filter]="initSearchParams$ | async"
         [progress]="inProgress$ | async"
+        externalFilter
         noActions
         (filterChange)="searchParamsUpdated($event)"
     ></v-table>

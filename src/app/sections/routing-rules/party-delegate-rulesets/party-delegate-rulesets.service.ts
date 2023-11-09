@@ -7,7 +7,7 @@ import {
     RoutingRulesObject,
 } from '@vality/domain-proto/domain';
 import { combineLatest, Observable } from 'rxjs';
-import { map, pluck, startWith, switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
@@ -19,11 +19,11 @@ import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 export class PartyDelegateRulesetsService {
     private partyID$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        pluck('partyID'),
+        map((p) => p.partyID),
     ) as Observable<PartyID>;
     private routingRulesType$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        pluck('type'),
+        map((p) => p.type),
     ) as Observable<RoutingRulesType>;
 
     constructor(
@@ -32,8 +32,11 @@ export class PartyDelegateRulesetsService {
         private routingRulesService: RoutingRulesService,
     ) {}
 
-    getDelegatesWithPaymentInstitution() {
-        return combineLatest([this.getPaymentInstitutionsWithRoutingRule(), this.partyID$]).pipe(
+    getDelegatesWithPaymentInstitution(type?: RoutingRulesType) {
+        return combineLatest([
+            this.getPaymentInstitutionsWithRoutingRule(type),
+            this.partyID$,
+        ]).pipe(
             map(([paymentInstitutionsWithRoutingRule, partyID]) =>
                 paymentInstitutionsWithRoutingRule
                     .map(({ routingRule: mainRoutingRule, paymentInstitution }) => ({
@@ -63,10 +66,10 @@ export class PartyDelegateRulesetsService {
         );
     }
 
-    private getPaymentInstitutionsWithRoutingRule() {
+    private getPaymentInstitutionsWithRoutingRule(type?: RoutingRulesType) {
         return combineLatest([
             this.domainStoreService.getObjects('payment_institution'),
-            this.routingRulesType$,
+            this.routingRulesType$.pipe(map((routeType) => type ?? routeType)),
         ]).pipe(
             switchMap(([paymentInstitutions, routingRulesType]) => {
                 return combineLatest(
