@@ -30,14 +30,12 @@ import { DomainThriftFormComponent } from '../../shared/components/thrift-api-cr
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
 import { ChargebacksTableComponent } from './components/chargebacks-table/chargebacks-table.component';
-import { CreateChargebackDialogComponent } from './components/create-chargeback-dialog/create-chargeback-dialog.component';
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 
 @NgModule({
     declarations: [
         ChargebacksComponent,
         ChargebacksTableComponent,
-        CreateChargebackDialogComponent,
         CreateChargebacksByFileDialogComponent,
     ],
     imports: [
