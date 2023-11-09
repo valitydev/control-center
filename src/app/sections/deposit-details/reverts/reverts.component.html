@@ -1,5 +1,12 @@
 <mat-card>
-    <mat-card-title fxLayout fxLayoutAlign="space-between center" style="padding: 16px">
+    <mat-card-title
+        style="
+            display: flex;
+            place-content: center space-between;
+            align-items: center;
+            padding: 16px;
+        "
+    >
         <h1 class="mat-headline-5">Reverts</h1>
         <button
             [disabled]="isCreateRevertAvailable(deposit?.status)"
@@ -15,7 +22,10 @@
             *ngIf="!(doAction$ | async) && reverts.length === 0"
             unwrapped
         ></cc-empty-search-result>
-        <mat-card-content *ngIf="reverts.length > 0" fxLayout="column" fxLayoutGap="16px">
+        <mat-card-content
+            *ngIf="reverts.length > 0"
+            style="display: flex; flex-direction: column; gap: 16px"
+        >
             <cc-reverts-table [reverts]="reverts"></cc-reverts-table>
             <button
                 *ngIf="hasMore$ | async"

@@ -1,7 +1,7 @@
 <v-dialog [progress]="!!(progress$ | async)" title="Create revert">
-    <div *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
-        <div fxLayout fxLayoutGap="24px">
-            <mat-form-field fxFlex>
+    <div *ngIf="form" [formGroup]="form" style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; gap: 24px">
+            <mat-form-field style="flex: 1">
                 <input
                     formControlName="amount"
                     matInput
@@ -10,7 +10,7 @@
                     type="number"
                 />
             </mat-form-field>
-            <mat-form-field fxFlex>
+            <mat-form-field style="flex: 1">
                 <input
                     formControlName="currency"
                     matInput
@@ -21,11 +21,11 @@
                 />
             </mat-form-field>
         </div>
-        <div fxLayout fxLayoutGap="24px">
-            <mat-form-field fxFlex>
+        <div style="display: flex; gap: 24px">
+            <mat-form-field style="flex: 1">
                 <input formControlName="reason" matInput placeholder="Reason" type="text" />
             </mat-form-field>
-            <mat-form-field fxFlex>
+            <mat-form-field style="flex: 1">
                 <input
                     formControlName="externalID"
                     matInput
