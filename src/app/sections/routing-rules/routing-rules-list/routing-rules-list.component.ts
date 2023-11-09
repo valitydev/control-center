@@ -5,6 +5,7 @@ import {
     Input,
     Output,
     OnChanges,
+    booleanAttribute,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -16,7 +17,6 @@ import {
     createOperationColumn,
     ComponentChanges,
 } from '@vality/ng-core';
-import { coerceBoolean } from 'coerce-property';
 import { filter, switchMap } from 'rxjs/operators';
 
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
@@ -45,7 +45,7 @@ export class RoutingRulesListComponent<
 {
     @Input() data: T[];
     @Input() displayedColumns: { key: keyof T; name: string }[];
-    @Input() @coerceBoolean progress: boolean | '' = false;
+    @Input({ transform: booleanAttribute }) progress: boolean = false;
 
     @Output() toDetails = new EventEmitter<DelegateId>();
 

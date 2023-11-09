@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
-import { coerceBoolean } from 'coerce-property';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap, from } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
@@ -28,8 +27,8 @@ export class ModificationUnitTimelineItemComponent {
     @Input() claim: Claim;
     @Input() modificationUnit: ModificationUnit;
 
-    @Input() @coerceBoolean isLoading: boolean = false;
-    @Input() @coerceBoolean isChangeable: boolean = false;
+    @Input({ transform: booleanAttribute }) isLoading: boolean = false;
+    @Input({ transform: booleanAttribute }) isChangeable: boolean = false;
     @Input() title?: string;
     @Input() icon?: string;
     @Input() color?: StatusColor | Color;

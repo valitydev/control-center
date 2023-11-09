@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { coerceBoolean } from 'coerce-property';
+import { Component, Input, booleanAttribute } from '@angular/core';
 
 @Component({
     selector: 'cc-empty-search-result',
@@ -7,6 +6,6 @@ import { coerceBoolean } from 'coerce-property';
     styleUrls: ['empty-search-result.component.scss'],
 })
 export class EmptySearchResultComponent {
-    @Input() @coerceBoolean unwrapped = false;
+    @Input({ transform: booleanAttribute }) unwrapped = false;
     @Input() label: string;
 }
