@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject, Cash } from '@vality/domain-proto/domain';
-import moment from 'moment';
+import { getNoTimeZoneIsoString } from '@vality/ng-core';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
@@ -40,7 +40,10 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
                 extension: () =>
-                    of({ type: 'datetime', generate: () => of(moment().toISOString()) }),
+                    of({
+                        type: 'datetime',
+                        generate: () => of(getNoTimeZoneIsoString(new Date())),
+                    }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'domain')),

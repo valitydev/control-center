@@ -15,14 +15,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PipesModule } from '@vality/ng-core';
+import { DatetimeFieldModule, PipesModule } from '@vality/ng-core';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
 import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
 import { CashModule } from '@cc/components/cash-field';
-
-import { DatetimeComponent } from '../datetime';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
@@ -57,7 +55,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         MatChipsModule,
         MatRadioModule,
         MatDatepickerModule,
-        DatetimeComponent,
+        DatetimeFieldModule,
         PipesModule,
         CashModule,
     ],

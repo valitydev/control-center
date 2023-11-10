@@ -2,13 +2,12 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Validator, ValidationErrors, FormControl, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
-import { ComponentChanges } from '@vality/ng-core';
+import { ComponentChanges, createControlProviders } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { defer, switchMap, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { shareReplay, first, map, pluck } from 'rxjs/operators';
 
 import { getValueTypeTitle } from '@cc/app/shared/pipes';
-import { createControlProviders } from '@cc/utils';
 
 import { getAliases, MetadataFormData } from '../../types/metadata-form-data';
 import {

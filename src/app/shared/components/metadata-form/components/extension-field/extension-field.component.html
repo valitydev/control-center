@@ -6,13 +6,13 @@
         label="{{ data.type | fieldLabel: data.field }} (amount)"
         minor
     ></cc-cash-field>
-    <div *ngSwitchCase="'datetime'" fxLayoutGap="4px">
-        <cc-datetime
+    <div *ngSwitchCase="'datetime'" style="display: flex; gap: 4px">
+        <v-datetime-field
             [formControl]="control"
             [hint]="aliases"
             [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
             fxFlex
-        ></cc-datetime>
+        ></v-datetime-field>
         <button *ngIf="!data.isRequired && control.value" mat-icon-button (click)="clear($event)">
             <mat-icon>clear</mat-icon>
         </button>
