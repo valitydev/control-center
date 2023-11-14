@@ -18,7 +18,6 @@ import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality
 import { PageLayoutModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { ClaimsComponentRouting } from './claims-routing.module';
 import { ClaimsTableComponent } from './claims-table/claims-table.component';
@@ -42,7 +41,6 @@ import { CreateClaimDialogComponent } from './components/create-claim-dialog/cre
         ReactiveFormsModule,
         FlexLayoutModule,
         MatExpansionModule,
-        EmptySearchResultModule,
         ThriftPipesModule,
         ActionsModule,
         DialogModule,

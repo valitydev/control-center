@@ -19,8 +19,6 @@ import {
     AutocompleteFieldModule,
 } from '@vality/ng-core';
 
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
-
 import { PageLayoutModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 
@@ -36,7 +34,6 @@ import { DepositsComponent } from './deposits.component';
         CommonModule,
         MatButtonModule,
         CreateDepositDialogModule,
-        EmptySearchResultModule,
         MatProgressSpinnerModule,
         PageLayoutModule,
         TableModule,

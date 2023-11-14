@@ -8,7 +8,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
 
-import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { PageLayoutModule } from '../../shared';
 import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
@@ -26,7 +25,6 @@ import { SourcesComponent } from './sources.component';
         MatButtonModule,
         MatCardModule,
         MatProgressBarModule,
-        EmptySearchResultModule,
         TableModule,
         MatTableModule,
         DialogModule,

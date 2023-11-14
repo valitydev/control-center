@@ -6,8 +6,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TableModule } from '@vality/ng-core';
 
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
-
 import { CreateRevertDialogModule } from './create-revert-dialog/create-revert-dialog.module';
 import { RevertsComponent } from './reverts.component';
 
@@ -19,7 +17,6 @@ import { RevertsComponent } from './reverts.component';
         MatButtonModule,
         CreateRevertDialogModule,
         MatProgressSpinnerModule,
-        EmptySearchResultModule,
         TableModule,
     ],
     declarations: [RevertsComponent],

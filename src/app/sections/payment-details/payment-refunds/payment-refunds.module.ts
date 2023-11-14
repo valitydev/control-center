@@ -4,7 +4,6 @@ import { FlexModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 import { TableModule } from '@cc/components/table';
 
 import { FetchRefundsService } from './fetch-refunds.service';
@@ -19,7 +18,6 @@ import { RefundsTableModule } from './refunds-table';
         RefundsTableModule,
         FlexModule,
         MatProgressSpinnerModule,
-        EmptySearchResultModule,
         MatButtonModule,
         TableModule,
     ],
