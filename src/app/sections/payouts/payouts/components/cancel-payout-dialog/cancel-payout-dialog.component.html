@@ -1,19 +1,16 @@
-<div class="mat-dialog-title">Cancel payout</div>
-<mat-dialog-content gdColumns="1fr">
+<v-dialog [progress]="progress$ | async" title="Cancel payout">
     <mat-form-field>
         <mat-label>Details</mat-label>
         <input [formControl]="detailsControl" matInput required type="text" />
     </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions fxLayout fxLayoutAlign="space-between">
-    <button [disabled]="!!(progress$ | async)" [mat-dialog-close]="false" mat-button>Cancel</button>
-    <button
-        [disabled]="detailsControl.invalid || !!(progress$ | async)"
-        color="primary"
-        mat-button
-        (click)="accept()"
-    >
-        Accept
-    </button>
-    <mat-progress-bar *ngIf="progress$ | async" mode="indeterminate"></mat-progress-bar>
-</mat-dialog-actions>
+    <v-dialog-actions>
+        <button
+            [disabled]="detailsControl.invalid || !!(progress$ | async)"
+            color="primary"
+            mat-button
+            (click)="accept()"
+        >
+            Accept
+        </button>
+    </v-dialog-actions>
+</v-dialog>
