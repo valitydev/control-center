@@ -1,9 +1,19 @@
-<div gdColumns="1fr" gdGap="16px">
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px">
     <ng-container *ngIf="data.type === 'bool'; else input">
-        <div gdColumns="1fr" gdGap="16px">
+        <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
             <span class="mat-body-1">{{ data.type | fieldLabel: data.field }}</span>
-            <div fxLayoutAlign=" center" fxLayoutGap="4px">
-                <mat-radio-group [formControl]="control" fxFlex gdColumns="1fr 1fr" gdGap="8px">
+            <div
+                style="
+                    display: flex;
+                    place-content: center flex-start;
+                    align-items: center;
+                    gap: 4px;
+                "
+            >
+                <mat-radio-group
+                    [formControl]="control"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1"
+                >
                     <mat-radio-button [value]="false">False</mat-radio-button>
                     <mat-radio-button [value]="true">True</mat-radio-button>
                 </mat-radio-group>
@@ -24,7 +34,7 @@
     </ng-container>
     <ng-template #input>
         <div style="display: flex; gap: 4px">
-            <mat-form-field fxFlex>
+            <mat-form-field style="flex: 1">
                 <mat-label>
                     <ng-container *ngIf="!(extensionResult$ | async)?.label; else extensionLabel">{{
                         data.type | fieldLabel: data.field
@@ -68,7 +78,14 @@
                             *ngFor="let option of filteredOptions$ | async"
                             [value]="option.value"
                         >
-                            <div fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="8px">
+                            <div
+                                style="
+                                    display: flex;
+                                    place-content: center flex-start;
+                                    align-items: center;
+                                    gap: 8px;
+                                "
+                            >
                                 <div [ngClass]="{ 'cc-code': extensionResult.isIdentifier }">
                                     {{ option.value }}
                                 </div>
@@ -86,7 +103,14 @@
     <ng-container *ngIf="selected$ | async as selected">
         <mat-expansion-panel *ngIf="selected.details">
             <mat-expansion-panel-header>
-                <mat-panel-title fxLayout="row" fxLayoutAlign=" center" fxLayoutGap="8px">
+                <mat-panel-title
+                    style="
+                        display: flex;
+                        place-content: center flex-start;
+                        align-items: center;
+                        gap: 8px;
+                    "
+                >
                     <div>Details</div>
                     <cc-label [color]="selected.color" [label]="selected.label"></cc-label>
                 </mat-panel-title>
