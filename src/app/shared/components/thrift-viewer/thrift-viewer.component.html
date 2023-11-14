@@ -1,4 +1,9 @@
-<div *ngIf="progress; else loaded" fxLayoutAlign="center"><mat-spinner></mat-spinner></div>
+<div
+    *ngIf="progress; else loaded"
+    style="display: flex; justify-content: center; flex-direction: row"
+>
+    <mat-spinner></mat-spinner>
+</div>
 <ng-template #loaded>
     <div class="wrapper" gdColumns="1fr" gdGap="8px" gdRows="1fr auto">
         <cc-monaco-diff-editor
