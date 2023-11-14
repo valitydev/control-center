@@ -1,9 +1,7 @@
 <div class="header">
     <h1
         class="mat-headline-4 mat-no-margin"
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="4px"
+        style="display: flex; place-content: center flex-start; align-items: center; gap: 4px"
     >
         <button *ngIf="isBackAvailable" mat-icon-button (click)="back()">
             <mat-icon>arrow_back</mat-icon>
