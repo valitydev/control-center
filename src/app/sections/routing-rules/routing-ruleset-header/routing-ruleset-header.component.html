@@ -1,6 +1,9 @@
 <div style="display: flex; flex-direction: column; gap: 8px">
-    <div fxLayout fxLayoutAlign="space-between center" fxLayoutGap="8px">
-        <div class="mat-headline-4 title" fxLayout fxLayoutAlign=" center" fxLayoutGap="8px">
+    <div style="display: flex; place-content: center space-between; align-items: center; gap: 8px">
+        <div
+            class="mat-headline-4 title"
+            style="display: flex; place-content: center flex-start; align-items: center; gap: 8px"
+        >
             <mat-icon *ngIf="backTo" class="back" (click)="navigateBack()">arrow_back</mat-icon>
             <div><ng-content></ng-content></div>
         </div>

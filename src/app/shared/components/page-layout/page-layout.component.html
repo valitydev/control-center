@@ -31,7 +31,10 @@
     >
 </div>
 
-<div *ngIf="progress; else content" fxLayout fxLayoutAlign="center center">
+<div
+    *ngIf="progress; else content"
+    style="display: flex; place-content: center; align-items: center"
+>
     <mat-spinner diameter="64"></mat-spinner>
 </div>
 <ng-template #content>

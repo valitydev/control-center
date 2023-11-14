@@ -3,16 +3,17 @@
 
     <div style="display: flex; flex-direction: column; gap: 39px">
         <mat-radio-group formControlName="target" style="display: flex">
-            <mat-radio-button [value]="target.PaymentInstitution" fxFlex
+            <mat-radio-button [value]="target.PaymentInstitution" style="flex: 1"
                 >Payment Institution</mat-radio-button
             >
-            <mat-radio-button [value]="target.Manual" fxFlex>Manual Target</mat-radio-button>
+            <mat-radio-button [value]="target.Manual" style="flex: 1"
+                >Manual Target</mat-radio-button
+            >
         </mat-radio-group>
 
         <div
             *ngIf="form.controls.target.value === target.PaymentInstitution"
-            fxLayout="column"
-            fxLayoutGap="16px"
+            style="display: flex; flex-direction: column; gap: 16px"
         >
             <mat-form-field>
                 <mat-label>Payment Institution</mat-label>
