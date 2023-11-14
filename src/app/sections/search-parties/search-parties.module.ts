@@ -7,7 +7,6 @@ import { TableModule } from '@vality/ng-core';
 
 import { PageLayoutModule } from '../../shared';
 
-import { PartiesSearchFiltersModule } from './parties-search-filters';
 import { SearchPartiesRoutingModule } from './search-parties-routing.module';
 import { SearchPartiesComponent } from './search-parties.component';
 
@@ -16,7 +15,6 @@ import { SearchPartiesComponent } from './search-parties.component';
         SearchPartiesRoutingModule,
         FlexModule,
         MatCardModule,
-        PartiesSearchFiltersModule,
         CommonModule,
         MatProgressBarModule,
         PageLayoutModule,
