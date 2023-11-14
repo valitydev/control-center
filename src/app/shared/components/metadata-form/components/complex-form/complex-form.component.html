@@ -1,4 +1,4 @@
-<div gdColumns="1fr" gdGap="16px">
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px">
     <span *ngIf="hasLabel" class="mat-body-1">
         {{ data.type | fieldLabel: data.field }}
         <span class="mat-secondary-text">
@@ -15,10 +15,8 @@
         >
             <mat-expansion-panel-header>
                 <mat-panel-title
-                    [gdColumns]="isKeyValue ? '1fr 1fr' : '1fr'"
+                    [ngStyle]="{ 'grid-template-columns': isKeyValue ? '1fr 1fr' : '1fr' }"
                     class="panel-title"
-                    fxFlex="100"
-                    gdGap="16px"
                 >
                     <div>
                         {{ i + 1 }}.
@@ -45,7 +43,7 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-                <div gdColumns="1fr" gdGap="16px">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
                     <ng-container *ngIf="isKeyValue">
                         <span class="mat-body-2">Key</span>
                         <cc-metadata-form
