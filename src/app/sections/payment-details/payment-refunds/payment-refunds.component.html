@@ -2,7 +2,7 @@
     <mat-spinner diameter="64"></mat-spinner>
 </div>
 <ng-template #content>
-    <div fxLayout="column" fxLayoutGap="24px">
+    <div style="display: flex; flex-direction: column; gap: 24px">
         <cc-refunds-table [refunds]="refunds$ | async"></cc-refunds-table>
         <cc-show-more-button
             *ngIf="hasMore$ | async"

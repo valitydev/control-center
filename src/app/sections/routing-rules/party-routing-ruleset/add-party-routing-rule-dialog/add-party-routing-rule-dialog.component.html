@@ -1,5 +1,5 @@
 <v-dialog title="Party routing rule params">
-    <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
+    <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
         <mat-form-field *ngIf="dialogData.type === 'payment'">
             <mat-label>Shop</mat-label>
             <mat-select formControlName="shopID" required>

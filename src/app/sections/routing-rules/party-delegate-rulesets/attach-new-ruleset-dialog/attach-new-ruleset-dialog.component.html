@@ -1,5 +1,5 @@
 <v-dialog title="Attach party delegate ruleset">
-    <div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
+    <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
         <cc-target-ruleset-form
             [type]="dialogData.type"
             (valid)="targetRulesetValid$.next($event)"
