@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule, GridModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -34,12 +33,10 @@ import { WithdrawalsComponent } from './withdrawals.component';
     imports: [
         WithdrawalsRoutingModule,
         CommonModule,
-        FlexModule,
         MatCardModule,
         MatProgressBarModule,
         MatButtonModule,
         MerchantFieldModule,
-        GridModule,
         ReactiveFormsModule,
         MatTableModule,
         ThriftPipesModule,

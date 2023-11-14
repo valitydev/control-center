@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -39,7 +38,6 @@ import { CreateClaimDialogComponent } from './components/create-claim-dialog/cre
         MatSelectModule,
         MatSnackBarModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         MatExpansionModule,
         ThriftPipesModule,
         ActionsModule,

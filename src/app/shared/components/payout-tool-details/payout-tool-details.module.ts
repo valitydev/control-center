@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { DetailsItemModule } from '@cc/components/details-item';
@@ -15,7 +14,7 @@ import { PayoutToolDetailsComponent } from './payout-tool-details.component';
         RussianBankAccountDetailsComponent,
         InternationalBankAccountDetailsComponent,
     ],
-    imports: [CommonModule, DetailsItemModule, FlexLayoutModule, ThriftPipesModule],
+    imports: [CommonModule, DetailsItemModule, ThriftPipesModule],
     exports: [PayoutToolDetailsComponent],
 })
 export class PayoutToolDetailsModule {}

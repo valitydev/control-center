@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule, GridModule } from '@angular/flex-layout';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -22,13 +21,11 @@ import { JsonViewerComponent } from './json-viewer.component';
         CommonModule,
         MatDividerModule,
         DetailsItemModule,
-        GridModule,
         MatCardModule,
         ThriftPipesModule,
         MatIconModule,
         MatButtonModule,
         MatTooltipModule,
-        FlexModule,
         MatBadgeModule,
         RouterModule,
     ],

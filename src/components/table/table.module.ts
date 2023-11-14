@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,7 +19,6 @@ import { ShowMoreButtonComponent } from './show-more-button/show-more-button.com
         MatTableModule,
         MatCheckboxModule,
         MatButtonModule,
-        FlexModule,
         MatSortModule,
         MatMenuModule,
         MatIconModule,

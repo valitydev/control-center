@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule, GridModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -22,8 +21,6 @@ import { ThriftEditorComponent } from './thrift-editor.component';
         MatButtonToggleModule,
         MatButtonModule,
         MatIconModule,
-        FlexModule,
-        GridModule,
     ],
 })
 export class ThriftEditorModule {}

@@ -1,7 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule, GridModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +36,6 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
     imports: [
         CommonModule,
         MatInputModule,
-        GridModule,
         ThriftPipesModule,
         MatSelectModule,
         MatButtonModule,
@@ -49,7 +47,6 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         OverlayModule,
         MatCardModule,
         MatExpansionModule,
-        FlexModule,
         ValueTypeTitleModule,
         MatCheckboxModule,
         MatChipsModule,

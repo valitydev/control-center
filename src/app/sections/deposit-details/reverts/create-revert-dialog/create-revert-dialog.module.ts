@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -18,7 +17,6 @@ import { CreateRevertDialogComponent } from './create-revert-dialog.component';
         CommonModule,
         ReactiveFormsModule,
         MatDialogModule,
-        FlexModule,
         MatFormFieldModule,
         MatProgressBarModule,
         MatButtonModule,

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,7 +29,6 @@ import { DepositsComponent } from './deposits.component';
     imports: [
         DepositsRoutingModule,
         MatCardModule,
-        FlexModule,
         CommonModule,
         MatButtonModule,
         CreateDepositDialogModule,

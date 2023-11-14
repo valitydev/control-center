@@ -9,7 +9,6 @@ import {
     booleanAttribute,
     OnChanges,
 } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
@@ -51,7 +50,6 @@ interface ShopParty {
     imports: [
         CommonModule,
         DomainThriftViewerComponent,
-        FlexModule,
         InputFieldModule,
         MatCardModule,
         TableModule,

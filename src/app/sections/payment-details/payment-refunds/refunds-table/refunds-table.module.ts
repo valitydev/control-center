@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
@@ -14,7 +13,6 @@ import { RefundsTableComponent } from './refunds-table.component';
     imports: [
         CommonModule,
         MatTableModule,
-        FlexModule,
         MatButtonModule,
         StatusModule,
         ThriftPipesModule,

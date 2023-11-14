@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 
 import { StatusModule } from '@cc/app/shared/components';
@@ -15,7 +14,6 @@ import { DepositMainInfoComponent } from './deposit-main-info.component';
         CommonModule,
         MatCardModule,
         DetailsItemModule,
-        FlexModule,
         StatusModule,
         ThriftPipesModule,
         CommonPipesModule,

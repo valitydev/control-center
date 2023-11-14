@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -60,7 +59,6 @@ import { CreateChargebacksByFileDialogComponent } from './components/create-char
         MatButtonModule,
         DialogModule,
         DomainThriftFormComponent,
-        FlexModule,
         FileUploadModule,
         MatExpansionModule,
         MatInputModule,

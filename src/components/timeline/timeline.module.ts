@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { TimelineItemComponent } from './timeline-item';
 import { TimelineItemBadgeComponent } from './timeline-item/timeline-item-badge';
@@ -17,7 +16,7 @@ const EXPORTED_DECLARATIONS = [
 ];
 
 @NgModule({
-    imports: [FlexLayoutModule, CommonModule],
+    imports: [CommonModule],
     declarations: EXPORTED_DECLARATIONS,
     exports: EXPORTED_DECLARATIONS,
 })
