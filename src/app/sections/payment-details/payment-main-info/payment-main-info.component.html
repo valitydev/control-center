@@ -1,4 +1,4 @@
-<div fxLayout="column" fxLayoutGap="16px">
+<div style="display: flex; flex-direction: column; gap: 16px">
     <div fxLayout fxLayoutGap="16px">
         <cc-details-item fxFlex title="Amount"
             >{{ payment.amount | ccFormatAmount }}
@@ -20,36 +20,39 @@
         </cc-details-item>
         <cc-details-item fxFlex title="Invoice">#{{ payment.invoice_id }}</cc-details-item>
     </div>
-    <div fxLayout="column" fxLayoutGap="16px">
-        <div fxLayout="column" fxLayoutGap="16px">
+    <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-h1">Shop</div>
             <cc-shop-details [shop]="shop"></cc-shop-details>
         </div>
-        <div *ngIf="hasError(payment.status)" fxLayout="column" fxLayoutGap="16px">
+        <div
+            *ngIf="hasError(payment.status)"
+            style="display: flex; flex-direction: column; gap: 16px"
+        >
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-headline-4">Failure</div>
             <cc-payment-error [status]="payment.status"></cc-payment-error>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-h1">Terminal</div>
             <cc-payment-terminal [terminalID]="payment.terminal_id.id"></cc-payment-terminal>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-h1">Provider</div>
             <cc-payment-provider [providerID]="payment.provider_id.id"></cc-payment-provider>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
