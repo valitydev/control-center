@@ -3,13 +3,13 @@
     style="display: flex; flex-direction: column; gap: 16px"
 >
     <div style="display: flex; gap: 16px">
-        <cc-details-item fxFlex="32" title="Code">{{ error.code }}</cc-details-item>
-        <cc-details-item fxFlex title="Reason">{{ error.reason }}</cc-details-item>
+        <cc-details-item style="flex: 1" title="Code">{{ error.code }}</cc-details-item>
+        <cc-details-item style="flex: 2" title="Reason">{{ error.reason }}</cc-details-item>
     </div>
-    <cc-details-item *ngIf="error.path" fxFlex title="Sub Failure">{{
+    <cc-details-item *ngIf="error.path" style="flex: 1" title="Sub Failure">{{
         error.path
     }}</cc-details-item>
 </div>
 <ng-template #timeout>
-    <cc-details-item fxFlex>Operation timeout</cc-details-item>
+    <cc-details-item style="flex: 1">Operation timeout</cc-details-item>
 </ng-template>

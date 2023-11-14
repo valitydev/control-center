@@ -11,7 +11,7 @@
             [formControl]="control"
             [hint]="aliases"
             [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
-            fxFlex
+            style="flex: 1"
         ></v-datetime-field>
         <button *ngIf="!data.isRequired && control.value" mat-icon-button (click)="clear($event)">
             <mat-icon>clear</mat-icon>
