@@ -4,7 +4,7 @@
     <div fxFlex></div>
 </div>
 <ng-template #empty>
-    <div *ngIf="inProgress$ | async; else emptyResult" fxLayout>
+    <div *ngIf="inProgress$ | async; else emptyResult" style="display: flex">
         <cc-details-item fxFlex>Loading...</cc-details-item>
     </div>
     <ng-template #emptyResult>
