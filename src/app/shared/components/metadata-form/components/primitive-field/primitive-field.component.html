@@ -23,7 +23,7 @@
         </div>
     </ng-container>
     <ng-template #input>
-        <div fxLayoutGap="4px">
+        <div style="display: flex; gap: 4px">
             <mat-form-field fxFlex>
                 <mat-label>
                     <ng-container *ngIf="!(extensionResult$ | async)?.label; else extensionLabel">{{
@@ -43,7 +43,7 @@
                     [type]="inputType"
                     matInput
                 />
-                <div fxLayoutGap="4px" matSuffix>
+                <div matSuffix style="display: flex; gap: 4px">
                     <button
                         *ngIf="!data.isRequired && control.value"
                         mat-icon-button

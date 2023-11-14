@@ -17,7 +17,7 @@
         <ng-content select="cc-page-layout-actions"></ng-content>
     </div>
 </div>
-<div *ngIf="path?.length" class="mat-h3 mat-secondary-text" fxLayout fxLayoutGap="4px">
+<div *ngIf="path?.length" class="mat-h3 mat-secondary-text" style="display: flex; gap: 4px">
     <ng-container *ngFor="let pathPart of path; let idx = index">
         <div [matTooltip]="pathPart.tooltip">
             <a
