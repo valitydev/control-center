@@ -1,7 +1,7 @@
 <div *ngIf="payout$ | async as payout" style="display: flex; flex-direction: column; gap: 24px">
     <div fxLayoutAlign="space-between">
         <cc-headline>Payout details</cc-headline>
-        <div fxLayoutGap="16px">
+        <div style="display: flex; gap: 16px">
             <button
                 [disabled]="canBeCancelled(payout.status | ccUnionKey)"
                 color="warn"
