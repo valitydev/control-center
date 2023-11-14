@@ -2,7 +2,7 @@
     *ngIf="error.code !== 'operation_timeout'; else timeout"
     style="display: flex; flex-direction: column; gap: 16px"
 >
-    <div fxLayout fxLayoutGap="16px">
+    <div style="display: flex; gap: 16px">
         <cc-details-item fxFlex="32" title="Code">{{ error.code }}</cc-details-item>
         <cc-details-item fxFlex title="Reason">{{ error.reason }}</cc-details-item>
     </div>

@@ -1,5 +1,5 @@
 <div style="display: flex; flex-direction: column; gap: 16px">
-    <div fxLayout fxLayoutGap="16px">
+    <div style="display: flex; gap: 16px">
         <cc-details-item fxFlex title="Amount"
             >{{ payment.amount | ccFormatAmount }}
             {{ payment.currency_symbolic_code | ccCurrency }}</cc-details-item
@@ -13,7 +13,7 @@
             }}</cc-status>
         </cc-details-item>
     </div>
-    <div fxLayout fxLayoutGap="16px">
+    <div style="display: flex; gap: 16px">
         <cc-details-item fxFlex title="Payer">{{ getPayerEmail(payment.payer) }}</cc-details-item>
         <cc-details-item fxFlex title="Payment Tool">
             <cc-payment-tool [paymentTool]="getPaymentTool(payment.payer)"></cc-payment-tool>
