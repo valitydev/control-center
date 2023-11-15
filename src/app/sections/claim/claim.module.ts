@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { ActionsModule, DialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule, PipesModule } from '@vality/ng-core';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { StatusModule } from '@cc/app/shared/components/status';
@@ -24,7 +23,6 @@ import { TimelineModule } from '@cc/components/timeline';
 
 import { PageLayoutModule } from '../../shared';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
-import { HumanizeDurationModule } from '../../shared/pipes/humanize-duration';
 
 import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';
@@ -52,7 +50,6 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
     imports: [
         CommonModule,
         ClaimRoutingModule,
-        FlexLayoutModule,
         RouterModule,
         TimelineModule,
         MatIconModule,
@@ -74,8 +71,8 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         MatProgressBarModule,
         DialogModule,
         ActionsModule,
-        HumanizeDurationModule,
         PageLayoutModule,
+        PipesModule,
     ],
 })
 export class ClaimModule {}

@@ -21,9 +21,12 @@
         }}</cc-status>
     </cc-page-layout-actions>
 
-    <div *ngIf="claim$ | async as claim" gdColumns="1fr" gdGap="24px">
+    <div *ngIf="claim$ | async as claim" style="display: flex; flex-direction: column; gap: 24px">
         <h2 class="mat-headline-5">Changeset</h2>
-        <div *ngIf="isLoading$ | async; else timeline" fxLayoutAlign="center">
+        <div
+            *ngIf="isLoading$ | async; else timeline"
+            style="display: flex; justify-content: center"
+        >
             <mat-progress-spinner
                 color="primary"
                 diameter="128"
@@ -95,7 +98,7 @@
             </cc-timeline>
         </ng-template>
         <mat-card>
-            <mat-card-content fxLayout="row" fxLayoutGap="24px">
+            <mat-card-content style="display: flex; gap: 24px">
                 <button color="primary" mat-button (click)="addModification()">
                     Add modification
                 </button>

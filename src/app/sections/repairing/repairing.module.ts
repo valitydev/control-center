@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,8 +26,6 @@ import { PageLayoutModule } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
-import { EmptySearchResultModule } from '../../../components/empty-search-result';
-
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { RepairingRoutingModule } from './repairing-routing.module';
 import { RepairingComponent } from './repairing.component';
@@ -40,10 +37,8 @@ import { RepairingComponent } from './repairing.component';
         TableModule,
         MatCardModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         MatProgressBarModule,
         MatButtonModule,
-        EmptySearchResultModule,
         MatTableModule,
         MatTooltipModule,
         MatBadgeModule,

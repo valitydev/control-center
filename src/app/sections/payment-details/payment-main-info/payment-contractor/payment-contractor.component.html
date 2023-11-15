@@ -1,11 +1,13 @@
-<div *ngIf="contractor$ | async as contractor; else empty" fxLayout fxLayoutGap="16px">
-    <cc-details-item fxFlex title="INN">{{ getINN(contractor) }}</cc-details-item>
-    <cc-details-item fxFlex title="Registered Name">{{ getRegName(contractor) }}</cc-details-item>
-    <div fxFlex></div>
+<div *ngIf="contractor$ | async as contractor; else empty" style="display: flex; gap: 16px">
+    <cc-details-item style="flex: 1" title="INN">{{ getINN(contractor) }}</cc-details-item>
+    <cc-details-item style="flex: 1" title="Registered Name">{{
+        getRegName(contractor)
+    }}</cc-details-item>
+    <div style="flex: 1"></div>
 </div>
 <ng-template #empty>
-    <div *ngIf="inProgress$ | async; else emptyResult" fxLayout>
-        <cc-details-item fxFlex>Loading...</cc-details-item>
+    <div *ngIf="inProgress$ | async; else emptyResult" style="display: flex">
+        <cc-details-item style="flex: 1">Loading...</cc-details-item>
     </div>
     <ng-template #emptyResult>
         <div>Error contractor loading.</div>

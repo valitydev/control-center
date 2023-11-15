@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -18,7 +17,6 @@ import { PaymentToolModule } from './payment-tool';
 @NgModule({
     imports: [
         CommonModule,
-        FlexLayoutModule,
         MatIconModule,
         DetailsItemModule,
         StatusModule,

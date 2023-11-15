@@ -1,9 +1,8 @@
-import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter, booleanAttribute } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
-import { coerceBoolean } from 'coerce-property';
 import { ReplaySubject } from 'rxjs';
 
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
@@ -27,7 +26,7 @@ export class ThriftViewerComponent<T> implements OnChanges {
     @Input() kind: ViewerKind = ViewerKind.Component;
     @Input() value: T;
     @Input() compared?: T;
-    @Input() @coerceBoolean progress: boolean | '' = false;
+    @Input({ transform: booleanAttribute }) progress: boolean = false;
 
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;

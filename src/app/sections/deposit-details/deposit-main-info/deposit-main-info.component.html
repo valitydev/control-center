@@ -1,32 +1,26 @@
 <mat-card>
-    <mat-card-content fxLayout="column" fxLayoutGap="16px">
-        <div fxFlexFill fxLayout fxLayoutGap="16px">
-            <cc-details-item fxFlex="66" title="ID">{{ deposit.id }}</cc-details-item>
-            <cc-details-item fxFlex title="Status">
-                <cc-status [color]="deposit.status | toStatus | toDepositColor">{{
-                    deposit.status | toStatus
-                }}</cc-status>
-            </cc-details-item>
-        </div>
-        <div fxFlexFill fxLayout fxLayoutGap="16px">
-            <cc-details-item fxFlex title="Amount"
-                >{{ deposit.amount | ccThriftInt64 | ccFormatAmount }}
-                {{ deposit.currency_symbolic_code | ccCurrency }}</cc-details-item
-            >
-            <cc-details-item fxFlex title="Fee"
-                >{{ deposit.fee | ccThriftInt64 | ccFormatAmount }}
-                {{ deposit.currency_symbolic_code | ccCurrency }}</cc-details-item
-            >
-            <cc-details-item fxFlex title="Created At">{{
-                deposit.created_at | date: 'dd.MM.yyyy HH:mm:ss'
-            }}</cc-details-item>
-        </div>
-        <div fxFlexFill fxLayout fxLayoutGap="16px">
-            <cc-details-item fxFlex title="Source ID">{{ deposit.source_id }}</cc-details-item>
-            <cc-details-item fxFlex title="Identity ID">{{ deposit.identity_id }}</cc-details-item>
-            <cc-details-item fxFlex title="Destination">
-                <cc-wallet-info [walletID]="deposit.destination_id"></cc-wallet-info>
-            </cc-details-item>
-        </div>
+    <mat-card-content style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
+        <cc-details-item style="grid-column: span 2" title="ID">{{ deposit.id }}</cc-details-item>
+        <cc-details-item title="Status">
+            <cc-status [color]="deposit.status | toStatus | toDepositColor">{{
+                deposit.status | toStatus
+            }}</cc-status>
+        </cc-details-item>
+        <cc-details-item title="Amount"
+            >{{ deposit.amount | ccThriftInt64 | ccFormatAmount }}
+            {{ deposit.currency_symbolic_code | ccCurrency }}</cc-details-item
+        >
+        <cc-details-item title="Fee"
+            >{{ deposit.fee | ccThriftInt64 | ccFormatAmount }}
+            {{ deposit.currency_symbolic_code | ccCurrency }}</cc-details-item
+        >
+        <cc-details-item title="Created At">{{
+            deposit.created_at | date: 'dd.MM.yyyy HH:mm:ss'
+        }}</cc-details-item>
+        <cc-details-item title="Source ID">{{ deposit.source_id }}</cc-details-item>
+        <cc-details-item title="Identity ID">{{ deposit.identity_id }}</cc-details-item>
+        <cc-details-item title="Destination">
+            <cc-wallet-info [walletID]="deposit.destination_id"></cc-wallet-info>
+        </cc-details-item>
     </mat-card-content>
 </mat-card>

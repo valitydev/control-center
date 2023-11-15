@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,14 +29,12 @@ import { DomainThriftFormComponent } from '../../shared/components/thrift-api-cr
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
 import { ChargebacksTableComponent } from './components/chargebacks-table/chargebacks-table.component';
-import { CreateChargebackDialogComponent } from './components/create-chargeback-dialog/create-chargeback-dialog.component';
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 
 @NgModule({
     declarations: [
         ChargebacksComponent,
         ChargebacksTableComponent,
-        CreateChargebackDialogComponent,
         CreateChargebacksByFileDialogComponent,
     ],
     imports: [
@@ -62,7 +59,6 @@ import { CreateChargebacksByFileDialogComponent } from './components/create-char
         MatButtonModule,
         DialogModule,
         DomainThriftFormComponent,
-        FlexModule,
         FileUploadModule,
         MatExpansionModule,
         MatInputModule,

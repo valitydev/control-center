@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -18,7 +17,6 @@ import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality
 import { PageLayoutModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { ThriftPipesModule } from '@cc/app/shared/pipes';
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
 
 import { ClaimsComponentRouting } from './claims-routing.module';
 import { ClaimsTableComponent } from './claims-table/claims-table.component';
@@ -40,9 +38,7 @@ import { CreateClaimDialogComponent } from './components/create-claim-dialog/cre
         MatSelectModule,
         MatSnackBarModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         MatExpansionModule,
-        EmptySearchResultModule,
         ThriftPipesModule,
         ActionsModule,
         DialogModule,

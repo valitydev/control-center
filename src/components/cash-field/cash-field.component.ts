@@ -1,10 +1,17 @@
 import { getCurrencySymbol } from '@angular/common';
-import { Component, Input, Injector, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    Injector,
+    Inject,
+    LOCALE_ID,
+    OnInit,
+    booleanAttribute,
+} from '@angular/core';
 import { Validator, ValidationErrors, FormControl } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
-import { coerceBoolean } from 'coerce-property';
 import sortBy from 'lodash-es/sortBy';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
@@ -28,8 +35,8 @@ const GROUP_SEPARATOR = ' ';
 })
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;
-    @Input() @coerceBoolean required: boolean = false;
-    @Input() @coerceBoolean minor: boolean = false;
+    @Input({ transform: booleanAttribute }) required: boolean = false;
+    @Input({ transform: booleanAttribute }) minor: boolean = false;
 
     amountControl = new FormControl<string>(null);
     currencyCodeControl = new FormControl<string>(null);

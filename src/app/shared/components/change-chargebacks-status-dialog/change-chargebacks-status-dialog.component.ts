@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { GridModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,7 +48,6 @@ const CHANGE_STATUS_METHODS = {
         MatFormFieldModule,
         MatSelectModule,
         EnumKeysPipe,
-        GridModule,
         EnumKeyPipe,
     ],
 })

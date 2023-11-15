@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +11,6 @@ import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-
 @NgModule({
     imports: [
         CommonModule,
-        FlexLayoutModule,
         ReactiveFormsModule,
         FormsModule,
         MatInputModule,

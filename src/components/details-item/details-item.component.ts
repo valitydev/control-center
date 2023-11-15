@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { coerceBoolean } from 'coerce-property';
+import { Component, Input, booleanAttribute } from '@angular/core';
 
 @Component({
     selector: 'cc-details-item',
@@ -8,5 +7,5 @@ import { coerceBoolean } from 'coerce-property';
 })
 export class DetailsItemComponent {
     @Input() title: string;
-    @Input() @coerceBoolean empty: boolean;
+    @Input({ transform: booleanAttribute }) empty: boolean;
 }

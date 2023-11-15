@@ -1,10 +1,10 @@
 <v-dialog [progress]="isLoading$ | async" title="Create deposit">
-    <form *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="16px">
-        <div fxLayout fxLayoutGap="24px">
-            <mat-form-field fxFlex>
-                <input formControlName="destination" matInput placeholder="Destination" required />
-            </mat-form-field>
-            <mat-form-field fxFlex>
+    <form *ngIf="form" [formGroup]="form" style="display: flex; flex-direction: column; gap: 16px">
+        <mat-form-field>
+            <input formControlName="destination" matInput placeholder="Destination" required />
+        </mat-form-field>
+        <div style="display: flex; gap: 24px">
+            <mat-form-field style="flex: 1">
                 <input
                     formControlName="amount"
                     matInput
@@ -13,9 +13,7 @@
                     type="number"
                 />
             </mat-form-field>
-        </div>
-        <div fxLayout fxLayoutGap="24px">
-            <mat-form-field fxFlex>
+            <mat-form-field style="flex: 1">
                 <mat-label>Currency</mat-label>
                 <mat-select formControlName="currency" required>
                     <mat-option *ngFor="let source of sources$ | async" [value]="source">
@@ -23,7 +21,6 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div fxFlex></div>
         </div>
     </form>
     <v-dialog-actions>

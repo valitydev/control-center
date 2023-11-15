@@ -1,4 +1,9 @@
-<div *ngIf="progress; else loaded" fxLayoutAlign="center"><mat-spinner></mat-spinner></div>
+<div
+    *ngIf="progress; else loaded"
+    style="display: flex; justify-content: center; flex-direction: row"
+>
+    <mat-spinner></mat-spinner>
+</div>
 <ng-template #loaded>
     <div class="wrapper" gdColumns="1fr" gdGap="8px" gdRows="1fr auto">
         <cc-monaco-diff-editor
@@ -24,7 +29,7 @@
                 class="monaco-editor"
             >
             </cc-monaco-editor>
-            <div class="actions" fxLayout fxLayoutAlign="end center" fxLayoutGap="2px">
+            <div class="actions">
                 <button color="primary" mat-icon-button (click)="toggleKind()">
                     <mat-icon *ngIf="kind === 'component'">code_blocks</mat-icon>
                     <mat-icon *ngIf="kind === 'editor'">view_comfy_alt</mat-icon>

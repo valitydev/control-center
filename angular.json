@@ -35,7 +35,6 @@
                         "styles": ["src/app/styles/styles.scss"],
                         "scripts": [],
                         "allowedCommonJsDependencies": [
-                            "moment",
                             "uuid",
                             "short-uuid",
                             "js-sha256",

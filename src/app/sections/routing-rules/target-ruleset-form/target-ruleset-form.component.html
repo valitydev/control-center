@@ -1,18 +1,19 @@
-<div [formGroup]="form" fxLayout="column" fxLayoutGap="24px">
-    <div class="mat-headline-4">Change Main Ruleset</div>
+<div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
+    <div class="mat-headline-4 mat-no-margin">Change Main Ruleset</div>
 
-    <div fxLayout="column" fxLayoutGap="39px">
-        <mat-radio-group formControlName="target" fxLayout>
-            <mat-radio-button [value]="target.PaymentInstitution" fxFlex
+    <div style="display: flex; flex-direction: column; gap: 39px">
+        <mat-radio-group formControlName="target" style="display: flex">
+            <mat-radio-button [value]="target.PaymentInstitution" style="flex: 1"
                 >Payment Institution</mat-radio-button
             >
-            <mat-radio-button [value]="target.Manual" fxFlex>Manual Target</mat-radio-button>
+            <mat-radio-button [value]="target.Manual" style="flex: 1"
+                >Manual Target</mat-radio-button
+            >
         </mat-radio-group>
 
         <div
             *ngIf="form.controls.target.value === target.PaymentInstitution"
-            fxLayout="column"
-            fxLayoutGap="16px"
+            style="display: flex; flex-direction: column; gap: 16px"
         >
             <mat-form-field>
                 <mat-label>Payment Institution</mat-label>

@@ -1,5 +1,5 @@
 <v-dialog [progress]="progress$ | async" title="Create chargebacks">
-    <div fxLayout="column" fxLayoutGap="16px">
+    <div style="display: flex; flex-direction: column; gap: 16px">
         <mat-checkbox [formControl]="hasHeaderControl">CSV with header</mat-checkbox>
 
         <v-file-upload [extensions]="['csv']" (upload)="loadFile($event)"></v-file-upload>
@@ -10,7 +10,9 @@
                     <mat-panel-title>Default format</mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="mat-body-1">
-                    <code style="word-wrap: break-word">{{ defaultFormat }}</code>
+                    <code style="word-wrap: break-word; word-break: break-word">{{
+                        defaultFormat
+                    }}</code>
                 </div>
                 <div class="mat-body-1">
                     Categories: fraud, dispute, authorisation, processing_error

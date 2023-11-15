@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    booleanAttribute,
+} from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
@@ -9,7 +16,6 @@ import {
     isEmpty,
     ComponentChanges,
 } from '@vality/ng-core';
-import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, defer, of } from 'rxjs';
 import { filter, map, share, switchMap } from 'rxjs/operators';
 
@@ -31,8 +37,8 @@ export class ShopFieldComponent<M extends boolean = boolean>
     implements OnChanges, OnInit
 {
     @Input() partyId: PartyID;
-    @Input() @coerceBoolean multiple: M;
-    @Input() @coerceBoolean required: boolean;
+    @Input({ transform: booleanAttribute }) multiple: M;
+    @Input({ transform: booleanAttribute }) required: boolean;
 
     shops$ = defer(() => this.partyId$).pipe(
         switchMap((partyId) =>

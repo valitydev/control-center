@@ -1,12 +1,12 @@
-<div class="party-container" fxLayout="column" fxLayoutGap="24px">
-    <div fxLayout fxLayoutAlign="space-between">
+<div class="party-container" style="display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; place-content: stretch space-between">
         <h3 class="mat-body-1">
             {{ (party$ | async)?.contact_info?.email }}
         </h3>
         <h4 class="mat-secondary-text mat-body-1">{{ (party$ | async)?.id }}</h4>
     </div>
 
-    <div fxLayout="column" fxLayoutGap="24px">
+    <div style="display: flex; flex-direction: column; gap: 24px">
         <nav mat-tab-nav-bar>
             <a
                 #rla="routerLinkActive"

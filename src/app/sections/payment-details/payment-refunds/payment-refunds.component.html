@@ -1,8 +1,11 @@
-<div *ngIf="doAction$ | async; else content" fxLayout fxLayoutAlign="center center">
+<div
+    *ngIf="doAction$ | async; else content"
+    style="display: flex; place-content: center; align-items: center"
+>
     <mat-spinner diameter="64"></mat-spinner>
 </div>
 <ng-template #content>
-    <div fxLayout="column" fxLayoutGap="24px">
+    <div style="display: flex; flex-direction: column; gap: 24px">
         <cc-refunds-table [refunds]="refunds$ | async"></cc-refunds-table>
         <cc-show-more-button
             *ngIf="hasMore$ | async"

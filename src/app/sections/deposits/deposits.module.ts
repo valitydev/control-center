@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,8 +18,6 @@ import {
     AutocompleteFieldModule,
 } from '@vality/ng-core';
 
-import { EmptySearchResultModule } from '@cc/components/empty-search-result';
-
 import { PageLayoutModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 
@@ -32,11 +29,9 @@ import { DepositsComponent } from './deposits.component';
     imports: [
         DepositsRoutingModule,
         MatCardModule,
-        FlexModule,
         CommonModule,
         MatButtonModule,
         CreateDepositDialogModule,
-        EmptySearchResultModule,
         MatProgressSpinnerModule,
         PageLayoutModule,
         TableModule,

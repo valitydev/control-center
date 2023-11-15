@@ -4,7 +4,10 @@
     }
 
     .panel-title {
+        display: grid;
         overflow: hidden;
+        flex: 100;
+        gap: 16px;
 
         & > * {
             white-space: nowrap;

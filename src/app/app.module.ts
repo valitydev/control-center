@@ -3,23 +3,19 @@ import localeRu from '@angular/common/locales/ru';
 import { LOCALE_ID, NgModule, Injector } from '@angular/core';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
-import * as moment from 'moment';
 
-import 'moment/locale/ru';
-
-import { KeycloakTokenInfoModule, MomentUtcDateAdapter } from '@cc/app/shared/services';
+import { KeycloakTokenInfoModule } from '@cc/app/shared/services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,11 +38,6 @@ import {
 } from './tokens';
 
 registerLocaleData(localeRu);
-
-/**
- * For use in specific locations (for example, questionary PDF document)
- */
-moment.locale('en-GB');
 
 // Do not use in code! Only for extending windows methods
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -79,9 +70,7 @@ export let AppInjector: Injector;
         InputMaskModule,
     ],
     providers: [
-        { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
-        { provide: DateAdapter, useClass: MomentUtcDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
         { provide: LOCALE_ID, useValue: 'ru' },
         { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },

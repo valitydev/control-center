@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { PayoutTool } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
 import { createControlProviders, FormControlSuperclass, Option } from '@vality/ng-core';
-import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, combineLatest, defer, Observable, of, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -22,7 +21,7 @@ export class PayoutToolFieldComponent
     implements OnInit
 {
     @Input() label: string;
-    @Input() @coerceBoolean required: boolean;
+    @Input({ transform: booleanAttribute }) required: boolean;
     @Input() set partyId(partyId: PartyID) {
         this.partyId$.next(partyId);
     }

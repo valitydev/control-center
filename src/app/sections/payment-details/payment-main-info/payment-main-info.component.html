@@ -1,55 +1,60 @@
-<div fxLayout="column" fxLayoutGap="16px">
-    <div fxLayout fxLayoutGap="16px">
-        <cc-details-item fxFlex title="Amount"
+<div style="display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; gap: 16px">
+        <cc-details-item style="flex: 1" title="Amount"
             >{{ payment.amount | ccFormatAmount }}
             {{ payment.currency_symbolic_code | ccCurrency }}</cc-details-item
         >
-        <cc-details-item fxFlex title="Created At">{{
+        <cc-details-item style="flex: 1" title="Created At">{{
             payment.created_at | date: 'dd.MM.yyyy HH:mm:ss'
         }}</cc-details-item>
-        <cc-details-item fxFlex title="Status">
+        <cc-details-item style="flex: 1" title="Status">
             <cc-status [color]="payment.status | toStatus | toPaymentColor">{{
                 payment.status | toStatus
             }}</cc-status>
         </cc-details-item>
     </div>
-    <div fxLayout fxLayoutGap="16px">
-        <cc-details-item fxFlex title="Payer">{{ getPayerEmail(payment.payer) }}</cc-details-item>
-        <cc-details-item fxFlex title="Payment Tool">
+    <div style="display: flex; gap: 16px">
+        <cc-details-item style="flex: 1" title="Payer">{{
+            getPayerEmail(payment.payer)
+        }}</cc-details-item>
+        <cc-details-item style="flex: 1" title="Payment Tool">
             <cc-payment-tool [paymentTool]="getPaymentTool(payment.payer)"></cc-payment-tool>
         </cc-details-item>
-        <cc-details-item fxFlex title="Invoice">#{{ payment.invoice_id }}</cc-details-item>
+        <cc-details-item style="flex: 1" title="Invoice">#{{ payment.invoice_id }}</cc-details-item>
     </div>
-    <div fxLayout="column" fxLayoutGap="16px">
-        <div fxLayout="column" fxLayoutGap="16px">
+    <div style="display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-h1">Shop</div>
             <cc-shop-details [shop]="shop"></cc-shop-details>
         </div>
-        <div *ngIf="hasError(payment.status)" fxLayout="column" fxLayoutGap="16px">
+        <div
+            *ngIf="hasError(payment.status)"
+            style="display: flex; flex-direction: column; gap: 16px"
+        >
             <div>
                 <mat-divider></mat-divider>
             </div>
-            <div class="mat-headline-4">Failure</div>
+            <div class="mat-headline-4 mat-no-margin">Failure</div>
             <cc-payment-error [status]="payment.status"></cc-payment-error>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-h1">Terminal</div>
             <cc-payment-terminal [terminalID]="payment.terminal_id.id"></cc-payment-terminal>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>
             <div class="mat-h1">Provider</div>
             <cc-payment-provider [providerID]="payment.provider_id.id"></cc-payment-provider>
         </div>
-        <div fxLayout="column" fxLayoutGap="16px">
+        <div style="display: flex; flex-direction: column; gap: 16px">
             <div>
                 <mat-divider></mat-divider>
             </div>

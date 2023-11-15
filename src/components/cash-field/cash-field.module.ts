@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
@@ -14,7 +13,6 @@ import { CashFieldComponent } from './cash-field.component';
         CommonModule,
         FormsModule,
         MatInputModule,
-        FlexModule,
         MatAutocompleteModule,
         InputMaskModule,
         ReactiveFormsModule,

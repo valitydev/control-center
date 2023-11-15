@@ -1,5 +1,5 @@
 <cc-page-layout title="Review changes of {{ type$ | async }}">
-    <div *ngIf="progress$ | async; else content" fxLayout fxLayoutAlign="center stretch">
+    <div *ngIf="progress$ | async; else content" style="display: flex; justify-content: center">
         <mat-spinner></mat-spinner>
     </div>
     <ng-template #content>

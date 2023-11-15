@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, booleanAttribute } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
@@ -7,7 +7,6 @@ import {
     FormControlSuperclass,
     createControlProviders,
 } from '@vality/ng-core';
-import { coerceBoolean } from 'coerce-property';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, debounceTime, map, switchMap, tap, startWith } from 'rxjs/operators';
 
@@ -24,7 +23,7 @@ export class MerchantFieldComponent
     implements AfterViewInit
 {
     @Input() label: string;
-    @Input() @coerceBoolean required: boolean;
+    @Input({ transform: booleanAttribute }) required: boolean;
 
     options$ = new ReplaySubject<Option<PartyID>[]>(1);
     searchChange$ = new Subject<string>();

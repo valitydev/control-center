@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputFieldModule } from '@vality/ng-core';
 
@@ -13,7 +12,7 @@ import { PartyShopsComponent } from './party-shops.component';
     imports: [
         PartyShopsRoutingModule,
         CommonModule,
-        FlexModule,
+
         ReactiveFormsModule,
         InputFieldModule,
         ShopsTableComponent,

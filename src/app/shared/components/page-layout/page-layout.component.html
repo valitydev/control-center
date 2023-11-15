@@ -1,9 +1,7 @@
 <div class="header">
     <h1
         class="mat-headline-4 mat-no-margin"
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="4px"
+        style="display: flex; place-content: center flex-start; align-items: center; gap: 4px"
     >
         <button *ngIf="isBackAvailable" mat-icon-button (click)="back()">
             <mat-icon>arrow_back</mat-icon>
@@ -17,7 +15,7 @@
         <ng-content select="cc-page-layout-actions"></ng-content>
     </div>
 </div>
-<div *ngIf="path?.length" class="mat-h3 mat-secondary-text" fxLayout fxLayoutGap="4px">
+<div *ngIf="path?.length" class="mat-h3 mat-secondary-text" style="display: flex; gap: 4px">
     <ng-container *ngFor="let pathPart of path; let idx = index">
         <div [matTooltip]="pathPart.tooltip">
             <a
@@ -33,7 +31,10 @@
     >
 </div>
 
-<div *ngIf="progress; else content" fxLayout fxLayoutAlign="center center">
+<div
+    *ngIf="progress; else content"
+    style="display: flex; place-content: center; align-items: center"
+>
     <mat-spinner diameter="64"></mat-spinner>
 </div>
 <ng-template #content>

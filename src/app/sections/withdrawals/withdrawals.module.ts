@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule, GridModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +20,6 @@ import {
     DateRangeFieldModule,
 } from '@vality/ng-core';
 
-import { EmptySearchResultModule } from '../../../components/empty-search-result';
 import { PageLayoutModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
@@ -35,13 +33,10 @@ import { WithdrawalsComponent } from './withdrawals.component';
     imports: [
         WithdrawalsRoutingModule,
         CommonModule,
-        FlexModule,
         MatCardModule,
         MatProgressBarModule,
-        EmptySearchResultModule,
         MatButtonModule,
         MerchantFieldModule,
-        GridModule,
         ReactiveFormsModule,
         MatTableModule,
         ThriftPipesModule,

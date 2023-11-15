@@ -3,7 +3,8 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/fistful_admin';
 import { StatDeposit, StatRequest } from '@vality/fistful-proto/fistful_stat';
 import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
-import * as moment from 'moment';
+import { getNoTimeZoneIsoString } from '@vality/ng-core';
+import { endOfDay, startOfDay } from 'date-fns';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { catchError, map, switchMap, first } from 'rxjs/operators';
 
@@ -15,7 +16,6 @@ import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
 import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
 
-import { ConfigService } from '../../../../../core/config.service';
 import { FetchSourcesService } from '../../../../sources';
 
 @Injectable()
@@ -80,7 +80,6 @@ export class CreateDepositService {
         private fistfulStatisticsService: FistfulStatisticsService,
         private fb: FormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
-        private configService: ConfigService,
         private fetchSourcesService: FetchSourcesService,
     ) {
         this.initForm();
@@ -115,8 +114,8 @@ export class CreateDepositService {
         return {
             dsl: createDsl({
                 deposits: {
-                    from_time: moment().startOf('d').toISOString(),
-                    to_time: moment().endOf('d').toISOString(),
+                    from_time: getNoTimeZoneIsoString(startOfDay(new Date())),
+                    to_time: getNoTimeZoneIsoString(endOfDay(new Date())),
                     size: 1,
                     deposit_id: params.id,
                 },

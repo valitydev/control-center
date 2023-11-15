@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexModule, GridModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -13,10 +12,8 @@ import { PageLayoutComponent } from './page-layout.component';
 @NgModule({
     imports: [
         CommonModule,
-        FlexModule,
         MatIconModule,
         MatProgressSpinnerModule,
-        GridModule,
         RouterLink,
         MatButtonModule,
         MatTooltipModule,

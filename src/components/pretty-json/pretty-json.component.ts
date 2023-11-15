@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { coerceBoolean } from 'coerce-property';
+import { Component, Input, booleanAttribute } from '@angular/core';
 
 @Component({
     selector: 'cc-pretty-json',
@@ -41,14 +40,7 @@ import { coerceBoolean } from 'coerce-property';
     ],
 })
 export class PrettyJsonComponent {
-    @Input()
-    object: unknown;
-
-    @Input()
-    @coerceBoolean
-    inline = false;
-
-    @Input()
-    @coerceBoolean
-    cleanLook: boolean;
+    @Input() object: unknown;
+    @Input({ transform: booleanAttribute }) inline = false;
+    @Input({ transform: booleanAttribute }) cleanLook: boolean;
 }

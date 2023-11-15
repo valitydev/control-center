@@ -1,7 +1,7 @@
-<div *ngIf="payout$ | async as payout" fxLayout="column" fxLayoutGap="24px">
-    <div fxLayoutAlign="space-between">
+<div *ngIf="payout$ | async as payout" style="display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; justify-content: space-between">
         <cc-headline>Payout details</cc-headline>
-        <div fxLayoutGap="16px">
+        <div style="display: flex; gap: 16px">
             <button
                 [disabled]="canBeCancelled(payout.status | ccUnionKey)"
                 color="warn"
@@ -21,8 +21,8 @@
         </div>
     </div>
     <mat-card>
-        <mat-card-content gdGap="16px">
-            <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+        <mat-card-content style="display: grid; gap: 16px">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
                 <cc-details-item title="Payout ID">{{ payout.payout_id }}</cc-details-item>
                 <cc-details-item title="Amount">
                     {{ payout.amount | ccFormatAmount }}
@@ -44,7 +44,7 @@
             <ng-container *ngIf="party$ | async as party">
                 <div><mat-divider></mat-divider></div>
                 <h2 class="mat-headline-4">Party</h2>
-                <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
                     <cc-details-item title="ID">{{ payout.party_id }}</cc-details-item>
                     <cc-details-item title="Email">
                         {{ party.contact_info?.email }}
@@ -65,7 +65,7 @@
     </mat-card>
 
     <mat-card>
-        <mat-card-content gdGap="24px">
+        <mat-card-content style="display: grid; gap: 24px">
             <h2 class="mat-headline-4">Cash Flow</h2>
             <div>
                 <table [dataSource]="payout.cash_flow" mat-table>
