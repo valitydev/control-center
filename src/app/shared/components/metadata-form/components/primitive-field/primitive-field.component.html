@@ -55,7 +55,8 @@
                 />
                 <div matSuffix style="display: flex; gap: 4px">
                     <button
-                        *ngIf="!data.isRequired && control.value"
+                        *ngIf="!data.isRequired"
+                        [disabled]="control.value === null || control.value === undefined"
                         mat-icon-button
                         (click)="clear($event)"
                     >
