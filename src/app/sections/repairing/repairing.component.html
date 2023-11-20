@@ -1,6 +1,9 @@
 <cc-page-layout title="Repairing">
     <mat-card>
-        <mat-card-content [formGroup]="filters" gdColumns="1fr 1fr 1fr" gdGap="16px">
+        <mat-card-content
+            [formGroup]="filters"
+            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px"
+        >
             <v-list-field formControlName="ids" label="IDs"></v-list-field>
             <mat-form-field>
                 <mat-label>Namespace</mat-label>

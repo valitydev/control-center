@@ -1,4 +1,4 @@
-<div gdColumns="1fr" gdGap="16px">
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px">
     <ng-container *ngIf="hasLabel">
         <mat-checkbox *ngIf="!labelControl.disabled; else label" [formControl]="labelControl">
             <ng-container [ngTemplateOutlet]="label"></ng-container>

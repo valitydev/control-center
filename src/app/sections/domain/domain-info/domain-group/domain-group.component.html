@@ -1,5 +1,5 @@
 <div style="display: flex; flex-direction: column; gap: 8px">
-    <div gdColumns="1fr 1fr" gdGap="24px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px">
         <v-select-field
             [formControl]="typesControl"
             [options]="options$ | async"

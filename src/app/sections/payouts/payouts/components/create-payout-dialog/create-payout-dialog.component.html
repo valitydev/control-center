@@ -1,5 +1,5 @@
 <v-dialog [progress]="!!(progress$ | async)" title="Create payout">
-    <div [formGroup]="control" gdColumns="1fr" gdGap="16px">
+    <div [formGroup]="control" style="display: grid; grid-template-columns: 1fr; gap: 16px">
         <cc-merchant-field formControlName="partyId" required></cc-merchant-field>
         <cc-shop-field
             [partyId]="this.control.value.partyId"
