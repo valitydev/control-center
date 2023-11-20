@@ -11,7 +11,8 @@
             }}</mat-option>
         </mat-select>
         <button
-            *ngIf="fieldControl.value && data.isRequired"
+            *ngIf="!data.isRequired"
+            [disabled]="!fieldControl.value"
             mat-icon-button
             matSuffix
             (click)="fieldControl.reset(); $event.stopPropagation()"
