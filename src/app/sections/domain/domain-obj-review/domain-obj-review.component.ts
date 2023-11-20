@@ -76,6 +76,8 @@ export class DomainObjReviewComponent {
     }
 
     back() {
-        void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref]);
+        void this.router.navigate(['domain', 'edit'], {
+            queryParams: { ref: this.route.snapshot.queryParams.ref },
+        });
     }
 }

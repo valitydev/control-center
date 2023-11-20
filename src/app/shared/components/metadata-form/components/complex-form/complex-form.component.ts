@@ -64,15 +64,17 @@ export class ComplexFormComponent<V, K = never>
                 const values = this.valueControls.value;
                 switch (this.data.type.name) {
                     case 'list':
-                        this.emitOutgoingValue(values);
+                        this.emitOutgoingValue(values.length ? values : null);
                         break;
                     case 'map': {
                         const keys = this.keyControls.value;
-                        this.emitOutgoingValue(new Map(values.map((v, idx) => [keys[idx], v])));
+                        this.emitOutgoingValue(
+                            keys.length ? new Map(values.map((v, idx) => [keys[idx], v])) : null,
+                        );
                         break;
                     }
                     case 'set':
-                        this.emitOutgoingValue(new Set(values));
+                        this.emitOutgoingValue(values.length ? new Set(values) : null);
                         break;
                 }
             });

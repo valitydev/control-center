@@ -1,19 +1,23 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ComponentChanges } from '@vality/ng-core';
+import {
+    ComponentChanges,
+    Option,
+    FormControlSuperclass,
+    createControlProviders,
+} from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
-import { map, pluck, shareReplay, startWith } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { getValueTypeTitle } from '@cc/app/shared';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,
 } from '@cc/app/shared/components/metadata-form';
-import { getFirstDeterminedExtensionsResult } from '@cc/app/shared/components/metadata-form/types/metadata-form-extension';
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
+import { getFirstDeterminedExtensionsResult } from '../../types/metadata-form-extension';
 
 @UntilDestroy()
 @Component({
@@ -21,10 +25,7 @@ import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(() => PrimitiveFieldComponent),
 })
-export class PrimitiveFieldComponent<T>
-    extends ValidatedFormControlSuperclass<T>
-    implements OnChanges
-{
+export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> implements OnChanges {
     @Input() data: MetadataFormData<ThriftType>;
     @Input() extensions: MetadataFormExtension[];
 
@@ -35,22 +36,26 @@ export class PrimitiveFieldComponent<T>
         switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    generate$ = this.extensionResult$.pipe(pluck('generate'));
-    selected$ = combineLatest([this.extensionResult$, this.control.valueChanges]).pipe(
-        map(([extensionResult, value]) => extensionResult?.options?.find((o) => o.value === value)),
-    );
-    filteredOptions$ = combineLatest([
-        this.control.valueChanges.pipe(startWith('')),
+    generate$ = this.extensionResult$.pipe(map((r) => r?.generate));
+    selected$ = combineLatest([
         this.extensionResult$,
+        this.control.valueChanges.pipe(startWith(this.control.value)),
     ]).pipe(
-        map(([value, extensionResult]) => {
-            const filterValue = String(value ?? '').toLowerCase();
-            return extensionResult.options?.filter(
-                (option) =>
-                    String(option.value).toLowerCase().includes(filterValue) ||
-                    (option.label && option.label.toLowerCase().includes(filterValue)),
-            );
-        }),
+        map(
+            ([extensionResult]) =>
+                extensionResult?.options?.find((o) => o.value === this.control.value),
+        ),
+    );
+    options$ = this.extensionResult$.pipe(
+        map((extensionResult): Option<T>[] =>
+            extensionResult?.options?.length
+                ? extensionResult.options.map((o) => ({
+                      label: o.label,
+                      value: o.value as never,
+                      description: String(o.value),
+                  }))
+                : null,
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 

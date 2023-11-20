@@ -1,4 +1,8 @@
 .wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    gap: 8px;
     height: 100%;
 
     .actions {

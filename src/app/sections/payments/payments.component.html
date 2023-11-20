@@ -44,10 +44,10 @@
         <button
             [disabled]="!(selected$ | async)?.length"
             color="primary"
-            mat-button
+            mat-raised-button
             (click)="createPaymentAdjustment()"
         >
-            Create payment adjustment
+            Create adjustment
         </button>
     </cc-payments-table>
 </cc-page-layout>

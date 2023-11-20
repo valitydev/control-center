@@ -1,5 +1,5 @@
-<div gdGap="16px">
-    <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+<div style="display: grid; gap: 16px">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
         <cc-details-item title="ID">{{ payoutTool.id }}</cc-details-item>
         <cc-details-item title="Created At">{{ payoutTool.created_at }}</cc-details-item>
         <cc-details-item title="Currency">{{ payoutTool.currency?.symbolic_code }}</cc-details-item>
@@ -16,7 +16,7 @@
             *ngIf="payoutTool.payout_tool_info.international_bank_account?.correspondent_account"
         >
             <h2 class="mat-h3">Correspondent account</h2>
-            <div gdColumns="1fr 1fr 1fr" gdGap="16px">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
                 <cc-international-bank-account-details
                     [internationalBankAccount]="
                         payoutTool.payout_tool_info.international_bank_account.correspondent_account

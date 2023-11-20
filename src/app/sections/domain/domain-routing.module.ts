@@ -26,11 +26,11 @@ import { ROUTING_CONFIG } from './routing-config';
                         component: DomainObjCreationComponent,
                     },
                     {
-                        path: 'edit/:ref',
+                        path: 'edit',
                         component: DomainObjModificationComponent,
                     },
                     {
-                        path: 'edit/:ref/review',
+                        path: 'review',
                         component: DomainObjReviewComponent,
                     },
                 ],

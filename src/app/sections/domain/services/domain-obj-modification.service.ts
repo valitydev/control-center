@@ -25,7 +25,7 @@ export class DomainObjModificationService {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    private ref$ = this.route.params.pipe(
+    private ref$ = this.route.queryParams.pipe(
         map(({ ref }) => {
             try {
                 return JSON.parse(ref as string) as Reference;

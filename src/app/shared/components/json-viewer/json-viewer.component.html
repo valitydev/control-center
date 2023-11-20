@@ -1,14 +1,20 @@
 <ng-container *ngIf="view?.items$ | async as items">
-    <div *ngIf="!(view.isValue$ | async); else onlyValue" gdColumns="1fr" gdGap="16px">
+    <div
+        *ngIf="!(view.isValue$ | async); else onlyValue"
+        style="display: grid; grid-template-columns: 1fr; gap: 16px"
+    >
         <div
             *ngIf="(view.leaves$ | async)?.length as count"
-            [gdColumns]="count === 1 ? '1fr' : count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'"
-            gdGap="16px"
+            [ngStyle]="{
+                display: 'grid',
+                gap: '16px',
+                'grid-template-columns':
+                    count === 1 ? '1fr' : count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'
+            }"
         >
             <div
                 *ngFor="let item of view.leaves$ | async; let i = index"
-                gdGap="8px"
-                gdRows="auto 1fr"
+                style="display: grid; grid-template-rows: auto 1fr; gap: 8px"
             >
                 <cc-key [keys]="item.path$ | async" class="mat-caption mat-secondary-text"></cc-key>
 
@@ -30,8 +36,12 @@
         <ng-container *ngFor="let item of view?.nodes$ | async; let idx = index">
             <mat-divider *ngIf="idx > 0 || (view.leaves$ | async)?.length"></mat-divider>
             <div
-                [gdColumns]="((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr'"
-                gdGap="16px"
+                [ngStyle]="{
+                    display: 'grid',
+                    'grid-template-columns':
+                        ((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr',
+                    gap: '16px'
+                }"
             >
                 <cc-key
                     *ngIf="!((item.current$ | async)?.key.data$ | async); else mapKey"
