@@ -61,7 +61,7 @@ export class DomainObjModificationComponent implements OnInit {
         this.domainObjModService.object$.pipe(first(), untilDestroyed(this)).subscribe((object) => {
             if (
                 this.modifiedDomainObjectService.domainObject &&
-                this.route.snapshot.params.ref === this.modifiedDomainObjectService.ref
+                this.route.snapshot.queryParams.ref === this.modifiedDomainObjectService.ref
             ) {
                 this.control.setValue(this.modifiedDomainObjectService.domainObject);
             } else {
@@ -71,8 +71,13 @@ export class DomainObjModificationComponent implements OnInit {
     }
 
     reviewChanges() {
-        this.modifiedDomainObjectService.update(this.control.value, this.route.snapshot.params.ref);
-        void this.router.navigate(['domain', 'edit', this.route.snapshot.params.ref, 'review']);
+        this.modifiedDomainObjectService.update(
+            this.control.value,
+            this.route.snapshot.queryParams.ref,
+        );
+        void this.router.navigate(['domain', 'review'], {
+            queryParams: { ref: this.route.snapshot.queryParams.ref },
+        });
     }
 
     backToDomain() {

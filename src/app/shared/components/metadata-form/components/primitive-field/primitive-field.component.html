@@ -34,68 +34,15 @@
     </ng-container>
     <ng-template #input>
         <div style="display: flex; gap: 4px">
-            <mat-form-field style="flex: 1">
-                <mat-label>
-                    <ng-container *ngIf="!(extensionResult$ | async)?.label; else extensionLabel">{{
-                        data.type | fieldLabel: data.field
-                    }}</ng-container>
-                    <ng-template #extensionLabel>{{
-                        (extensionResult$ | async).label
-                    }}</ng-template>
-                </mat-label>
-                <mat-hint>{{ aliases }}</mat-hint>
-                <input
-                    #trigger="matAutocompleteTrigger"
-                    [formControl]="control"
-                    [matAutocomplete]="auto"
-                    [ngClass]="{ 'cc-code': (extensionResult$ | async)?.isIdentifier }"
-                    [required]="data.isRequired"
-                    [type]="inputType"
-                    matInput
-                />
-                <div matSuffix style="display: flex; gap: 4px">
-                    <button
-                        *ngIf="!data.isRequired"
-                        [disabled]="control.value === null || control.value === undefined"
-                        mat-icon-button
-                        (click)="clear($event)"
-                    >
-                        <mat-icon>clear</mat-icon>
-                    </button>
-                    <button
-                        *ngIf="(extensionResult$ | async)?.options?.length"
-                        mat-icon-button
-                        (click)="
-                            auto.isOpen ? trigger.closePanel() : trigger.openPanel();
-                            $event.stopPropagation()
-                        "
-                    >
-                        <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
-                    </button>
-                </div>
-                <mat-autocomplete #auto="matAutocomplete">
-                    <ng-container *ngIf="extensionResult$ | async as extensionResult">
-                        <mat-option
-                            *ngFor="let option of filteredOptions$ | async"
-                            [value]="option.value"
-                        >
-                            <div
-                                style="
-                                    display: flex;
-                                    place-content: center flex-start;
-                                    align-items: center;
-                                    gap: 8px;
-                                "
-                            >
-                                <div [ngClass]="{ 'cc-code': extensionResult.isIdentifier }">
-                                    {{ option.value }}
-                                </div>
-                                <cc-label [color]="option.color" [label]="option.label"></cc-label>
-                            </div>
-                        </mat-option>
-                    </ng-container>
-                </mat-autocomplete>
-            </mat-form-field>
+            <v-autocomplete-field
+                [formControl]="control"
+                [hint]="aliases"
+                [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
+                [options]="options$ | async"
+                [required]="data.isRequired"
+                [type]="inputType"
+                style="flex: 1"
+            ></v-autocomplete-field>
             <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
                 <mat-icon>loop</mat-icon>
             </button>
@@ -117,7 +64,9 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-                <cc-json-viewer [value]="selected.details"></cc-json-viewer>
+                <div style="padding: 0 24px">
+                    <cc-json-viewer [value]="selected.details"></cc-json-viewer>
+                </div>
             </ng-template>
         </mat-expansion-panel>
     </ng-container>

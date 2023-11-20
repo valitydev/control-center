@@ -59,7 +59,9 @@ export class DomainInfoComponent {
     ) {}
 
     edit() {
-        void this.router.navigate(['domain', 'edit', JSON.stringify(this.objWithRef.ref)]);
+        void this.router.navigate(['domain', 'edit'], {
+            queryParams: { ref: JSON.stringify(this.objWithRef.ref) },
+        });
     }
 
     delete() {

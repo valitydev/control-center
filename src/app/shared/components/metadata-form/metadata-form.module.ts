@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DatetimeFieldModule, PipesModule } from '@vality/ng-core';
+import { DatetimeFieldModule, PipesModule, AutocompleteFieldModule } from '@vality/ng-core';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
@@ -55,6 +55,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         DatetimeFieldModule,
         PipesModule,
         CashModule,
+        AutocompleteFieldModule,
     ],
     declarations: [
         MetadataFormComponent,
