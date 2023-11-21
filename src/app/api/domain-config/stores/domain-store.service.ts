@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Domain, DomainObject } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
+import { NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
-import { map, pluck, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
-import { inProgressFrom, progressTo } from '../../../../utils';
-import { getUnionKey } from '../../../../utils/get-union-key';
-import { DomainSecretService } from '../../../shared/services/domain-secret-service';
-import { handleError, NotificationErrorService } from '../../../shared/services/notification-error';
+import { inProgressFrom, progressTo, getUnionKey } from '../../../../utils';
+import { DomainSecretService } from '../../../shared/services';
+import { handleError } from '../../../shared/services/notification-error';
 import { RepositoryService } from '../index';
 
 @UntilDestroy()
@@ -16,7 +16,7 @@ import { RepositoryService } from '../index';
     providedIn: 'root',
 })
 export class DomainStoreService {
-    version$ = defer(() => this.snapshot$).pipe(pluck('version'));
+    version$ = defer(() => this.snapshot$).pipe(map((s) => s?.version));
     isLoading$ = inProgressFrom(
         () => this.progress$,
         defer(() => this.snapshot$),
@@ -27,7 +27,7 @@ export class DomainStoreService {
         switchMap(() =>
             this.repositoryService
                 .Checkout({ head: {} })
-                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error)),
+                .pipe(progressTo(this.progress$), handleError(this.log.error)),
         ),
         untilDestroyed(this),
         shareReplay(1),
@@ -38,7 +38,7 @@ export class DomainStoreService {
     constructor(
         private repositoryService: RepositoryService,
         private domainSecretService: DomainSecretService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {}
 
     forceReload(): void {
@@ -47,7 +47,7 @@ export class DomainStoreService {
 
     getDomain(raw = false): Observable<Domain> {
         return this.snapshot$.pipe(
-            pluck('domain'),
+            map((s) => s?.domain),
             map((d) => (raw ? d : this.domainSecretService.reduceDomain(d))),
         );
     }
