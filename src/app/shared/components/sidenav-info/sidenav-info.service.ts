@@ -12,7 +12,7 @@ export class SidenavInfoService {
     inputs?: Record<PropertyKey, unknown>;
 
     get opened() {
-        return !!this.template;
+        return !!this.template || !!this.component;
     }
 
     private id: unknown = null;
@@ -37,14 +37,19 @@ export class SidenavInfoService {
         this.id = id;
     }
 
-    openComponent(component: Type<unknown>, inputs: Record<PropertyKey, unknown> = {}) {
+    openComponent<C extends Type<unknown>>(
+        component: C,
+        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
+    ) {
         this.component = component;
         this.inputs = inputs;
     }
 
     close() {
         this.template = null;
+        this.component = null;
         this.title = '';
         this.id = null;
+        this.inputs = null;
     }
 }

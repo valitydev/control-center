@@ -1,4 +1,4 @@
-<div class="sidenav-info">
+<div *ngIf="sidenavInfoService.template" class="sidenav-info">
     <div class="sidenav-info-title-bar">
         <div>
             <h2 class="sidenav-info-title">{{ sidenavInfoService.title }}</h2>
@@ -9,13 +9,11 @@
     </div>
     <mat-divider></mat-divider>
     <div class="sidenav-info-content">
-        <ng-container *ngIf="sidenavInfoService.template">
-            <ng-container *ngTemplateOutlet="sidenavInfoService.template"></ng-container>
-        </ng-container>
-        <ng-container *ngIf="sidenavInfoService.component">
-            <ng-container
-                *ngComponentOutlet="sidenavInfoService.component; inputs: sidenavInfoService.inputs"
-            ></ng-container>
-        </ng-container>
+        <ng-container *ngTemplateOutlet="sidenavInfoService.template"></ng-container>
     </div>
 </div>
+<ng-container *ngIf="sidenavInfoService.component">
+    <ng-container
+        *ngComponentOutlet="sidenavInfoService.component; inputs: sidenavInfoService.inputs"
+    ></ng-container>
+</ng-container>

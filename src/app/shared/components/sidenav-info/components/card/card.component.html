@@ -1,0 +1,18 @@
+<div class="sidenav-info">
+    <div class="sidenav-info-title-bar">
+        <div>
+            <h2 class="sidenav-info-title">{{ title }}</h2>
+        </div>
+        <mat-icon class="sidenav-info-close" inline (click)="sidenavInfoService.close()"
+            >clear</mat-icon
+        >
+    </div>
+    <mat-divider></mat-divider>
+    <div class="sidenav-info-content">
+        <ng-content></ng-content>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="sidenav-info-actions">
+        <ng-content select="cc-card-actions"></ng-content>
+    </div>
+</div>

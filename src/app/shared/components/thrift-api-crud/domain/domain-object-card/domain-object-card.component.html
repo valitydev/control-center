@@ -1,2 +1,11 @@
-<p>domain-object-card works!</p>
-label: {{ label }}
+<cc-card [title]="title">
+    <cc-domain-thrift-viewer
+        [progress]="progress"
+        [value]="domainObject"
+        type="DomainObject"
+    ></cc-domain-thrift-viewer>
+    <cc-card-actions>
+        <button color="warn" mat-button (click)="delete()">Delete</button>
+        <button color="primary" mat-button (click)="edit()">Edit</button>
+    </cc-card-actions>
+</cc-card>

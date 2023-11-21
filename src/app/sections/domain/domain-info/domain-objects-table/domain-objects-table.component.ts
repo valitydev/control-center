@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Sort } from '@angular/material/sort';
@@ -13,11 +13,10 @@ import {
     TableModule,
     ActionsModule,
 } from '@vality/ng-core';
-import isEqual from 'lodash-es/isEqual';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, Observable, forkJoin, of } from 'rxjs';
-import { map, shareReplay, withLatestFrom, filter, startWith, switchMap } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
@@ -37,7 +36,6 @@ interface DomainObjectData {
 
 interface Params {
     types?: string[];
-    ref?: Reference;
 }
 
 @UntilDestroy()
@@ -56,10 +54,6 @@ interface Params {
     ],
 })
 export class DomainObjectsTableComponent implements OnInit {
-    // @ViewChild('objTpl') contractTpl: TemplateRef<unknown>;
-
-    @Output() refChange = new EventEmitter<{ ref: Reference; obj: DomainObject }>();
-
     typesControl = new FormControl<string[]>(
         (this.queryParamsService.params.types as (keyof DomainObject)[]) || [],
     );
@@ -90,15 +84,7 @@ export class DomainObjectsTableComponent implements OnInit {
                 formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).id,
                 sortable: true,
                 click: (d) => {
-                    this.sidenavInfoService.openComponent(DomainObjectCardComponent, {
-                        label: 'hell xx',
-                    });
-                    // this.selectedObj = d;
-                    // this.sidenavInfoService.toggle(
-                    //     this.contractTpl,
-                    //     getDomainObjectDetails(d.obj).label,
-                    //     d.ref,
-                    // );
+                    this.details(d);
                 },
             },
             {
@@ -121,13 +107,7 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Details',
                     click: (d) => {
-                        // void this.queryParamsService.patch({ ref: d.ref });
-                        // this.selectedObj = d;
-                        // this.sidenavInfoService.toggle(
-                        //     this.contractTpl,
-                        //     getDomainObjectDetails(d.obj).label,
-                        //     d.ref,
-                        // );
+                        this.details(d);
                     },
                 },
             ]),
@@ -148,7 +128,6 @@ export class DomainObjectsTableComponent implements OnInit {
     );
     isLoading$ = this.domainStoreService.isLoading$;
     sort: Sort = { active: 'id', direction: 'asc' };
-    selectedObj?: DomainObjectData;
 
     constructor(
         private domainStoreService: DomainStoreService,
@@ -161,21 +140,16 @@ export class DomainObjectsTableComponent implements OnInit {
         this.typesControl.valueChanges.subscribe((types) => {
             void this.queryParamsService.patch({ types });
         });
-        this.queryParamsService.params$
-            .pipe(
-                filter((p) => !!p.ref),
-                withLatestFrom(this.domainStoreService.getDomain()),
-            )
-            .subscribe(([params, domain]) => {
-                domain.forEach((obj, ref) => {
-                    if (isEqual(params.ref, ref)) {
-                        this.refChange.emit({ ref, obj: obj });
-                    }
-                });
-            });
     }
 
     update() {
         this.domainStoreService.forceReload();
+    }
+
+    details(d: DomainObjectData) {
+        this.sidenavInfoService.openComponent(DomainObjectCardComponent, {
+            domainObject: d.obj,
+            ref: d.ref,
+        });
     }
 }
