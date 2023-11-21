@@ -16,11 +16,7 @@ import {
 } from '../../components/metadata-form';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
-import {
-    defaultDomainObjectToOption,
-    DOMAIN_OBJECTS_TO_OPTIONS,
-    OtherDomainObjects,
-} from './utils/domains-objects-to-options';
+import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
@@ -110,13 +106,9 @@ export class DomainMetadataFormExtensionsService {
             'domain',
             'DomainObject',
         ).ast;
-        return domainFields
-            .filter(
-                (f) => !(f.name in DOMAIN_OBJECTS_TO_OPTIONS) || DOMAIN_OBJECTS_TO_OPTIONS[f.name],
-            )
-            .map((f) =>
-                this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
-            );
+        return domainFields.map((f) =>
+            this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
+        );
     }
 
     private createFieldOptions(
@@ -130,10 +122,7 @@ export class DomainMetadataFormExtensionsService {
         return createDomainObjectExtension(refType, () =>
             this.domainStoreService.getObjects(objectKey).pipe(
                 map((objects) => {
-                    const domainObjectToOption =
-                        objectKey in DOMAIN_OBJECTS_TO_OPTIONS
-                            ? DOMAIN_OBJECTS_TO_OPTIONS[objectKey as keyof OtherDomainObjects]
-                            : defaultDomainObjectToOption;
+                    const domainObjectToOption = getDomainObjectValueOptionFn(objectKey);
                     return objects.map(domainObjectToOption);
                 }),
             ),

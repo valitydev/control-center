@@ -13,16 +13,17 @@ import { PipesModule, ActionsModule } from '@vality/ng-core';
 import { MonacoEditorModule } from '@cc/components/monaco-editor';
 
 import { ThriftPipesModule, PageLayoutModule } from '../../../shared';
+import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 
-import { DomainGroupModule } from './domain-group';
 import { DomainInfoComponent } from './domain-info.component';
+import { DomainObjectsTableComponent } from './domain-objects-table';
 
 @NgModule({
     declarations: [DomainInfoComponent],
     imports: [
         CommonModule,
-        DomainGroupModule,
+        DomainObjectsTableComponent,
         MatCardModule,
         MatProgressBarModule,
         MatSnackBarModule,
@@ -37,6 +38,7 @@ import { DomainInfoComponent } from './domain-info.component';
         ActionsModule,
         ThriftPipesModule,
         PageLayoutModule,
+        DomainThriftViewerComponent,
     ],
 })
 export class DomainInfoModule {}

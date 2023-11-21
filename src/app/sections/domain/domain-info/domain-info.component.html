@@ -1,46 +1,9 @@
-<mat-sidenav-container>
-    <mat-sidenav
-        #domainObjDetails
-        [opened]="!!objWithRef"
-        fixedInViewport="true"
-        fixedTopGap="64"
-        mode="side"
-        position="end"
-    >
-        <div class="details-container" style="display: flex; flex-direction: column; gap: 24px">
-            <cc-thrift-viewer
-                [extensions]="extensions$ | async"
-                [kind]="kind"
-                [metadata]="metadata$ | async"
-                [value]="objWithRef?.obj"
-                class="viewer"
-                namespace="domain"
-                type="DomainObject"
-                (changeKind)="kind = $event"
-            ></cc-thrift-viewer>
-            <v-actions>
-                <button mat-button (click)="close()">Close</button>
-                <button color="warn" mat-button (click)="delete()">Delete</button>
-                <button color="primary" mat-button (click)="edit()">Edit</button>
-            </v-actions>
-        </div>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <cc-page-layout description="#{{ version$ | async }}" title="Domain config">
-            <cc-page-layout-actions>
-                <button color="primary" mat-raised-button routerLink="/domain/create">
-                    Create object
-                </button>
-            </cc-page-layout-actions>
-            <div
-                *ngIf="progress$ | async; else content"
-                style="display: flex; justify-content: center"
-            >
-                <mat-spinner></mat-spinner>
-            </div>
-            <ng-template #content>
-                <cc-domain-group (refChange)="objWithRef = $event"></cc-domain-group>
-            </ng-template>
-        </cc-page-layout>
-    </mat-sidenav-content>
-</mat-sidenav-container>
+<cc-page-layout
+    description="{{ (version$ | async) ? '#' + (version$ | async) : '' }}"
+    title="Domain config"
+>
+    <cc-page-layout-actions>
+        <button color="primary" mat-raised-button routerLink="/domain/create">Create object</button>
+    </cc-page-layout-actions>
+    <cc-domain-objects-table (refChange)="objWithRef = $event"></cc-domain-objects-table>
+</cc-page-layout>

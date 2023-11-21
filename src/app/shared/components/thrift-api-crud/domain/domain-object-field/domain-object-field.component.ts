@@ -14,11 +14,7 @@ import { shareReplay, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
-import {
-    DOMAIN_OBJECTS_TO_OPTIONS,
-    OtherDomainObjects,
-    defaultDomainObjectToOption,
-} from '../../../../services/domain-metadata-form-extensions/utils/domains-objects-to-options';
+import { getDomainObjectValueDetailsFn } from '../utils';
 
 type DomainObjectID = unknown;
 
@@ -38,15 +34,12 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
     options$ = defer(() => this.name$).pipe(
         switchMap((name) => this.domainStoreService.getObjects(name)),
         map((objs) => {
-            const domainObjectToOption =
-                this.name in DOMAIN_OBJECTS_TO_OPTIONS
-                    ? DOMAIN_OBJECTS_TO_OPTIONS[this.name as keyof OtherDomainObjects]
-                    : defaultDomainObjectToOption;
+            const domainObjectToOption = getDomainObjectValueDetailsFn(this.name);
             return objs.map(domainObjectToOption).map(
                 (o): Option<DomainObjectID> => ({
                     label: o.label,
-                    value: o.value,
-                    description: String(o.value),
+                    value: o.id,
+                    description: String(o.id),
                 }),
             );
         }),

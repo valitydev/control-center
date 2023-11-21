@@ -1,4 +1,4 @@
-import { Injectable, TemplateRef } from '@angular/core';
+import { Injectable, TemplateRef, Type } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -8,6 +8,8 @@ import { filter } from 'rxjs/operators';
 export class SidenavInfoService {
     title: string = '';
     template?: TemplateRef<unknown>;
+    component?: Type<unknown>;
+    inputs?: Record<PropertyKey, unknown>;
 
     get opened() {
         return !!this.template;
@@ -33,6 +35,11 @@ export class SidenavInfoService {
         this.template = template;
         this.title = title;
         this.id = id;
+    }
+
+    openComponent(component: Type<unknown>, inputs: Record<PropertyKey, unknown> = {}) {
+        this.component = component;
+        this.inputs = inputs;
     }
 
     close() {

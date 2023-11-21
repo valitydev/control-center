@@ -1,0 +1,32 @@
+<v-table
+    [(sort)]="sort"
+    [columns]="columns$ | async"
+    [data]="objects$ | async"
+    [progress]="isLoading$ | async"
+    noActions
+    sortOnFront
+    standaloneFilter
+    (update)="update()"
+>
+    <v-table-inputs>
+        <v-select-field
+            [formControl]="typesControl"
+            [options]="options$ | async"
+            label="Object types"
+            multiple
+            style="overflow: auto"
+        ></v-select-field>
+    </v-table-inputs>
+</v-table>
+
+<!--<ng-template #objTpl>-->
+<!--    <cc-domain-thrift-viewer-->
+<!--        [progress]="isLoading$ | async"-->
+<!--        [value]="selectedObj.obj"-->
+<!--        type="DomainObject"-->
+<!--    ></cc-domain-thrift-viewer>-->
+<!--    <v-actions>-->
+<!--        <button color="warn" mat-button>Delete</button>-->
+<!--        <button color="primary" mat-button>Edit</button>-->
+<!--    </v-actions>-->
+<!--</ng-template>-->
