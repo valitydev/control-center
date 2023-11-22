@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { DomainInfoModule } from './domain-info/domain-info.module';
+import { DomainInfoModule } from './domain-info';
 import { DomainObjModificationModule } from './domain-obj-modification';
 import { DomainObjReviewModule } from './domain-obj-review';
 import { DomainRoutingModule } from './domain-routing.module';

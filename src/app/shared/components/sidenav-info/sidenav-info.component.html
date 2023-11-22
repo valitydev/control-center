@@ -1,4 +1,4 @@
-<div class="sidenav-info">
+<div *ngIf="sidenavInfoService.template" class="sidenav-info">
     <div class="sidenav-info-title-bar">
         <div>
             <h2 class="sidenav-info-title">{{ sidenavInfoService.title }}</h2>
@@ -12,3 +12,8 @@
         <ng-container *ngTemplateOutlet="sidenavInfoService.template"></ng-container>
     </div>
 </div>
+<ng-container *ngIf="sidenavInfoService.component">
+    <ng-container
+        *ngComponentOutlet="sidenavInfoService.component; inputs: sidenavInfoService.inputs"
+    ></ng-container>
+</ng-container>

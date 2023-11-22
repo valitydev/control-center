@@ -1,0 +1,21 @@
+<v-table
+    [(sort)]="sort"
+    [columns]="columns"
+    [data]="objects$ | async"
+    [filterByColumns]="[]"
+    [progress]="isLoading$ | async"
+    noActions
+    sortOnFront
+    standaloneFilter
+    (update)="update()"
+>
+    <v-table-inputs>
+        <v-select-field
+            [formControl]="typesControl"
+            [options]="options$ | async"
+            label="Object types"
+            multiple
+            style="overflow: auto"
+        ></v-select-field>
+    </v-table-inputs>
+</v-table>

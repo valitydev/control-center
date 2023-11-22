@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export class Columns<T extends readonly string[]> {
     list: T;
     def: { [N in T[number]]: N };

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
+import { NotifyLogService } from '@vality/ng-core';
 import { Observable, switchMap, BehaviorSubject, defer } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { toJson, getUnionValue, progressTo } from '@cc/utils';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { DomainStoreService } from '../../../api/domain-config';
 
 import { MetadataService } from './metadata.service';
 
@@ -30,7 +30,7 @@ export class DomainObjModificationService {
             try {
                 return JSON.parse(ref as string) as Reference;
             } catch (err) {
-                this.notificationErrorService.error(err, 'Malformed domain object ref');
+                this.log.error(err, 'Malformed domain object ref');
                 return null;
             }
         }),
@@ -40,7 +40,7 @@ export class DomainObjModificationService {
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {}
 
     private getDomainObject(ref: Reference, rawDomain: boolean): Observable<DomainObject> {

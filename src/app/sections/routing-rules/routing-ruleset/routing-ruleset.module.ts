@@ -19,7 +19,6 @@ import { RouterModule } from '@angular/router';
 import { TableModule } from '@vality/ng-core';
 
 import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
-import { PrettyJsonModule } from '@cc/components/pretty-json';
 
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
@@ -47,7 +46,6 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         MatExpansionModule,
         RoutingRulesetHeaderModule,
         MatAutocompleteModule,
-        PrettyJsonModule,
         TableModule,
         DomainThriftViewerComponent,
     ],

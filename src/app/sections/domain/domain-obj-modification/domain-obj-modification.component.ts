@@ -7,8 +7,6 @@ import { first } from 'rxjs/operators';
 
 import { CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
 
-import { enumHasValue } from '../../../../utils';
-import { EditorKind } from '../../../shared/components/thrift-editor';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
@@ -16,8 +14,6 @@ import { ModifiedDomainObjectService } from '../services/modified-domain-object.
 
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
 import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
-
-const EDITOR_KIND = 'domain-obj-modification-kind';
 
 @UntilDestroy()
 @Component({
@@ -35,18 +31,6 @@ export class DomainObjModificationComponent implements OnInit {
     object$ = this.domainObjModService.object$;
     type$ = this.domainObjModService.type$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
-
-    get kind() {
-        const kind = localStorage.getItem(EDITOR_KIND);
-        if (!enumHasValue(EditorKind, kind)) {
-            this.kind = EditorKind.Editor;
-            return EditorKind.Editor;
-        }
-        return kind;
-    }
-    set kind(kind: EditorKind) {
-        localStorage.setItem(EDITOR_KIND, kind);
-    }
 
     constructor(
         private router: Router,
