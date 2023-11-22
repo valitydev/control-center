@@ -28,9 +28,7 @@ export class ShopCardComponent implements OnChanges {
     private id$ = new ReplaySubject<string>(1);
     private partyId$ = new ReplaySubject<string>(1);
 
-    constructor(private partiesStoreService: PartiesStoreService) {
-        this.progress$.subscribe(console.log);
-    }
+    constructor(private partiesStoreService: PartiesStoreService) {}
 
     ngOnChanges(changes: ComponentChanges<ShopCardComponent>) {
         if (changes.id) {
