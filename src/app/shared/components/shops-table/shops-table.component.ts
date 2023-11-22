@@ -217,7 +217,9 @@ export class ShopsTableComponent implements OnChanges {
 
     ngOnChanges(changes: ComponentChanges<ShopsTableComponent>) {
         if (changes.noSort || changes.noPartyColumn) {
-            this.sort = { active: '', direction: '' };
+            if (this.noSort) {
+                this.sort = { active: '', direction: '' };
+            }
             this.updateColumns$.next();
         }
     }
