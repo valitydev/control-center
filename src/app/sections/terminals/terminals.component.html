@@ -15,19 +15,3 @@
         </v-table-actions>
     </v-table>
 </cc-page-layout>
-
-<ng-template #terminalTpl>
-    <cc-domain-thrift-viewer
-        [value]="openedTerminal"
-        type="TerminalObject"
-    ></cc-domain-thrift-viewer>
-</ng-template>
-<ng-template #providerTpl>
-    <cc-domain-thrift-viewer
-        [value]="openedProvider"
-        type="ProviderObject"
-    ></cc-domain-thrift-viewer>
-</ng-template>
-<ng-template #routingRulesTpl>
-    <v-table [columns]="routingRulesColumns" [data]="openedRoutingRules" noActions></v-table>
-</ng-template>

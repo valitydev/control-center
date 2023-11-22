@@ -1,0 +1,7 @@
+<cc-card [title]="(shop$ | async)?.details?.name">
+    <cc-domain-thrift-viewer
+        [progress]="!!(progress$ | async)"
+        [value]="shop$ | async"
+        type="Shop"
+    ></cc-domain-thrift-viewer>
+</cc-card>

@@ -25,17 +25,3 @@
         sortOnFront
     ></v-table>
 </div>
-
-<ng-template #terminalTpl>
-    <cc-domain-thrift-viewer
-        [value]="(terminalsMapID$ | async)[openedCandidate.terminal.id]"
-        type="TerminalObject"
-    ></cc-domain-thrift-viewer>
-</ng-template>
-
-<ng-template #candidateTpl>
-    <cc-domain-thrift-viewer
-        [value]="openedCandidate"
-        type="RoutingCandidate"
-    ></cc-domain-thrift-viewer>
-</ng-template>

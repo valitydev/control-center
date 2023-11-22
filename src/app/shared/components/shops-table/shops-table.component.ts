@@ -1,19 +1,10 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    Output,
-    EventEmitter,
-    ViewChild,
-    TemplateRef,
-    Input,
-    booleanAttribute,
-    OnChanges,
-} from '@angular/core';
+import { Component, Output, EventEmitter, Input, booleanAttribute, OnChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { Shop, Party, Contract } from '@vality/domain-proto/domain';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { Shop, Party } from '@vality/domain-proto/domain';
 import {
     InputFieldModule,
     TableModule,
@@ -21,7 +12,6 @@ import {
     createOperationColumn,
     DialogService,
     NotifyLogService,
-    progressTo,
     ConfirmDialogComponent,
     DialogResponseStatus,
     ComponentChanges,
@@ -35,6 +25,8 @@ import { DomainStoreService } from '../../../api/domain-config';
 import { PartyManagementService } from '../../../api/payment-processing';
 import { PartyDelegateRulesetsService } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
+import { ShopCardComponent } from '../shop-card/shop-card.component';
+import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
@@ -67,11 +59,6 @@ export class ShopsTableComponent implements OnChanges {
     @Input({ transform: booleanAttribute }) noSort: boolean = false;
     @Input({ transform: booleanAttribute }) noPartyColumn: boolean = false;
 
-    @ViewChild('shopTpl') shopTpl: TemplateRef<unknown>;
-    @ViewChild('contractTpl') contractTpl: TemplateRef<unknown>;
-
-    selectedShop?: Shop;
-    selectedContract?: Contract;
     columns$ = combineLatest([
         this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
             RoutingRulesType.Payment,
@@ -80,16 +67,16 @@ export class ShopsTableComponent implements OnChanges {
     ]).pipe(
         map(([delegatesWithPaymentInstitution]): Column<ShopParty>[] => [
             {
+                field: 'shop.id',
+                sortable: !this.noSort,
+            },
+            {
                 field: 'shop.details.name',
-                description: 'shop.id',
-                pinned: 'left',
                 click: (d) => {
-                    this.selectedShop = d.shop;
-                    this.sidenavInfoService.toggle(
-                        this.shopTpl,
-                        d.shop.details.name || `Shop #${d.shop.id}`,
-                        d.shop,
-                    );
+                    this.sidenavInfoService.toggle(ShopCardComponent, {
+                        partyId: d.party.id,
+                        id: d.shop.id,
+                    });
                 },
                 sortable: !this.noSort,
             },
@@ -104,21 +91,10 @@ export class ShopsTableComponent implements OnChanges {
                 field: 'shop.contract_id',
                 header: 'Contract',
                 click: (d) => {
-                    this.partyManagementService
-                        .GetShopContract(d.party.id, d.shop.id)
-                        .pipe(
-                            progressTo(this.contractProgress$),
-                            map((c) => c.contract),
-                            untilDestroyed(this),
-                        )
-                        .subscribe((contract) => {
-                            this.selectedContract = contract;
-                            this.sidenavInfoService.toggle(
-                                this.contractTpl,
-                                `Contract #${d.shop.id}`,
-                                d.shop,
-                            );
-                        });
+                    this.sidenavInfoService.toggle(ShopContractCardComponent, {
+                        partyId: d.party.id,
+                        id: d.shop.id,
+                    });
                 },
             },
             {

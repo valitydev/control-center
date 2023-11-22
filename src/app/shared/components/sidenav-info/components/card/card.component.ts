@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ContentChild } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 
 import { SidenavInfoService } from '../../sidenav-info.service';
+import { CardActionsComponent } from '../card-actions/card-actions.component';
 
 @Component({
     selector: 'cc-card',
@@ -14,6 +15,8 @@ import { SidenavInfoService } from '../../sidenav-info.service';
 })
 export class CardComponent {
     @Input() title: string;
+
+    @ContentChild(CardActionsComponent) cardActionsComponent?: CardActionsComponent;
 
     constructor(public sidenavInfoService: SidenavInfoService) {}
 }

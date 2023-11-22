@@ -155,6 +155,6 @@ export class DomainObjectsTableComponent implements OnInit {
     }
 
     details(d: DomainObjectData) {
-        this.sidenavInfoService.openComponent(DomainObjectCardComponent, { ref: d.ref });
+        this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
     }
 }

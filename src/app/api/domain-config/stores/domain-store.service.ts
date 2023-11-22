@@ -3,6 +3,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService } from '@vality/ng-core';
+import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
@@ -49,6 +50,12 @@ export class DomainStoreService {
         return this.snapshot$.pipe(
             map((s) => s?.domain),
             map((d) => (raw ? d : this.domainSecretService.reduceDomain(d))),
+        );
+    }
+
+    getObject(ref: Reference): Observable<DomainObject> {
+        return this.getDomain().pipe(
+            map((domain) => Array.from(domain).find(([r]) => isEqual(ref, r))[1]),
         );
     }
 

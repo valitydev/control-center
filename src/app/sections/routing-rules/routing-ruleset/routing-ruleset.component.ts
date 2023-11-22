@@ -1,7 +1,7 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TerminalObject, RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
+import { RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
 import {
     DialogResponseStatus,
     DialogService,
@@ -14,9 +14,13 @@ import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
+import {
+    DomainThriftFormDialogComponent,
+    DomainObjectCardComponent,
+} from '@cc/app/shared/components/thrift-api-crud';
 
 import { objectToJSON, getUnionKey } from '../../../../utils';
+import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -28,9 +32,6 @@ import { RoutingRulesetService } from './routing-ruleset.service';
     providers: [RoutingRulesetService],
 })
 export class RoutingRulesetComponent {
-    @ViewChild('terminalTpl') terminalTpl: TemplateRef<unknown>;
-    @ViewChild('candidateTpl') candidateTpl: TemplateRef<unknown>;
-
     shopRuleset$ = this.routingRulesetService.shopRuleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
@@ -39,16 +40,6 @@ export class RoutingRulesetComponent {
     candidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) => r.data.decisions.candidates),
     );
-    terminalsMapID$ = this.domainStoreService
-        .getObjects('terminal')
-        .pipe(
-            map((terminals) =>
-                terminals.reduce(
-                    (acc, t) => ((acc[t.ref.id] = t), acc),
-                    {} as { [N in number]: TerminalObject },
-                ),
-            ),
-        );
     isLoading$ = this.domainStoreService.isLoading$;
     columns: Column<RoutingCandidate>[] = [
         {
@@ -58,15 +49,13 @@ export class RoutingRulesetComponent {
             sortable: true,
             formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `#${idx + 1}`)),
             click: (d) => {
-                this.getCandidateIdx(d)
+                combineLatest([this.getCandidateIdx(d), this.routingRulesetService.shopRuleset$])
                     .pipe(untilDestroyed(this))
-                    .subscribe((idx) => {
-                        this.openedCandidate = d;
-                        this.sidenavInfoService.toggle(
-                            this.candidateTpl,
-                            `Candidate #${idx + 1}`,
-                            d,
-                        );
+                    .subscribe(([idx, ruleset]) => {
+                        this.sidenavInfoService.toggle(CandidateCardComponent, {
+                            idx,
+                            ref: ruleset.ref,
+                        });
                     });
             },
         },
@@ -84,12 +73,9 @@ export class RoutingRulesetComponent {
                         ),
                     ),
             click: (d) => {
-                this.openedCandidate = d;
-                this.sidenavInfoService.toggle(
-                    this.terminalTpl,
-                    `Terminal #${d.terminal.id}`,
-                    d.terminal.id,
-                );
+                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                    ref: { terminal: { id: d.terminal.id } },
+                });
             },
         },
         {
@@ -150,7 +136,6 @@ export class RoutingRulesetComponent {
             },
         ]),
     ];
-    openedCandidate?: RoutingCandidate;
 
     constructor(
         private dialog: DialogService,
