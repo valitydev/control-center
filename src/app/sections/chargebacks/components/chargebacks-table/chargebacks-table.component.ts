@@ -23,7 +23,7 @@ export class ChargebacksTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column<StatChargeback>[] = [
-        { field: 'chargeback_id', header: 'Id', pinned: 'left' },
+        { field: 'chargeback_id', header: 'Id' },
         {
             field: 'chargeback_reason',
             header: 'Reason',

@@ -22,7 +22,7 @@ export class ClaimsTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column<Claim>[] = [
-        { field: 'id', pinned: 'left' },
+        { field: 'id' },
         {
             field: 'party',
             description: 'party_id',

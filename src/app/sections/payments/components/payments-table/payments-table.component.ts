@@ -26,7 +26,7 @@ export class PaymentsTableComponent {
 
     columns: Column<StatPayment>[] = [
         { field: 'id', hide: true },
-        { field: 'invoice_id', pinned: 'left' },
+        { field: 'invoice_id' },
         {
             field: 'amount',
             type: 'currency',

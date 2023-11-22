@@ -27,7 +27,8 @@ export class WalletsComponent implements OnInit {
     inProgress$ = this.fetchWalletsService.doAction$;
     hasMore$ = this.fetchWalletsService.hasMore$;
     columns: Column<StatWallet>[] = [
-        { field: 'name', description: 'id' },
+        { field: 'id' },
+        { field: 'name' },
         'currency_symbolic_code',
         'identity_id',
         { field: 'created_at', type: 'datetime' },

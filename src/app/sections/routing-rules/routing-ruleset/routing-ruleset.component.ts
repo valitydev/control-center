@@ -43,7 +43,6 @@ export class RoutingRulesetComponent {
     isLoading$ = this.domainStoreService.isLoading$;
     columns: Column<RoutingCandidate>[] = [
         {
-            pinned: 'left',
             field: 'candidate',
             description: 'description',
             sortable: true,
@@ -60,7 +59,6 @@ export class RoutingRulesetComponent {
             },
         },
         {
-            pinned: 'left',
             field: 'terminal',
             description: 'terminal.id',
             formatter: (d) =>
