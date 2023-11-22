@@ -17,7 +17,7 @@ import {
     ComponentChanges,
 } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
-import { map, switchMap, BehaviorSubject, Subject, defer, combineLatest } from 'rxjs';
+import { map, switchMap, Subject, defer, combineLatest } from 'rxjs';
 import { filter, shareReplay, startWith, take } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../../utils';
@@ -202,11 +202,7 @@ export class ShopsTableComponent implements OnChanges {
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    contractProgress$ = new BehaviorSubject(0);
-    sort: Sort = {
-        active: 'details.name',
-        direction: 'asc',
-    };
+    sort: Sort = { active: 'shop.details.name', direction: 'asc' };
     private updateColumns$ = new Subject<void>();
 
     constructor(
