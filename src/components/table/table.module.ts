@@ -10,9 +10,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MenuCellComponent } from '@cc/components/table/menu-cell/menu-cell.component';
 
 import { NoDataRowComponent } from './no-data-row/no-data-row.component';
-import { SelectColumnComponent } from './select-column/select-column.component';
 import { ShowMoreButtonComponent } from './show-more-button/show-more-button.component';
 
+/**
+ * @deprecated
+ */
 @NgModule({
     imports: [
         CommonModule,
@@ -23,17 +25,7 @@ import { ShowMoreButtonComponent } from './show-more-button/show-more-button.com
         MatMenuModule,
         MatIconModule,
     ],
-    declarations: [
-        SelectColumnComponent,
-        ShowMoreButtonComponent,
-        MenuCellComponent,
-        NoDataRowComponent,
-    ],
-    exports: [
-        SelectColumnComponent,
-        ShowMoreButtonComponent,
-        MenuCellComponent,
-        NoDataRowComponent,
-    ],
+    declarations: [ShowMoreButtonComponent, MenuCellComponent, NoDataRowComponent],
+    exports: [ShowMoreButtonComponent, MenuCellComponent, NoDataRowComponent],
 })
 export class TableModule {}
