@@ -72,6 +72,7 @@ export class ShopsTableComponent implements OnChanges {
             },
             {
                 field: 'shop.details.name',
+                description: 'shop.details.description',
                 click: (d) => {
                     this.sidenavInfoService.toggle(ShopCardComponent, {
                         partyId: d.party.id,
@@ -96,9 +97,6 @@ export class ShopsTableComponent implements OnChanges {
                         id: d.shop.id,
                     });
                 },
-            },
-            {
-                field: 'shop.details.description',
             },
             {
                 field: 'shop.location.url',

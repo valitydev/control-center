@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { RoutingDelegate, RoutingRulesObject, TerminalRef } from '@vality/domain-proto/domain';
 import { ComponentChanges, TableModule, Column } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
-import { ReplaySubject, BehaviorSubject, defer, switchMap } from 'rxjs';
+import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { getUnionKey, getUnionValue } from '../../../../utils';
@@ -22,7 +22,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 export class TerminalDelegatesCardComponent implements OnChanges {
     @Input() ref: TerminalRef;
 
-    progress$ = new BehaviorSubject(0);
+    progress$ = this.domainStoreService.isLoading$;
     columns: Column<{
         delegate: RoutingDelegate;
         rule: RoutingRulesObject;
