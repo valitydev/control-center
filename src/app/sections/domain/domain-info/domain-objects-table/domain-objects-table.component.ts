@@ -25,6 +25,7 @@ import {
     getDomainObjectDetails,
     DomainThriftViewerComponent,
     DomainObjectCardComponent,
+    DomainObjectService,
 } from '../../../../shared/components/thrift-api-crud';
 import { MetadataService } from '../../services/metadata.service';
 
@@ -55,7 +56,7 @@ interface Params {
 })
 export class DomainObjectsTableComponent implements OnInit {
     typesControl = new FormControl<string[]>(
-        (this.queryParamsService.params.types as (keyof DomainObject)[]) || [],
+        (this.qp.params.types as (keyof DomainObject)[]) || [],
     );
     objects$: Observable<DomainObjectData[]> = combineLatest([
         this.domainStoreService.getDomain(),
@@ -83,14 +84,14 @@ export class DomainObjectsTableComponent implements OnInit {
                 field: 'id',
                 formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).id,
                 sortable: true,
-                click: (d) => {
-                    this.details(d);
-                },
             },
             {
                 field: 'name',
-                formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label,
+                formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label || d.type,
                 sortable: true,
+                click: (d) => {
+                    this.details(d);
+                },
             },
             {
                 field: 'type',
@@ -108,6 +109,18 @@ export class DomainObjectsTableComponent implements OnInit {
                     label: 'Details',
                     click: (d) => {
                         this.details(d);
+                    },
+                },
+                {
+                    label: 'Edit',
+                    click: (d) => {
+                        void this.domainObjectService.edit(d.ref);
+                    },
+                },
+                {
+                    label: 'Delete',
+                    click: (d) => {
+                        this.domainObjectService.delete(d.obj);
                     },
                 },
             ]),
@@ -132,13 +145,14 @@ export class DomainObjectsTableComponent implements OnInit {
     constructor(
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private queryParamsService: QueryParamsService<Params>,
+        private qp: QueryParamsService<Params>,
         private sidenavInfoService: SidenavInfoService,
+        private domainObjectService: DomainObjectService,
     ) {}
 
     ngOnInit() {
         this.typesControl.valueChanges.subscribe((types) => {
-            void this.queryParamsService.patch({ types });
+            void this.qp.patch({ types });
         });
     }
 
