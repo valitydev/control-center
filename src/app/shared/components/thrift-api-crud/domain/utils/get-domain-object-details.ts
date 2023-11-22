@@ -30,7 +30,6 @@ const defaultGetDomainObjectDetails: GetDomainObjectDetails<ValuesType<DomainRef
         ('name' in o.data ? o.data.name : undefined) ??
         ('id' in o.data ? String(o.data.id ?? '') : undefined) ??
         '',
-    source: o,
 });
 
 type DomainNoRefDataObjects = Omit<DomainObject, keyof DomainRefDataObjects>;
@@ -38,16 +37,12 @@ const GET_DOMAIN_OBJECTS_DETAILS: {
     [N in keyof DomainNoRefDataObjects]-?: GetDomainObjectDetails<DomainNoRefDataObjects[N]>;
 } = {
     /* eslint-disable @typescript-eslint/naming-convention */
-    currency: (o) => ({ id: o.ref.symbolic_code, label: o.data.name, source: o }),
-    payment_method: (o) => ({
-        id: inlineJson(o.ref.id, Infinity),
-        label: o.data.name,
-        source: o,
-    }),
-    globals: (o) => ({ id: inlineJson(o.ref), label: inlineJson(o.data), source: o }),
-    identity_provider: (o) => ({ id: o.ref.id, label: inlineJson(o.data), source: o }),
-    dummy_link: (o) => ({ id: o.ref.id, label: o.data.link.id, source: o }),
-    limit_config: (o) => ({ id: o.ref.id, label: o.data.description, source: o }),
+    currency: (o) => ({ id: o.ref.symbolic_code, label: o.data.name }),
+    payment_method: (o) => ({ id: inlineJson(o.ref.id, Infinity), label: o.data.name }),
+    globals: (o) => ({ id: inlineJson(o.ref), label: inlineJson(o.data) }),
+    identity_provider: (o) => ({ id: o.ref.id, label: inlineJson(o.data) }),
+    dummy_link: (o) => ({ id: o.ref.id, label: o.data.link.id }),
+    limit_config: (o) => ({ id: o.ref.id, label: o.data.description }),
     /* eslint-enable @typescript-eslint/naming-convention */
 };
 
@@ -56,5 +51,8 @@ export function getDomainObjectValueDetailsFn(key: keyof DomainObject): GetDomai
 }
 
 export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
+    if (!o) {
+        return { id: null, label: 'Unknown' };
+    }
     return getDomainObjectValueDetailsFn(getUnionKey(o))(getUnionValue(o));
 }

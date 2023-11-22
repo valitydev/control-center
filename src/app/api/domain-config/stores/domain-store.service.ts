@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Domain, DomainObject } from '@vality/domain-proto/domain';
+import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
@@ -53,12 +53,14 @@ export class DomainStoreService {
     }
 
     getObjects<T extends keyof DomainObject>(objectType: T): Observable<DomainObject[T][]> {
+        return this.getObjectsRefs(objectType).pipe(map((d) => d.map(([, o]) => o[objectType])));
+    }
+
+    getObjectsRefs<T extends keyof DomainObject>(
+        objectType: T,
+    ): Observable<[Reference, DomainObject][]> {
         return this.getDomain().pipe(
-            map((d) =>
-                Array.from(d.values())
-                    .filter((o) => getUnionKey(o) === objectType)
-                    .map((o) => o[objectType]),
-            ),
+            map((d) => Array.from(d).filter(([, o]) => getUnionKey(o) === objectType)),
         );
     }
 
