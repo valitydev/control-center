@@ -67,12 +67,12 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                                       getUnionValue(
                                           d.delegate.allowed.condition?.party?.definition,
                                       ),
-                                  ).details.name
+                                  )?.details?.name
                                 : p.wallets.get(
                                       getUnionValue(
                                           d.delegate.allowed.condition?.party?.definition,
                                       ),
-                                  ).name,
+                                  )?.name,
                         ),
                     ),
             description: (d) => getUnionValue(d.delegate.allowed.condition?.party?.definition),
