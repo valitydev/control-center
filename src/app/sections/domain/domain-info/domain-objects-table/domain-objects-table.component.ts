@@ -12,6 +12,7 @@ import {
     SelectFieldModule,
     TableModule,
     ActionsModule,
+    inlineJson,
 } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
@@ -20,6 +21,7 @@ import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
+import { getUnionValue } from '../../../../../utils';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
     getDomainObjectDetails,
@@ -95,11 +97,11 @@ export class DomainObjectsTableComponent implements OnInit {
                 formatter: (d) => startCase(d.type),
                 hide: types.length <= 1,
             },
-            // {
-            //     field: 'object',
-            //     formatter: (d) => inlineJson(getUnionValue(d.obj)?.data, Infinity),
-            //     sortable: true,
-            // },
+            {
+                field: 'data',
+                formatter: (d) => inlineJson(getUnionValue(d.obj)?.data, Infinity),
+                sortable: true,
+            },
             createOperationColumn([
                 {
                     label: 'Details',
