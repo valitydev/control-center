@@ -5,5 +5,6 @@ import { CardActionsComponent } from './components/card-actions/card-actions.com
 
 @NgModule({
     imports: [CardComponent, CardActionsComponent],
+    exports: [CardComponent, CardActionsComponent],
 })
 export class SidenavInfoModule {}

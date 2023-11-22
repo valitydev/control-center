@@ -11,12 +11,10 @@
                     [defaultValue]="object$ | async"
                     [extensions]="extensions$ | async"
                     [formControl]="control"
-                    [kind]="kind"
                     [metadata]="metadata$ | async"
                     [type]="type$ | async"
                     class="editor"
                     namespace="domain"
-                    (changeKind)="kind = $event"
                 ></cc-thrift-editor>
             </mat-card-content>
         </mat-card>

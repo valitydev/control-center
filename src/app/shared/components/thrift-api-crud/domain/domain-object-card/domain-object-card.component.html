@@ -1,7 +1,7 @@
-<cc-card [title]="title">
+<cc-card [title]="title$ | async">
     <cc-domain-thrift-viewer
-        [progress]="progress"
-        [value]="domainObject"
+        [progress]="progress$ | async"
+        [value]="domainObject$ | async"
         type="DomainObject"
     ></cc-domain-thrift-viewer>
     <cc-card-actions>

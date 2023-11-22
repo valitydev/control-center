@@ -35,10 +35,6 @@ interface DomainObjectData {
     obj: DomainObject;
 }
 
-interface Params {
-    types?: string[];
-}
-
 @UntilDestroy()
 @Component({
     standalone: true,
@@ -145,7 +141,7 @@ export class DomainObjectsTableComponent implements OnInit {
     constructor(
         private domainStoreService: DomainStoreService,
         private metadataService: MetadataService,
-        private qp: QueryParamsService<Params>,
+        private qp: QueryParamsService<{ types?: string[] }>,
         private sidenavInfoService: SidenavInfoService,
         private domainObjectService: DomainObjectService,
     ) {}
@@ -161,9 +157,6 @@ export class DomainObjectsTableComponent implements OnInit {
     }
 
     details(d: DomainObjectData) {
-        this.sidenavInfoService.openComponent(DomainObjectCardComponent, {
-            domainObject: d.obj,
-            ref: d.ref,
-        });
+        this.sidenavInfoService.openComponent(DomainObjectCardComponent, { ref: d.ref });
     }
 }

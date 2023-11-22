@@ -5,23 +5,19 @@
                 *ngIf="!review"
                 [extensions]="extensions$ | async"
                 [formControl]="control"
-                [kind]="kind"
                 [metadata]="metadata$ | async"
                 class="editor"
                 namespace="domain"
                 type="DomainObject"
-                (changeKind)="kind = $event"
             ></cc-thrift-editor>
             <cc-thrift-viewer
                 *ngIf="review"
                 [extensions]="viewerExtensions$ | async"
-                [kind]="reviewKind"
                 [metadata]="metadata$ | async"
                 [value]="control.value"
                 class="editor"
                 namespace="domain"
                 type="DomainObject"
-                (changeKind)="reviewKind = $event"
             ></cc-thrift-viewer>
         </mat-card-content>
     </mat-card>

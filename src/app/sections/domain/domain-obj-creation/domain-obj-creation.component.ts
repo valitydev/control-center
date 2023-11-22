@@ -2,23 +2,18 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DomainObject } from '@vality/domain-proto/domain';
+import { NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 
-import { progressTo, getUnionKey, enumHasValue } from '../../../../utils';
-import { EditorKind } from '../../../shared/components/thrift-editor';
-import { ViewerKind } from '../../../shared/components/thrift-viewer';
+import { progressTo, getUnionKey } from '../../../../utils';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { NotificationService } from '../../../shared/services/notification';
-import { NotificationErrorService } from '../../../shared/services/notification-error';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { MetadataService } from '../services/metadata.service';
-
-const EDITOR_KIND = 'domain-obj-creation-editor-kind';
-const REVIEW_KIND = 'domain-obj-creation-review-kind';
 
 @UntilDestroy()
 @Component({
@@ -34,36 +29,12 @@ export class DomainObjCreationComponent {
     viewerExtensions$ = this.domainMetadataViewExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
-    get kind() {
-        const kind = localStorage.getItem(EDITOR_KIND);
-        if (!enumHasValue(EditorKind, kind)) {
-            this.kind = EditorKind.Form;
-            return EditorKind.Form;
-        }
-        return kind;
-    }
-    set kind(kind: EditorKind) {
-        localStorage.setItem(EDITOR_KIND, kind);
-    }
-
-    get reviewKind() {
-        const kind = localStorage.getItem(REVIEW_KIND);
-        if (!enumHasValue(ViewerKind, kind)) {
-            this.reviewKind = ViewerKind.Editor;
-            return ViewerKind.Editor;
-        }
-        return kind;
-    }
-    set reviewKind(kind: ViewerKind) {
-        localStorage.setItem(REVIEW_KIND, kind);
-    }
-
     constructor(
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
         private domainStoreService: DomainStoreService,
         private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService,
     ) {}
@@ -87,7 +58,7 @@ export class DomainObjCreationComponent {
                     this.notificationService.success('Successfully created');
                     void this.domainNavigateService.toType(String(field.type));
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }

@@ -25,7 +25,8 @@ import { ClaimsModule } from './sections/claims/claims.module';
 import { PayoutsModule } from './sections/payouts';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
-import { SidenavInfoComponent } from './shared/components/sidenav-info';
+import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
+import { DomainObjectCardComponent } from './shared/components/thrift-api-crud';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
@@ -77,6 +78,12 @@ export let AppInjector: Injector;
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
         { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },
+        {
+            provide: SIDENAV_INFO_COMPONENTS,
+            useValue: {
+                domainObjects: DomainObjectCardComponent,
+            },
+        },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
     ],
     bootstrap: [AppComponent],
