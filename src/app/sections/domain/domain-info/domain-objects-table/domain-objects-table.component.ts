@@ -75,55 +75,51 @@ export class DomainObjectsTableComponent implements OnInit {
         map(([objects, types]) => objects.filter((o) => types.includes(o.type))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    columns$: Observable<Column<DomainObjectData>[]> = this.typesControl.valueChanges.pipe(
-        startWith(this.typesControl.value),
-        map((types) => [
-            {
-                field: 'id',
-                formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).id,
-                sortable: true,
+    columns: Column<DomainObjectData>[] = [
+        {
+            field: 'id',
+            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).id,
+            sortable: true,
+        },
+        {
+            field: 'name',
+            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label || d.type,
+            sortable: true,
+            click: (d) => {
+                this.details(d);
             },
+        },
+        {
+            field: 'type',
+            sortable: true,
+            formatter: (d) => startCase(d.type),
+        },
+        {
+            field: 'data',
+            formatter: (d) => inlineJson(getUnionValue(d.obj)?.data, Infinity),
+            sortable: true,
+        },
+        createOperationColumn([
             {
-                field: 'name',
-                formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label || d.type,
-                sortable: true,
+                label: 'Details',
                 click: (d) => {
                     this.details(d);
                 },
             },
             {
-                field: 'type',
-                sortable: true,
-                formatter: (d) => startCase(d.type),
-                hide: types.length <= 1,
+                label: 'Edit',
+                click: (d) => {
+                    void this.domainObjectService.edit(d.ref);
+                },
             },
             {
-                field: 'data',
-                formatter: (d) => inlineJson(getUnionValue(d.obj)?.data, Infinity),
-                sortable: true,
+                label: 'Delete',
+                click: (d) => {
+                    this.domainObjectService.delete(d.obj);
+                },
             },
-            createOperationColumn([
-                {
-                    label: 'Details',
-                    click: (d) => {
-                        this.details(d);
-                    },
-                },
-                {
-                    label: 'Edit',
-                    click: (d) => {
-                        void this.domainObjectService.edit(d.ref);
-                    },
-                },
-                {
-                    label: 'Delete',
-                    click: (d) => {
-                        this.domainObjectService.delete(d.obj);
-                    },
-                },
-            ]),
         ]),
-    );
+    ];
     fields$ = this.metadataService.getDomainFields().pipe(
         map((fields) => sortBy(fields, 'type')),
         shareReplay({ refCount: true, bufferSize: 1 }),
