@@ -4,8 +4,8 @@
         [(sort)]="sort"
         [columns]="columns"
         [data]="data$ | async"
+        [filterByColumns]="[]"
         [progress]="progress$ | async"
-        size="50"
         sortOnFront
         standaloneFilter
         (update)="update()"
