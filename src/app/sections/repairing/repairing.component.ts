@@ -58,7 +58,7 @@ export class RepairingComponent implements OnInit {
     selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
     columns: Column<Machine>[] = [
-        { field: 'id', pinned: 'left' },
+        { field: 'id' },
         { header: 'Namespace', field: 'ns' },
         { field: 'created_at', type: 'datetime' },
         {

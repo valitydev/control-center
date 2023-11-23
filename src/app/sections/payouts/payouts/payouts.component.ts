@@ -59,7 +59,7 @@ export class PayoutsComponent implements OnInit {
     payouts$ = this.fetchPayoutsService.result$;
     hasMore$ = this.fetchPayoutsService.hasMore$;
     columns: Column<StatPayout>[] = [
-        { field: 'id', pinned: 'left', link: (d) => `/payouts/${d.id}` },
+        { field: 'id', link: (d) => `/payouts/${d.id}` },
         createPartyColumn('party_id'),
         createShopColumn('shop_id', (d) => d.party_id),
         { field: 'created_at', type: 'datetime' },

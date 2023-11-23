@@ -11,8 +11,10 @@
     <div class="sidenav-info-content">
         <ng-content></ng-content>
     </div>
-    <mat-divider></mat-divider>
-    <div class="sidenav-info-actions">
-        <ng-content select="cc-card-actions"></ng-content>
-    </div>
+    <ng-container *ngIf="cardActionsComponent">
+        <mat-divider></mat-divider>
+        <div class="sidenav-info-actions">
+            <ng-content select="cc-card-actions"></ng-content>
+        </div>
+    </ng-container>
 </div>

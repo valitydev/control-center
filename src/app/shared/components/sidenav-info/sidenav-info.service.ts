@@ -1,7 +1,8 @@
-import { Injectable, TemplateRef, Type, Inject, Optional } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Injectable, Type, Inject, Optional } from '@angular/core';
+import { Router } from '@angular/router';
 import { QueryParamsService, QueryParamsNamespace } from '@vality/ng-core';
-import { filter, pairwise, startWith, first, map } from 'rxjs/operators';
+import isEqual from 'lodash-es/isEqual';
+import { filter, pairwise, startWith, map } from 'rxjs/operators';
 
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
 
@@ -9,23 +10,14 @@ import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
     providedIn: 'root',
 })
 export class SidenavInfoService {
-    /**
-     * @deprecated
-     */
-    title: string = '';
-    /**
-     * @deprecated
-     */
-    template?: TemplateRef<unknown>;
     component?: Type<unknown>;
     inputs?: Record<PropertyKey, unknown>;
 
     get opened() {
-        return !!this.template || !!this.component;
+        return !!this.component;
     }
 
     private qp!: QueryParamsNamespace<{ id?: string; inputs?: Record<PropertyKey, unknown> }>;
-    private id: unknown = null;
 
     constructor(
         router: Router,
@@ -39,7 +31,6 @@ export class SidenavInfoService {
         }
         router.events
             .pipe(
-                filter((e) => e instanceof NavigationEnd),
                 startWith(null),
                 filter(() => router.navigated),
                 map(() => router.url?.split('?', 1)[0].split('#', 1)[0]),
@@ -50,32 +41,29 @@ export class SidenavInfoService {
                 this.close();
             });
         this.qp = this.qps.createNamespace('sidenav');
-        this.qp.params$.pipe(first()).subscribe(() => {
-            const component = this.getComponentById(this.qp.params.id);
-            if (component) {
-                this.openComponent(component, this.qp.params.inputs);
-            }
-        });
+        this.qp.params$
+            .pipe(
+                filter((params) => !!params.id),
+                map((params) => this.getComponentById(params.id)),
+                filter((component) => !this.isEqual(component, this.qp.params)),
+            )
+            .subscribe((component) => {
+                this.open(component, this.qp.params.inputs);
+            });
     }
 
-    toggle(template: TemplateRef<unknown>, title: string, id: unknown = null) {
-        if (this.template === template && id === this.id) {
+    toggle<C extends Type<unknown>>(
+        component: C,
+        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
+    ) {
+        if (this.isEqual(component, inputs)) {
             this.close();
         } else {
-            this.open(template, title, id);
+            this.open(component, inputs);
         }
     }
 
-    /**
-     * @deprecated
-     */
-    open(template: TemplateRef<unknown>, title: string, id: unknown = null) {
-        this.template = template;
-        this.title = title;
-        this.id = id;
-    }
-
-    openComponent<C extends Type<unknown>>(
+    open<C extends Type<unknown>>(
         component: C,
         inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
     ) {
@@ -88,16 +76,15 @@ export class SidenavInfoService {
     }
 
     close() {
-        this.template = null;
         this.component = null;
-        this.title = '';
-        this.id = null;
         this.inputs = null;
         void this.qp.set({});
     }
 
     private getComponentId(component: Type<unknown>) {
-        return Object.entries(this.sidenavInfoComponents).find(([, comp]) => comp === component)[0];
+        return Object.entries(this.sidenavInfoComponents).find(
+            ([, comp]) => comp === component,
+        )?.[0];
     }
 
     private getComponentById(id: string) {
@@ -105,5 +92,12 @@ export class SidenavInfoService {
             return null;
         }
         return Object.entries(this.sidenavInfoComponents).find(([key]) => id === key)[1];
+    }
+
+    private isEqual<C extends Type<unknown>>(
+        component: C,
+        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
+    ) {
+        return component === this.component && isEqual(this.inputs, inputs);
     }
 }

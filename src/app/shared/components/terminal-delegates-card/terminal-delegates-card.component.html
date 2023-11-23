@@ -1,0 +1,8 @@
+<cc-card title="Terminal #{{ ref.id }} delegates">
+    <v-table
+        [columns]="columns"
+        [data]="rules$ | async"
+        [progress]="progress$ | async"
+        noActions
+    ></v-table>
+</cc-card>

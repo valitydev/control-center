@@ -12,6 +12,8 @@ import { DomainStoreService } from '@cc/app/api/domain-config';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 
+import { getUnionValue } from '../../../../../../../../utils';
+
 import { getObjectLabel } from './utils/get-object-label';
 
 @UntilDestroy()
@@ -53,16 +55,19 @@ export class DomainMetadataViewExtensionsService {
             return {
                 determinant: (data) => of(isTypeWithAliases(data, refType, 'domain')),
                 extension: (_, value) =>
-                    this.domainStoreService.getObjects(objectKey).pipe(
-                        map((objs) => objs.find((o) => isEqual(o.ref, value))),
-                        map((obj) => ({
-                            value: getObjectLabel(obj, objectKey),
-                            tooltip: obj.ref,
+                    this.domainStoreService.getObjectsRefs(objectKey).pipe(
+                        map((objs) => objs.find(([, o]) => isEqual(o[objectKey].ref, value))),
+                        map(([ref, obj]) => ({
+                            value: getObjectLabel(getUnionValue(obj), objectKey),
+                            tooltip: getUnionValue(ref),
                             link: [
                                 ['/domain'],
                                 {
                                     queryParams: {
-                                        ref: JSON.stringify({ [objectKey]: obj.ref }),
+                                        sidenav: JSON.stringify({
+                                            id: 'domainObjects',
+                                            inputs: { ref },
+                                        }),
                                     },
                                 },
                             ],

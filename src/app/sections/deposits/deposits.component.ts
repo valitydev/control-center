@@ -62,7 +62,6 @@ export class DepositsComponent implements OnInit {
         {
             field: 'id',
             link: (d) => `/deposits/${d.id}`,
-            pinned: 'left',
         },
         {
             field: 'status',

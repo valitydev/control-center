@@ -19,10 +19,9 @@ export class SearchPartiesComponent {
     inProgress$ = this.fetchPartiesService.inProgress$;
     parties$ = this.fetchPartiesService.parties$;
     columns: Column<Party>[] = [
+        { field: 'id' },
         {
             field: 'email',
-            description: 'id',
-            pinned: 'left',
             link: (party) => `/party/${party.id}`,
         },
         {

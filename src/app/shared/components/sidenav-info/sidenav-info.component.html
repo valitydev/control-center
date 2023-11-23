@@ -1,17 +1,3 @@
-<div *ngIf="sidenavInfoService.template" class="sidenav-info">
-    <div class="sidenav-info-title-bar">
-        <div>
-            <h2 class="sidenav-info-title">{{ sidenavInfoService.title }}</h2>
-        </div>
-        <mat-icon class="sidenav-info-close" inline (click)="sidenavInfoService.close()"
-            >clear</mat-icon
-        >
-    </div>
-    <mat-divider></mat-divider>
-    <div class="sidenav-info-content">
-        <ng-container *ngTemplateOutlet="sidenavInfoService.template"></ng-container>
-    </div>
-</div>
 <ng-container *ngIf="sidenavInfoService.component">
     <ng-container
         *ngComponentOutlet="sidenavInfoService.component; inputs: sidenavInfoService.inputs"

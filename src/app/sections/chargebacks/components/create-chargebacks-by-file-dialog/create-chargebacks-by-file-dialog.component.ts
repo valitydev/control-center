@@ -48,9 +48,9 @@ export class CreateChargebacksByFileDialogComponent
     progress$ = new BehaviorSubject(0);
     upload$ = new BehaviorSubject<File | null>(null);
     columns: Column<ChargebackParams>[] = [
-        { field: 'invoiceId', pinned: 'left' },
-        { field: 'paymentId', pinned: 'left' },
-        // { field: 'params.id', pinned: 'left' },
+        { field: 'invoiceId' },
+        { field: 'paymentId' },
+        // { field: 'params.id' },
         {
             field: 'params.reason',
             formatter: ({ params }) => startCase(getUnionKey(params.reason.category)),

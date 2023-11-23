@@ -56,7 +56,7 @@ export class WithdrawalsComponent implements OnInit {
     inProgress$ = this.fetchWithdrawalsService.isLoading$;
     hasMore$ = this.fetchWithdrawalsService.hasMore$;
     columns: Column<StatWithdrawal>[] = [
-        { field: 'id', pinned: 'left' },
+        { field: 'id' },
         { field: 'created_at', type: 'datetime' },
         'identity_id',
         'source_id',
