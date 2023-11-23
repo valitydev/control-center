@@ -13,12 +13,14 @@ export class RoutingRulesetHeaderComponent {
 
     @Output() add = new EventEmitter();
 
-    get queryRef() {
-        return JSON.stringify({ routing_rules: { id: this.refID } });
-    }
-
-    get queryTypes() {
-        return JSON.stringify(['RoutingRulesObject']);
+    get queryParams() {
+        return {
+            types: JSON.stringify(['RoutingRulesObject']),
+            sidenav: JSON.stringify({
+                id: 'domainObject',
+                inputs: { ref: { routing_rules: { id: this.refID } } },
+            }),
+        };
     }
 
     constructor(private router: Router) {}
@@ -26,4 +28,6 @@ export class RoutingRulesetHeaderComponent {
     navigateBack() {
         void this.router.navigate([this.backTo]);
     }
+
+    protected readonly JSON = JSON;
 }

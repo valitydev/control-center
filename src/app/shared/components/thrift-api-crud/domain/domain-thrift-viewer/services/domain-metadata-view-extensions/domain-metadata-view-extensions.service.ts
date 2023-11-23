@@ -65,7 +65,7 @@ export class DomainMetadataViewExtensionsService {
                                 {
                                     queryParams: {
                                         sidenav: JSON.stringify({
-                                            id: 'domainObjects',
+                                            id: 'domainObject',
                                             inputs: { ref },
                                         }),
                                     },
