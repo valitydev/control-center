@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { StatRefund, RefundSearchQuery } from '@vality/magista-proto/magista';
+import { cleanPrimitiveProps } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';
 
-import { cleanPrimitiveProps } from '../../../../../../../ng-libs/projects/ng-core/dist';
 import { MerchantStatisticsService } from '../../../../api/magista';
 import { FetchResult, PartialFetcher } from '../../../../shared/services';
 
