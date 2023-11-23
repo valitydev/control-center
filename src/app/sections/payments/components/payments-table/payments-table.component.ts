@@ -25,7 +25,7 @@ export class PaymentsTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column<StatPayment>[] = [
-        { field: 'id', hide: true },
+        { field: 'id', click: (d) => this.toDetails(d) },
         { field: 'invoice_id' },
         {
             field: 'amount',
@@ -85,15 +85,7 @@ export class PaymentsTableComponent {
         createOperationColumn<StatPayment>([
             {
                 label: 'Details',
-                click: (data) =>
-                    void this.router.navigate([
-                        'party',
-                        data.owner_id,
-                        'invoice',
-                        data.invoice_id,
-                        'payment',
-                        data.id,
-                    ]),
+                click: (data) => this.toDetails(data),
             },
         ]),
     ];
@@ -103,4 +95,15 @@ export class PaymentsTableComponent {
         private partiesStoreService: PartiesStoreService,
         private router: Router,
     ) {}
+
+    private toDetails(data: StatPayment) {
+        return void this.router.navigate([
+            'party',
+            data.owner_id,
+            'invoice',
+            data.invoice_id,
+            'payment',
+            data.id,
+        ]);
+    }
 }
