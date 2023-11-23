@@ -1,6 +1,6 @@
 <cc-page-layout
     [progress]="isLoading$ | async"
-    description="#{{ (payment$ | async).id }}"
+    description="{{ (payment$ | async)?.id }}"
     title="Payment"
 >
     <ng-container *ngIf="payment$ | async as payment">
@@ -20,15 +20,11 @@
         </mat-card>
 
         <h2 class="mat-h1 mat-no-margin">Refunds</h2>
-        <mat-card>
-            <mat-card-content>
-                <cc-payment-refunds
-                    [invoiceID]="payment.invoice_id"
-                    [partyID]="payment.owner_id"
-                    [paymentID]="payment.id"
-                ></cc-payment-refunds>
-            </mat-card-content>
-        </mat-card>
+        <cc-refunds-table
+            [invoiceID]="payment.invoice_id"
+            [partyID]="payment.owner_id"
+            [paymentID]="payment.id"
+        ></cc-refunds-table>
 
         <div style="display: flex; place-content: stretch space-between">
             <h2 class="mat-h1 mat-no-margin">Chargebacks</h2>
@@ -38,12 +34,10 @@
                 </button>
             </v-actions>
         </div>
-        <mat-card>
-            <cc-chargebacks
-                [chargebacks]="chargebacks$ | async"
-                [invoiceId]="payment.invoice_id"
-                [paymentId]="payment.id"
-            ></cc-chargebacks>
-        </mat-card>
+        <cc-chargebacks
+            [chargebacks]="chargebacks$ | async"
+            [invoiceId]="payment.invoice_id"
+            [paymentId]="payment.id"
+        ></cc-chargebacks>
     </ng-container>
 </cc-page-layout>

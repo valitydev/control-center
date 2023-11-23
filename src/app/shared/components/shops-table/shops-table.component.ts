@@ -65,6 +65,7 @@ export class ShopsTableComponent implements OnChanges {
         ),
         defer(() => this.updateColumns$).pipe(startWith(null)),
     ]).pipe(
+        startWith([[]]),
         map(([delegatesWithPaymentInstitution]): Column<ShopParty>[] => [
             {
                 field: 'shop.id',

@@ -85,7 +85,7 @@ export let AppInjector: Injector;
         {
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {
-                domainObjects: DomainObjectCardComponent,
+                domainObject: DomainObjectCardComponent,
                 shop: ShopCardComponent,
                 shopContract: ShopContractCardComponent,
                 terminalDelegates: TerminalDelegatesCardComponent,

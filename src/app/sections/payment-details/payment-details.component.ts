@@ -4,7 +4,7 @@ import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { Subject, merge, defer, from } from 'rxjs';
-import { pluck, shareReplay, switchMap, map } from 'rxjs/operators';
+import { shareReplay, switchMap, map } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 
@@ -18,7 +18,6 @@ import { PaymentDetailsService } from './payment-details.service';
     providers: [PaymentDetailsService],
 })
 export class PaymentDetailsComponent {
-    partyID$ = this.route.params.pipe(pluck('partyID'));
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     shop$ = this.paymentDetailsService.shop$;

@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTableModule } from '@angular/material/table';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
-import { DialogService } from '@vality/ng-core';
+import { InvoicePaymentChargeback } from '@vality/domain-proto/payment_processing';
+import { DialogService, Column, TableModule, createOperationColumn } from '@vality/ng-core';
+import startCase from 'lodash-es/startCase';
 
-import { AmountCurrencyPipe, ThriftPipesModule } from '@cc/app/shared';
+import { createCurrencyColumn } from '@cc/app/shared';
 import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog/details-dialog.component';
-import { TableModule, Columns } from '@cc/components/table';
 
+import { getUnionKey } from '../../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
 @UntilDestroy()
@@ -17,21 +16,52 @@ import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-st
     standalone: true,
     selector: 'cc-chargebacks',
     templateUrl: './chargebacks.component.html',
-    imports: [
-        MatTableModule,
-        TableModule,
-        ThriftPipesModule,
-        CommonModule,
-        AmountCurrencyPipe,
-        MatMenuModule,
-    ],
+    imports: [CommonModule, TableModule],
 })
 export class ChargebacksComponent {
     @Input() chargebacks: InvoicePaymentChargeback[];
     @Input() paymentId: string;
     @Input() invoiceId: string;
 
-    cols = new Columns('id', 'status', 'created_at', 'body', 'levy', 'stage', 'actions');
+    columns: Column<InvoicePaymentChargeback>[] = [
+        'chargeback.id',
+        {
+            field: 'status',
+            type: 'tag',
+            formatter: (d) => getUnionKey(d.chargeback.status),
+            typeParameters: {
+                label: (d) => startCase(getUnionKey(d.chargeback.status)),
+                tags: {
+                    pending: { color: 'pending' },
+                    accepted: { color: 'success' },
+                    rejected: { color: 'warn' },
+                    cancelled: { color: 'neutral' },
+                },
+            },
+        },
+        { field: 'chargeback.created_at', type: 'datetime' },
+        createCurrencyColumn(
+            'body',
+            (d) => d.chargeback.body.amount,
+            (d) => d.chargeback.body.currency.symbolic_code,
+        ),
+        createCurrencyColumn(
+            'levy',
+            (d) => d.chargeback.levy.amount,
+            (d) => d.chargeback.levy.currency.symbolic_code,
+        ),
+        { field: 'stage', formatter: (d) => getUnionKey(d.chargeback.stage) },
+        createOperationColumn([
+            {
+                label: 'Details',
+                click: (d) => this.showDetails(d),
+            },
+            {
+                label: 'Change status',
+                click: (d) => this.changeStatus(d.chargeback.id),
+            },
+        ]),
+    ];
 
     constructor(private dialogService: DialogService) {}
 

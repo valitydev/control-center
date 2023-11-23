@@ -14,7 +14,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { TableModule } from '@vality/ng-core';
 
@@ -36,7 +35,6 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         MatFormFieldModule,
         MatInputModule,
         RouterModule,
-        MatTableModule,
         MatIconModule,
         MatMenuModule,
         MatPaginatorModule,
