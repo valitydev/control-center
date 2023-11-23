@@ -28,6 +28,4 @@ export class RoutingRulesetHeaderComponent {
     navigateBack() {
         void this.router.navigate([this.backTo]);
     }
-
-    protected readonly JSON = JSON;
 }
