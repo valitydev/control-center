@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
+import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { getImportValue } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
+import round from 'lodash-es/round';
 import { of, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -24,12 +26,24 @@ export class DomainMetadataViewExtensionsService {
     extensions$: Observable<MetadataViewExtension[]> = getImportValue<ThriftAstMetadata[]>(
         import('@vality/domain-proto/metadata.json'),
     ).pipe(
-        map((metadata) => [
+        map((metadata): MetadataViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
-                extension: (_, value) =>
+                extension: (_, value: Timestamp) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
+            },
+            {
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'Rational', 'base') &&
+                            isTypeWithAliases(data.parent, 'CashVolumeShare', 'domain'),
+                    ),
+                extension: (_, value: Rational) =>
+                    of({
+                        value: `${round((value.p / value.q) * 100, 4)}%`,
+                        tooltip: `${value.p}/${value.q}`,
+                    }),
             },
         ]),
         untilDestroyed(this),
