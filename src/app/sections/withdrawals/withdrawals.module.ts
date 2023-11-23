@@ -10,7 +10,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
 import {
     DialogModule,
     ListFieldModule,
@@ -38,7 +37,6 @@ import { WithdrawalsComponent } from './withdrawals.component';
         MatButtonModule,
         MerchantFieldModule,
         ReactiveFormsModule,
-        MatTableModule,
         ThriftPipesModule,
         MatCheckboxModule,
         TableModule,

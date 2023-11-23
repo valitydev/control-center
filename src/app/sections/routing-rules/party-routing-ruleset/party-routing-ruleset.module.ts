@@ -14,7 +14,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 
 import { ChangeTargetDialogModule } from '../change-target-dialog';
@@ -37,7 +36,6 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
         MatFormFieldModule,
         MatInputModule,
         RouterModule,
-        MatTableModule,
         MatIconModule,
         MatMenuModule,
         MatPaginatorModule,

@@ -1,0 +1,6 @@
+<v-table
+    [columns]="columns"
+    [data]="refunds$ | async"
+    [progress]="isLoading$ | async"
+    (more)="fetchMore()"
+></v-table>

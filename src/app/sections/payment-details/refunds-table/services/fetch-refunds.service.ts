@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { StatRefund, RefundSearchQuery } from '@vality/magista-proto/magista';
-import { cleanPrimitiveProps } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';
 
-import { MerchantStatisticsService } from '@cc/app/api/magista';
-import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
+import { cleanPrimitiveProps } from '../../../../../../../ng-libs/projects/ng-core/dist';
+import { MerchantStatisticsService } from '../../../../api/magista';
+import { FetchResult, PartialFetcher } from '../../../../shared/services';
 
 const SEARCH_LIMIT = 5;
 
@@ -31,7 +31,7 @@ export class FetchRefundsService extends PartialFetcher<
                         {
                             continuation_token: continuationToken,
                             limit: SEARCH_LIMIT,
-                            from_time: new Date('01.01.2020').toISOString(), // TODO
+                            from_time: new Date(0).toISOString(), // TODO
                             to_time: new Date().toISOString(),
                         },
                         params.common_search_query_params,

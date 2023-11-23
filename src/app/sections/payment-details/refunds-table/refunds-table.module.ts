@@ -1,18 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
 
-import { StatusModule } from '@cc/app/shared/components/status';
-import { CommonPipesModule, ThriftPipesModule, AmountCurrencyPipe } from '@cc/app/shared/pipes';
-import { TableModule } from '@cc/components/table';
+import { TableModule } from '../../../../../../ng-libs/projects/ng-core/dist';
+import { StatusModule } from '../../../shared/components/status';
+import { CommonPipesModule, ThriftPipesModule, AmountCurrencyPipe } from '../../../shared/pipes';
 
 import { RefundsTableComponent } from './refunds-table.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        MatTableModule,
         MatButtonModule,
         StatusModule,
         ThriftPipesModule,

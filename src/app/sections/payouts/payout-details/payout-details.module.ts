@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, TableModule } from '@vality/ng-core';
 
 import { ShopDetailsModule, PageLayoutModule } from '@cc/app/shared/components';
@@ -29,7 +28,6 @@ import { PayoutDetailsComponent } from './payout-details.component';
         ThriftPipesModule,
         ShopDetailsModule,
         PayoutToolDetailsModule,
-        MatTableModule,
         MatPaginatorModule,
         MatButtonModule,
         ActionsModule,

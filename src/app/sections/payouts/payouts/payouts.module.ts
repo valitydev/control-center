@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
 import {
     DialogModule,
     ActionsModule,
@@ -51,7 +50,6 @@ import { PayoutsComponent } from './payouts.component';
         MatSelectModule,
         MatDatepickerModule,
         MatIconModule,
-        MatTableModule,
         MatMenuModule,
         CommonPipesModule,
         ThriftPipesModule,
