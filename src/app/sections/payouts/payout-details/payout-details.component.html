@@ -1,120 +1,70 @@
-<div *ngIf="payout$ | async as payout" style="display: flex; flex-direction: column; gap: 24px">
-    <div style="display: flex; justify-content: space-between">
-        <cc-headline>Payout details</cc-headline>
-        <div style="display: flex; gap: 16px">
-            <button
-                [disabled]="canBeCancelled(payout.status | ccUnionKey)"
-                color="warn"
-                mat-button
-                (click)="cancel(payout.id)"
-            >
-                Cancel
-            </button>
-            <button
-                [disabled]="canBeConfirmed(payout.status | ccUnionKey)"
-                color="primary"
-                mat-button
-                (click)="confirm(payout.id)"
-            >
-                Confirm
-            </button>
-        </div>
-    </div>
-    <mat-card>
-        <mat-card-content style="display: grid; gap: 16px">
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
-                <cc-details-item title="Payout ID">{{ payout.payout_id }}</cc-details-item>
-                <cc-details-item title="Amount">
-                    {{ payout.amount | ccFormatAmount }}
-                    {{ payout.currency.symbolic_code | ccCurrency }}
-                </cc-details-item>
-                <cc-details-item title="Fee">
-                    {{ payout.fee | ccFormatAmount }}
-                    {{ payout.currency.symbolic_code | ccCurrency }}
-                </cc-details-item>
-                <cc-details-item title="Status">{{ payout.status | ccUnionKey }}</cc-details-item>
-                <cc-details-item *ngIf="payout.status.cancelled" title="Status Details">{{
-                    payout.status.cancelled.details
-                }}</cc-details-item>
-                <cc-details-item title="Created At">{{
-                    payout.created_at | date: 'dd.MM.yyyy HH:mm:ss'
-                }}</cc-details-item>
-            </div>
-
-            <ng-container *ngIf="party$ | async as party">
-                <div><mat-divider></mat-divider></div>
-                <h2 class="mat-headline-4">Party</h2>
+<cc-page-layout [description]="(payout$ | async)?.id" [progress]="progress$ | async" title="Payout">
+    <cc-page-layout-actions *ngIf="payout$ | async as payout">
+        <button
+            [disabled]="canBeCancelled(payout.status | ccUnionKey)"
+            color="warn"
+            mat-raised-button
+            (click)="cancel(payout.id)"
+        >
+            Cancel
+        </button>
+        <button
+            [disabled]="canBeConfirmed(payout.status | ccUnionKey)"
+            color="primary"
+            mat-raised-button
+            (click)="confirm(payout.id)"
+        >
+            Confirm
+        </button>
+    </cc-page-layout-actions>
+    <ng-container *ngIf="payout$ | async as payout">
+        <mat-card>
+            <mat-card-content style="display: grid; gap: 16px">
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
-                    <cc-details-item title="ID">{{ payout.party_id }}</cc-details-item>
-                    <cc-details-item title="Email">
-                        {{ party.contact_info?.email }}
+                    <cc-details-item title="Payout ID">{{ payout.payout_id }}</cc-details-item>
+                    <cc-details-item title="Amount">
+                        {{ payout.amount | ccFormatAmount }}
+                        {{ payout.currency.symbolic_code | ccCurrency }}
                     </cc-details-item>
+                    <cc-details-item title="Fee">
+                        {{ payout.fee | ccFormatAmount }}
+                        {{ payout.currency.symbolic_code | ccCurrency }}
+                    </cc-details-item>
+                    <cc-details-item title="Status">{{
+                        payout.status | ccUnionKey
+                    }}</cc-details-item>
+                    <cc-details-item *ngIf="payout.status.cancelled" title="Status Details">{{
+                        payout.status.cancelled.details
+                    }}</cc-details-item>
+                    <cc-details-item title="Created At">{{
+                        payout.created_at | date: 'dd.MM.yyyy HH:mm:ss'
+                    }}</cc-details-item>
                 </div>
-            </ng-container>
 
-            <div><mat-divider></mat-divider></div>
-            <h2 class="mat-headline-4">Shop</h2>
-            <cc-shop-details [shop]="shop$ | async"></cc-shop-details>
+                <ng-container *ngIf="party$ | async as party">
+                    <div><mat-divider></mat-divider></div>
+                    <h2 class="mat-headline-4">Party</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px">
+                        <cc-details-item title="ID">{{ payout.party_id }}</cc-details-item>
+                        <cc-details-item title="Email">
+                            {{ party.contact_info?.email }}
+                        </cc-details-item>
+                    </div>
+                </ng-container>
 
-            <ng-container *ngIf="payoutTool$ | async as payoutTool">
                 <div><mat-divider></mat-divider></div>
-                <h2 class="mat-headline-4">Payout Tool</h2>
-                <cc-payout-tool-details [payoutTool]="payoutTool"></cc-payout-tool-details>
-            </ng-container>
-        </mat-card-content>
-    </mat-card>
+                <h2 class="mat-headline-4">Shop</h2>
+                <cc-shop-details [shop]="shop$ | async"></cc-shop-details>
 
-    <mat-card>
-        <mat-card-content style="display: grid; gap: 24px">
-            <h2 class="mat-headline-4">Cash Flow</h2>
-            <div>
-                <table [dataSource]="payout.cash_flow" mat-table>
-                    <ng-container matColumnDef="source">
-                        <th *matHeaderCellDef mat-header-cell>Source</th>
-                        <td *matCellDef="let cashFlow" mat-cell>
-                            {{ cashFlow.source.account_type | ccUnionKey }}
-                            {{
-                                cashFlow.source.account_type[
-                                    cashFlow.source.account_type | ccUnionKey
-                                ]
-                            }}
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="destination">
-                        <th *matHeaderCellDef mat-header-cell>Destination</th>
-                        <td *matCellDef="let cashFlow" mat-cell>
-                            {{ cashFlow.destination.account_type | ccUnionKey }}
-                            {{
-                                cashFlow.destination.account_type[
-                                    cashFlow.destination.account_type | ccUnionKey
-                                ]
-                            }}
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="volume">
-                        <th *matHeaderCellDef mat-header-cell>Volume</th>
-                        <td *matCellDef="let cashFlow" mat-cell>
-                            {{ cashFlow.volume.amount | ccFormatAmount }}
-                            {{ cashFlow.volume.currency.symbolic_code | ccCurrency }}
-                        </td>
-                    </ng-container>
-                    <ng-container matColumnDef="details">
-                        <th *matHeaderCellDef mat-header-cell>Details</th>
-                        <td *matCellDef="let cashFlow" mat-cell>
-                            {{ cashFlow.details }}
-                        </td>
-                    </ng-container>
+                <ng-container *ngIf="payoutTool$ | async as payoutTool">
+                    <div><mat-divider></mat-divider></div>
+                    <h2 class="mat-headline-4">Payout Tool</h2>
+                    <cc-payout-tool-details [payoutTool]="payoutTool"></cc-payout-tool-details>
+                </ng-container>
+            </mat-card-content>
+        </mat-card>
 
-                    <tr *matNoDataRow class="mat-row">
-                        <td class="mat-cell" colspan="9999">No data</td>
-                    </tr>
-
-                    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-                    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
-                </table>
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
-                </mat-paginator>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</div>
+        <h2 class="mat-h1 mat-no-margin">Cash Flow</h2>
+        <v-table [columns]="cashFlowColumns" [data]="payout.cash_flow"></v-table>
+    </ng-container>
+</cc-page-layout>

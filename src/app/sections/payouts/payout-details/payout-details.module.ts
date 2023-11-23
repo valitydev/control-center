@@ -5,9 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule } from '@vality/ng-core';
+import { ActionsModule, TableModule } from '@vality/ng-core';
 
-import { ShopDetailsModule } from '@cc/app/shared/components';
+import { ShopDetailsModule, PageLayoutModule } from '@cc/app/shared/components';
 import { PayoutToolDetailsModule } from '@cc/app/shared/components/payout-tool-details/payout-tool-details.module';
 import { CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
 import { DetailsItemModule } from '@cc/components/details-item';
@@ -33,6 +33,8 @@ import { PayoutDetailsComponent } from './payout-details.component';
         MatPaginatorModule,
         MatButtonModule,
         ActionsModule,
+        TableModule,
+        PageLayoutModule,
     ],
 })
 export class PayoutDetailsModule {}

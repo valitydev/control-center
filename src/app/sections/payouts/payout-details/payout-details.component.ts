@@ -1,25 +1,32 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
-import { combineLatest } from 'rxjs';
-import { map, pluck, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { Column, progressTo } from '@vality/ng-core';
+import { FinalCashFlowPosting } from '@vality/payout-manager-proto/internal/proto/domain';
+import startCase from 'lodash-es/startCase';
+import { combineLatest, BehaviorSubject } from 'rxjs';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 
+import { getUnionKey, getUnionValue } from '../../../../utils';
+import { createCurrencyColumn } from '../../../shared';
 import { PayoutActionsService } from '../services/payout-actions.service';
 
 @Component({
     selector: 'cc-payout-details',
     templateUrl: './payout-details.component.html',
-    styleUrls: ['./payout-details.component.scss'],
     providers: [PayoutActionsService],
 })
 export class PayoutDetailsComponent {
+    progress$ = new BehaviorSubject(0);
     payout$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        pluck('payoutId'),
-        switchMap((id: string) => this.payoutManagementService.GetPayout(id)),
+        map((p) => p?.payoutId),
+        switchMap((id: string) =>
+            this.payoutManagementService.GetPayout(id).pipe(progressTo(this.progress$)),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     shop$ = this.payout$.pipe(
@@ -42,7 +49,24 @@ export class PayoutDetailsComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    displayedColumns = ['source', 'destination', 'volume', 'details'];
+    cashFlowColumns: Column<FinalCashFlowPosting>[] = [
+        {
+            field: 'source',
+            description: (d) => getUnionValue(d.source.account_type),
+            formatter: (d) => startCase(getUnionKey(d.source.account_type)),
+        },
+        {
+            field: 'destination',
+            description: (d) => getUnionValue(d.destination.account_type),
+            formatter: (d) => startCase(getUnionKey(d.destination.account_type)),
+        },
+        createCurrencyColumn(
+            'volume',
+            (d) => d.volume.amount,
+            (d) => d.volume.currency.symbolic_code,
+        ),
+        'details',
+    ];
 
     constructor(
         private route: ActivatedRoute,
