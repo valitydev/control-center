@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { SearchShopHit } from '@vality/deanonimus-proto/internal/deanonimus';
+import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
 import { Column, progressTo, NotifyLogService } from '@vality/ng-core';
-import { BehaviorSubject, defer, of, combineLatest, Subject } from 'rxjs';
-import { switchMap, shareReplay, catchError } from 'rxjs/operators';
+import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
+import { switchMap, shareReplay, catchError, map } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../api/deanonimus';
+import { ShopParty } from '../../shared/components/shops-table';
 
 @UntilDestroy()
 @Component({
@@ -14,17 +15,26 @@ import { DeanonimusService } from '../../api/deanonimus';
 })
 export class ShopsComponent {
     filterChange$ = new Subject<string>();
-    shopsParty$ = combineLatest([this.filterChange$, defer(() => this.updateShops$)]).pipe(
+    shopsParty$: Observable<ShopParty[]> = combineLatest([
+        this.filterChange$,
+        defer(() => this.updateShops$),
+    ]).pipe(
         switchMap(([search]) =>
             search
                 ? this.deanonimusService.searchShopText(search.trim()).pipe(
                       progressTo(this.progress$),
                       catchError((err) => {
                           this.log.error(err);
-                          return of([]);
+                          return of<SearchShopHit[]>([]);
                       }),
                   )
                 : of<SearchShopHit[]>([]),
+        ),
+        map((shops) =>
+            shops.map(({ shop, party }) => ({
+                shop: shop as ShopParty['shop'],
+                party,
+            })),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

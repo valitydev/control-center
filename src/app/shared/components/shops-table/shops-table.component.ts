@@ -30,9 +30,12 @@ import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-c
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
-interface ShopParty {
+export interface ShopParty {
     shop: Shop;
-    party: Party;
+    party: {
+        id: Party['id'];
+        email: Party['contact_info']['email'];
+    };
 }
 
 @UntilDestroy()
@@ -60,12 +63,11 @@ export class ShopsTableComponent implements OnChanges {
     @Input({ transform: booleanAttribute }) noPartyColumn: boolean = false;
 
     columns$ = combineLatest([
-        this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
-            RoutingRulesType.Payment,
-        ),
+        this.partyDelegateRulesetsService
+            .getDelegatesWithPaymentInstitution(RoutingRulesType.Payment)
+            .pipe(startWith([])),
         defer(() => this.updateColumns$).pipe(startWith(null)),
     ]).pipe(
-        startWith([[]]),
         map(([delegatesWithPaymentInstitution]): Column<ShopParty>[] => [
             {
                 field: 'shop.id',
@@ -82,13 +84,16 @@ export class ShopsTableComponent implements OnChanges {
                 },
                 sortable: !this.noSort,
             },
-            {
-                field: 'party.contact_info.email',
-                header: 'Party',
-                description: 'party.id',
-                link: (d) => `/party/${d.party.id}`,
-                hide: this.noPartyColumn,
-            },
+            ...(this.noPartyColumn
+                ? []
+                : [
+                      {
+                          field: 'party.email',
+                          header: 'Party',
+                          description: 'party.id',
+                          link: (d) => `/party/${d.party.id}`,
+                      },
+                  ]),
             {
                 field: 'shop.contract_id',
                 header: 'Contract',

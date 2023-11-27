@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { withLatestFrom } from 'rxjs';
+import { withLatestFrom, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+
+import { ShopParty } from '../../shared/components/shops-table';
 
 import { PartyShopsService } from './party-shops.service';
 
@@ -10,9 +12,14 @@ import { PartyShopsService } from './party-shops.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PartyShopsComponent {
-    shopsParty$ = this.partyShopsService.shops$.pipe(
+    shopsParty$: Observable<ShopParty[]> = this.partyShopsService.shops$.pipe(
         withLatestFrom(this.partyShopsService.party$),
-        map(([shops, party]) => shops.map((shop) => ({ shop, party }))),
+        map(([shops, party]) =>
+            shops.map((shop) => ({
+                shop,
+                party: { id: party.id, email: party.contact_info?.email },
+            })),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     progress$ = this.partyShopsService.progress$;
