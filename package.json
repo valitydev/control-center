@@ -13,7 +13,7 @@
     "format:fix": "prettier ** --write --log-level=warn",
     "spell": "cspell --no-progress **",
     "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
-    "fix": "npm run lint:fix && npm run format:fix"
+    "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix"
   },
   "dependencies": {
     "@angular/animations": "16.2.12",
