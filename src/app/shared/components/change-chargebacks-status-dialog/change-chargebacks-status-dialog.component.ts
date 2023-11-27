@@ -96,7 +96,6 @@ export class ChangeChargebacksStatusDialogComponent
                     this.control.value,
                 ),
             ),
-            4,
             this.progress$,
         )
             .pipe(untilDestroyed(this))

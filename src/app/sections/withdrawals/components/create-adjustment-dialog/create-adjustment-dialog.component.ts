@@ -55,7 +55,6 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
                     external_id: this.externalIdControl.value,
                 }),
             ),
-            4,
             this.progress$,
         )
             .pipe(untilDestroyed(this))

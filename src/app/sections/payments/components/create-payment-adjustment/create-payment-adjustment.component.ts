@@ -3,10 +3,14 @@ import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
-import chunk from 'lodash-es/chunk';
-import { BehaviorSubject, from, concatMap, of, forkJoin } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import {
+    DialogSuperclass,
+    NotifyLogService,
+    forkJoinToResult,
+    splitResultsErrors,
+    ForkJoinErrorResult,
+} from '@vality/ng-core';
+import { BehaviorSubject, from } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
@@ -20,13 +24,13 @@ import { InvoicingService } from '../../../../api/payment-processing';
 export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     CreatePaymentAdjustmentComponent,
     { payments: StatPayment[] },
-    { withError?: { payment: StatPayment; error: unknown }[] }
+    { errors?: ForkJoinErrorResult<StatPayment>[] }
 > {
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
     metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
-    withError: { payment: StatPayment; error: unknown }[] = [];
+    errors: ForkJoinErrorResult<StatPayment>[] = [];
 
     constructor(
         injector: Injector,
@@ -38,62 +42,35 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     }
 
     create() {
-        const payments = this.withError.length
-            ? this.withError.map((w) => w.payment)
+        const payments = this.errors.length
+            ? this.errors.map(({ data }) => data)
             : this.dialogData.payments;
-        this.withError = [];
-        const progressStep = 100 / (payments.length + 1);
-        this.progress$.next(progressStep);
-        of(...chunk(payments, 4))
-            .pipe(
-                concatMap((payments) =>
-                    forkJoin(
-                        payments.map((p) =>
-                            this.invoicingService
-                                .CreatePaymentAdjustment(p.invoice_id, p.id, this.control.value)
-                                .pipe(
-                                    catchError((error) => {
-                                        this.withError.push({ payment: p, error });
-                                        return of(null);
-                                    }),
-                                    finalize(() =>
-                                        this.progress$.next(this.progress$.value + progressStep),
-                                    ),
-                                ),
-                        ),
-                    ),
+        this.errors = [];
+        forkJoinToResult(
+            payments.map((p) =>
+                this.invoicingService.CreatePaymentAdjustment(
+                    p.invoice_id,
+                    p.id,
+                    this.control.value,
                 ),
-                untilDestroyed(this),
-            )
-            .subscribe({
-                complete: () => {
-                    if (!this.withError.length) {
-                        this.log.success(`${payments.length} created successfully`);
-                        this.closeWithSuccess();
-                    } else {
-                        const errors = this.withError
-                            .map((w) => {
-                                const error: string =
-                                    w.error?.['name'] || w.error?.['message'] || '';
-                                if (error) {
-                                    return `${w.payment.id}: ${error}`;
-                                }
-                                return null;
-                            })
-                            .filter(Boolean)
-                            .join(', ');
-                        this.log.error(
-                            new Error(
-                                `${this.withError.length} out of ${payments.length} failed. Errors: ${errors}`,
-                            ),
-                        );
-                    }
-                    this.progress$.next(0);
-                },
+            ),
+            this.progress$,
+            payments,
+        )
+            .pipe(untilDestroyed(this))
+            .subscribe((res) => {
+                const [result, errors] = splitResultsErrors(res);
+                if (errors.length) {
+                    this.errors = errors;
+                    this.log.error(this.errors.map((e) => e.error));
+                } else {
+                    this.log.success(`${result.length} created successfully`);
+                    this.closeWithSuccess();
+                }
             });
     }
 
     closeAndSelectWithAnError() {
-        this.closeWithError({ withError: this.withError });
+        this.closeWithError({ errors: this.errors });
     }
 }

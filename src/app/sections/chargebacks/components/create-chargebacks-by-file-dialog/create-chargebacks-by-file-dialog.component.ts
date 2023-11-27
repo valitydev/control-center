@@ -158,7 +158,6 @@ export class CreateChargebacksByFileDialogComponent
             selected.map((c) =>
                 this.invoicingService.CreateChargeback(c.invoiceId, c.paymentId, c.params),
             ),
-            2,
             this.progress$,
         )
             .pipe(untilDestroyed(this))
