@@ -21,6 +21,7 @@ import lodashMerge from 'lodash-es/merge';
 import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { Namespace } from '../../api/machinegun';
 import { FailMachinesDialogComponent } from '../../shared/components/fail-machines-dialog';
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
 import { DATE_RANGE_DAYS } from '../../tokens';
@@ -155,7 +156,7 @@ export class PaymentsComponent implements OnInit {
         this.dialogService
             .open(FailMachinesDialogComponent, {
                 ids: uniq(this.selected$.value.map((s) => s.invoice_id)),
-                ns: 'invoice',
+                ns: Namespace.Invoice,
             })
             .afterClosed()
             .subscribe((res) => {

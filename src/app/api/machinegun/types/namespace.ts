@@ -1,2 +1,5 @@
-// https://github.com/valitydev/machinegun/blob/77ea7677e2a777666cbca76b11e5a96d0a9f0532/config/config.yaml#L354
-export type Namespace = 'party' | 'invoice' | 'domain-config';
+// https://github.com/empayre/cloud-infra/blob/a9b5047df3e2b8eb3377686251ca83b561f308d7/helmfile/config/machinegun-ha/config.yaml.gotmpl#L139
+export enum Namespace {
+    Invoice = 'invoice',
+    Withdrawal = 'ff/withdrawal_v2',
+}
