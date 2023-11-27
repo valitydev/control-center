@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
@@ -138,12 +138,11 @@ export class CreateChargebacksByFileDialogComponent
     successfullyChargebacks: InvoicePaymentChargeback[] = [];
 
     constructor(
-        injector: Injector,
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
         private amountCurrencyService: AmountCurrencyService,
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit() {

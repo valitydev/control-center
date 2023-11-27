@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -72,12 +72,11 @@ export class ChangeChargebacksStatusDialogComponent
     progress$ = new BehaviorSubject(0);
 
     constructor(
-        injector: Injector,
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit() {

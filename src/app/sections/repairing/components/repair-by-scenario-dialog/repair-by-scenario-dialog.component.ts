@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
@@ -57,13 +57,12 @@ export class RepairByScenarioDialogComponent
     }
 
     constructor(
-        injector: Injector,
         private repairManagementService: RepairManagementService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit() {

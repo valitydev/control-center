@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
@@ -23,11 +23,10 @@ export class ChangeTargetDialogComponent extends DialogSuperclass<
     initValue: Partial<TargetRuleset> = {};
 
     constructor(
-        injector: Injector,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
         this.routingRulesService
             .getRuleset(this.dialogData?.mainRulesetRefID)
             .pipe(untilDestroyed(this))

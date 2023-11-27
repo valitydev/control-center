@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
@@ -30,12 +30,11 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);
 
     constructor(
-        injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
     }
 
     attach() {

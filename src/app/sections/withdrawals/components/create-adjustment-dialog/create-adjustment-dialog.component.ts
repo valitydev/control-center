@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeRequest } from '@vality/fistful-proto/deposit_adjustment';
@@ -39,11 +39,10 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     progress$ = new BehaviorSubject(0);
 
     constructor(
-        injector: Injector,
         private managementService: ManagementService,
         private log: NotifyLogService,
     ) {
-        super(injector);
+        super();
     }
 
     createAdjustment() {

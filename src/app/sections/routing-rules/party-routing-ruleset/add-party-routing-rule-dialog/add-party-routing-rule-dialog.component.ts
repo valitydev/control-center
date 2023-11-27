@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
@@ -26,12 +26,11 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     });
 
     constructor(
-        injector: Injector,
         private fb: FormBuilder,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
     }
 
     add() {

@@ -16,10 +16,12 @@ import {
     isEqualDateRange,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
+import { uniq } from 'lodash-es';
 import lodashMerge from 'lodash-es/merge';
 import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { FailMachinesDialogComponent } from '../../shared/components/fail-machines-dialog';
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
 import { DATE_RANGE_DAYS } from '../../tokens';
 
@@ -143,8 +145,27 @@ export class PaymentsComponent implements OnInit {
                 if (res.status === DialogResponseStatus.Success) {
                     this.load();
                     this.selected$.next([]);
-                } else if (res.data?.withError?.length) {
-                    this.selected$.next(res.data.withError.map((w) => w.payment));
+                } else if (res.data?.errors?.length) {
+                    this.selected$.next(res.data.errors.map(({ data }) => data));
+                }
+            });
+    }
+
+    failMachines() {
+        this.dialogService
+            .open(FailMachinesDialogComponent, {
+                ids: uniq(this.selected$.value.map((s) => s.invoice_id)),
+                ns: 'invoice',
+            })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res.status === DialogResponseStatus.Success) {
+                    this.load();
+                    this.selected$.next([]);
+                } else if (res.data?.errors?.length) {
+                    this.selected$.next(
+                        res.data.errors.map(({ index }) => this.selected$.value[index]),
+                    );
                 }
             });
     }

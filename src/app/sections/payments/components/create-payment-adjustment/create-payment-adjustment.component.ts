@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
@@ -33,12 +33,11 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 
     constructor(
-        injector: Injector,
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {
-        super(injector);
+        super();
     }
 
     create() {

@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
@@ -23,13 +23,12 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
     progress$ = new BehaviorSubject(0);
 
     constructor(
-        injector: Injector,
         private claimService: ClaimManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private router: Router,
     ) {
-        super(injector);
+        super();
     }
 
     create() {

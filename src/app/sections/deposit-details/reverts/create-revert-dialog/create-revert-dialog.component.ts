@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Validators, NonNullableFormBuilder } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
@@ -31,13 +31,12 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
     progress$ = new BehaviorSubject(0);
 
     constructor(
-        injector: Injector,
         private fb: NonNullableFormBuilder,
         private depositManagementService: ManagementService,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private log: NotifyLogService,
     ) {
-        super(injector);
+        super();
     }
 
     createRevert() {

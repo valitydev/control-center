@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -37,11 +37,8 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
         );
     }
 
-    constructor(
-        injector: Injector,
-        private fb: FormBuilder,
-    ) {
-        super(injector);
+    constructor(private fb: FormBuilder) {
+        super();
     }
 
     upsert() {

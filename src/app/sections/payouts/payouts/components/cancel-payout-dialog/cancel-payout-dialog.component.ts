@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
@@ -24,12 +24,11 @@ export class CancelPayoutDialogComponent extends DialogSuperclass<
     progress$ = new BehaviorSubject(0);
 
     constructor(
-        injector: Injector,
         private payoutManagementService: PayoutManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
     }
 
     accept() {
