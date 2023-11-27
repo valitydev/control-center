@@ -46,4 +46,8 @@ export class DeanonimusService {
     searchShopText(text: string) {
         return this.client$.pipe(switchMap((c) => c.searchShopText(text)));
     }
+
+    searchWalletText(text: string) {
+        return this.client$.pipe(switchMap((c) => c.searchWalletText(text)));
+    }
 }
