@@ -13,7 +13,7 @@ import {
 } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
-import { AutomatonService, FAILS_MACHINE_VALUE } from '../../../api/machinegun';
+import { AutomatonService, FAILS_MACHINE_VALUE, Namespace } from '../../../api/machinegun';
 
 @UntilDestroy()
 @Component({
@@ -23,7 +23,7 @@ import { AutomatonService, FAILS_MACHINE_VALUE } from '../../../api/machinegun';
 })
 export class FailMachinesDialogComponent extends DialogSuperclass<
     FailMachinesDialogComponent,
-    { ids: ID[]; ns: 'invoice' },
+    { ids: ID[]; ns: Namespace },
     { errors?: ForkJoinErrorResult<ID>[] }
 > {
     progress$ = new BehaviorSubject(0);
