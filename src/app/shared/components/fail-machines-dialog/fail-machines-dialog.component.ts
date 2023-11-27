@@ -11,7 +11,8 @@ import {
     ForkJoinErrorResult,
     DialogModule,
 } from '@vality/ng-core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { AutomatonService, FAILS_MACHINE_VALUE, Namespace } from '../../../api/machinegun';
 
@@ -41,14 +42,23 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
         this.errors = [];
         forkJoinToResult(
             ids.map((id) =>
-                this.automatonService.Call(
-                    {
-                        ns: this.dialogData.ns,
-                        ref: { id },
-                        range: { limit: 1, direction: 1 },
-                    },
-                    FAILS_MACHINE_VALUE,
-                ),
+                this.automatonService
+                    .Call(
+                        {
+                            ns: this.dialogData.ns,
+                            ref: { id },
+                            range: { limit: 1, direction: 1 },
+                        },
+                        FAILS_MACHINE_VALUE,
+                    )
+                    .pipe(
+                        catchError((err) => {
+                            if (err?.name === 'MachineFailed') {
+                                return of(err);
+                            }
+                            throw err;
+                        }),
+                    ),
             ),
             this.progress$,
             ids,
