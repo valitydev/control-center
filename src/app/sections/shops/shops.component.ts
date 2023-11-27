@@ -24,7 +24,7 @@ export class ShopsComponent implements OnInit {
                       .pipe(progressTo(this.progress$))
                 : of<SearchShopHit[]>([]),
         ),
-        map((hits) => hits.map((h) => ({ shop: h.shop, party: {} }))),
+        map((hits) => hits.map((h) => ({ shop: h.shop, party: h.party }))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     columns: Column<SearchShopHit>[] = [{ field: 'shop.details.name', description: 'shop.id' }];
