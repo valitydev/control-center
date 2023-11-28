@@ -1,8 +1,14 @@
 <v-dialog
+    [noContent]="!hasNsControl"
     [progress]="progress$ | async"
-    noContent
     title="Fail {{ dialogData.ids.length }} machines"
 >
+    <v-select-field
+        [formControl]="nsControl"
+        [options]="nsOptions"
+        label="Namespace"
+        required
+    ></v-select-field>
     <v-dialog-actions>
         <button
             *ngIf="this.errors.length"
@@ -13,7 +19,7 @@
             Close and select with an error
         </button>
         <button
-            [disabled]="!!(progress$ | async)"
+            [disabled]="nsControl.invalid || !!(progress$ | async)"
             color="primary"
             mat-raised-button
             (click)="fail()"

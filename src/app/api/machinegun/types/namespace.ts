@@ -2,4 +2,5 @@
 export enum Namespace {
     Invoice = 'invoice',
     Withdrawal = 'ff/withdrawal_v2',
+    WithdrawalSession = 'ff/withdrawal/session_v2',
 }

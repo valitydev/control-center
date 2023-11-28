@@ -20,8 +20,7 @@ import startCase from 'lodash-es/startCase';
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
 import { getUnionKey } from '../../../utils';
-import { Namespace } from '../../api/machinegun';
-import { FailMachinesDialogComponent } from '../../shared/components/fail-machines-dialog';
+import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { AmountCurrencyService } from '../../shared/services';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
@@ -147,7 +146,7 @@ export class WithdrawalsComponent implements OnInit {
         this.dialogService
             .open(FailMachinesDialogComponent, {
                 ids: this.selected.map((s) => s.id),
-                ns: Namespace.Withdrawal,
+                type: Type.Withdrawal,
             })
             .afterClosed()
             .subscribe((res) => {
