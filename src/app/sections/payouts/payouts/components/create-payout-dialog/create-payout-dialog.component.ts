@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
@@ -39,13 +39,12 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
     });
 
     constructor(
-        injector: Injector,
         private fb: FormBuilder,
         private payoutManagementService: PayoutManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
     }
 
     create() {

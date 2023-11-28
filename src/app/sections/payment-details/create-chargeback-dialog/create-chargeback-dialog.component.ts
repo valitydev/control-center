@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
@@ -27,13 +27,12 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     constructor(
-        injector: Injector,
         private invoicingService: InvoicingService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
     ) {
-        super(injector);
+        super();
     }
 
     create() {

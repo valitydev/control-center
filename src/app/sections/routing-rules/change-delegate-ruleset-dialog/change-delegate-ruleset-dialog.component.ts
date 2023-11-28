@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
@@ -27,11 +27,10 @@ export class ChangeDelegateRulesetDialogComponent
     rulesets$ = this.routingRulesService.rulesets$;
 
     constructor(
-        injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit() {

@@ -11,7 +11,7 @@
     ></cc-metadata-form>
     <v-dialog-actions>
         <button
-            *ngIf="this.withError.length"
+            *ngIf="this.errors.length"
             [disabled]="control.invalid || !!(progress$ | async)"
             mat-raised-button
             (click)="closeAndSelectWithAnError()"
@@ -24,7 +24,7 @@
             mat-raised-button
             (click)="create()"
         >
-            {{ this.withError.length ? 'Repeat for ' + this.withError.length : 'Create' }}
+            {{ this.errors.length ? 'Repeat for ' + this.errors.length : 'Create' }}
         </button>
     </v-dialog-actions>
 </v-dialog>

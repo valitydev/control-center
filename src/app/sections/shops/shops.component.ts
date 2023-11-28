@@ -1,30 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { SearchShopHit } from '@vality/deanonimus-proto/internal/deanonimus';
-import { Column, progressTo, QueryParamsService } from '@vality/ng-core';
-import { BehaviorSubject, defer, of, combineLatest } from 'rxjs';
-import { startWith, switchMap, map, shareReplay, debounceTime } from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
+import { Column, progressTo, NotifyLogService } from '@vality/ng-core';
+import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
+import { switchMap, shareReplay, catchError, map } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../api/deanonimus';
+import { ShopParty } from '../../shared/components/shops-table';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-shops',
     templateUrl: './shops.component.html',
 })
-export class ShopsComponent implements OnInit {
-    filterChange$ = new BehaviorSubject(this.qp.params.search);
-    shopsParty$ = combineLatest([this.filterChange$, defer(() => this.updateShops$)]).pipe(
-        startWith(null),
-        debounceTime(200),
+export class ShopsComponent {
+    filterChange$ = new Subject<string>();
+    shopsParty$: Observable<ShopParty[]> = combineLatest([
+        this.filterChange$,
+        defer(() => this.updateShops$),
+    ]).pipe(
         switchMap(([search]) =>
             search
-                ? this.deanonimusService
-                      .searchShopText(search.trim())
-                      .pipe(progressTo(this.progress$))
+                ? this.deanonimusService.searchShopText(search.trim()).pipe(
+                      progressTo(this.progress$),
+                      catchError((err) => {
+                          this.log.error(err);
+                          return of<SearchShopHit[]>([]);
+                      }),
+                  )
                 : of<SearchShopHit[]>([]),
         ),
-        map((hits) => hits.map((h) => ({ shop: h.shop, party: {} }))),
+        map((shops) =>
+            shops.map(({ shop, party }) => ({
+                shop: shop as ShopParty['shop'],
+                party,
+            })),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     columns: Column<SearchShopHit>[] = [{ field: 'shop.details.name', description: 'shop.id' }];
@@ -34,14 +45,8 @@ export class ShopsComponent implements OnInit {
 
     constructor(
         private deanonimusService: DeanonimusService,
-        private qp: QueryParamsService<{ search: string }>,
+        private log: NotifyLogService,
     ) {}
-
-    ngOnInit() {
-        this.filterChange$.pipe(untilDestroyed(this)).subscribe((search) => {
-            this.qp.set({ search });
-        });
-    }
 
     update() {
         this.updateShops$.next();

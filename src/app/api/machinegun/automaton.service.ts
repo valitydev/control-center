@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
-    deanonimus_DeanonimusCodegenClient,
+    state_processing_Automaton,
+    state_processing_AutomatonCodegenClient,
     ThriftAstMetadata,
-    deanonimus_Deanonimus,
-} from '@vality/deanonimus-proto';
+} from '@vality/machinegun-proto';
+import { MachineDescriptor, Args } from '@vality/machinegun-proto/state_processing';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
@@ -12,24 +13,24 @@ import { environment } from '@cc/environments/environment';
 import { ConfigService } from '../../core/config.service';
 
 @Injectable({ providedIn: 'root' })
-export class DeanonimusService {
-    private client$: Observable<deanonimus_DeanonimusCodegenClient>;
+export class AutomatonService {
+    private client$: Observable<state_processing_AutomatonCodegenClient>;
 
     constructor(
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
         const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Deanonimus')),
+            map(toWachterHeaders('Automaton')),
         );
         const metadata$ = from(
-            import('@vality/deanonimus-proto/metadata.json').then(
+            import('@vality/machinegun-proto/metadata.json').then(
                 (m) => m.default as ThriftAstMetadata[],
             ),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                deanonimus_Deanonimus({
+                state_processing_Automaton({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
@@ -39,15 +40,8 @@ export class DeanonimusService {
         );
     }
 
-    searchParty(text: string) {
-        return this.client$.pipe(switchMap((c) => c.searchParty(text)));
-    }
-
-    searchShopText(text: string) {
-        return this.client$.pipe(switchMap((c) => c.searchShopText(text)));
-    }
-
-    searchWalletText(text: string) {
-        return this.client$.pipe(switchMap((c) => c.searchWalletText(text)));
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Call(desc: MachineDescriptor, a: Args) {
+        return this.client$.pipe(switchMap((c) => c.Call(desc, a)));
     }
 }

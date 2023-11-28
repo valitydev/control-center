@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DialogSuperclass } from '@vality/ng-core';
 
@@ -14,12 +14,11 @@ export class CreateSourceComponent extends DialogSuperclass<void> {
     control = new FormControl();
 
     constructor(
-        injector: Injector,
         private fistfulAdminService: FistfulAdminService,
         private errorService: NotificationErrorService,
         private notificationService: NotificationService,
     ) {
-        super(injector);
+        super();
     }
 
     create() {

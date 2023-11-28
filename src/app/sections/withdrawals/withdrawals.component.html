@@ -46,9 +46,17 @@
                 [disabled]="!selected?.length"
                 color="primary"
                 mat-raised-button
+                (click)="failMachines()"
+            >
+                Fail machines
+            </button>
+            <button
+                [disabled]="!selected?.length"
+                color="primary"
+                mat-raised-button
                 (click)="adjustment()"
             >
-                Create adjustment
+                Create adjustments
             </button>
         </v-table-actions>
     </v-table>

@@ -45,9 +45,17 @@
             [disabled]="!(selected$ | async)?.length"
             color="primary"
             mat-raised-button
+            (click)="failMachines()"
+        >
+            Fail machines
+        </button>
+        <button
+            [disabled]="!(selected$ | async)?.length"
+            color="primary"
+            mat-raised-button
             (click)="createPaymentAdjustment()"
         >
-            Create adjustment
+            Create adjustments
         </button>
     </cc-payments-table>
 </cc-page-layout>

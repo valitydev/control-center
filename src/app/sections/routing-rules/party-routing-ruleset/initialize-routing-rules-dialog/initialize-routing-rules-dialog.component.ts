@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
@@ -22,12 +22,11 @@ export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
     });
 
     constructor(
-        injector: Injector,
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
     }
 
     init() {

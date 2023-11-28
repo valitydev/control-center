@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
@@ -37,13 +37,12 @@ export class AddModificationDialogComponent extends DialogSuperclass<
     private progress$ = new BehaviorSubject(0);
 
     constructor(
-        injector: Injector,
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
     ) {
-        super(injector);
+        super();
     }
 
     add() {

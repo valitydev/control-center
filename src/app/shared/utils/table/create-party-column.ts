@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { PossiblyAsync, ColumnObject, getPossiblyAsyncObservable } from '@vality/ng-core';
 import get from 'lodash-es/get';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
 

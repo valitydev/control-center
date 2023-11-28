@@ -1,0 +1,24 @@
+<v-dialog
+    [progress]="progress$ | async"
+    noContent
+    title="Fail {{ dialogData.ids.length }} machines"
+>
+    <v-dialog-actions>
+        <button
+            *ngIf="this.errors.length"
+            [disabled]="!!(progress$ | async)"
+            mat-raised-button
+            (click)="closeAndSelectWithAnError()"
+        >
+            Close and select with an error
+        </button>
+        <button
+            [disabled]="!!(progress$ | async)"
+            color="primary"
+            mat-raised-button
+            (click)="fail()"
+        >
+            {{ this.errors.length ? 'Repeat for ' + this.errors.length : 'Fail machines' }}
+        </button>
+    </v-dialog-actions>
+</v-dialog>
