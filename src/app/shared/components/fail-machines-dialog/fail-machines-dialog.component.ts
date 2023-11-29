@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ID } from '@vality/machinegun-proto/internal/base';
@@ -10,25 +11,49 @@ import {
     splitResultsErrors,
     ForkJoinErrorResult,
     DialogModule,
+    SelectFieldModule,
+    Option,
+    getEnumKey,
 } from '@vality/ng-core';
+import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AutomatonService, FAILS_MACHINE_VALUE, Namespace } from '../../../api/machinegun';
 
+export enum Type {
+    Invoice,
+    Withdrawal,
+}
+
+const TYPE_NS_MAP: Record<Type, Namespace[]> = {
+    [Type.Invoice]: [Namespace.Invoice],
+    [Type.Withdrawal]: [Namespace.Withdrawal, Namespace.WithdrawalSession],
+};
+
 @UntilDestroy()
 @Component({
     standalone: true,
     templateUrl: './fail-machines-dialog.component.html',
-    imports: [CommonModule, DialogModule, MatButtonModule],
+    imports: [CommonModule, DialogModule, MatButtonModule, ReactiveFormsModule, SelectFieldModule],
 })
 export class FailMachinesDialogComponent extends DialogSuperclass<
     FailMachinesDialogComponent,
-    { ids: ID[]; ns: Namespace },
+    { ids: ID[]; type: Type },
     { errors?: ForkJoinErrorResult<ID>[] }
 > {
     progress$ = new BehaviorSubject(0);
     errors: ForkJoinErrorResult<ID>[] = [];
+    nsControl = new FormControl<Namespace>(TYPE_NS_MAP[this.dialogData.type][0]);
+    nsOptions: Option<Namespace>[] = TYPE_NS_MAP[this.dialogData.type].map((ns) => ({
+        label: startCase(getEnumKey(Namespace, ns)),
+        description: ns,
+        value: ns,
+    }));
+
+    get hasNsControl() {
+        return TYPE_NS_MAP[this.dialogData.type].length > 1;
+    }
 
     constructor(
         private automatonService: AutomatonService,
@@ -45,7 +70,7 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
                 this.automatonService
                     .Call(
                         {
-                            ns: this.dialogData.ns,
+                            ns: this.nsControl.value,
                             ref: { id },
                             range: { limit: 1, direction: 1 },
                         },
