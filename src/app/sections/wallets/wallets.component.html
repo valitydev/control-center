@@ -1,8 +1,16 @@
 <cc-page-layout title="Wallets">
     <cc-page-layout-actions>
-        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+        <v-more-filters-button *ngIf="filters" [filters]="filters"></v-more-filters-button>
+        <!--TODO wait backend fix-->
+        <!--        <v-switch-button-->
+        <!--            [formControl]="isFilterControl"-->
+        <!--            [states]="[-->
+        <!--                { label: 'full-text search', icon: 'travel_explore' },-->
+        <!--                { label: 'filters', icon: 'manage_search' }-->
+        <!--            ]"-->
+        <!--        ></v-switch-button>-->
     </cc-page-layout-actions>
-    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+    <v-filters *ngIf="isFilterControl.value" [active]="active" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
             <mat-form-field>
@@ -18,11 +26,24 @@
     </v-filters>
 
     <v-table
-        [columns]="columns"
-        [data]="wallets$ | async"
-        [hasMore]="hasMore$ | async"
-        [progress]="inProgress$ | async"
-        (more)="fetchMore()"
-        (update)="search($event.size)"
+        *ngIf="isFilterControl.value"
+        [columns]="filterColumns"
+        [data]="filterWallets$ | async"
+        [hasMore]="filterHasMore$ | async"
+        [progress]="filtersLoading$ | async"
+        name="filterWallets"
+        (more)="filterMore()"
+        (update)="filterSearch($event)"
+    ></v-table>
+    <v-table
+        *ngIf="!isFilterControl.value"
+        [columns]="fullTextSearchColumns"
+        [data]="fullTextSearchWallets$ | async"
+        [progress]="fullTextSearchLoading$ | async"
+        externalFilter
+        name="ftsWallets"
+        noActions
+        (filterChange)="fullTextSearch($event)"
+        (update)="fullTextSearchReload()"
     ></v-table>
 </cc-page-layout>

@@ -8,21 +8,25 @@ import { PartiesStoreService } from '../../../api/payment-processing';
 export function createPartyColumn<T extends object>(
     field: ColumnObject<T>['field'],
     selectPartyId?: (d: T) => PossiblyAsync<string>,
+    selectPartyEmail?: (d: T) => PossiblyAsync<string>,
     params: Partial<ColumnObject<T>> = {},
 ): ColumnObject<T> {
     const partiesStoreService = inject(PartiesStoreService);
     if (!selectPartyId) {
         selectPartyId = (d) => get(d, field);
     }
-    return {
-        field,
-        header: 'Party',
-        description: (d) => selectPartyId(d),
-        formatter: (d) =>
+    if (!selectPartyEmail) {
+        selectPartyEmail = (d: T) =>
             getPossiblyAsyncObservable(selectPartyId(d)).pipe(
                 switchMap((partyId) => partiesStoreService.get(partyId)),
                 map((p) => p.contact_info.email),
-            ),
+            );
+    }
+    return {
+        field,
+        header: 'Party',
+        description: selectPartyId,
+        formatter: selectPartyEmail,
         ...params,
     } as ColumnObject<T>;
 }

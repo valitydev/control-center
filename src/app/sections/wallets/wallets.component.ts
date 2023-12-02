@@ -1,110 +1,100 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
+import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
-import { clean, Column, QueryParamsService, NotifyLogService, countProps } from '@vality/ng-core';
-import { of, switchMap } from 'rxjs';
-import { startWith, map, shareReplay, catchError, debounceTime } from 'rxjs/operators';
+import {
+    clean,
+    Column,
+    QueryParamsService,
+    NotifyLogService,
+    countProps,
+    FiltersComponent,
+    UpdateOptions,
+    getValueChanges,
+} from '@vality/ng-core';
+import isNil from 'lodash-es/isNil';
+import { of } from 'rxjs';
+import { map, shareReplay, catchError, debounceTime } from 'rxjs/operators';
 import { Memoize } from 'typescript-memoize';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
 
-import { AmountCurrencyService } from '../../shared/services';
+import { createCurrencyColumn, createPartyColumn } from '../../shared';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 
+import { FetchWalletsTextService } from './fetch-wallets-text.service';
 import { FetchWalletsService } from './fetch-wallets.service';
 
 @UntilDestroy()
 @Component({
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
-    providers: [FetchWalletsService],
+    providers: [FetchWalletsService, FetchWalletsTextService],
 })
 export class WalletsComponent implements OnInit {
-    wallets$ = this.fetchWalletsService.searchResult$;
-    inProgress$ = this.fetchWalletsService.doAction$;
-    hasMore$ = this.fetchWalletsService.hasMore$;
-    columns: Column<StatWallet>[] = [
+    isFilterControl = new FormControl(1);
+
+    filterWallets$ = this.fetchWalletsService.result$;
+    filtersLoading$ = this.fetchWalletsService.isLoading$;
+    filterHasMore$ = this.fetchWalletsService.hasMore$;
+
+    fullTextSearchWallets$ = this.fetchWalletsTextService.result$;
+    fullTextSearchLoading$ = this.fetchWalletsTextService.isLoading$;
+
+    filterColumns: Column<StatWallet>[] = [
         { field: 'id' },
         { field: 'name' },
         'currency_symbolic_code',
         'identity_id',
         { field: 'created_at', type: 'datetime' },
-        {
-            field: 'balance',
-            type: 'currency',
-            lazy: true,
-            formatter: (d) =>
-                this.getBalance(d.id).pipe(
-                    switchMap((balance) =>
-                        this.amountCurrencyService.toMajor(
-                            balance.current,
-                            balance.currency.symbolic_code,
-                        ),
-                    ),
-                ),
-            typeParameters: {
-                currencyCode: (d) =>
-                    this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
-            },
-        },
-        {
-            field: 'hold',
-            type: 'currency',
-            lazy: true,
-            formatter: (d) =>
-                this.getBalance(d.id).pipe(
-                    switchMap((balance) =>
-                        this.amountCurrencyService.toMajor(
-                            balance.current - balance.expected_min,
-                            balance.currency.symbolic_code,
-                        ),
-                    ),
-                ),
-            typeParameters: {
-                currencyCode: (d) =>
-                    this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
-            },
-        },
-        {
-            field: 'expected_min',
-            type: 'currency',
-            lazy: true,
-            formatter: (d) =>
-                this.getBalance(d.id).pipe(
-                    switchMap((balance) =>
-                        this.amountCurrencyService.toMajor(
-                            balance.expected_min,
-                            balance.currency.symbolic_code,
-                        ),
-                    ),
-                ),
-            typeParameters: {
-                currencyCode: (d) =>
-                    this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
-            },
-        },
-        {
-            field: 'expected_max',
-            type: 'currency',
-            lazy: true,
-            hide: true,
-            formatter: (d) =>
-                this.getBalance(d.id).pipe(
-                    switchMap((balance) =>
-                        this.amountCurrencyService.toMajor(
-                            balance.expected_max,
-                            balance.currency.symbolic_code,
-                        ),
-                    ),
-                ),
-            typeParameters: {
-                currencyCode: (d) =>
-                    this.getBalance(d.id).pipe(map((balance) => balance.currency.symbolic_code)),
-            },
-        },
+        createCurrencyColumn<StatWallet>(
+            'balance',
+            (d) => this.getBalance(d.id).pipe(map((b) => b.current)),
+            (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
+        createCurrencyColumn<StatWallet>(
+            'hold',
+            (d) => this.getBalance(d.id).pipe(map((b) => b.current - b.expected_min)),
+            (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
+        createCurrencyColumn<StatWallet>(
+            'expected_min',
+            (d) => this.getBalance(d.id).pipe(map((b) => b.expected_min)),
+            (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
+    ];
+    fullTextSearchColumns: Column<SearchWalletHit>[] = [
+        { field: 'wallet.id' },
+        { field: 'wallet.name' },
+        createPartyColumn<SearchWalletHit>(
+            'party',
+            (d) => d.party.id,
+            (d) => d.party.email,
+        ),
+        createCurrencyColumn<SearchWalletHit>(
+            'balance',
+            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.current)),
+            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
+        createCurrencyColumn<SearchWalletHit>(
+            'hold',
+            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.current - b.expected_min)),
+            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
+        createCurrencyColumn<SearchWalletHit>(
+            'expected_min',
+            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.expected_min)),
+            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
     ];
     filtersForm = this.fb.group({
         party_id: null as string,
@@ -113,39 +103,54 @@ export class WalletsComponent implements OnInit {
         wallet_id: [null as string[]],
     });
     active = 0;
+    @ViewChild(FiltersComponent) filters!: FiltersComponent;
+    typeQp = this.qp.createNamespace<{ isFilter: boolean }>('type');
 
     constructor(
         private fetchWalletsService: FetchWalletsService,
+        private fetchWalletsTextService: FetchWalletsTextService,
         private qp: QueryParamsService<WalletParams>,
         private fb: FormBuilder,
         private walletManagementService: ManagementService,
         private log: NotifyLogService,
-        private amountCurrencyService: AmountCurrencyService,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
-        this.filtersForm.valueChanges
-            .pipe(
-                startWith(this.filtersForm.value),
-                debounceTime(this.debounceTimeMs),
-                untilDestroyed(this),
-            )
+        const isFilter = this.typeQp.params.isFilter;
+        if (!isNil(isFilter)) {
+            this.isFilterControl.setValue(Number(isFilter));
+        }
+        getValueChanges(this.isFilterControl)
+            .pipe(untilDestroyed(this))
+            .subscribe((value) => {
+                void this.typeQp.set({ isFilter: !!value });
+            });
+        getValueChanges(this.filtersForm)
+            .pipe(debounceTime(this.debounceTimeMs), untilDestroyed(this))
             .subscribe((value) => {
                 void this.qp.set(clean(value));
-                this.search();
+                this.filterSearch();
             });
     }
 
-    search(size?: number) {
+    filterSearch(opts?: UpdateOptions) {
         const props = clean(this.filtersForm.value);
-        this.fetchWalletsService.search(props, size);
+        this.fetchWalletsService.load(props, opts);
         this.active = countProps(props);
     }
 
-    fetchMore() {
-        this.fetchWalletsService.fetchMore();
+    filterMore() {
+        this.fetchWalletsService.more();
+    }
+
+    fullTextSearch(text: string) {
+        this.fetchWalletsTextService.load(text);
+    }
+
+    fullTextSearchReload() {
+        this.fetchWalletsTextService.reload();
     }
 
     @Memoize()
