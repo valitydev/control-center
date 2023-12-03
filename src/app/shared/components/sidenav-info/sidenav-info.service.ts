@@ -1,8 +1,14 @@
 import { Injectable, Type, Inject, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import { QueryParamsService, QueryParamsNamespace } from '@vality/ng-core';
+import {
+    QueryParamsService,
+    QueryParamsNamespace,
+    getPossiblyAsyncObservable,
+    PossiblyAsync,
+} from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
-import { filter, pairwise, startWith, map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { filter, startWith, map, distinctUntilChanged } from 'rxjs/operators';
 
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
 
@@ -10,12 +16,10 @@ import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
     providedIn: 'root',
 })
 export class SidenavInfoService {
-    component?: Type<unknown>;
+    component$ = new BehaviorSubject<Type<unknown> | null>(null);
     inputs?: Record<PropertyKey, unknown>;
 
-    get opened() {
-        return !!this.component;
-    }
+    opened$ = this.component$.pipe(map(Boolean));
 
     private qp!: QueryParamsNamespace<{ id?: string; inputs?: Record<PropertyKey, unknown> }>;
 
@@ -34,8 +38,8 @@ export class SidenavInfoService {
                 startWith(null),
                 filter(() => router.navigated),
                 map(() => router.url?.split('?', 1)[0].split('#', 1)[0]),
-                pairwise(),
-                filter(([a, b]) => a !== b && this.opened),
+                distinctUntilChanged(),
+                filter(() => !!this.component$.value),
             )
             .subscribe(() => {
                 this.close();
@@ -53,21 +57,23 @@ export class SidenavInfoService {
     }
 
     toggle<C extends Type<unknown>>(
-        component: C,
+        component: PossiblyAsync<C>,
         inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
     ) {
-        if (this.isEqual(component, inputs)) {
-            this.close();
-        } else {
-            this.open(component, inputs);
-        }
+        getPossiblyAsyncObservable(component).subscribe((comp) => {
+            if (this.isEqual(comp, inputs)) {
+                this.close();
+            } else {
+                this.open(comp, inputs);
+            }
+        });
     }
 
     open<C extends Type<unknown>>(
         component: C,
         inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
     ) {
-        this.component = component;
+        this.component$.next(component);
         this.inputs = inputs;
         void this.qp.set({
             id: this.getComponentId(component),
@@ -76,7 +82,7 @@ export class SidenavInfoService {
     }
 
     close() {
-        this.component = null;
+        this.component$.next(null);
         this.inputs = null;
         void this.qp.set({});
     }
@@ -87,7 +93,7 @@ export class SidenavInfoService {
         )?.[0];
     }
 
-    private getComponentById(id: string) {
+    private getComponentById(id: string): Type<unknown> | null {
         if (!id) {
             return null;
         }
@@ -98,6 +104,6 @@ export class SidenavInfoService {
         component: C,
         inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
     ) {
-        return component === this.component && isEqual(this.inputs, inputs);
+        return component === this.component$.value && isEqual(this.inputs, inputs);
     }
 }

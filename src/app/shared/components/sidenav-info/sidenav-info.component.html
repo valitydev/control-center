@@ -1,5 +1,8 @@
-<ng-container *ngIf="sidenavInfoService.component">
+<ng-container *ngIf="sidenavInfoService.component$ | async">
     <ng-container
-        *ngComponentOutlet="sidenavInfoService.component; inputs: sidenavInfoService.inputs"
+        *ngComponentOutlet="
+            sidenavInfoService.component$ | async;
+            inputs: sidenavInfoService.inputs
+        "
     ></ng-container>
 </ng-container>

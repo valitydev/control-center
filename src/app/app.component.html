@@ -23,7 +23,7 @@
         <router-outlet></router-outlet>
     </mat-sidenav-content>
     <mat-sidenav
-        [opened]="sidenavInfoService.opened"
+        [opened]="sidenavInfoService.opened$ | async"
         class="sidenav-info"
         fixedInViewport="true"
         fixedTopGap="64"

@@ -9,6 +9,7 @@ export interface MetadataViewExtensionResult {
     value: string;
     tooltip?: unknown;
     link?: Parameters<Router['navigate']>;
+    click?: () => void;
 }
 
 export type MetadataViewExtension = {
