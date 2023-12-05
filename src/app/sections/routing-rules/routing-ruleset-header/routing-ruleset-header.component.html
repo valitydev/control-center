@@ -13,8 +13,12 @@
         {{ description }}
     </div>
     <div class="mat-caption cc-routing-rules-caption">
-        <a [queryParams]="queryParams" class="mat-secondary-text" routerLink="/domain">
-            Ruleset ref ID: {{ refID }}</a
+        <span
+            class="mat-secondary-text"
+            style="cursor: pointer; text-decoration: underline"
+            (click)="openRule()"
+        >
+            Ruleset ref ID: {{ refID }}</span
         >
     </div>
 </div>
