@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { SidenavInfoService } from '../../../shared/components/sidenav-info';
+import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
+
 @Component({
     selector: 'cc-routing-ruleset-header',
     templateUrl: 'routing-ruleset-header.component.html',
@@ -23,9 +26,18 @@ export class RoutingRulesetHeaderComponent {
         };
     }
 
-    constructor(private router: Router) {}
+    constructor(
+        private router: Router,
+        private sidenavInfoService: SidenavInfoService,
+    ) {}
 
     navigateBack() {
         void this.router.navigate([this.backTo]);
+    }
+
+    openRule() {
+        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+            ref: { routing_rules: { id: Number(this.refID) } },
+        });
     }
 }

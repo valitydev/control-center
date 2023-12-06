@@ -80,6 +80,11 @@ export class AppComponent implements OnInit {
                     services: SHOPS_ROUTING_CONFIG.services,
                 },
                 {
+                    name: 'Wallets',
+                    route: '/wallets',
+                    services: WALLETS_ROUTING_CONFIG.services,
+                },
+                {
                     name: 'Claims',
                     route: '/claims',
                     services: CLAIMS_ROUTING_CONFIG.services,
@@ -111,11 +116,6 @@ export class AppComponent implements OnInit {
                         name: 'Withdrawals',
                         route: '/withdrawals',
                         services: WITHDRAWALS_ROUTING_CONFIG.services,
-                    },
-                    {
-                        name: 'Wallets',
-                        route: '/wallets',
-                        services: WALLETS_ROUTING_CONFIG.services,
                     },
                 ],
                 'name',

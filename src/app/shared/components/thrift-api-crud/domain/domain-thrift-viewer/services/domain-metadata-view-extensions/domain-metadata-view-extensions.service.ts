@@ -15,6 +15,7 @@ import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 
 import { getUnionValue } from '../../../../../../../../utils';
+import { SidenavInfoService } from '../../../../../sidenav-info';
 
 import { getObjectLabel } from './utils/get-object-label';
 
@@ -50,7 +51,10 @@ export class DomainMetadataViewExtensionsService {
         shareReplay(1),
     );
 
-    constructor(private domainStoreService: DomainStoreService) {}
+    constructor(
+        private domainStoreService: DomainStoreService,
+        private sidenavInfoService: SidenavInfoService,
+    ) {}
 
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {
         const domainFields = new MetadataFormData<string, 'struct'>(
@@ -74,17 +78,14 @@ export class DomainMetadataViewExtensionsService {
                         map(([ref, obj]) => ({
                             value: getObjectLabel(getUnionValue(obj), objectKey),
                             tooltip: getUnionValue(ref),
-                            link: [
-                                ['/domain'],
-                                {
-                                    queryParams: {
-                                        sidenav: JSON.stringify({
-                                            id: 'domainObject',
-                                            inputs: { ref },
-                                        }),
-                                    },
-                                },
-                            ],
+                            click: () => {
+                                this.sidenavInfoService.toggle(
+                                    import(
+                                        '../../../domain-object-card/domain-object-card.component'
+                                    ).then((r) => r.DomainObjectCardComponent),
+                                    { ref },
+                                );
+                            },
                         })),
                     ),
             };

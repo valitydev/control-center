@@ -1,4 +1,4 @@
-<cc-page-layout title="Search merchants">
+<cc-page-layout title="Merchants">
     <v-table
         [columns]="columns"
         [data]="parties$ | async"
@@ -7,5 +7,6 @@
         externalFilter
         noActions
         (filterChange)="searchParamsUpdated($event)"
+        (update)="update()"
     ></v-table>
 </cc-page-layout>

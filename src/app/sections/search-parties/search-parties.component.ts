@@ -72,4 +72,8 @@ export class SearchPartiesComponent {
         void this.qp.set({ text: filter });
         this.fetchPartiesService.searchParties(filter);
     }
+
+    update() {
+        this.fetchPartiesService.searchParties(this.qp.params.text);
+    }
 }

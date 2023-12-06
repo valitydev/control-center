@@ -72,12 +72,13 @@
     <ng-template #onlyValue>
         <span
             [ngClass]="{
-                link: !!extension?.link?.[0],
+                link: !!extension?.click || !!extension?.link?.[0],
                 'tooltip-link': !!extension?.tooltip,
                 'mat-body-1': true
             }"
             [queryParams]="extensionQueryParams$ | async"
             [routerLink]="extension?.link?.[0]"
+            (click)="extension?.click?.()"
         >
             <span
                 *ngIf="extension?.tooltip; else simpleValue"

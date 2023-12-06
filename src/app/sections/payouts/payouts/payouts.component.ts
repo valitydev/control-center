@@ -8,7 +8,7 @@ import {
     DialogService,
     QueryParamsService,
     clean,
-    getFormValueChanges,
+    getValueChanges,
     getNoTimeZoneIsoString,
     createDateRangeToToday,
     Column,
@@ -116,7 +116,7 @@ export class PayoutsComponent implements OnInit {
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
-        getFormValueChanges(this.filtersForm, true)
+        getValueChanges(this.filtersForm)
             .pipe(
                 filter(() => this.filtersForm.valid),
                 untilDestroyed(this),
