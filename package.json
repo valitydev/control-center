@@ -35,7 +35,7 @@
     "@vality/fistful-proto": "2.0.1-3b9a0a7.0",
     "@vality/machinegun-proto": "1.0.0",
     "@vality/magista-proto": "2.0.2-4383410.0",
-    "@vality/ng-core": "16.2.1-pr-49-4158152.0",
+    "@vality/ng-core": "16.2.1-pr-49-27b446f.0",
     "@vality/payout-manager-proto": "2.0.1-eb4091a.0",
     "@vality/repairer-proto": "2.0.2-07b73e9.0",
     "@vality/thrift-ts": "2.4.1-8ad5123.0",
