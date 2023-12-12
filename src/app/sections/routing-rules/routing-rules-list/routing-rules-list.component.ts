@@ -16,10 +16,9 @@ import {
     Column,
     createOperationColumn,
     ComponentChanges,
+    NotifyLogService,
 } from '@vality/ng-core';
 import { filter, switchMap } from 'rxjs/operators';
-
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { handleError } from '../../../../utils/operators/handle-error';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
@@ -53,7 +52,7 @@ export class RoutingRulesListComponent<
 
     constructor(
         private dialogService: DialogService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute,
     ) {}
@@ -120,7 +119,7 @@ export class RoutingRulesListComponent<
                 delegateIdx: delegateId.delegateIdx,
             })
             .afterClosed()
-            .pipe(handleError(this.notificationErrorService.error), untilDestroyed(this))
+            .pipe(handleError(this.log.error), untilDestroyed(this))
             .subscribe();
     }
 
@@ -133,7 +132,7 @@ export class RoutingRulesListComponent<
             })
             .afterClosed()
             .pipe(untilDestroyed(this))
-            .subscribe({ error: this.notificationErrorService.error });
+            .subscribe({ error: this.log.error });
     }
 
     cloneDelegateRuleset(delegateId: DelegateId) {
@@ -150,7 +149,7 @@ export class RoutingRulesListComponent<
                 ),
                 untilDestroyed(this),
             )
-            .subscribe({ error: this.notificationErrorService.error });
+            .subscribe({ error: this.log.error });
     }
 
     delete(delegateId: DelegateId) {
@@ -167,6 +166,6 @@ export class RoutingRulesListComponent<
                 ),
                 untilDestroyed(this),
             )
-            .subscribe({ error: this.notificationErrorService.error });
+            .subscribe({ error: this.log.error });
     }
 }

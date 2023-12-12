@@ -19,9 +19,11 @@
         [columns]="columns"
         [data]="(candidates$ | async) || []"
         [progress]="isLoading$ | async"
+        [rowDragDrop]="['priority']"
         [size]="100"
         [sort]="{ active: 'priority', direction: 'desc' }"
         noActions
         sortOnFront
+        (rowDropped)="drop($event)"
     ></v-table>
 </div>
