@@ -6,7 +6,6 @@ interface Endpoint {
 }
 
 export interface AppConfig {
-    fileStorageEndpoint: string;
     api: {
         wachter: Endpoint;
     };

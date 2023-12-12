@@ -19,7 +19,6 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
                             checkLoginIframe: true,
                         },
                         enableBearerInterceptor: true,
-                        bearerExcludedUrls: ['/assets', configService.config.fileStorageEndpoint],
                         bearerPrefix: 'Bearer',
                     })
                     .then(() => keycloak.getToken()),
