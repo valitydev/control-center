@@ -6,7 +6,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { ConfigService } from '../../../core/config.service';
 import { FetchSourcesService } from '../../sources';
 
 import { CreateDepositService } from './services/create-deposit/create-deposit.service';
@@ -33,7 +32,6 @@ export class CreateDepositDialogComponent implements OnInit {
         private createDepositService: CreateDepositService,
         private snackBar: MatSnackBar,
         private dialogRef: MatDialogRef<CreateDepositDialogComponent>,
-        private configService: ConfigService,
         private fetchSourcesService: FetchSourcesService,
     ) {}
 
