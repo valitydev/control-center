@@ -19,6 +19,7 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
                             checkLoginIframe: true,
                         },
                         enableBearerInterceptor: true,
+                        bearerExcludedUrls: ['/assets'],
                         bearerPrefix: 'Bearer',
                     })
                     .then(() => keycloak.getToken()),
