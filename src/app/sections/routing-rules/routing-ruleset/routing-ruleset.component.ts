@@ -298,6 +298,7 @@ export class RoutingRulesetComponent {
             )
             .subscribe({
                 next: () => {
+                    this.log.successOperation('update', 'candidates');
                     this.domainStoreService.forceReload();
                 },
                 error: (err) => {
