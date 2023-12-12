@@ -71,7 +71,10 @@ export class CreateDepositService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     form = this.fb.group({
         destination: ['', Validators.required],
-        amount: [null as number, [Validators.required, Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
+        amount: [
+            null as number,
+            [Validators.required, Validators.pattern(/^-?\d+([,.]\d{1,2})?$/)],
+        ],
         currency: [null as StatSource, Validators.required],
     });
 
