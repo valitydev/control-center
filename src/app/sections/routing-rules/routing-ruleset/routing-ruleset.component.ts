@@ -8,8 +8,11 @@ import {
     NotifyLogService,
     Column,
     createOperationColumn,
+    DragDrop,
+    correctPriorities,
 } from '@vality/ng-core';
-import { Observable, combineLatest } from 'rxjs';
+import cloneDeep from 'lodash-es/cloneDeep';
+import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
@@ -24,6 +27,7 @@ import { CandidateCardComponent } from '../../../shared/components/candidate-car
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
 
+import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
 import { RoutingRulesetService } from './routing-ruleset.service';
 
 @UntilDestroy()
@@ -42,6 +46,7 @@ export class RoutingRulesetComponent {
     );
     isLoading$ = this.domainStoreService.isLoading$;
     columns: Column<RoutingCandidate>[] = [
+        { field: 'priority', sortable: true },
         {
             field: 'candidate',
             description: 'description',
@@ -94,7 +99,6 @@ export class RoutingRulesetComponent {
                 ),
         },
         { field: 'allowed', formatter: (d) => this.formatPredicate(d.allowed) },
-        { field: 'priority', sortable: true },
         { field: 'weight', sortable: true },
         {
             field: 'pin',
@@ -246,6 +250,60 @@ export class RoutingRulesetComponent {
             map((candidates) => candidates.findIndex((c) => c === candidate)),
             first(),
         );
+    }
+
+    drop(e: DragDrop<RoutingCandidate>) {
+        const prevPriorities = e.currentData.map((d) => d.priority);
+        const resPriorities =
+            e.sort.direction === 'desc'
+                ? correctPriorities(prevPriorities)
+                : correctPriorities(prevPriorities.reverse()).reverse();
+        this.candidates$
+            .pipe(
+                first(),
+                switchMap((candidates) =>
+                    this.dialog
+                        .open(ChangeCandidatesPrioritiesDialogComponent, {
+                            object: candidates.map((c) => ({
+                                ...c,
+                                priority: resPriorities[e.currentData.findIndex((d) => d === c)],
+                            })),
+                            prevObject: candidates,
+                        })
+                        .afterClosed()
+                        .pipe(filter((res) => res.status === DialogResponseStatus.Success)),
+                ),
+                withLatestFrom(this.routingRulesetService.shopRuleset$),
+                switchMap(
+                    ([
+                        {
+                            data: { object: candidates },
+                        },
+                        shopRuleset,
+                    ]) => {
+                        const newShopRuleset = cloneDeep(shopRuleset);
+                        newShopRuleset.data.decisions.candidates = candidates as RoutingCandidate[];
+                        return this.domainStoreService.commit({
+                            ops: [
+                                {
+                                    update: {
+                                        old_object: { routing_rules: shopRuleset },
+                                        new_object: { routing_rules: newShopRuleset },
+                                    },
+                                },
+                            ],
+                        });
+                    },
+                ),
+            )
+            .subscribe({
+                next: () => {
+                    this.domainStoreService.forceReload();
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
     }
 
     private formatPredicate(predicate: Predicate) {

@@ -1,0 +1,10 @@
+<v-dialog title="Change priorities">
+    <cc-thrift-viewer
+        [compared]="dialogData.object"
+        [value]="dialogData.prevObject"
+    ></cc-thrift-viewer>
+
+    <v-dialog-actions>
+        <button color="primary" mat-raised-button (click)="closeWithSuccess()">Update</button>
+    </v-dialog-actions>
+</v-dialog>

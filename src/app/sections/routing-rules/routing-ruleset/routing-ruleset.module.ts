@@ -15,12 +15,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { TableModule } from '@vality/ng-core';
+import { TableModule, DialogModule } from '@vality/ng-core';
 
 import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
 
+import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
+import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
 import { RoutingRulesetComponent } from './routing-ruleset.component';
 
@@ -46,7 +48,9 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         MatAutocompleteModule,
         TableModule,
         DomainThriftViewerComponent,
+        ThriftViewerModule,
+        DialogModule,
     ],
-    declarations: [RoutingRulesetComponent],
+    declarations: [RoutingRulesetComponent, ChangeCandidatesPrioritiesDialogComponent],
 })
 export class RoutingRulesetModule {}
