@@ -100,13 +100,13 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "control-center:build:production"
+                          "buildTarget": "control-center:build:production"
                         },
                         "development": {
-                            "browserTarget": "control-center:build:development"
+                          "buildTarget": "control-center:build:development"
                         },
                         "stage": {
-                            "browserTarget": "control-center:build:development,stage"
+                          "buildTarget": "control-center:build:development,stage"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -114,7 +114,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "mixer-ui:build"
+                      "buildTarget": "mixer-ui:build"
                     }
                 },
                 "test": {
