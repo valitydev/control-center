@@ -17,10 +17,7 @@
                 <mat-label>Identity ID</mat-label>
                 <input formControlName="identity_id" matInput />
             </mat-form-field>
-            <mat-form-field>
-                <mat-label>Currency Code</mat-label>
-                <input formControlName="currency_code" matInput />
-            </mat-form-field>
+            <cc-currency-field formControlName="currency_code"></cc-currency-field>
             <v-list-field formControlName="wallet_id" label="Wallet IDs"></v-list-field>
         </ng-template>
     </v-filters>
