@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, booleanAttribute } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import {
     SelectFieldModule,
     FormControlSuperclass,
@@ -19,13 +20,15 @@ import { FetchSourcesService } from '../../../sections/sources';
     templateUrl: './currency-source-field.component.html',
     providers: createControlProviders(() => CurrencySourceFieldComponent),
 })
-export class CurrencySourceFieldComponent extends FormControlSuperclass<string> {
+export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSource> {
+    @Input({ transform: booleanAttribute }) required = false;
+
     options$ = this.fetchSourcesService.sources$.pipe(
-        map((sources): Option<string>[] =>
+        map((sources): Option<StatSource>[] =>
             sources
                 .map((s) => ({
                     label: s.currency_symbolic_code,
-                    value: s.id,
+                    value: s,
                     description: s.name,
                 }))
                 .sort((a, b) => compareDifferentTypes(a.label, b.label)),

@@ -11,6 +11,8 @@ import { DialogModule } from '@vality/ng-core';
 
 import { UserInfoBasedIdGeneratorModule } from '@cc/app/shared/services/user-info-based-id-generator/user-info-based-id-generator.module';
 
+import { CurrencySourceFieldComponent } from '../../../shared/components/currency-source-field';
+
 import { CreateDepositDialogComponent } from './create-deposit-dialog.component';
 
 @NgModule({
@@ -25,6 +27,7 @@ import { CreateDepositDialogComponent } from './create-deposit-dialog.component'
         MatProgressBarModule,
         UserInfoBasedIdGeneratorModule,
         DialogModule,
+        CurrencySourceFieldComponent,
     ],
     declarations: [CreateDepositDialogComponent],
 })

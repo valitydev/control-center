@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StatDeposit, RevertStatus } from '@vality/fistful-proto/fistful_stat';
@@ -14,6 +13,8 @@ import {
     countProps,
     isEqualDateRange,
     getNoTimeZoneIsoString,
+    DialogService,
+    DialogResponseStatus,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
@@ -117,7 +118,7 @@ export class DepositsComponent implements OnInit {
     depositStatuses: QueryDsl['query']['deposits']['status'][] = ['Pending', 'Succeeded', 'Failed'];
 
     constructor(
-        private dialog: MatDialog,
+        private dialog: DialogService,
         private fetchDepositsService: FetchDepositsService,
         private router: Router,
         private fb: FormBuilder,
@@ -141,10 +142,10 @@ export class DepositsComponent implements OnInit {
 
     createDeposit() {
         this.dialog
-            .open(CreateDepositDialogComponent, { width: '552px', disableClose: true })
+            .open(CreateDepositDialogComponent)
             .afterClosed()
             .pipe(
-                filter((deposit) => !!deposit),
+                filter((res) => res.status === DialogResponseStatus.Success),
                 untilDestroyed(this),
             )
             .subscribe(() => {
