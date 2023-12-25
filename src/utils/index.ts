@@ -1,7 +1,6 @@
 export * from './get-union-key';
 export * from './remove-empty-properties';
 export * from './wrap-values-to-array';
-export * from './skip-null-values';
 export * from './thrift-json-converter';
 export * from './to-minor';
 export * from './to-major';
