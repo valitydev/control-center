@@ -22,6 +22,7 @@
         "lib": ["ESNext", "DOM"],
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
+        "skipLibCheck": true,
         "paths": {
             "@cc/*": ["src/*"],
             // necessary for local work with the library (ng-core), so that the node does not use the second angular from the local library node_modules
