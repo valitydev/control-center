@@ -13,9 +13,9 @@ export class SourcesComponent {
     progress$ = this.fetchSourcesService.progress$;
     columns: Column<Source>[] = [
         { field: 'id' },
-        { field: 'name' },
+        { field: 'name', sortable: true },
         'identity',
-        'currency_symbolic_code',
+        { field: 'currency_symbolic_code', sortable: true },
         { field: 'created_at', type: 'datetime' },
     ];
 
