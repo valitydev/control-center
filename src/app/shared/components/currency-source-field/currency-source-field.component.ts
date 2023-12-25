@@ -31,7 +31,11 @@ export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSour
                     value: s,
                     description: s.name,
                 }))
-                .sort((a, b) => compareDifferentTypes(a.label, b.label)),
+                .sort((a, b) =>
+                    a.label === b.label
+                        ? compareDifferentTypes(a.description, b.description)
+                        : compareDifferentTypes(a.label, b.label),
+                ),
         ),
     );
 
