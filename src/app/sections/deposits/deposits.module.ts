@@ -16,9 +16,11 @@ import {
     DateRangeFieldModule,
     InputFieldModule,
     AutocompleteFieldModule,
+    SelectFieldModule,
 } from '@vality/ng-core';
 
 import { PageLayoutModule } from '../../shared';
+import { CurrencyFieldComponent } from '../../shared/components/currency-field';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 
 import { CreateDepositDialogModule } from './create-deposit-dialog/create-deposit-dialog.module';
@@ -47,6 +49,8 @@ import { DepositsComponent } from './deposits.component';
         DateRangeFieldModule,
         InputFieldModule,
         AutocompleteFieldModule,
+        SelectFieldModule,
+        CurrencyFieldComponent,
     ],
     declarations: [DepositsComponent],
 })

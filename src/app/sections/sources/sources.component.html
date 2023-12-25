@@ -6,6 +6,8 @@
         [columns]="columns"
         [data]="sources$ | async"
         [progress]="!!(progress$ | async)"
+        [sort]="{ direction: 'asc', active: 'name' }"
         noActions
+        sortOnFront
     ></v-table>
 </cc-page-layout>

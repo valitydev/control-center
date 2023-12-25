@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StatDeposit, RevertStatus } from '@vality/fistful-proto/fistful_stat';
@@ -14,18 +13,17 @@ import {
     countProps,
     isEqualDateRange,
     getNoTimeZoneIsoString,
-    Option,
-    compareDifferentTypes,
+    DialogService,
+    DialogResponseStatus,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
-import { filter, startWith, map, debounceTime } from 'rxjs/operators';
+import { filter, startWith, debounceTime } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../utils';
 import { QueryDsl } from '../../api/fistful-stat';
 import { createCurrencyColumn } from '../../shared';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
-import { FetchSourcesService } from '../sources';
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog/create-deposit-dialog.component';
 import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.service';
@@ -46,7 +44,7 @@ export class DepositsComponent implements OnInit {
     filtersForm = this.fb.nonNullable.group({
         dateRange: createDateRangeToToday(this.dateRangeDays),
         amount_to: null as number,
-        currency_code: '',
+        currency_code: null as string,
         status: '' as QueryDsl['query']['deposits']['status'],
         deposit_id: '',
         identity_id: '',
@@ -117,25 +115,13 @@ export class DepositsComponent implements OnInit {
             },
         ]),
     ];
-    currencyOptions$ = this.fetchSourcesService.sources$.pipe(
-        map((sources): Option<string>[] =>
-            sources
-                .map((s) => ({
-                    label: s.currency_symbolic_code,
-                    value: s.currency_symbolic_code,
-                    description: s.name,
-                }))
-                .sort((a, b) => compareDifferentTypes(a.label, b.label)),
-        ),
-    );
     depositStatuses: QueryDsl['query']['deposits']['status'][] = ['Pending', 'Succeeded', 'Failed'];
 
     constructor(
-        private dialog: MatDialog,
+        private dialog: DialogService,
         private fetchDepositsService: FetchDepositsService,
         private router: Router,
         private fb: FormBuilder,
-        private fetchSourcesService: FetchSourcesService,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private qp: QueryParamsService<object>,
@@ -156,10 +142,10 @@ export class DepositsComponent implements OnInit {
 
     createDeposit() {
         this.dialog
-            .open(CreateDepositDialogComponent, { width: '552px', disableClose: true })
+            .open(CreateDepositDialogComponent)
             .afterClosed()
             .pipe(
-                filter((deposit) => !!deposit),
+                filter((res) => res.status === DialogResponseStatus.Success),
                 untilDestroyed(this),
             )
             .subscribe(() => {

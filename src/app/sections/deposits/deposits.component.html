@@ -6,11 +6,7 @@
         <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="dateRange" required></v-date-range-field>
             <v-input-field formControlName="amount_to" label="Amount To"></v-input-field>
-            <v-autocomplete-field
-                [options]="currencyOptions$ | async"
-                formControlName="currency_code"
-                label="Currency"
-            ></v-autocomplete-field>
+            <cc-currency-field formControlName="currency_code"></cc-currency-field>
             <mat-form-field>
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="status">

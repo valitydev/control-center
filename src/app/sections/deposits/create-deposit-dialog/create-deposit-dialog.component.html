@@ -13,14 +13,11 @@
                     type="number"
                 />
             </mat-form-field>
-            <mat-form-field style="flex: 1">
-                <mat-label>Currency</mat-label>
-                <mat-select formControlName="currency" required>
-                    <mat-option *ngFor="let source of sources$ | async" [value]="source">
-                        {{ source.currency_symbolic_code }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+            <cc-currency-source-field
+                formControlName="currency"
+                required
+                style="flex: 1"
+            ></cc-currency-source-field>
         </div>
     </form>
     <v-dialog-actions>

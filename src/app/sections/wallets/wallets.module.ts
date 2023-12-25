@@ -12,6 +12,8 @@ import { AmountCurrencyPipe, PageLayoutModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
+import { CurrencyFieldComponent } from '../../shared/components/currency-field';
+
 import { WalletsRoutingModule } from './wallets-routing.module';
 import { WalletsComponent } from './wallets.component';
 
@@ -33,6 +35,7 @@ import { WalletsComponent } from './wallets.component';
         ListFieldModule,
         FiltersModule,
         SwitchButtonModule,
+        CurrencyFieldComponent,
     ],
     declarations: [WalletsComponent],
 })

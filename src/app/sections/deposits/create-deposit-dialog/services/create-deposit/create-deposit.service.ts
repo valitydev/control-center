@@ -6,7 +6,7 @@ import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
 import { getNoTimeZoneIsoString } from '@vality/ng-core';
 import { endOfDay, startOfDay } from 'date-fns';
 import { EMPTY, forkJoin, merge, Observable, of, Subject } from 'rxjs';
-import { catchError, map, switchMap, first } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { FistfulAdminService } from '@cc/app/api/fistful-admin';
 import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
@@ -15,8 +15,6 @@ import { UserInfoBasedIdGeneratorService } from '@cc/app/shared/services';
 import { createDepositStopPollingCondition } from '@cc/app/shared/utils';
 import { poll } from '@cc/utils/poll';
 import { toMinor } from '@cc/utils/to-minor';
-
-import { FetchSourcesService } from '../../../../sources';
 
 @Injectable()
 export class CreateDepositService {
@@ -83,19 +81,10 @@ export class CreateDepositService {
         private fistfulStatisticsService: FistfulStatisticsService,
         private fb: FormBuilder,
         private idGenerator: UserInfoBasedIdGeneratorService,
-        private fetchSourcesService: FetchSourcesService,
-    ) {
-        this.initForm();
-    }
+    ) {}
 
     createDeposit() {
         this.create$.next();
-    }
-
-    private initForm() {
-        this.fetchSourcesService.sources$.pipe(first()).subscribe((sources) => {
-            this.form.patchValue({ currency: sources[0] });
-        });
     }
 
     private getParams(): DepositParams {
