@@ -1,9 +1,4 @@
-<mat-toolbar class="toolbar" color="primary">
-    <span>Control Center</span> <span class="spacer"></span> <span>{{ username }}</span>
-    <button [matMenuTriggerFor]="userMenu" mat-icon-button><mat-icon>more_vert</mat-icon></button>
-</mat-toolbar>
-
-<mat-menu #userMenu="matMenu"> <button mat-menu-item (click)="logout()">Logout</button> </mat-menu>
+<cc-toolbar />
 
 <mat-sidenav-container autosize class="container">
     <mat-sidenav fixedInViewport="true" fixedTopGap="64" mode="side" opened role="navigation">
