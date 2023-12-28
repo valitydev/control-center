@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import jwt_decode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, defer, switchMap, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -15,7 +15,7 @@ export class KeycloakTokenInfoService {
     ).pipe(switchMap(() => this.keycloakService.getToken()));
     decoded$: Observable<KeycloakToken> = this.token$.pipe(
         map((token) => ({
-            ...jwt_decode<KeycloakToken>(token),
+            ...jwtDecode<KeycloakToken>(token),
             token,
         })),
         untilDestroyed(this),
