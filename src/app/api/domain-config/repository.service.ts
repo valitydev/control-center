@@ -20,9 +20,7 @@ export class RepositoryService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
-            map(toWachterHeaders('Domain')),
-        );
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(map(toWachterHeaders('Domain')));
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(
                 (m) => m.default as ThriftAstMetadata[],

@@ -20,7 +20,7 @@ export class AutomatonService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('Automaton')),
         );
         const metadata$ = from(

@@ -20,7 +20,7 @@ export class PayoutManagementService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('PayoutManagement')),
         );
         const metadata$ = from(
