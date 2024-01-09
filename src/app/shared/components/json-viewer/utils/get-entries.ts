@@ -5,6 +5,6 @@ export function getEntries(obj: unknown): [number | string, unknown][] {
     return Array.isArray(obj) || obj instanceof Set
         ? Array.from(obj).map((v, idx) => [idx, v])
         : obj instanceof Map
-        ? Array.from(obj)
-        : Object.entries(obj);
+          ? Array.from(obj)
+          : Object.entries(obj);
 }
