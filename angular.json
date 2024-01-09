@@ -114,7 +114,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "buildTarget": "mixer-ui:build"
+                        "buildTarget": "control-center:build"
                     }
                 },
                 "test": {
