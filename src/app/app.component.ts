@@ -24,7 +24,6 @@ import { SidenavInfoService } from './shared/components/sidenav-info';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    username: string;
     menuItems: { name: string; route: string }[][] = [];
 
     constructor(
@@ -35,13 +34,8 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         void this.keycloakService.loadUserProfile().then(() => {
-            this.username = this.keycloakService.getUsername();
             this.menuItems = this.getMenuItems();
         });
-    }
-
-    logout() {
-        void this.keycloakService.logout();
     }
 
     private getMenuItems() {

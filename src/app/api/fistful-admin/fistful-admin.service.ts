@@ -22,7 +22,7 @@ export class FistfulAdminService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('FistfulAdmin')),
         );
         const metadata$ = from(

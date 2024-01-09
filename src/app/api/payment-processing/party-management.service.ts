@@ -21,7 +21,7 @@ export class PartyManagementService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('PartyManagement')),
         );
         const metadata$ = from(

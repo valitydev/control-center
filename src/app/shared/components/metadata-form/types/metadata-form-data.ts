@@ -123,8 +123,8 @@ export class MetadataFormData<
         this.typeGroup = isComplexType(type)
             ? TypeGroup.Complex
             : isPrimitiveType(this.type)
-            ? TypeGroup.Primitive
-            : TypeGroup.Object;
+              ? TypeGroup.Primitive
+              : TypeGroup.Object;
     }
 
     private setNamespaceObjectType() {

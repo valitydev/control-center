@@ -19,6 +19,7 @@ import { KeycloakTokenInfoModule } from '@cc/app/shared/services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
 import { CoreModule } from './core/core.module';
 import icons from './icons.json';
 import { ClaimsModule } from './sections/claims/claims.module';
@@ -69,6 +70,7 @@ export let AppInjector: Injector;
         PayoutsModule,
         SectionsModule,
         SidenavInfoComponent,
+        ToolbarComponent,
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
         // TODO: hack for cash field 😡

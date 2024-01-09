@@ -30,7 +30,7 @@ export class ClaimManagementService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.decoded$.pipe(
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('ClaimManagement')),
         );
         const metadata$ = from(
