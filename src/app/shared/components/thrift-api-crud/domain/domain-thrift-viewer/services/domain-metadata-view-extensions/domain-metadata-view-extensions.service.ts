@@ -16,8 +16,7 @@ import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/m
 
 import { getUnionValue } from '../../../../../../../../utils';
 import { SidenavInfoService } from '../../../../../sidenav-info';
-
-import { getObjectLabel } from './utils/get-object-label';
+import { getDomainObjectDetails } from '../../../utils';
 
 @Injectable({
     providedIn: 'root',
@@ -81,7 +80,7 @@ export class DomainMetadataViewExtensionsService {
                             }
                             const [ref, obj] = refObj;
                             return {
-                                value: getObjectLabel(getUnionValue(obj), objectKey),
+                                value: getDomainObjectDetails(obj).label,
                                 tooltip: getUnionValue(ref),
                                 click: () => {
                                     this.sidenavInfoService.toggle(
