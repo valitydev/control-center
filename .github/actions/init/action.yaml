@@ -4,6 +4,5 @@ runs:
   using: composite
   steps:
     - uses: valitydev/action-frontend/setup@v1
-    # TODO: Need to remove `--force` after removing deprecated `@angular/flex-layout`
-    - run: npm ci --force
+    - run: npm ci
       shell: bash
