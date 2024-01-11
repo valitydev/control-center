@@ -5,15 +5,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { from } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { CodeLensProvider, CompletionProvider } from '@cc/components/monaco-editor';
-
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
-
-import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
-import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
 
 @Component({
     templateUrl: './domain-obj-modification.component.html',
@@ -24,8 +19,6 @@ export class DomainObjModificationComponent implements OnInit {
     control = new FormControl();
 
     progress$ = this.domainObjModService.progress$;
-    codeLensProviders: CodeLensProvider[] = [new DomainObjCodeLensProvider()];
-    completionProviders: CompletionProvider[] = [new DomainObjCompletionProvider()];
     metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
     object$ = this.domainObjModService.object$;
     type$ = this.domainObjModService.type$;

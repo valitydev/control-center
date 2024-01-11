@@ -74,19 +74,25 @@ export class DomainMetadataViewExtensionsService {
                 determinant: (data) => of(isTypeWithAliases(data, refType, 'domain')),
                 extension: (_, value) =>
                     this.domainStoreService.getObjectsRefs(objectKey).pipe(
-                        map((objs) => objs.find(([, o]) => isEqual(o[objectKey].ref, value))),
-                        map(([ref, obj]) => ({
-                            value: getObjectLabel(getUnionValue(obj), objectKey),
-                            tooltip: getUnionValue(ref),
-                            click: () => {
-                                this.sidenavInfoService.toggle(
-                                    import(
-                                        '../../../domain-object-card/domain-object-card.component'
-                                    ).then((r) => r.DomainObjectCardComponent),
-                                    { ref },
-                                );
-                            },
-                        })),
+                        map((refObjs) => refObjs.find(([, o]) => isEqual(o[objectKey].ref, value))),
+                        map((refObj) => {
+                            if (!refObj) {
+                                return undefined;
+                            }
+                            const [ref, obj] = refObj;
+                            return {
+                                value: getObjectLabel(getUnionValue(obj), objectKey),
+                                tooltip: getUnionValue(ref),
+                                click: () => {
+                                    this.sidenavInfoService.toggle(
+                                        import(
+                                            '../../../domain-object-card/domain-object-card.component'
+                                        ).then((r) => r.DomainObjectCardComponent),
+                                        { ref },
+                                    );
+                                },
+                            };
+                        }),
                     ),
             };
         });

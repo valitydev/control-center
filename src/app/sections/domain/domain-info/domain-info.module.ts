@@ -9,8 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { PipesModule, ActionsModule } from '@vality/ng-core';
-
-import { MonacoEditorModule } from '@cc/components/monaco-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { ThriftPipesModule, PageLayoutModule } from '../../../shared';
 import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';

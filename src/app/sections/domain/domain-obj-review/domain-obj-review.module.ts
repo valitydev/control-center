@@ -8,8 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ActionsModule } from '@vality/ng-core';
-
-import { MonacoEditorModule } from '@cc/components/monaco-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { PageLayoutModule } from '../../../shared';
 import { ThriftEditorModule } from '../../../shared/components/thrift-editor';

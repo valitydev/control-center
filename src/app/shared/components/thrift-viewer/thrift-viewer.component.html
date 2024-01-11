@@ -6,13 +6,13 @@
 </div>
 <ng-template #loaded>
     <div class="wrapper">
-        <cc-monaco-diff-editor
+        <ngx-monaco-diff-editor
             *ngIf="isDiff; else standard"
-            [modified]="comparedFile$ | async"
+            [modifiedModel]="comparedFile$ | async"
             [options]="{ renderSideBySide: true, readOnly: true }"
-            [original]="valueFile$ | async"
+            [originalModel]="valueFile$ | async"
             class="monaco-editor"
-        ></cc-monaco-diff-editor>
+        ></ngx-monaco-diff-editor>
         <ng-template #standard>
             <cc-json-viewer
                 *ngIf="kind === 'component'"
@@ -22,13 +22,13 @@
                 [type]="type"
                 [value]="value"
             ></cc-json-viewer>
-            <cc-monaco-editor
+            <ngx-monaco-editor
                 *ngIf="kind === 'editor'"
-                [file]="valueFile$ | async"
-                [options]="{ readOnly: true }"
+                [ngModel]="(valueFile$ | async).code"
+                [options]="{ readOnly: true, language: (valueFile$ | async).language }"
                 class="monaco-editor"
             >
-            </cc-monaco-editor>
+            </ngx-monaco-editor>
             <div class="actions">
                 <button color="primary" mat-icon-button (click)="toggleKind()">
                     <mat-icon *ngIf="kind === 'component'">code_blocks</mat-icon>

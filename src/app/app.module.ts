@@ -14,6 +14,7 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { KeycloakTokenInfoModule } from '@cc/app/shared/services';
 
@@ -71,6 +72,7 @@ export let AppInjector: Injector;
         SectionsModule,
         SidenavInfoComponent,
         ToolbarComponent,
+        MonacoEditorModule.forRoot(),
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
         // TODO: hack for cash field 😡
