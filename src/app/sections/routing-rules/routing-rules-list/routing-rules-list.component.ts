@@ -6,9 +6,10 @@ import {
     Output,
     OnChanges,
     booleanAttribute,
+    DestroyRef,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
     DialogResponseStatus,
     DialogService,
@@ -30,7 +31,6 @@ type DelegateId = {
     delegateIdx: number;
 };
 
-@UntilDestroy()
 @Component({
     selector: 'cc-routing-rules-list',
     templateUrl: 'routing-rules-list.component.html',
@@ -55,6 +55,7 @@ export class RoutingRulesListComponent<
         private log: NotifyLogService,
         private routingRulesService: RoutingRulesService,
         private route: ActivatedRoute,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<RoutingRulesListComponent<T>>) {
@@ -119,7 +120,7 @@ export class RoutingRulesListComponent<
                 delegateIdx: delegateId.delegateIdx,
             })
             .afterClosed()
-            .pipe(handleError(this.log.error), untilDestroyed(this))
+            .pipe(handleError(this.log.error), takeUntilDestroyed(this.destroyRef))
             .subscribe();
     }
 
@@ -131,7 +132,7 @@ export class RoutingRulesListComponent<
                 type: this.route.snapshot.params.type,
             })
             .afterClosed()
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({ error: this.log.error });
     }
 
@@ -147,7 +148,7 @@ export class RoutingRulesListComponent<
                         delegateIdx: delegateId.delegateIdx,
                     }),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({ error: this.log.error });
     }
@@ -164,7 +165,7 @@ export class RoutingRulesListComponent<
                         delegateIdx: delegateId.delegateIdx,
                     }),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({ error: this.log.error });
     }

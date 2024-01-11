@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { Subject, merge, defer, from } from 'rxjs';
@@ -11,7 +11,6 @@ import { InvoicingService } from '@cc/app/api/payment-processing';
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsService } from './payment-details.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'payment-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +43,7 @@ export class PaymentDetailsComponent {
         private route: ActivatedRoute,
         private invoicingService: InvoicingService,
         private dialogService: DialogService,
+        private destroyRef: DestroyRef,
     ) {}
 
     createChargeback() {
@@ -53,7 +53,7 @@ export class PaymentDetailsComponent {
                 this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>,
             )
             .afterClosed()
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(({ status }) => {
                 if (status === DialogResponseStatus.Success) {
                     this.updateChargebacks$.next();

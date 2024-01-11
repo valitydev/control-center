@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     ValidationErrors,
     Validator,
@@ -6,7 +7,6 @@ import {
     FormControl,
     AbstractControl,
 } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
@@ -26,7 +26,6 @@ function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[
 
 type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
 
-@UntilDestroy()
 @Component({
     selector: 'cc-complex-form',
     templateUrl: './complex-form.component.html',
@@ -57,9 +56,13 @@ export class ComplexFormComponent<V, K = never>
         }
     }
 
+    constructor(private destroyRef: DestroyRef) {
+        super();
+    }
+
     ngOnInit() {
         merge(this.valueControls.valueChanges, this.keyControls.valueChanges)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 const values = this.valueControls.value;
                 switch (this.data.type.name) {

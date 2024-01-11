@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import {
     DialogService,
     ConfirmDialogComponent,
@@ -14,7 +14,6 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 
-@UntilDestroy()
 @Injectable()
 export class RoutingRulesetService {
     partyID$: Observable<string> = this.route.params.pipe(
@@ -57,6 +56,7 @@ export class RoutingRulesetService {
         private partyManagementService: PartyManagementService,
         private log: NotifyLogService,
         private dialog: DialogService,
+        private destroyRef: DestroyRef,
     ) {}
 
     removeShopRule(candidateIdx: number) {
@@ -73,7 +73,7 @@ export class RoutingRulesetService {
                         candidateIdx,
                     }),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: () => {

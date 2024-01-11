@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
 import {
@@ -28,7 +28,6 @@ import { DATE_RANGE_DAYS } from '../../tokens';
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'payments.component.html',
 })
@@ -82,6 +81,7 @@ export class PaymentsComponent implements OnInit {
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
@@ -92,7 +92,7 @@ export class PaymentsComponent implements OnInit {
         const otherFiltersParams: Partial<PaymentSearchQuery> = this.qp.params.otherFilters || {};
         this.otherFiltersControl.patchValue(lodashMerge({}, otherFilters, otherFiltersParams));
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
-            .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
+            .pipe(startWith(null), debounceTime(500), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.load();
             });

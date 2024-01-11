@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidationErrors, Validator, FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
@@ -12,7 +12,6 @@ import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 import { getDefaultValue } from '../../utils/get-default-value';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-union-field',
     templateUrl: './union-field.component.html',
@@ -28,6 +27,10 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     fieldControl = new FormControl() as FormControl<Field>;
     internalControl = new FormControl() as FormControl<T[keyof T]>;
 
+    constructor(private destroyRef: DestroyRef) {
+        super();
+    }
+
     ngOnInit() {
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)
             .pipe(
@@ -37,12 +40,12 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
                 }),
                 distinctUntilChanged(),
                 delay(0),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => {
                 this.emitOutgoingValue(value);
             });
-        this.fieldControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
+        this.fieldControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
             this.cleanInternal(true);
         });
     }

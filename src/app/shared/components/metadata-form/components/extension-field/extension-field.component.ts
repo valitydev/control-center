@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator, ValidationErrors, FormControl, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import { ComponentChanges, createControlProviders } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
@@ -17,7 +17,6 @@ import {
     getFirstDeterminedExtensionsResult,
 } from '../../types/metadata-form-extension';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-extension-field',
     templateUrl: './extension-field.component.html',
@@ -62,11 +61,15 @@ export class ExtensionFieldComponent<T>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
+    constructor(private destroyRef: DestroyRef) {
+        super();
+    }
+
     ngOnInit() {
         this.control.valueChanges
             .pipe(
                 switchMap(() => this.converter$),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((converter) => {
                 this.emitOutgoingValue(converter.internalToOutput(this.control.value) as never);
@@ -74,9 +77,11 @@ export class ExtensionFieldComponent<T>
     }
 
     handleIncomingValue(value: T) {
-        this.converter$.pipe(first(), untilDestroyed(this)).subscribe((converter) => {
-            this.control.setValue(converter.outputToInternal(value) as never);
-        });
+        this.converter$
+            .pipe(first(), takeUntilDestroyed(this.destroyRef))
+            .subscribe((converter) => {
+                this.control.setValue(converter.outputToInternal(value) as never);
+            });
     }
 
     validate(): ValidationErrors | null {
@@ -97,7 +102,7 @@ export class ExtensionFieldComponent<T>
         this.generate$
             .pipe(
                 switchMap((generate) => generate()),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => this.control.setValue(value as T));
         event.stopPropagation();

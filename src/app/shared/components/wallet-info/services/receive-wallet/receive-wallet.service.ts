@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, switchMap, shareReplay, tap } from 'rxjs/operators';
 
 import { ManagementService } from '@cc/app/api/wallet';
 
-@UntilDestroy()
 @Injectable()
 export class ReceiveWalletService {
     private receiveWallet$ = new ReplaySubject<string>();
@@ -26,7 +25,7 @@ export class ReceiveWalletService {
             ),
         ),
         tap(() => this.loading$.next(false)),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
@@ -35,7 +34,10 @@ export class ReceiveWalletService {
     // eslint-disable-next-line @typescript-eslint/member-ordering
     hasError$ = this.error$.asObservable();
 
-    constructor(private walletManagementService: ManagementService) {}
+    constructor(
+        private walletManagementService: ManagementService,
+        private destroyRef: DestroyRef,
+    ) {}
 
     receiveWallet(id: string): void {
         this.receiveWallet$.next(id);

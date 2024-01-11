@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { combineLatest, defer, Observable } from 'rxjs';
 import { map, pluck, shareReplay, switchMap } from 'rxjs/operators';
 
@@ -9,18 +9,17 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { RoutingRulesService } from '../services/routing-rules';
 
-@UntilDestroy()
 @Injectable()
 export class PartyRoutingRulesetService {
     partyID$ = this.route.params.pipe(
         pluck('partyID'),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     ) as Observable<string>;
     refID$ = this.route.params.pipe(
         pluck('partyRefID'),
         map((r) => +r),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
@@ -35,19 +34,19 @@ export class PartyRoutingRulesetService {
             }),
         ),
         pluck('data', 'wallets'),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
     partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
     private party$ = this.partyID$.pipe(
         switchMap((partyID) => this.partyManagementService.Get(partyID)),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
@@ -56,6 +55,7 @@ export class PartyRoutingRulesetService {
         private partyManagementService: PartyManagementService,
         private routingRulesService: RoutingRulesService,
         private fistfulStatistics: FistfulStatisticsService,
+        private destroyRef: DestroyRef,
     ) {}
 
     reload() {

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -10,7 +10,6 @@ import { NotificationService } from '@cc/app/shared/services/notification';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { progressTo } from '@cc/utils';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-create-claim-dialog',
     templateUrl: './create-claim-dialog.component.html',
@@ -27,6 +26,7 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
         private router: Router,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -34,7 +34,7 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
     create() {
         this.claimService
             .CreateClaim(this.control.value, [])
-            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (claim) => {
                     this.notificationService.success('Claim successfully created');

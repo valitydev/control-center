@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
@@ -28,7 +28,6 @@ import { DEBOUNCE_TIME_MS } from '../../tokens';
 import { FetchWalletsTextService } from './fetch-wallets-text.service';
 import { FetchWalletsService } from './fetch-wallets.service';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
@@ -114,6 +113,7 @@ export class WalletsComponent implements OnInit {
         private walletManagementService: ManagementService,
         private log: NotifyLogService,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
@@ -123,12 +123,12 @@ export class WalletsComponent implements OnInit {
             this.isFilterControl.setValue(Number(isFilter));
         }
         getValueChanges(this.isFilterControl)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((value) => {
                 void this.typeQp.set({ isFilter: !!value });
             });
         getValueChanges(this.filtersForm)
-            .pipe(debounceTime(this.debounceTimeMs), untilDestroyed(this))
+            .pipe(debounceTime(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe((value) => {
                 void this.qp.set(clean(value));
                 this.filterSearch();

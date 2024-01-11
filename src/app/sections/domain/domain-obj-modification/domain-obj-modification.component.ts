@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { from } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -15,7 +15,6 @@ import { ModifiedDomainObjectService } from '../services/modified-domain-object.
 import { DomainObjCodeLensProvider } from './domain-obj-code-lens-provider';
 import { DomainObjCompletionProvider } from './domain-obj-completion-provider';
 
-@UntilDestroy()
 @Component({
     templateUrl: './domain-obj-modification.component.html',
     styleUrls: ['../editor-container.scss'],
@@ -39,19 +38,22 @@ export class DomainObjModificationComponent implements OnInit {
         private modifiedDomainObjectService: ModifiedDomainObjectService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
         private domainNavigateService: DomainNavigateService,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
-        this.domainObjModService.object$.pipe(first(), untilDestroyed(this)).subscribe((object) => {
-            if (
-                this.modifiedDomainObjectService.domainObject &&
-                this.route.snapshot.queryParams.ref === this.modifiedDomainObjectService.ref
-            ) {
-                this.control.setValue(this.modifiedDomainObjectService.domainObject);
-            } else {
-                this.control.setValue(object);
-            }
-        });
+        this.domainObjModService.object$
+            .pipe(first(), takeUntilDestroyed(this.destroyRef))
+            .subscribe((object) => {
+                if (
+                    this.modifiedDomainObjectService.domainObject &&
+                    this.route.snapshot.queryParams.ref === this.modifiedDomainObjectService.ref
+                ) {
+                    this.control.setValue(this.modifiedDomainObjectService.domainObject);
+                } else {
+                    this.control.setValue(object);
+                }
+            });
     }
 
     reviewChanges() {

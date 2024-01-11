@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { TerminalObject } from '@vality/domain-proto/domain';
 import { Column } from '@vality/ng-core';
 import { of } from 'rxjs';
@@ -14,7 +14,6 @@ import { DomainObjectCardComponent } from '../../shared/components/thrift-api-cr
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-terminals',
     templateUrl: './terminals.component.html',
@@ -40,7 +39,7 @@ export class TerminalsComponent {
             sortable: true,
             click: (d) => {
                 this.getProvider(d)
-                    .pipe(take(1), untilDestroyed(this))
+                    .pipe(take(1), takeUntilDestroyed(this.destroyRef))
                     .subscribe((provider) => {
                         if (!provider) {
                             return;
@@ -68,6 +67,7 @@ export class TerminalsComponent {
         private domainStoreService: DomainStoreService,
         private router: Router,
         private sidenavInfoService: SidenavInfoService,
+        private destroyRef: DestroyRef,
     ) {}
 
     update() {

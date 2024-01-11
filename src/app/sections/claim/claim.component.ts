@@ -1,13 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogResponseStatus, DialogService } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 import { NotificationErrorService, handleError } from '../../shared/services/notification-error';
@@ -17,7 +16,6 @@ import { ChangeStatusDialogComponent } from './components/change-status-dialog/c
 import { AllowedClaimStatusesService } from './services/allowed-claim-statuses.service';
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-claim',
     templateUrl: './claim.component.html',
@@ -62,10 +60,10 @@ export class ClaimComponent {
         private route: ActivatedRoute,
         private claimManagementService: ClaimManagementService,
         private partyManagementService: PartyManagementService,
-        private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
         private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {}
 
     reloadClaim() {
@@ -81,7 +79,7 @@ export class ClaimComponent {
                         .open(AddModificationDialogComponent, { party, claim })
                         .afterClosed(),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((result) => {
                 if (result.status === DialogResponseStatus.Success) {
@@ -99,7 +97,7 @@ export class ClaimComponent {
                         .open(ChangeStatusDialogComponent, { partyID: party.id, claim })
                         .afterClosed(),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((result) => {
                 if (result.status === DialogResponseStatus.Success) {

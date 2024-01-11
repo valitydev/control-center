@@ -1,5 +1,5 @@
-import { Component, Input, AfterViewInit, booleanAttribute } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Component, Input, AfterViewInit, booleanAttribute, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
     Option,
@@ -12,7 +12,6 @@ import { catchError, debounceTime, map, switchMap, tap, startWith } from 'rxjs/o
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
@@ -32,6 +31,7 @@ export class MerchantFieldComponent
     constructor(
         private deanonimusService: DeanonimusService,
         private log: NotifyLogService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -46,7 +46,7 @@ export class MerchantFieldComponent
                 }),
                 debounceTime(600),
                 switchMap((term) => this.searchOptions(term)),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((options) => {
                 this.options$.next(options);

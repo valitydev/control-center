@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
 
 import { NotificationErrorService } from '../../../../shared/services/notification-error';
 import { RoutingRulesService } from '../../services/routing-rules';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-initialize-routing-rules-dialog',
     templateUrl: 'initialize-routing-rules-dialog.component.html',
@@ -25,6 +24,7 @@ export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -39,7 +39,7 @@ export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
                 description,
                 delegateDescription,
             })
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.dialogRef.close(), this.notificationErrorService.error);
     }
 }

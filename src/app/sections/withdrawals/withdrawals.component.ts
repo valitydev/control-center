@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -36,7 +36,6 @@ interface WithdrawalsForm {
     walletId: WithdrawalParams['wallet_id'];
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-withdrawals',
     templateUrl: './withdrawals.component.html',
@@ -104,13 +103,14 @@ export class WithdrawalsComponent implements OnInit {
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private amountCurrencyService: AmountCurrencyService,
         private dialogService: DialogService,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
         this.filtersForm.valueChanges
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((v) => void this.qp.set(clean(v)));
-        this.qp.params$.pipe(untilDestroyed(this)).subscribe(() => this.update());
+        this.qp.params$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.update());
     }
 
     update(options?: UpdateOptions) {

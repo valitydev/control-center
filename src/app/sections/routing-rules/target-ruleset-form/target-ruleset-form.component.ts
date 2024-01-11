@@ -5,9 +5,10 @@ import {
     Input,
     OnChanges,
     Output,
+    DestroyRef,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { PaymentInstitutionObject } from '@vality/domain-proto/domain';
 import { ComponentChanges } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
@@ -22,7 +23,6 @@ import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 import { Target } from './types/target';
 import { TargetRuleset } from './types/target-ruleset';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-target-ruleset-form',
     templateUrl: 'target-ruleset-form.component.html',
@@ -59,9 +59,10 @@ export class TargetRulesetFormComponent implements OnChanges {
         private fb: UntypedFormBuilder,
         private domainStoreService: DomainStoreService,
         private routingRulesService: RoutingRulesService,
+        private destroyRef: DestroyRef,
     ) {
         this.form.controls.target.valueChanges
-            .pipe(startWith(this.form.value.target), untilDestroyed(this))
+            .pipe(startWith(this.form.value.target), takeUntilDestroyed(this.destroyRef))
             .subscribe((target) => {
                 switch (target) {
                     case Target.Manual:
@@ -98,14 +99,14 @@ export class TargetRulesetFormComponent implements OnChanges {
                         mainDelegateDescription,
                     }),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => this.valueChanges.emit(value));
         this.form.statusChanges
             .pipe(
                 startWith(this.form.valid),
                 map(() => this.form.valid),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((valid) => this.valid.emit(valid));
     }

@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
 import {
     DateRange,
@@ -32,7 +32,6 @@ import { DATE_RANGE_DAYS } from '../../tokens';
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-chargebacks',
     templateUrl: './chargebacks.component.html',
@@ -67,6 +66,7 @@ export class ChargebacksComponent implements OnInit {
         private fetchChargebacksService: FetchChargebacksService,
         private dialog: DialogService,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
@@ -74,7 +74,7 @@ export class ChargebacksComponent implements OnInit {
             merge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
         );
         this.filtersForm.valueChanges
-            .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
+            .pipe(startWith(null), debounceTime(500), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.load();
             });
@@ -120,7 +120,7 @@ export class ChargebacksComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((res) => {
                 this.filtersForm.reset({
@@ -136,7 +136,7 @@ export class ChargebacksComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe(() => {
                 this.load();

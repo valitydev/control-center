@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, ActivatedRoute } from '@angular/router';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { switchMap } from 'rxjs';
 import { first, withLatestFrom } from 'rxjs/operators';
 
@@ -14,7 +14,6 @@ import { DomainNavigateService } from '../services/domain-navigate.service';
 import { DomainObjModificationService } from '../services/domain-obj-modification.service';
 import { ModifiedDomainObjectService } from '../services/modified-domain-object.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: './domain-obj-review.component.html',
     styleUrls: ['../editor-container.scss'],
@@ -36,6 +35,7 @@ export class DomainObjReviewComponent {
         private notificationErrorService: NotificationErrorService,
         private domainNavigateService: DomainNavigateService,
         private domainSecretService: DomainSecretService,
+        private destroyRef: DestroyRef,
     ) {
         if (!modifiedDomainObjectService.domainObject) {
             this.back();
@@ -62,7 +62,7 @@ export class DomainObjReviewComponent {
                     }),
                 ),
                 withLatestFrom(this.type$),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: ([, type]) => {

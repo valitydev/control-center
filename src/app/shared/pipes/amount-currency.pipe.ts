@@ -1,6 +1,13 @@
 import { formatCurrency, getCurrencySymbol } from '@angular/common';
-import { Pipe, Inject, LOCALE_ID, DEFAULT_CURRENCY_CODE, PipeTransform } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+    Pipe,
+    Inject,
+    LOCALE_ID,
+    DEFAULT_CURRENCY_CODE,
+    PipeTransform,
+    DestroyRef,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CurrencyObject } from '@vality/domain-proto/domain';
 import isNil from 'lodash-es/isNil';
 import { ReplaySubject, combineLatest } from 'rxjs';
@@ -10,7 +17,6 @@ import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { toMajor } from '../../../utils';
 
-@UntilDestroy()
 @Pipe({
     standalone: true,
     pure: false,
@@ -29,6 +35,7 @@ export class AmountCurrencyPipe implements PipeTransform {
         @Inject(LOCALE_ID) private _locale: string,
         @Inject(DEFAULT_CURRENCY_CODE) private _defaultCurrencyCode: string = 'USD',
         private domainStoreService: DomainStoreService,
+        private destroyRef: DestroyRef,
     ) {}
 
     init() {
@@ -61,7 +68,7 @@ export class AmountCurrencyPipe implements PipeTransform {
                         format === 'short' ? '0.0-2' : undefined,
                     );
                 }),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => {
                 this.latestValue = value;

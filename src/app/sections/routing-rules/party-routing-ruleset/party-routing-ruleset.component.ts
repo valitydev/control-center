@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
@@ -13,7 +13,6 @@ import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dia
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-party-routing-ruleset',
     templateUrl: 'party-routing-ruleset.component.html',
@@ -61,7 +60,7 @@ export class PartyRoutingRulesetComponent {
                     };
                 }),
         ),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
     walletsData$ = combineLatest([
@@ -88,7 +87,7 @@ export class PartyRoutingRulesetComponent {
                     };
                 }),
         ),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
@@ -98,6 +97,7 @@ export class PartyRoutingRulesetComponent {
         private router: Router,
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService,
+        private destroyRef: DestroyRef,
     ) {}
 
     initialize() {
@@ -112,7 +112,7 @@ export class PartyRoutingRulesetComponent {
                         .open(InitializeRoutingRulesDialogComponent, { partyID, refID })
                         .afterClosed(),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: () => {
@@ -142,7 +142,7 @@ export class PartyRoutingRulesetComponent {
                         })
                         .afterClosed(),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: (res) => {
@@ -155,7 +155,7 @@ export class PartyRoutingRulesetComponent {
 
     navigateToDelegate(parentRefId: number, delegateIdx: number) {
         this.partyRoutingRulesetService.partyRuleset$
-            .pipe(take(1), untilDestroyed(this))
+            .pipe(take(1), takeUntilDestroyed(this.destroyRef))
             .subscribe((ruleset) =>
                 this.router.navigate([
                     'party',

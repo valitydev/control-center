@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { PayoutTool } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
 import { createControlProviders, FormControlSuperclass, Option } from '@vality/ng-core';
@@ -10,7 +9,6 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 
 import { handleError, NotificationErrorService } from '../../services/notification-error';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-payout-tool-field',
     templateUrl: 'payout-tool-field.component.html',

@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Sort } from '@angular/material/sort';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/domain';
 import {
     QueryParamsService,
@@ -35,7 +34,6 @@ interface DomainObjectData {
     obj: DomainObject;
 }
 
-@UntilDestroy()
 @Component({
     standalone: true,
     selector: 'cc-domain-objects-table',

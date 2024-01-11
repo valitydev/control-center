@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
@@ -16,7 +16,6 @@ import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
 import { InvoicingService } from '../../../../api/payment-processing';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-create-payment-adjustment',
     templateUrl: './create-payment-adjustment.component.html',
@@ -36,6 +35,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -56,7 +56,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
             this.progress$,
             payments,
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
                 const [result, errors] = splitResultsErrors(res);
                 if (errors.length) {

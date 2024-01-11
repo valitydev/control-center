@@ -7,10 +7,11 @@ import {
     LOCALE_ID,
     OnInit,
     booleanAttribute,
+    DestroyRef,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator, ValidationErrors, FormControl } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import { combineLatest } from 'rxjs';
@@ -27,7 +28,6 @@ export interface Cash {
 
 const GROUP_SEPARATOR = ' ';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-cash-field',
     templateUrl: './cash-field.component.html',
@@ -77,6 +77,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
         injector: Injector,
         @Inject(LOCALE_ID) private _locale: string,
         private domainStoreService: DomainStoreService,
+        private destroyRef: DestroyRef,
     ) {
         super(injector);
     }
@@ -88,7 +89,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
         ])
             .pipe(
                 switchMap(([currencyCode]) => this.getCurrencyByCode(currencyCode)),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((currency) => {
                 const amountStr = this.amountControl.value;

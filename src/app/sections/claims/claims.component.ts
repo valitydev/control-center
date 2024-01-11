@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { PartyID } from '@vality/domain-proto/domain';
 import { DialogService, LoadOptions, QueryParamsService, clean } from '@vality/ng-core';
 import { debounceTime } from 'rxjs';
@@ -11,7 +11,6 @@ import { CLAIM_STATUSES } from '../../api/claim-management';
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
 import { FetchClaimsService } from './fetch-claims.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: './claims.component.html',
 })
@@ -34,12 +33,13 @@ export class ClaimsComponent implements OnInit {
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<ClaimsComponent['filtersForm']['value']>,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit(): void {
         this.filtersForm.patchValue(this.qp.params);
         this.filtersForm.valueChanges
-            .pipe(startWith(null), debounceTime(500), untilDestroyed(this))
+            .pipe(startWith(null), debounceTime(500), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.load();
             });

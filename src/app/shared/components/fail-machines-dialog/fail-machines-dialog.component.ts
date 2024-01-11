@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ID } from '@vality/machinegun-proto/internal/base';
 import {
     DialogSuperclass,
@@ -31,7 +31,6 @@ const TYPE_NS_MAP: Record<Type, Namespace[]> = {
     [Type.Withdrawal]: [Namespace.Withdrawal, Namespace.WithdrawalSession],
 };
 
-@UntilDestroy()
 @Component({
     standalone: true,
     templateUrl: './fail-machines-dialog.component.html',
@@ -58,6 +57,7 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
     constructor(
         private automatonService: AutomatonService,
         private log: NotifyLogService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -88,7 +88,7 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
             this.progress$,
             ids,
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
                 const [result, errors] = splitResultsErrors(res);
                 if (errors.length) {

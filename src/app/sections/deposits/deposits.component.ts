@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StatDeposit, RevertStatus } from '@vality/fistful-proto/fistful_stat';
 import {
     Column,
@@ -34,7 +34,6 @@ const REVERT_STATUS: { [N in RevertStatus]: string } = {
     2: 'full',
 };
 
-@UntilDestroy()
 @Component({
     templateUrl: 'deposits.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -125,6 +124,7 @@ export class DepositsComponent implements OnInit {
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private qp: QueryParamsService<object>,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
@@ -133,7 +133,7 @@ export class DepositsComponent implements OnInit {
             .pipe(
                 startWith(this.filtersForm.value),
                 debounceTime(this.debounceTimeMs),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe(() => {
                 this.update();
@@ -146,7 +146,7 @@ export class DepositsComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe(() => {
                 this.update();

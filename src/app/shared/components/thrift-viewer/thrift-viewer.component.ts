@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, Output, EventEmitter, booleanAttribute } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
@@ -16,7 +15,6 @@ export enum ViewerKind {
     Component = 'component',
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-thrift-viewer',
     templateUrl: './thrift-viewer.component.html',

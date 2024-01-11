@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -10,7 +10,6 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 import { RoutingRulesService } from '../../services/routing-rules';
 import { TargetRuleset } from '../../target-ruleset-form';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'attach-new-ruleset-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +32,7 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -46,7 +46,7 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
                 mainDelegateDescription,
                 ruleset: this.form.value.ruleset,
             })
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => this.dialogRef.close(),
                 error: (err) => this.notificationErrorService.error(err),

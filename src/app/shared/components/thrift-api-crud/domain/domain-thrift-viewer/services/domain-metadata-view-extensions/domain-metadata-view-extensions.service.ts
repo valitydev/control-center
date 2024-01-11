@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
@@ -19,7 +19,6 @@ import { SidenavInfoService } from '../../../../../sidenav-info';
 
 import { getObjectLabel } from './utils/get-object-label';
 
-@UntilDestroy()
 @Injectable({
     providedIn: 'root',
 })
@@ -47,13 +46,14 @@ export class DomainMetadataViewExtensionsService {
                     }),
             },
         ]),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
     constructor(
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
+        private destroyRef: DestroyRef,
     ) {}
 
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {

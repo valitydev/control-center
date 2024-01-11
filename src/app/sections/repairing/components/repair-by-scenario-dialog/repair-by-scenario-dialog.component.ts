@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import {
     RepairInvoicesRequest,
@@ -27,7 +27,6 @@ enum Namespace {
     Withdrawal,
 }
 
-@UntilDestroy()
 @Component({
     templateUrl: './repair-by-scenario-dialog.component.html',
 })
@@ -61,13 +60,14 @@ export class RepairByScenarioDialogComponent
         private notificationErrorService: NotificationErrorService,
         private notificationService: NotificationService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
 
     ngOnInit() {
         getFormValueChanges(this.nsControl)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.form.setValue(
                     this.dialogData.machines.map(({ id }) => ({ id, scenario: {} })),
@@ -84,7 +84,7 @@ export class RepairByScenarioDialogComponent
             ? this.repairManagementService.RepairInvoices(value as RepairInvoicesRequest)
             : this.repairManagementService.RepairWithdrawals(value as RepairWithdrawalsRequest)
         )
-            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
                     this.notificationService.success();

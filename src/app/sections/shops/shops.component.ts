@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
 import { Column, progressTo, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
@@ -8,7 +7,6 @@ import { switchMap, shareReplay, catchError, map } from 'rxjs/operators';
 import { DeanonimusService } from '../../api/deanonimus';
 import { ShopParty } from '../../shared/components/shops-table';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-shops',
     templateUrl: './shops.component.html',

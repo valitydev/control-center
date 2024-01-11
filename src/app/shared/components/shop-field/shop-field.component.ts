@@ -5,8 +5,9 @@ import {
     OnChanges,
     OnInit,
     booleanAttribute,
+    DestroyRef,
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Shop } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
 import {
@@ -21,7 +22,6 @@ import { filter, map, share, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
@@ -53,7 +53,10 @@ export class ShopFieldComponent<M extends boolean = boolean>
 
     private partyId$ = new BehaviorSubject<PartyID>(null);
 
-    constructor(private partyManagementService: PartyManagementService) {
+    constructor(
+        private partyManagementService: PartyManagementService,
+        private destroyRef: DestroyRef,
+    ) {
         super();
     }
 
@@ -79,7 +82,7 @@ export class ShopFieldComponent<M extends boolean = boolean>
                             ? !this.control.value.every((v) => shops.some((s) => s.id === v))
                             : !shops.some((s) => s.id === this.control.value)),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe(() => {
                 this.control.setValue(null);
