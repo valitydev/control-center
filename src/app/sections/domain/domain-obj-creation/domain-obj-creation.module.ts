@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule } from '@angular/router';
 import { ActionsModule } from '@vality/ng-core';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { ThriftEditorModule } from '@cc/app/shared/components/thrift-editor';
 
@@ -26,7 +25,6 @@ import { DomainObjCreationComponent } from './domain-obj-creation.component';
         MatCardModule,
         MatButtonModule,
         MatIconModule,
-        MonacoEditorModule,
         MatDialogModule,
         ReactiveFormsModule,
         ThriftEditorModule,
