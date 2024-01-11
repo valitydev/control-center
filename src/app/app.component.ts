@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
+import { from, Observable } from 'rxjs';
+import { shareReplay, map } from 'rxjs/operators';
 
 import { AppAuthGuardService } from '@cc/app/shared/services';
+
+import { environment } from '../environments/environment';
 
 import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/claims/routing-config';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
@@ -23,22 +27,37 @@ import { SidenavInfoService } from './shared/components/sidenav-info';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-    menuItems: { name: string; route: string }[][] = [];
+export class AppComponent {
+    menuItemsGroups$: Observable<{ name: string; route: string }[][]> = from(
+        this.keycloakService.loadUserProfile(),
+    ).pipe(
+        map(() => this.getMenuItemsGroups()),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     constructor(
         private keycloakService: KeycloakService,
         private appAuthGuardService: AppAuthGuardService,
         public sidenavInfoService: SidenavInfoService,
-    ) {}
+    ) {
+        this.registerConsoleUtils();
+    }
 
-    ngOnInit() {
-        void this.keycloakService.loadUserProfile().then(() => {
-            this.menuItems = this.getMenuItems();
+    private registerConsoleUtils() {
+        Object.assign(window as never as object, {
+            ccSwitchLogging: () => {
+                environment.logging = { requests: !environment.logging.requests };
+                // eslint-disable-next-line no-console
+                console.log(`Logging ${environment.logging.requests ? 'enabled' : 'disabled'}`);
+            },
+            ccGetMyRoles: () => {
+                // eslint-disable-next-line no-console
+                console.log(this.keycloakService.getUserRoles(true).sort().join('\n'));
+            },
         });
     }
 
-    private getMenuItems() {
+    private getMenuItemsGroups() {
         const menuItems = [
             [
                 {
