@@ -79,22 +79,22 @@ export class DomainObjectsTableComponent implements OnInit {
         },
         {
             field: 'name',
-            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label || d.type,
+            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label,
             sortable: true,
             click: (d) => {
                 this.details(d);
             },
         },
         {
+            field: 'description',
+            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).description,
+            sortable: true,
+        },
+        {
             field: 'type',
             sortable: true,
             formatter: (d) => startCase(d.type),
         },
-        // {
-        //     field: 'data',
-        //     formatter: (d) => inlineJson(getUnionValue(d.obj)?.data, Infinity),
-        //     sortable: true,
-        // },
         createOperationColumn([
             {
                 label: 'Details',
