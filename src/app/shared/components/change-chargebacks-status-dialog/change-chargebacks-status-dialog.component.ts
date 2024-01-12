@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { StatChargeback } from '@vality/magista-proto/internal/magista';
 import {
     DialogSuperclass,
@@ -35,7 +35,6 @@ const CHANGE_STATUS_METHODS = {
     [Action.Cancel]: 'CancelChargeback',
 } as const;
 
-@UntilDestroy()
 @Component({
     standalone: true,
     templateUrl: './change-chargebacks-status-dialog.component.html',
@@ -75,12 +74,13 @@ export class ChangeChargebacksStatusDialogComponent
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
 
     ngOnInit() {
-        this.actionControl.valueChanges.pipe(untilDestroyed(this)).subscribe(() => {
+        this.actionControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
             this.control.reset();
         });
     }
@@ -97,7 +97,7 @@ export class ChangeChargebacksStatusDialogComponent
             ),
             this.progress$,
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const withErrors = res.filter((r) => r.hasError);

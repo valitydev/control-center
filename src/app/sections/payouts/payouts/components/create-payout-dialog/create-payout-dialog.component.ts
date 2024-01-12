@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
@@ -22,7 +22,6 @@ interface CreatePayoutDialogForm {
     payoutToolId?: string;
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-create-payout-dialog',
     templateUrl: './create-payout-dialog.component.html',
@@ -43,6 +42,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
         private payoutManagementService: PayoutManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -66,7 +66,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
                     isNil,
                 ) as PayoutParams,
             )
-            .pipe(untilDestroyed(this), progressTo(this.progress$))
+            .pipe(takeUntilDestroyed(this.destroyRef), progressTo(this.progress$))
             .subscribe({
                 next: () => {
                     this.notificationService.success('Payout created successfully');

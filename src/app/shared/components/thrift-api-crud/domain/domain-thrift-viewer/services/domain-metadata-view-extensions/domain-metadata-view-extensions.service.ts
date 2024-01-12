@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
@@ -16,10 +16,8 @@ import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/m
 
 import { getUnionValue } from '../../../../../../../../utils';
 import { SidenavInfoService } from '../../../../../sidenav-info';
+import { getDomainObjectDetails } from '../../../utils';
 
-import { getObjectLabel } from './utils/get-object-label';
-
-@UntilDestroy()
 @Injectable({
     providedIn: 'root',
 })
@@ -47,13 +45,14 @@ export class DomainMetadataViewExtensionsService {
                     }),
             },
         ]),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
 
     constructor(
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
+        private destroyRef: DestroyRef,
     ) {}
 
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {
@@ -74,19 +73,25 @@ export class DomainMetadataViewExtensionsService {
                 determinant: (data) => of(isTypeWithAliases(data, refType, 'domain')),
                 extension: (_, value) =>
                     this.domainStoreService.getObjectsRefs(objectKey).pipe(
-                        map((objs) => objs.find(([, o]) => isEqual(o[objectKey].ref, value))),
-                        map(([ref, obj]) => ({
-                            value: getObjectLabel(getUnionValue(obj), objectKey),
-                            tooltip: getUnionValue(ref),
-                            click: () => {
-                                this.sidenavInfoService.toggle(
-                                    import(
-                                        '../../../domain-object-card/domain-object-card.component'
-                                    ).then((r) => r.DomainObjectCardComponent),
-                                    { ref },
-                                );
-                            },
-                        })),
+                        map((refObjs) => refObjs.find(([, o]) => isEqual(o[objectKey].ref, value))),
+                        map((refObj) => {
+                            if (!refObj) {
+                                return undefined;
+                            }
+                            const [ref, obj] = refObj;
+                            return {
+                                value: getDomainObjectDetails(obj).label,
+                                tooltip: getUnionValue(ref),
+                                click: () => {
+                                    this.sidenavInfoService.toggle(
+                                        import(
+                                            '../../../domain-object-card/domain-object-card.component'
+                                        ).then((r) => r.DomainObjectCardComponent),
+                                        { ref },
+                                    );
+                                },
+                            };
+                        }),
                     ),
             };
         });

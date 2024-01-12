@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Sort } from '@angular/material/sort';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { Reference, DomainObject } from '@vality/domain-proto/domain';
 import {
     QueryParamsService,
@@ -35,7 +34,6 @@ interface DomainObjectData {
     obj: DomainObject;
 }
 
-@UntilDestroy()
 @Component({
     standalone: true,
     selector: 'cc-domain-objects-table',
@@ -81,22 +79,22 @@ export class DomainObjectsTableComponent implements OnInit {
         },
         {
             field: 'name',
-            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label || d.type,
+            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label,
             sortable: true,
             click: (d) => {
                 this.details(d);
             },
         },
         {
+            field: 'description',
+            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).description,
+            sortable: true,
+        },
+        {
             field: 'type',
             sortable: true,
             formatter: (d) => startCase(d.type),
         },
-        // {
-        //     field: 'data',
-        //     formatter: (d) => inlineJson(getUnionValue(d.obj)?.data, Infinity),
-        //     sortable: true,
-        // },
         createOperationColumn([
             {
                 label: 'Details',

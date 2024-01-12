@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Shop } from '@vality/domain-proto/domain';
 import { StatWallet } from '@vality/fistful-proto/fistful_stat';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
@@ -10,7 +10,6 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 import { RoutingRulesService } from '../../services/routing-rules';
 import { RoutingRulesType } from '../../types/routing-rules-type';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'add-party-routing-rule-dialog.component.html',
 })
@@ -29,6 +28,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
         private fb: FormBuilder,
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -51,7 +51,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
                   walletID,
               })
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => this.dialogRef.close({ status: DialogResponseStatus.Success }),
                 error: this.notificationErrorService.error,

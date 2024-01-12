@@ -1,14 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 
-@UntilDestroy()
 @Component({
     standalone: true,
     templateUrl: 'domain-thrift-form-dialog.component.html',
@@ -37,14 +36,17 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
         );
     }
 
-    constructor(private fb: FormBuilder) {
+    constructor(
+        private fb: FormBuilder,
+        private destroyRef: DestroyRef,
+    ) {
         super();
     }
 
     upsert() {
         this.dialogData
             .action(this.control.value)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (result) => {
                     this.closeWithSuccess({ object: this.control.value, result });

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
 import {
     DialogResponseStatus,
@@ -30,7 +30,6 @@ import { RoutingRulesService } from '../services/routing-rules';
 import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
 import { RoutingRulesetService } from './routing-ruleset.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'routing-ruleset.component.html',
     providers: [RoutingRulesetService],
@@ -54,7 +53,7 @@ export class RoutingRulesetComponent {
             formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `#${idx + 1}`)),
             click: (d) => {
                 combineLatest([this.getCandidateIdx(d), this.routingRulesetService.shopRuleset$])
-                    .pipe(untilDestroyed(this))
+                    .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe(([idx, ruleset]) => {
                         this.sidenavInfoService.toggle(CandidateCardComponent, {
                             idx,
@@ -110,7 +109,7 @@ export class RoutingRulesetComponent {
                 label: 'Edit',
                 click: (d) => {
                     this.getCandidateIdx(d)
-                        .pipe(untilDestroyed(this))
+                        .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
                             this.editShopRule(idx);
                         });
@@ -120,7 +119,7 @@ export class RoutingRulesetComponent {
                 label: 'Duplicate',
                 click: (d) => {
                     this.getCandidateIdx(d)
-                        .pipe(untilDestroyed(this))
+                        .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
                             void this.duplicateShopRule(idx);
                         });
@@ -130,7 +129,7 @@ export class RoutingRulesetComponent {
                 label: 'Remove',
                 click: (d) => {
                     this.getCandidateIdx(d)
-                        .pipe(untilDestroyed(this))
+                        .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
                             void this.removeShopRule(idx);
                         });
@@ -147,6 +146,7 @@ export class RoutingRulesetComponent {
         private log: NotifyLogService,
         private route: ActivatedRoute,
         private sidenavInfoService: SidenavInfoService,
+        private destroyRef: DestroyRef,
     ) {}
 
     addShopRule() {
@@ -163,7 +163,7 @@ export class RoutingRulesetComponent {
                         .afterClosed(),
                 ),
             )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
@@ -195,7 +195,7 @@ export class RoutingRulesetComponent {
                         .afterClosed(),
                 ),
             )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
@@ -227,7 +227,7 @@ export class RoutingRulesetComponent {
                         .afterClosed(),
                 ),
             )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {

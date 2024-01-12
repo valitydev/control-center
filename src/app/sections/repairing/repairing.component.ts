@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
     DialogResponseStatus,
     DialogService,
@@ -37,7 +37,6 @@ interface Filters {
     error_message: string;
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-repairing',
     templateUrl: './repairing.component.html',
@@ -96,6 +95,7 @@ export class RepairingComponent implements OnInit {
         private notificationService: NotificationService,
         private log: NotifyLogService,
         private domainStoreService: DomainStoreService,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
@@ -103,7 +103,7 @@ export class RepairingComponent implements OnInit {
         this.filters.valueChanges
             .pipe(
                 map(() => clean(this.filters.value)),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((v: Filters) => this.qp.set(v));
         this.qp.params$
@@ -124,7 +124,7 @@ export class RepairingComponent implements OnInit {
                                 : null,
                     }),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((params) => this.machinesService.search(params));
     }
@@ -151,7 +151,7 @@ export class RepairingComponent implements OnInit {
                         this.selected$.value.map(({ id, ns }) => ({ id, ns })),
                     ),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: () => {
@@ -165,7 +165,7 @@ export class RepairingComponent implements OnInit {
         this.dialogService
             .open(RepairByScenarioDialogComponent, { machines: this.selected$.value })
             .afterClosed()
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe();
     }
 }

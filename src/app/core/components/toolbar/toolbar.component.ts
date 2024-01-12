@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { KeycloakService } from 'keycloak-angular';
-import { of, switchMap } from 'rxjs';
+import { from } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 @Component({
@@ -16,8 +16,7 @@ import { map, shareReplay } from 'rxjs/operators';
     styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent {
-    username$ = of().pipe(
-        switchMap(() => this.keycloakService.loadUserProfile()),
+    username$ = from(this.keycloakService.loadUserProfile()).pipe(
         map(() => this.keycloakService.getUsername()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

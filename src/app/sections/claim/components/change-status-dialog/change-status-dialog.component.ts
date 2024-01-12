@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -12,7 +12,6 @@ import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
 import { NotificationErrorService } from '../../../../shared/services/notification-error';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-change-status-dialog',
     templateUrl: './change-status-dialog.component.html',
@@ -39,6 +38,7 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
         private notificationService: NotificationService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -65,7 +65,7 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
                 result$ = this.claimManagementService.RequestClaimChanges(...params);
                 break;
         }
-        result$.pipe(progressTo(this.progress$), untilDestroyed(this)).subscribe({
+        result$.pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef)).subscribe({
             next: () => {
                 this.dialogRef.close({ status: DialogResponseStatus.Success });
                 this.notificationService.success('Status successfully changed');

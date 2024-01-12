@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidationErrors, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
@@ -11,7 +11,6 @@ import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils';
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
@@ -35,13 +34,16 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         );
     }
 
-    constructor(private fb: FormBuilder) {
+    constructor(
+        private fb: FormBuilder,
+        private destroyRef: DestroyRef,
+    ) {
         super();
     }
 
     ngOnInit() {
         merge(this.control.valueChanges, this.labelControl.valueChanges)
-            .pipe(delay(0), untilDestroyed(this))
+            .pipe(delay(0), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.emitOutgoingValue(
                     this.control.value && this.labelControl.value

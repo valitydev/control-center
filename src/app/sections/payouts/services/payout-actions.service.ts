@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
 import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
 import { switchMap } from 'rxjs';
@@ -10,13 +10,13 @@ import { NotificationErrorService } from '@cc/app/shared/services/notification-e
 
 import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout-dialog/cancel-payout-dialog.component';
 
-@UntilDestroy()
 @Injectable()
 export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
         private dialogService: DialogService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {}
 
     canBeConfirmed(status: keyof PayoutStatus) {
@@ -38,7 +38,7 @@ export class PayoutActionsService {
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() => this.payoutManagementService.ConfirmPayout(id)),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 error: this.notificationErrorService.error,

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
 import {
@@ -29,7 +29,6 @@ interface ChargebackParams {
     params: InvoicePaymentChargebackParams;
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-create-chargebacks-by-file-dialog',
     templateUrl: './create-chargebacks-by-file-dialog.component.html',
@@ -141,12 +140,13 @@ export class CreateChargebacksByFileDialogComponent
         private invoicingService: InvoicingService,
         private log: NotifyLogService,
         private amountCurrencyService: AmountCurrencyService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
 
     ngOnInit() {
-        this.chargebacks$.pipe(untilDestroyed(this)).subscribe((c) => {
+        this.chargebacks$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((c) => {
             this.selectedChargebacks = c || [];
         });
     }
@@ -159,7 +159,7 @@ export class CreateChargebacksByFileDialogComponent
             ),
             this.progress$,
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     this.successfullyChargebacks.push(

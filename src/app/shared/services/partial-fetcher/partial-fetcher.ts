@@ -1,4 +1,5 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
 import {
     debounceTime,
@@ -27,7 +28,6 @@ import { SHARE_REPLAY_CONF } from './utils/share-replay-conf';
 /**
  * @deprecated
  */
-@UntilDestroy()
 export abstract class PartialFetcher<R, P> {
     readonly fetchResultChanges$: Observable<{
         result: R[];
@@ -42,6 +42,7 @@ export abstract class PartialFetcher<R, P> {
     readonly errors$: Observable<unknown>;
 
     private action$ = new Subject<FetchAction<P>>();
+    private destroyRef = inject(DestroyRef);
 
     // TODO: make a dependency for DI
     constructor(
@@ -93,7 +94,7 @@ export abstract class PartialFetcher<R, P> {
             this.errors$,
             this.fetchResultChanges$,
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe();
     }
 

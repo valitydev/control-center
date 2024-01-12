@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/payment_processing';
 import { DialogService, Column, TableModule, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
@@ -11,7 +10,6 @@ import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog
 import { getUnionKey } from '../../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
-@UntilDestroy()
 @Component({
     standalone: true,
     selector: 'cc-chargebacks',

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, NonNullableFormBuilder } from '@angular/forms';
-import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
 import { DialogSuperclass, NotifyLogService, toMinor, clean } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
@@ -11,7 +11,6 @@ import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 
 import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'create-revert-dialog.component.html',
     styleUrls: ['create-revert-dialog.component.scss'],
@@ -35,6 +34,7 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
         private depositManagementService: ManagementService,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private log: NotifyLogService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -60,7 +60,7 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
                     true,
                 ),
             )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (revert) => {
                     this.log.successOperation('create', 'revert');

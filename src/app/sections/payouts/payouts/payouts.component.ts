@@ -1,6 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Party, Shop, ShopID, PartyID } from '@vality/domain-proto/domain';
 import { magista } from '@vality/magista-proto';
 import { StatPayout } from '@vality/magista-proto/magista';
@@ -40,7 +40,6 @@ interface PayoutsSearchForm {
     payoutToolType: magista.PayoutToolType;
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-payouts',
     templateUrl: './payouts.component.html',
@@ -112,6 +111,7 @@ export class PayoutsComponent implements OnInit {
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         private payoutActionsService: PayoutActionsService,
         private fb: FormBuilder,
+        private destroyRef: DestroyRef,
     ) {}
 
     ngOnInit() {
@@ -119,10 +119,10 @@ export class PayoutsComponent implements OnInit {
         getValueChanges(this.filtersForm)
             .pipe(
                 filter(() => this.filtersForm.valid),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => void this.qp.set(clean(value)));
-        this.qp.params$.pipe(untilDestroyed(this)).subscribe(() => this.search());
+        this.qp.params$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.search());
     }
 
     more() {

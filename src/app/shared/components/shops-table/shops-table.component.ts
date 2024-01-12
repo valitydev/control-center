@@ -3,7 +3,6 @@ import { Component, Output, EventEmitter, Input, booleanAttribute, OnChanges } f
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { Shop, Party } from '@vality/domain-proto/domain';
 import {
     InputFieldModule,
@@ -38,7 +37,6 @@ export interface ShopParty {
     };
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-shops-table',
     standalone: true,

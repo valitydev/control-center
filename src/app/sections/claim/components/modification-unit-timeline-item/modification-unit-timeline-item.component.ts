@@ -1,5 +1,12 @@
-import { Component, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    booleanAttribute,
+    DestroyRef,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
 import isEmpty from 'lodash-es/isEmpty';
@@ -18,7 +25,6 @@ import { getUnionValue } from '@cc/utils/get-union-key';
 import { NotificationErrorService } from '../../../../shared/services/notification-error';
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-modification-unit-timeline-item',
     templateUrl: './modification-unit-timeline-item.component.html',
@@ -48,6 +54,7 @@ export class ModificationUnitTimelineItemComponent {
         private notificationService: NotificationService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {}
 
     get name() {
@@ -72,7 +79,7 @@ export class ModificationUnitTimelineItemComponent {
                         })
                         .afterClosed(),
                 ),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((result) => {
                 if (result.status === DialogResponseStatus.Success) {
@@ -97,7 +104,7 @@ export class ModificationUnitTimelineItemComponent {
                     ),
                 ),
                 progressTo(this.progress$),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: () => {

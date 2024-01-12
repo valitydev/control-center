@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Component, Input, OnChanges, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     ComponentChanges,
     Option,
@@ -19,7 +19,6 @@ import {
 import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
 import { getFirstDeterminedExtensionsResult } from '../../types/metadata-form-extension';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
@@ -85,6 +84,10 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
     private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
 
+    constructor(private destroyRef: DestroyRef) {
+        super();
+    }
+
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.data) {
@@ -99,7 +102,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         this.generate$
             .pipe(
                 switchMap((generate) => generate()),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => this.control.setValue(value as T));
         event.stopPropagation();

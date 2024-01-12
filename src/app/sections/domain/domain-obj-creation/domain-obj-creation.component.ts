@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
@@ -15,7 +15,6 @@ import { NotificationService } from '../../../shared/services/notification';
 import { DomainNavigateService } from '../services/domain-navigate.service';
 import { MetadataService } from '../services/metadata.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: './domain-obj-creation.component.html',
     styleUrls: ['../editor-container.scss'],
@@ -37,6 +36,7 @@ export class DomainObjCreationComponent {
         private log: NotifyLogService,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService,
+        private destroyRef: DestroyRef,
     ) {}
 
     reviewChanges() {
@@ -51,7 +51,7 @@ export class DomainObjCreationComponent {
                     this.metadataService.getDomainFieldByFieldName(getUnionKey(this.control.value)),
                 ),
                 progressTo(this.progress$),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: ([, field]) => {

@@ -1,22 +1,18 @@
 import { Component, Input, OnChanges, Output, EventEmitter, booleanAttribute } from '@angular/core';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
+import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
 
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { objectToJSON } from '@cc/utils/thrift-instance';
-
-import { MonacoFile } from '../../../../components/monaco-editor';
-import { toMonacoFile } from '../../../sections/domain/utils';
 
 export enum ViewerKind {
     Editor = 'editor',
     Component = 'component',
 }
 
-@UntilDestroy()
 @Component({
     selector: 'cc-thrift-viewer',
     templateUrl: './thrift-viewer.component.html',
@@ -35,8 +31,8 @@ export class ThriftViewerComponent<T> implements OnChanges {
 
     @Output() changeKind = new EventEmitter<ViewerKind>();
 
-    valueFile$ = new ReplaySubject<MonacoFile>(1);
-    comparedFile$ = new ReplaySubject<MonacoFile>(1);
+    valueFile$ = new ReplaySubject<DiffEditorModel>(1);
+    comparedFile$ = new ReplaySubject<DiffEditorModel>(1);
 
     get isDiff() {
         return !!this.compared;
@@ -44,12 +40,16 @@ export class ThriftViewerComponent<T> implements OnChanges {
 
     ngOnChanges(changes: ComponentChanges<ThriftViewerComponent<T>>) {
         if (changes.value) {
-            this.valueFile$.next(toMonacoFile(JSON.stringify(objectToJSON(this.value), null, 2)));
+            this.valueFile$.next({
+                code: JSON.stringify(objectToJSON(this.value), null, 2),
+                language: 'json',
+            });
         }
         if (changes.compared) {
-            this.comparedFile$.next(
-                toMonacoFile(JSON.stringify(objectToJSON(this.compared), null, 2)),
-            );
+            this.comparedFile$.next({
+                code: JSON.stringify(objectToJSON(this.compared), null, 2),
+                language: 'json',
+            });
         }
     }
 

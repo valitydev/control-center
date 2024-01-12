@@ -28,8 +28,8 @@
                             "src/assets",
                             {
                                 "glob": "**/*",
-                                "input": "./node_modules/monaco-editor/min/vs",
-                                "output": "libs/vs"
+                                "input": "node_modules/monaco-editor",
+                                "output": "/assets/monaco/"
                             }
                         ],
                         "styles": ["src/app/styles/styles.scss"],
@@ -39,7 +39,6 @@
                             "short-uuid",
                             "js-sha256",
                             "jwt-decode",
-                            "css-element-queries",
                             "base64-js",
                             "@vality/deanonimus-proto",
                             "@vality/domain-proto",
@@ -128,8 +127,8 @@
                             "src/assets",
                             {
                                 "glob": "**/*",
-                                "input": "./node_modules/monaco-editor/min/vs",
-                                "output": "libs/vs"
+                                "input": "node_modules/monaco-editor",
+                                "output": "/assets/monaco/"
                             }
                         ],
                         "styles": ["src/app/styles/styles.scss"],

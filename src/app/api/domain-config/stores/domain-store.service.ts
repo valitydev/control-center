@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Injectable, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService } from '@vality/ng-core';
@@ -12,7 +12,6 @@ import { DomainSecretService } from '../../../shared/services';
 import { handleError } from '../../../shared/services/notification-error';
 import { RepositoryService } from '../index';
 
-@UntilDestroy()
 @Injectable({
     providedIn: 'root',
 })
@@ -30,7 +29,7 @@ export class DomainStoreService {
                 .Checkout({ head: {} })
                 .pipe(progressTo(this.progress$), handleError(this.log.error)),
         ),
-        untilDestroyed(this),
+        takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
     private reload$ = new ReplaySubject<void>(1);
@@ -40,6 +39,7 @@ export class DomainStoreService {
         private repositoryService: RepositoryService,
         private domainSecretService: DomainSecretService,
         private log: NotifyLogService,
+        private destroyRef: DestroyRef,
     ) {}
 
     forceReload(): void {

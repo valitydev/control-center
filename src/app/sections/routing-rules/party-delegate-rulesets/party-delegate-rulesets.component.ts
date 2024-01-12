@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogService } from '@vality/ng-core';
 import { first, map } from 'rxjs/operators';
 
@@ -14,7 +14,6 @@ import { RoutingRulesService } from '../services/routing-rules';
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-party-delegate-rulesets',
     templateUrl: 'party-delegate-rulesets.component.html',
@@ -63,6 +62,7 @@ export class PartyDelegateRulesetsComponent {
         private domainStoreService: DomainStoreService,
         private notificationErrorService: NotificationErrorService,
         private route: ActivatedRoute,
+        private destroyRef: DestroyRef,
     ) {}
 
     attachNewRuleset() {
@@ -72,14 +72,17 @@ export class PartyDelegateRulesetsComponent {
                 type: this.route.snapshot.params.type,
             })
             .afterClosed()
-            .pipe(handleError(this.notificationErrorService.error), untilDestroyed(this))
+            .pipe(
+                handleError(this.notificationErrorService.error),
+                takeUntilDestroyed(this.destroyRef),
+            )
             .subscribe();
     }
 
     navigateToPartyRuleset(parentRefId: number, delegateIdx: number) {
         this.routingRulesService
             .getRuleset(parentRefId)
-            .pipe(first(), untilDestroyed(this))
+            .pipe(first(), takeUntilDestroyed(this.destroyRef))
             .subscribe((parent) => {
                 void this.router.navigate([
                     'party',

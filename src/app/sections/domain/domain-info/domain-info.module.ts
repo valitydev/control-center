@@ -10,8 +10,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { PipesModule, ActionsModule } from '@vality/ng-core';
 
-import { MonacoEditorModule } from '@cc/components/monaco-editor';
-
 import { ThriftPipesModule, PageLayoutModule } from '../../../shared';
 import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
@@ -31,7 +29,6 @@ import { DomainObjectsTableComponent } from './domain-objects-table';
         MatButtonModule,
         MatInputModule,
         MatProgressSpinnerModule,
-        MonacoEditorModule,
         ThriftViewerModule,
         PipesModule,
         RouterModule,

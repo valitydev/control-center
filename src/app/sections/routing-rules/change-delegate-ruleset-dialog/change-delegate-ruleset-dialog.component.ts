@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DialogSuperclass } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../services/routing-rules';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-change-delegate-ruleset-dialog',
     templateUrl: 'change-delegate-ruleset-dialog.component.html',
@@ -29,6 +28,7 @@ export class ChangeDelegateRulesetDialogComponent
     constructor(
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -38,7 +38,7 @@ export class ChangeDelegateRulesetDialogComponent
             .getRuleset(this.dialogData.mainRulesetRefID)
             .pipe(
                 map((r) => r?.data?.decisions?.delegates?.[this.dialogData?.delegateIdx]),
-                untilDestroyed(this),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((delegate) => {
                 this.form.patchValue({
@@ -56,7 +56,7 @@ export class ChangeDelegateRulesetDialogComponent
                 newDelegateRulesetRefID: this.form.value.rulesetRefId,
                 description: this.form.value.description,
             })
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.dialogRef.close());
     }
 }

@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { pluck, take } from 'rxjs/operators';
 
 import { ReceiveDepositService } from './services/receive-deposit/receive-deposit.service';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'deposit-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

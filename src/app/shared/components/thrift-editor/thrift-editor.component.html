@@ -16,12 +16,11 @@
         [namespace]="namespace"
         [type]="type"
     ></cc-metadata-form>
-    <cc-monaco-editor
+    <ngx-monaco-editor
         *ngIf="kind === 'editor'"
-        [codeLensProviders]="codeLensProviders"
-        [completionProviders]="completionProviders"
-        [file]="file$ | async"
+        [ngModel]="content$ | async"
+        [options]="{ language: 'json' }"
         class="monaco-editor"
-        (fileChange)="fileChange($event)"
-    ></cc-monaco-editor>
+        (ngModelChange)="contentChange($event)"
+    ></ngx-monaco-editor>
 </div>

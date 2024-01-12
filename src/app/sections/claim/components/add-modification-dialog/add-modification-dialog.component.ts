@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormBuilder } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
@@ -13,7 +13,6 @@ import { inProgressFrom, progressTo } from '@cc/utils';
 
 import { NotificationErrorService } from '../../../../shared/services/notification-error';
 
-@UntilDestroy()
 @Component({
     selector: 'cc-add-modification-dialog',
     templateUrl: './add-modification-dialog.component.html',
@@ -41,6 +40,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
         private claimManagementService: ClaimManagementService,
         private notificationService: NotificationService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -49,7 +49,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
         const { party, claim } = this.dialogData;
         this.claimManagementService
             .UpdateClaim(party.id, claim.id, claim.revision, [this.control.value])
-            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification added successfully');
@@ -69,7 +69,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
                 modificationUnit.modification_id,
                 this.control.value,
             )
-            .pipe(progressTo(this.progress$), untilDestroyed(this))
+            .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
                     this.notificationService.success('Modification updated successfully');

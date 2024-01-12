@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeRequest } from '@vality/fistful-proto/deposit_adjustment';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { ExternalID } from '@vality/fistful-proto/withdrawal_adjustment';
@@ -11,7 +11,6 @@ import * as short from 'short-uuid';
 import { ManagementService } from '@cc/app/api/withdrawal';
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 
-@UntilDestroy()
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',
 })
@@ -41,6 +40,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     constructor(
         private managementService: ManagementService,
         private log: NotifyLogService,
+        private destroyRef: DestroyRef,
     ) {
         super();
     }
@@ -56,7 +56,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
             ),
             this.progress$,
         )
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
                 const withError = res.filter((e) => e.hasError);
                 if (withError.length) {

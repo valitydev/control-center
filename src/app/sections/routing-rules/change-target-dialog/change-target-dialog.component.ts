@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogSuperclass } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -9,7 +9,6 @@ import { RoutingRulesService } from '../services/routing-rules';
 import { TargetRuleset } from '../target-ruleset-form';
 import { RoutingRulesType } from '../types/routing-rules-type';
 
-@UntilDestroy()
 @Component({
     templateUrl: 'change-target-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,11 +24,12 @@ export class ChangeTargetDialogComponent extends DialogSuperclass<
     constructor(
         private routingRulesService: RoutingRulesService,
         private notificationErrorService: NotificationErrorService,
+        private destroyRef: DestroyRef,
     ) {
         super();
         this.routingRulesService
             .getRuleset(this.dialogData?.mainRulesetRefID)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((ruleset) => {
                 this.initValue = {
                     mainRulesetRefID: ruleset.ref.id,
@@ -50,7 +50,7 @@ export class ChangeTargetDialogComponent extends DialogSuperclass<
                 mainDelegateDescription,
                 delegateIdx,
             })
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.dialogRef.close(), this.notificationErrorService.error);
     }
 }

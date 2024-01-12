@@ -3,6 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 const DEFAULT_DURATION_MS = 3000;
 
+/**
+ * @deprecated
+ */
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
     constructor(private snackBar: MatSnackBar) {}
