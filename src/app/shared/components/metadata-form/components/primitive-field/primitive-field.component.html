@@ -36,7 +36,7 @@
         <div style="display: flex; gap: 4px">
             <v-autocomplete-field
                 [formControl]="control"
-                [hint]="aliases"
+                [hint]="selectedHint$ | async"
                 [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
                 [options]="options$ | async"
                 [required]="data.isRequired"
@@ -48,7 +48,7 @@
             </button>
         </div>
     </ng-template>
-    <ng-container *ngIf="selected$ | async as selected">
+    <ng-container *ngIf="selectedExtensionOption$ | async as selected">
         <mat-expansion-panel *ngIf="selected.details">
             <mat-expansion-panel-header>
                 <mat-panel-title
@@ -60,7 +60,7 @@
                     "
                 >
                     <div>Details</div>
-                    <cc-label [color]="selected.color" [label]="selected.label"></cc-label>
+                    <v-tag [color]="selected.color">{{ (selectedOption$ | async)?.label }}</v-tag>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>

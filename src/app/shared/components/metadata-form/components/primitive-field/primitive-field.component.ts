@@ -5,18 +5,20 @@ import {
     Option,
     FormControlSuperclass,
     createControlProviders,
+    getValueChanges,
 } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
-import { getValueTypeTitle } from '@cc/app/shared';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,
+    getAliases,
 } from '@cc/app/shared/components/metadata-form';
 
-import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
+import { getValueTypeTitle } from '../../../../pipes';
+import { MetadataFormData } from '../../types/metadata-form-data';
 import { getFirstDeterminedExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({
@@ -36,26 +38,41 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(map((r) => r?.generate));
-    selected$ = combineLatest([
-        this.extensionResult$,
-        this.control.valueChanges.pipe(startWith(this.control.value)),
-    ]).pipe(
-        map(
-            ([extensionResult]) =>
-                extensionResult?.options?.find((o) => o.value === this.control.value),
-        ),
-    );
     options$ = this.extensionResult$.pipe(
         map((extensionResult): Option<T>[] =>
             extensionResult?.options?.length
                 ? extensionResult.options.map((o) => ({
-                      label: o.label,
+                      label: o.label || `#${o.value}`,
                       value: o.value as never,
                       description: String(o.value),
                   }))
-                : null,
+                : [],
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedExtensionOption$ = combineLatest([
+        this.extensionResult$,
+        getValueChanges(this.control),
+    ]).pipe(
+        map(([result, value]) => result?.options?.find?.((o) => o.value === value)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
+        map(([options, value]) => options.find((o) => o.value === value)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedHint$ = this.selectedOption$.pipe(
+        map((s) => {
+            if (!s) {
+                return '';
+            }
+            const aliases = [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
+                .filter((d) => d.typeGroup !== 'primitive')
+                .map((d) => getValueTypeTitle(d.type))
+                .filter((t) => t !== this.data.field?.name)
+                .join(', ');
+            return s.label + (aliases ? ` (${aliases})` : '');
+        }),
     );
 
     get inputType(): string {
@@ -71,14 +88,6 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
             default:
                 return 'string';
         }
-    }
-
-    get aliases() {
-        return [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
-            .filter((d) => d.typeGroup !== 'primitive')
-            .map((d) => getValueTypeTitle(d.type))
-            .filter((t) => t !== this.data.field?.name)
-            .join(', ');
     }
 
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
