@@ -5,10 +5,11 @@ import {
     Option,
     FormControlSuperclass,
     createControlProviders,
+    getValueChanges,
 } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import {
     MetadataFormExtensionResult,
@@ -37,15 +38,6 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(map((r) => r?.generate));
-    selected$ = combineLatest([
-        this.extensionResult$,
-        this.control.valueChanges.pipe(startWith(this.control.value)),
-    ]).pipe(
-        map(
-            ([extensionResult]) =>
-                extensionResult?.options?.find((o) => o.value === this.control.value),
-        ),
-    );
     options$ = this.extensionResult$.pipe(
         map((extensionResult): Option<T>[] =>
             extensionResult?.options?.length
@@ -54,11 +46,22 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
                       value: o.value as never,
                       description: String(o.value),
                   }))
-                : null,
+                : [],
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    selectedHint$ = this.selected$.pipe(
+    selectedExtensionOption$ = combineLatest([
+        this.extensionResult$,
+        getValueChanges(this.control),
+    ]).pipe(
+        map(([result, value]) => result?.options?.find?.((o) => o.value === value)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
+        map(([options, value]) => options.find((o) => o.value === value)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedHint$ = this.selectedOption$.pipe(
         map((s) => {
             if (!s) {
                 return '';
@@ -68,7 +71,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
                 .map((d) => getValueTypeTitle(d.type))
                 .filter((t) => t !== this.data.field?.name)
                 .join(', ');
-            return (s.label || `#${s.value}`) + (aliases ? ` (${aliases})` : '');
+            return s.label + (aliases ? ` (${aliases})` : '');
         }),
     );
 

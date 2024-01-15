@@ -48,7 +48,7 @@
             </button>
         </div>
     </ng-template>
-    <ng-container *ngIf="selected$ | async as selected">
+    <ng-container *ngIf="selectedExtensionOption$ | async as selected">
         <mat-expansion-panel *ngIf="selected.details">
             <mat-expansion-panel-header>
                 <mat-panel-title
@@ -60,7 +60,7 @@
                     "
                 >
                     <div>Details</div>
-                    <v-tag [color]="selected.color">{{ selected.label }}</v-tag>
+                    <v-tag [color]="selected.color">{{ (selectedOption$ | async)?.label }}</v-tag>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
