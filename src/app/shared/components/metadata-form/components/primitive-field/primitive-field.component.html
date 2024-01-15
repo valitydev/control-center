@@ -60,7 +60,7 @@
                     "
                 >
                     <div>Details</div>
-                    <cc-label [color]="selected.color" [label]="selected.label"></cc-label>
+                    <v-tag [color]="selected.color">{{ selected.label }}</v-tag>
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>

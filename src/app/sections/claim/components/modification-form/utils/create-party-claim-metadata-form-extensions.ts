@@ -14,7 +14,7 @@ function createPartyOptions(
     values: IterableIterator<{ id: string }>,
 ): MetadataFormExtensionOption[] {
     return Array.from(values).map((value) => ({
-        label: 'from party',
+        label: 'From party',
         details: value,
         value: value.id,
     }));
@@ -25,13 +25,27 @@ function createClaimOptions(
 ): MetadataFormExtensionOption[] {
     return uniqBy(
         modificationUnits.filter(Boolean).map((unit) => ({
-            label: 'from claim',
+            label: 'From claim',
             details: unit.modification as object,
             value: unit.id,
             color: 'primary',
         })),
         'value',
     );
+}
+
+function mergeClaimAndPartyOptions(
+    claimOptions: MetadataFormExtensionOption[],
+    partyOptions: MetadataFormExtensionOption[],
+) {
+    return partyOptions.reduce((acc, partyOpt) => {
+        const claimPartyOpt = acc.find((o) => o.value === partyOpt.value);
+        if (claimPartyOpt) {
+            claimPartyOpt.label = 'From claim and party';
+            claimPartyOpt.details = { claim: claimPartyOpt.details, party: partyOpt.details };
+        }
+        return acc;
+    }, claimOptions);
 }
 
 function generate() {
@@ -47,15 +61,15 @@ export function createPartyClaimMetadataFormExtensions(
             determinant: (data) => of(isTypeWithAliases(data, 'ContractorID', 'domain')),
             extension: () =>
                 of({
-                    options: [
-                        ...createClaimOptions(
+                    options: mergeClaimAndPartyOptions(
+                        createClaimOptions(
                             claim.changeset.map(
                                 (unit) =>
                                     unit.modification.party_modification?.contractor_modification,
                             ),
                         ),
-                        ...createPartyOptions(party.contractors.values()),
-                    ],
+                        createPartyOptions(party.contractors.values()),
+                    ),
                     generate,
                     isIdentifier: true,
                 }),
@@ -64,15 +78,15 @@ export function createPartyClaimMetadataFormExtensions(
             determinant: (data) => of(isTypeWithAliases(data, 'ContractID', 'domain')),
             extension: () =>
                 of({
-                    options: [
-                        ...createClaimOptions(
+                    options: mergeClaimAndPartyOptions(
+                        createClaimOptions(
                             claim.changeset.map(
                                 (unit) =>
                                     unit.modification.party_modification?.contract_modification,
                             ),
                         ),
-                        ...createPartyOptions(party.contracts.values()),
-                    ],
+                        createPartyOptions(party.contracts.values()),
+                    ),
                     generate,
                     isIdentifier: true,
                 }),
@@ -81,14 +95,14 @@ export function createPartyClaimMetadataFormExtensions(
             determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
             extension: () =>
                 of({
-                    options: [
-                        ...createClaimOptions(
+                    options: mergeClaimAndPartyOptions(
+                        createClaimOptions(
                             claim.changeset.map(
                                 (unit) => unit.modification.party_modification?.shop_modification,
                             ),
                         ),
-                        ...createPartyOptions(party.shops.values()),
-                    ],
+                        createPartyOptions(party.shops.values()),
+                    ),
                     generate,
                     isIdentifier: true,
                 }),
@@ -97,14 +111,14 @@ export function createPartyClaimMetadataFormExtensions(
             determinant: (data) => of(isTypeWithAliases(data, 'WalletID', 'domain')),
             extension: () =>
                 of({
-                    options: [
-                        ...createClaimOptions(
+                    options: mergeClaimAndPartyOptions(
+                        createClaimOptions(
                             claim.changeset.map(
                                 (unit) => unit.modification.party_modification?.wallet_modification,
                             ),
                         ),
-                        ...createPartyOptions(party.wallets.values()),
-                    ],
+                        createPartyOptions(party.wallets.values()),
+                    ),
                     generate,
                     isIdentifier: true,
                 }),
