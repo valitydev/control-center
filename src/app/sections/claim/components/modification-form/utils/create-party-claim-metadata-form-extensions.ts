@@ -43,6 +43,8 @@ function mergeClaimAndPartyOptions(
         if (claimPartyOpt) {
             claimPartyOpt.label = 'From claim and party';
             claimPartyOpt.details = { claim: claimPartyOpt.details, party: partyOpt.details };
+        } else {
+            acc.push(partyOpt);
         }
         return acc;
     }, claimOptions);
