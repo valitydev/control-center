@@ -10,13 +10,14 @@ import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 
-import { getValueTypeTitle } from '@cc/app/shared';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,
+    getAliases,
 } from '@cc/app/shared/components/metadata-form';
 
-import { MetadataFormData, getAliases } from '../../types/metadata-form-data';
+import { getValueTypeTitle } from '../../../../pipes';
+import { MetadataFormData } from '../../types/metadata-form-data';
 import { getFirstDeterminedExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({
@@ -58,18 +59,17 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedHint$ = this.selected$.pipe(
-        map((s) =>
-            s
-                ? `${s.label || `#${s.value}`} (${[
-                      ...getAliases(this.data),
-                      ...(this.data.field ? [this.data] : []),
-                  ]
-                      .filter((d) => d.typeGroup !== 'primitive')
-                      .map((d) => getValueTypeTitle(d.type))
-                      .filter((t) => t !== this.data.field?.name)
-                      .join(', ')})`
-                : '',
-        ),
+        map((s) => {
+            if (!s) {
+                return '';
+            }
+            const aliases = [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
+                .filter((d) => d.typeGroup !== 'primitive')
+                .map((d) => getValueTypeTitle(d.type))
+                .filter((t) => t !== this.data.field?.name)
+                .join(', ');
+            return (s.label || `#${s.value}`) + (aliases ? ` (${aliases})` : '');
+        }),
     );
 
     get inputType(): string {
