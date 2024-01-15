@@ -49,7 +49,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         map((extensionResult): Option<T>[] =>
             extensionResult?.options?.length
                 ? extensionResult.options.map((o) => ({
-                      label: o.label,
+                      label: o.label || `#${o.value}`,
                       value: o.value as never,
                       description: String(o.value),
                   }))
