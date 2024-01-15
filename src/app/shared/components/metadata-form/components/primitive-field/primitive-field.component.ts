@@ -57,6 +57,20 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    selectedHint$ = this.selected$.pipe(
+        map((s) =>
+            s
+                ? `${s.label || `#${s.value}`} (${[
+                      ...getAliases(this.data),
+                      ...(this.data.field ? [this.data] : []),
+                  ]
+                      .filter((d) => d.typeGroup !== 'primitive')
+                      .map((d) => getValueTypeTitle(d.type))
+                      .filter((t) => t !== this.data.field?.name)
+                      .join(', ')})`
+                : '',
+        ),
+    );
 
     get inputType(): string {
         switch (this.data.type) {
@@ -71,14 +85,6 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
             default:
                 return 'string';
         }
-    }
-
-    get aliases() {
-        return [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
-            .filter((d) => d.typeGroup !== 'primitive')
-            .map((d) => getValueTypeTitle(d.type))
-            .filter((t) => t !== this.data.field?.name)
-            .join(', ');
     }
 
     private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
