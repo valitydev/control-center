@@ -3,7 +3,7 @@ import { Component, Output, EventEmitter, Input, booleanAttribute, OnChanges } f
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { Shop, Party } from '@vality/domain-proto/domain';
+import { Shop, Party, Reference } from '@vality/domain-proto/domain';
 import {
     InputFieldModule,
     TableModule,
@@ -306,13 +306,8 @@ export class ShopsTableComponent implements OnChanges {
     @MemoizeExpiring(5 * 60_000, (...args) => JSON.stringify(args))
     getTerms(partyId: string, shopId: string) {
         return this.partyManagementService.GetShopContract(partyId, shopId).pipe(
-            switchMap((c) =>
-                this.domainStoreService
-                    .getObject({
-                        term_set_hierarchy: { id: c.contract.terms.id },
-                    })
-                    .pipe(first()),
-            ),
+            map((c): Reference => ({ term_set_hierarchy: { id: c.contract.terms.id } })),
+            switchMap((ref) => this.domainStoreService.getObject(ref).pipe(first())),
             shareReplay({ refCount: true, bufferSize: 1 }),
         );
     }
