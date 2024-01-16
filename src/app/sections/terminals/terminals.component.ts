@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config';
+import { createPredicateColumn } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectCardComponent } from '../../shared/components/thrift-api-crud';
@@ -50,6 +51,11 @@ export class TerminalsComponent {
                     });
             },
         },
+        createPredicateColumn('payments global allow', (d) => d.data.terms?.payments?.global_allow),
+        createPredicateColumn(
+            'withdrawals global allow',
+            (d) => d.data.terms?.wallet?.withdrawals?.global_allow,
+        ),
         {
             field: 'delegates',
             formatter: (d) =>
