@@ -1,10 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Validator } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
+import { createControlProviders } from '@vality/ng-core';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
+import { ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from './types/metadata-form-data';
 import {

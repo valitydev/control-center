@@ -1,6 +1,5 @@
 import { AbstractControl } from '@angular/forms';
-
-import { hasControls } from './has-controls';
+import { hasControls } from '@vality/ng-core';
 
 export function getValue<T extends AbstractControl>(control: T): T['value'] {
     if (!hasControls(control)) {

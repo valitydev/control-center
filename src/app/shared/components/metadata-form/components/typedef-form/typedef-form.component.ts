@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { createControlProviders } from '@vality/ng-core';
 
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
+import { ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';

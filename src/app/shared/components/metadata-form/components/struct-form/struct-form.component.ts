@@ -1,12 +1,13 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidationErrors, Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { createControlProviders } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils';
+import { ValidatedControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';

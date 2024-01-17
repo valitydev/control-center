@@ -8,11 +8,11 @@ import {
     AbstractControl,
 } from '@angular/forms';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
+import { createControlProviders, getErrorsTree } from '@vality/ng-core';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
-import { createControlProviders, getErrorsTree } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 

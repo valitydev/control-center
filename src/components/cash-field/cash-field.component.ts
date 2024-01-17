@@ -13,13 +13,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator, ValidationErrors, FormControl } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
+import { createControlProviders } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
-import { createControlProviders, getFormValueChanges } from '../../utils';
+import { getFormValueChanges } from '../../utils';
 
 export interface Cash {
     amount: number;

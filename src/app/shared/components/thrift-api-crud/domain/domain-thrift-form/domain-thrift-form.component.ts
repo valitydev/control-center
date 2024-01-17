@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { createControlProviders, getImportValue } from '@vality/ng-core';
+import { getImportValue, createControlProviders } from '@vality/ng-core';
 
 import { DomainMetadataFormExtensionsService } from '../../../../services';
 import { MetadataFormModule } from '../../../metadata-form';

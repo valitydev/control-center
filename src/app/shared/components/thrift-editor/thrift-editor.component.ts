@@ -1,11 +1,16 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@vality/ng-core';
+import {
+    DialogService,
+    DialogResponseStatus,
+    ConfirmDialogComponent,
+    createControlProviders,
+} from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
-import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/utils';
+import { ValidatedFormControlSuperclass } from '@cc/utils';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { MetadataFormExtension } from '../metadata-form';
