@@ -1,10 +1,8 @@
 import { Directive, OnInit } from '@angular/core';
 import { FormGroup, ValidationErrors, Validator } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
-import { getErrorsTree } from '@vality/ng-core';
+import { getErrorsTree, getValue } from '@vality/ng-core';
 import { EMPTY, Observable } from 'rxjs';
-
-import { getValue } from '../get-value';
 
 /**
  * @deprecated

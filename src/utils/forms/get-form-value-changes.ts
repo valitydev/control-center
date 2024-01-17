@@ -1,8 +1,7 @@
 import { AbstractControl, FormControlState } from '@angular/forms';
+import { getValue } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-
-import { getValue } from './get-value';
 
 /**
  * @deprecated
