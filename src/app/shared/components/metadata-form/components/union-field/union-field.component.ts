@@ -1,8 +1,7 @@
 import { Component, Input, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidationErrors, Validator, FormControl } from '@angular/forms';
-import { FormComponentSuperclass } from '@s-libs/ng-core';
-import { createControlProviders, getErrorsTree } from '@vality/ng-core';
+import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/ng-core';
 import { Field } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 import { delay, distinctUntilChanged, map } from 'rxjs/operators';
