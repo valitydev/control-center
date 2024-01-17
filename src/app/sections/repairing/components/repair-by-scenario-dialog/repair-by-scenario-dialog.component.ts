@@ -1,7 +1,7 @@
 import { Component, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormControl } from '@angular/forms';
-import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass, getValue } from '@vality/ng-core';
 import {
     RepairInvoicesRequest,
     RepairWithdrawalsRequest,
@@ -9,11 +9,12 @@ import {
 } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
 import { BehaviorSubject, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { progressTo, getFormValueChanges } from '../../../../../utils';
+import { progressTo } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
 import { NotificationService } from '../../../../shared/services/notification';
 
@@ -66,8 +67,11 @@ export class RepairByScenarioDialogComponent
     }
 
     ngOnInit() {
-        getFormValueChanges(this.nsControl)
-            .pipe(takeUntilDestroyed(this.destroyRef))
+        this.nsControl.valueChanges
+            .pipe(
+                map(() => getValue(this.nsControl)),
+                takeUntilDestroyed(this.destroyRef),
+            )
             .subscribe(() => {
                 this.form.setValue(
                     this.dialogData.machines.map(({ id }) => ({ id, scenario: {} })),

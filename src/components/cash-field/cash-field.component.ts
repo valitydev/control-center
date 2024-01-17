@@ -13,14 +13,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator, ValidationErrors, FormControl } from '@angular/forms';
 import { createMask } from '@ngneat/input-mask';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
-import { createControlProviders } from '@vality/ng-core';
+import { createControlProviders, getValueChanges } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import { combineLatest } from 'rxjs';
 import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
-
-import { getFormValueChanges } from '../../utils';
 
 export interface Cash {
     amount: number;
@@ -43,7 +41,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
     currencyCodeControl = new FormControl<string>(null);
 
     currencies$ = combineLatest([
-        getFormValueChanges(this.currencyCodeControl, true),
+        getValueChanges(this.currencyCodeControl),
         this.domainStoreService.getObjects('currency'),
     ]).pipe(
         map(([code, currencies]) =>
@@ -54,7 +52,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
         ),
     );
 
-    amountMask$ = getFormValueChanges(this.currencyCodeControl, true).pipe(
+    amountMask$ = getValueChanges(this.currencyCodeControl).pipe(
         switchMap((code) => this.getCurrencyByCode(code)),
         map((c) => (this.minor ? 0 : c?.data?.exponent || 2)),
         distinctUntilChanged(),
@@ -85,8 +83,8 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
 
     ngOnInit() {
         combineLatest([
-            getFormValueChanges(this.currencyCodeControl, true),
-            getFormValueChanges(this.amountControl, true),
+            getValueChanges(this.currencyCodeControl),
+            getValueChanges(this.amountControl),
         ])
             .pipe(
                 switchMap(([currencyCode]) => this.getCurrencyByCode(currencyCode)),
