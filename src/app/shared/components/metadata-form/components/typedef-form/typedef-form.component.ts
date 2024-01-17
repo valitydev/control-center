@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { createControlProviders } from '@vality/ng-core';
-
-import { ValidatedFormControlSuperclass } from '@cc/utils';
+import { createControlProviders, FormControlSuperclass } from '@vality/ng-core';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
@@ -11,7 +9,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
     templateUrl: './typedef-form.component.html',
     providers: createControlProviders(() => TypedefFormComponent),
 })
-export class TypedefFormComponent<T> extends ValidatedFormControlSuperclass<T> {
+export class TypedefFormComponent<T> extends FormControlSuperclass<T> {
     @Input() data: MetadataFormData<string, 'typedef'>;
     @Input() extensions: MetadataFormExtension[];
 }

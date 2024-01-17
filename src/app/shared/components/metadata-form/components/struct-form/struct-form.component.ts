@@ -1,13 +1,17 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ValidationErrors, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { createControlProviders } from '@vality/ng-core';
+import {
+    ValidationErrors,
+    Validators,
+    FormBuilder,
+    FormGroup,
+    AbstractControl,
+} from '@angular/forms';
+import { createControlProviders, FormGroupSuperclass } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
 import { delay } from 'rxjs/operators';
-
-import { ValidatedControlSuperclass } from '@cc/utils';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
@@ -18,7 +22,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
     providers: createControlProviders(() => StructFormComponent),
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
-    extends ValidatedControlSuperclass<T>
+    extends FormGroupSuperclass<T>
     implements OnChanges, OnInit
 {
     @Input() data: MetadataFormData<string, 'struct'>;
@@ -84,8 +88,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
-    validate(): ValidationErrors | null {
-        return this.labelControl.value ? super.validate() : null;
+    validate(control: AbstractControl): ValidationErrors | null {
+        return this.labelControl.value ? super.validate(control) : null;
     }
 
     private setLabelControl(value: boolean = false) {

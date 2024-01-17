@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { createControlProviders } from '@vality/ng-core';
-
-import { ValidatedFormControlSuperclass } from '@cc/utils';
+import { createControlProviders, FormControlSuperclass } from '@vality/ng-core';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 
@@ -10,6 +8,6 @@ import { MetadataFormData } from '../../types/metadata-form-data';
     templateUrl: './enum-field.component.html',
     providers: createControlProviders(() => EnumFieldComponent),
 })
-export class EnumFieldComponent<T> extends ValidatedFormControlSuperclass<T> {
+export class EnumFieldComponent<T> extends FormControlSuperclass<T> {
     @Input() data: MetadataFormData<string, 'enum'>;
 }
