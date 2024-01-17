@@ -17,7 +17,7 @@ import {
 import isNil from 'lodash-es/isNil';
 import { of } from 'rxjs';
 import { map, shareReplay, catchError, debounceTime } from 'rxjs/operators';
-import { Memoize } from 'typescript-memoize';
+import { MemoizeExpiring } from 'typescript-memoize';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
@@ -153,7 +153,7 @@ export class WalletsComponent implements OnInit {
         this.fetchWalletsTextService.reload();
     }
 
-    @Memoize()
+    @MemoizeExpiring(5 * 60_000)
     getBalance(walletId: string) {
         return this.walletManagementService.GetAccountBalance(walletId).pipe(
             catchError((err) => {

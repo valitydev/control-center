@@ -3,7 +3,7 @@ import { Component, Output, EventEmitter, Input, booleanAttribute, OnChanges } f
 import { MatCardModule } from '@angular/material/card';
 import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { Shop, Party } from '@vality/domain-proto/domain';
+import { Shop, Party, Reference } from '@vality/domain-proto/domain';
 import {
     InputFieldModule,
     TableModule,
@@ -17,7 +17,8 @@ import {
 } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map, switchMap, Subject, defer, combineLatest } from 'rxjs';
-import { filter, shareReplay, startWith, take } from 'rxjs/operators';
+import { filter, shareReplay, startWith, take, first } from 'rxjs/operators';
+import { MemoizeExpiring } from 'typescript-memoize';
 
 import { getUnionKey } from '../../../../utils';
 import { DomainStoreService } from '../../../api/domain-config';
@@ -27,7 +28,11 @@ import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
-import { DomainThriftViewerComponent } from '../thrift-api-crud';
+import {
+    DomainThriftViewerComponent,
+    DomainObjectCardComponent,
+    getDomainObjectDetails,
+} from '../thrift-api-crud';
 
 export interface ShopParty {
     shop: Shop;
@@ -99,6 +104,25 @@ export class ShopsTableComponent implements OnChanges {
                     this.sidenavInfoService.toggle(ShopContractCardComponent, {
                         partyId: d.party.id,
                         id: d.shop.id,
+                    });
+                },
+            },
+            {
+                field: 'terms',
+                formatter: (d) =>
+                    this.getTerms(d.party.id, d.shop.id).pipe(
+                        map((terms) => getDomainObjectDetails(terms).label),
+                    ),
+                description: (d) =>
+                    this.getTerms(d.party.id, d.shop.id).pipe(
+                        map((terms) => getDomainObjectDetails(terms).id),
+                    ),
+                lazy: true,
+                click: (d) => {
+                    this.getTerms(d.party.id, d.shop.id).subscribe((terms) => {
+                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                            ref: { term_set_hierarchy: terms.term_set_hierarchy.ref },
+                        });
                     });
                 },
             },
@@ -277,5 +301,14 @@ export class ShopsTableComponent implements OnChanges {
                     this.log.error(err);
                 },
             });
+    }
+
+    @MemoizeExpiring(5 * 60_000, (...args) => JSON.stringify(args))
+    getTerms(partyId: string, shopId: string) {
+        return this.partyManagementService.GetShopContract(partyId, shopId).pipe(
+            map((c): Reference => ({ term_set_hierarchy: { id: c.contract.terms.id } })),
+            switchMap((ref) => this.domainStoreService.getObject(ref).pipe(first())),
+            shareReplay({ refCount: true, bufferSize: 1 }),
+        );
     }
 }

@@ -1,7 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { RoutingCandidate, Predicate } from '@vality/domain-proto/domain';
+import { RoutingCandidate } from '@vality/domain-proto/domain';
 import {
     DialogResponseStatus,
     DialogService,
@@ -22,7 +22,8 @@ import {
     DomainObjectCardComponent,
 } from '@cc/app/shared/components/thrift-api-crud';
 
-import { objectToJSON, getUnionKey } from '../../../../utils';
+import { objectToJSON } from '../../../../utils';
+import { createPredicateColumn } from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
@@ -80,24 +81,20 @@ export class RoutingRulesetComponent {
                 });
             },
         },
-        {
-            field: 'global_allow',
-            formatter: (d) =>
-                combineLatest([
-                    this.domainStoreService.getObjects('terminal'),
-                    this.routingRulesType$,
-                ]).pipe(
-                    map(([terminals, type]) => {
-                        const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
-                        const globalAllow =
-                            type === RoutingRulesType.Payment
-                                ? terms?.payments?.global_allow
-                                : terms?.wallet?.withdrawals?.global_allow;
-                        return this.formatPredicate(globalAllow);
-                    }),
-                ),
-        },
-        { field: 'allowed', formatter: (d) => this.formatPredicate(d.allowed) },
+        createPredicateColumn('global_allow', (d) =>
+            combineLatest([
+                this.domainStoreService.getObjects('terminal'),
+                this.routingRulesType$,
+            ]).pipe(
+                map(([terminals, type]) => {
+                    const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
+                    return type === RoutingRulesType.Payment
+                        ? terms?.payments?.global_allow
+                        : terms?.wallet?.withdrawals?.global_allow;
+                }),
+            ),
+        ),
+        createPredicateColumn('allowed', (d) => d.allowed),
         { field: 'weight', sortable: true },
         {
             field: 'pin',
@@ -305,15 +302,5 @@ export class RoutingRulesetComponent {
                     this.log.error(err);
                 },
             });
-    }
-
-    private formatPredicate(predicate: Predicate) {
-        if (!predicate) {
-            return '';
-        }
-        if (getUnionKey(predicate) === 'constant') {
-            return JSON.stringify(predicate.constant);
-        }
-        return getUnionKey(predicate);
     }
 }
