@@ -13,7 +13,7 @@ import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
+import { MetadataFormData, isRequiredField } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 @Component({
@@ -72,10 +72,9 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
             this.control.addControl(
                 name as never,
                 this.fb.control(null, {
-                    validators:
-                        this.data.ast.find((f) => f.name === name)?.option === 'required'
-                            ? [Validators.required]
-                            : [],
+                    validators: isRequiredField(this.data.ast.find((f) => f.name === name))
+                        ? [Validators.required]
+                        : [],
                 }) as never,
             ),
         );
