@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { DomainObject, Reference } from '@vality/domain-proto/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 import {
     ConfirmDialogComponent,
     DialogResponseStatus,
@@ -16,17 +15,10 @@ import { DomainStoreService } from '../../../../../api/domain-config';
 })
 export class DomainObjectService {
     constructor(
-        private router: Router,
         private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
         private log: NotifyLogService,
     ) {}
-
-    edit(ref: Reference) {
-        return this.router.navigate(['domain', 'edit'], {
-            queryParams: { ref: JSON.stringify(ref) },
-        });
-    }
 
     delete(domainObject: DomainObject) {
         return this.dialogService

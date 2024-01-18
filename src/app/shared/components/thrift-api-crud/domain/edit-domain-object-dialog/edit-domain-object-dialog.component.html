@@ -1,0 +1,34 @@
+<v-dialog *ngIf="!isReview; else reviewTpl" title="Edit domain object">
+    <cc-domain-thrift-form
+        [formControl]="control"
+        [type]="dataType$ | async"
+    ></cc-domain-thrift-form>
+    <v-dialog-actions>
+        <button
+            *ngIf="!isReview"
+            [disabled]="control.invalid || control.pristine"
+            color="primary"
+            mat-flat-button
+            (click)="isReview = true"
+        >
+            Review
+        </button>
+    </v-dialog-actions>
+</v-dialog>
+
+<ng-template #reviewTpl>
+    <v-dialog title="Review domain object">
+        <cc-domain-thrift-viewer
+            [compared]="control.value"
+            [type]="dataType$ | async"
+            [value]="dialogData.domainObject"
+            kind="editor"
+        ></cc-domain-thrift-viewer>
+        <v-dialog-actions>
+            <button *ngIf="isReview" mat-flat-button (click)="isReview = false">Edit</button>
+            <button *ngIf="isReview" color="primary" mat-flat-button (click)="update()">
+                Update
+            </button>
+        </v-dialog-actions>
+    </v-dialog>
+</ng-template>

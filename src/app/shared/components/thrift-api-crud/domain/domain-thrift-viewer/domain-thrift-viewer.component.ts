@@ -4,7 +4,7 @@ import { ThriftAstMetadata } from '@vality/domain-proto';
 import { getImportValue } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 
-import { ThriftViewerModule } from '../../../thrift-viewer';
+import { ThriftViewerModule, ViewerKind } from '../../../thrift-viewer';
 
 import { DomainMetadataViewExtensionsService } from './services/domain-metadata-view-extensions';
 
@@ -15,7 +15,9 @@ import { DomainMetadataViewExtensionsService } from './services/domain-metadata-
     imports: [CommonModule, ThriftViewerModule],
 })
 export class DomainThriftViewerComponent<T> {
+    @Input() kind: ViewerKind = ViewerKind.Component;
     @Input() value: T;
+    @Input() compared?: T;
     @Input() type: ValueType;
     @Input({ transform: booleanAttribute }) progress: boolean = false;
     // @Input() extensions?: MetadataViewExtension[];

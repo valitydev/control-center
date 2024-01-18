@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Sort } from '@angular/material/sort';
@@ -11,6 +12,7 @@ import {
     SelectFieldModule,
     TableModule,
     ActionsModule,
+    DialogService,
 } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
@@ -25,6 +27,7 @@ import {
     DomainThriftViewerComponent,
     DomainObjectCardComponent,
     DomainObjectService,
+    EditDomainObjectDialogComponent,
 } from '../../../../shared/components/thrift-api-crud';
 import { MetadataService } from '../../services/metadata.service';
 
@@ -105,7 +108,11 @@ export class DomainObjectsTableComponent implements OnInit {
             {
                 label: 'Edit',
                 click: (d) => {
-                    void this.domainObjectService.edit(d.ref);
+                    this.dialogService
+                        .open(EditDomainObjectDialogComponent, { domainObject: d.obj })
+                        .afterClosed()
+                        .pipe(takeUntilDestroyed(this.destroyRef))
+                        .subscribe();
                 },
             },
             {
@@ -138,6 +145,8 @@ export class DomainObjectsTableComponent implements OnInit {
         private qp: QueryParamsService<{ types?: string[] }>,
         private sidenavInfoService: SidenavInfoService,
         private domainObjectService: DomainObjectService,
+        private destroyRef: DestroyRef,
+        private dialogService: DialogService,
     ) {}
 
     ngOnInit() {
