@@ -1,5 +1,13 @@
 <div class="wrapper">
     <div class="actions">
+        <button
+            *ngIf="control.invalid"
+            [matTooltip]="control.errors | inlineJson: false"
+            color="warn"
+            mat-icon-button
+        >
+            <mat-icon>priority_high</mat-icon>
+        </button>
         <button color="warn" mat-icon-button (click)="reset()">
             <mat-icon>restart_alt</mat-icon>
         </button>
