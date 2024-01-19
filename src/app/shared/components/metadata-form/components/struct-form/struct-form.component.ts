@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, DestroyRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     ValidationErrors,
@@ -7,7 +7,7 @@ import {
     FormGroup,
     AbstractControl,
 } from '@angular/forms';
-import { createControlProviders, FormGroupSuperclass } from '@vality/ng-core';
+import { createControlProviders, FormGroupSuperclass, ComponentChanges } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { merge } from 'rxjs';
@@ -59,7 +59,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         return super.ngOnInit();
     }
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
         const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
         Object.keys(this.control.controls).forEach((name) => {
             if (newControlsNames.has(name)) {
