@@ -60,25 +60,23 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     }
 
     ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
-        const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
-        Object.keys(this.control.controls).forEach((name) => {
-            if (newControlsNames.has(name)) {
-                newControlsNames.delete(name);
-            } else {
+        if (changes.data) {
+            const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
+            Object.keys(this.control.controls).forEach((name) => {
                 this.control.removeControl(name as never);
-            }
-        });
-        newControlsNames.forEach((name) =>
-            this.control.addControl(
-                name as never,
-                this.fb.control(null, {
-                    validators: isRequiredField(this.data.ast.find((f) => f.name === name))
-                        ? [Validators.required]
-                        : [],
-                }) as never,
-            ),
-        );
-        this.setLabelControl();
+            });
+            newControlsNames.forEach((name) =>
+                this.control.addControl(
+                    name as never,
+                    this.fb.control(null, {
+                        validators: isRequiredField(this.data.ast.find((f) => f.name === name))
+                            ? [Validators.required]
+                            : [],
+                    }) as never,
+                ),
+            );
+            this.setLabelControl();
+        }
         super.ngOnChanges(changes);
     }
 
