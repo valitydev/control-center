@@ -4,19 +4,23 @@ import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, defer, Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, defer, Observable, of, ReplaySubject, filter, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { inProgressFrom, progressTo, getUnionKey } from '../../../../utils';
 import { DomainSecretService } from '../../../shared/services';
 import { handleError } from '../../../shared/services/notification-error';
-import { RepositoryService } from '../index';
+import { RepositoryService } from '../repository.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainStoreService {
-    version$ = defer(() => this.snapshot$).pipe(map((s) => s?.version));
+    version$ = combineLatest([defer(() => this.snapshot$), defer(() => this.progress$)]).pipe(
+        filter(([, p]) => !p),
+        map(([s]) => s.version),
+        take(1),
+    );
     isLoading$ = inProgressFrom(
         () => this.progress$,
         defer(() => this.snapshot$),
