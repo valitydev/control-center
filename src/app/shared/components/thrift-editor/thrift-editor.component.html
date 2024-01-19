@@ -9,7 +9,13 @@
         >
             <mat-icon>priority_high</mat-icon>
         </button>
-        <button color="warn" mat-icon-button matTooltip="Reset" (click)="reset()">
+        <button
+            *ngIf="control.dirty"
+            color="warn"
+            mat-icon-button
+            matTooltip="Reset"
+            (click)="reset()"
+        >
             <mat-icon>restart_alt</mat-icon>
         </button>
         <button

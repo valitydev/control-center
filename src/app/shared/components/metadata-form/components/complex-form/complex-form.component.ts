@@ -64,20 +64,22 @@ export class ComplexFormComponent<V, K = never>
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 const values = this.valueControls.value;
+                if (!this.data.isRequired && !values.length) {
+                    this.emitOutgoingValue(null);
+                    return;
+                }
                 switch (this.data.type.name) {
                     case 'list':
-                        this.emitOutgoingValue(values.length ? values : null);
-                        break;
+                        this.emitOutgoingValue(values);
+                        return;
                     case 'map': {
                         const keys = this.keyControls.value;
-                        this.emitOutgoingValue(
-                            keys.length ? new Map(values.map((v, idx) => [keys[idx], v])) : null,
-                        );
-                        break;
+                        this.emitOutgoingValue(new Map(values.map((v, idx) => [keys[idx], v])));
+                        return;
                     }
                     case 'set':
-                        this.emitOutgoingValue(values.length ? new Set(values) : null);
-                        break;
+                        this.emitOutgoingValue(new Set(values));
+                        return;
                 }
             });
     }
