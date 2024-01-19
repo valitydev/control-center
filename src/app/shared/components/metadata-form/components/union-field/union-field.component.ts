@@ -1,15 +1,19 @@
-import { Component, Input, OnInit, DestroyRef } from '@angular/core';
+import { Component, Input, OnInit, DestroyRef, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ValidationErrors, Validator, FormControl } from '@angular/forms';
-import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/ng-core';
+import {
+    FormComponentSuperclass,
+    createControlProviders,
+    getErrorsTree,
+    ComponentChanges,
+} from '@vality/ng-core';
 import { Field } from '@vality/thrift-ts';
-import { merge } from 'rxjs';
-import { delay, distinctUntilChanged, map } from 'rxjs/operators';
+import { merge, ReplaySubject, defer } from 'rxjs';
+import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
-import { getFieldLabel } from '../../utils';
-import { getDefaultValue } from '../../utils/get-default-value';
+import { getFieldLabel, getDefaultValue } from '../../utils';
 
 @Component({
     selector: 'cc-union-field',
@@ -18,7 +22,7 @@ import { getDefaultValue } from '../../utils/get-default-value';
 })
 export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
-    implements OnInit, Validator
+    implements OnInit, Validator, OnChanges
 {
     @Input() data: MetadataFormData<string, 'union'>;
     @Input() extensions: MetadataFormExtension[];
@@ -26,11 +30,16 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     fieldControl = new FormControl() as FormControl<Field>;
     internalControl = new FormControl() as FormControl<T[keyof T]>;
 
-    get options() {
-        return this.data.ast
-            .map((field) => ({ label: getFieldLabel(field.type, field), value: field }))
-            .sort((a, b) => a.label.localeCompare(b.label));
-    }
+    protected options$ = defer(() => this.data$).pipe(
+        map((data) =>
+            data.ast
+                .map((field) => ({ label: getFieldLabel(field.type, field), value: field }))
+                .sort((a, b) => a.label.localeCompare(b.label)),
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
+    private data$ = new ReplaySubject<MetadataFormData<string, 'union'>>(1);
 
     constructor(private destroyRef: DestroyRef) {
         super();
@@ -55,6 +64,13 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         });
     }
 
+    ngOnChanges(changes: ComponentChanges<UnionFieldComponent<T>>) {
+        super.ngOnChanges(changes);
+        if (changes.data) {
+            this.data$.next(this.data);
+        }
+    }
+
     validate(): ValidationErrors | null {
         return this.fieldControl.errors || getErrorsTree(this.internalControl);
     }
@@ -75,13 +91,11 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
 
     cleanInternal(emitEvent = false) {
         this.internalControl.reset(
-            this.fieldControl.value
-                ? (getDefaultValue(
-                      this.data.metadata,
-                      this.data.namespace,
-                      this.fieldControl.value.type,
-                  ) as T[keyof T])
-                : null,
+            getDefaultValue(
+                this.data.metadata,
+                this.data.namespace,
+                this.fieldControl.value?.type,
+            ) as T[keyof T],
             { emitEvent },
         );
     }

@@ -6,7 +6,7 @@
             [required]="data.isRequired"
             (ngModelChange)="cleanInternal()"
         >
-            <mat-option *ngFor="let option of options" [value]="option.value">{{
+            <mat-option *ngFor="let option of options$ | async" [value]="option.value">{{
                 option.label
             }}</mat-option>
         </mat-select>
