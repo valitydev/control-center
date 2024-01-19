@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, DestroyRef } from '@angular/core';
+import { Component, OnInit, DestroyRef, Output, EventEmitter } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,7 @@ import {
     TableModule,
     ActionsModule,
     DialogService,
+    getValueChanges,
 } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
@@ -52,6 +53,8 @@ interface DomainObjectData {
     ],
 })
 export class DomainObjectsTableComponent implements OnInit {
+    @Output() selectedChange = new EventEmitter<string[]>();
+
     typesControl = new FormControl<string[]>(
         (this.qp.params.types as (keyof DomainObject)[]) || [],
     );
@@ -150,9 +153,16 @@ export class DomainObjectsTableComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.typesControl.valueChanges.subscribe((types) => {
-            void this.qp.patch({ types });
-        });
+        this.typesControl.valueChanges
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((types) => {
+                void this.qp.patch({ types });
+            });
+        getValueChanges(this.typesControl)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((types) => {
+                this.selectedChange.emit(types);
+            });
     }
 
     update() {

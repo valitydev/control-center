@@ -35,6 +35,12 @@ export class MetadataService {
         );
     }
 
+    getDomainFieldByType(fieldType: string): Observable<Field> {
+        return this.getDomainFields().pipe(
+            map((fields) => fields.find((f) => f.type === fieldType)),
+        );
+    }
+
     getDomainObjectDataFieldByName(fieldName: string): Observable<Field> {
         return this.getDomainFields().pipe(
             map((fields) => fields.find((f) => f.name === fieldName)),

@@ -1,4 +1,8 @@
-<v-dialog *ngIf="!isReview; else reviewTpl" title="Edit domain object">
+<v-dialog
+    *ngIf="!isReview; else reviewTpl"
+    [progress]="!!(progress$ | async)"
+    title="Edit domain object"
+>
     <cc-domain-thrift-form
         [defaultValue]="(dialogData.domainObject | ccUnionValue)?.data"
         [formControl]="control"
@@ -18,7 +22,7 @@
 </v-dialog>
 
 <ng-template #reviewTpl>
-    <v-dialog title="Review domain object">
+    <v-dialog [progress]="!!(progress$ | async)" title="Review domain object">
         <cc-domain-thrift-viewer
             [compared]="newObject$ | async"
             [type]="dataType$ | async"
@@ -26,8 +30,21 @@
             kind="editor"
         ></cc-domain-thrift-viewer>
         <v-dialog-actions>
-            <button *ngIf="isReview" mat-flat-button (click)="isReview = false">Edit</button>
-            <button *ngIf="isReview" color="primary" mat-flat-button (click)="update()">
+            <button
+                *ngIf="isReview"
+                [disabled]="!!(progress$ | async)"
+                mat-flat-button
+                (click)="isReview = false"
+            >
+                Edit
+            </button>
+            <button
+                *ngIf="isReview"
+                [disabled]="!!(progress$ | async)"
+                color="primary"
+                mat-flat-button
+                (click)="update()"
+            >
                 Update
             </button>
         </v-dialog-actions>

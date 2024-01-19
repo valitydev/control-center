@@ -7,5 +7,7 @@
             Create
         </button>
     </cc-page-layout-actions>
-    <cc-domain-objects-table></cc-domain-objects-table>
+    <cc-domain-objects-table
+        (selectedChange)="selectedTypes$.next($event)"
+    ></cc-domain-objects-table>
 </cc-page-layout>

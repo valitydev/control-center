@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,8 +13,8 @@ import {
     progressTo,
     NotifyLogService,
 } from '@vality/ng-core';
-import { BehaviorSubject, switchMap } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { BehaviorSubject, switchMap, EMPTY } from 'rxjs';
+import { first, map, catchError } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { getUnionKey } from '../../../../../../utils';
@@ -37,7 +37,10 @@ import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
     ],
     templateUrl: './create-domain-object-dialog.component.html',
 })
-export class CreateDomainObjectDialogComponent extends DialogSuperclass<CreateDomainObjectDialogComponent> {
+export class CreateDomainObjectDialogComponent
+    extends DialogSuperclass<CreateDomainObjectDialogComponent, { objectType?: string } | void>
+    implements OnInit
+{
     static defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -57,11 +60,34 @@ export class CreateDomainObjectDialogComponent extends DialogSuperclass<CreateDo
         super();
     }
 
-    create() {
+    ngOnInit() {
+        if (this.dialogData) {
+            this.metadataService
+                .getDomainFieldByType(this.dialogData.objectType)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe((type) => {
+                    this.control.setValue({ [type.name]: {} });
+                });
+        }
+    }
+
+    create(attempt = 0) {
         this.domainStoreService
             .commit({ ops: [{ insert: { object: this.control.value } }] })
             .pipe(
                 switchMap(() => this.getType()),
+                catchError((err) => {
+                    if (err?.name === 'ObsoleteCommitVersion' && attempt < 1) {
+                        this.domainStoreService.forceReload();
+                        this.create(++attempt);
+                        this.log.error(
+                            err,
+                            `Domain config is out of date, attempt number ${attempt + 1}...`,
+                        );
+                        return EMPTY;
+                    }
+                    throw err;
+                }),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.destroyRef),
             )
@@ -71,7 +97,9 @@ export class CreateDomainObjectDialogComponent extends DialogSuperclass<CreateDo
                     void this.domainNavigateService.toType(String(type));
                     this.closeWithSuccess();
                 },
-                error: this.log.error,
+                error: (err) => {
+                    this.log.errorOperation(err, 'create', 'domain object');
+                },
             });
     }
 

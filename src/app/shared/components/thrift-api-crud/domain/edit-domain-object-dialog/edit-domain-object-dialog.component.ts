@@ -106,7 +106,9 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                     void this.domainNavigateService.toType(type);
                     this.closeWithSuccess();
                 },
-                error: this.log.error,
+                error: (err) => {
+                    this.log.errorOperation(err, 'update', 'domain object');
+                },
             });
     }
 
