@@ -8,6 +8,7 @@ import { delay, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { getFieldLabel } from '../../utils';
 import { getDefaultValue } from '../../utils/get-default-value';
 
 @Component({
@@ -24,6 +25,12 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
 
     fieldControl = new FormControl() as FormControl<Field>;
     internalControl = new FormControl() as FormControl<T[keyof T]>;
+
+    get options() {
+        return this.data.ast
+            .map((field) => ({ label: getFieldLabel(field.type, field), value: field }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+    }
 
     constructor(private destroyRef: DestroyRef) {
         super();
