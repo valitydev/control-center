@@ -5,13 +5,19 @@
             [matTooltip]="control.errors | inlineJson: false"
             color="warn"
             mat-icon-button
+            (click)="control.updateValueAndValidity()"
         >
             <mat-icon>priority_high</mat-icon>
         </button>
-        <button color="warn" mat-icon-button (click)="reset()">
+        <button color="warn" mat-icon-button matTooltip="Reset" (click)="reset()">
             <mat-icon>restart_alt</mat-icon>
         </button>
-        <button color="primary" mat-icon-button (click)="toggleKind()">
+        <button
+            color="primary"
+            mat-icon-button
+            matTooltip="Show {{ kind === 'form' ? 'form' : 'JSON' }} editor"
+            (click)="toggleKind()"
+        >
             <mat-icon *ngIf="kind === 'form'">code</mat-icon>
             <mat-icon *ngIf="kind === 'editor'">edit_note</mat-icon>
         </button>

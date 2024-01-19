@@ -93,6 +93,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
             .afterClosed()
             .pipe(filter(({ status }) => status === DialogResponseStatus.Success))
             .subscribe(() => {
+                console.log(this.defaultValue);
                 this.control.reset(this.defaultValue);
                 this.editorError = null;
                 this.updateFile$.next();

@@ -1,5 +1,6 @@
 <v-dialog *ngIf="!isReview; else reviewTpl" title="Edit domain object">
     <cc-domain-thrift-form
+        [defaultValue]="(dialogData.domainObject | ccUnionValue)?.data"
         [formControl]="control"
         [type]="dataType$ | async"
     ></cc-domain-thrift-form>
@@ -19,7 +20,7 @@
 <ng-template #reviewTpl>
     <v-dialog title="Review domain object">
         <cc-domain-thrift-viewer
-            [compared]="control.value"
+            [compared]="newObject$ | async"
             [type]="dataType$ | async"
             [value]="dialogData.domainObject"
             kind="editor"

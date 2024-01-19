@@ -11,15 +11,17 @@ import {
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     DialogConfig,
     NotifyLogService,
+    getValueChanges,
 } from '@vality/ng-core';
 import { BehaviorSubject, switchMap } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { first, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { getUnionKey, getUnionValue } from '../../../../../../utils';
 import { DomainStoreService } from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
 import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
+import { ThriftPipesModule } from '../../../../pipes';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
 
@@ -33,6 +35,7 @@ import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
         DomainThriftFormComponent,
         ReactiveFormsModule,
         DomainThriftViewerComponent,
+        ThriftPipesModule,
     ],
     templateUrl: './edit-domain-object-dialog.component.html',
 })
@@ -66,6 +69,11 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             first(),
         );
 
+    newObject$ = getValueChanges(this.control).pipe(
+        map(() => this.getNewObject()),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
     constructor(
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
@@ -83,12 +91,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                     {
                         update: {
                             old_object: this.dialogData.domainObject,
-                            new_object: {
-                                [getUnionKey(this.dialogData.domainObject)]: {
-                                    ref: getUnionValue(this.dialogData.domainObject),
-                                    data: this.control.value,
-                                },
-                            },
+                            new_object: this.getNewObject(),
                         },
                     },
                 ],
@@ -105,5 +108,14 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                 },
                 error: this.log.error,
             });
+    }
+
+    private getNewObject() {
+        return {
+            [getUnionKey(this.dialogData.domainObject)]: {
+                ref: getUnionValue(this.dialogData.domainObject).ref,
+                data: this.control.value,
+            },
+        };
     }
 }
