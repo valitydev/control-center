@@ -71,23 +71,20 @@ export class CreateDomainObjectDialogComponent
         }
     }
 
-    create(attempt = 0) {
+    create(attempts = 1) {
         this.domainStoreService
             .commit({ ops: [{ insert: { object: this.control.value } }] })
             .pipe(
-                switchMap(() => this.getType()),
                 catchError((err) => {
-                    if (err?.name === 'ObsoleteCommitVersion' && attempt < 1) {
+                    if (err?.name === 'ObsoleteCommitVersion' && attempts !== 0) {
                         this.domainStoreService.forceReload();
-                        this.create(++attempt);
-                        this.log.error(
-                            err,
-                            `Domain config is out of date, attempt number ${attempt + 1}...`,
-                        );
+                        this.create(attempts - 1);
+                        this.log.error(err, `Domain config is out of date, one more attempt...`);
                         return EMPTY;
                     }
                     throw err;
                 }),
+                switchMap(() => this.getType()),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.destroyRef),
             )

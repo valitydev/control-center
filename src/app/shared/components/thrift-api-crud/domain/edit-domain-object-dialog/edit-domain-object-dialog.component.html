@@ -1,52 +1,86 @@
-<v-dialog
-    *ngIf="!isReview; else reviewTpl"
-    [progress]="!!(progress$ | async)"
-    title="Edit domain object"
->
-    <cc-domain-thrift-form
-        [defaultValue]="(dialogData.domainObject | ccUnionValue)?.data"
-        [formControl]="control"
-        [type]="dataType$ | async"
-    ></cc-domain-thrift-form>
-    <v-dialog-actions>
-        <button
-            *ngIf="!isReview"
-            [disabled]="control.invalid || control.pristine"
-            color="primary"
-            mat-flat-button
-            (click)="isReview = true"
-        >
-            Review
-        </button>
-    </v-dialog-actions>
-</v-dialog>
+<ng-container [ngSwitch]="step">
+    <v-dialog
+        *ngSwitchCase="stepEnum.Edit"
+        [progress]="!!(progress$ | async)"
+        title="Edit domain object"
+    >
+        <cc-domain-thrift-form
+            [defaultValue]="(dialogData.domainObject | ccUnionValue)?.data"
+            [formControl]="control"
+            [type]="dataType$ | async"
+        ></cc-domain-thrift-form>
+        <v-dialog-actions
+            ><ng-container *ngTemplateOutlet="actions"></ng-container
+        ></v-dialog-actions>
+    </v-dialog>
 
-<ng-template #reviewTpl>
-    <v-dialog [progress]="!!(progress$ | async)" title="Review domain object">
+    <v-dialog
+        *ngSwitchCase="stepEnum.Review"
+        [progress]="!!(progress$ | async)"
+        title="Review domain object"
+    >
         <cc-domain-thrift-viewer
             [compared]="newObject$ | async"
+            [type]="dataType$ | async"
+            [value]="currObject ?? dialogData.domainObject"
+            kind="editor"
+        ></cc-domain-thrift-viewer>
+        <v-dialog-actions
+            ><ng-container *ngTemplateOutlet="actions"></ng-container
+        ></v-dialog-actions>
+    </v-dialog>
+
+    <v-dialog
+        *ngSwitchCase="stepEnum.SourceReview"
+        [progress]="!!(progress$ | async)"
+        title="Changes from the server"
+    >
+        <cc-domain-thrift-viewer
+            *ngIf="currObject"
+            [compared]="this.currObject"
             [type]="dataType$ | async"
             [value]="dialogData.domainObject"
             kind="editor"
         ></cc-domain-thrift-viewer>
-        <v-dialog-actions>
-            <button
-                *ngIf="isReview"
-                [disabled]="!!(progress$ | async)"
-                mat-flat-button
-                (click)="isReview = false"
-            >
-                Edit
-            </button>
-            <button
-                *ngIf="isReview"
-                [disabled]="!!(progress$ | async)"
-                color="primary"
-                mat-flat-button
-                (click)="update()"
-            >
-                Update
-            </button>
-        </v-dialog-actions>
+        <v-dialog-actions
+            ><ng-container *ngTemplateOutlet="actions"></ng-container
+        ></v-dialog-actions>
     </v-dialog>
+</ng-container>
+
+<ng-template #actions>
+    <button
+        *ngIf="step !== stepEnum.Edit"
+        [disabled]="!!(progress$ | async)"
+        mat-flat-button
+        (click)="step = stepEnum.Edit"
+    >
+        Edit
+    </button>
+    <button
+        *ngIf="!!currObject && step !== stepEnum.SourceReview"
+        [disabled]="!!(progress$ | async)"
+        mat-flat-button
+        (click)="step = stepEnum.SourceReview"
+    >
+        Review changes from the server
+    </button>
+    <button
+        *ngIf="step !== stepEnum.Review"
+        [disabled]="control.invalid || control.pristine"
+        color="primary"
+        mat-flat-button
+        (click)="step = stepEnum.Review"
+    >
+        Review
+    </button>
+    <button
+        *ngIf="step === stepEnum.Review"
+        [disabled]="!!(progress$ | async)"
+        color="primary"
+        mat-flat-button
+        (click)="update()"
+    >
+        Update
+    </button>
 </ng-template>

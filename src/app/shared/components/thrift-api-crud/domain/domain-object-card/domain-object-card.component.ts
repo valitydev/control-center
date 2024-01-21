@@ -63,6 +63,7 @@ export class DomainObjectCardComponent implements OnChanges {
     edit() {
         this.domainObject$
             .pipe(
+                first(),
                 switchMap((domainObject) =>
                     this.dialogService
                         .open(EditDomainObjectDialogComponent, { domainObject })

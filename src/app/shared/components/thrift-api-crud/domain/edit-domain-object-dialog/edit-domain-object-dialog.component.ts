@@ -12,18 +12,27 @@ import {
     DialogConfig,
     NotifyLogService,
     getValueChanges,
+    progressTo,
+    DialogService,
+    ConfirmDialogComponent,
 } from '@vality/ng-core';
-import { BehaviorSubject, switchMap } from 'rxjs';
-import { first, map, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, switchMap, EMPTY } from 'rxjs';
+import { first, map, shareReplay, catchError } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { getUnionKey, getUnionValue } from '../../../../../../utils';
+import { getUnionKey, getUnionValue, isEqualThrift } from '../../../../../../utils';
 import { DomainStoreService } from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
 import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
 import { ThriftPipesModule } from '../../../../pipes';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
+
+enum Step {
+    Edit,
+    Review,
+    SourceReview,
+}
 
 @Component({
     selector: 'cc-edit-domain-object-dialog',
@@ -53,7 +62,9 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         [Validators.required],
     );
     progress$ = new BehaviorSubject(0);
-    isReview = false;
+    step: Step = Step.Edit;
+    stepEnum = Step;
+    currObject?: DomainObject;
 
     type$ = this.metadataService
         .getDomainFieldByName(getUnionKey(this.dialogData.domainObject))
@@ -80,24 +91,56 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         private log: NotifyLogService,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService,
+        private dialogService: DialogService,
     ) {
         super();
     }
 
-    update() {
+    update(attempts = 1) {
         this.domainStoreService
-            .commit({
-                ops: [
-                    {
-                        update: {
-                            old_object: this.dialogData.domainObject,
-                            new_object: this.getNewObject(),
-                        },
-                    },
-                ],
+            .getObject({
+                [getUnionKey(this.dialogData.domainObject)]: getUnionValue(
+                    this.dialogData.domainObject,
+                ).ref,
             })
             .pipe(
+                first(),
+                switchMap((currObject) => {
+                    if (!isEqualThrift(currObject, this.dialogData.domainObject)) {
+                        this.dialogService.open(ConfirmDialogComponent, {
+                            title: 'The object has been modified',
+                            description:
+                                'The original object has been modified. View changes in the original object before committing your own.',
+                            confirmLabel: 'View',
+                        });
+                        this.step = Step.SourceReview;
+                        this.currObject = currObject;
+                        return EMPTY;
+                    } else if (this.currObject) {
+                        this.currObject = undefined;
+                    }
+                    return this.domainStoreService.commit({
+                        ops: [
+                            {
+                                update: {
+                                    old_object: currObject,
+                                    new_object: this.getNewObject(),
+                                },
+                            },
+                        ],
+                    });
+                }),
+                catchError((err) => {
+                    if (err?.name === 'ObsoleteCommitVersion' && attempts !== 0) {
+                        this.domainStoreService.forceReload();
+                        this.update(attempts - 1);
+                        this.log.error(err, `Domain config is out of date, one more attempt...`);
+                        return EMPTY;
+                    }
+                    throw err;
+                }),
                 switchMap(() => this.type$),
+                progressTo(this.progress$),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
