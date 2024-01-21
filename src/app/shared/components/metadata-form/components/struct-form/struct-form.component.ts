@@ -7,11 +7,16 @@ import {
     FormGroup,
     AbstractControl,
 } from '@angular/forms';
-import { createControlProviders, FormGroupSuperclass, ComponentChanges } from '@vality/ng-core';
+import {
+    createControlProviders,
+    ComponentChanges,
+    FormComponentSuperclass,
+    getValueChanges,
+} from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
-import { merge } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 
 import { MetadataFormData, isRequiredField } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
@@ -22,7 +27,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
     providers: createControlProviders(() => StructFormComponent),
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
-    extends FormGroupSuperclass<T>
+    extends FormComponentSuperclass<T>
     implements OnChanges, OnInit
 {
     @Input() data: MetadataFormData<string, 'struct'>;
@@ -47,14 +52,16 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     }
 
     ngOnInit() {
-        merge(this.control.valueChanges, this.labelControl.valueChanges)
-            .pipe(delay(0), takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => {
-                this.emitOutgoingValue(
-                    this.control.value && this.labelControl.value
-                        ? (omitBy(this.control.value, isNil) as T)
-                        : null,
-                );
+        combineLatest([getValueChanges(this.control), getValueChanges(this.labelControl)])
+            .pipe(
+                map(([value, labelValue]) =>
+                    value && labelValue ? (omitBy(value, isNil) as T) : null,
+                ),
+                distinctUntilChanged(),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((value) => {
+                this.emitOutgoingValue(value);
             });
         return super.ngOnInit();
     }
