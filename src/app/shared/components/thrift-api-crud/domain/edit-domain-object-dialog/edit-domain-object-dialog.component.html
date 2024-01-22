@@ -67,7 +67,7 @@
     </button>
     <button
         *ngIf="step !== stepEnum.Review"
-        [disabled]="control.invalid || control.pristine"
+        [disabled]="!allowReview"
         color="primary"
         mat-flat-button
         (click)="step = stepEnum.Review"

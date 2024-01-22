@@ -85,6 +85,13 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
+    get allowReview() {
+        return (
+            this.control.valid &&
+            !isEqualThrift(this.currObject ?? this.dialogData.domainObject, this.getNewObject())
+        );
+    }
+
     constructor(
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
