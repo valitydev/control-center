@@ -64,7 +64,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     progress$ = new BehaviorSubject(0);
     step: Step = Step.Edit;
     stepEnum = Step;
-    currObject?: DomainObject;
+    currentObject?: DomainObject;
 
     type$ = this.metadataService
         .getDomainFieldByName(getUnionKey(this.dialogData.domainObject))
@@ -88,7 +88,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     get allowReview() {
         return (
             this.control.valid &&
-            !isEqualThrift(this.currObject ?? this.dialogData.domainObject, this.getNewObject())
+            !isEqualThrift(this.currentObject ?? this.dialogData.domainObject, this.getNewObject())
         );
     }
 
@@ -112,8 +112,8 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             })
             .pipe(
                 first(),
-                switchMap((currObject) => {
-                    if (!isEqualThrift(currObject, this.dialogData.domainObject)) {
+                switchMap((currentObject) => {
+                    if (!isEqualThrift(currentObject, this.dialogData.domainObject)) {
                         this.dialogService.open(ConfirmDialogComponent, {
                             title: 'The object has been modified',
                             description:
@@ -121,16 +121,16 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                             confirmLabel: 'View',
                         });
                         this.step = Step.SourceReview;
-                        this.currObject = currObject;
+                        this.currentObject = currentObject;
                         return EMPTY;
-                    } else if (this.currObject) {
-                        this.currObject = undefined;
+                    } else if (this.currentObject) {
+                        this.currentObject = undefined;
                     }
                     return this.domainStoreService.commit({
                         ops: [
                             {
                                 update: {
-                                    old_object: currObject,
+                                    old_object: currentObject,
                                     new_object: this.getNewObject(),
                                 },
                             },

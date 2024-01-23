@@ -22,7 +22,7 @@
         <cc-domain-thrift-viewer
             [compared]="newObject$ | async"
             [type]="dataType$ | async"
-            [value]="currObject ?? dialogData.domainObject"
+            [value]="currentObject ?? dialogData.domainObject"
             kind="editor"
         ></cc-domain-thrift-viewer>
         <v-dialog-actions
@@ -36,8 +36,8 @@
         title="Changes from the server"
     >
         <cc-domain-thrift-viewer
-            *ngIf="currObject"
-            [compared]="this.currObject"
+            *ngIf="currentObject"
+            [compared]="this.currentObject"
             [type]="dataType$ | async"
             [value]="dialogData.domainObject"
             kind="editor"
@@ -58,7 +58,7 @@
         Edit
     </button>
     <button
-        *ngIf="!!currObject && step !== stepEnum.SourceReview"
+        *ngIf="!!currentObject && step !== stepEnum.SourceReview"
         [disabled]="!!(progress$ | async)"
         mat-flat-button
         (click)="step = stepEnum.SourceReview"
