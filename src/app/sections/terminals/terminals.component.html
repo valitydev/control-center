@@ -1,5 +1,7 @@
 <cc-page-layout title="Terminals">
-    <cc-page-layout-actions></cc-page-layout-actions>
+    <cc-page-layout-actions>
+        <button color="primary" mat-raised-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
     <v-table
         [(sort)]="sort"
         [columns]="columns"
@@ -9,9 +11,5 @@
         sortOnFront
         standaloneFilter
         (update)="update()"
-    >
-        <v-table-actions>
-            <button color="primary" mat-raised-button (click)="create()">Create</button>
-        </v-table-actions>
-    </v-table>
+    ></v-table>
 </cc-page-layout>
