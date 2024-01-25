@@ -124,8 +124,8 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                     }),
                 ),
                 catchError((err) => {
-                    switch (err?.name) {
-                        case 'ObsoleteCommitVersion': {
+                    if (err?.name === 'ObsoleteCommitVersion') {
+                        if (attempts > 0) {
                             this.domainStoreService.forceReload();
                             this.update(attempts - 1);
                             this.log.error(
@@ -134,15 +134,14 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                             );
                             return EMPTY;
                         }
-                        case 'OperationConflict': {
-                            this.domainStoreService.forceReload();
-                            this.log.error(
-                                err,
-                                'The original object has been modified. View changes in the original object before committing your own.',
-                            );
-                            this.step = Step.SourceReview;
-                            return EMPTY;
-                        }
+                    } else if (err?.name === 'OperationConflict') {
+                        this.domainStoreService.forceReload();
+                        this.log.error(
+                            err,
+                            'The original object has been modified. View changes in the original object before committing your own.',
+                        );
+                        this.step = Step.SourceReview;
+                        return EMPTY;
                     }
                     throw err;
                 }),

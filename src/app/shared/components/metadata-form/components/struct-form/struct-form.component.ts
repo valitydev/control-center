@@ -12,6 +12,7 @@ import {
     ComponentChanges,
     FormComponentSuperclass,
     getValueChanges,
+    getErrorsTree,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
@@ -92,8 +93,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
-    validate(control: AbstractControl): ValidationErrors | null {
-        return this.labelControl.value ? super.validate(control) : null;
+    validate(_control: AbstractControl): ValidationErrors | null {
+        return this.labelControl.value ? getErrorsTree(this.control) : null;
     }
 
     private setLabelControl(value: boolean = false) {
