@@ -15,7 +15,7 @@ import {
     progressTo,
 } from '@vality/ng-core';
 import { BehaviorSubject, switchMap, EMPTY, combineLatest, defer } from 'rxjs';
-import { first, map, shareReplay, catchError } from 'rxjs/operators';
+import { first, map, shareReplay, catchError, distinctUntilChanged } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { getUnionKey, getUnionValue, isEqualThrift } from '../../../../../../utils';
@@ -83,8 +83,14 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         map(() => this.getNewObject()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    isConflict$ = combineLatest([this.currentObject$, this.newObject$]).pipe(
-        map((a, b) => isEqualThrift(a, b)),
+    hasConflict$ = this.currentObject$.pipe(
+        map((currentObject) => !isEqualThrift(currentObject, this.dialogData.domainObject)),
+        distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    hasChanges$ = combineLatest([this.currentObject$, this.newObject$]).pipe(
+        map(([a, b]) => !isEqualThrift(a, b)),
+        distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isLoading$ = combineLatest([
@@ -140,7 +146,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                             err,
                             'The original object has been modified. View changes in the original object before committing your own.',
                         );
-                        this.step = Step.SourceReview;
+                        this.step = Step.Edit;
                         return EMPTY;
                     }
                     throw err;
@@ -161,7 +167,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             });
     }
 
-    private getNewObject() {
+    private getNewObject(): DomainObject {
         return {
             [getUnionKey(this.dialogData.domainObject)]: {
                 ref: getUnionValue(this.dialogData.domainObject).ref,
