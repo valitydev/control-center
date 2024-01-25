@@ -8,13 +8,14 @@ import { map, shareReplay } from 'rxjs/operators';
 import { MetadataFormExtension } from '../../../metadata-form';
 
 @Directive()
-export abstract class BaseThriftFormSuperclass
-    extends FormControlSuperclass<unknown>
+export abstract class BaseThriftFormSuperclass<T = unknown>
+    extends FormControlSuperclass<T>
     implements OnChanges
 {
     @Input() type: ValueType;
     @Input() namespace?: string;
     @Input() extensions?: MetadataFormExtension[];
+    @Input() defaultValue?: T;
 
     protected abstract defaultNamespace: string;
     protected abstract metadata$: Observable<ThriftAstMetadata[]>;

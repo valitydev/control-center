@@ -45,6 +45,10 @@ export function isTypeWithAliases(
     return Boolean(getByType(data, type, namespace));
 }
 
+export function isRequiredField(field: Field): boolean {
+    return field?.option === 'required'; // optional even if not explicitly stated
+}
+
 export class MetadataFormData<
     T extends ValueType = ValueType,
     S extends StructureType = StructureType,
@@ -86,7 +90,7 @@ export class MetadataFormData<
     }
 
     get isRequired() {
-        return this.field?.option === 'required' || this.trueParent?.objectType === 'union';
+        return isRequiredField(this.field) || this.trueParent?.objectType === 'union';
     }
 
     constructor(

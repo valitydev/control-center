@@ -31,7 +31,7 @@ export class SidenavInfoService {
         private sidenavInfoComponents?: SidenavInfoComponents,
     ) {
         if (!this.sidenavInfoComponents) {
-            this.sidenavInfoComponents = sidenavInfoComponents = {};
+            this.sidenavInfoComponents = sidenavInfoComponents ?? {};
         }
         router.events
             .pipe(

@@ -3,14 +3,11 @@
     title="Domain config"
 >
     <cc-page-layout-actions>
-        <button
-            color="primary"
-            mat-raised-button
-            routerLink="/domain/create"
-            style="white-space: nowrap"
-        >
-            Create object
+        <button color="primary" mat-raised-button style="white-space: nowrap" (click)="create()">
+            Create
         </button>
     </cc-page-layout-actions>
-    <cc-domain-objects-table></cc-domain-objects-table>
+    <cc-domain-objects-table
+        (selectedChange)="selectedTypes$.next($event)"
+    ></cc-domain-objects-table>
 </cc-page-layout>

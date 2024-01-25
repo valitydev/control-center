@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator, ValidationErrors, FormControl, Validators } from '@angular/forms';
-import { FormComponentSuperclass } from '@s-libs/ng-core';
-import { ComponentChanges, createControlProviders } from '@vality/ng-core';
+import { FormComponentSuperclass, ComponentChanges, createControlProviders } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { defer, switchMap, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { shareReplay, first, map, pluck } from 'rxjs/operators';

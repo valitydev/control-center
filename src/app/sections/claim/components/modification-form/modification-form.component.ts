@@ -2,12 +2,11 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Validator } from '@angular/forms';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
-import { ComponentChanges } from '@vality/ng-core';
+import { ComponentChanges, createControlProviders, FormControlSuperclass } from '@vality/ng-core';
 import { from, combineLatest, ReplaySubject, defer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services/domain-metadata-form-extensions';
-import { createControlProviders, ValidatedFormControlSuperclass } from '@cc/utils';
 
 import { createPartyClaimMetadataFormExtensions } from './utils/create-party-claim-metadata-form-extensions';
 
@@ -17,7 +16,7 @@ import { createPartyClaimMetadataFormExtensions } from './utils/create-party-cla
     providers: createControlProviders(() => ModificationFormComponent),
 })
 export class ModificationFormComponent
-    extends ValidatedFormControlSuperclass<unknown>
+    extends FormControlSuperclass<unknown>
     implements Validator, OnChanges
 {
     @Input() party: Party;

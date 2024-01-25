@@ -1,9 +1,8 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
-import { Router } from '@angular/router';
 import { TerminalObject } from '@vality/domain-proto/domain';
-import { Column } from '@vality/ng-core';
+import { Column, DialogService } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -11,7 +10,10 @@ import { DomainStoreService } from '../../api/domain-config';
 import { createPredicateColumn } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { DomainObjectCardComponent } from '../../shared/components/thrift-api-crud';
+import {
+    DomainObjectCardComponent,
+    CreateDomainObjectDialogComponent,
+} from '../../shared/components/thrift-api-crud';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
@@ -71,9 +73,9 @@ export class TerminalsComponent {
 
     constructor(
         private domainStoreService: DomainStoreService,
-        private router: Router,
         private sidenavInfoService: SidenavInfoService,
         private destroyRef: DestroyRef,
+        private dialogService: DialogService,
     ) {}
 
     update() {
@@ -81,7 +83,9 @@ export class TerminalsComponent {
     }
 
     create() {
-        void this.router.navigate(['/domain/create']);
+        this.dialogService.open(CreateDomainObjectDialogComponent, {
+            objectType: 'TerminalObject',
+        });
     }
 
     private getProvider(terminalObj: TerminalObject) {

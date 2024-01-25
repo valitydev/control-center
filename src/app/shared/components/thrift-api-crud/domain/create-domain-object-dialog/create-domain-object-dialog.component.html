@@ -1,0 +1,47 @@
+<v-dialog
+    *ngIf="!isReview; else reviewTpl"
+    [progress]="!!(progress$ | async)"
+    title="Create domain object"
+>
+    <cc-domain-thrift-form [formControl]="control" type="DomainObject"></cc-domain-thrift-form>
+    <v-dialog-actions>
+        <button
+            *ngIf="!isReview"
+            [disabled]="control.invalid"
+            color="primary"
+            mat-flat-button
+            (click)="isReview = true"
+        >
+            Review
+        </button>
+    </v-dialog-actions>
+</v-dialog>
+
+<ng-template #reviewTpl>
+    <v-dialog [progress]="!!(progress$ | async)" title="Review domain object">
+        <cc-domain-thrift-viewer
+            [value]="control.value"
+            kind="editor"
+            type="DomainObject"
+        ></cc-domain-thrift-viewer>
+        <v-dialog-actions>
+            <button
+                *ngIf="isReview"
+                [disabled]="!!(progress$ | async)"
+                mat-flat-button
+                (click)="isReview = false"
+            >
+                Edit
+            </button>
+            <button
+                *ngIf="isReview"
+                [disabled]="!!(progress$ | async)"
+                color="primary"
+                mat-flat-button
+                (click)="create()"
+            >
+                Create
+            </button>
+        </v-dialog-actions>
+    </v-dialog>
+</ng-template>

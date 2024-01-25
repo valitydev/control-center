@@ -3,8 +3,8 @@ import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
-import { ComponentChanges } from '@vality/ng-core';
-import { combineLatest, ReplaySubject } from 'rxjs';
+import { ComponentChanges, DialogService } from '@vality/ng-core';
+import { combineLatest, ReplaySubject, switchMap } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
@@ -13,6 +13,7 @@ import { toJson } from '@cc/utils';
 import { SidenavInfoModule } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
+import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 import { DomainObjectService } from '../services';
 import { getDomainObjectDetails } from '../utils';
 
@@ -50,6 +51,7 @@ export class DomainObjectCardComponent implements OnChanges {
         private domainObjectService: DomainObjectService,
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
+        private dialogService: DialogService,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<DomainObjectCardComponent>) {
@@ -59,7 +61,17 @@ export class DomainObjectCardComponent implements OnChanges {
     }
 
     edit() {
-        void this.domainObjectService.edit(this.ref);
+        this.domainObject$
+            .pipe(
+                first(),
+                switchMap((domainObject) =>
+                    this.dialogService
+                        .open(EditDomainObjectDialogComponent, { domainObject })
+                        .afterClosed(),
+                ),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe();
     }
 
     delete() {

@@ -5,6 +5,9 @@ import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
 import { MetadataFormData, TypeGroup } from '../types/metadata-form-data';
 
 export function getDefaultValue(metadata: ThriftAstMetadata[], namespace: string, type: ValueType) {
+    if (!type) {
+        return null;
+    }
     let data: MetadataFormData;
     do {
         data = new MetadataFormData(metadata, namespace, type);

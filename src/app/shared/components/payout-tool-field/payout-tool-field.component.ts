@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { PayoutTool } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
-import { createControlProviders, FormControlSuperclass, Option } from '@vality/ng-core';
+import { FormControlSuperclass, Option, createControlProviders } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, Observable, of, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 

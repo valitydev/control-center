@@ -1,14 +1,24 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, DestroyRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ValidationErrors, Validators, FormBuilder, FormGroup } from '@angular/forms';
+import {
+    ValidationErrors,
+    Validators,
+    FormBuilder,
+    FormGroup,
+    AbstractControl,
+} from '@angular/forms';
+import {
+    createControlProviders,
+    ComponentChanges,
+    FormComponentSuperclass,
+    getValueChanges,
+} from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
-import { merge } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 
-import { createControlProviders, ValidatedControlSuperclass } from '@cc/utils';
-
-import { MetadataFormData } from '../../types/metadata-form-data';
+import { MetadataFormData, isRequiredField } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 @Component({
@@ -17,7 +27,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
     providers: createControlProviders(() => StructFormComponent),
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
-    extends ValidatedControlSuperclass<T>
+    extends FormComponentSuperclass<T>
     implements OnChanges, OnInit
 {
     @Input() data: MetadataFormData<string, 'struct'>;
@@ -42,39 +52,38 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     }
 
     ngOnInit() {
-        merge(this.control.valueChanges, this.labelControl.valueChanges)
-            .pipe(delay(0), takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => {
-                this.emitOutgoingValue(
-                    this.control.value && this.labelControl.value
-                        ? (omitBy(this.control.value, isNil) as T)
-                        : null,
-                );
+        combineLatest([getValueChanges(this.control), getValueChanges(this.labelControl)])
+            .pipe(
+                map(([value, labelValue]) =>
+                    value && labelValue ? (omitBy(value, isNil) as T) : null,
+                ),
+                distinctUntilChanged(),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((value) => {
+                this.emitOutgoingValue(value);
             });
         return super.ngOnInit();
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
-        Object.keys(this.control.controls).forEach((name) => {
-            if (newControlsNames.has(name)) {
-                newControlsNames.delete(name);
-            } else {
+    ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
+        if (changes.data) {
+            const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
+            Object.keys(this.control.controls).forEach((name) => {
                 this.control.removeControl(name as never);
-            }
-        });
-        newControlsNames.forEach((name) =>
-            this.control.addControl(
-                name as never,
-                this.fb.control(null, {
-                    validators:
-                        this.data.ast.find((f) => f.name === name)?.option === 'required'
+            });
+            newControlsNames.forEach((name) =>
+                this.control.addControl(
+                    name as never,
+                    this.fb.control(null, {
+                        validators: isRequiredField(this.data.ast.find((f) => f.name === name))
                             ? [Validators.required]
                             : [],
-                }) as never,
-            ),
-        );
-        this.setLabelControl();
+                    }) as never,
+                ),
+            );
+            this.setLabelControl();
+        }
         super.ngOnChanges(changes);
     }
 
@@ -83,8 +92,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
-    validate(): ValidationErrors | null {
-        return this.labelControl.value ? super.validate() : null;
+    validate(control: AbstractControl): ValidationErrors | null {
+        return this.labelControl.value ? super.validate(control) : null;
     }
 
     private setLabelControl(value: boolean = false) {

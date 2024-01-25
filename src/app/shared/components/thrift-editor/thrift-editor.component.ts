@@ -1,11 +1,16 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ValidationErrors } from '@angular/forms';
+import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DialogService, DialogResponseStatus, ConfirmDialogComponent } from '@vality/ng-core';
+import {
+    DialogService,
+    DialogResponseStatus,
+    ConfirmDialogComponent,
+    createControlProviders,
+    FormControlSuperclass,
+} from '@vality/ng-core';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
-import { ValidatedFormControlSuperclass, createControlProviders } from '@cc/utils';
 import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { MetadataFormExtension } from '../metadata-form';
@@ -21,7 +26,7 @@ export enum EditorKind {
     styleUrls: ['./thrift-editor.component.scss'],
     providers: createControlProviders(() => ThriftEditorComponent),
 })
-export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> {
+export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input() kind: EditorKind = EditorKind.Form;
 
     @Input() defaultValue?: T;
@@ -49,11 +54,11 @@ export class ThriftEditorComponent<T> extends ValidatedFormControlSuperclass<T> 
         super();
     }
 
-    validate(): ValidationErrors | null {
+    validate(control: AbstractControl): ValidationErrors | null {
         if (this.kind === EditorKind.Editor) {
             return this.editorError ? { jsonParse: this.editorError } : null;
         }
-        return super.validate();
+        return super.validate(control);
     }
 
     contentChange(str: string) {
