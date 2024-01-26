@@ -13,11 +13,9 @@ import {
     NotifyLogService,
     getValueChanges,
     progressTo,
-    DialogService,
-    ConfirmDialogComponent,
 } from '@vality/ng-core';
-import { BehaviorSubject, switchMap, EMPTY } from 'rxjs';
-import { first, map, shareReplay, catchError } from 'rxjs/operators';
+import { BehaviorSubject, switchMap, EMPTY, combineLatest, defer } from 'rxjs';
+import { first, map, shareReplay, catchError, distinctUntilChanged } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { getUnionKey, getUnionValue, isEqualThrift } from '../../../../../../utils';
@@ -61,36 +59,49 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         getUnionValue(this.dialogData.domainObject).data,
         [Validators.required],
     );
-    progress$ = new BehaviorSubject(0);
     step: Step = Step.Edit;
     stepEnum = Step;
-    currentObject?: DomainObject;
-
     type$ = this.metadataService
         .getDomainFieldByName(getUnionKey(this.dialogData.domainObject))
         .pipe(
             map((f) => String(f.type)),
             first(),
         );
-
     dataType$ = this.metadataService
         .getDomainObjectDataFieldByName(getUnionKey(this.dialogData.domainObject))
         .pipe(
             map((f) => String(f.type)),
             first(),
         );
-
+    currentObject$ = this.domainStoreService
+        .getObject({
+            [getUnionKey(this.dialogData.domainObject)]: getUnionValue(this.dialogData.domainObject)
+                .ref,
+        })
+        .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     newObject$ = getValueChanges(this.control).pipe(
         map(() => this.getNewObject()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    hasConflict$ = this.currentObject$.pipe(
+        map((currentObject) => !isEqualThrift(currentObject, this.dialogData.domainObject)),
+        distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    hasChanges$ = combineLatest([this.currentObject$, this.newObject$]).pipe(
+        map(([a, b]) => !isEqualThrift(a, b)),
+        distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    isLoading$ = combineLatest([
+        this.domainStoreService.isLoading$,
+        defer(() => this.progress$),
+    ]).pipe(
+        map((progresses) => progresses.some((p) => !!p)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
-    get allowReview() {
-        return (
-            this.control.valid &&
-            !isEqualThrift(this.currentObject ?? this.dialogData.domainObject, this.getNewObject())
-        );
-    }
+    private progress$ = new BehaviorSubject(0);
 
     constructor(
         private domainStoreService: DomainStoreService,
@@ -98,35 +109,16 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         private log: NotifyLogService,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService,
-        private dialogService: DialogService,
     ) {
         super();
     }
 
     update(attempts = 1) {
-        this.domainStoreService
-            .getObject({
-                [getUnionKey(this.dialogData.domainObject)]: getUnionValue(
-                    this.dialogData.domainObject,
-                ).ref,
-            })
+        this.currentObject$
             .pipe(
                 first(),
-                switchMap((currentObject) => {
-                    if (!isEqualThrift(currentObject, this.dialogData.domainObject)) {
-                        this.dialogService.open(ConfirmDialogComponent, {
-                            title: 'The object has been modified',
-                            description:
-                                'The original object has been modified. View changes in the original object before committing your own.',
-                            confirmLabel: 'View',
-                        });
-                        this.step = Step.SourceReview;
-                        this.currentObject = currentObject;
-                        return EMPTY;
-                    } else if (this.currentObject) {
-                        this.currentObject = undefined;
-                    }
-                    return this.domainStoreService.commit({
+                switchMap((currentObject) =>
+                    this.domainStoreService.commit({
                         ops: [
                             {
                                 update: {
@@ -135,13 +127,26 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                                 },
                             },
                         ],
-                    });
-                }),
+                    }),
+                ),
                 catchError((err) => {
-                    if (err?.name === 'ObsoleteCommitVersion' && attempts !== 0) {
+                    if (err?.name === 'ObsoleteCommitVersion') {
+                        if (attempts > 0) {
+                            this.domainStoreService.forceReload();
+                            this.update(attempts - 1);
+                            this.log.error(
+                                err,
+                                `Domain config is out of date, one more attempt...`,
+                            );
+                            return EMPTY;
+                        }
+                    } else if (err?.name === 'OperationConflict') {
                         this.domainStoreService.forceReload();
-                        this.update(attempts - 1);
-                        this.log.error(err, `Domain config is out of date, one more attempt...`);
+                        this.log.error(
+                            err,
+                            'The original object has been modified. View changes in the original object before committing your own.',
+                        );
+                        this.step = Step.Edit;
                         return EMPTY;
                     }
                     throw err;
@@ -162,7 +167,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             });
     }
 
-    private getNewObject() {
+    private getNewObject(): DomainObject {
         return {
             [getUnionKey(this.dialogData.domainObject)]: {
                 ref: getUnionValue(this.dialogData.domainObject).ref,

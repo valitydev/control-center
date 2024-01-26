@@ -19,7 +19,6 @@ export class DomainStoreService {
     version$ = combineLatest([defer(() => this.snapshot$), defer(() => this.progress$)]).pipe(
         filter(([, p]) => !p),
         map(([s]) => s.version),
-        take(1),
     );
     isLoading$ = inProgressFrom(
         () => this.progress$,
