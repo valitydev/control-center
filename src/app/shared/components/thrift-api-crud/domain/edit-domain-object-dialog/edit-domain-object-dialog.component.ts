@@ -113,12 +113,20 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         super();
     }
 
-    update(attempts = 1) {
+    update(isRepeat = false) {
         this.currentObject$
             .pipe(
                 first(),
-                switchMap((currentObject) =>
-                    this.domainStoreService.commit({
+                switchMap((currentObject) => {
+                    if (isRepeat && !isEqualThrift(currentObject, this.dialogData.domainObject)) {
+                        this.log.error(
+                            new Error('The object has changed'),
+                            'The original object has been modified. View changes in the original object before committing your own.',
+                        );
+                        this.step = Step.Edit;
+                        return EMPTY;
+                    }
+                    return this.domainStoreService.commit({
                         ops: [
                             {
                                 update: {
@@ -127,26 +135,20 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                                 },
                             },
                         ],
-                    }),
-                ),
+                    });
+                }),
                 catchError((err) => {
                     if (err?.name === 'ObsoleteCommitVersion') {
-                        if (attempts > 0) {
+                        if (!isRepeat) {
                             this.domainStoreService.forceReload();
-                            this.update(attempts - 1);
+                            this.update(true);
                             this.log.error(
                                 err,
                                 `Domain config is out of date, one more attempt...`,
                             );
-                            return EMPTY;
+                        } else {
+                            this.log.error(err, `Domain config is out of date, please try again`);
                         }
-                    } else if (err?.name === 'OperationConflict') {
-                        this.domainStoreService.forceReload();
-                        this.log.error(
-                            err,
-                            'The original object has been modified. View changes in the original object before committing your own.',
-                        );
-                        this.step = Step.Edit;
                         return EMPTY;
                     }
                     throw err;
