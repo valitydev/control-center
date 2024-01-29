@@ -1,15 +1,16 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
-import { NotifyLogService } from '@vality/ng-core';
+import { NotifyLogService, getImportValue } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
-import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 
 import { progressTo, getUnionKey } from '../../../../utils';
+import { DomainMetadataViewExtensionsService } from '../../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 import { NotificationService } from '../../../shared/services/notification';
 import { DomainNavigateService } from '../services/domain-navigate.service';
@@ -23,7 +24,9 @@ export class DomainObjCreationComponent {
     control = new FormControl<DomainObject>(null, Validators.required);
     review = false;
 
-    metadata$ = this.metadataService.metadata;
+    metadata$ = getImportValue<ThriftAstMetadata[]>(
+        import('@vality/domain-proto/metadata.json'),
+    ).pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     viewerExtensions$ = this.domainMetadataViewExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
@@ -48,7 +51,9 @@ export class DomainObjCreationComponent {
             .commit({ ops: [{ insert: { object: this.control.value } }] })
             .pipe(
                 withLatestFrom(
-                    this.metadataService.getDomainFieldByFieldName(getUnionKey(this.control.value)),
+                    this.metadataService.getDomainObjectDataFieldByName(
+                        getUnionKey(this.control.value),
+                    ),
                 ),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.destroyRef),

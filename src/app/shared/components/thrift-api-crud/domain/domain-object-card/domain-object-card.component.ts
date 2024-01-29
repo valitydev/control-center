@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 import { Reference } from '@vality/domain-proto/internal/domain';
 import { ComponentChanges, DialogService } from '@vality/ng-core';
 import { combineLatest, ReplaySubject, switchMap } from 'rxjs';
@@ -52,6 +53,7 @@ export class DomainObjectCardComponent implements OnChanges {
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
+        private router: Router,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<DomainObjectCardComponent>) {
@@ -80,5 +82,13 @@ export class DomainObjectCardComponent implements OnChanges {
             .subscribe((domainObject) => {
                 this.domainObjectService.delete(domainObject);
             });
+    }
+
+    oldEdit() {
+        this.ref$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((ref) => {
+            void this.router.navigate(['domain', 'edit'], {
+                queryParams: { ref: JSON.stringify(ref) },
+            });
+        });
     }
 }
