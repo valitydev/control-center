@@ -54,6 +54,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         NumberRangeFieldModule,
         DateRangeFieldModule,
         InputFieldModule,
+        NumberRangeFieldModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })

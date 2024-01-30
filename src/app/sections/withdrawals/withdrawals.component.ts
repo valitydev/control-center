@@ -13,6 +13,7 @@ import {
     DateRange,
     getNoTimeZoneIsoString,
     DialogResponseStatus,
+    NumberRange,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
@@ -32,8 +33,7 @@ interface WithdrawalsForm {
     dateRange: DateRange;
     merchant: PartyID;
     status: WithdrawalParams['status'];
-    amountFrom: WithdrawalParams['amount_from'];
-    amountTo: WithdrawalParams['amount_to'];
+    amount: NumberRange;
     withdrawalIds: WithdrawalParams['withdrawal_ids'];
     walletId: WithdrawalParams['wallet_id'];
     errorMessage: WithdrawalParams['error_message'];
@@ -49,8 +49,7 @@ export class WithdrawalsComponent implements OnInit {
         dateRange: null,
         merchant: null,
         status: null,
-        amountFrom: null,
-        amountTo: null,
+        amount: null,
         withdrawalIds: null,
         walletId: null,
         errorMessage: null,
@@ -121,31 +120,21 @@ export class WithdrawalsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        const {
-            dateRange,
-            merchant,
-            status,
-            amountFrom,
-            amountTo,
-            withdrawalIds,
-            walletId,
-            errorMessage,
-        } = this.qp.params;
-        this.fetchWithdrawalsService.load(
-            clean({
-                party_id: merchant,
-                from_time: dateRange?.start && getNoTimeZoneIsoString(dateRange?.start),
-                to_time: dateRange?.end && getNoTimeZoneIsoString(endOfDay(dateRange?.end)),
-                status: status,
-                amount_from: amountFrom,
-                amount_to: amountTo,
-                withdrawal_ids: withdrawalIds,
-                wallet_id: walletId,
-                error_message: errorMessage,
-            }),
-            options,
-        );
-        this.active = countProps(clean(this.qp.params));
+        const { dateRange, merchant, status, amount, withdrawalIds, walletId, errorMessage } =
+            this.qp.params;
+        const params = clean({
+            party_id: merchant,
+            from_time: dateRange?.start && getNoTimeZoneIsoString(dateRange?.start),
+            to_time: dateRange?.end && getNoTimeZoneIsoString(endOfDay(dateRange?.end)),
+            status: status,
+            amount_from: amount?.start,
+            amount_to: amount?.end,
+            withdrawal_ids: withdrawalIds,
+            wallet_id: walletId,
+            error_message: errorMessage,
+        });
+        this.fetchWithdrawalsService.load(params, options);
+        this.active = countProps(params);
     }
 
     more() {
