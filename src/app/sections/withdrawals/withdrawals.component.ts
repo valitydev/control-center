@@ -16,6 +16,7 @@ import {
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
+import { debounceTime } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
@@ -114,7 +115,9 @@ export class WithdrawalsComponent implements OnInit {
         this.filtersForm.valueChanges
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((v) => void this.qp.set(clean(v)));
-        this.qp.params$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.update());
+        this.qp.params$
+            .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => this.update());
     }
 
     update(options?: UpdateOptions) {
