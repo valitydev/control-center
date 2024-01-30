@@ -45,6 +45,7 @@ export class PaymentsComponent implements OnInit {
         payment_last4: undefined as string,
         payment_rrn: undefined as string,
         payment_email: undefined as string,
+        error_message: undefined as string,
     });
     otherFiltersControl = this.fb.control({
         common_search_query_params: {},
@@ -64,6 +65,7 @@ export class PaymentsComponent implements OnInit {
                             'payment_first6',
                             'payment_last4',
                             'payment_rrn',
+                            'error_message',
                         ].includes(data?.field?.name),
                 ),
             extension: () => of({ hidden: true }),
@@ -122,6 +124,7 @@ export class PaymentsComponent implements OnInit {
                     payment_first6: filters.payment_first6,
                     payment_last4: filters.payment_last4,
                     payment_rrn: filters.payment_rrn,
+                    error_message: filters.error_message,
                 },
                 invoice_ids: filters.invoice_ids,
             }),

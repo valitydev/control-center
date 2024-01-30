@@ -17,6 +17,7 @@ import {
     FiltersModule,
     NumberRangeFieldModule,
     DateRangeFieldModule,
+    InputFieldModule,
 } from '@vality/ng-core';
 
 import { PageLayoutModule } from '../../shared';
@@ -52,6 +53,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         FiltersModule,
         NumberRangeFieldModule,
         DateRangeFieldModule,
+        InputFieldModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })

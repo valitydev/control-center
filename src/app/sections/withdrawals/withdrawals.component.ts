@@ -20,6 +20,7 @@ import startCase from 'lodash-es/startCase';
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
 import { getUnionKey } from '../../../utils';
+import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { AmountCurrencyService } from '../../shared/services';
 
@@ -34,6 +35,7 @@ interface WithdrawalsForm {
     amountTo: WithdrawalParams['amount_to'];
     withdrawalIds: WithdrawalParams['withdrawal_ids'];
     walletId: WithdrawalParams['wallet_id'];
+    errorMessage: WithdrawalParams['error_message'];
 }
 
 @Component({
@@ -50,6 +52,7 @@ export class WithdrawalsComponent implements OnInit {
         amountTo: null,
         withdrawalIds: null,
         walletId: null,
+        errorMessage: null,
         ...this.qp.params,
     });
     active = 0;
@@ -93,6 +96,7 @@ export class WithdrawalsComponent implements OnInit {
                 },
             },
         },
+        createFailureColumn<StatWithdrawal>((d) => d.status?.failed?.base_failure),
     ];
     selected: StatWithdrawal[] = [];
     statuses: WithdrawalParams['status'][] = ['Pending', 'Succeeded', 'Failed'];
@@ -114,8 +118,16 @@ export class WithdrawalsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        const { dateRange, merchant, status, amountFrom, amountTo, withdrawalIds, walletId } =
-            this.qp.params;
+        const {
+            dateRange,
+            merchant,
+            status,
+            amountFrom,
+            amountTo,
+            withdrawalIds,
+            walletId,
+            errorMessage,
+        } = this.qp.params;
         this.fetchWithdrawalsService.load(
             clean({
                 party_id: merchant,
@@ -126,6 +138,7 @@ export class WithdrawalsComponent implements OnInit {
                 amount_to: amountTo,
                 withdrawal_ids: withdrawalIds,
                 wallet_id: walletId,
+                error_message: errorMessage,
             }),
             options,
         );
