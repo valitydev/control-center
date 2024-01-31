@@ -57,8 +57,8 @@ export class DomainStoreService {
         );
     }
 
-    getObject(ref: Reference): Observable<DomainObject> {
-        return this.getDomain().pipe(
+    getObject(ref: Reference, raw = false): Observable<DomainObject> {
+        return this.getDomain(raw).pipe(
             map((domain) => Array.from(domain).find(([r]) => isEqual(ref, r))[1]),
         );
     }

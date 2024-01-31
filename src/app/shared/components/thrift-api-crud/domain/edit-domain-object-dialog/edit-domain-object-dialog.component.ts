@@ -24,6 +24,7 @@ import { DomainStoreService } from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
 import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
 import { ThriftPipesModule } from '../../../../pipes';
+import { DomainSecretService } from '../../../../services';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
 
@@ -99,15 +100,16 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         private log: NotifyLogService,
         private domainNavigateService: DomainNavigateService,
         private metadataService: MetadataService,
+        private domainSecretService: DomainSecretService,
     ) {
         super();
     }
 
     update(isRepeat = false) {
-        this.getCurrentObject()
+        combineLatest([this.getCurrentObject(), this.getCurrentObject(true)])
             .pipe(
                 first(),
-                switchMap((currentObject) => {
+                switchMap(([currentObject, currentObjectRaw]) => {
                     if (isRepeat && !isEqualThrift(currentObject, this.dialogData.domainObject)) {
                         this.log.error(
                             new Error('The object has changed'),
@@ -120,8 +122,11 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                         ops: [
                             {
                                 update: {
-                                    old_object: currentObject,
-                                    new_object: this.getNewObject(),
+                                    old_object: currentObjectRaw,
+                                    new_object: this.domainSecretService.restoreDomain(
+                                        currentObjectRaw,
+                                        this.getNewObject(),
+                                    ),
                                 },
                             },
                         ],
@@ -159,11 +164,15 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             });
     }
 
-    private getCurrentObject(): Observable<DomainObject> {
-        return this.domainStoreService.getObject({
-            [getUnionKey(this.dialogData.domainObject)]: getUnionValue(this.dialogData.domainObject)
-                .ref,
-        });
+    private getCurrentObject(raw = false): Observable<DomainObject> {
+        return this.domainStoreService.getObject(
+            {
+                [getUnionKey(this.dialogData.domainObject)]: getUnionValue(
+                    this.dialogData.domainObject,
+                ).ref,
+            },
+            raw,
+        );
     }
 
     private getNewObject(): DomainObject {
