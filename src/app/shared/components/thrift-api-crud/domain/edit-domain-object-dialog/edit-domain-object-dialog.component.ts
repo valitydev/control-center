@@ -13,8 +13,9 @@ import {
     NotifyLogService,
     getValueChanges,
     progressTo,
+    inProgressFrom,
 } from '@vality/ng-core';
-import { BehaviorSubject, switchMap, EMPTY, combineLatest, defer, Observable } from 'rxjs';
+import { BehaviorSubject, switchMap, EMPTY, combineLatest, Observable } from 'rxjs';
 import { first, map, shareReplay, catchError, distinctUntilChanged } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
@@ -88,13 +89,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    isLoading$ = combineLatest([
-        this.domainStoreService.isLoading$,
-        defer(() => this.progress$),
-    ]).pipe(
-        map((progresses) => progresses.some((p) => !!p)),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    isLoading$ = inProgressFrom([this.domainStoreService.isLoading$, () => this.progress$]);
 
     private progress$ = new BehaviorSubject(0);
 
