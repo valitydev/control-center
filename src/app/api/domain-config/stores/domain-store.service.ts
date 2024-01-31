@@ -50,8 +50,9 @@ export class DomainStoreService {
     }
 
     getDomain(raw = false): Observable<Domain> {
-        return this.snapshot$.pipe(
-            map((s) => s?.domain),
+        return combineLatest([defer(() => this.snapshot$), defer(() => this.progress$)]).pipe(
+            filter(([, p]) => !p),
+            map(([s]) => s?.domain),
             map((d) => (raw ? d : this.domainSecretService.reduceDomain(d))),
         );
     }

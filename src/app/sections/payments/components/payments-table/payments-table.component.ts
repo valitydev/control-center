@@ -10,6 +10,8 @@ import { PartiesStoreService } from '@cc/app/api/payment-processing';
 import { AmountCurrencyService } from '@cc/app/shared/services';
 import { getUnionKey } from '@cc/utils';
 
+import { createFailureColumn } from '../../../../shared';
+
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
@@ -82,6 +84,13 @@ export class PaymentsTableComponent {
         'domain_revision',
         { field: 'terminal_id.id', header: 'Terminal' },
         { field: 'provider_id.id', header: 'Provider' },
+        createFailureColumn<StatPayment>(
+            (d) => d.status?.failed?.failure?.failure,
+            (d) =>
+                getUnionKey(d.status?.failed?.failure) === 'failure'
+                    ? ''
+                    : startCase(getUnionKey(d.status?.failed?.failure)),
+        ),
         createOperationColumn<StatPayment>([
             {
                 label: 'Details',

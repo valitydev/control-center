@@ -17,4 +17,5 @@ export interface WithdrawalParams extends PagedBaseParameters {
     currency_code?: string;
     from_time?: string;
     to_time?: string;
+    error_message?: string;
 }

@@ -20,14 +20,8 @@
                 <mat-label>Wallet ID</mat-label>
                 <input formControlName="walletId" matInput />
             </mat-form-field>
-            <mat-form-field>
-                <mat-label>Amount from</mat-label>
-                <input formControlName="amountFrom" matInput type="number" />
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Amount to</mat-label>
-                <input formControlName="amountTo" matInput type="number" />
-            </mat-form-field>
+            <v-number-range-field formControlName="amount" label="Amount"></v-number-range-field>
+            <v-input-field formControlName="errorMessage" label="Error message"></v-input-field>
         </ng-template>
     </v-filters>
 

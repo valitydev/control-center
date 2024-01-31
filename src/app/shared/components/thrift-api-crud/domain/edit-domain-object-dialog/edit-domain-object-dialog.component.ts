@@ -14,7 +14,7 @@ import {
     getValueChanges,
     progressTo,
 } from '@vality/ng-core';
-import { BehaviorSubject, switchMap, EMPTY, combineLatest, defer } from 'rxjs';
+import { BehaviorSubject, switchMap, EMPTY, combineLatest, defer, Observable } from 'rxjs';
 import { first, map, shareReplay, catchError, distinctUntilChanged } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
@@ -73,12 +73,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             map((f) => String(f.type)),
             first(),
         );
-    currentObject$ = this.domainStoreService
-        .getObject({
-            [getUnionKey(this.dialogData.domainObject)]: getUnionValue(this.dialogData.domainObject)
-                .ref,
-        })
-        .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    currentObject$ = this.getCurrentObject().pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     newObject$ = getValueChanges(this.control).pipe(
         map(() => this.getNewObject()),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -114,7 +109,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     }
 
     update(isRepeat = false) {
-        this.currentObject$
+        this.getCurrentObject()
             .pipe(
                 first(),
                 switchMap((currentObject) => {
@@ -167,6 +162,13 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                     this.log.errorOperation(err, 'update', 'domain object');
                 },
             });
+    }
+
+    private getCurrentObject(): Observable<DomainObject> {
+        return this.domainStoreService.getObject({
+            [getUnionKey(this.dialogData.domainObject)]: getUnionValue(this.dialogData.domainObject)
+                .ref,
+        });
     }
 
     private getNewObject(): DomainObject {
