@@ -14,7 +14,7 @@ const EXCLUDE_OBJECTS = ['terminal', 'provider', 'proxy'];
     providedIn: 'root',
 })
 export class DomainSecretService {
-    private isDominantSecret = isDominantSecretRole(
+    private hasDominantSecretRole = isDominantSecretRole(
         this.keycloakService.getUserRoles(),
         DOMINANT_SECRETS_ROLE,
     );
@@ -22,7 +22,7 @@ export class DomainSecretService {
     constructor(private keycloakService: KeycloakService) {}
 
     reduceDomain(domain: Domain): Domain {
-        if (this.isDominantSecret) {
+        if (this.hasDominantSecretRole) {
             return domain;
         }
         const result = new Map(domain);
@@ -36,7 +36,7 @@ export class DomainSecretService {
     }
 
     restoreDomain(oldObject: DomainObject, newObject: DomainObject): DomainObject {
-        if (this.isDominantSecret) {
+        if (this.hasDominantSecretRole) {
             return newObject;
         }
         let result = newObject;
