@@ -76,7 +76,7 @@ export function getDomainObjectValueDetailsFn(key: keyof DomainObject): GetDomai
 }
 
 export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
-    if (!o) {
+    if (!o || !getUnionValue(o)) {
         return { id: null, label: '', description: '', type: '' };
     }
     const result = getDomainObjectValueDetailsFn(getUnionKey(o))(getUnionValue(o));
