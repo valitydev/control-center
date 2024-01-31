@@ -21,7 +21,7 @@ import {
     EnumKeysPipe,
 } from '@vality/ng-core';
 
-import { PageLayoutModule } from '@cc/app/shared';
+import { PageLayoutModule, ThriftPipesModule } from '@cc/app/shared';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
@@ -54,6 +54,7 @@ import { RepairingComponent } from './repairing.component';
         DomainObjectFieldComponent,
         PageLayoutModule,
         ListFieldModule,
+        ThriftPipesModule,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })
