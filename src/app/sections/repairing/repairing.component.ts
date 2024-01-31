@@ -24,6 +24,7 @@ import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
 import { NotificationService } from '../../shared/services/notification';
+import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
@@ -60,20 +61,7 @@ export class RepairingComponent implements OnInit {
         { field: 'id' },
         { header: 'Namespace', field: 'ns' },
         { field: 'created_at', type: 'datetime' },
-        {
-            field: 'provider',
-            formatter: (data) =>
-                this.domainStoreService
-                    .getObjects('provider')
-                    .pipe(
-                        map(
-                            (providers) =>
-                                providers.find((p) => String(p.ref.id) === data.provider_id)?.data
-                                    ?.name,
-                        ),
-                    ),
-            description: 'provider_id',
-        },
+        createProviderColumn((d) => Number(d.provider_id)),
         {
             field: 'status',
             formatter: (data) => getEnumKey(repairer.RepairStatus, data.status),

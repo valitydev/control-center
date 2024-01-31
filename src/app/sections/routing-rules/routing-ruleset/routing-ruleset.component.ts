@@ -17,15 +17,13 @@ import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import {
-    DomainThriftFormDialogComponent,
-    DomainObjectCardComponent,
-} from '@cc/app/shared/components/thrift-api-crud';
+import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
 
 import { objectToJSON } from '../../../../utils';
 import { createPredicateColumn } from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
+import { createTerminalColumn } from '../../../shared/utils/table/create-terminal-column';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
@@ -63,24 +61,7 @@ export class RoutingRulesetComponent {
                     });
             },
         },
-        {
-            field: 'terminal',
-            description: 'terminal.id',
-            formatter: (d) =>
-                this.domainStoreService
-                    .getObjects('terminal')
-                    .pipe(
-                        map(
-                            (terminals) =>
-                                terminals.find((t) => t.ref.id === d.terminal.id).data.name,
-                        ),
-                    ),
-            click: (d) => {
-                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                    ref: { terminal: { id: d.terminal.id } },
-                });
-            },
-        },
+        createTerminalColumn((d) => d.terminal.id),
         createPredicateColumn('global_allow', (d) =>
             combineLatest([
                 this.domainStoreService.getObjects('terminal'),

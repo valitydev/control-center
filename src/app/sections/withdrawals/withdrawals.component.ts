@@ -25,6 +25,8 @@ import { getUnionKey } from '../../../utils';
 import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { AmountCurrencyService } from '../../shared/services';
+import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
+import { createTerminalColumn } from '../../shared/utils/table/create-terminal-column';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
@@ -100,12 +102,8 @@ export class WithdrawalsComponent implements OnInit {
                 },
             },
         },
-        {
-            field: 'terminal_id',
-        },
-        {
-            field: 'provider_id',
-        },
+        createTerminalColumn((d) => d.terminal_id),
+        createProviderColumn((d) => d.provider_id),
         createFailureColumn<StatWithdrawal>((d) => d.status?.failed?.base_failure),
     ];
     selected: StatWithdrawal[] = [];
