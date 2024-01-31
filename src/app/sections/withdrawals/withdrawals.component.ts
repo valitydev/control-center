@@ -100,6 +100,12 @@ export class WithdrawalsComponent implements OnInit {
                 },
             },
         },
+        {
+            field: 'terminal_id',
+        },
+        {
+            field: 'provider_id',
+        },
         createFailureColumn<StatWithdrawal>((d) => d.status?.failed?.base_failure),
     ];
     selected: StatWithdrawal[] = [];
