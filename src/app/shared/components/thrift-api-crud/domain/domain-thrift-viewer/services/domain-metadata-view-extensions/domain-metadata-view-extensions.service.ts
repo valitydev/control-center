@@ -70,7 +70,15 @@ export class DomainMetadataViewExtensionsService {
             ).ast;
             const refType = objectFields.find((n) => n.name === 'ref').type as string;
             return {
-                determinant: (data) => of(isTypeWithAliases(data, refType, 'domain')),
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, refType, 'domain') &&
+                            !isTypeWithAliases(
+                                data?.trueParent?.trueParent,
+                                'DomainObject',
+                                'domain',
+                            ),
+                    ),
                 extension: (_, value) =>
                     this.domainStoreService.getObjectsRefs(objectKey).pipe(
                         map((refObjs) => refObjs.find(([, o]) => isEqual(o[objectKey].ref, value))),
