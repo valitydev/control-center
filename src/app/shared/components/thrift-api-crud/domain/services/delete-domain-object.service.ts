@@ -1,35 +1,34 @@
 import { Injectable } from '@angular/core';
-import { DomainObject } from '@vality/domain-proto/domain';
+import { Reference } from '@vality/domain-proto/domain';
 import {
     ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
 } from '@vality/ng-core';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../api/domain-config';
 
 @Injectable({
     providedIn: 'root',
 })
-export class DomainObjectService {
+export class DeleteDomainObjectService {
     constructor(
         private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
         private log: NotifyLogService,
     ) {}
 
-    delete(domainObject: DomainObject) {
+    delete(domainRef: Reference) {
         return this.dialogService
             .open(ConfirmDialogComponent, { title: 'Delete object' })
             .afterClosed()
             .pipe(
-                filter(({ status }) => status === DialogResponseStatus.Success),
-                switchMap(() =>
-                    this.domainStoreService.commit({
-                        ops: [{ remove: { object: domainObject } }],
-                    }),
+                filter((r) => r.status === DialogResponseStatus.Success),
+                switchMap(() => this.domainStoreService.getObject(domainRef, true).pipe(first())),
+                switchMap((obj) =>
+                    this.domainStoreService.commit({ ops: [{ remove: { object: obj } }] }),
                 ),
             )
             .subscribe({
