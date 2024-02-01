@@ -29,7 +29,7 @@
     "@angular/router": "17.1.1",
     "@ngneat/input-mask": "6.0.0",
     "@vality/deanonimus-proto": "2.0.1-2a02d87.0",
-    "@vality/domain-proto": "2.0.1-23211ff.0",
+    "@vality/domain-proto": "2.0.1-decfa45.0",
     "@vality/fistful-proto": "2.0.1-23e9ba3.0",
     "@vality/machinegun-proto": "1.0.0",
     "@vality/magista-proto": "2.0.2-28d11b9.0",
