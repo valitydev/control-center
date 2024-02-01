@@ -82,8 +82,6 @@ export class RepairingComponent implements OnInit {
         },
         {
             field: 'error_message',
-            width: '100px',
-            maxWidth: 100,
         },
     ];
 
