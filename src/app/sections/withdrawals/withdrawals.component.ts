@@ -25,6 +25,8 @@ import { getUnionKey } from '../../../utils';
 import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { AmountCurrencyService } from '../../shared/services';
+import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
+import { createTerminalColumn } from '../../shared/utils/table/create-terminal-column';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
@@ -37,6 +39,8 @@ interface WithdrawalsForm {
     withdrawalIds: WithdrawalParams['withdrawal_ids'];
     walletId: WithdrawalParams['wallet_id'];
     errorMessage: WithdrawalParams['error_message'];
+    providerId: WithdrawalParams['withdrawal_provider_id'];
+    terminalId: WithdrawalParams['withdrawal_terminal_id'];
 }
 
 @Component({
@@ -53,6 +57,8 @@ export class WithdrawalsComponent implements OnInit {
         withdrawalIds: null,
         walletId: null,
         errorMessage: null,
+        providerId: null,
+        terminalId: null,
         ...this.qp.params,
     });
     active = 0;
@@ -96,6 +102,8 @@ export class WithdrawalsComponent implements OnInit {
                 },
             },
         },
+        createTerminalColumn((d) => d.terminal_id),
+        createProviderColumn((d) => d.provider_id),
         createFailureColumn<StatWithdrawal>((d) => d.status?.failed?.base_failure),
     ];
     selected: StatWithdrawal[] = [];
@@ -120,8 +128,17 @@ export class WithdrawalsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        const { dateRange, merchant, status, amount, withdrawalIds, walletId, errorMessage } =
-            this.qp.params;
+        const {
+            dateRange,
+            merchant,
+            status,
+            amount,
+            withdrawalIds,
+            walletId,
+            errorMessage,
+            providerId,
+            terminalId,
+        } = this.qp.params;
         const params = clean({
             party_id: merchant,
             from_time: dateRange?.start && getNoTimeZoneIsoString(dateRange?.start),
@@ -132,6 +149,8 @@ export class WithdrawalsComponent implements OnInit {
             withdrawal_ids: withdrawalIds,
             wallet_id: walletId,
             error_message: errorMessage,
+            withdrawal_terminal_id: terminalId,
+            withdrawal_provider_id: providerId,
         });
         this.fetchWithdrawalsService.load(params, options);
         this.active = countProps(params);

@@ -16,14 +16,15 @@ import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';
 import isNil from 'lodash-es/isNil';
+import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
 import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
 import { NotificationService } from '../../shared/services/notification';
+import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
@@ -60,29 +61,27 @@ export class RepairingComponent implements OnInit {
         { field: 'id' },
         { header: 'Namespace', field: 'ns' },
         { field: 'created_at', type: 'datetime' },
-        {
-            field: 'provider',
-            formatter: (data) =>
-                this.domainStoreService
-                    .getObjects('provider')
-                    .pipe(
-                        map(
-                            (providers) =>
-                                providers.find((p) => String(p.ref.id) === data.provider_id)?.data
-                                    ?.name,
-                        ),
-                    ),
-            description: 'provider_id',
-        },
+        createProviderColumn((d) => Number(d.provider_id)),
         {
             field: 'status',
-            formatter: (data) => getEnumKey(repairer.RepairStatus, data.status),
-            tooltip: 'error_message',
+            formatter: (d) => getEnumKey(repairer.RepairStatus, d.status),
+            type: 'tag',
+            typeParameters: {
+                label: (d) => startCase(getEnumKey(repairer.RepairStatus, d.status)),
+                tags: {
+                    failed: { color: 'warn' },
+                    in_progress: { color: 'pending' },
+                    repaired: { color: 'success' },
+                },
+            },
         },
         {
             field: 'history',
             formatter: (data) => (data.history?.length ? String(data.history.length) : ''),
             tooltip: 'history',
+        },
+        {
+            field: 'error_message',
         },
     ];
 
@@ -94,7 +93,6 @@ export class RepairingComponent implements OnInit {
         private repairManagementService: RepairManagementService,
         private notificationService: NotificationService,
         private log: NotifyLogService,
-        private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
     ) {}
 

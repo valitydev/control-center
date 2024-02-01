@@ -22,7 +22,7 @@
                         *ngFor="let statusName of status | enumKeys"
                         [value]="status[statusName]"
                     >
-                        {{ statusName }}
+                        {{ statusName | keyTitle | titlecase }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

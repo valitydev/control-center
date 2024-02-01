@@ -18,4 +18,6 @@ export interface WithdrawalParams extends PagedBaseParameters {
     from_time?: string;
     to_time?: string;
     error_message?: string;
+    withdrawal_provider_id?: string;
+    withdrawal_terminal_id?: string;
 }

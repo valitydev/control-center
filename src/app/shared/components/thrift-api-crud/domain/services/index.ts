@@ -1,1 +1,1 @@
-export * from './domain-object.service';
+export * from './delete-domain-object.service';

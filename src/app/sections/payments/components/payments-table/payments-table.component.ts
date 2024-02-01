@@ -11,6 +11,8 @@ import { AmountCurrencyService } from '@cc/app/shared/services';
 import { getUnionKey } from '@cc/utils';
 
 import { createFailureColumn } from '../../../../shared';
+import { createProviderColumn } from '../../../../shared/utils/table/create-provider-column';
+import { createTerminalColumn } from '../../../../shared/utils/table/create-terminal-column';
 
 @Component({
     selector: 'cc-payments-table',
@@ -82,8 +84,8 @@ export class PaymentsTableComponent {
             header: 'Shop',
         },
         'domain_revision',
-        { field: 'terminal_id.id', header: 'Terminal' },
-        { field: 'provider_id.id', header: 'Provider' },
+        createTerminalColumn((d) => d.terminal_id.id),
+        createProviderColumn((d) => d.provider_id.id),
         createFailureColumn<StatPayment>(
             (d) => d.status?.failed?.failure?.failure,
             (d) =>

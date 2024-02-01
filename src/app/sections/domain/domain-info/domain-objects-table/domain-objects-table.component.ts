@@ -27,7 +27,7 @@ import {
     getDomainObjectDetails,
     DomainThriftViewerComponent,
     DomainObjectCardComponent,
-    DomainObjectService,
+    DeleteDomainObjectService,
     EditDomainObjectDialogComponent,
 } from '../../../../shared/components/thrift-api-crud';
 import { MetadataService } from '../../services/metadata.service';
@@ -121,7 +121,7 @@ export class DomainObjectsTableComponent implements OnInit {
             {
                 label: 'Delete',
                 click: (d) => {
-                    this.domainObjectService.delete(d.obj);
+                    this.deleteDomainObjectService.delete(d.ref);
                 },
             },
         ]),
@@ -147,7 +147,7 @@ export class DomainObjectsTableComponent implements OnInit {
         private metadataService: MetadataService,
         private qp: QueryParamsService<{ types?: string[] }>,
         private sidenavInfoService: SidenavInfoService,
-        private domainObjectService: DomainObjectService,
+        private deleteDomainObjectService: DeleteDomainObjectService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
     ) {}
