@@ -1,10 +1,11 @@
 import { Component, DestroyRef, ViewChild, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validators, NonNullableFormBuilder } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/ng-core';
 import { BehaviorSubject, of, switchMap } from 'rxjs';
 import { first, map } from 'rxjs/operators';
+import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../components/source-cash-field';
 import { DepositManagementService } from '../../../api/deposit';
@@ -18,13 +19,7 @@ import { FetchSourcesService } from '../../sources';
 export class CreateDepositDialogComponent extends DialogSuperclass<CreateDepositDialogComponent> {
     @ViewChild('sourceCashTemplate') sourceCashTemplate: TemplateRef<unknown>;
 
-    control = this.fb.control(
-        {
-            id: this.userInfoBasedIdGeneratorService.getUsernameBasedId(),
-            source_id: 'STUB',
-        } as DepositParams,
-        [Validators.required],
-    );
+    control = new FormControl(this.getDefaultValue(), [Validators.required]);
     progress$ = new BehaviorSubject(0);
     extensions: MetadataFormExtension[] = [
         {
@@ -48,14 +43,12 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
         private log: NotifyLogService,
         private userInfoBasedIdGeneratorService: UserInfoBasedIdGeneratorService,
         private fetchSourcesService: FetchSourcesService,
-        private fb: NonNullableFormBuilder,
     ) {
         super();
     }
 
     create() {
-        const value = this.control.value;
-        const sourceCash = value.body as never as SourceCash;
+        const { body: sourceCash, ...value } = this.control.value;
         this.fetchSourcesService.sources$
             .pipe(
                 first(),
@@ -81,5 +74,12 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                 next: () => this.closeWithSuccess(),
                 error: (err) => this.log.error(err),
             });
+    }
+
+    getDefaultValue() {
+        return {
+            id: this.userInfoBasedIdGeneratorService.getUsernameBasedId(),
+            source_id: 'STUB',
+        } as Overwrite<DepositParams, { body: SourceCash }>;
     }
 }
