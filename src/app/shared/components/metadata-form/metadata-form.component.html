@@ -1,6 +1,9 @@
 <div *ngIf="!(extensionResult$ | async)?.hidden" [ngSwitch]="data?.typeGroup">
     <cc-extension-field
-        *ngIf="(extensionResult$ | async)?.type; else defaultFields"
+        *ngIf="
+            (extensionResult$ | async)?.type || (extensionResult$ | async)?.template;
+            else defaultFields
+        "
         [data]="data"
         [extensions]="extensions"
         [formControl]="control"

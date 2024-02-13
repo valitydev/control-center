@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, booleanAttribute } from '@angular/core';
 import { ValidationErrors, AbstractControl } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import {
@@ -35,6 +35,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input() namespace: string;
     @Input() type: string;
     @Input() extensions: MetadataFormExtension[];
+    @Input({ transform: booleanAttribute }) noChangeKind = false;
 
     @Output() changeKind = new EventEmitter<EditorKind>();
 

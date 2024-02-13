@@ -19,6 +19,7 @@
             <mat-icon>restart_alt</mat-icon>
         </button>
         <button
+            *ngIf="!noChangeKind"
             color="primary"
             mat-icon-button
             matTooltip="Show {{ kind === 'form' ? 'form' : 'JSON' }} editor"
