@@ -5,7 +5,7 @@ import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
 import { DialogSuperclass, NotifyLogService, toMinor, clean } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
-import { ManagementService } from '@cc/app/api/deposit';
+import { DepositManagementService } from '@cc/app/api/deposit';
 
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 
@@ -31,7 +31,7 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
 
     constructor(
         private fb: NonNullableFormBuilder,
-        private depositManagementService: ManagementService,
+        private depositManagementService: DepositManagementService,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private log: NotifyLogService,
         private destroyRef: DestroyRef,

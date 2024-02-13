@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
+import { compareDifferentTypes, NotifyLogService } from '@vality/ng-core';
 import { Observable, switchMap, of, BehaviorSubject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 
 import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
 import { progressTo } from '@cc/utils';
 
-import { NotificationErrorService } from '../../shared/services/notification-error';
-
 @Injectable({
     providedIn: 'root',
 })
 export class FetchSourcesService {
     sources$: Observable<StatSource[]> = this.fetch().pipe(
-        map((s) => s.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at))),
+        map((s) =>
+            s.sort(
+                (a, b) =>
+                    compareDifferentTypes(a.name, b.name) ||
+                    +new Date(a.created_at) - +new Date(b.created_at),
+            ),
+        ),
         progressTo(() => this.progress$),
         shareReplay(1),
     );
@@ -21,7 +26,7 @@ export class FetchSourcesService {
 
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        private errorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {}
 
     private fetch(
@@ -35,7 +40,7 @@ export class FetchSourcesService {
             })
             .pipe(
                 catchError((err) => {
-                    this.errorService.error(err);
+                    this.log.error(err);
                     return of(null);
                 }),
                 switchMap((res) =>
