@@ -1,1 +1,1 @@
-export * from './management.service';
+export * from './deposit-management.service';

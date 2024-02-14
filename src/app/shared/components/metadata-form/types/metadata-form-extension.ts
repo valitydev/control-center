@@ -1,3 +1,4 @@
+import { TemplateRef } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { Observable, combineLatest, switchMap, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,6 +23,7 @@ export interface MetadataFormExtensionResult {
     type?: 'datetime' | 'cash';
     converter?: Converter;
     hidden?: boolean;
+    template?: TemplateRef<unknown>;
 }
 
 export interface MetadataFormExtensionOption {

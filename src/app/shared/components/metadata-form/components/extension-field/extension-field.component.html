@@ -1,23 +1,35 @@
-<ng-container [ngSwitch]="(extensionResult$ | async)?.type">
-    <cc-cash-field
-        *ngSwitchCase="'cash'"
-        [formControl]="control"
-        [required]="data.isRequired"
-        label="{{ data.type | fieldLabel: data.field }} (amount)"
-        minor
-    ></cc-cash-field>
-    <div *ngSwitchCase="'datetime'" style="display: flex; gap: 4px">
-        <v-datetime-field
-            [formControl]="control"
-            [hint]="aliases"
-            [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
-            style="flex: 1"
-        ></v-datetime-field>
-        <button *ngIf="!data.isRequired && control.value" mat-icon-button (click)="clear($event)">
-            <mat-icon>clear</mat-icon>
-        </button>
-        <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
-            <mat-icon>loop</mat-icon>
-        </button>
-    </div>
+<ng-container *ngIf="(extensionResult$ | async)?.template as template; else typeTemplate">
+    <ng-template
+        [ngTemplateOutlet]="template"
+        [ngTemplateOutletContext]="{ control: control }"
+    ></ng-template>
 </ng-container>
+<ng-template #typeTemplate>
+    <ng-container [ngSwitch]="(extensionResult$ | async)?.type">
+        <cc-cash-field
+            *ngSwitchCase="'cash'"
+            [formControl]="control"
+            [required]="data.isRequired"
+            label="{{ data.type | fieldLabel: data.field }} (amount)"
+            minor
+        ></cc-cash-field>
+        <div *ngSwitchCase="'datetime'" style="display: flex; gap: 4px">
+            <v-datetime-field
+                [formControl]="control"
+                [hint]="aliases"
+                [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
+                style="flex: 1"
+            ></v-datetime-field>
+            <button
+                *ngIf="!data.isRequired && control.value"
+                mat-icon-button
+                (click)="clear($event)"
+            >
+                <mat-icon>clear</mat-icon>
+            </button>
+            <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
+                <mat-icon>loop</mat-icon>
+            </button>
+        </div>
+    </ng-container>
+</ng-template>

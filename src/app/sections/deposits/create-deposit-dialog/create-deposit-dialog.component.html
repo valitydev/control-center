@@ -1,33 +1,24 @@
-<v-dialog [progress]="isLoading$ | async" title="Create deposit">
-    <form *ngIf="form" [formGroup]="form" style="display: flex; flex-direction: column; gap: 16px">
-        <mat-form-field>
-            <input formControlName="destination" matInput placeholder="Destination" required />
-        </mat-form-field>
-        <div style="display: flex; gap: 24px">
-            <mat-form-field style="flex: 1">
-                <input
-                    formControlName="amount"
-                    matInput
-                    placeholder="Amount"
-                    required
-                    type="number"
-                />
-            </mat-form-field>
-            <cc-currency-source-field
-                formControlName="currency"
-                required
-                style="flex: 1"
-            ></cc-currency-source-field>
-        </div>
-    </form>
+<v-dialog [progress]="progress$ | async" title="Create deposit">
+    <cc-fistful-thrift-form
+        [defaultValue]="getDefaultValue()"
+        [extensions]="extensions"
+        [formControl]="control"
+        namespace="deposit"
+        noChangeKind
+        type="DepositParams"
+    ></cc-fistful-thrift-form>
     <v-dialog-actions>
         <button
-            [disabled]="(isLoading$ | async) || form.invalid"
+            [disabled]="(progress$ | async) || control.invalid"
             color="primary"
             mat-button
-            (click)="createDeposit()"
+            (click)="create()"
         >
             Create
         </button>
     </v-dialog-actions>
 </v-dialog>
+
+<ng-template #sourceCashTemplate let-control="control">
+    <cc-source-cash-field [formControl]="control"></cc-source-cash-field>
+</ng-template>

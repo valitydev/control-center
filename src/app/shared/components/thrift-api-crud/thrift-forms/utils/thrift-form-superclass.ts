@@ -1,4 +1,4 @@
-import { Input, Directive, OnChanges } from '@angular/core';
+import { Input, Directive, OnChanges, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { FormControlSuperclass, ComponentChanges } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
@@ -16,6 +16,7 @@ export abstract class BaseThriftFormSuperclass<T = unknown>
     @Input() namespace?: string;
     @Input() extensions?: MetadataFormExtension[];
     @Input() defaultValue?: T;
+    @Input({ transform: booleanAttribute }) noChangeKind = false;
 
     protected abstract defaultNamespace: string;
     protected abstract metadata$: Observable<ThriftAstMetadata[]>;

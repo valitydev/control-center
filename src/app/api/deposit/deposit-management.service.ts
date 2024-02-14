@@ -4,9 +4,10 @@ import {
     ThriftAstMetadata,
     deposit_Management,
 } from '@vality/fistful-proto';
-import { DepositID } from '@vality/fistful-proto/deposit';
+import { DepositID, DepositParams } from '@vality/fistful-proto/deposit';
 import { AdjustmentParams, AdjustmentState } from '@vality/fistful-proto/deposit_adjustment';
 import { RevertParams, RevertState } from '@vality/fistful-proto/deposit_revert';
+import { ContextSet } from '@vality/fistful-proto/internal/context';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
@@ -15,7 +16,7 @@ import { environment } from '@cc/environments/environment';
 import { ConfigService } from '../../core/config.service';
 
 @Injectable({ providedIn: 'root' })
-export class ManagementService {
+export class DepositManagementService {
     private client$: Observable<deposit_ManagementCodegenClient>;
 
     constructor(
@@ -50,5 +51,10 @@ export class ManagementService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     CreateRevert(id: DepositID, params: RevertParams): Observable<RevertState> {
         return this.client$.pipe(switchMap((c) => c.CreateRevert(id, params)));
+    }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    Create(params: DepositParams, context: ContextSet) {
+        return this.client$.pipe(switchMap((c) => c.Create(params, context)));
     }
 }
