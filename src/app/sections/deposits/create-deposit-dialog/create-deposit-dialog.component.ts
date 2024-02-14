@@ -3,8 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/ng-core';
-import { BehaviorSubject, of, switchMap } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../components/source-cash-field';
