@@ -20,10 +20,12 @@ import {
     getValueChanges,
     Option,
     SelectFieldModule,
+    toMinorByExponent,
+    toMajorByExponent,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
-import { combineLatest } from 'rxjs';
-import { map, first, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { combineLatest, switchMap, of } from 'rxjs';
+import { map, first, distinctUntilChanged, shareReplay, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../app/api/domain-config';
 import { FetchSourcesService } from '../../app/sections/sources';
@@ -59,19 +61,8 @@ export class SourceCashFieldComponent
     amountControl = new FormControl<string>(null);
     sourceControl = new FormControl<StatSource>(null);
 
-    amountMask$ = getValueChanges(this.sourceControl).pipe(
-        distinctUntilChanged(),
-        map(() =>
-            createMask({
-                alias: 'numeric',
-                groupSeparator: GROUP_SEPARATOR,
-                digits: 0,
-                digitsOptional: true,
-                placeholder: '',
-            }),
-        ),
-    );
     options$ = this.fetchSourcesService.sources$.pipe(
+        startWith([] as StatSource[]),
         map((sources): Option<StatSource>[] =>
             sources.map((s) => ({
                 label: s.currency_symbolic_code,
@@ -79,29 +70,24 @@ export class SourceCashFieldComponent
                 value: s,
             })),
         ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    amountSource$ = combineLatest([
-        getValueChanges(this.amountControl).pipe(
-            map((amountStr) =>
-                amountStr ? Number(amountStr.replaceAll(GROUP_SEPARATOR, '')) : null,
-            ),
-            distinctUntilChanged(),
-        ),
-        getValueChanges(this.sourceControl),
-        this.domainStoreService.getObjects('currency'),
-    ]).pipe(
-        map(([amount, source, currencies]) =>
-            !isNil(amount) && source
-                ? {
-                      amount,
-                      source,
-                      currency: currencies.find(
-                          (c) => c.data.symbolic_code === source.currency_symbolic_code,
-                      ),
-                  }
-                : null,
-        ),
+    currencyExponent$ = getValueChanges(this.sourceControl).pipe(
+        switchMap((source) => this.getCurrencyExponent(source?.currency_symbolic_code)),
         distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    amountMask$ = this.currencyExponent$.pipe(
+        distinctUntilChanged(),
+        map((exponent) =>
+            createMask({
+                alias: 'numeric',
+                groupSeparator: GROUP_SEPARATOR,
+                digits: exponent,
+                digitsOptional: true,
+                placeholder: '',
+            }),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
@@ -123,13 +109,31 @@ export class SourceCashFieldComponent
     }
 
     ngOnInit() {
-        this.amountSource$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((amountSource) => {
-            this.emitOutgoingValue(
-                amountSource
-                    ? { amount: amountSource.amount, sourceId: amountSource.source.id }
-                    : null,
-            );
-        });
+        combineLatest([
+            combineLatest([getValueChanges(this.amountControl), this.currencyExponent$]).pipe(
+                map(([amountStr, exponent]) => {
+                    const amount = amountStr
+                        ? Number(amountStr.replaceAll(GROUP_SEPARATOR, ''))
+                        : null;
+                    return isNil(amount) ? null : toMinorByExponent(amount, exponent);
+                }),
+                distinctUntilChanged(),
+            ),
+            getValueChanges(this.sourceControl).pipe(
+                map((s) => s?.id),
+                distinctUntilChanged(),
+            ),
+        ])
+            .pipe(
+                map(([amount, sourceId]) =>
+                    !isNil(amount) && sourceId ? { amount, sourceId } : null,
+                ),
+                distinctUntilChanged(),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((value) => {
+                this.emitOutgoingValue(value);
+            });
     }
 
     validate(): ValidationErrors | null {
@@ -139,15 +143,40 @@ export class SourceCashFieldComponent
     }
 
     handleIncomingValue(value: SourceCash) {
-        this.amountControl.setValue(
-            typeof value?.amount === 'number' ? String(value.amount) : null,
-        );
-        if (value?.sourceId) {
-            this.options$.pipe(first()).subscribe((opts) => {
-                this.sourceControl.setValue(opts.find((o) => o.value.id === value.sourceId).value);
-            });
-        } else {
-            this.sourceControl.setValue(null);
+        const { sourceId, amount } = value || {};
+        if (!sourceId) {
+            this.setValues(amount, null);
         }
+        this.options$
+            .pipe(
+                map((options) => options.find((o) => o.value.id === value.sourceId)?.value ?? null),
+                switchMap((s) =>
+                    combineLatest([of(s), this.getCurrencyExponent(s?.currency_symbolic_code)]),
+                ),
+                first(),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe(([source, exponent]) => {
+                this.setValues(amount, source, exponent);
+            });
+    }
+
+    private getCurrencyExponent(symbolicCode: string) {
+        return this.domainStoreService
+            .getObjects('currency')
+            .pipe(
+                map(
+                    (currencies) =>
+                        currencies.find((c) => c.data.symbolic_code === symbolicCode)?.data
+                            ?.exponent ?? 2,
+                ),
+            );
+    }
+
+    private setValues(amount: number, source: StatSource, exponent: number = 2) {
+        this.sourceControl.setValue(source);
+        this.amountControl.setValue(
+            typeof amount === 'number' ? String(toMajorByExponent(amount, exponent)) : null,
+        );
     }
 }
