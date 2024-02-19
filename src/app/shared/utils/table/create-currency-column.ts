@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { CurrencyColumn, PossiblyAsync, getPossiblyAsyncObservable } from '@vality/ng-core';
 import { combineLatest, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { AmountCurrencyService } from '../../services';
 
@@ -21,6 +22,11 @@ export function createCurrencyColumn<T extends object>(
             ]).pipe(switchMap(([amount, code]) => amountCurrencyService.toMajor(amount, code))),
         typeParameters: {
             currencyCode: (d: T) => selectSymbolicCode(d),
+            exponent: (d: T) =>
+                getPossiblyAsyncObservable(selectSymbolicCode(d)).pipe(
+                    switchMap((code) => amountCurrencyService.getCurrency(code)),
+                    map((c) => c.data.exponent),
+                ),
         },
         ...params,
     };
