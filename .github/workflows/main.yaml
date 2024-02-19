@@ -41,5 +41,10 @@ jobs:
       - uses: valitydev/action-mattermost-notify@v0.1.4
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+          channel: 'control-center-improvements'
+          username: 'Frontend'
+      - uses: valitydev/action-mattermost-notify@v0.1.4
+        with:
+          webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: 'frontend-deployments'
           username: 'Frontend'
