@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
-import { getImportValue, clean } from '@vality/ng-core';
+import { getImportValue } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
 import { of, Observable } from 'rxjs';
@@ -90,16 +90,12 @@ export class DomainMetadataViewExtensionsService {
                             const details = getDomainObjectDetails(obj);
                             return {
                                 value: details.label,
-                                tooltip: clean(
-                                    {
-                                        description: details.description,
-                                        id: details.id,
-                                        ref: getUnionValue(ref),
-                                    },
-                                    false,
-                                    true,
-                                    (v) => v !== undefined,
-                                ),
+                                tooltip: details.description
+                                    ? {
+                                          description: details.description,
+                                          ref: getUnionValue(ref),
+                                      }
+                                    : { ref: getUnionValue(ref) },
                                 click: () => {
                                     this.sidenavInfoService.toggle(
                                         import(
