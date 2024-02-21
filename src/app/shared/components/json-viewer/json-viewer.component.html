@@ -1,35 +1,34 @@
-<ng-container *ngIf="view?.items$ | async as items">
+<ng-container *ngIf="!extension?.hidden">
     <div
         *ngIf="!(view.isValue$ | async); else onlyValue"
         style="display: grid; grid-template-columns: 1fr; gap: 16px"
     >
-        <div
-            *ngIf="(view.leaves$ | async)?.length as count"
-            [ngStyle]="{
-                display: 'grid',
-                gap: '16px',
-                'grid-template-columns':
-                    count === 1 ? '1fr' : count === 2 ? '1fr 1fr' : '1fr 1fr 1fr'
-            }"
-        >
-            <div
-                *ngFor="let item of view.leaves$ | async; let i = index"
-                style="display: grid; grid-template-rows: auto 1fr; gap: 8px"
-            >
-                <cc-key [keys]="item.path$ | async" class="mat-caption mat-secondary-text"></cc-key>
+        <div *ngIf="(view.leaves$ | async)?.length as count" class="grid-container">
+            <div [ngClass]="['grid', 'grid-columns-' + count]">
+                <ng-container *ngFor="let item of view.leaves$ | async; let i = index">
+                    <div
+                        *ngIf="!((item.current$ | async)?.extension$ | async)?.hidden"
+                        style="display: grid; grid-template-rows: auto 1fr; gap: 8px"
+                    >
+                        <cc-key
+                            [keys]="item.path$ | async"
+                            class="mat-caption mat-secondary-text"
+                        ></cc-key>
 
-                <div *ngIf="item.current$ | async as current" class="mat-body-1">
-                    <cc-json-viewer
-                        *ngIf="!(current.isEmpty$ | async); else empty"
-                        [data]="current.data$ | async"
-                        [extension]="current.extension$ | async"
-                        [extensions]="extensions"
-                        [value]="current.value$ | async"
-                    ></cc-json-viewer>
-                    <ng-template #empty>
-                        <mat-icon class="mat-secondary-text" inline>hide_source</mat-icon>
-                    </ng-template>
-                </div>
+                        <div *ngIf="item.current$ | async as current" class="mat-body-1">
+                            <cc-json-viewer
+                                *ngIf="!(current.isEmpty$ | async); else empty"
+                                [data]="current.data$ | async"
+                                [extension]="current.extension$ | async"
+                                [extensions]="extensions"
+                                [value]="current.value$ | async"
+                            ></cc-json-viewer>
+                            <ng-template #empty>
+                                <mat-icon class="mat-secondary-text" inline>hide_source</mat-icon>
+                            </ng-template>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
         </div>
 
@@ -68,25 +67,35 @@
             </div>
         </ng-container>
     </div>
+</ng-container>
 
-    <ng-template #onlyValue>
+<ng-template #onlyValue>
+    <span
+        [queryParams]="extensionQueryParams$ | async"
+        [routerLink]="extension?.link?.[0]"
+        (click)="extension?.click?.()"
+    >
         <span
-            [ngClass]="{
-                link: !!extension?.click || !!extension?.link?.[0],
-                'tooltip-link': !!extension?.tooltip,
-                'mat-body-1': true
-            }"
-            [queryParams]="extensionQueryParams$ | async"
-            [routerLink]="extension?.link?.[0]"
-            (click)="extension?.click?.()"
+            *ngIf="extension?.tooltip; else tagValue"
+            [matTooltip]="getTooltip(extension.tooltip)"
+            matTooltipClass="tooltip"
         >
+            <ng-container *ngTemplateOutlet="tagValue"></ng-container>
+        </span>
+        <ng-template #tagValue>
+            <v-tag *ngIf="extension?.tag; else simpleValue" [color]="extension?.color">
+                <ng-container *ngTemplateOutlet="simpleValue"></ng-container>
+            </v-tag>
+        </ng-template>
+        <ng-template #simpleValue>
             <span
-                *ngIf="extension?.tooltip; else simpleValue"
-                [matTooltip]="getTooltip(extension.tooltip)"
-                matTooltipClass="tooltip"
+                [ngClass]="{
+                    link: !!extension?.click || !!extension?.link?.[0],
+                    'tooltip-link': !!extension?.tooltip,
+                    'mat-body-1': !extension?.tag
+                }"
                 >{{ view.renderValue$ | async }}</span
             >
-            <ng-template #simpleValue>{{ view.renderValue$ | async }}</ng-template>
-        </span>
-    </ng-template>
-</ng-container>
+        </ng-template>
+    </span>
+</ng-template>
