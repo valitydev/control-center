@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
+import { NotifyLogService } from '@vality/ng-core';
 import { merge, ReplaySubject, Subject, EMPTY } from 'rxjs';
 import { catchError, switchMap, shareReplay, map } from 'rxjs/operators';
 
 import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
 import { progress } from '@cc/app/shared/custom-operators';
-
-import { NotificationErrorService } from '../../../../shared/services/notification-error';
 
 @Injectable()
 export class ReceiveDepositService {
@@ -20,7 +19,7 @@ export class ReceiveDepositService {
                 .pipe(
                     catchError((err) => {
                         this.error$.next(true);
-                        this.notificationErrorService.error(err);
+                        this.log.error(err);
                         return EMPTY;
                     }),
                 ),
@@ -34,7 +33,7 @@ export class ReceiveDepositService {
 
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {}
 
     receiveDeposit(id: string) {

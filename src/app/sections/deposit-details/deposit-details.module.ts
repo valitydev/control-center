@@ -9,9 +9,10 @@ import { StatusModule, PageLayoutModule } from '@cc/app/shared/components';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
+import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
+
 import { DepositDetailsRoutingModule } from './deposit-details-routing.module';
 import { DepositDetailsComponent } from './deposit-details.component';
-import { DepositMainInfoModule } from './deposit-main-info/deposit-main-info.module';
 import { RevertsModule } from './reverts/reverts.module';
 
 @NgModule({
@@ -25,9 +26,9 @@ import { RevertsModule } from './reverts/reverts.module';
         MatProgressSpinnerModule,
         MatButtonModule,
         MatDialogModule,
-        DepositMainInfoModule,
         RevertsModule,
         PageLayoutModule,
+        ThriftViewerModule,
     ],
     declarations: [DepositDetailsComponent],
 })

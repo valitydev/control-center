@@ -1,7 +1,14 @@
-<cc-page-layout title="Deposit details">
-    <cc-deposit-main-info
-        *ngIf="deposit$ | async as deposit"
-        [deposit]="deposit"
-    ></cc-deposit-main-info>
+<cc-page-layout [progress]="isLoading$ | async" title="Deposit details">
+    <mat-card *ngIf="deposit$ | async">
+        <mat-card-content>
+            <cc-thrift-viewer
+                [extensions]="extensions$ | async"
+                [metadata]="metadata$ | async"
+                [value]="deposit$ | async"
+                namespace="fistful_stat"
+                type="StatDeposit"
+            ></cc-thrift-viewer>
+        </mat-card-content>
+    </mat-card>
     <cc-reverts *ngIf="deposit$ | async as deposit" [deposit]="deposit"></cc-reverts>
 </cc-page-layout>
