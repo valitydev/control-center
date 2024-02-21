@@ -25,7 +25,7 @@ import {
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import { combineLatest, switchMap, of } from 'rxjs';
-import { map, first, distinctUntilChanged, shareReplay, startWith } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, startWith, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../app/api/domain-config';
 import { FetchSourcesService } from '../../app/sections/sources';
@@ -109,6 +109,7 @@ export class SourceCashFieldComponent
     }
 
     ngOnInit() {
+        super.ngOnInit();
         combineLatest([
             combineLatest([getValueChanges(this.amountControl), this.currencyExponent$]).pipe(
                 map(([amountStr, exponent]) => {
@@ -153,7 +154,7 @@ export class SourceCashFieldComponent
                 switchMap((s) =>
                     combineLatest([of(s), this.getCurrencyExponent(s?.currency_symbolic_code)]),
                 ),
-                first(),
+                take(1),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe(([source, exponent]) => {

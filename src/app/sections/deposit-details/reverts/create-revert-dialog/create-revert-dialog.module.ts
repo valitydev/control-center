@@ -10,6 +10,9 @@ import { DialogModule } from '@vality/ng-core';
 
 import { UserInfoBasedIdGeneratorModule } from '@cc/app/shared/services/user-info-based-id-generator/user-info-based-id-generator.module';
 
+import { CashFieldComponent } from '../../../../../components/cash-field';
+import { FistfulThriftFormComponent } from '../../../../shared/components/fistful-thrift-form';
+
 import { CreateRevertDialogComponent } from './create-revert-dialog.component';
 
 @NgModule({
@@ -23,6 +26,8 @@ import { CreateRevertDialogComponent } from './create-revert-dialog.component';
         MatInputModule,
         UserInfoBasedIdGeneratorModule,
         DialogModule,
+        FistfulThriftFormComponent,
+        CashFieldComponent,
     ],
     declarations: [CreateRevertDialogComponent],
 })

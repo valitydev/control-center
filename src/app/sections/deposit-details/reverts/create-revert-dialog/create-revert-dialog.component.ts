@@ -1,12 +1,25 @@
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    viewChild,
+    TemplateRef,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validators, NonNullableFormBuilder } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { DepositParams } from '@vality/fistful-proto/deposit';
 import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
-import { DialogSuperclass, NotifyLogService, toMinor, clean } from '@vality/ng-core';
-import { BehaviorSubject } from 'rxjs';
+import { DialogSuperclass, NotifyLogService, clean } from '@vality/ng-core';
+import { BehaviorSubject, of } from 'rxjs';
+import { Overwrite } from 'utility-types';
 
 import { DepositManagementService } from '@cc/app/api/deposit';
 
+import { Cash } from '../../../../../components/cash-field';
+import {
+    MetadataFormExtension,
+    isTypeWithAliases,
+} from '../../../../shared/components/metadata-form';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 
 import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
@@ -21,16 +34,24 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
     CreateRevertDialogConfig,
     Revert
 > {
-    form = this.fb.group({
-        amount: [undefined as number, [Validators.pattern(/^\d+([,.]\d{1,2})?$/)]],
-        currency: this.dialogData.currency,
-        reason: undefined as string,
-        externalID: undefined as string,
-    });
+    control = new FormControl({
+        id: this.idGenerator.getUsernameBasedId(),
+        body: { currencyCode: this.dialogData.currency },
+    } as Overwrite<DepositParams, { body: Cash }>);
     progress$ = new BehaviorSubject(0);
+    cashTemplate = viewChild<TemplateRef<unknown>>('cashTemplate');
+    extensions: MetadataFormExtension[] = [
+        {
+            determinant: (data) => of(isTypeWithAliases(data, 'RevertID', 'deposit_revert')),
+            extension: () => of({ hidden: true }),
+        },
+        {
+            determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'base')),
+            extension: () => of({ template: this.cashTemplate() }),
+        },
+    ];
 
     constructor(
-        private fb: NonNullableFormBuilder,
         private depositManagementService: DepositManagementService,
         private idGenerator: UserInfoBasedIdGeneratorService,
         private log: NotifyLogService,
@@ -40,21 +61,17 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
     }
 
     createRevert() {
-        const { reason, amount, currency, externalID } = this.form.value;
+        const { body, ...value } = this.control.value;
         this.depositManagementService
             .CreateRevert(
                 this.dialogData.depositID,
                 clean(
                     {
-                        id: this.idGenerator.getUsernameBasedId(),
+                        ...value,
                         body: {
-                            amount: toMinor(amount, currency),
-                            currency: {
-                                symbolic_code: currency,
-                            },
+                            currency: { symbolic_code: body.currencyCode },
+                            amount: body.amount,
                         },
-                        reason,
-                        external_id: externalID,
                     },
                     false,
                     true,

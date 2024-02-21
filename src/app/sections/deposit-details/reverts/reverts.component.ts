@@ -4,7 +4,7 @@ import { DialogService, Column } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
-import { getDepositStatus, createCurrencyColumn } from '@cc/app/shared/utils';
+import { createCurrencyColumn } from '@cc/app/shared/utils';
 
 import { getUnionKey } from '../../../../utils';
 
@@ -70,7 +70,7 @@ export class RevertsComponent implements OnInit {
     }
 
     isCreateRevertAvailable(status: DepositStatus): boolean {
-        return getDepositStatus(status) !== 'succeeded';
+        return getUnionKey(status) !== 'succeeded';
     }
 
     update() {

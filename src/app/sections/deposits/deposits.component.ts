@@ -58,7 +58,10 @@ export class DepositsComponent implements OnInit {
     columns: Column<StatDeposit>[] = [
         {
             field: 'id',
+            formatter: (d) => d.description || `#${d.id}`,
             link: (d) => `/deposits/${d.id}`,
+            description: 'id',
+            maxWidth: 'max(300px, 30vw)',
         },
         {
             field: 'status',

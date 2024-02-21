@@ -9,25 +9,10 @@
             matInput
         />
     </mat-form-field>
-    <mat-form-field style="min-width: 28px; width: 50%">
-        <mat-label>Currency</mat-label>
-        <input
-            [formControl]="currencyCodeControl"
-            [inputMask]="currencyMask"
-            [matAutocomplete]="auto"
-            [required]="required"
-            matInput
-        />
-        <mat-autocomplete
-            #auto="matAutocomplete"
-            (optionSelected)="this.currencyCodeControl.setValue($event.option.value)"
-        >
-            <mat-option
-                *ngFor="let currency of currencies$ | async"
-                [value]="currency.data.symbolic_code"
-            >
-                {{ currency.data.symbolic_code }} ({{ currency.data.name }})
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
+    <v-select-field
+        [formControl]="currencyControl"
+        [options]="options$ | async"
+        [style.width.px]="200"
+        label="Currency"
+    ></v-select-field>
 </div>
