@@ -87,9 +87,15 @@ export class DomainMetadataViewExtensionsService {
                                 return undefined;
                             }
                             const [ref, obj] = refObj;
+                            const details = getDomainObjectDetails(obj);
                             return {
-                                value: getDomainObjectDetails(obj).label,
-                                tooltip: getUnionValue(ref),
+                                value: details.label,
+                                tooltip: details.description
+                                    ? {
+                                          description: details.description,
+                                          ref: getUnionValue(ref),
+                                      }
+                                    : { ref: getUnionValue(ref) },
                                 click: () => {
                                     this.sidenavInfoService.toggle(
                                         import(

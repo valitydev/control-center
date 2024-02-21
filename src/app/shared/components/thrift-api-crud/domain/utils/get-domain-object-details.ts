@@ -42,8 +42,8 @@ const GET_DOMAIN_OBJECTS_DETAILS: {
     /* eslint-disable @typescript-eslint/naming-convention */
     currency: (o) => ({
         id: o.ref.symbolic_code,
-        label: o.data.name,
-        description: `Exponent: ${o.data.exponent}`,
+        label: o.ref.symbolic_code,
+        description: o.data.name,
     }),
     payment_method: (o) => ({
         id: inlineJson(o.ref.id, Infinity),
