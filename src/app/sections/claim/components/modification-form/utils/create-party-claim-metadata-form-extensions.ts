@@ -152,7 +152,7 @@ export function createPartyClaimMetadataFormExtensions(
                             )
                             .filter(Boolean),
                     ),
-                    generate,
+                    generate: () => of(short().generate()),
                     isIdentifier: true,
                 }),
         },
