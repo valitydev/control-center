@@ -22,6 +22,7 @@ import {
     SelectFieldModule,
     toMinorByExponent,
     toMajorByExponent,
+    compareDifferentTypes,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import { combineLatest } from 'rxjs';
@@ -62,11 +63,13 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
     options$ = this.domainStoreService.getObjects('currency').pipe(
         startWith([] as CurrencyObject[]),
         map((objs): Option<CurrencyObject>[] =>
-            objs.map((s) => ({
-                label: s.data.symbolic_code,
-                description: s.data.name,
-                value: s,
-            })),
+            objs
+                .sort((a, b) => compareDifferentTypes(a.data.symbolic_code, b.data.symbolic_code))
+                .map((s) => ({
+                    label: s.data.symbolic_code,
+                    description: s.data.name,
+                    value: s,
+                })),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
