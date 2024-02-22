@@ -36,6 +36,7 @@ export interface Cash {
 
 const GROUP_SEPARATOR = ' ';
 const DEFAULT_EXPONENT = 2;
+const RADIX_POINT = '.';
 
 @Component({
     standalone: true,
@@ -83,6 +84,8 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
                 digits: exponent,
                 digitsOptional: true,
                 placeholder: '',
+                onBeforePaste: (pastedValue: string) =>
+                    this.convertPastedToStringNumber(pastedValue),
             }),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -168,5 +171,9 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
                   )
                 : null,
         );
+    }
+
+    private convertPastedToStringNumber(pastedValue: string) {
+        return pastedValue.replaceAll(',', RADIX_POINT);
     }
 }

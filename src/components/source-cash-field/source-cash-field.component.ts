@@ -36,6 +36,7 @@ export interface SourceCash {
 }
 
 const GROUP_SEPARATOR = ' ';
+const DEFAULT_EXPONENT = 2;
 const RADIX_POINT = '.';
 
 @Component({
@@ -174,12 +175,12 @@ export class SourceCashFieldComponent
                 map(
                     (currencies) =>
                         currencies.find((c) => c.data.symbolic_code === symbolicCode)?.data
-                            ?.exponent ?? 2,
+                            ?.exponent ?? DEFAULT_EXPONENT,
                 ),
             );
     }
 
-    private setValues(amount: number, source: StatSource, exponent: number = 2) {
+    private setValues(amount: number, source: StatSource, exponent: number = DEFAULT_EXPONENT) {
         this.sourceControl.setValue(source);
         this.amountControl.setValue(
             typeof amount === 'number' ? String(toMajorByExponent(amount, exponent)) : null,
