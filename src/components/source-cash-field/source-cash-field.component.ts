@@ -36,6 +36,7 @@ export interface SourceCash {
 }
 
 const GROUP_SEPARATOR = ' ';
+const RADIX_POINT = '.';
 
 @Component({
     standalone: true,
@@ -83,9 +84,12 @@ export class SourceCashFieldComponent
             createMask({
                 alias: 'numeric',
                 groupSeparator: GROUP_SEPARATOR,
+                radixPoint: RADIX_POINT,
                 digits: exponent,
                 digitsOptional: true,
                 placeholder: '',
+                onBeforePaste: (pastedValue: string) =>
+                    this.convertPastedToStringNumber(pastedValue),
             }),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -147,6 +151,7 @@ export class SourceCashFieldComponent
         const { sourceId, amount } = value || {};
         if (!sourceId) {
             this.setValues(amount, null);
+            return;
         }
         this.options$
             .pipe(
@@ -179,5 +184,9 @@ export class SourceCashFieldComponent
         this.amountControl.setValue(
             typeof amount === 'number' ? String(toMajorByExponent(amount, exponent)) : null,
         );
+    }
+
+    private convertPastedToStringNumber(pastedValue: string) {
+        return pastedValue.replaceAll(',', RADIX_POINT);
     }
 }
