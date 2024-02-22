@@ -1,44 +1,15 @@
 <v-dialog [progress]="!!(progress$ | async)" title="Create revert">
-    <div *ngIf="form" [formGroup]="form" style="display: flex; flex-direction: column; gap: 16px">
-        <div style="display: flex; gap: 24px">
-            <mat-form-field style="flex: 1">
-                <input
-                    formControlName="amount"
-                    matInput
-                    placeholder="Amount"
-                    required
-                    type="number"
-                />
-            </mat-form-field>
-            <mat-form-field style="flex: 1">
-                <input
-                    formControlName="currency"
-                    matInput
-                    placeholder="Currency"
-                    readonly
-                    required
-                    type="text"
-                />
-            </mat-form-field>
-        </div>
-        <div style="display: flex; gap: 24px">
-            <mat-form-field style="flex: 1">
-                <input formControlName="reason" matInput placeholder="Reason" type="text" />
-            </mat-form-field>
-            <mat-form-field style="flex: 1">
-                <input
-                    formControlName="externalID"
-                    matInput
-                    placeholder="External ID"
-                    type="text"
-                />
-            </mat-form-field>
-        </div>
-    </div>
+    <cc-fistful-thrift-form
+        [extensions]="extensions"
+        [formControl]="control"
+        namespace="deposit_revert"
+        noChangeKind
+        type="RevertParams"
+    ></cc-fistful-thrift-form>
 
     <v-dialog-actions>
         <button
-            [disabled]="!!(progress$ | async) || form.invalid"
+            [disabled]="!!(progress$ | async) || control.invalid"
             color="primary"
             mat-button
             (click)="createRevert()"
@@ -47,3 +18,7 @@
         </button>
     </v-dialog-actions>
 </v-dialog>
+
+<ng-template #cashTemplate let-cashControl="control">
+    <cc-cash-field [formControl]="cashControl"></cc-cash-field>
+</ng-template>

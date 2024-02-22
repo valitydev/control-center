@@ -2,8 +2,8 @@ import { isEmpty } from '@vality/ng-core';
 import { SetType, ListType, MapType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
-import { Observable, of, switchMap, combineLatest } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, of, switchMap, combineLatest, defer } from 'rxjs';
+import { map, shareReplay, distinctUntilChanged, startWith } from 'rxjs/operators';
 
 import { MetadataFormData } from '../../metadata-form';
 
@@ -12,42 +12,34 @@ import { getEntries } from './get-entries';
 import {
     MetadataViewExtension,
     getFirstDeterminedExtensionsResult,
+    MetadataViewExtensionResult,
 } from './metadata-view-extension';
 
 export class MetadataViewItem {
-    extension$ = getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value).pipe(
+    extension$: Observable<MetadataViewExtensionResult> = defer(() => this.renderValue$).pipe(
+        switchMap((viewValue) =>
+            getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value, viewValue),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    data$ = this.extension$.pipe(map((ext) => (ext ? null : this.data)));
+    data$ = this.extension$.pipe(
+        startWith(null),
+        map((ext) => (ext ? null : this.data)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     key$ = this.extension$.pipe(
         map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     value$ = this.extension$.pipe(
-        map((ext) => {
-            const value = ext?.value ?? this.value;
-            return isEmpty(value) ? null : value;
-        }),
+        startWith(null),
+        map((ext) => this.getValue(ext)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     renderValue$ = combineLatest([this.value$, this.data$]).pipe(
-        map(([value, data]) => {
-            if (data?.trueTypeNode?.data?.objectType === 'enum') {
-                return (
-                    (data.trueTypeNode.data as MetadataFormData<ValueType, 'enum'>).ast.items.find(
-                        (i, idx) => {
-                            if ('value' in i) {
-                                return i.value === value;
-                            }
-                            return idx === value;
-                        },
-                    ).name ?? value
-                );
-            }
-            if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1])) {
-                return getEntries(value)?.[0]?.[0];
-            }
-            return value;
-        }),
+        map(([value, data]) => this.getRenderValue(value, data)),
+        distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isEmpty$ = this.renderValue$.pipe(map((value) => isEmpty(value)));
 
@@ -198,5 +190,29 @@ export class MetadataViewItem {
                     : [];
             }),
         );
+    }
+
+    private getValue(ext: MetadataViewExtensionResult) {
+        const value = ext?.value ?? this.value;
+        return isEmpty(value) || ext?.hidden ? null : value;
+    }
+
+    private getRenderValue(value: unknown, data: MetadataFormData) {
+        if (data?.trueTypeNode?.data?.objectType === 'enum') {
+            return (
+                (data.trueTypeNode.data as MetadataFormData<ValueType, 'enum'>).ast.items.find(
+                    (i, idx) => {
+                        if ('value' in i) {
+                            return i.value === value;
+                        }
+                        return idx === value;
+                    },
+                ).name ?? value
+            );
+        }
+        if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1])) {
+            return getEntries(value)?.[0]?.[0];
+        }
+        return value;
     }
 }

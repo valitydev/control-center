@@ -24,7 +24,7 @@ import {
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
 import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
-import { CashModule } from '@cc/components/cash-field';
+import { CashFieldComponent } from '@cc/components/cash-field';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
@@ -58,7 +58,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         MatDatepickerModule,
         DatetimeFieldModule,
         PipesModule,
-        CashModule,
+        CashFieldComponent,
         AutocompleteFieldModule,
         TagModule,
     ],

@@ -25,7 +25,7 @@ import {
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import { combineLatest, switchMap, of } from 'rxjs';
-import { map, first, distinctUntilChanged, shareReplay, startWith } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, startWith, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../app/api/domain-config';
 import { FetchSourcesService } from '../../app/sections/sources';
@@ -36,6 +36,7 @@ export interface SourceCash {
 }
 
 const GROUP_SEPARATOR = ' ';
+const DEFAULT_EXPONENT = 2;
 const RADIX_POINT = '.';
 
 @Component({
@@ -159,7 +160,7 @@ export class SourceCashFieldComponent
                 switchMap((s) =>
                     combineLatest([of(s), this.getCurrencyExponent(s?.currency_symbolic_code)]),
                 ),
-                first(),
+                take(1),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe(([source, exponent]) => {
@@ -174,12 +175,12 @@ export class SourceCashFieldComponent
                 map(
                     (currencies) =>
                         currencies.find((c) => c.data.symbolic_code === symbolicCode)?.data
-                            ?.exponent ?? 2,
+                            ?.exponent ?? DEFAULT_EXPONENT,
                 ),
             );
     }
 
-    private setValues(amount: number, source: StatSource, exponent: number = 2) {
+    private setValues(amount: number, source: StatSource, exponent: number = DEFAULT_EXPONENT) {
         this.sourceControl.setValue(source);
         this.amountControl.setValue(
             typeof amount === 'number' ? String(toMajorByExponent(amount, exponent)) : null,

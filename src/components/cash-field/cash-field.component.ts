@@ -1,8 +1,7 @@
-import { getCurrencySymbol } from '@angular/common';
+import { getCurrencySymbol, CommonModule } from '@angular/common';
 import {
     Component,
     Input,
-    Injector,
     Inject,
     LOCALE_ID,
     OnInit,
@@ -10,14 +9,26 @@ import {
     DestroyRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validator, ValidationErrors, FormControl } from '@angular/forms';
-import { createMask } from '@ngneat/input-mask';
-import { FormComponentSuperclass, createControlProviders, getValueChanges } from '@vality/ng-core';
-import sortBy from 'lodash-es/sortBy';
+import { Validator, ValidationErrors, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { createMask, InputMaskModule } from '@ngneat/input-mask';
+import { CurrencyObject } from '@vality/domain-proto/domain';
+import {
+    FormComponentSuperclass,
+    createControlProviders,
+    getValueChanges,
+    Option,
+    SelectFieldModule,
+    toMinorByExponent,
+    toMajorByExponent,
+    compareDifferentTypes,
+} from '@vality/ng-core';
+import isNil from 'lodash-es/isNil';
 import { combineLatest } from 'rxjs';
-import { map, switchMap, first, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, startWith, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
+import { DomainStoreService } from '../../app/api/domain-config';
 
 export interface Cash {
     amount: number;
@@ -25,104 +36,147 @@ export interface Cash {
 }
 
 const GROUP_SEPARATOR = ' ';
+const DEFAULT_EXPONENT = 2;
+const RADIX_POINT = '.';
 
 @Component({
+    standalone: true,
     selector: 'cc-cash-field',
     templateUrl: './cash-field.component.html',
     providers: createControlProviders(() => CashFieldComponent),
+    imports: [
+        MatFormField,
+        ReactiveFormsModule,
+        InputMaskModule,
+        SelectFieldModule,
+        CommonModule,
+        MatInputModule,
+    ],
 })
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;
     @Input({ transform: booleanAttribute }) required: boolean = false;
-    @Input({ transform: booleanAttribute }) minor: boolean = false;
 
     amountControl = new FormControl<string>(null);
-    currencyCodeControl = new FormControl<string>(null);
+    currencyControl = new FormControl<CurrencyObject>(null);
 
-    currencies$ = combineLatest([
-        getValueChanges(this.currencyCodeControl),
-        this.domainStoreService.getObjects('currency'),
-    ]).pipe(
-        map(([code, currencies]) =>
-            sortBy(currencies, 'data', 'symbolic_code').filter(
-                (c) =>
-                    c.data.symbolic_code.toUpperCase().includes(code) || c.data.name.includes(code),
-            ),
+    options$ = this.domainStoreService.getObjects('currency').pipe(
+        startWith([] as CurrencyObject[]),
+        map((objs): Option<CurrencyObject>[] =>
+            objs
+                .sort((a, b) => compareDifferentTypes(a.data.symbolic_code, b.data.symbolic_code))
+                .map((s) => ({
+                    label: s.data.symbolic_code,
+                    description: s.data.name,
+                    value: s,
+                })),
         ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    amountMask$ = getValueChanges(this.currencyCodeControl).pipe(
-        switchMap((code) => this.getCurrencyByCode(code)),
-        map((c) => (this.minor ? 0 : c?.data?.exponent || 2)),
+    currencyExponent$ = getValueChanges(this.currencyControl).pipe(
+        map((obj) => obj?.data?.exponent ?? DEFAULT_EXPONENT),
         distinctUntilChanged(),
-        map((digits) =>
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    amountMask$ = this.currencyExponent$.pipe(
+        distinctUntilChanged(),
+        map((exponent) =>
             createMask({
                 alias: 'numeric',
                 groupSeparator: GROUP_SEPARATOR,
-                digits,
+                digits: exponent,
                 digitsOptional: true,
                 placeholder: '',
+                onBeforePaste: (pastedValue: string) =>
+                    this.convertPastedToStringNumber(pastedValue),
             }),
         ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    currencyMask = createMask({ mask: 'AAA', placeholder: '' });
+
+    get currencyCode() {
+        return this.currencyControl.value?.data?.symbolic_code;
+    }
 
     get prefix() {
-        return getCurrencySymbol(this.currencyCodeControl.value, 'narrow', this._locale);
+        return getCurrencySymbol(this.currencyCode, 'narrow', this._locale);
     }
 
     constructor(
-        injector: Injector,
         @Inject(LOCALE_ID) private _locale: string,
-        private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
+        private domainStoreService: DomainStoreService,
     ) {
-        super(injector);
+        super();
     }
 
     ngOnInit() {
+        super.ngOnInit();
         combineLatest([
-            getValueChanges(this.currencyCodeControl),
-            getValueChanges(this.amountControl),
+            combineLatest([getValueChanges(this.amountControl), this.currencyExponent$]).pipe(
+                map(([amountStr, exponent]) => {
+                    const amount = amountStr
+                        ? Number(amountStr.replaceAll(GROUP_SEPARATOR, ''))
+                        : null;
+                    return isNil(amount) ? null : toMinorByExponent(amount, exponent);
+                }),
+                distinctUntilChanged(),
+            ),
+            getValueChanges(this.currencyControl).pipe(
+                map((obj) => obj?.data?.symbolic_code),
+                distinctUntilChanged(),
+            ),
         ])
             .pipe(
-                switchMap(([currencyCode]) => this.getCurrencyByCode(currencyCode)),
+                map(([amount, currencyCode]) =>
+                    !isNil(amount) && currencyCode ? { amount, currencyCode } : null,
+                ),
+                distinctUntilChanged(),
                 takeUntilDestroyed(this.destroyRef),
             )
-            .subscribe((currency) => {
-                const amountStr = this.amountControl.value;
-                if (amountStr && currency && !this.validate()) {
-                    const [whole, fractional] = amountStr.split('.');
-                    if (fractional?.length > currency.data.exponent) {
-                        this.amountControl.setValue(
-                            `${whole}.${fractional.slice(0, currency.data.exponent)}`,
-                        );
-                    }
-                    const amount = Number(this.amountControl.value.replaceAll(GROUP_SEPARATOR, ''));
-                    this.emitOutgoingValue({ amount, currencyCode: currency.data.symbolic_code });
-                } else {
-                    this.emitOutgoingValue(null);
-                }
+            .subscribe((value) => {
+                this.emitOutgoingValue(value);
             });
     }
 
     validate(): ValidationErrors | null {
-        return !this.amountControl.value || this.currencyCodeControl.value?.length !== 3
+        return !this.amountControl.value || !this.currencyControl.value
             ? { invalidCash: true }
             : null;
     }
 
     handleIncomingValue(value: Cash) {
-        this.amountControl.setValue(
-            typeof value?.amount === 'number' ? String(value.amount) : null,
-        );
-        this.currencyCodeControl.setValue(value?.currencyCode);
+        const { currencyCode, amount } = value || {};
+        if (!currencyCode) {
+            this.setValues(amount, null);
+        }
+        this.options$
+            .pipe(
+                map(
+                    (options) =>
+                        options.find((o) => o.value?.data?.symbolic_code === value.currencyCode)
+                            ?.value ?? null,
+                ),
+                take(1),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((obj) => {
+                this.setValues(amount, obj);
+            });
     }
 
-    private getCurrencyByCode(currencyCode: string) {
-        return this.domainStoreService.getObjects('currency').pipe(
-            map((c) => c.find((v) => v.data.symbolic_code === currencyCode)),
-            first(),
+    private setValues(amount: number, currencyObject: CurrencyObject) {
+        this.currencyControl.setValue(currencyObject);
+        this.amountControl.setValue(
+            typeof amount === 'number'
+                ? String(
+                      toMajorByExponent(amount, currencyObject?.data?.exponent ?? DEFAULT_EXPONENT),
+                  )
+                : null,
         );
+    }
+
+    private convertPastedToStringNumber(pastedValue: string) {
+        return pastedValue.replaceAll(',', RADIX_POINT);
     }
 }
