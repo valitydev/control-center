@@ -76,12 +76,4 @@ export class DomainObjectCardComponent implements OnChanges {
     delete() {
         this.deleteDomainObjectService.delete(this.ref);
     }
-
-    oldEdit() {
-        this.ref$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((ref) => {
-            void this.router.navigate(['domain', 'edit'], {
-                queryParams: { ref: JSON.stringify(ref) },
-            });
-        });
-    }
 }
