@@ -20,7 +20,7 @@ export interface MetadataFormExtensionResult {
     generate?: () => Observable<unknown>;
     isIdentifier?: boolean;
     label?: string;
-    type?: 'datetime' | 'cash';
+    type?: 'datetime';
     converter?: Converter;
     hidden?: boolean;
     template?: TemplateRef<unknown>;

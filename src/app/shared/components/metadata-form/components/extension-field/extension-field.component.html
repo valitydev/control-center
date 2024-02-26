@@ -6,13 +6,6 @@
 </ng-container>
 <ng-template #typeTemplate>
     <ng-container [ngSwitch]="(extensionResult$ | async)?.type">
-        <cc-cash-field
-            *ngSwitchCase="'cash'"
-            [formControl]="control"
-            [required]="data.isRequired"
-            label="{{ data.type | fieldLabel: data.field }} (amount)"
-            minor
-        ></cc-cash-field>
         <div *ngSwitchCase="'datetime'" style="display: flex; gap: 4px">
             <v-datetime-field
                 [formControl]="control"

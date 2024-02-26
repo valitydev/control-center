@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DomainObject, Cash } from '@vality/domain-proto/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString } from '@vality/ng-core';
 import { from, Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -8,7 +8,6 @@ import * as short from 'short-uuid';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
-import { Cash as CashField } from '../../../../components/cash-field';
 import {
     MetadataFormData,
     MetadataFormExtension,
@@ -39,29 +38,6 @@ export class DomainMetadataFormExtensionsService {
                     of({
                         type: 'datetime',
                         generate: () => of(getNoTimeZoneIsoString(new Date())),
-                    }),
-            },
-            {
-                determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'domain')),
-                extension: () =>
-                    of({
-                        type: 'cash',
-                        converter: {
-                            internalToOutput: (cash: CashField): Cash =>
-                                cash
-                                    ? {
-                                          amount: cash.amount,
-                                          currency: { symbolic_code: cash.currencyCode },
-                                      }
-                                    : null,
-                            outputToInternal: (cash: Cash): CashField =>
-                                cash
-                                    ? {
-                                          amount: cash.amount,
-                                          currencyCode: cash.currency.symbolic_code,
-                                      }
-                                    : null,
-                        },
                     }),
             },
             {
