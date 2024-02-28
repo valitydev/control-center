@@ -2,12 +2,10 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { NotificationService } from '@cc/app/shared/services/notification';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 import { progressTo } from '@cc/utils';
 
 @Component({
@@ -23,8 +21,7 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
 
     constructor(
         private claimService: ClaimManagementService,
-        private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private router: Router,
         private destroyRef: DestroyRef,
     ) {
@@ -37,15 +34,12 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (claim) => {
-                    this.notificationService.success('Claim successfully created');
+                    this.log.successOperation('create', 'claim');
                     void this.router.navigate([`party/${claim.party_id}/claim/${claim.id}`]);
                     this.closeWithSuccess();
                 },
                 error: (err) => {
-                    this.notificationErrorService.error(
-                        err,
-                        'An error occurred while claim creation',
-                    );
+                    this.log.errorOperation(err, 'create', 'claim');
                 },
             });
     }
