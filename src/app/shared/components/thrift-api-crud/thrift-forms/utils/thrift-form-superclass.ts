@@ -17,6 +17,7 @@ export abstract class BaseThriftFormSuperclass<T = unknown>
     @Input() extensions?: MetadataFormExtension[];
     @Input() defaultValue?: T;
     @Input({ transform: booleanAttribute }) noChangeKind = false;
+    @Input({ transform: booleanAttribute }) noToolbar = false;
 
     protected abstract defaultNamespace: string;
     protected abstract metadata$: Observable<ThriftAstMetadata[]>;

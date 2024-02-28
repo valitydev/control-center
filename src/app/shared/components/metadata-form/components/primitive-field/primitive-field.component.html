@@ -59,8 +59,7 @@
                         gap: 8px;
                     "
                 >
-                    <div>Details</div>
-                    <v-tag [color]="selected.color">{{ (selectedOption$ | async)?.label }}</v-tag>
+                    {{ (selectedOption$ | async)?.label }}
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>

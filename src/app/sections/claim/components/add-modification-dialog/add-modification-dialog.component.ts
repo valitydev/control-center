@@ -4,12 +4,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
-import {
-    DialogResponseStatus,
-    DialogSuperclass,
-    DEFAULT_DIALOG_CONFIG,
-    NotifyLogService,
-} from '@vality/ng-core';
+import { DialogSuperclass, DEFAULT_DIALOG_CONFIG, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
@@ -54,7 +49,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
             .subscribe({
                 next: () => {
                     this.log.success('Modification added successfully');
-                    this.dialogRef.close({ status: DialogResponseStatus.Success });
+                    this.closeWithSuccess();
                 },
                 error: this.log.error,
             });
@@ -74,13 +69,9 @@ export class AddModificationDialogComponent extends DialogSuperclass<
             .subscribe({
                 next: () => {
                     this.log.success('Modification updated successfully');
-                    this.dialogRef.close({ status: DialogResponseStatus.Success });
+                    this.closeWithSuccess();
                 },
                 error: this.log.error,
             });
-    }
-
-    cancel() {
-        this.dialogRef.close({ status: DialogResponseStatus.Cancelled });
     }
 }

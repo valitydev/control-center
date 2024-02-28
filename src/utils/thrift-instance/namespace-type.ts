@@ -75,7 +75,7 @@ export function parseNamespaceType<T extends ValueType>(
     type: T,
     namespace?: string,
 ): NamespaceType<T> {
-    if (!isPrimitiveType(type) && !isComplexType(type) && type.includes('.')) {
+    if (type && !isPrimitiveType(type) && !isComplexType(type) && type.includes('.')) {
         [namespace, type as unknown] = type.split('.');
     }
     return { namespace, type };
