@@ -21,6 +21,7 @@ import {
     NotifyLogService,
 } from '@vality/ng-core';
 import { of, BehaviorSubject } from 'rxjs';
+import { first } from 'rxjs/operators';
 import short from 'short-uuid';
 
 import { MetadataFormExtension, isTypeWithAliases } from '@cc/app/shared/components/metadata-form';
@@ -123,16 +124,20 @@ export class CreateShopDialogComponent
     ngOnInit() {
         this.domainStoreService
             .getObjects('payment_institution')
+            .pipe(takeUntilDestroyed(this.destroyRef), first())
             .subscribe((paymentInstitutions) => {
                 this.form.controls.paymentInstitution.setValue({
                     id: paymentInstitutions.sort((a, b) => b.ref.id - a.ref.id)[0].ref.id,
                 });
             });
-        this.domainStoreService.getObjects('category').subscribe((categories) => {
-            this.form.controls.category.setValue({
-                id: categories.sort((a, b) => b.ref.id - a.ref.id)[0].ref.id,
+        this.domainStoreService
+            .getObjects('category')
+            .pipe(takeUntilDestroyed(this.destroyRef), first())
+            .subscribe((categories) => {
+                this.form.controls.category.setValue({
+                    id: categories.sort((a, b) => b.ref.id - a.ref.id)[0].ref.id,
+                });
             });
-        });
     }
 
     create() {

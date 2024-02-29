@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, DestroyRef } from '@angular/core';
+import { Component, Input, OnChanges, DestroyRef, model, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     ComponentChanges,
@@ -25,8 +25,12 @@ import { getExtensionsResult } from '../../types/metadata-form-extension';
     selector: 'cc-primitive-field',
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(() => PrimitiveFieldComponent),
+    styleUrl: './primitive-field.component.scss',
 })
-export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> implements OnChanges {
+export class PrimitiveFieldComponent<T>
+    extends FormControlSuperclass<T>
+    implements OnChanges, OnInit
+{
     @Input() data: MetadataFormData<ThriftType>;
     @Input() extensions: MetadataFormExtension[];
 
@@ -54,11 +58,11 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         this.extensionResult$,
         getValueChanges(this.control),
     ]).pipe(
-        map(([result, value]) => result?.options?.find?.((o) => o.value === value)),
+        map(([result]) => result?.options?.find?.((o) => o.value === this.control.value)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
-        map(([options, value]) => options.find((o) => o.value === value)),
+        map(([options]) => options.find((o) => o.value === this.control.value)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedHint$ = this.selectedOption$.pipe(
@@ -74,6 +78,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
             return s.label + (aliases ? ` (${aliases})` : '');
         }),
     );
+    detailsShown = model(false);
 
     get inputType(): string {
         switch (this.data.type) {
@@ -95,6 +100,15 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
 
     constructor(private destroyRef: DestroyRef) {
         super();
+    }
+
+    ngOnInit() {
+        super.ngOnInit();
+        getValueChanges(this.control)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+                this.detailsShown.set(false);
+            });
     }
 
     ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
@@ -120,5 +134,9 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
     clear(event: MouseEvent) {
         this.control.reset(null);
         event.stopPropagation();
+    }
+
+    toggleDetails() {
+        this.detailsShown.update((s) => !s);
     }
 }

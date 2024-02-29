@@ -1,0 +1,23 @@
+.details {
+    display: grid;
+    grid-template-rows: 1fr;
+    margin-top: 16px;
+
+    &_hidden {
+        grid-template-rows: 0fr;
+        margin-top: 0;
+
+        .details-card {
+            box-shadow: rgba(255, 255, 255, 0) 0 0;
+        }
+    }
+
+    &,
+    .details-card {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .details-card {
+        overflow: hidden;
+    }
+}
