@@ -97,20 +97,20 @@
                 </ng-container>
             </cc-timeline>
         </ng-template>
-        <mat-card>
-            <mat-card-content style="display: flex; gap: 24px">
-                <button color="primary" mat-button (click)="addModification()">
-                    Add modification
-                </button>
-                <button
-                    [disabled]="(isAllowedChangeStatus$ | async) === false"
-                    color="primary"
-                    mat-button
-                    (click)="changeStatus()"
-                >
-                    Change status
-                </button>
-            </mat-card-content>
-        </mat-card>
+
+        <v-actions>
+            <button
+                [disabled]="(isAllowedChangeStatus$ | async) === false"
+                color="accent"
+                mat-raised-button
+                (click)="changeStatus()"
+            >
+                Change status
+            </button>
+            <button mat-raised-button (click)="createShop()">Add shop modifications</button>
+            <button color="primary" mat-raised-button (click)="addModification()">
+                Add modification
+            </button>
+        </v-actions>
     </div>
 </cc-page-layout>
