@@ -8,7 +8,7 @@ import { getUnionKey, getUnionValue } from '../../../../../../utils';
 export interface DomainObjectDetails {
     id: number | string;
     label: string;
-    description: string;
+    description?: string;
     type: string;
 }
 

@@ -6,6 +6,7 @@ import {
     FormControlSuperclass,
     createControlProviders,
     getValueChanges,
+    compareDifferentTypes,
 } from '@vality/ng-core';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
@@ -52,6 +53,7 @@ export class PrimitiveFieldComponent<T>
                   }))
                 : [],
         ),
+        map((o) => o.sort((a, b) => compareDifferentTypes(a.value, b.value))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedExtensionOption$ = combineLatest([
