@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -61,7 +62,13 @@ const DEFAULT_SHOP_LOCATION: ShopLocation = {
 @Component({
     selector: 'cc-create-shop-dialog',
     standalone: true,
-    imports: [DialogModule, MatButton, DomainThriftFormComponent, ReactiveFormsModule],
+    imports: [
+        DialogModule,
+        MatButton,
+        DomainThriftFormComponent,
+        ReactiveFormsModule,
+        CommonModule,
+    ],
     templateUrl: './create-shop-dialog.component.html',
     styles: ``,
 })

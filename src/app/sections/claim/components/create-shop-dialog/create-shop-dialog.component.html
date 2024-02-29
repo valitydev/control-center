@@ -1,4 +1,4 @@
-<v-dialog title="Add shop modifications">
+<v-dialog [progress]="progress$ | async" title="Add shop modifications">
     <div [formGroup]="form" style="display: grid; grid-template-columns: 1fr; gap: 16px">
         <cc-domain-thrift-form
             [claim]="dialogData.claim"
@@ -43,7 +43,12 @@
     </div>
 
     <v-dialog-actions>
-        <button [disabled]="form.invalid" color="primary" mat-raised-button (click)="create()">
+        <button
+            [disabled]="form.invalid || (progress$ | async)"
+            color="primary"
+            mat-raised-button
+            (click)="create()"
+        >
             Create
         </button>
     </v-dialog-actions>

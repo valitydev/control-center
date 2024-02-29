@@ -1,4 +1,4 @@
-<v-dialog title="Create claim">
+<v-dialog [progress]="progress$ | async" title="Create claim">
     <cc-merchant-field [formControl]="control"></cc-merchant-field>
     <v-dialog-actions>
         <button
