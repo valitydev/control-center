@@ -8,7 +8,7 @@ import {
     isTypeWithAliases,
     MetadataFormExtension,
     MetadataFormExtensionOption,
-} from '@cc/app/shared/components/metadata-form';
+} from '../../../components/metadata-form';
 
 function createPartyOptions(
     values: IterableIterator<{ id: string }>,
@@ -68,7 +68,7 @@ function generate() {
     return of(short().uuid());
 }
 
-export function createPartyClaimMetadataFormExtensions(
+export function createPartyClaimDomainMetadataFormExtensions(
     party: Party,
     claim: Claim,
 ): MetadataFormExtension[] {

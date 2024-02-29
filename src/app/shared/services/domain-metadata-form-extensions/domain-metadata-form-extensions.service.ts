@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DomainObject } from '@vality/domain-proto/domain';
-import { getNoTimeZoneIsoString } from '@vality/ng-core';
-import { from, Observable, of } from 'rxjs';
+import { Claim } from '@vality/domain-proto/claim_management';
+import { DomainObject, Party } from '@vality/domain-proto/domain';
+import { getNoTimeZoneIsoString, getImportValue } from '@vality/ng-core';
+import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
 
@@ -15,16 +16,15 @@ import {
 } from '../../components/metadata-form';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
+import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
 import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainMetadataFormExtensionsService {
-    extensions$: Observable<MetadataFormExtension[]> = from(
-        import('@vality/domain-proto/metadata.json').then(
-            (m) => m.default as never as ThriftAstMetadata[],
-        ),
+    extensions$: Observable<MetadataFormExtension[]> = getImportValue<ThriftAstMetadata[]>(
+        import('@vality/domain-proto/metadata.json'),
     ).pipe(
         map((metadata): MetadataFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
@@ -71,10 +71,14 @@ export class DomainMetadataFormExtensionsService {
                     }),
             },
         ]),
-        shareReplay(1),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     constructor(private domainStoreService: DomainStoreService) {}
+
+    createPartyClaimExtensions(party: Party, claim: Claim) {
+        return createPartyClaimDomainMetadataFormExtensions(party, claim);
+    }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
         const domainFields = new MetadataFormData<string, 'struct'>(

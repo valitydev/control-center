@@ -23,12 +23,12 @@ import { TimelineModule } from '@cc/components/timeline';
 
 import { PageLayoutModule } from '../../shared';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
 import { ClaimRoutingModule } from './claim-routing.module';
 import { ClaimComponent } from './claim.component';
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
-import { ModificationFormComponent } from './components/modification-form/modification-form.component';
 import { ModificationUnitTimelineItemComponent } from './components/modification-unit-timeline-item/modification-unit-timeline-item.component';
 import { ShopModificationTimelineItemComponent } from './components/shop-modification-timeline-item/shop-modification-timeline-item.component';
 import { StatusModificationTimelineItemComponent } from './components/status-modification-timeline-item/status-modification-timeline-item.component';
@@ -43,7 +43,6 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         ShopModificationTimelineItemComponent,
         AddModificationDialogComponent,
         ChangeStatusDialogComponent,
-        ModificationFormComponent,
         TimelineItemHeaderComponent,
         TimelineItemLoadingComponent,
     ],
@@ -73,6 +72,7 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         ActionsModule,
         PageLayoutModule,
         PipesModule,
+        DomainThriftFormComponent,
     ],
 })
 export class ClaimModule {}

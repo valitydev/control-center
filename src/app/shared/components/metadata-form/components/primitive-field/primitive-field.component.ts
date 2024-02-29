@@ -19,7 +19,7 @@ import {
 
 import { getValueTypeTitle } from '../../../../pipes';
 import { MetadataFormData } from '../../types/metadata-form-data';
-import { getFirstDeterminedExtensionsResult } from '../../types/metadata-form-extension';
+import { getExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({
     selector: 'cc-primitive-field',
@@ -34,7 +34,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         defer(() => this.data$),
         defer(() => this.extensions$),
     ]).pipe(
-        switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
+        switchMap(([data, extensions]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(map((r) => r?.generate));
