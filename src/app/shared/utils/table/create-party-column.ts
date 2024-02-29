@@ -27,6 +27,7 @@ export function createPartyColumn<T extends object>(
         header: 'Party',
         description: selectPartyId,
         formatter: selectPartyEmail,
+        link: (d) => `/party/${selectPartyId(d)}`,
         ...params,
     } as ColumnObject<T>;
 }

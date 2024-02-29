@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
-import { map } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../../utils';
 import { PartiesStoreService } from '../../../api/payment-processing';
+import { createPartyColumn } from '../../../shared';
 
 @Component({
     selector: 'cc-claims-table',
@@ -22,13 +22,8 @@ export class ClaimsTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column<Claim>[] = [
-        { field: 'id' },
-        {
-            field: 'party',
-            description: 'party_id',
-            formatter: (claim) =>
-                this.partiesStoreService.get(claim.party_id).pipe(map((p) => p.contact_info.email)),
-        },
+        { field: 'id', link: (d) => this.getClaimLink(d.party_id, d.id) },
+        createPartyColumn('party_id'),
         {
             field: 'status',
             type: 'tag',
@@ -62,6 +57,10 @@ export class ClaimsTableComponent {
     ) {}
 
     navigateToClaim(partyId: string, claimID: number) {
-        void this.router.navigate([`/party/${partyId}/claim/${claimID}`]);
+        void this.router.navigate([this.getClaimLink(partyId, claimID)]);
+    }
+
+    private getClaimLink(partyId: string, claimID: number): string {
+        return `/party/${partyId}/claim/${claimID}`;
     }
 }
