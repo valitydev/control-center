@@ -44,7 +44,7 @@
 
     <v-dialog-actions>
         <button
-            [disabled]="form.invalid || (progress$ | async)"
+            [disabled]="form.invalid || !!(progress$ | async)"
             color="primary"
             mat-raised-button
             (click)="create()"
