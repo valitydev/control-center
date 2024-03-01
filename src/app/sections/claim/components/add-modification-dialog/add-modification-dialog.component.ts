@@ -4,14 +4,11 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
-import { DialogResponseStatus, DialogSuperclass, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
+import { DialogSuperclass, DEFAULT_DIALOG_CONFIG, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { inProgressFrom, progressTo } from '@cc/utils';
-
-import { NotificationErrorService } from '../../../../shared/services/notification-error';
 
 @Component({
     selector: 'cc-add-modification-dialog',
@@ -38,8 +35,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
     constructor(
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
-        private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -52,10 +48,10 @@ export class AddModificationDialogComponent extends DialogSuperclass<
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    this.notificationService.success('Modification added successfully');
-                    this.dialogRef.close({ status: DialogResponseStatus.Success });
+                    this.log.success('Modification added successfully');
+                    this.closeWithSuccess();
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 
@@ -72,14 +68,10 @@ export class AddModificationDialogComponent extends DialogSuperclass<
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    this.notificationService.success('Modification updated successfully');
-                    this.dialogRef.close({ status: DialogResponseStatus.Success });
+                    this.log.success('Modification updated successfully');
+                    this.closeWithSuccess();
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
-    }
-
-    cancel() {
-        this.dialogRef.close({ status: DialogResponseStatus.Cancelled });
     }
 }

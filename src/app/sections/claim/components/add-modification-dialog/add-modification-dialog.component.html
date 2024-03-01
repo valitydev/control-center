@@ -2,12 +2,14 @@
     [progress]="isLoading$ | async"
     [title]="isUpdate ? 'Update modification unit' : 'Add modification unit'"
 >
-    <cc-modification-form
+    <cc-domain-thrift-form
         [claim]="dialogData.claim"
         [formControl]="control"
         [party]="dialogData.party"
         [type]="isUpdate ? 'Modification' : 'ModificationChange'"
-    ></cc-modification-form>
+        namespace="claim_management"
+        noToolbar
+    ></cc-domain-thrift-form>
     <v-dialog-actions>
         <button
             [disabled]="control.invalid || (isLoading$ | async)"

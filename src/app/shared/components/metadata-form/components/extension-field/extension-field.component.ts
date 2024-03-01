@@ -13,7 +13,7 @@ import {
     Converter,
     MetadataFormExtension,
     MetadataFormExtensionResult,
-    getFirstDeterminedExtensionsResult,
+    getExtensionsResult,
 } from '../../types/metadata-form-extension';
 
 @Component({
@@ -34,7 +34,7 @@ export class ExtensionFieldComponent<T>
         defer(() => this.data$),
         defer(() => this.extensions$),
     ]).pipe(
-        switchMap(([data, extensions]) => getFirstDeterminedExtensionsResult(extensions, data)),
+        switchMap(([data, extensions]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(pluck('generate'));

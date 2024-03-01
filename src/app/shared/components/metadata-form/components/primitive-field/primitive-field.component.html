@@ -1,73 +1,61 @@
-<div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-    <ng-container *ngIf="data.type === 'bool'; else input">
-        <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-            <span class="mat-body-1">{{ data.type | fieldLabel: data.field }}</span>
-            <div
-                style="
-                    display: flex;
-                    place-content: center flex-start;
-                    align-items: center;
-                    gap: 4px;
-                "
-            >
-                <mat-radio-group
-                    [formControl]="control"
-                    [required]="data.isRequired"
-                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1"
-                >
-                    <mat-radio-button [value]="false">False</mat-radio-button>
-                    <mat-radio-button [value]="true">True</mat-radio-button>
-                </mat-radio-group>
-                <button
-                    *ngIf="!data.isRequired"
-                    [disabled]="control.value === null || control.value === undefined"
-                    mat-icon-button
-                    (click)="clear($event)"
-                >
-                    <mat-icon>clear</mat-icon>
-                </button>
-                <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
-                    <mat-icon>loop</mat-icon>
-                </button>
-            </div>
-        </div>
-    </ng-container>
-    <ng-template #input>
-        <div style="display: flex; gap: 4px">
-            <v-autocomplete-field
+<ng-container *ngIf="data.type === 'bool'; else input">
+    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+        <span class="mat-body-1">{{ data.type | fieldLabel: data.field }}</span>
+        <div style="display: flex; place-content: center flex-start; align-items: center; gap: 4px">
+            <mat-radio-group
                 [formControl]="control"
-                [hint]="selectedHint$ | async"
-                [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
-                [options]="options$ | async"
                 [required]="data.isRequired"
-                [type]="inputType"
-                style="flex: 1"
-            ></v-autocomplete-field>
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1"
+            >
+                <mat-radio-button [value]="false">False</mat-radio-button>
+                <mat-radio-button [value]="true">True</mat-radio-button>
+            </mat-radio-group>
+            <button
+                *ngIf="!data.isRequired"
+                [disabled]="control.value === null || control.value === undefined"
+                mat-icon-button
+                (click)="clear($event)"
+            >
+                <mat-icon>clear</mat-icon>
+            </button>
             <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
                 <mat-icon>loop</mat-icon>
             </button>
         </div>
-    </ng-template>
-    <ng-container *ngIf="selectedExtensionOption$ | async as selected">
-        <mat-expansion-panel *ngIf="selected.details">
-            <mat-expansion-panel-header>
-                <mat-panel-title
-                    style="
-                        display: flex;
-                        place-content: center flex-start;
-                        align-items: center;
-                        gap: 8px;
-                    "
-                >
-                    <div>Details</div>
-                    <v-tag [color]="selected.color">{{ (selectedOption$ | async)?.label }}</v-tag>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <ng-template matExpansionPanelContent>
-                <div style="padding: 0 24px">
-                    <cc-json-viewer [value]="selected.details"></cc-json-viewer>
-                </div>
-            </ng-template>
-        </mat-expansion-panel>
-    </ng-container>
+    </div>
+</ng-container>
+<ng-template #input>
+    <div style="display: flex; gap: 4px">
+        <v-autocomplete-field
+            [formControl]="control"
+            [hint]="selectedHint$ | async"
+            [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
+            [options]="options$ | async"
+            [required]="data.isRequired"
+            [type]="inputType"
+            style="flex: 1"
+        ></v-autocomplete-field>
+        <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
+            <mat-icon>loop</mat-icon>
+        </button>
+        <button
+            *ngIf="(options$ | async)?.length"
+            [disabled]="!(selectedExtensionOption$ | async)"
+            mat-icon-button
+            (click)="toggleDetails()"
+        >
+            <mat-icon>{{ detailsShown() ? 'visibility_off' : 'wysiwyg' }}</mat-icon>
+        </button>
+    </div>
+</ng-template>
+<div
+    *ngIf="selectedExtensionOption$ | async"
+    [class.details_hidden]="!detailsShown()"
+    class="details"
+>
+    <mat-card class="details-card">
+        <mat-card-content>
+            <cc-json-viewer [value]="(selectedExtensionOption$ | async).details"></cc-json-viewer>
+        </mat-card-content>
+    </mat-card>
 </div>

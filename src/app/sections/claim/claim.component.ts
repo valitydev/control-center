@@ -13,6 +13,7 @@ import { NotificationErrorService, handleError } from '../../shared/services/not
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
+import { CreateShopDialogComponent } from './components/create-shop-dialog/create-shop-dialog.component';
 import { AllowedClaimStatusesService } from './services/allowed-claim-statuses.service';
 import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
 
@@ -95,6 +96,24 @@ export class ClaimComponent {
                 switchMap(([party, claim]) =>
                     this.dialogService
                         .open(ChangeStatusDialogComponent, { partyID: party.id, claim })
+                        .afterClosed(),
+                ),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((result) => {
+                if (result.status === DialogResponseStatus.Success) {
+                    this.reloadClaim();
+                }
+            });
+    }
+
+    createShop() {
+        combineLatest([this.party$, this.claim$])
+            .pipe(
+                first(),
+                switchMap(([party, claim]) =>
+                    this.dialogService
+                        .open(CreateShopDialogComponent, { party, claim })
                         .afterClosed(),
                 ),
                 takeUntilDestroyed(this.destroyRef),

@@ -13,7 +13,10 @@ export function getDomainObjectValueOptionFn(
         const details = getDomainObjectDetails(o);
         return {
             value: details.id,
-            label: details.label,
+            label:
+                String(details.id) === details.label
+                    ? details.description ?? details.label
+                    : details.label,
             details: o,
         };
     };

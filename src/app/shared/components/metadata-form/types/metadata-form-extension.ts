@@ -33,14 +33,21 @@ export interface MetadataFormExtensionOption {
     color?: ThemePalette;
 }
 
-export function getFirstDeterminedExtensionsResult(
+export function getExtensionsResult(
     sourceExtensions: MetadataFormExtension[],
     data: MetadataFormData,
 ): Observable<MetadataFormExtensionResult> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data))).pipe(
-              map((determined) => sourceExtensions.find((_, idx) => determined[idx])),
-              switchMap((extension) => extension?.extension(data) ?? of(null)),
+              map((determined) => sourceExtensions.filter((_, idx) => determined[idx])),
+              switchMap((extensions) => {
+                  if (!extensions?.length) {
+                      return of(null);
+                  }
+                  return combineLatest(extensions.map((e) => e.extension(data))).pipe(
+                      map((results) => Object.assign({}, ...results)),
+                  );
+              }),
           )
         : of(null);
 }

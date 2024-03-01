@@ -1,0 +1,55 @@
+<v-dialog [progress]="progress$ | async" title="Add shop modifications">
+    <div [formGroup]="form" style="display: grid; grid-template-columns: 1fr; gap: 16px">
+        <cc-domain-thrift-form
+            [claim]="dialogData.claim"
+            [extensions]="extensions"
+            [party]="dialogData.party"
+            formControlName="shopDetails"
+            noToolbar
+            type="ShopDetails"
+        ></cc-domain-thrift-form>
+        <cc-domain-thrift-form
+            [claim]="dialogData.claim"
+            [extensions]="extensions"
+            [party]="dialogData.party"
+            formControlName="contractTemplate"
+            noToolbar
+            type="ContractTemplateRef"
+        ></cc-domain-thrift-form>
+        <cc-domain-thrift-form
+            [claim]="dialogData.claim"
+            [extensions]="extensions"
+            [party]="dialogData.party"
+            formControlName="currency"
+            noToolbar
+            type="CurrencyRef"
+        ></cc-domain-thrift-form>
+        <cc-domain-thrift-form
+            [claim]="dialogData.claim"
+            [extensions]="extensions"
+            [party]="dialogData.party"
+            formControlName="category"
+            noToolbar
+            type="CategoryRef"
+        ></cc-domain-thrift-form>
+        <cc-domain-thrift-form
+            [claim]="dialogData.claim"
+            [extensions]="extensions"
+            [party]="dialogData.party"
+            formControlName="paymentInstitution"
+            noToolbar
+            type="PaymentInstitutionRef"
+        ></cc-domain-thrift-form>
+    </div>
+
+    <v-dialog-actions>
+        <button
+            [disabled]="form.invalid || !!(progress$ | async)"
+            color="primary"
+            mat-raised-button
+            (click)="create()"
+        >
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

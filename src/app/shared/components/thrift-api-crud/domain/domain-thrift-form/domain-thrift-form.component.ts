@@ -1,8 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Claim } from '@vality/domain-proto/claim_management';
+import { Party } from '@vality/domain-proto/domain';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { getImportValue, createControlProviders } from '@vality/ng-core';
+import { combineLatest, filter } from 'rxjs';
+import { shareReplay, startWith, map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '../../../../services';
 import { MetadataFormModule } from '../../../metadata-form';
@@ -17,8 +22,23 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     imports: [CommonModule, ReactiveFormsModule, MetadataFormModule, ThriftEditorModule],
 })
 export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
+    party = input<Party>();
+    claim = input<Claim>();
+
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
-    internalExtensions$ = this.domainMetadataFormExtensionsService.extensions$;
+    internalExtensions$ = combineLatest([
+        this.domainMetadataFormExtensionsService.extensions$,
+        combineLatest([toObservable(this.party), toObservable(this.claim)]).pipe(
+            filter(([party, claim]) => !!party && !!claim),
+            map(([party, claim]) =>
+                this.domainMetadataFormExtensionsService.createPartyClaimExtensions(party, claim),
+            ),
+            startWith([]),
+        ),
+    ]).pipe(
+        map((extGroups) => extGroups.flat()),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     defaultNamespace = 'domain';
 
     constructor(private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService) {

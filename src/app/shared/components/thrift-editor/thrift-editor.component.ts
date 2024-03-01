@@ -36,6 +36,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input() type: string;
     @Input() extensions: MetadataFormExtension[];
     @Input({ transform: booleanAttribute }) noChangeKind = false;
+    @Input({ transform: booleanAttribute }) noToolbar = false;
 
     @Output() changeKind = new EventEmitter<EditorKind>();
 

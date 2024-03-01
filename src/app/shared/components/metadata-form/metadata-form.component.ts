@@ -11,7 +11,7 @@ import { MetadataFormData } from './types/metadata-form-data';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
-    getFirstDeterminedExtensionsResult,
+    getExtensionsResult,
 } from './types/metadata-form-extension';
 
 @Component({
@@ -35,7 +35,7 @@ export class MetadataFormComponent<T>
 
     data: MetadataFormData;
     extensionResult$: Observable<MetadataFormExtensionResult> = defer(() => this.updated$).pipe(
-        switchMap(() => getFirstDeterminedExtensionsResult(this.extensions, this.data)),
+        switchMap(() => getExtensionsResult(this.extensions, this.data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 

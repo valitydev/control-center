@@ -1,8 +1,9 @@
-import { Input, Directive, OnChanges, booleanAttribute } from '@angular/core';
+import { Input, Directive, OnChanges, booleanAttribute, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { FormControlSuperclass, ComponentChanges } from '@vality/ng-core';
+import { FormControlSuperclass } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
-import { of, Observable, BehaviorSubject, combineLatest, defer } from 'rxjs';
+import { of, Observable, combineLatest, defer } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormExtension } from '../../../metadata-form';
@@ -14,27 +15,20 @@ export abstract class BaseThriftFormSuperclass<T = unknown>
 {
     @Input() type: ValueType;
     @Input() namespace?: string;
-    @Input() extensions?: MetadataFormExtension[];
+    extensions = input<MetadataFormExtension[]>([]);
     @Input() defaultValue?: T;
     @Input({ transform: booleanAttribute }) noChangeKind = false;
+    @Input({ transform: booleanAttribute }) noToolbar = false;
 
     protected abstract defaultNamespace: string;
     protected abstract metadata$: Observable<ThriftAstMetadata[]>;
 
     protected internalExtensions$: Observable<MetadataFormExtension[]> = of([]);
-    protected externalExtensions$ = new BehaviorSubject<MetadataFormExtension[]>([]);
     protected extensions$ = combineLatest([
         defer(() => this.internalExtensions$),
-        this.externalExtensions$,
+        toObservable(this.extensions),
     ]).pipe(
-        map(([internal, external]) => [...internal, ...external]),
+        map((extGroups) => extGroups.flat()),
         shareReplay({ bufferSize: 1, refCount: true }),
     );
-
-    ngOnChanges(changes: ComponentChanges<BaseThriftFormSuperclass>) {
-        super.ngOnChanges(changes);
-        if (changes.extensions) {
-            this.externalExtensions$.next(changes.extensions.currentValue);
-        }
-    }
 }
