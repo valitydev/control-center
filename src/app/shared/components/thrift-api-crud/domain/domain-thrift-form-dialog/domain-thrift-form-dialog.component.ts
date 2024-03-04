@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
+import { DeepPartial } from 'utility-types';
 
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 
@@ -20,14 +21,14 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
         title: string;
         action: (object: T) => Observable<R>;
         namespace?: string;
-        object?: T;
+        object?: T extends object ? DeepPartial<T> : T;
         actionType?: 'create' | 'update';
     },
     { object?: T; result?: R; error?: unknown }
 > {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
-    control = this.fb.control(this.dialogData.object ?? null);
+    control = this.fb.control<T>((this.dialogData.object as T) ?? null);
 
     get actionType() {
         return (

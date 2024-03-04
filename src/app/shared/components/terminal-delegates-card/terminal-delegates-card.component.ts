@@ -10,8 +10,9 @@ import { getUnionKey, getUnionValue } from '../../../../utils';
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { getTerminalShopWalletDelegates } from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
+import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainThriftViewerComponent } from '../thrift-api-crud';
+import { DomainThriftViewerComponent, DomainObjectCardComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
@@ -32,11 +33,21 @@ export class TerminalDelegatesCardComponent implements OnChanges {
             header: 'Routing Rule',
             field: 'terminalRule.data.name',
             description: 'terminalRule.ref.id',
+            click: (d) => {
+                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                    ref: { routing_rules: { id: d.terminalRule.ref.id } },
+                });
+            },
         },
         {
             header: 'Ruleset',
             field: 'rule.data.name',
             description: 'rule.ref.id',
+            click: (d) => {
+                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                    ref: { routing_rules: { id: d.rule.ref.id } },
+                });
+            },
         },
         {
             field: 'party',
@@ -102,6 +113,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
     constructor(
         private partiesStoreService: PartiesStoreService,
         private domainStoreService: DomainStoreService,
+        private sidenavInfoService: SidenavInfoService,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<TerminalDelegatesCardComponent>) {

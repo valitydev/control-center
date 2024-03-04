@@ -136,6 +136,7 @@ export class RoutingRulesetComponent {
                         .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
                             type: 'RoutingCandidate',
                             title: 'Add shop routing candidate',
+                            object: { allowed: { all_of: new Set([{ constant: true }]) } },
                             action: (params) => this.routingRulesService.addShopRule(refId, params),
                         })
                         .afterClosed(),
