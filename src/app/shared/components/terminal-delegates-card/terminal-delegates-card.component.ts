@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { RoutingDelegate, RoutingRulesObject, TerminalRef } from '@vality/domain-proto/domain';
+import { TerminalRef } from '@vality/domain-proto/domain';
 import { ComponentChanges, TableModule, Column } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
@@ -9,7 +9,11 @@ import { map, shareReplay } from 'rxjs/operators';
 import { getUnionKey, getUnionValue } from '../../../../utils';
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
-import { getTerminalShopWalletDelegates } from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
+import {
+    getTerminalShopWalletDelegates,
+    TerminalShopWalletDelegate,
+} from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
+import { createPredicateColumn } from '../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent, DomainObjectCardComponent } from '../thrift-api-crud';
@@ -24,11 +28,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
     @Input() ref: TerminalRef;
 
     progress$ = this.domainStoreService.isLoading$;
-    columns: Column<{
-        delegate: RoutingDelegate;
-        rule: RoutingRulesObject;
-        terminalRule: RoutingRulesObject;
-    }>[] = [
+    columns: Column<TerminalShopWalletDelegate>[] = [
         {
             header: 'Routing Rule',
             field: 'terminalRule.data.name',
@@ -49,6 +49,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                 });
             },
         },
+        createPredicateColumn('allowed', (d) => d.candidates[0].allowed),
         {
             field: 'party',
             formatter: (d) =>
@@ -71,19 +72,23 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                 this.partiesStoreService
                     .get(d.delegate.allowed.condition?.party?.id)
                     .pipe(
-                        map((p) =>
-                            getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
-                            'shop_is'
-                                ? p.shops.get(
-                                      getUnionValue(
-                                          d.delegate.allowed.condition?.party?.definition,
-                                      ),
-                                  )?.details?.name
-                                : p.wallets.get(
-                                      getUnionValue(
-                                          d.delegate.allowed.condition?.party?.definition,
-                                      ),
-                                  )?.name,
+                        map(
+                            (p) =>
+                                (getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
+                                'shop_is'
+                                    ? p.shops.get(
+                                          getUnionValue(
+                                              d.delegate.allowed.condition?.party?.definition,
+                                          ),
+                                      )?.details?.name
+                                    : p.wallets.get(
+                                          getUnionValue(
+                                              d.delegate.allowed.condition?.party?.definition,
+                                          ),
+                                      )?.name) ??
+                                `#${getUnionValue(
+                                    d.delegate.allowed.condition?.party?.definition,
+                                )}`,
                         ),
                     ),
             description: (d) => getUnionValue(d.delegate.allowed.condition?.party?.definition),
