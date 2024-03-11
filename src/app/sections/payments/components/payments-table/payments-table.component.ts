@@ -4,13 +4,11 @@ import { InvoicePaymentStatus } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
 import { Column, TagColumn, LoadOptions, createOperationColumn } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
-import { map } from 'rxjs/operators';
 
-import { PartiesStoreService } from '@cc/app/api/payment-processing';
 import { AmountCurrencyService } from '@cc/app/shared/services';
 import { getUnionKey } from '@cc/utils';
 
-import { createFailureColumn } from '../../../../shared';
+import { createFailureColumn, createPartyColumn, createShopColumn } from '../../../../shared';
 import { createProviderColumn } from '../../../../shared/utils/table/create-provider-column';
 import { createTerminalColumn } from '../../../../shared/utils/table/create-terminal-column';
 
@@ -67,22 +65,8 @@ export class PaymentsTableComponent {
             },
         } as TagColumn<StatPayment, keyof InvoicePaymentStatus>,
         { field: 'created_at', type: 'datetime' },
-        {
-            field: 'owner_id',
-            header: 'Party',
-            formatter: (data) =>
-                this.partiesStoreService.get(data.owner_id).pipe(map((p) => p.contact_info.email)),
-            description: 'owner_id',
-        },
-        {
-            field: 'shop',
-            formatter: (data) =>
-                this.partiesStoreService
-                    .get(data.owner_id)
-                    .pipe(map((p) => p.shops.get(data.shop_id).details.name)),
-            description: 'shop_id',
-            header: 'Shop',
-        },
+        createPartyColumn('owner_id'),
+        createShopColumn('shop_id', (d) => d.owner_id),
         'domain_revision',
         createTerminalColumn((d) => d.terminal_id.id),
         createProviderColumn((d) => d.provider_id.id),
@@ -103,7 +87,6 @@ export class PaymentsTableComponent {
 
     constructor(
         private amountCurrencyService: AmountCurrencyService,
-        private partiesStoreService: PartiesStoreService,
         private router: Router,
     ) {}
 

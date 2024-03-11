@@ -18,6 +18,7 @@ export function createShopColumn<T extends object>(
     }
     return {
         field,
+        header: 'Shop',
         description: (d) => selectPartyId(d),
         formatter: (d) =>
             getPossiblyAsyncObservable(selectPartyId(d)).pipe(
