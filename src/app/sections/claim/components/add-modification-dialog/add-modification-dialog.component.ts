@@ -6,6 +6,7 @@ import { Party } from '@vality/domain-proto/domain';
 import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
 import { DialogSuperclass, DEFAULT_DIALOG_CONFIG, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
+import { DeepPartial } from 'utility-types';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { inProgressFrom, progressTo } from '@cc/utils';
@@ -16,12 +17,19 @@ import { inProgressFrom, progressTo } from '@cc/utils';
 })
 export class AddModificationDialogComponent extends DialogSuperclass<
     AddModificationDialogComponent,
-    { party: Party; claim: Claim; modificationUnit?: ModificationUnit }
+    {
+        party: Party;
+        claim: Claim;
+        modificationUnit?: ModificationUnit;
+        createModification?: DeepPartial<Modification>;
+    }
 > {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     control = this.fb.control<Modification | ModificationChange>(
-        this.dialogData.modificationUnit?.modification || null,
+        this.dialogData.modificationUnit?.modification ||
+            (this.dialogData.createModification as Modification) ||
+            null,
         Validators.required,
     );
     isLoading$ = inProgressFrom(() => this.progress$);

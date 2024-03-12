@@ -1,7 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
@@ -9,7 +9,8 @@ import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
 
-import { NotificationErrorService, handleError } from '../../shared/services/notification-error';
+import { DomainMetadataFormExtensionsService } from '../../shared/services';
+import { handleError } from '../../shared/services/notification-error';
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';
@@ -27,7 +28,7 @@ export class ClaimComponent {
         switchMap(({ partyID }) =>
             this.partyManagementService
                 .Get(partyID)
-                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error)),
+                .pipe(progressTo(this.progress$), handleError(this.log.error)),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -39,7 +40,7 @@ export class ClaimComponent {
         switchMap(({ partyID, claimID }) =>
             this.claimManagementService
                 .GetClaim(partyID, Number(claimID))
-                .pipe(progressTo(this.progress$), handleError(this.notificationErrorService.error)),
+                .pipe(progressTo(this.progress$), handleError(this.log.error)),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -63,8 +64,9 @@ export class ClaimComponent {
         private partyManagementService: PartyManagementService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
         private dialogService: DialogService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
+        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
     ) {}
 
     reloadClaim() {
@@ -114,6 +116,37 @@ export class ClaimComponent {
                 switchMap(([party, claim]) =>
                     this.dialogService
                         .open(CreateShopDialogComponent, { party, claim })
+                        .afterClosed(),
+                ),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((result) => {
+                if (result.status === DialogResponseStatus.Success) {
+                    this.reloadClaim();
+                }
+            });
+    }
+
+    createWallet() {
+        combineLatest([
+            this.party$,
+            this.claim$,
+            this.domainMetadataFormExtensionsService.generateNextWalletId(),
+        ])
+            .pipe(
+                first(),
+                switchMap(([party, claim, nextWalledId]) =>
+                    this.dialogService
+                        .open(AddModificationDialogComponent, {
+                            party,
+                            claim,
+                            createModification: {
+                                wallet_modification: {
+                                    id: nextWalledId,
+                                    modification: { creation: {} },
+                                },
+                            },
+                        })
                         .afterClosed(),
                 ),
                 takeUntilDestroyed(this.destroyRef),

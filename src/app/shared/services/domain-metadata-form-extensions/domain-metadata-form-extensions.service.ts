@@ -9,6 +9,7 @@ import * as short from 'short-uuid';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
+import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
 import {
     MetadataFormData,
     MetadataFormExtension,
@@ -31,6 +32,14 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
                 extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'WalletID', 'claim_management')),
+                extension: () =>
+                    of({
+                        generate: () => this.generateNextWalletId(),
+                        isIdentifier: true,
+                    }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
@@ -74,10 +83,30 @@ export class DomainMetadataFormExtensionsService {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    constructor(private domainStoreService: DomainStoreService) {}
+    constructor(
+        private domainStoreService: DomainStoreService,
+        private fistfulStatisticsService: FistfulStatisticsService,
+    ) {}
 
     createPartyClaimExtensions(party: Party, claim: Claim) {
         return createPartyClaimDomainMetadataFormExtensions(party, claim);
+    }
+
+    generateNextWalletId() {
+        return this.fistfulStatisticsService
+            .GetWallets({
+                dsl: createDsl({ wallets: {} }),
+            })
+            .pipe(
+                map((res) =>
+                    String(
+                        Math.max(
+                            1,
+                            ...res.data.wallets.map((w) => Number(w.id)).filter((id) => !isNaN(id)),
+                        ) + 1,
+                    ),
+                ),
+            );
     }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
