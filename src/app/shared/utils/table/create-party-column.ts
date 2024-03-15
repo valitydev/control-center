@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { PossiblyAsync, ColumnObject, getPossiblyAsyncObservable } from '@vality/ng-core';
 import get from 'lodash-es/get';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, take } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
 
@@ -12,6 +13,7 @@ export function createPartyColumn<T extends object>(
     params: Partial<ColumnObject<T>> = {},
 ): ColumnObject<T> {
     const partiesStoreService = inject(PartiesStoreService);
+    const router = inject(Router);
     if (!selectPartyId) {
         selectPartyId = (d) => get(d, field);
     }
@@ -27,7 +29,16 @@ export function createPartyColumn<T extends object>(
         header: 'Party',
         description: selectPartyId,
         formatter: selectPartyEmail,
-        link: (d) => getPossiblyAsyncObservable(selectPartyId(d)).pipe(map((id) => `/party/${id}`)),
+        click: (d) => {
+            getPossiblyAsyncObservable(selectPartyId(d))
+                .pipe(
+                    take(1),
+                    map((id) => `/party/${id}`),
+                )
+                .subscribe((url) => {
+                    void router.navigate([url]);
+                });
+        },
         ...params,
     } as ColumnObject<T>;
 }
