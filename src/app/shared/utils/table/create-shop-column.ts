@@ -20,7 +20,7 @@ export function createShopColumn<T extends object>(
     return {
         field,
         header: 'Shop',
-        description: (d) => selectPartyId(d),
+        description: (d) => selectShopId(d),
         formatter: (d) =>
             getPossiblyAsyncObservable(selectPartyId(d)).pipe(
                 switchMap((partyId) =>
