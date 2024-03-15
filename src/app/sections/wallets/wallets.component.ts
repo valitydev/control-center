@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, ViewChild, DestroyRef } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
+import { IdentityState } from '@vality/fistful-proto/identity';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
 import {
@@ -22,6 +23,7 @@ import { MemoizeExpiring } from 'typescript-memoize';
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
 
+import { IdentityManagementService } from '../../api/identity';
 import { createCurrencyColumn, createPartyColumn } from '../../shared';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 
@@ -65,6 +67,18 @@ export class WalletsComponent implements OnInit {
             'expected_min',
             (d) => this.getBalance(d.id).pipe(map((b) => b.expected_min)),
             (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
+            { lazy: true },
+        ),
+        {
+            field: 'contract_id',
+            formatter: (d) =>
+                this.getIdentity(d.identity_id).pipe(map((identity) => identity.contract_id)),
+            lazy: true,
+        },
+        createPartyColumn(
+            'party',
+            (d) => this.getIdentity(d.identity_id).pipe(map((identity) => identity.party_id)),
+            undefined,
             { lazy: true },
         ),
     ];
@@ -114,6 +128,7 @@ export class WalletsComponent implements OnInit {
         private log: NotifyLogService,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private destroyRef: DestroyRef,
+        private identityManagementService: IdentityManagementService,
     ) {}
 
     ngOnInit() {
@@ -159,6 +174,17 @@ export class WalletsComponent implements OnInit {
             catchError((err) => {
                 this.log.error(err);
                 return of<Partial<AccountBalance>>({});
+            }),
+            shareReplay({ refCount: true, bufferSize: 1 }),
+        );
+    }
+
+    @MemoizeExpiring(5 * 60_000)
+    getIdentity(id: string) {
+        return this.identityManagementService.Get(id, {}).pipe(
+            catchError((err) => {
+                this.log.error(err);
+                return of<Partial<IdentityState>>({});
             }),
             shareReplay({ refCount: true, bufferSize: 1 }),
         );
