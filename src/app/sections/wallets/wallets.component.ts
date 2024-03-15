@@ -70,11 +70,17 @@ export class WalletsComponent implements OnInit {
             { lazy: true },
         ),
         {
-            field: 'contract',
+            field: 'contract_id',
             formatter: (d) =>
                 this.getIdentity(d.identity_id).pipe(map((identity) => identity.contract_id)),
             lazy: true,
         },
+        createPartyColumn(
+            'party',
+            (d) => this.getIdentity(d.identity_id).pipe(map((identity) => identity.party_id)),
+            undefined,
+            { lazy: true },
+        ),
     ];
     fullTextSearchColumns: Column<SearchWalletHit>[] = [
         { field: 'wallet.id' },
