@@ -27,7 +27,7 @@ export function createPartyColumn<T extends object>(
         header: 'Party',
         description: selectPartyId,
         formatter: selectPartyEmail,
-        link: (d) => `/party/${selectPartyId(d)}`,
+        link: (d) => getPossiblyAsyncObservable(selectPartyId(d)).pipe(map((id) => `/party/${id}`)),
         ...params,
     } as ColumnObject<T>;
 }
