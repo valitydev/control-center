@@ -1,6 +1,19 @@
 <mat-toolbar class="toolbar" color="primary">
-    <span>Control Center</span><span class="spacer"></span><span>{{ username$ | async }}</span>
-    <button [matMenuTriggerFor]="userMenu" mat-icon-button><mat-icon>more_vert</mat-icon></button>
+    <div class="logo">Control Center</div>
+    <cc-merchant-field
+        [formControl]="partyIdControl"
+        appearance="outline"
+        class="search"
+        hint=""
+        label="Search merchant"
+        size="small"
+    ></cc-merchant-field>
+    <div class="user">
+        <span>{{ username$ | async }}</span>
+        <button [matMenuTriggerFor]="userMenu" mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
 </mat-toolbar>
 
 <mat-menu #userMenu="matMenu"><button mat-menu-item (click)="logout()">Logout</button></mat-menu>

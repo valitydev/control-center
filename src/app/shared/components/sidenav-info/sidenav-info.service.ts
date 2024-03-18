@@ -1,14 +1,14 @@
 import { Injectable, Type, Inject, Optional } from '@angular/core';
-import { Router } from '@angular/router';
 import {
     QueryParamsService,
     QueryParamsNamespace,
     getPossiblyAsyncObservable,
     PossiblyAsync,
+    UrlService,
 } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject } from 'rxjs';
-import { filter, startWith, map, distinctUntilChanged } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
 
@@ -24,7 +24,7 @@ export class SidenavInfoService {
     private qp!: QueryParamsNamespace<{ id?: string; inputs?: Record<PropertyKey, unknown> }>;
 
     constructor(
-        router: Router,
+        urlService: UrlService,
         private qps: QueryParamsService,
         @Optional()
         @Inject(SIDENAV_INFO_COMPONENTS)
@@ -33,17 +33,9 @@ export class SidenavInfoService {
         if (!this.sidenavInfoComponents) {
             this.sidenavInfoComponents = sidenavInfoComponents ?? {};
         }
-        router.events
-            .pipe(
-                startWith(null),
-                filter(() => router.navigated),
-                map(() => router.url?.split('?', 1)[0].split('#', 1)[0]),
-                distinctUntilChanged(),
-                filter(() => !!this.component$.value),
-            )
-            .subscribe(() => {
-                this.close();
-            });
+        urlService.url$.pipe(filter(() => !!this.component$.value)).subscribe(() => {
+            this.close();
+        });
         this.qp = this.qps.createNamespace('sidenav');
         this.qp.params$
             .pipe(
