@@ -1,10 +1,6 @@
 <cc-page-layout
     [progress]="isLoading$ | async"
-    [title]="
-        (routingRulesTypeService.routingRulesType$ | async) === 'payment'
-            ? 'Payment Routing Rules'
-            : 'Withdrawal Routing Rules'
-    "
+    [title]="(routingRulesTypeService.routingRulesType$ | async | titlecase) + ' Routing Rules'"
 >
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="attachNewRuleset()">Add</button>

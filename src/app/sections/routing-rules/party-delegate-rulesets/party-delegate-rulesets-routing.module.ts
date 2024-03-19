@@ -34,7 +34,7 @@ import { ROUTING_CONFIG } from './routing-config';
             },
             {
                 path: '',
-                redirectTo: 'payments',
+                redirectTo: 'payment',
                 pathMatch: 'prefix',
             },
         ]),

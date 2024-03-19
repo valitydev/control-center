@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
+import isObject from 'lodash-es/isObject';
 import startCase from 'lodash-es/startCase';
 
 import { getUnionKey } from '../../../../utils';
@@ -29,9 +30,14 @@ export class ClaimsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns = computed<Column<Claim>[]>(() => [
+    columns = computed<Column<Claim>[]>(() =>
+        this.sourceColumns.filter(
+            (c) => (isObject(c) && c?.field !== 'party_id') || !this.noParty(),
+        ),
+    );
+    private sourceColumns: Column<Claim>[] = [
         { field: 'id', link: (d) => this.getClaimLink(d.party_id, d.id) },
-        ...(this.noParty() ? [] : [createPartyColumn('party_id')]),
+        createPartyColumn('party_id'),
         {
             field: 'status',
             type: 'tag',
@@ -57,7 +63,7 @@ export class ClaimsTableComponent {
                 click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
             },
         ]),
-    ]);
+    ];
 
     constructor(private router: Router) {}
 

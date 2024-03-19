@@ -33,7 +33,20 @@ import { ROUTING_CONFIG } from './routing-config';
                         path: 'claim',
                         redirectTo: 'claims',
                     },
-                    { path: '', redirectTo: 'shops', pathMatch: 'full' },
+                    {
+                        path: 'wallets',
+                        loadChildren: () =>
+                            import('../wallets/wallets.module').then((m) => m.WalletsModule),
+                    },
+                    {
+                        path: 'wallet',
+                        redirectTo: 'wallets',
+                    },
+                    {
+                        path: '',
+                        redirectTo: 'shops',
+                        pathMatch: 'full',
+                    },
                 ],
             },
         ]),

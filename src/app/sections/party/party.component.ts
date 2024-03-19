@@ -6,6 +6,7 @@ import { AppAuthGuardService, Services } from '@cc/app/shared/services';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { ROUTING_CONFIG as CLAIMS_CONFIG } from '../claims/routing-config';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
+import { SHOPS_ROUTING_CONFIG } from '../shops';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../wallets/routing-config';
 
 import { PartyStoreService } from './party-store.service';
@@ -23,13 +24,18 @@ export class PartyComponent {
         {
             label: 'Shops',
             url: 'shops',
+            services: SHOPS_ROUTING_CONFIG.services,
+        },
+        {
+            label: 'Wallets',
+            url: 'wallets',
             services: WALLETS_ROUTING_CONFIG.services,
         },
-        // {
-        //     label: 'Wallets',
-        //     url: 'wallets',
-        //     services: SHOPS_ROUTING_CONFIG.services,
-        // },
+        {
+            label: 'Claims',
+            url: 'claims',
+            services: CLAIMS_CONFIG.services,
+        },
         {
             label: 'Payment Routing Rules',
             url: 'routing-rules/payment',
@@ -39,11 +45,6 @@ export class PartyComponent {
             label: 'Withdrawal Routing Rules',
             url: 'routing-rules/withdrawal',
             services: RULESET_ROUTING_CONFIG.services,
-        },
-        {
-            label: 'Claims',
-            url: 'claims',
-            services: CLAIMS_CONFIG.services,
         },
     ].filter((item) => this.appAuthGuardService.userHasSomeServiceMethods(item.services));
     party$ = this.partyStoreService.party$;

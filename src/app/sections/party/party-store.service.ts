@@ -1,28 +1,38 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Party } from '@vality/domain-proto/domain';
 import { NotifyLogService } from '@vality/ng-core';
-import { EMPTY } from 'rxjs';
-import { startWith, switchMap, catchError, shareReplay } from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import {
+    startWith,
+    switchMap,
+    catchError,
+    shareReplay,
+    distinctUntilChanged,
+} from 'rxjs/operators';
 
 import { PartyManagementService } from '../../api/payment-processing';
 
 @Injectable()
 export class PartyStoreService {
-    party$ = this.route.params.pipe(
+    party$: Observable<Party | Pick<Party, 'id'> | null> = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         switchMap(({ partyID }) =>
-            this.partyManagementService.Get(partyID).pipe(
-                catchError((err) => {
-                    this.log.error(err);
-                    return EMPTY;
-                }),
-            ),
+            partyID
+                ? this.partyManagementService.Get(partyID).pipe(
+                      catchError((err) => {
+                          this.log.error(err);
+                          return EMPTY;
+                      }),
+                  )
+                : of(null),
         ),
         startWith(this.partyId ? { id: this.partyId } : null),
+        distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    get partyId() {
+    private get partyId() {
         return this.route.snapshot.params.partyID;
     }
 

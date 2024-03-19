@@ -4,7 +4,7 @@ import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
 import { DialogService, LoadOptions, QueryParamsService, clean } from '@vality/ng-core';
 import { debounceTime } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith, take } from 'rxjs/operators';
 
 import { CLAIM_STATUSES } from '../../api/claim-management';
 import { PartyStoreService } from '../party';
@@ -52,15 +52,17 @@ export class ClaimsComponent implements OnInit {
     load(options?: LoadOptions): void {
         const filters = clean(this.filtersForm.value);
         void this.qp.set(filters);
-        this.fetchClaimsService.load(
-            clean({
-                party_id: this.partyStoreService.partyId,
-                ...filters,
-                statuses: filters.statuses?.map((status) => ({ [status]: {} })) || [],
-            }),
-            options,
-        );
         this.active = Object.keys(filters).length;
+        this.partyStoreService.party$.pipe(take(1)).subscribe((p) => {
+            this.fetchClaimsService.load(
+                clean({
+                    party_id: p ? p.id : undefined,
+                    ...filters,
+                    statuses: filters.statuses?.map((status) => ({ [status]: {} })) || [],
+                }),
+                options,
+            );
+        });
     }
 
     more(): void {
