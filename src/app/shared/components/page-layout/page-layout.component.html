@@ -1,14 +1,26 @@
 <div [ngClass]="{ wrapper__offset: !noOffset }" class="wrapper">
-    <div *ngIf="title" class="header">
-        <h1
-            class="mat-headline-4 mat-no-margin"
-            style="display: flex; place-content: center flex-start; align-items: center; gap: 4px"
-        >
-            <button *ngIf="isBackAvailable()" mat-icon-button (click)="back()">
-                <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
-            </button>
-
-            <div style="display: flex; flex-direction: column">
+    <div *ngIf="title" style="display: flex; flex-direction: column; gap: 8px">
+        <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">
+            <ng-container *ngFor="let p of path$ | async; let index = index">
+                <!-- TODO: fix paths -->
+                <!--[ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }" [routerLink]="p.url"-->
+                <span>{{ p.label }}</span>
+                <span *ngIf="index !== (path$ | async).length - 1"> / </span>
+            </ng-container>
+        </div>
+        <div class="header">
+            <h1
+                class="mat-headline-4 mat-no-margin"
+                style="
+                    display: flex;
+                    place-content: center flex-start;
+                    align-items: center;
+                    gap: 4px;
+                "
+            >
+                <button *ngIf="isBackAvailable()" mat-icon-button (click)="back()">
+                    <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
+                </button>
                 <div>
                     {{ title }}
                     <span class="mat-secondary-text"
@@ -25,31 +37,11 @@
                         </ng-container>
                     </span>
                 </div>
-                <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">
-                    <span *ngFor="let p of path$ | async; let index = index">
-                        {{ p }}{{ index !== (path$ | async).length - 1 ? ' / ' : '' }}
-                    </span>
-                </div>
+            </h1>
+            <div class="mat-headline-4 mat-no-margin">
+                <ng-content select="cc-page-layout-actions"></ng-content>
             </div>
-        </h1>
-        <div class="mat-headline-4 mat-no-margin">
-            <ng-content select="cc-page-layout-actions"></ng-content>
         </div>
-    </div>
-    <div *ngIf="path?.length" class="mat-h3 mat-secondary-text" style="display: flex; gap: 4px">
-        <ng-container *ngFor="let pathPart of path; let idx = index">
-            <div [matTooltip]="pathPart.tooltip">
-                <a
-                    *ngIf="pathPart.link; else onlyLabel"
-                    [queryParams]="pathPart?.queryParams"
-                    [routerLink]="pathPart.link"
-                    class="mat-secondary-text"
-                    >{{ pathPart.label }}</a
-                >
-                <ng-template #onlyLabel>{{ pathPart.label }}</ng-template>
-            </div>
-            <div *ngIf="idx !== path.length - 1">/</div></ng-container
-        >
     </div>
 
     <div

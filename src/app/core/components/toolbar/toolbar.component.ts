@@ -49,7 +49,9 @@ export class ToolbarComponent implements OnInit {
             .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
             .subscribe((partyId) => {
                 if (partyId) {
-                    void this.router.navigate([`/party/${partyId}`]);
+                    if (this.getPartyId() !== partyId) {
+                        void this.router.navigate([`/party/${partyId}`]);
+                    }
                 } else {
                     void this.router.navigate([`/parties`]);
                 }

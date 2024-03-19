@@ -9,9 +9,9 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-import { Params, Router } from '@angular/router';
-
-import { UrlService } from '../../../../../../ng-libs/projects/ng-core/dist';
+import { Router } from '@angular/router';
+import { UrlService } from '@vality/ng-core';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'cc-page-layout',
@@ -24,12 +24,6 @@ export class PageLayoutComponent {
     @Input() description?: string;
     @Input() id?: string;
     @Input() progress?: boolean;
-    @Input() path?: {
-        label: string;
-        link?: unknown[] | string | null | undefined;
-        queryParams?: Params | null;
-        tooltip?: string;
-    }[];
     @Input({ transform: booleanAttribute }) noOffset = false;
 
     @Output() idLinkClick = new EventEmitter<MouseEvent>();
@@ -46,7 +40,17 @@ export class PageLayoutComponent {
             (window.history.length > 2 && window.location.pathname.split('/').slice(1).length > 1),
     );
 
-    path$ = this.urlService.path$;
+    path$ = this.urlService.path$.pipe(
+        map((path) => {
+            return path.reduce(
+                (acc, p) => {
+                    acc.push({ url: ['/', ...(acc.at(-1)?.url || []), p], label: p });
+                    return acc;
+                },
+                [] as { url: string[]; label: string }[],
+            );
+        }),
+    );
 
     constructor(
         private location: Location,

@@ -5,7 +5,6 @@ import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/n
 import startCase from 'lodash-es/startCase';
 
 import { getUnionKey } from '../../../../utils';
-import { PartiesStoreService } from '../../../api/payment-processing';
 import { createPartyColumn } from '../../../shared';
 
 @Component({
@@ -51,10 +50,7 @@ export class ClaimsTableComponent {
         ]),
     ];
 
-    constructor(
-        private router: Router,
-        private partiesStoreService: PartiesStoreService,
-    ) {}
+    constructor(private router: Router) {}
 
     navigateToClaim(partyId: string, claimID: number) {
         void this.router.navigate([this.getClaimLink(partyId, claimID)]);
