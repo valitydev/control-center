@@ -7,21 +7,29 @@
             <button *ngIf="isBackAvailable()" mat-icon-button (click)="back()">
                 <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
             </button>
-            <div>
-                {{ title }}
-                <span class="mat-secondary-text"
-                    >{{ description }}
-                    <ng-container *ngIf="id">
-                        <span
-                            *ngIf="idLink() || idLinkClick.observed; else idText"
-                            [routerLink]="idLink()"
-                            class="mat-action"
-                            (click)="idLinkClick.emit($event)"
-                            ><ng-container *ngTemplateOutlet="idText"></ng-container
-                        ></span>
-                        <ng-template #idText>{{ id ? '#' + id : '' }}</ng-template>
-                    </ng-container>
-                </span>
+
+            <div style="display: flex; flex-direction: column">
+                <div>
+                    {{ title }}
+                    <span class="mat-secondary-text"
+                        >{{ description }}
+                        <ng-container *ngIf="id">
+                            <span
+                                *ngIf="idLink() || idLinkClick.observed; else idText"
+                                [routerLink]="idLink()"
+                                class="mat-action"
+                                (click)="idLinkClick.emit($event)"
+                                ><ng-container *ngTemplateOutlet="idText"></ng-container
+                            ></span>
+                            <ng-template #idText>{{ id ? '#' + id : '' }}</ng-template>
+                        </ng-container>
+                    </span>
+                </div>
+                <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">
+                    <span *ngFor="let p of path$ | async; let index = index">
+                        {{ p }}{{ index !== (path$ | async).length - 1 ? ' / ' : '' }}
+                    </span>
+                </div>
             </div>
         </h1>
         <div class="mat-headline-4 mat-no-margin">

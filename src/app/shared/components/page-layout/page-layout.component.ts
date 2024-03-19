@@ -11,6 +11,8 @@ import {
 } from '@angular/core';
 import { Params, Router } from '@angular/router';
 
+import { UrlService } from '../../../../../../ng-libs/projects/ng-core/dist';
+
 @Component({
     selector: 'cc-page-layout',
     templateUrl: './page-layout.component.html',
@@ -44,9 +46,12 @@ export class PageLayoutComponent {
             (window.history.length > 2 && window.location.pathname.split('/').slice(1).length > 1),
     );
 
+    path$ = this.urlService.path$;
+
     constructor(
         private location: Location,
         private router: Router,
+        private urlService: UrlService,
     ) {}
 
     back() {
