@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TableOfContentsComponent } from '@vality/ng-core';
+import { NavComponent } from '@vality/ng-core';
 
 import { PageLayoutModule } from '../../shared';
 
@@ -17,7 +17,7 @@ import { PartyComponent } from './party.component';
         MatTabsModule,
         MatButtonModule,
         PageLayoutModule,
-        TableOfContentsComponent,
+        NavComponent,
         MatSidenavModule,
     ],
     declarations: [PartyComponent],

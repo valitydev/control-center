@@ -1,17 +1,15 @@
-<cc-page-layout>
-    <mat-sidenav-container autosize>
-        <mat-sidenav-content style="overflow: unset"
-            ><router-outlet></router-outlet
-        ></mat-sidenav-content>
-        <mat-sidenav
-            [opened]="!(sidenavInfoService.opened$ | async)"
-            fixedInViewport="true"
-            fixedTopGap="64"
-            mode="side"
-            position="end"
-            style="background: transparent; border: none; padding: 24px 24px 24px 0"
-        >
-            <v-table-of-contents [links]="links"></v-table-of-contents
-        ></mat-sidenav>
-    </mat-sidenav-container>
-</cc-page-layout>
+<mat-sidenav-container autosize>
+    <mat-sidenav-content style="overflow: unset"
+        ><router-outlet></router-outlet
+    ></mat-sidenav-content>
+    <mat-sidenav
+        [opened]="!(sidenavInfoService.opened$ | async)"
+        fixedInViewport="true"
+        fixedTopGap="64"
+        mode="side"
+        position="end"
+        style="background: transparent; border: none; padding: 24px 0 24px 0"
+    >
+        <v-nav [links]="links" type="secondary"></v-nav
+    ></mat-sidenav>
+</mat-sidenav-container>

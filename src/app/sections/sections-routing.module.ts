@@ -11,10 +11,6 @@ const ROUTES: Routes = [
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
     },
     {
-        path: 'party',
-        loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
-    },
-    {
         path: 'party/:partyID',
         children: [
             {
