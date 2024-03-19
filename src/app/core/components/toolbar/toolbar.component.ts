@@ -1,3 +1,4 @@
+import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -5,6 +6,7 @@ import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { UrlService } from '@vality/ng-core';
@@ -26,6 +28,7 @@ import { MerchantFieldModule } from '../../../shared/components/merchant-field';
         MerchantFieldModule,
         FormsModule,
         ReactiveFormsModule,
+        CdkCopyToClipboard,
     ],
     templateUrl: './toolbar.component.html',
     styleUrl: './toolbar.component.scss',
@@ -42,6 +45,7 @@ export class ToolbarComponent implements OnInit {
         private router: Router,
         private urlService: UrlService,
         private destroyRef: DestroyRef,
+        private snackBar: MatSnackBar,
     ) {}
 
     ngOnInit() {
@@ -70,6 +74,16 @@ export class ToolbarComponent implements OnInit {
 
     logout() {
         void this.keycloakService.logout();
+    }
+
+    copyNotify(res: boolean) {
+        this.snackBar.open(
+            res
+                ? `Party Id #${this.partyIdControl.value} copied`
+                : `Party Id not copied, select and copy yourself: ${this.partyIdControl.value}`,
+            'OK',
+            { duration: res ? 2_000 : 60_000 },
+        );
     }
 
     private getPartyId(path: string[] = this.urlService.path) {

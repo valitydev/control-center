@@ -14,6 +14,14 @@
     align-self: end;
     margin-bottom: -9px;
     justify-self: center;
+    position: relative;
+
+    .copy {
+        cursor: pointer;
+        position: absolute;
+        right: -291px;
+        top: 8px;
+    }
 
     ::ng-deep .mdc-floating-label {
         pointer-events: none !important;

@@ -1,13 +1,21 @@
 <mat-toolbar class="toolbar" color="primary">
     <div class="logo">Control Center</div>
-    <cc-merchant-field
-        [formControl]="partyIdControl"
-        appearance="outline"
-        class="search"
-        hint=""
-        label="Search merchant"
-        size="small"
-    ></cc-merchant-field>
+    <div class="search">
+        <cc-merchant-field
+            [formControl]="partyIdControl"
+            appearance="outline"
+            hint=""
+            label="Search merchant"
+            size="small"
+        ></cc-merchant-field>
+        <mat-icon
+            *ngIf="partyIdControl.value"
+            [cdkCopyToClipboard]="partyIdControl.value"
+            class="copy"
+            (cdkCopyToClipboardCopied)="copyNotify($event)"
+            >content_copy</mat-icon
+        >
+    </div>
     <div class="user">
         <span>{{ username$ | async }}</span>
         <button [matMenuTriggerFor]="userMenu" mat-icon-button>
