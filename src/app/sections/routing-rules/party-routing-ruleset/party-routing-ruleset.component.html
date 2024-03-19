@@ -1,24 +1,29 @@
 <cc-page-layout
     [id]="(partyRuleset$ | async)?.ref?.id"
     [progress]="isLoading$ | async"
-    [upLink]="['/party/' + (partyID$ | async) + '/routing-rules/' + (routingRulesType$ | async)]"
+    [upLink]="[
+        '/party/' +
+            (partyID$ | async) +
+            '/routing-rules/' +
+            (routingRulesTypeService.routingRulesType$ | async)
+    ]"
     noOffset
     title="Party Routing Rules"
     (idLinkClick)="openRefId()"
 >
     <cc-page-layout-actions>
-        <button color="primary" mat-raised-button (click)="add()">
+        <button [disabled]="isLoading$ | async" color="primary" mat-raised-button (click)="add()">
             {{ (partyRuleset$ | async) ? 'Add' : 'Init' }}
         </button>
     </cc-page-layout-actions>
     <cc-routing-rules-list
-        *ngIf="(routingRulesType$ | async) === 'payment'"
+        *ngIf="(routingRulesTypeService.routingRulesType$ | async) === 'payment'"
         [data]="shopsData$ | async"
         [displayedColumns]="shopsDisplayedColumns"
         (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
     ></cc-routing-rules-list>
     <cc-routing-rules-list
-        *ngIf="(routingRulesType$ | async) === 'withdrawal'"
+        *ngIf="(routingRulesTypeService.routingRulesType$ | async) === 'withdrawal'"
         [data]="walletsData$ | async"
         [displayedColumns]="walletsDisplayedColumns"
         (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"

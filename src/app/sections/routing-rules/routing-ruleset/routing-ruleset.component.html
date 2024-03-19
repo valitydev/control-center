@@ -1,5 +1,6 @@
 <cc-page-layout
     [id]="(shopRuleset$ | async)?.ref?.id"
+    [title]="((routingRulesType$ | async) === 'payment' ? 'Shop' : 'Wallet') + ' Routing Rules'"
     [upLink]="[
         '/party/' +
             (partyID$ | async) +
@@ -9,7 +10,6 @@
             (partyRulesetRefID$ | async)
     ]"
     noOffset
-    title="Routing rules"
     (idLinkClick)="openRefId()"
 >
     <cc-page-layout-actions>

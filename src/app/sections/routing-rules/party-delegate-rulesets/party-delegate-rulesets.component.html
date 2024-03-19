@@ -1,4 +1,12 @@
-<cc-page-layout [progress]="isLoading$ | async" noOffset title="Party delegate rulesets">
+<cc-page-layout
+    [progress]="isLoading$ | async"
+    [title]="
+        (routingRulesTypeService.routingRulesType$ | async) === 'payment'
+            ? 'Payment Routing Rules'
+            : 'Withdrawal Routing Rules'
+    "
+    noOffset
+>
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="attachNewRuleset()">Add</button>
     </cc-page-layout-actions>

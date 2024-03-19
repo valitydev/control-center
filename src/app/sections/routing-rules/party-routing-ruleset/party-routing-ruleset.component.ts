@@ -2,14 +2,14 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
-import { RoutingRulesType } from '../types/routing-rules-type';
+import { RoutingRulesTypeService } from '../routing-rules-type.service';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
@@ -19,15 +19,11 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     selector: 'cc-party-routing-ruleset',
     templateUrl: 'party-routing-ruleset.component.html',
     styleUrls: ['party-routing-ruleset.component.scss'],
-    providers: [PartyRoutingRulesetService],
+    providers: [PartyRoutingRulesetService, RoutingRulesTypeService],
 })
 export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
-    routingRulesType$ = this.route.params.pipe(
-        startWith(this.route.snapshot.params),
-        pluck('type'),
-    ) as Observable<RoutingRulesType>;
     isLoading$ = this.domainStoreService.isLoading$;
 
     shopsDisplayedColumns = [
@@ -103,6 +99,7 @@ export class PartyRoutingRulesetComponent {
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
         private sidenavInfoService: SidenavInfoService,
+        protected routingRulesTypeService: RoutingRulesTypeService,
     ) {}
 
     add() {
@@ -165,7 +162,7 @@ export class PartyRoutingRulesetComponent {
             this.partyRoutingRulesetService.refID$,
             this.partyRoutingRulesetService.shops$,
             this.partyRoutingRulesetService.wallets$,
-            this.routingRulesType$,
+            this.routingRulesTypeService.routingRulesType$,
             this.partyRoutingRulesetService.partyID$,
         ])
             .pipe(
