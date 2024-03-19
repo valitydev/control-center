@@ -42,13 +42,15 @@ export class PageLayoutComponent {
 
     path$ = this.urlService.path$.pipe(
         map((path) => {
-            return path.reduce(
-                (acc, p) => {
-                    acc.push({ url: ['/', ...(acc.at(-1)?.url || []), p], label: p });
-                    return acc;
-                },
-                [] as { url: string[]; label: string }[],
-            );
+            return path
+                .reduce(
+                    (acc, p) => {
+                        acc.push({ url: [...(acc.at(-1)?.url || ['']), p], label: p });
+                        return acc;
+                    },
+                    [] as { url: string[]; label: string }[],
+                )
+                .map((v) => ({ ...v, url: v.url.join('/') }));
         }),
     );
 

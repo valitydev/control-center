@@ -2,9 +2,12 @@
     <div *ngIf="title" style="display: flex; flex-direction: column; gap: 8px">
         <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">
             <ng-container *ngFor="let p of path$ | async; let index = index">
-                <!-- TODO: fix paths -->
-                <!--[ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }" [routerLink]="p.url"-->
-                <span>{{ p.label }}</span>
+                <span
+                    [ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }"
+                    [routerLink]="p.url"
+                    [title]="p.url"
+                    >{{ p.label }}</span
+                >
                 <span *ngIf="index !== (path$ | async).length - 1"> / </span>
             </ng-container>
         </div>
