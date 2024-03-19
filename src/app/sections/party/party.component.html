@@ -1,24 +1,10 @@
-<div class="party-container" style="display: flex; flex-direction: column; gap: 24px">
-    <div style="display: flex; place-content: stretch space-between">
-        <h3 class="mat-body-1">
-            {{ (party$ | async)?.contact_info?.email }}
-        </h3>
-        <h4 class="mat-secondary-text mat-body-1">{{ (party$ | async)?.id }}</h4>
+<cc-page-layout>
+    <div style="display: grid; grid-template-columns: 1fr auto; gap: 24px">
+        <div>
+            <router-outlet></router-outlet>
+        </div>
+        <div *ngIf="!(sidenavInfoService.opened$ | async)">
+            <v-table-of-contents [links]="links"></v-table-of-contents>
+        </div>
     </div>
-
-    <div style="display: flex; flex-direction: column; gap: 24px">
-        <nav mat-tab-nav-bar>
-            <a
-                #rla="routerLinkActive"
-                *ngFor="let link of links"
-                [active]="rla.isActive || (activeLinkByFragment$ | async) === link"
-                [routerLink]="link.url"
-                mat-tab-link
-                routerLinkActive
-            >
-                {{ link.name }}
-            </a>
-        </nav>
-        <router-outlet></router-outlet>
-    </div>
-</div>
+</cc-page-layout>

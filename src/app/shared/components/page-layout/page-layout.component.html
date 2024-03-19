@@ -1,42 +1,57 @@
-<div class="header">
-    <h1
-        class="mat-headline-4 mat-no-margin"
-        style="display: flex; place-content: center flex-start; align-items: center; gap: 4px"
-    >
-        <button *ngIf="isBackAvailable" mat-icon-button (click)="back()">
-            <mat-icon>arrow_back</mat-icon>
-        </button>
-        <div>
-            {{ title }}
-            <span class="mat-secondary-text">{{ description }}</span>
+<div [ngClass]="{ wrapper__offset: !noOffset }" class="wrapper">
+    <div *ngIf="title" class="header">
+        <h1
+            class="mat-headline-4 mat-no-margin"
+            style="display: flex; place-content: center flex-start; align-items: center; gap: 4px"
+        >
+            <button *ngIf="isBackAvailable()" mat-icon-button (click)="back()">
+                <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
+            </button>
+            <div>
+                {{ title }}
+                <span class="mat-secondary-text"
+                    >{{ description }}
+                    <ng-container *ngIf="id">
+                        <span
+                            *ngIf="idLink() || idLinkClick.observed; else idText"
+                            [routerLink]="idLink()"
+                            class="mat-action"
+                            (click)="idLinkClick.emit($event)"
+                            ><ng-container *ngTemplateOutlet="idText"></ng-container
+                        ></span>
+                        <ng-template #idText>{{ id ? '#' + id : '' }}</ng-template>
+                    </ng-container>
+                </span>
+            </div>
+        </h1>
+        <div class="mat-headline-4 mat-no-margin">
+            <ng-content select="cc-page-layout-actions"></ng-content>
         </div>
-    </h1>
-    <div class="mat-headline-4 mat-no-margin">
-        <ng-content select="cc-page-layout-actions"></ng-content>
+    </div>
+    <div *ngIf="path?.length" class="mat-h3 mat-secondary-text" style="display: flex; gap: 4px">
+        <ng-container *ngFor="let pathPart of path; let idx = index">
+            <div [matTooltip]="pathPart.tooltip">
+                <a
+                    *ngIf="pathPart.link; else onlyLabel"
+                    [queryParams]="pathPart?.queryParams"
+                    [routerLink]="pathPart.link"
+                    class="mat-secondary-text"
+                    >{{ pathPart.label }}</a
+                >
+                <ng-template #onlyLabel>{{ pathPart.label }}</ng-template>
+            </div>
+            <div *ngIf="idx !== path.length - 1">/</div></ng-container
+        >
+    </div>
+
+    <div
+        *ngIf="progress; else content"
+        style="display: flex; place-content: center; align-items: center"
+    >
+        <mat-spinner diameter="64"></mat-spinner>
     </div>
 </div>
-<div *ngIf="path?.length" class="mat-h3 mat-secondary-text" style="display: flex; gap: 4px">
-    <ng-container *ngFor="let pathPart of path; let idx = index">
-        <div [matTooltip]="pathPart.tooltip">
-            <a
-                *ngIf="pathPart.link; else onlyLabel"
-                [queryParams]="pathPart?.queryParams"
-                [routerLink]="pathPart.link"
-                class="mat-secondary-text"
-                >{{ pathPart.label }}</a
-            >
-            <ng-template #onlyLabel>{{ pathPart.label }}</ng-template>
-        </div>
-        <div *ngIf="idx !== path.length - 1">/</div></ng-container
-    >
-</div>
 
-<div
-    *ngIf="progress; else content"
-    style="display: flex; place-content: center; align-items: center"
->
-    <mat-spinner diameter="64"></mat-spinner>
-</div>
 <ng-template #content>
     <ng-content></ng-content>
 </ng-template>

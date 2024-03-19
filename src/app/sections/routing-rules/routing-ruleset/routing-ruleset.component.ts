@@ -13,11 +13,14 @@ import {
 } from '@vality/ng-core';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
-import { first, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { DomainThriftFormDialogComponent } from '@cc/app/shared/components/thrift-api-crud';
+import {
+    DomainThriftFormDialogComponent,
+    DomainObjectCardComponent,
+} from '@cc/app/shared/components/thrift-api-crud';
 
 import { objectToJSON } from '../../../../utils';
 import { createPredicateColumn } from '../../../shared';
@@ -284,5 +287,13 @@ export class RoutingRulesetComponent {
                     this.log.error(err);
                 },
             });
+    }
+
+    openRefId() {
+        this.shopRuleset$.pipe(take(1), filter(Boolean)).subscribe(({ ref }) => {
+            this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                ref: { routing_rules: { id: Number(ref.id) } },
+            });
+        });
     }
 }

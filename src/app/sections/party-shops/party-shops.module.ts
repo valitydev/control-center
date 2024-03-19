@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputFieldModule } from '@vality/ng-core';
 
+import { PageLayoutModule } from '../../shared';
 import { ShopsTableComponent } from '../../shared/components/shops-table';
 
 import { PartyShopsRoutingModule } from './party-shops-routing.module';
@@ -16,6 +17,7 @@ import { PartyShopsComponent } from './party-shops.component';
         ReactiveFormsModule,
         InputFieldModule,
         ShopsTableComponent,
+        PageLayoutModule,
     ],
     declarations: [PartyShopsComponent],
 })
