@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TableOfContentsComponent } from '@vality/ng-core';
 
@@ -17,6 +18,7 @@ import { PartyComponent } from './party.component';
         MatButtonModule,
         PageLayoutModule,
         TableOfContentsComponent,
+        MatSidenavModule,
     ],
     declarations: [PartyComponent],
 })

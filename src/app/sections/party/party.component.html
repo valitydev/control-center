@@ -1,10 +1,17 @@
 <cc-page-layout>
-    <div style="display: grid; grid-template-columns: 1fr auto; gap: 24px">
-        <div>
-            <router-outlet></router-outlet>
-        </div>
-        <div *ngIf="!(sidenavInfoService.opened$ | async)">
-            <v-table-of-contents [links]="links"></v-table-of-contents>
-        </div>
-    </div>
+    <mat-sidenav-container autosize>
+        <mat-sidenav-content style="overflow: unset"
+            ><router-outlet></router-outlet
+        ></mat-sidenav-content>
+        <mat-sidenav
+            [opened]="!(sidenavInfoService.opened$ | async)"
+            fixedInViewport="true"
+            fixedTopGap="64"
+            mode="side"
+            position="end"
+            style="background: transparent; border: none; padding: 24px 24px 24px 0"
+        >
+            <v-table-of-contents [links]="links"></v-table-of-contents
+        ></mat-sidenav>
+    </mat-sidenav-container>
 </cc-page-layout>
