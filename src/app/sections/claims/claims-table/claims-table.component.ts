@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    booleanAttribute,
+    input,
+    computed,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
@@ -16,13 +24,14 @@ export class ClaimsTableComponent {
     @Input() data!: Claim[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;
+    noParty = input(false, { transform: booleanAttribute });
 
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column<Claim>[] = [
+    columns = computed<Column<Claim>[]>(() => [
         { field: 'id', link: (d) => this.getClaimLink(d.party_id, d.id) },
-        createPartyColumn('party_id'),
+        ...(this.noParty() ? [] : [createPartyColumn('party_id')]),
         {
             field: 'status',
             type: 'tag',
@@ -48,7 +57,7 @@ export class ClaimsTableComponent {
                 click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
             },
         ]),
-    ];
+    ]);
 
     constructor(private router: Router) {}
 

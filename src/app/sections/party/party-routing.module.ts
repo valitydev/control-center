@@ -25,6 +25,14 @@ import { ROUTING_CONFIG } from './routing-config';
                         loadChildren: () =>
                             import('../routing-rules').then((m) => m.RoutingRulesModule),
                     },
+                    {
+                        path: 'claims',
+                        loadChildren: () => import('../claims').then((m) => m.ClaimsModule),
+                    },
+                    {
+                        path: 'claim',
+                        redirectTo: 'claims',
+                    },
                     { path: '', redirectTo: 'shops', pathMatch: 'full' },
                 ],
             },

@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
-import { NavComponent } from '@vality/ng-core';
+import { MatToolbar } from '@angular/material/toolbar';
+import { NavComponent, TagModule } from '@vality/ng-core';
 
-import { PageLayoutModule } from '../../shared';
+import { PageLayoutModule, ThriftPipesModule } from '../../shared';
 
 import { PartyRouting } from './party-routing.module';
 import { PartyComponent } from './party.component';
@@ -19,6 +20,9 @@ import { PartyComponent } from './party.component';
         PageLayoutModule,
         NavComponent,
         MatSidenavModule,
+        MatToolbar,
+        TagModule,
+        ThriftPipesModule,
     ],
     declarations: [PartyComponent],
 })

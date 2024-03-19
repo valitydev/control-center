@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NotifyLogService, Link } from '@vality/ng-core';
-import { EMPTY } from 'rxjs';
-import { catchError, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { Link } from '@vality/ng-core';
 
 import { AppAuthGuardService, Services } from '@cc/app/shared/services';
 
-import { PartyManagementService } from '../../api/payment-processing';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
-import { ROUTING_CONFIG as SHOPS_ROUTING_CONFIG } from '../party-shops/routing-config';
+import { ROUTING_CONFIG as CLAIMS_CONFIG } from '../claims/routing-config';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
+import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../wallets/routing-config';
+
+import { PartyStoreService } from './party-store.service';
 
 interface PartyLink extends Link {
     services?: Services[];
@@ -17,14 +16,20 @@ interface PartyLink extends Link {
 
 @Component({
     templateUrl: 'party.component.html',
+    providers: [PartyStoreService],
 })
 export class PartyComponent {
     links: PartyLink[] = [
         {
             label: 'Shops',
             url: 'shops',
-            services: SHOPS_ROUTING_CONFIG.services,
+            services: WALLETS_ROUTING_CONFIG.services,
         },
+        // {
+        //     label: 'Wallets',
+        //     url: 'wallets',
+        //     services: SHOPS_ROUTING_CONFIG.services,
+        // },
         {
             label: 'Payment Routing Rules',
             url: 'routing-rules/payment',
@@ -35,23 +40,17 @@ export class PartyComponent {
             url: 'routing-rules/withdrawal',
             services: RULESET_ROUTING_CONFIG.services,
         },
+        {
+            label: 'Claims',
+            url: 'claims',
+            services: CLAIMS_CONFIG.services,
+        },
     ].filter((item) => this.appAuthGuardService.userHasSomeServiceMethods(item.services));
-    party$ = this.route.params.pipe(
-        startWith(this.route.snapshot.params),
-        switchMap(({ partyID }) => this.partyManagementService.Get(partyID)),
-        catchError((err) => {
-            this.log.error(err);
-            return EMPTY;
-        }),
-        startWith({ id: this.route.snapshot.params.partyID }),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    party$ = this.partyStoreService.party$;
 
     constructor(
-        private route: ActivatedRoute,
         private appAuthGuardService: AppAuthGuardService,
-        private partyManagementService: PartyManagementService,
-        private log: NotifyLogService,
         protected sidenavInfoService: SidenavInfoService,
+        private partyStoreService: PartyStoreService,
     ) {}
 }

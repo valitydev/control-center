@@ -13,12 +13,7 @@ import { ROUTING_CONFIG } from './routing-config';
                 path: '',
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
-                children: [
-                    {
-                        path: '',
-                        component: DomainInfoComponent,
-                    },
-                ],
+                component: DomainInfoComponent,
             },
         ]),
     ],

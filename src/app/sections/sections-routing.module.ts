@@ -11,6 +11,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
     },
     {
+        path: 'claims',
+        loadChildren: () => import('./claims').then((m) => m.ClaimsModule),
+    },
+    {
         path: 'party/:partyID',
         children: [
             {
