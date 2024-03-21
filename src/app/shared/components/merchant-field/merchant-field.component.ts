@@ -6,9 +6,17 @@ import {
     NotifyLogService,
     FormControlSuperclass,
     createControlProviders,
+    getValueChanges,
 } from '@vality/ng-core';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { catchError, debounceTime, map, switchMap, tap, startWith } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
+import {
+    catchError,
+    debounceTime,
+    map,
+    switchMap,
+    tap,
+    distinctUntilChanged,
+} from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
 
@@ -23,6 +31,9 @@ export class MerchantFieldComponent
 {
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
+    @Input() size?: string;
+    @Input() appearance?: string;
+    @Input() hint?: string;
 
     options$ = new ReplaySubject<Option<PartyID>[]>(1);
     searchChange$ = new Subject<string>();
@@ -37,9 +48,9 @@ export class MerchantFieldComponent
     }
 
     ngAfterViewInit() {
-        this.searchChange$
+        merge(getValueChanges(this.control), this.searchChange$)
             .pipe(
-                startWith(this.control.value),
+                distinctUntilChanged(),
                 tap(() => {
                     this.options$.next([]);
                     this.progress$.next(true);

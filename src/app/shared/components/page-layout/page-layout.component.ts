@@ -1,6 +1,17 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Params } from '@angular/router';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    booleanAttribute,
+    input,
+    computed,
+    Output,
+    EventEmitter,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { UrlService } from '@vality/ng-core';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'cc-page-layout',
@@ -11,21 +22,49 @@ import { Params } from '@angular/router';
 export class PageLayoutComponent {
     @Input() title!: string;
     @Input() description?: string;
+    @Input() id?: string;
     @Input() progress?: boolean;
-    @Input() path?: {
-        label: string;
-        link?: unknown[] | string | null | undefined;
-        queryParams?: Params | null;
-        tooltip?: string;
-    }[];
+    @Input({ transform: booleanAttribute }) noOffset = false;
 
-    // 1 and 2 is default history length
-    isBackAvailable =
-        window.history.length > 2 && window.location.pathname.split('/').slice(1).length > 1;
+    @Output() idLinkClick = new EventEmitter<MouseEvent>();
 
-    constructor(private location: Location) {}
+    backLink = input<unknown[]>();
+    upLink = input<unknown[]>();
+    idLink = input<unknown[]>();
+
+    isBackAvailable = computed(
+        () =>
+            this.backLink() ||
+            this.upLink() ||
+            // 1 and 2 is default history length
+            (window.history.length > 2 && window.location.pathname.split('/').slice(1).length > 1),
+    );
+
+    path$ = this.urlService.path$.pipe(
+        map((path) => {
+            return path
+                .reduce(
+                    (acc, p) => {
+                        acc.push({ url: [...(acc.at(-1)?.url || ['']), p], label: p });
+                        return acc;
+                    },
+                    [] as { url: string[]; label: string }[],
+                )
+                .map((v) => ({ ...v, url: v.url.join('/') }));
+        }),
+    );
+
+    constructor(
+        private location: Location,
+        private router: Router,
+        private urlService: UrlService,
+    ) {}
 
     back() {
-        this.location.back();
+        if (this.backLink() || this.upLink()) {
+            void this.router.navigate(this.backLink() || this.upLink());
+        } else {
+            this.location.back();
+        }
     }
 }

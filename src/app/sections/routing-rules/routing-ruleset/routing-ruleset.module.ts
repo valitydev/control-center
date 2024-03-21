@@ -19,8 +19,8 @@ import { TableModule, DialogModule } from '@vality/ng-core';
 
 import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
 
+import { PageLayoutModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
-import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
 import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
@@ -44,12 +44,12 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         MatSelectModule,
         MatRadioModule,
         MatExpansionModule,
-        RoutingRulesetHeaderModule,
         MatAutocompleteModule,
         TableModule,
         DomainThriftViewerComponent,
         ThriftViewerModule,
         DialogModule,
+        PageLayoutModule,
     ],
     declarations: [RoutingRulesetComponent, ChangeCandidatesPrioritiesDialogComponent],
 })

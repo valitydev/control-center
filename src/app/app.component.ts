@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { Link } from '@vality/ng-core';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
 import { from, Observable } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { shareReplay, map, startWith } from 'rxjs/operators';
 
-import { AppAuthGuardService } from '@cc/app/shared/services';
+import { AppAuthGuardService, Services } from '@cc/app/shared/services';
 
 import { environment } from '../environments/environment';
 
@@ -28,9 +29,8 @@ import { SidenavInfoService } from './shared/components/sidenav-info';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-    menuItemsGroups$: Observable<{ name: string; route: string }[][]> = from(
-        this.keycloakService.loadUserProfile(),
-    ).pipe(
+    links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
+        startWith(null),
         map(() => this.getMenuItemsGroups()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -58,80 +58,80 @@ export class AppComponent {
     }
 
     private getMenuItemsGroups() {
-        const menuItems = [
+        const menuItems: (Link & { services: Services[] })[][] = [
             [
                 {
-                    name: 'Domain config',
-                    route: '/domain',
+                    label: 'Domain config',
+                    url: '/domain',
                     services: DOMAIN_ROUTING_CONFIG.services,
                 },
                 {
-                    name: 'Terminals',
-                    route: '/terminals',
+                    label: 'Terminals',
+                    url: '/terminals',
                     services: TERMINALS_ROUTING_CONFIG.services,
                 },
                 {
-                    name: 'Repairing',
-                    route: '/repairing',
+                    label: 'Repairing',
+                    url: '/repairing',
                     services: REPAIRING_ROUTING_CONFIG.services,
                 },
                 {
-                    name: 'Sources',
-                    route: '/sources',
+                    label: 'Sources',
+                    url: '/sources',
                     services: SOURCES_ROUTING_CONFIG.services,
                 },
             ],
             [
                 {
-                    name: 'Merchants',
-                    route: '/parties',
+                    label: 'Merchants',
+                    url: '/parties',
                     services: PARTIES_ROUTING_CONFIG.services,
                 },
                 {
-                    name: 'Shops',
-                    route: '/shops',
+                    label: 'Shops',
+                    url: '/shops',
                     services: SHOPS_ROUTING_CONFIG.services,
                 },
                 {
-                    name: 'Wallets',
-                    route: '/wallets',
+                    label: 'Wallets',
+                    url: '/wallets',
                     services: WALLETS_ROUTING_CONFIG.services,
                 },
                 {
-                    name: 'Claims',
-                    route: '/claims',
+                    label: 'Claims',
+                    url: '/claims',
                     services: CLAIMS_ROUTING_CONFIG.services,
                 },
             ],
             sortBy(
                 [
                     {
-                        name: 'Payments',
-                        route: '/payments',
+                        label: 'Payments',
+                        url: '/payments',
                         services: PAYMENTS_ROUTING_CONFIG.services,
                     },
                     {
-                        name: 'Payouts',
-                        route: '/payouts',
+                        label: 'Payouts',
+                        url: '/payouts',
                         services: PAYOUTS_ROUTING_CONFIG.services,
                     },
                     {
-                        name: 'Chargebacks',
-                        route: '/chargebacks',
+                        label: 'Chargebacks',
+                        url: '/chargebacks',
                         services: WALLETS_ROUTING_CONFIG.services,
                     },
                     {
-                        name: 'Deposits',
-                        route: '/deposits',
+                        label: 'Deposits',
+                        url: '/deposits',
                         services: DEPOSITS_ROUTING_CONFIG.services,
                     },
                     {
-                        name: 'Withdrawals',
-                        route: '/withdrawals',
+                        label: 'Withdrawals',
+                        url: '/withdrawals',
                         services: WITHDRAWALS_ROUTING_CONFIG.services,
                     },
                 ],
-                'name',
+                'label',
             ),
         ];
         return menuItems.map((group) =>

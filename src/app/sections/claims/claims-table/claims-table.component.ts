@@ -1,11 +1,19 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    booleanAttribute,
+    input,
+    computed,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
+import isObject from 'lodash-es/isObject';
 import startCase from 'lodash-es/startCase';
 
 import { getUnionKey } from '../../../../utils';
-import { PartiesStoreService } from '../../../api/payment-processing';
 import { createPartyColumn } from '../../../shared';
 
 @Component({
@@ -17,11 +25,17 @@ export class ClaimsTableComponent {
     @Input() data!: Claim[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;
+    noParty = input(false, { transform: booleanAttribute });
 
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column<Claim>[] = [
+    columns = computed<Column<Claim>[]>(() =>
+        this.sourceColumns.filter(
+            (c) => (isObject(c) && c?.field !== 'party_id') || !this.noParty(),
+        ),
+    );
+    private sourceColumns: Column<Claim>[] = [
         { field: 'id', link: (d) => this.getClaimLink(d.party_id, d.id) },
         createPartyColumn('party_id'),
         {
@@ -51,10 +65,7 @@ export class ClaimsTableComponent {
         ]),
     ];
 
-    constructor(
-        private router: Router,
-        private partiesStoreService: PartiesStoreService,
-    ) {}
+    constructor(private router: Router) {}
 
     navigateToClaim(partyId: string, claimID: number) {
         void this.router.navigate([this.getClaimLink(partyId, claimID)]);

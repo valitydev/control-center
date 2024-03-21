@@ -1,8 +1,52 @@
 .toolbar {
     position: fixed;
     z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    & > * {
+        display: flex;
+        align-items: center;
+    }
 }
 
-.spacer {
-    flex: 1 1 auto;
+.search {
+    align-self: end;
+    margin-bottom: -9px;
+    justify-self: center;
+    position: relative;
+
+    .copy {
+        cursor: pointer;
+        position: absolute;
+        right: -291px;
+        top: 8px;
+    }
+
+    ::ng-deep .mdc-floating-label {
+        pointer-events: none !important;
+    }
+
+    ::ng-deep & > * {
+        min-width: 280px;
+    }
+
+    ::ng-deep * {
+        color: #fff !important;
+    }
+
+    ::ng-deep .mdc-notched-outline * {
+        border-color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    ::ng-deep .ng-spinner-loader {
+        border-color: rgba(255, 255, 255, 0.2);
+        border-left-color: #fff;
+    }
+
+    --mtx-select-enabled-arrow-color: #fff;
+}
+
+.user {
+    justify-self: end;
 }

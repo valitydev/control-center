@@ -1,24 +1,35 @@
-<div class="party-container" style="display: flex; flex-direction: column; gap: 24px">
-    <div style="display: flex; place-content: stretch space-between">
-        <h3 class="mat-body-1">
-            {{ (party$ | async)?.contact_info?.email }}
-        </h3>
-        <h4 class="mat-secondary-text mat-body-1">{{ (party$ | async)?.id }}</h4>
+<mat-toolbar *ngIf="party$ | async as party" style="height: 48px; padding: 0 24px">
+    <div style="display: flex; gap: 8px; align-items: center">
+        <!--        <div class="mat-body-2 mat-no-margin">-->
+        <!--            {{ party?.contact_info?.email }}-->
+        <!--        </div>-->
+        <v-tag
+            *ngIf="party?.blocking"
+            [color]="(party?.blocking | ccUnionKey) === 'blocked' ? 'warn' : 'success'"
+            style="margin-top: 8px"
+            >{{ party?.blocking | ccUnionKey | titlecase }}</v-tag
+        >
+        <v-tag
+            *ngIf="party?.suspension"
+            [color]="(party?.suspension | ccUnionKey) === 'suspended' ? 'warn' : 'success'"
+            style="margin-top: 8px"
+            >{{ party?.suspension | ccUnionKey | titlecase }}</v-tag
+        >
     </div>
+</mat-toolbar>
 
-    <div style="display: flex; flex-direction: column; gap: 24px">
-        <nav mat-tab-nav-bar>
-            <a
-                #rla="routerLinkActive"
-                *ngFor="let link of links"
-                [active]="rla.isActive || (activeLinkByFragment$ | async) === link"
-                [routerLink]="link.url"
-                mat-tab-link
-                routerLinkActive
-            >
-                {{ link.name }}
-            </a>
-        </nav>
-        <router-outlet></router-outlet>
-    </div>
-</div>
+<mat-sidenav-container autosize>
+    <mat-sidenav-content style="overflow: unset"
+        ><router-outlet></router-outlet
+    ></mat-sidenav-content>
+    <mat-sidenav
+        [fixedTopGap]="64 + 48"
+        [opened]="!(sidenavInfoService.opened$ | async)"
+        fixedInViewport="true"
+        mode="side"
+        position="end"
+        style="background: transparent; border: none; padding: 24px 0 24px 0"
+    >
+        <v-nav [links]="links" type="secondary"></v-nav
+    ></mat-sidenav>
+</mat-sidenav-container>

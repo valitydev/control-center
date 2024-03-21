@@ -15,6 +15,10 @@ import { SearchPartiesComponent } from './search-parties.component';
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
             },
+            {
+                path: 'party',
+                redirectTo: 'parties',
+            },
         ]),
     ],
     exports: [RouterModule],

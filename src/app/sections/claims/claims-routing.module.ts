@@ -10,7 +10,7 @@ import { ROUTING_CONFIG } from './routing-config';
     imports: [
         RouterModule.forChild([
             {
-                path: 'claims',
+                path: '',
                 component: ClaimsComponent,
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,

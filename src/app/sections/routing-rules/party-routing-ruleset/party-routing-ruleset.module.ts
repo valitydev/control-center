@@ -16,9 +16,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
+import { PageLayoutModule } from '../../../shared';
 import { ChangeTargetDialogModule } from '../change-target-dialog';
 import { RoutingRulesListModule } from '../routing-rules-list';
-import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 
 import { AddPartyRoutingRuleDialogModule } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogModule } from './initialize-routing-rules-dialog';
@@ -43,12 +43,12 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
         MatSelectModule,
         MatRadioModule,
         MatExpansionModule,
-        RoutingRulesetHeaderModule,
         AddPartyRoutingRuleDialogModule,
         InitializeRoutingRulesDialogModule,
         MatProgressBarModule,
         ChangeTargetDialogModule,
         RoutingRulesListModule,
+        PageLayoutModule,
     ],
     declarations: [PartyRoutingRulesetComponent],
 })

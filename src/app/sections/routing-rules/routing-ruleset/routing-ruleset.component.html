@@ -1,20 +1,19 @@
-<div style="display: flex; flex-direction: column; gap: 24px">
-    <cc-routing-ruleset-header
-        [backTo]="
-            'party/' +
+<cc-page-layout
+    [id]="(shopRuleset$ | async)?.ref?.id"
+    [title]="((routingRulesType$ | async) === 'payment' ? 'Shop' : 'Wallet') + ' Routing Rules'"
+    [upLink]="[
+        '/party/' +
             (partyID$ | async) +
             '/routing-rules/' +
             (routingRulesType$ | async) +
             '/' +
             (partyRulesetRefID$ | async)
-        "
-        [description]="(shop$ | async)?.details?.name"
-        [refID]="(shopRuleset$ | async)?.ref?.id"
-        (add)="addShopRule()"
-    >
-        Routing rules
-    </cc-routing-ruleset-header>
-
+    ]"
+    (idLinkClick)="openRefId()"
+>
+    <cc-page-layout-actions>
+        <button color="primary" mat-raised-button (click)="addShopRule()">Add</button>
+    </cc-page-layout-actions>
     <v-table
         [columns]="columns"
         [data]="(candidates$ | async) || []"
@@ -26,4 +25,4 @@
         sortOnFront
         (rowDropped)="drop($event)"
     ></v-table>
-</div>
+</cc-page-layout>

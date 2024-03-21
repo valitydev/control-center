@@ -2,12 +2,14 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogResponseStatus } from '@vality/ng-core';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, map, pluck, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
-import { RoutingRulesType } from '../types/routing-rules-type';
+import { SidenavInfoService } from '../../../shared/components/sidenav-info';
+import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
+import { RoutingRulesTypeService } from '../routing-rules-type.service';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
@@ -17,15 +19,11 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     selector: 'cc-party-routing-ruleset',
     templateUrl: 'party-routing-ruleset.component.html',
     styleUrls: ['party-routing-ruleset.component.scss'],
-    providers: [PartyRoutingRulesetService],
+    providers: [PartyRoutingRulesetService, RoutingRulesTypeService],
 })
 export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
-    routingRulesType$ = this.route.params.pipe(
-        startWith(this.route.snapshot.params),
-        pluck('type'),
-    ) as Observable<RoutingRulesType>;
     isLoading$ = this.domainStoreService.isLoading$;
 
     shopsDisplayedColumns = [
@@ -60,6 +58,7 @@ export class PartyRoutingRulesetComponent {
                     };
                 }),
         ),
+        startWith([]),
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
@@ -87,6 +86,7 @@ export class PartyRoutingRulesetComponent {
                     };
                 }),
         ),
+        startWith([]),
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
@@ -98,9 +98,45 @@ export class PartyRoutingRulesetComponent {
         private route: ActivatedRoute,
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
+        private sidenavInfoService: SidenavInfoService,
+        protected routingRulesTypeService: RoutingRulesTypeService,
     ) {}
 
-    initialize() {
+    add() {
+        this.partyRuleset$.pipe(take(1)).subscribe((partyRuleset) => {
+            if (partyRuleset) {
+                this.addPartyRule();
+            } else {
+                this.initialize();
+            }
+        });
+    }
+
+    navigateToDelegate(parentRefId: number, delegateIdx: number) {
+        this.partyRoutingRulesetService.partyRuleset$
+            .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+            .subscribe((ruleset) =>
+                this.router.navigate([
+                    'party',
+                    this.route.snapshot.params.partyID,
+                    'routing-rules',
+                    this.route.snapshot.params.type,
+                    parentRefId,
+                    'delegate',
+                    ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,
+                ]),
+            );
+    }
+
+    openRefId() {
+        this.partyRuleset$.pipe(take(1), filter(Boolean)).subscribe(({ ref }) => {
+            this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                ref: { routing_rules: { id: Number(ref.id) } },
+            });
+        });
+    }
+
+    private initialize() {
         combineLatest([
             this.partyRoutingRulesetService.partyID$,
             this.partyRoutingRulesetService.refID$,
@@ -121,12 +157,12 @@ export class PartyRoutingRulesetComponent {
             });
     }
 
-    addPartyRule() {
+    private addPartyRule() {
         combineLatest([
             this.partyRoutingRulesetService.refID$,
             this.partyRoutingRulesetService.shops$,
             this.partyRoutingRulesetService.wallets$,
-            this.routingRulesType$,
+            this.routingRulesTypeService.routingRulesType$,
             this.partyRoutingRulesetService.partyID$,
         ])
             .pipe(
@@ -151,21 +187,5 @@ export class PartyRoutingRulesetComponent {
                     }
                 },
             });
-    }
-
-    navigateToDelegate(parentRefId: number, delegateIdx: number) {
-        this.partyRoutingRulesetService.partyRuleset$
-            .pipe(take(1), takeUntilDestroyed(this.destroyRef))
-            .subscribe((ruleset) =>
-                this.router.navigate([
-                    'party',
-                    this.route.snapshot.params.partyID,
-                    'routing-rules',
-                    this.route.snapshot.params.type,
-                    parentRefId,
-                    'delegate',
-                    ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,
-                ]),
-            );
     }
 }

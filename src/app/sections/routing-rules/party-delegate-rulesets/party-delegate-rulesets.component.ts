@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from '@vality/ng-core';
+import { DialogService, NotifyLogService } from '@vality/ng-core';
 import { first, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { handleError } from '../../../../utils/operators/handle-error';
+import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
@@ -18,7 +18,7 @@ import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service'
     selector: 'cc-party-delegate-rulesets',
     templateUrl: 'party-delegate-rulesets.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [PartyDelegateRulesetsService],
+    providers: [PartyDelegateRulesetsService, RoutingRulesTypeService],
 })
 export class PartyDelegateRulesetsComponent {
     displayedColumns = [
@@ -60,9 +60,10 @@ export class PartyDelegateRulesetsComponent {
         private router: Router,
         private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private route: ActivatedRoute,
         private destroyRef: DestroyRef,
+        protected routingRulesTypeService: RoutingRulesTypeService,
     ) {}
 
     attachNewRuleset() {
@@ -72,10 +73,7 @@ export class PartyDelegateRulesetsComponent {
                 type: this.route.snapshot.params.type,
             })
             .afterClosed()
-            .pipe(
-                handleError(this.notificationErrorService.error),
-                takeUntilDestroyed(this.destroyRef),
-            )
+            .pipe(handleError(this.log.error), takeUntilDestroyed(this.destroyRef))
             .subscribe();
     }
 

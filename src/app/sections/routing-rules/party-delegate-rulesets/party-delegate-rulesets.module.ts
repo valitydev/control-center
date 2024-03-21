@@ -17,9 +17,9 @@ import { DialogModule } from '@vality/ng-core';
 
 import { DetailsItemModule } from '@cc/components/details-item';
 
+import { PageLayoutModule } from '../../../shared';
 import { ChangeTargetDialogModule } from '../change-target-dialog';
 import { RoutingRulesListModule } from '../routing-rules-list';
-import { RoutingRulesetHeaderModule } from '../routing-ruleset-header';
 import { TargetRulesetFormModule } from '../target-ruleset-form';
 
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
@@ -31,7 +31,6 @@ const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetD
 @NgModule({
     imports: [
         PartyDelegateRulesetsRoutingModule,
-        RoutingRulesetHeaderModule,
         MatButtonModule,
         CommonModule,
         RouterModule,
@@ -51,6 +50,7 @@ const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetD
         TargetRulesetFormModule,
         RoutingRulesListModule,
         DialogModule,
+        PageLayoutModule,
     ],
     declarations: EXPORTED_DECLARATIONS,
     exports: EXPORTED_DECLARATIONS,

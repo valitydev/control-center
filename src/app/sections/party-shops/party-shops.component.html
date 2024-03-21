@@ -1,9 +1,8 @@
-<div style="display: flex; flex-direction: column; gap: 24px">
-    <div class="mat-headline-4 mat-no-margin">Shops</div>
+<cc-page-layout title="Shops">
     <cc-shops-table
         [progress]="progress$ | async"
         [shops]="shopsParty$ | async"
         noPartyColumn
         (update)="update()"
     ></cc-shops-table>
-</div>
+</cc-page-layout>

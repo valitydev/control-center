@@ -12,19 +12,22 @@
     </cc-page-layout-actions>
     <v-filters *ngIf="isFilterControl.value" [active]="active" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
-            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+            <cc-merchant-field
+                *ngIf="!(party$ | async)"
+                formControlName="party_id"
+            ></cc-merchant-field>
+            <v-list-field formControlName="wallet_id" label="Wallet IDs"></v-list-field>
             <mat-form-field>
                 <mat-label>Identity ID</mat-label>
                 <input formControlName="identity_id" matInput />
             </mat-form-field>
             <cc-currency-field formControlName="currency_code"></cc-currency-field>
-            <v-list-field formControlName="wallet_id" label="Wallet IDs"></v-list-field>
         </ng-template>
     </v-filters>
 
     <v-table
         *ngIf="isFilterControl.value"
-        [columns]="filterColumns"
+        [columns]="filterColumns$ | async"
         [data]="filterWallets$ | async"
         [hasMore]="filterHasMore$ | async"
         [progress]="filtersLoading$ | async"

@@ -4,6 +4,10 @@
     ></cc-page-layout-actions>
     <v-filters #filters [active]="active">
         <ng-template [formGroup]="filtersForm">
+            <cc-merchant-field
+                *ngIf="!(party$ | async)"
+                formControlName="party_id"
+            ></cc-merchant-field>
             <mat-form-field>
                 <input
                     autocomplete="off"
@@ -20,13 +24,13 @@
                     }}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
         </ng-template>
     </v-filters>
     <cc-claims-table
         [data]="claims$ | async"
         [hasMore]="hasMore$ | async"
         [isLoading]="isLoading$ | async"
+        [noParty]="!!(party$ | async)"
         (more)="more()"
         (update)="load($event)"
     >
