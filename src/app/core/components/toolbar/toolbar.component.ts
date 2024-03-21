@@ -39,6 +39,7 @@ export class ToolbarComponent implements OnInit {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     partyIdControl = new FormControl<string>(this.getPartyId());
+    hasMenu$ = this.urlService.path$.pipe(map((p) => p.length <= 3));
 
     constructor(
         private keycloakService: KeycloakService,
@@ -52,11 +53,12 @@ export class ToolbarComponent implements OnInit {
         this.partyIdControl.valueChanges
             .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
             .subscribe((partyId) => {
+                const currentPartyId = this.getPartyId();
                 if (partyId) {
-                    if (this.getPartyId() !== partyId) {
+                    if (currentPartyId !== partyId) {
                         void this.router.navigate([`/party/${partyId}`]);
                     }
-                } else {
+                } else if (currentPartyId) {
                     void this.router.navigate([`/parties`]);
                 }
             });
@@ -84,6 +86,10 @@ export class ToolbarComponent implements OnInit {
             'OK',
             { duration: res ? 2_000 : 60_000 },
         );
+    }
+
+    toParty() {
+        void this.router.navigate([`/party/${this.partyIdControl.value}`]);
     }
 
     private getPartyId(path: string[] = this.urlService.path) {
