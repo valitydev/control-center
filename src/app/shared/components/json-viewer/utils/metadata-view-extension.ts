@@ -7,7 +7,7 @@ import { MetadataFormData } from '../../metadata-form';
 
 export interface MetadataViewExtensionResult {
     key?: string;
-    value?: string;
+    value?: unknown;
     hidden?: boolean;
     tooltip?: unknown;
     link?: Parameters<Router['navigate']>;

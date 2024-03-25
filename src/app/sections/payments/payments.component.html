@@ -10,7 +10,11 @@
     >
         <ng-template [formGroup]="filtersForm" vMainFilters>
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
-            <v-list-field formControlName="invoice_ids" label="Invoice Ids"></v-list-field>
+            <v-list-field
+                focusedHint="invoice_1, invoice_2.payment_2"
+                formControlName="invoice_ids"
+                label="Invoice and Payment Ids"
+            ></v-list-field>
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
             <cc-shop-field
                 [partyId]="filtersForm.value.party_id"
