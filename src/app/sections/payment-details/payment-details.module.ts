@@ -14,13 +14,12 @@ import { HeadlineModule } from '@cc/components/headline';
 import { ChargebacksComponent } from '../../shared/components/chargebacks/chargebacks.component';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
 
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsRoutingModule } from './payment-details-routing.module';
 import { PaymentDetailsComponent } from './payment-details.component';
-import { PaymentMainInfoModule } from './payment-main-info';
-import { PaymentToolModule } from './payment-main-info/payment-tool';
 import { RefundsTableModule } from './refunds-table';
 
 @NgModule({
@@ -31,9 +30,7 @@ import { RefundsTableModule } from './refunds-table';
         MatCardModule,
         DetailsItemModule,
         StatusModule,
-        PaymentToolModule,
         MatProgressSpinnerModule,
-        PaymentMainInfoModule,
         MatButtonModule,
         MatDialogModule,
         ChargebacksComponent,
@@ -45,6 +42,7 @@ import { RefundsTableModule } from './refunds-table';
         ThriftViewerModule,
         JsonViewerModule,
         RefundsTableModule,
+        MagistaThriftViewerComponent,
     ],
     declarations: [PaymentDetailsComponent, CreateChargebackDialogComponent],
 })

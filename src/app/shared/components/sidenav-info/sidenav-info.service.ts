@@ -50,7 +50,7 @@ export class SidenavInfoService {
 
     toggle<C extends Type<unknown>>(
         component: PossiblyAsync<C>,
-        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
+        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] | any } = {},
     ) {
         getPossiblyAsyncObservable(component).subscribe((comp) => {
             if (this.isEqual(comp, inputs)) {

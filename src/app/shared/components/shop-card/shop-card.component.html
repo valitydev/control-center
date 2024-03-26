@@ -1,7 +1,31 @@
 <cc-card [title]="(shop$ | async)?.details?.name">
-    <cc-domain-thrift-viewer
-        [progress]="!!(progress$ | async)"
-        [value]="shop$ | async"
-        type="Shop"
-    ></cc-domain-thrift-viewer>
+    <mat-tab-group>
+        <mat-tab label="Shop">
+            <div style="padding-top: 24px">
+                <cc-domain-thrift-viewer
+                    [progress]="!!(progress$ | async)"
+                    [value]="shop$ | async"
+                    type="Shop"
+                ></cc-domain-thrift-viewer>
+            </div>
+        </mat-tab>
+        <mat-tab label="Contract">
+            <div style="padding-top: 24px">
+                <cc-domain-thrift-viewer
+                    [progress]="!!(progress$ | async)"
+                    [value]="contract$ | async"
+                    type="Contract"
+                ></cc-domain-thrift-viewer>
+            </div>
+        </mat-tab>
+        <mat-tab label="Contractor">
+            <div style="padding-top: 24px">
+                <cc-domain-thrift-viewer
+                    [progress]="!!(progress$ | async)"
+                    [value]="contractor$ | async"
+                    type="Contractor"
+                ></cc-domain-thrift-viewer>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 </cc-card>

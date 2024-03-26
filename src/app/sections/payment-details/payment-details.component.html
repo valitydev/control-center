@@ -1,21 +1,17 @@
 <cc-page-layout
     [progress]="isLoading$ | async"
+    [tags]="tags$ | async"
     description="{{ (payment$ | async)?.id }}"
     title="Payment"
 >
     <ng-container *ngIf="payment$ | async as payment">
         <mat-card>
             <mat-card-content>
-                <cc-payment-main-info
-                    [payment]="payment"
-                    [shop]="shop$ | async"
-                ></cc-payment-main-info>
-                <!--                <cc-json-viewer-->
-                <!--                    [metadata]="metadata$ | async"-->
-                <!--                    [value]="payment"-->
-                <!--                    namespace="magista"-->
-                <!--                    type="StatPayment"-->
-                <!--                ></cc-json-viewer>-->
+                <cc-magista-thrift-viewer
+                    [extensions]="extensions$ | async"
+                    [value]="payment"
+                    type="StatPayment"
+                ></cc-magista-thrift-viewer>
             </mat-card-content>
         </mat-card>
 

@@ -10,7 +10,7 @@ import {
     EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { UrlService } from '@vality/ng-core';
+import { UrlService, Color } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -25,6 +25,7 @@ export class PageLayoutComponent {
     @Input() id?: string;
     @Input() progress?: boolean;
     @Input({ transform: booleanAttribute }) noOffset = false;
+    @Input() tags?: { value: string; color: Color }[] | null;
 
     @Output() idLinkClick = new EventEmitter<MouseEvent>();
 
