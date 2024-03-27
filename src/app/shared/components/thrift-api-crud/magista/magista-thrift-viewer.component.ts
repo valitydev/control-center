@@ -10,7 +10,7 @@ import { ThriftViewerSuperclass, ThriftViewerBaseModule } from '../utils';
 @Component({
     standalone: true,
     selector: 'cc-magista-thrift-viewer',
-    template: `<cc-thrift-viewer-base [data]="data" />`,
+    template: `<cc-thrift-viewer-base [data]="data()" />`,
     imports: [ThriftViewerBaseModule],
 })
 export class MagistaThriftViewerComponent<T> extends ThriftViewerSuperclass<T> {

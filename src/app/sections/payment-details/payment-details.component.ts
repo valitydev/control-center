@@ -72,6 +72,17 @@ export class PaymentDetailsComponent {
                     ),
                 extension: (_, v) => of({ hidden: !Object.keys(getUnionValue(v)).length }),
             },
+            {
+                determinant: (d) =>
+                    of(
+                        isTypeWithAliases(d?.trueParent, 'StatPayment', 'magista') &&
+                            (d.field.name === 'make_recurrent' ||
+                                d.field.name === 'currency_symbolic_code' ||
+                                isTypeWithAliases(d, 'InvoiceID', 'domain') ||
+                                isTypeWithAliases(d, 'InvoicePaymentID', 'domain')),
+                    ),
+                extension: () => of({ hidden: true }),
+            },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -103,6 +114,9 @@ export class PaymentDetailsComponent {
             {
                 value: payment.make_recurrent ? 'Recurrent' : 'Not Recurrent',
                 color: payment.make_recurrent ? 'success' : 'neutral',
+            },
+            {
+                value: payment.currency_symbolic_code,
             },
         ]),
     );

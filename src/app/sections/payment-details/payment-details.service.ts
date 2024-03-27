@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { cleanPrimitiveProps } from '@vality/ng-core';
-import { combineLatest, of } from 'rxjs';
-import { map, pluck, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { cleanPrimitiveProps, NotifyLogService, progressTo, inProgressFrom } from '@vality/ng-core';
+import { BehaviorSubject } from 'rxjs';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 import { MerchantStatisticsService } from '@cc/app/api/magista';
-import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { progress } from '@cc/app/shared/custom-operators';
 
 @Injectable()
 export class PaymentDetailsService {
-    private partyID$ = this.route.params.pipe(pluck('partyID'), shareReplay(1));
-
-    private routeParams$ = this.route.params.pipe(shareReplay(1));
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    payment$ = this.routeParams$.pipe(
+    payment$ = this.route.params.pipe(
         switchMap(({ partyID, invoiceID, paymentID }) =>
             this.merchantStatisticsService
                 .SearchPayments(
@@ -36,28 +28,21 @@ export class PaymentDetailsService {
                     map(({ payments }) => payments[0]),
                     tap((payment) => {
                         if (!payment) {
-                            this.snackBar.open('An error occurred when receiving payment', 'OK');
+                            this.log.error('Payment not found');
                         }
                     }),
+                    progressTo(this.progress$),
                 ),
         ),
-        shareReplay(1),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    isLoading$ = inProgressFrom(() => this.progress$, this.payment$);
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    isLoading$ = progress(this.routeParams$, this.payment$).pipe(shareReplay(1));
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    shop$ = this.payment$.pipe(
-        switchMap((payment) => combineLatest([this.partyID$, of(payment.shop_id)])),
-        switchMap(([partyID, shopID]) => this.partyManagementService.GetShop(partyID, shopID)),
-        shareReplay(1),
-    );
+    private progress$ = new BehaviorSubject(0);
 
     constructor(
-        private partyManagementService: PartyManagementService,
         private merchantStatisticsService: MerchantStatisticsService,
         private route: ActivatedRoute,
-        private snackBar: MatSnackBar,
+        private log: NotifyLogService,
     ) {}
 }

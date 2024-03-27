@@ -76,8 +76,18 @@ export class DomainMetadataViewExtensionsService {
                 this.partiesStoreService.getShop(shopId, partyId).pipe(
                     map((p) => ({
                         value: p.details.name,
-                        link: [[`/party/${partyId}`]],
                         tooltip: shopId,
+                        click: () => {
+                            this.sidenavInfoService.toggle(
+                                import('../../../../../shop-card/shop-card.component').then(
+                                    (r) => r.ShopCardComponent,
+                                ),
+                                {
+                                    partyId,
+                                    id: shopId,
+                                },
+                            );
+                        },
                     })),
                 ),
         };
