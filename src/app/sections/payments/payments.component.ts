@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
+import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogService,
     DialogResponseStatus,
@@ -17,9 +17,11 @@ import {
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
+import isEqual from 'lodash-es/isEqual';
 import lodashMerge from 'lodash-es/merge';
+import omit from 'lodash-es/omit';
 import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith, map, distinctUntilChanged } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
@@ -27,6 +29,12 @@ import { DATE_RANGE_DAYS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
+
+interface Filters {
+    filters: PaymentsComponent['filtersForm']['value'];
+    otherFilters: PaymentsComponent['otherFiltersControl']['value'];
+    dateRange: DateRange;
+}
 
 @Component({
     templateUrl: 'payments.component.html',
@@ -74,11 +82,7 @@ export class PaymentsComponent implements OnInit {
     active = 0;
 
     constructor(
-        private qp: QueryParamsService<{
-            filters: object;
-            otherFilters: object;
-            dateRange: DateRange;
-        }>,
+        private qp: QueryParamsService<Filters>,
         private fetchPaymentsService: FetchPaymentsService,
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
@@ -90,13 +94,23 @@ export class PaymentsComponent implements OnInit {
         this.filtersForm.patchValue(
             lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
         );
-        const otherFilters = this.otherFiltersControl.value;
-        const otherFiltersParams: Partial<PaymentSearchQuery> = this.qp.params.otherFilters || {};
-        this.otherFiltersControl.patchValue(lodashMerge({}, otherFilters, otherFiltersParams));
+        this.otherFiltersControl.patchValue(
+            lodashMerge({}, this.otherFiltersControl.value, this.qp.params.otherFilters || {}),
+        );
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
-            .pipe(startWith(null), debounceTime(500), takeUntilDestroyed(this.destroyRef))
-            .subscribe(() => {
-                this.load();
+            .pipe(
+                startWith(null),
+                debounceTime(500),
+                map(() => {
+                    const { dateRange, ...filters } = clean(this.filtersForm.value);
+                    const otherFilters = clean(this.otherFiltersControl.value);
+                    return { filters, dateRange, otherFilters };
+                }),
+                distinctUntilChanged(isEqual),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((filters) => {
+                this.load(filters);
             });
     }
 
@@ -104,37 +118,27 @@ export class PaymentsComponent implements OnInit {
         this.fetchPaymentsService.more();
     }
 
-    load(options?: LoadOptions) {
-        const { dateRange, ...filters } = clean(this.filtersForm.value);
-        const otherFilters = clean(this.otherFiltersControl.value);
+    load({ filters, otherFilters, dateRange }: Filters, options?: LoadOptions) {
         void this.qp.set({ filters, otherFilters, dateRange });
-        this.fetchPaymentsService.load(
-            clean({
-                ...otherFilters,
-                common_search_query_params: {
-                    ...(otherFilters.common_search_query_params || {}),
-                    party_id: filters.party_id,
-                    shop_ids: filters.shop_ids,
-                    from_time: getNoTimeZoneIsoString(dateRange.start),
-                    to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
-                },
-                payment_params: {
-                    ...(otherFilters.payment_params || {}),
-                    payment_email: filters.payment_email,
-                    payment_first6: filters.payment_first6,
-                    payment_last4: filters.payment_last4,
-                    payment_rrn: filters.payment_rrn,
-                    error_message: filters.error_message,
-                },
-                invoice_ids: filters.invoice_ids,
-            }),
-            options,
-        );
+        const { invoice_ids, party_id, shop_ids, ...paymentParams } = filters;
+        const searchParams = clean({
+            ...otherFilters,
+            common_search_query_params: {
+                ...(otherFilters.common_search_query_params || {}),
+                party_id,
+                shop_ids,
+                from_time: getNoTimeZoneIsoString(dateRange.start),
+                to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
+            },
+            payment_params: { ...(otherFilters.payment_params || {}), ...paymentParams },
+            invoice_ids,
+        });
+        this.fetchPaymentsService.load(searchParams, options);
         this.active =
             countProps(
-                filters,
-                otherFilters.payment_params,
-                otherFilters.common_search_query_params,
+                omit(searchParams, 'payment_params', 'common_search_query_params'),
+                searchParams.payment_params,
+                omit(searchParams.common_search_query_params, 'from_time', 'to_time'),
             ) + +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
@@ -146,7 +150,7 @@ export class PaymentsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.load();
+                    this.fetchPaymentsService.reload();
                     this.selected$.next([]);
                 } else if (res.data?.errors?.length) {
                     this.selected$.next(res.data.errors.map(({ data }) => data));
@@ -163,7 +167,7 @@ export class PaymentsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.load();
+                    this.fetchPaymentsService.reload();
                     this.selected$.next([]);
                 } else if (res.data?.errors?.length) {
                     this.selected$.next(
