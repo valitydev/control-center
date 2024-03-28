@@ -1,4 +1,4 @@
-import { Injectable, Type, Inject, Optional } from '@angular/core';
+import { Injectable, Type, Inject, Optional, InputSignal } from '@angular/core';
 import {
     QueryParamsService,
     QueryParamsNamespace,
@@ -11,6 +11,10 @@ import { BehaviorSubject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
+
+type InputType<T> = {
+    [N in keyof T]?: T[N] extends InputSignal<infer S> ? S : T[N];
+};
 
 @Injectable({
     providedIn: 'root',
@@ -50,7 +54,7 @@ export class SidenavInfoService {
 
     toggle<C extends Type<unknown>>(
         component: PossiblyAsync<C>,
-        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] | any } = {},
+        inputs: InputType<InstanceType<C>> = {},
     ) {
         getPossiblyAsyncObservable(component).subscribe((comp) => {
             if (this.isEqual(comp, inputs)) {
@@ -61,10 +65,7 @@ export class SidenavInfoService {
         });
     }
 
-    open<C extends Type<unknown>>(
-        component: C,
-        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
-    ) {
+    open<C extends Type<unknown>>(component: C, inputs: InputType<InstanceType<C>> = {}) {
         this.component$.next(component);
         this.inputs = inputs;
         void this.qp.set({
@@ -94,7 +95,7 @@ export class SidenavInfoService {
 
     private isEqual<C extends Type<unknown>>(
         component: C,
-        inputs: { [N in keyof InstanceType<C>]?: InstanceType<C>[N] } = {},
+        inputs: InputType<InstanceType<C>> = {},
     ) {
         return component === this.component$.value && isEqual(this.inputs, inputs);
     }
