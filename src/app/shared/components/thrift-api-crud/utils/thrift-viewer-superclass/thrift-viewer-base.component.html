@@ -1,0 +1,11 @@
+<cc-thrift-viewer
+    *ngIf="data() as data"
+    [compared]="data.compared"
+    [extensions]="data.extensions$ | async"
+    [kind]="data.kind"
+    [metadata]="data.metadata$ | async"
+    [namespace]="data.namespace"
+    [progress]="data.progress"
+    [type]="data.type"
+    [value]="data.value"
+></cc-thrift-viewer>

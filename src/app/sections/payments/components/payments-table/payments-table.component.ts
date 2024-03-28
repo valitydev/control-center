@@ -27,8 +27,8 @@ export class PaymentsTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column<StatPayment>[] = [
-        { field: 'id', click: (d) => this.toDetails(d) },
-        { field: 'invoice_id' },
+        { field: 'id', click: (d) => this.toDetails(d), pinned: 'left' },
+        { field: 'invoice_id', pinned: 'left' },
         {
             field: 'amount',
             type: 'currency',
@@ -70,6 +70,7 @@ export class PaymentsTableComponent {
         'domain_revision',
         createTerminalColumn((d) => d.terminal_id.id),
         createProviderColumn((d) => d.provider_id.id),
+        'external_id',
         createFailureColumn<StatPayment>(
             (d) => d.status?.failed?.failure?.failure,
             (d) =>

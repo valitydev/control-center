@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
+import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
@@ -15,6 +16,7 @@ import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
 import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 
 import { getUnionValue } from '../../../../../../../../utils';
+import { PartiesStoreService } from '../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { getDomainObjectDetails } from '../../../utils';
 
@@ -27,6 +29,17 @@ export class DomainMetadataViewExtensionsService {
     ).pipe(
         map((metadata): MetadataViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'PartyID', 'domain')),
+                extension: (_, partyId: PartyID) =>
+                    this.partiesStoreService.get(partyId).pipe(
+                        map((p) => ({
+                            value: p.contact_info.email,
+                            link: [[`/party/${p.id}`]],
+                            tooltip: p.id,
+                        })),
+                    ),
+            },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
                 extension: (_, value: Timestamp) =>
@@ -53,7 +66,32 @@ export class DomainMetadataViewExtensionsService {
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
         private destroyRef: DestroyRef,
+        private partiesStoreService: PartiesStoreService,
     ) {}
+
+    createShopExtension(partyId: PartyID): MetadataViewExtension {
+        return {
+            determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
+            extension: (_, shopId: ShopID) =>
+                this.partiesStoreService.getShop(shopId, partyId).pipe(
+                    map((p) => ({
+                        value: p.details.name,
+                        tooltip: shopId,
+                        click: () => {
+                            this.sidenavInfoService.toggle(
+                                import('../../../../../shop-card/shop-card.component').then(
+                                    (r) => r.ShopCardComponent,
+                                ),
+                                {
+                                    partyId,
+                                    id: shopId,
+                                },
+                            );
+                        },
+                    })),
+                ),
+        };
+    }
 
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {
         const domainFields = new MetadataFormData<string, 'struct'>(

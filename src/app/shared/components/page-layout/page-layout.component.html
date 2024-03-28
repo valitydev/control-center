@@ -1,3 +1,10 @@
+<mat-toolbar *ngIf="tags?.length" style="height: 48px; padding: 0 24px">
+    <div style="display: flex; gap: 8px; align-items: center">
+        <v-tag *ngFor="let tag of tags" [color]="tag.color" style="margin-top: 8px">{{
+            tag.value
+        }}</v-tag>
+    </div>
+</mat-toolbar>
 <div [ngClass]="{ wrapper__offset: !noOffset }" class="wrapper">
     <div *ngIf="title" style="display: flex; flex-direction: column; gap: 8px">
         <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">

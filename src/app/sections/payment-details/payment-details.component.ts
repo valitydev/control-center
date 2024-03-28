@@ -1,12 +1,26 @@
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Inject, LOCALE_ID } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DialogService, DialogResponseStatus } from '@vality/ng-core';
-import { Subject, merge, defer, from } from 'rxjs';
+import { InvoicePaymentStatus, InvoicePaymentFlow } from '@vality/domain-proto/internal/domain';
+import {
+    DialogService,
+    DialogResponseStatus,
+    getImportValue,
+    formatCurrency,
+    Color,
+} from '@vality/ng-core';
+import startCase from 'lodash-es/startCase';
+import { Subject, merge, defer, Observable, of } from 'rxjs';
 import { shareReplay, switchMap, map } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
+
+import { getUnionKey, getUnionValue } from '../../../utils';
+import { MetadataViewExtension } from '../../shared/components/json-viewer';
+import { isTypeWithAliases } from '../../shared/components/metadata-form';
+import { DomainMetadataViewExtensionsService } from '../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
+import { AmountCurrencyService } from '../../shared/services';
 
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsService } from './payment-details.service';
@@ -19,7 +33,6 @@ import { PaymentDetailsService } from './payment-details.service';
 export class PaymentDetailsComponent {
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
-    shop$ = this.paymentDetailsService.shop$;
 
     chargebacks$ = merge(
         this.route.params,
@@ -32,8 +45,80 @@ export class PaymentDetailsComponent {
         map(({ chargebacks }) => chargebacks),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    metadata$ = from(
-        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
+    extensions$: Observable<MetadataViewExtension[]> = this.payment$.pipe(
+        map((payment): MetadataViewExtension[] => [
+            this.domainMetadataViewExtensionsService.createShopExtension(payment.owner_id),
+            {
+                determinant: (d) => of(isTypeWithAliases(d, 'Amount', 'domain')),
+                extension: (_, amount: number) =>
+                    this.amountCurrencyService.getCurrency(payment.currency_symbolic_code).pipe(
+                        map((c) => ({
+                            value: formatCurrency(
+                                amount,
+                                c.data.symbolic_code,
+                                'long',
+                                this._locale,
+                                c.data.exponent,
+                            ),
+                        })),
+                    ),
+            },
+            {
+                determinant: (d) =>
+                    of(
+                        isTypeWithAliases(d, 'InvoicePaymentStatus', 'domain') ||
+                            isTypeWithAliases(d, 'InvoicePaymentFlow', 'magista'),
+                    ),
+                extension: (_, v) => of({ hidden: !Object.keys(getUnionValue(v)).length }),
+            },
+            {
+                determinant: (d) =>
+                    of(
+                        isTypeWithAliases(d?.trueParent, 'StatPayment', 'magista') &&
+                            (d.field.name === 'make_recurrent' ||
+                                d.field.name === 'currency_symbolic_code' ||
+                                isTypeWithAliases(d, 'InvoiceID', 'domain') ||
+                                isTypeWithAliases(d, 'InvoicePaymentID', 'domain')),
+                    ),
+                extension: () => of({ hidden: true }),
+            },
+        ]),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    tags$ = this.payment$.pipe(
+        map((payment) => [
+            {
+                value: startCase(getUnionKey(payment.status)),
+                color: (
+                    {
+                        captured: 'success',
+                        refunded: 'success',
+                        charged_back: 'success',
+                        pending: 'pending',
+                        processed: 'pending',
+                        cancelled: 'warn',
+                        failed: 'warn',
+                    } as Record<keyof InvoicePaymentStatus, Color>
+                )[getUnionKey(payment.status)],
+            },
+            {
+                value: startCase(getUnionKey(payment.flow)),
+                color: (
+                    {
+                        instant: 'success',
+                        hold: 'pending',
+                    } as Record<keyof InvoicePaymentFlow, Color>
+                )[getUnionKey(payment.flow)],
+            },
+            {
+                value: payment.make_recurrent ? 'Recurrent' : 'Not Recurrent',
+                color: payment.make_recurrent ? 'success' : 'neutral',
+            },
+            {
+                value: payment.currency_symbolic_code,
+            },
+        ]),
     );
 
     private updateChargebacks$ = new Subject<void>();
@@ -44,6 +129,9 @@ export class PaymentDetailsComponent {
         private invoicingService: InvoicingService,
         private dialogService: DialogService,
         private destroyRef: DestroyRef,
+        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
+        private amountCurrencyService: AmountCurrencyService,
+        @Inject(LOCALE_ID) private _locale: string,
     ) {}
 
     createChargeback() {
