@@ -142,6 +142,10 @@ export class PaymentsComponent implements OnInit {
             ) + +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
+    update(options?: LoadOptions) {
+        this.fetchPaymentsService.reload(options);
+    }
+
     createPaymentAdjustment() {
         this.dialogService
             .open(CreatePaymentAdjustmentComponent, {
@@ -150,7 +154,7 @@ export class PaymentsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.fetchPaymentsService.reload();
+                    this.update();
                     this.selected$.next([]);
                 } else if (res.data?.errors?.length) {
                     this.selected$.next(res.data.errors.map(({ data }) => data));
@@ -167,7 +171,7 @@ export class PaymentsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.fetchPaymentsService.reload();
+                    this.update();
                     this.selected$.next([]);
                 } else if (res.data?.errors?.length) {
                     this.selected$.next(

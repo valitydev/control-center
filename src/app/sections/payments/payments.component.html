@@ -44,11 +44,10 @@
         [selected]="selected$ | async"
         (more)="more()"
         (selectedChange)="selected$.next($event)"
-        (update)="load($event ?? {})"
+        (update)="update($event ?? {})"
     >
         <button
             [disabled]="!(selected$ | async)?.length"
-            color="primary"
             mat-raised-button
             (click)="failMachines()"
         >
