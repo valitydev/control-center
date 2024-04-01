@@ -21,6 +21,7 @@ import {
 } from '@vality/ng-core';
 
 import { PageLayoutModule } from '../../shared';
+import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
 import { ThriftPipesModule } from '../../shared/pipes/thrift';
@@ -55,6 +56,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         DateRangeFieldModule,
         InputFieldModule,
         NumberRangeFieldModule,
+        FistfulThriftFormComponent,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })
