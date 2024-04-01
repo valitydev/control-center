@@ -54,6 +54,7 @@ export class PaymentsComponent implements OnInit {
         payment_rrn: undefined as string,
         payment_email: undefined as string,
         error_message: undefined as string,
+        external_id: undefined as string,
     });
     otherFiltersControl = this.fb.control({
         common_search_query_params: {},
@@ -74,6 +75,7 @@ export class PaymentsComponent implements OnInit {
                             'payment_last4',
                             'payment_rrn',
                             'error_message',
+                            'external_id',
                         ].includes(data?.field?.name),
                 ),
             extension: () => of({ hidden: true }),
@@ -120,7 +122,7 @@ export class PaymentsComponent implements OnInit {
 
     load({ filters, otherFilters, dateRange }: Filters, options?: LoadOptions) {
         void this.qp.set({ filters, otherFilters, dateRange });
-        const { invoice_ids, party_id, shop_ids, ...paymentParams } = filters;
+        const { invoice_ids, party_id, shop_ids, external_id, ...paymentParams } = filters;
         const searchParams = clean({
             ...otherFilters,
             common_search_query_params: {
@@ -131,6 +133,7 @@ export class PaymentsComponent implements OnInit {
                 to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
             },
             payment_params: { ...(otherFilters.payment_params || {}), ...paymentParams },
+            external_id,
             invoice_ids,
         });
         this.fetchPaymentsService.load(searchParams, options);

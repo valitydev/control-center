@@ -15,6 +15,7 @@
                 formControlName="invoice_ids"
                 label="Invoice and Payment Ids"
             ></v-list-field>
+            <v-input-field formControlName="external_id" label="External Id"></v-input-field>
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
             <cc-shop-field
                 [partyId]="filtersForm.value.party_id"
