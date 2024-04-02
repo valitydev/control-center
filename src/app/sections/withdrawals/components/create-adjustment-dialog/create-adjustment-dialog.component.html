@@ -1,29 +1,14 @@
 <v-dialog [progress]="progress$ | async" title="Create Adjustment">
-    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-        <mat-radio-group
-            [formControl]="typeControl"
-            style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px"
-        >
-            <mat-radio-button [value]="0">Use ID from withdrawal</mat-radio-button>
-            <mat-radio-button [value]="1">Generate ID</mat-radio-button>
-        </mat-radio-group>
-        <cc-metadata-form
-            [formControl]="control"
-            [metadata]="metadata$ | async"
-            namespace="withdrawal_adjustment"
-            type="ChangeRequest"
-        ></cc-metadata-form>
-        <cc-metadata-form
-            [extensions]="externalIdExtensions"
-            [formControl]="externalIdControl"
-            [metadata]="metadata$ | async"
-            namespace="base"
-            type="ExternalID"
-        ></cc-metadata-form>
-    </div>
+    <cc-fistful-thrift-form
+        [extensions]="extensions"
+        [formControl]="control"
+        namespace="withdrawal_adjustment"
+        noToolbar
+        type="AdjustmentParams"
+    ></cc-fistful-thrift-form>
     <v-dialog-actions>
         <button
-            [disabled]="control.invalid"
+            [disabled]="control.invalid || (progress$ | async)"
             color="primary"
             mat-button
             (click)="createAdjustment()"

@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { PossiblyAsync, ColumnObject, getPossiblyAsyncObservable } from '@vality/ng-core';
 import get from 'lodash-es/get';
+import { of } from 'rxjs';
 import { switchMap, map, take } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
@@ -20,7 +21,11 @@ export function createPartyColumn<T extends object>(
     if (!selectPartyEmail) {
         selectPartyEmail = (d: T) =>
             getPossiblyAsyncObservable(selectPartyId(d)).pipe(
-                switchMap((partyId) => partiesStoreService.get(partyId)),
+                switchMap((partyId) =>
+                    partyId
+                        ? partiesStoreService.get(partyId)
+                        : of({ contact_info: { email: '' } }),
+                ),
                 map((p) => p.contact_info.email),
             );
     }
