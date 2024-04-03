@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { getImportValue } from '@vality/ng-core';
 import {
     terminal_balance_TerminalServiceCodegenClient,
     ThriftAstMetadata,
     terminal_balance_TerminalService,
 } from '@vality/scrooge-proto';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';
@@ -18,13 +19,9 @@ export class TerminalBalanceService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.info$.pipe(
-            map(toWachterHeaders('IdentityManagement')),
-        );
-        const metadata$ = from(
-            import('@vality/fistful-proto/metadata.json').then(
-                (m) => m.default as ThriftAstMetadata[],
-            ),
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(map(toWachterHeaders('Scrooge')));
+        const metadata$ = getImportValue<ThriftAstMetadata[]>(
+            import('@vality/scrooge-proto/metadata.json'),
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>

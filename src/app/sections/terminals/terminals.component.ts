@@ -7,7 +7,8 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config';
-import { createPredicateColumn } from '../../shared';
+import { TerminalBalancesStoreService } from '../../api/terminal-balance';
+import { createPredicateColumn, createCurrencyColumn } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import {
@@ -66,6 +67,17 @@ export class TerminalsComponent {
                 this.sidenavInfoService.toggle(TerminalDelegatesCardComponent, { ref: d.ref });
             },
         },
+        createCurrencyColumn(
+            'balance',
+            (d) =>
+                this.terminalBalancesStoreService
+                    .getTerminalBalance(d.ref.id)
+                    .pipe(map((b) => (b?.balance?.amount ? Number(b.balance.amount) : undefined))),
+            (d) =>
+                this.terminalBalancesStoreService
+                    .getTerminalBalance(d.ref.id)
+                    .pipe(map((b) => b?.balance?.currency_code)),
+        ),
     ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
@@ -76,6 +88,7 @@ export class TerminalsComponent {
         private sidenavInfoService: SidenavInfoService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
+        private terminalBalancesStoreService: TerminalBalancesStoreService,
     ) {}
 
     update() {
