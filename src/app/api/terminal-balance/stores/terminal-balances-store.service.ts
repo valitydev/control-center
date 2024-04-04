@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { shareReplay, map } from 'rxjs/operators';
+import { TerminalBalance } from '@vality/scrooge-proto/internal/terminal_balance';
+import { of, Observable } from 'rxjs';
+import { shareReplay, map, catchError, startWith } from 'rxjs/operators';
 
 import { TerminalBalanceService } from '../terminal-balance.service';
 
@@ -7,10 +9,17 @@ import { TerminalBalanceService } from '../terminal-balance.service';
     providedIn: 'root',
 })
 export class TerminalBalancesStoreService {
-    balances$ = this.terminalBalanceService.GetTerminalBalances().pipe(
-        map((b) => b.balances),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    balances$: Observable<TerminalBalance[]> = this.terminalBalanceService
+        .GetTerminalBalances()
+        .pipe(
+            map((b) => b.balances),
+            startWith([]),
+            catchError(() => {
+                console.error('Terminal balances are not loaded');
+                return of([]);
+            }),
+            shareReplay({ refCount: true, bufferSize: 1 }),
+        );
 
     constructor(private terminalBalanceService: TerminalBalanceService) {}
 
