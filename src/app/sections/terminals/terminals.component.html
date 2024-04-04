@@ -4,7 +4,7 @@
     </cc-page-layout-actions>
     <v-table
         [(sort)]="sort"
-        [columns]="columns"
+        [columns]="columns$ | async"
         [data]="data$ | async"
         [filterByColumns]="[]"
         [progress]="progress$ | async"

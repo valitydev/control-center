@@ -8,7 +8,7 @@
     ></cc-fistful-thrift-form>
     <v-dialog-actions>
         <button
-            [disabled]="control.invalid || (progress$ | async)"
+            [disabled]="control.invalid || !!(progress$ | async)"
             color="primary"
             mat-button
             (click)="createAdjustment()"
