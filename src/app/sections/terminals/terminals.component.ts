@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, isDevMode } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { TerminalObject } from '@vality/domain-proto/domain';
@@ -69,17 +69,26 @@ export class TerminalsComponent {
                 });
             },
         },
-        createCurrencyColumn<TerminalObject>(
-            'balance',
-            (d) =>
-                this.terminalBalancesStoreService
-                    .getTerminalBalance(d.ref.id)
-                    .pipe(map((b) => (b?.balance?.amount ? Number(b.balance.amount) : undefined))),
-            (d) =>
-                this.terminalBalancesStoreService
-                    .getTerminalBalance(d.ref.id)
-                    .pipe(map((b) => b?.balance?.currency_code)),
-        ),
+        ...(isDevMode()
+            ? [
+                  createCurrencyColumn<TerminalObject>(
+                      'balance',
+                      (d) =>
+                          this.terminalBalancesStoreService
+                              .getTerminalBalance(d.ref.id)
+                              .pipe(
+                                  map((b) =>
+                                      b?.balance?.amount ? Number(b.balance.amount) : undefined,
+                                  ),
+                              ),
+                      (d) =>
+                          this.terminalBalancesStoreService
+                              .getTerminalBalance(d.ref.id)
+                              .pipe(map((b) => b?.balance?.currency_code)),
+                      { sortable: true },
+                  ),
+              ]
+            : []),
     ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
