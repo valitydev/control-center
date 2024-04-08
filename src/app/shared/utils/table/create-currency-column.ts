@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CurrencyColumn, PossiblyAsync, getPossiblyAsyncObservable } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
-import { combineLatest, switchMap } from 'rxjs';
+import { combineLatest, switchMap, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AmountCurrencyService } from '../../services';
@@ -22,15 +22,15 @@ export function createCurrencyColumn<T extends object>(
                 getPossiblyAsyncObservable(selectSymbolicCode(d)),
             ]).pipe(
                 switchMap(([amount, code]) =>
-                    isNil(amount) ? undefined : amountCurrencyService.toMajor(amount, code),
+                    isNil(amount) ? of(undefined) : amountCurrencyService.toMajor(amount, code),
                 ),
             ),
         typeParameters: {
-            currencyCode: (d: T) => selectSymbolicCode(d),
+            currencyCode: (d: T) => getPossiblyAsyncObservable(selectSymbolicCode(d)),
             exponent: (d: T) =>
                 getPossiblyAsyncObservable(selectSymbolicCode(d)).pipe(
                     switchMap((code) => amountCurrencyService.getCurrency(code)),
-                    map((c) => c.data.exponent),
+                    map((c) => c?.data?.exponent),
                 ),
         },
         ...params,

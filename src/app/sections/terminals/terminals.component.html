@@ -4,10 +4,11 @@
     </cc-page-layout-actions>
     <v-table
         [(sort)]="sort"
-        [columns]="columns$ | async"
+        [columns]="columns"
         [data]="data$ | async"
         [filterByColumns]="[]"
         [progress]="progress$ | async"
+        name="terminals"
         sortOnFront
         standaloneFilter
         (update)="update()"

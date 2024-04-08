@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, isDevMode } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { TerminalObject } from '@vality/domain-proto/domain';
@@ -23,75 +23,73 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
     templateUrl: './terminals.component.html',
 })
 export class TerminalsComponent {
-    columns$ = this.terminalBalancesStoreService.balances$.pipe(
-        map((balances): Column<TerminalObject>[] => [
-            { field: 'ref.id', sortable: true },
-            {
-                field: 'data.name',
-                description: 'data.description',
-                sortable: true,
-                click: (d) => {
-                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                        ref: { terminal: d.ref },
-                    });
-                },
+    columns: Column<TerminalObject>[] = [
+        { field: 'ref.id', sortable: true },
+        {
+            field: 'data.name',
+            description: 'data.description',
+            sortable: true,
+            click: (d) => {
+                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                    ref: { terminal: d.ref },
+                });
             },
-            {
-                field: 'data.provider_ref.id',
-                description: 'data.provider_ref.id',
-                header: 'Provider',
-                formatter: (d) => this.getProvider(d).pipe(map((p) => p?.data?.name || '')),
-                sortable: true,
-                click: (d) => {
-                    this.getProvider(d)
-                        .pipe(take(1), takeUntilDestroyed(this.destroyRef))
-                        .subscribe((provider) => {
-                            if (!provider) {
-                                return;
-                            }
-                            this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                                ref: { provider: provider.ref },
-                            });
+        },
+        {
+            field: 'data.provider_ref.id',
+            description: 'data.provider_ref.id',
+            header: 'Provider',
+            formatter: (d) => this.getProvider(d).pipe(map((p) => p?.data?.name || '')),
+            sortable: true,
+            click: (d) => {
+                this.getProvider(d)
+                    .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+                    .subscribe((provider) => {
+                        if (!provider) {
+                            return;
+                        }
+                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                            ref: { provider: provider.ref },
                         });
-                },
+                    });
             },
-            createPredicateColumn(
-                'payments global allow',
-                (d) => d.data.terms?.payments?.global_allow,
-            ),
-            createPredicateColumn(
-                'withdrawals global allow',
-                (d) => d.data.terms?.wallet?.withdrawals?.global_allow,
-            ),
-            {
-                field: 'delegates',
-                formatter: (d) =>
-                    this.getTerminalShopWalletDelegates(d).pipe(map((r) => r.length || '')),
-                click: (d) => {
-                    this.sidenavInfoService.toggle(TerminalDelegatesCardComponent, { ref: d.ref });
-                },
+        },
+        createPredicateColumn('payments global allow', (d) => d.data.terms?.payments?.global_allow),
+        createPredicateColumn(
+            'withdrawals global allow',
+            (d) => d.data.terms?.wallet?.withdrawals?.global_allow,
+        ),
+        {
+            field: 'delegates',
+            formatter: (d) =>
+                this.getTerminalShopWalletDelegates(d).pipe(map((r) => r.length || '')),
+            click: (d) => {
+                this.sidenavInfoService.toggle(TerminalDelegatesCardComponent, {
+                    ref: d.ref,
+                });
             },
-            ...(balances?.length
-                ? [
-                      createCurrencyColumn<TerminalObject>(
-                          'balance',
-                          (d) =>
-                              this.terminalBalancesStoreService
-                                  .getTerminalBalance(d.ref.id)
-                                  .pipe(
-                                      map((b) =>
-                                          b?.balance?.amount ? Number(b.balance.amount) : undefined,
-                                      ),
+        },
+        ...(isDevMode()
+            ? [
+                  createCurrencyColumn<TerminalObject>(
+                      'balance',
+                      (d) =>
+                          this.terminalBalancesStoreService
+                              .getTerminalBalance(d.ref.id)
+                              .pipe(
+                                  map((b) =>
+                                      b?.balance?.amount ? Number(b.balance.amount) : undefined,
                                   ),
-                          (d) =>
-                              this.terminalBalancesStoreService
-                                  .getTerminalBalance(d.ref.id)
-                                  .pipe(map((b) => b?.balance?.currency_code)),
-                      ),
-                  ]
-                : []),
-        ]),
-    );
+                              ),
+                      (d) =>
+                          this.terminalBalancesStoreService
+                              .getTerminalBalance(d.ref.id)
+                              .pipe(map((b) => b?.balance?.currency_code)),
+                      { sortable: true },
+                  ),
+              ]
+            : []),
+    ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
     sort: Sort = { active: 'data.name', direction: 'asc' };
