@@ -41,7 +41,6 @@ export class RoutingRulesetComponent {
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
     routingRulesType$ = this.route.params.pipe(map((p) => p.type)) as Observable<RoutingRulesType>;
-    shop$ = this.routingRulesetService.shop$;
     candidates$ = this.routingRulesetService.shopRuleset$.pipe(
         map((r) => r.data.decisions.candidates),
     );

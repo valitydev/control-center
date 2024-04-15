@@ -9,6 +9,7 @@ import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
+import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
@@ -19,7 +20,7 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     selector: 'cc-party-routing-ruleset',
     templateUrl: 'party-routing-ruleset.component.html',
     styleUrls: ['party-routing-ruleset.component.scss'],
-    providers: [PartyRoutingRulesetService, RoutingRulesTypeService],
+    providers: [PartyRoutingRulesetService, RoutingRulesTypeService, PartyDelegateRulesetsService],
 })
 export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;

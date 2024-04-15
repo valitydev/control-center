@@ -7,7 +7,7 @@ import { first, map } from 'rxjs/operators';
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 
-import { handleError } from '../../../../utils/operators/handle-error';
+import { handleError } from '../../../../utils';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
 

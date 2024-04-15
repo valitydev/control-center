@@ -38,12 +38,12 @@ export class PartyComponent {
         },
         {
             label: 'Payment Routing Rules',
-            url: 'routing-rules/payment',
+            url: 'routing-rules/payment/main',
             services: RULESET_ROUTING_CONFIG.services,
         },
         {
             label: 'Withdrawal Routing Rules',
-            url: 'routing-rules/withdrawal',
+            url: 'routing-rules/withdrawal/main',
             services: RULESET_ROUTING_CONFIG.services,
         },
     ].filter((item) => this.appAuthGuardService.userHasSomeServiceMethods(item.services));
