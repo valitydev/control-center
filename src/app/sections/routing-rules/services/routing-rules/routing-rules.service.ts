@@ -167,19 +167,19 @@ export class RoutingRulesService {
     updateRule(
         refID: number,
         candidateIdx: number,
-        shopCandidate: RoutingCandidate,
+        candidate: RoutingCandidate,
     ): Observable<Version> {
         return this.getRuleset(refID).pipe(
             take(1),
             switchMap((ruleset) => {
-                const newShopRuleset = cloneDeep(ruleset);
-                newShopRuleset.data.decisions.candidates.splice(candidateIdx, 1, shopCandidate);
+                const newRuleset = cloneDeep(ruleset);
+                newRuleset.data.decisions.candidates.splice(candidateIdx, 1, candidate);
                 return this.domainStoreService.commit({
                     ops: [
                         {
                             update: {
                                 old_object: { routing_rules: ruleset },
-                                new_object: { routing_rules: newShopRuleset },
+                                new_object: { routing_rules: newRuleset },
                             },
                         },
                     ],

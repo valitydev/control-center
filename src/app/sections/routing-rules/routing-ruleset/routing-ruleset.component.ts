@@ -2,6 +2,7 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { RoutingCandidate } from '@vality/domain-proto/domain';
+import { Predicate } from '@vality/domain-proto/internal/domain';
 import {
     DialogResponseStatus,
     DialogService,
@@ -20,17 +21,32 @@ import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-r
 import {
     DomainThriftFormDialogComponent,
     DomainObjectCardComponent,
+    UpdateThriftDialogComponent,
 } from '@cc/app/shared/components/thrift-api-crud';
 
-import { objectToJSON } from '../../../../utils';
+import { objectToJSON, getUnionKey } from '../../../../utils';
 import { createPredicateColumn } from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { createTerminalColumn } from '../../../shared/utils/table/create-terminal-column';
 import { RoutingRulesService } from '../services/routing-rules';
 
-import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
 import { RoutingRulesetService } from './routing-ruleset.service';
+
+function togglePredicate(predicate: Predicate): { toggled: Predicate; prevAllowed: boolean } {
+    const predicates: Predicate[] =
+        getUnionKey(predicate) === 'all_of' ? Array.from(predicate.all_of) : [predicate];
+    const idx = predicates.findIndex((a) => getUnionKey(a) === 'constant');
+    const prevAllowed = idx !== -1 ? predicates[idx].constant : true;
+    if (idx !== -1) {
+        predicates.splice(idx, 1);
+    }
+    predicates.unshift({ constant: !prevAllowed });
+    return {
+        toggled: { all_of: new Set(predicates) },
+        prevAllowed,
+    };
+}
 
 @Component({
     templateUrl: 'routing-ruleset.component.html',
@@ -75,7 +91,15 @@ export class RoutingRulesetComponent {
                 }),
             ),
         ),
-        createPredicateColumn('allowed', (d) => d.allowed),
+        createPredicateColumn('allowed', (d) => d.allowed, {
+            click: (d) => {
+                this.getCandidateIdx(d)
+                    .pipe(takeUntilDestroyed(this.destroyRef))
+                    .subscribe((idx) => {
+                        void this.toggleAllow(idx);
+                    });
+            },
+        }),
         { field: 'weight', sortable: true },
         {
             field: 'pin',
@@ -100,6 +124,16 @@ export class RoutingRulesetComponent {
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
                             void this.duplicateRule(idx);
+                        });
+                },
+            },
+            {
+                label: (d) => (togglePredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow'),
+                click: (d) => {
+                    this.getCandidateIdx(d)
+                        .pipe(takeUntilDestroyed(this.destroyRef))
+                        .subscribe((idx) => {
+                            void this.toggleAllow(idx);
                         });
                 },
             },
@@ -220,6 +254,37 @@ export class RoutingRulesetComponent {
             });
     }
 
+    toggleAllow(idx: number) {
+        this.routingRulesetService.refID$
+            .pipe(
+                first(),
+                switchMap((refId) => this.routingRulesService.getCandidate(refId, idx)),
+                withLatestFrom(this.routingRulesetService.refID$),
+                switchMap(([candidate, refId]) => {
+                    const newAllowed = togglePredicate(candidate.allowed).toggled;
+                    return this.dialog
+                        .open(UpdateThriftDialogComponent, {
+                            title: 'Toggle allowed',
+                            prevObject: candidate.allowed,
+                            object: newAllowed,
+                            action: () =>
+                                this.routingRulesService.updateRule(refId, idx, {
+                                    ...candidate,
+                                    allowed: newAllowed,
+                                }),
+                        })
+                        .afterClosed();
+                }),
+            )
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((res) => {
+                if (res.status === DialogResponseStatus.Success) {
+                    this.domainStoreService.forceReload();
+                    this.log.successOperation('update', 'Allowed');
+                }
+            });
+    }
+
     removeRule(idx: number) {
         this.routingRulesetService.removeRule(idx);
     }
@@ -242,7 +307,7 @@ export class RoutingRulesetComponent {
                 first(),
                 switchMap((candidates) =>
                     this.dialog
-                        .open(ChangeCandidatesPrioritiesDialogComponent, {
+                        .open(UpdateThriftDialogComponent, {
                             object: candidates.map((c) => ({
                                 ...c,
                                 priority: resPriorities[e.currentData.findIndex((d) => d === c)],

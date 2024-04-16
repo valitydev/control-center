@@ -22,7 +22,6 @@ import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-ap
 import { PageLayoutModule } from '../../../shared';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 
-import { ChangeCandidatesPrioritiesDialogComponent } from './components/change-candidates-priorities-dialog/change-candidates-priorities-dialog.component';
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
 import { RoutingRulesetComponent } from './routing-ruleset.component';
 
@@ -51,6 +50,6 @@ import { RoutingRulesetComponent } from './routing-ruleset.component';
         DialogModule,
         PageLayoutModule,
     ],
-    declarations: [RoutingRulesetComponent, ChangeCandidatesPrioritiesDialogComponent],
+    declarations: [RoutingRulesetComponent],
 })
 export class RoutingRulesetModule {}
