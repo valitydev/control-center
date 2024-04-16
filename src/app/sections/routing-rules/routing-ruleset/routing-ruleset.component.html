@@ -1,5 +1,5 @@
 <cc-page-layout
-    [id]="(shopRuleset$ | async)?.ref?.id"
+    [id]="(ruleset$ | async)?.ref?.id"
     [title]="((routingRulesType$ | async) === 'payment' ? 'Shop' : 'Wallet') + ' Routing Rules'"
     [upLink]="[
         '/party/' +
@@ -12,7 +12,7 @@
     (idLinkClick)="openRefId()"
 >
     <cc-page-layout-actions>
-        <button color="primary" mat-raised-button (click)="addShopRule()">Add</button>
+        <button color="primary" mat-raised-button (click)="addRule()">Add</button>
     </cc-page-layout-actions>
     <v-table
         [columns]="columns"

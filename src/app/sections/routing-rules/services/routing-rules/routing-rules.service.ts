@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { RoutingCandidate, RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { Version } from '@vality/domain-proto/domain_config';
+import { PartyConditionDefinition } from '@vality/domain-proto/internal/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, concat, Observable } from 'rxjs';
-import { map, pluck, shareReplay, switchMap, take } from 'rxjs/operators';
+import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { createNextId } from '@cc/utils/create-next-id';
@@ -88,15 +89,15 @@ export class RoutingRulesService {
         );
     }
 
-    addShopRuleset({
+    addRuleset({
         name,
-        shopID,
+        definition,
         partyID,
         partyRulesetRefID,
         description,
     }: {
         name: string;
-        shopID: string;
+        definition: PartyConditionDefinition;
         partyID: string;
         partyRulesetRefID: number;
         description?: string;
@@ -104,7 +105,7 @@ export class RoutingRulesService {
         return combineLatest([this.getRuleset(partyRulesetRefID), this.nextRefID$]).pipe(
             take(1),
             switchMap(([partyRuleset, id]) => {
-                const shopRuleset: RoutingRulesObject = {
+                const ruleset: RoutingRulesObject = {
                     ref: { id },
                     data: {
                         name,
@@ -120,9 +121,7 @@ export class RoutingRulesService {
                         condition: {
                             party: {
                                 id: partyID,
-                                definition: {
-                                    shop_is: shopID,
-                                },
+                                definition,
                             },
                         },
                     },
@@ -131,7 +130,7 @@ export class RoutingRulesService {
                     ops: [
                         {
                             insert: {
-                                object: { routing_rules: shopRuleset },
+                                object: { routing_rules: ruleset },
                             },
                         },
                         {
@@ -146,65 +145,7 @@ export class RoutingRulesService {
         );
     }
 
-    addWalletRuleset({
-        name,
-        walletID,
-        partyID,
-        partyRulesetRefID,
-        description,
-    }: {
-        name: string;
-        walletID: string;
-        partyID: string;
-        partyRulesetRefID: number;
-        description?: string;
-    }): Observable<Version> {
-        return combineLatest([this.getRuleset(partyRulesetRefID), this.nextRefID$]).pipe(
-            take(1),
-            switchMap(([partyRuleset, id]) => {
-                const walletRuleset: RoutingRulesObject = {
-                    ref: { id },
-                    data: {
-                        name,
-                        description,
-                        decisions: {
-                            candidates: [],
-                        },
-                    },
-                };
-                const newPartyRuleset = this.cloneRulesetAndPushDelegate(partyRuleset, {
-                    ruleset: { id },
-                    allowed: {
-                        condition: {
-                            party: {
-                                id: partyID,
-                                definition: {
-                                    wallet_is: walletID,
-                                },
-                            },
-                        },
-                    },
-                });
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            insert: {
-                                object: { routing_rules: walletRuleset },
-                            },
-                        },
-                        {
-                            update: {
-                                old_object: { routing_rules: partyRuleset },
-                                new_object: { routing_rules: newPartyRuleset },
-                            },
-                        },
-                    ],
-                });
-            }),
-        );
-    }
-
-    addShopRule(refID: number, params: RoutingCandidate): Observable<Version> {
+    addRule(refID: number, params: RoutingCandidate): Observable<Version> {
         return this.getRuleset(refID).pipe(
             take(1),
             switchMap((ruleset) => {
@@ -223,7 +164,7 @@ export class RoutingRulesService {
         );
     }
 
-    updateShopRule(
+    updateRule(
         refID: number,
         candidateIdx: number,
         shopCandidate: RoutingCandidate,
@@ -295,10 +236,10 @@ export class RoutingRulesService {
         );
     }
 
-    getShopCandidate(refID: number, candidateIdx: number) {
+    getCandidate(refID: number, candidateIdx: number) {
         return this.getRuleset(refID).pipe(
             take(1),
-            map((shopRuleset) => cloneDeep(shopRuleset.data.decisions.candidates.at(candidateIdx))),
+            map((ruleset) => cloneDeep(ruleset.data.decisions.candidates.at(candidateIdx))),
         );
     }
 
@@ -480,7 +421,6 @@ export class RoutingRulesService {
                     }),
                 );
             }),
-            pluck('1'),
         );
     }
 

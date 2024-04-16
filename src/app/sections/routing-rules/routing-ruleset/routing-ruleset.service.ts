@@ -28,7 +28,7 @@ export class RoutingRulesetService {
         map((p) => +p),
         shareReplay(1),
     );
-    shopRuleset$ = this.refID$.pipe(
+    ruleset$ = this.refID$.pipe(
         switchMap((refID) => this.routingRulesService.getRuleset(refID)),
         shareReplay(1),
     );
@@ -41,7 +41,7 @@ export class RoutingRulesetService {
         private destroyRef: DestroyRef,
     ) {}
 
-    removeShopRule(candidateIdx: number) {
+    removeRule(candidateIdx: number) {
         this.dialog
             .open(ConfirmDialogComponent)
             .afterClosed()

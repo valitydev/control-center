@@ -37,13 +37,11 @@ import { RoutingRulesetService } from './routing-ruleset.service';
     providers: [RoutingRulesetService],
 })
 export class RoutingRulesetComponent {
-    shopRuleset$ = this.routingRulesetService.shopRuleset$;
+    ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
     routingRulesType$ = this.route.params.pipe(map((p) => p.type)) as Observable<RoutingRulesType>;
-    candidates$ = this.routingRulesetService.shopRuleset$.pipe(
-        map((r) => r.data.decisions.candidates),
-    );
+    candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.domainStoreService.isLoading$;
     columns: Column<RoutingCandidate>[] = [
         { field: 'priority', sortable: true },
@@ -53,7 +51,7 @@ export class RoutingRulesetComponent {
             sortable: true,
             formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `#${idx + 1}`)),
             click: (d) => {
-                combineLatest([this.getCandidateIdx(d), this.routingRulesetService.shopRuleset$])
+                combineLatest([this.getCandidateIdx(d), this.routingRulesetService.ruleset$])
                     .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe(([idx, ruleset]) => {
                         this.sidenavInfoService.toggle(CandidateCardComponent, {
@@ -91,7 +89,7 @@ export class RoutingRulesetComponent {
                     this.getCandidateIdx(d)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
-                            this.editShopRule(idx);
+                            this.editRule(idx);
                         });
                 },
             },
@@ -101,7 +99,7 @@ export class RoutingRulesetComponent {
                     this.getCandidateIdx(d)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
-                            void this.duplicateShopRule(idx);
+                            void this.duplicateRule(idx);
                         });
                 },
             },
@@ -111,7 +109,7 @@ export class RoutingRulesetComponent {
                     this.getCandidateIdx(d)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
-                            void this.removeShopRule(idx);
+                            void this.removeRule(idx);
                         });
                 },
             },
@@ -129,7 +127,7 @@ export class RoutingRulesetComponent {
         private destroyRef: DestroyRef,
     ) {}
 
-    addShopRule() {
+    addRule() {
         this.routingRulesetService.refID$
             .pipe(
                 first(),
@@ -137,9 +135,9 @@ export class RoutingRulesetComponent {
                     this.dialog
                         .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
                             type: 'RoutingCandidate',
-                            title: 'Add shop routing candidate',
+                            title: 'Add routing candidate',
                             object: { allowed: { all_of: new Set([{ constant: true }]) } },
-                            action: (params) => this.routingRulesService.addShopRule(refId, params),
+                            action: (params) => this.routingRulesService.addRule(refId, params),
                         })
                         .afterClosed(),
                 ),
@@ -158,20 +156,20 @@ export class RoutingRulesetComponent {
             });
     }
 
-    editShopRule(idx: number) {
+    editRule(idx: number) {
         this.routingRulesetService.refID$
             .pipe(
                 first(),
-                switchMap((refId) => this.routingRulesService.getShopCandidate(refId, idx)),
+                switchMap((refId) => this.routingRulesService.getCandidate(refId, idx)),
                 withLatestFrom(this.routingRulesetService.refID$),
-                switchMap(([shopCandidate, refId]) =>
+                switchMap(([candidate, refId]) =>
                     this.dialog
                         .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
                             type: 'RoutingCandidate',
-                            title: `Edit shop routing candidate #${idx + 1}`,
-                            object: shopCandidate,
+                            title: `Edit routing candidate #${idx + 1}`,
+                            object: candidate,
                             action: (params) =>
-                                this.routingRulesService.updateShopRule(refId, idx, params),
+                                this.routingRulesService.updateRule(refId, idx, params),
                         })
                         .afterClosed(),
                 ),
@@ -190,20 +188,20 @@ export class RoutingRulesetComponent {
             });
     }
 
-    duplicateShopRule(idx: number) {
+    duplicateRule(idx: number) {
         this.routingRulesetService.refID$
             .pipe(
                 first(),
-                switchMap((refId) => this.routingRulesService.getShopCandidate(refId, idx)),
+                switchMap((refId) => this.routingRulesService.getCandidate(refId, idx)),
                 withLatestFrom(this.routingRulesetService.refID$),
-                switchMap(([shopCandidate, refId]) =>
+                switchMap(([candidate, refId]) =>
                     this.dialog
                         .open(DomainThriftFormDialogComponent<RoutingCandidate>, {
                             type: 'RoutingCandidate',
-                            title: 'Add shop routing candidate',
-                            object: shopCandidate,
+                            title: 'Add routing candidate',
+                            object: candidate,
                             actionType: 'create',
-                            action: (params) => this.routingRulesService.addShopRule(refId, params),
+                            action: (params) => this.routingRulesService.addRule(refId, params),
                         })
                         .afterClosed(),
                 ),
@@ -222,8 +220,8 @@ export class RoutingRulesetComponent {
             });
     }
 
-    removeShopRule(idx: number) {
-        this.routingRulesetService.removeShopRule(idx);
+    removeRule(idx: number) {
+        this.routingRulesetService.removeRule(idx);
     }
 
     getCandidateIdx(candidate: RoutingCandidate) {
@@ -254,22 +252,22 @@ export class RoutingRulesetComponent {
                         .afterClosed()
                         .pipe(filter((res) => res.status === DialogResponseStatus.Success)),
                 ),
-                withLatestFrom(this.routingRulesetService.shopRuleset$),
+                withLatestFrom(this.routingRulesetService.ruleset$),
                 switchMap(
                     ([
                         {
                             data: { object: candidates },
                         },
-                        shopRuleset,
+                        ruleset,
                     ]) => {
-                        const newShopRuleset = cloneDeep(shopRuleset);
-                        newShopRuleset.data.decisions.candidates = candidates as RoutingCandidate[];
+                        const newRuleset = cloneDeep(ruleset);
+                        newRuleset.data.decisions.candidates = candidates as RoutingCandidate[];
                         return this.domainStoreService.commit({
                             ops: [
                                 {
                                     update: {
-                                        old_object: { routing_rules: shopRuleset },
-                                        new_object: { routing_rules: newShopRuleset },
+                                        old_object: { routing_rules: ruleset },
+                                        new_object: { routing_rules: newRuleset },
                                     },
                                 },
                             ],
@@ -289,7 +287,7 @@ export class RoutingRulesetComponent {
     }
 
     openRefId() {
-        this.shopRuleset$.pipe(take(1), filter(Boolean)).subscribe(({ ref }) => {
+        this.ruleset$.pipe(take(1), filter(Boolean)).subscribe(({ ref }) => {
             this.sidenavInfoService.toggle(DomainObjectCardComponent, {
                 ref: { routing_rules: { id: Number(ref.id) } },
             });
