@@ -4,8 +4,8 @@
     </cc-page-layout-actions>
     <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
-            <cc-merchant-field formControlName="merchant"></cc-merchant-field>
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
+            <cc-merchant-field formControlName="merchant"></cc-merchant-field>
             <mat-form-field>
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="status">

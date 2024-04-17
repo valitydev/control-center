@@ -1,15 +1,15 @@
-<cc-page-layout title="Repairing">
-    <mat-card>
-        <mat-card-content
-            [formGroup]="filters"
-            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px"
-        >
+<cc-page-layout title="Machines">
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
+            <v-date-range-field formControlName="timespan"></v-date-range-field>
             <v-list-field formControlName="ids" label="IDs"></v-list-field>
             <mat-form-field>
                 <mat-label>Namespace</mat-label>
                 <input formControlName="ns" matInput />
             </mat-form-field>
-            <v-date-range-field formControlName="timespan"></v-date-range-field>
             <cc-domain-object-field
                 formControlName="provider_id"
                 name="provider"
@@ -30,8 +30,8 @@
                 <mat-label>Error message</mat-label>
                 <input formControlName="error_message" matInput />
             </mat-form-field>
-        </mat-card-content>
-    </mat-card>
+        </ng-template>
+    </v-filters>
 
     <v-table
         [columns]="columns"

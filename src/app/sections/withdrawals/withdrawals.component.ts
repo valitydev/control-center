@@ -1,6 +1,6 @@
 import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -115,7 +115,7 @@ export class WithdrawalsComponent implements OnInit {
 
     constructor(
         private fetchWithdrawalsService: FetchWithdrawalsService,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private amountCurrencyService: AmountCurrencyService,
         private dialogService: DialogService,

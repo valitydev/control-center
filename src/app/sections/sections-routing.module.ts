@@ -33,7 +33,7 @@ const ROUTES: Routes = [
             import('./withdrawals/withdrawals.module').then((m) => m.WithdrawalsModule),
     },
     {
-        path: 'repairing',
+        path: 'machines',
         loadChildren: () => import('./repairing/repairing.module').then((m) => m.RepairingModule),
     },
     {
