@@ -35,22 +35,17 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
 
     add() {
         const { shopID, walletID, name, description } = this.form.value;
-        (this.dialogData.type === RoutingRulesType.Payment
-            ? this.routingRulesService.addShopRuleset({
-                  name,
-                  description,
-                  partyRulesetRefID: this.dialogData.refID,
-                  partyID: this.dialogData.partyID,
-                  shopID,
-              })
-            : this.routingRulesService.addWalletRuleset({
-                  name,
-                  description,
-                  partyRulesetRefID: this.dialogData.refID,
-                  partyID: this.dialogData.partyID,
-                  walletID,
-              })
-        )
+        this.routingRulesService
+            .addRuleset({
+                name,
+                description,
+                partyRulesetRefID: this.dialogData.refID,
+                partyID: this.dialogData.partyID,
+                definition:
+                    this.dialogData.type === RoutingRulesType.Payment
+                        ? { shop_is: shopID }
+                        : { wallet_is: walletID },
+            })
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => this.dialogRef.close({ status: DialogResponseStatus.Success }),

@@ -1,0 +1,17 @@
+<v-dialog [progress]="!!(progress$ | async)" [title]="dialogData?.title || 'View changes'">
+    <cc-thrift-viewer
+        [compared]="dialogData.object"
+        [value]="dialogData.prevObject"
+    ></cc-thrift-viewer>
+
+    <v-dialog-actions>
+        <button
+            [disabled]="!!(progress$ | async)"
+            color="primary"
+            mat-raised-button
+            (click)="closeWithSuccess()"
+        >
+            Update
+        </button>
+    </v-dialog-actions>
+</v-dialog>
