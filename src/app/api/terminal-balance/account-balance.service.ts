@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { getImportValue } from '@vality/ng-core';
 import {
-    terminal_balance_TerminalServiceCodegenClient,
+    account_balance_AccountServiceCodegenClient,
     ThriftAstMetadata,
-    terminal_balance_TerminalService,
+    account_balance_AccountService,
 } from '@vality/scrooge-proto';
 import { combineLatest, map, Observable, switchMap } from 'rxjs';
 
@@ -12,8 +12,8 @@ import { ConfigService } from '../../core/config.service';
 import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })
-export class TerminalBalanceService {
-    private client$: Observable<terminal_balance_TerminalServiceCodegenClient>;
+export class AccountBalanceService {
+    private client$: Observable<account_balance_AccountServiceCodegenClient>;
 
     constructor(
         private keycloakTokenInfoService: KeycloakTokenInfoService,
@@ -25,7 +25,7 @@ export class TerminalBalanceService {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                terminal_balance_TerminalService({
+                account_balance_AccountService({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
@@ -37,6 +37,6 @@ export class TerminalBalanceService {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     GetTerminalBalances() {
-        return this.client$.pipe(switchMap((c) => c.GetTerminalBalances()));
+        return this.client$.pipe(switchMap((c) => c.GetAccountBalances()));
     }
 }

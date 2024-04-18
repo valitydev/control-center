@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config';
-import { TerminalBalancesStoreService } from '../../api/terminal-balance';
+import { AccountBalancesStoreService } from '../../api/terminal-balance';
 import { createPredicateColumn, createCurrencyColumn } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
@@ -74,17 +74,13 @@ export class TerminalsComponent {
                   createCurrencyColumn<TerminalObject>(
                       'balance',
                       (d) =>
-                          this.terminalBalancesStoreService
-                              .getTerminalBalance(d.ref.id)
-                              .pipe(
-                                  map((b) =>
-                                      b?.balance?.amount ? Number(b.balance.amount) : undefined,
-                                  ),
-                              ),
+                          this.accountBalancesStoreService
+                              .getTerminalBalances(d.ref.id)
+                              .pipe(map((b) => b?.[0]?.balance?.amount)),
                       (d) =>
-                          this.terminalBalancesStoreService
-                              .getTerminalBalance(d.ref.id)
-                              .pipe(map((b) => b?.balance?.currency_code)),
+                          this.accountBalancesStoreService
+                              .getTerminalBalances(d.ref.id)
+                              .pipe(map((b) => b?.[0]?.balance?.currency_code)),
                       { sortable: true },
                   ),
               ]
@@ -99,7 +95,7 @@ export class TerminalsComponent {
         private sidenavInfoService: SidenavInfoService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
-        private terminalBalancesStoreService: TerminalBalancesStoreService,
+        private accountBalancesStoreService: AccountBalancesStoreService,
     ) {}
 
     update() {
