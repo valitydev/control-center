@@ -1,6 +1,6 @@
-import { Component, OnInit, DestroyRef } from '@angular/core';
+import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -14,8 +14,12 @@ import {
     getNoTimeZoneIsoString,
     DialogResponseStatus,
     NumberRange,
+    createDateRangeToToday,
+    isEqualDateRange,
+    getValueChanges,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
+import omit from 'lodash-es/omit';
 import startCase from 'lodash-es/startCase';
 import { debounceTime } from 'rxjs/operators';
 
@@ -27,6 +31,7 @@ import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-
 import { AmountCurrencyService } from '../../shared/services';
 import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
 import { createTerminalColumn } from '../../shared/utils/table/create-terminal-column';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
@@ -50,7 +55,7 @@ interface WithdrawalsForm {
 })
 export class WithdrawalsComponent implements OnInit {
     filtersForm = this.fb.group<WithdrawalsForm>({
-        dateRange: null,
+        dateRange: createDateRangeToToday(this.dateRangeDays),
         merchant: null,
         status: null,
         amount: null,
@@ -59,7 +64,6 @@ export class WithdrawalsComponent implements OnInit {
         errorMessage: null,
         providerId: null,
         terminalId: null,
-        ...this.qp.params,
     });
     active = 0;
     withdrawals$ = this.fetchWithdrawalsService.result$;
@@ -111,19 +115,19 @@ export class WithdrawalsComponent implements OnInit {
 
     constructor(
         private fetchWithdrawalsService: FetchWithdrawalsService,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
         private amountCurrencyService: AmountCurrencyService,
         private dialogService: DialogService,
         private destroyRef: DestroyRef,
+        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
-        this.filtersForm.valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((v) => void this.qp.set(clean(v)));
-        this.qp.params$
-            .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
+        this.filtersForm.patchValue(Object.assign({}, this.qp.params));
+        getValueChanges(this.filtersForm)
+            .pipe(debounceTime(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.update());
     }
 
@@ -138,7 +142,8 @@ export class WithdrawalsComponent implements OnInit {
             errorMessage,
             providerId,
             terminalId,
-        } = this.qp.params;
+        } = this.filtersForm.value;
+        void this.qp.set(clean(this.filtersForm.value));
         const params = clean({
             party_id: merchant,
             from_time: dateRange?.start && getNoTimeZoneIsoString(dateRange?.start),
@@ -153,7 +158,9 @@ export class WithdrawalsComponent implements OnInit {
             withdrawal_provider_id: providerId,
         });
         this.fetchWithdrawalsService.load(params, options);
-        this.active = countProps(params);
+        this.active =
+            countProps(omit(params, 'from_time', 'to_time')) +
+            +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
     more() {

@@ -19,6 +19,7 @@ import {
     ListFieldModule,
     EnumKeyPipe,
     EnumKeysPipe,
+    FiltersModule,
 } from '@vality/ng-core';
 
 import { PageLayoutModule, ThriftPipesModule } from '@cc/app/shared';
@@ -55,6 +56,7 @@ import { RepairingComponent } from './repairing.component';
         PageLayoutModule,
         ListFieldModule,
         ThriftPipesModule,
+        FiltersModule,
     ],
     declarations: [RepairingComponent, RepairByScenarioDialogComponent],
 })

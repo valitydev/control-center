@@ -71,8 +71,8 @@ export class AppComponent {
                     services: TERMINALS_ROUTING_CONFIG.services,
                 },
                 {
-                    label: 'Repairing',
-                    url: '/repairing',
+                    label: 'Machines',
+                    url: '/machines',
                     services: REPAIRING_ROUTING_CONFIG.services,
                 },
                 {

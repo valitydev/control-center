@@ -1,6 +1,6 @@
-import { Component, OnInit, DestroyRef } from '@angular/core';
+import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import {
     DialogResponseStatus,
     DialogService,
@@ -11,20 +11,25 @@ import {
     NotifyLogService,
     DateRange,
     getNoTimeZoneIsoString,
+    countProps,
+    createDateRangeToToday,
+    isEqualDateRange,
+    getValueChanges,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';
 import isNil from 'lodash-es/isNil';
+import omit from 'lodash-es/omit';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, switchMap, debounceTime } from 'rxjs/operators';
 
 import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
-import { NotificationService } from '../../shared/services/notification';
 import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
+import { DATE_RANGE_DAYS } from '../../tokens';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
@@ -47,10 +52,10 @@ export class RepairingComponent implements OnInit {
     machines$ = this.machinesService.searchResult$;
     inProgress$ = this.machinesService.doAction$;
     hasMore$ = this.machinesService.hasMore$;
-    filters = this.fb.group({
+    filtersForm = this.fb.group({
         ids: [null as string[]],
         ns: null as string,
-        timespan: null as DateRange,
+        timespan: createDateRangeToToday(this.dateRangeDays),
         provider_id: null as string,
         status: null as RepairStatus,
         error_message: null as string,
@@ -84,29 +89,27 @@ export class RepairingComponent implements OnInit {
             field: 'error_message',
         },
     ];
+    active = 0;
 
     constructor(
         private machinesService: MachinesService,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Filters>,
         private dialogService: DialogService,
         private repairManagementService: RepairManagementService,
-        private notificationService: NotificationService,
         private log: NotifyLogService,
         private destroyRef: DestroyRef,
+        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
     ) {}
 
     ngOnInit() {
-        this.filters.patchValue(this.qp.params);
-        this.filters.valueChanges
-            .pipe(
-                map(() => clean(this.filters.value)),
-                takeUntilDestroyed(this.destroyRef),
-            )
-            .subscribe((v: Filters) => this.qp.set(v));
-        this.qp.params$
-            .pipe(
-                map(({ ids, ns, timespan, provider_id, status, error_message }) =>
+        this.filtersForm.patchValue(this.qp.params);
+        getValueChanges(this.filtersForm)
+            .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
+            .subscribe((params: Filters) => {
+                const { ids, ns, timespan, provider_id, status, error_message } = params;
+                void this.qp.set(clean(params));
+                this.machinesService.search(
                     clean({
                         ids,
                         ns,
@@ -121,10 +124,11 @@ export class RepairingComponent implements OnInit {
                                   }
                                 : null,
                     }),
-                ),
-                takeUntilDestroyed(this.destroyRef),
-            )
-            .subscribe((params) => this.machinesService.search(params));
+                );
+                this.active =
+                    countProps(omit(clean(params), 'timespan')) +
+                    +!isEqualDateRange(timespan, createDateRangeToToday(this.dateRangeDays));
+            });
     }
 
     update(size: number) {
@@ -153,7 +157,7 @@ export class RepairingComponent implements OnInit {
             )
             .subscribe({
                 next: () => {
-                    this.notificationService.success();
+                    this.log.success();
                 },
                 error: (err) => this.log.error(err),
             });
