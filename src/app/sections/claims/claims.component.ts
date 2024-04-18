@@ -2,9 +2,15 @@ import { Component, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
-import { DialogService, LoadOptions, QueryParamsService, clean } from '@vality/ng-core';
+import {
+    DialogService,
+    LoadOptions,
+    QueryParamsService,
+    clean,
+    getValueChanges,
+} from '@vality/ng-core';
 import { debounceTime } from 'rxjs';
-import { startWith, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import { CLAIM_STATUSES } from '../../api/claim-management';
 import { PartyStoreService } from '../party';
@@ -42,8 +48,8 @@ export class ClaimsComponent implements OnInit {
 
     ngOnInit(): void {
         this.filtersForm.patchValue(this.qp.params);
-        this.filtersForm.valueChanges
-            .pipe(startWith(null), debounceTime(500), takeUntilDestroyed(this.destroyRef))
+        getValueChanges(this.filtersForm)
+            .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.load();
             });
