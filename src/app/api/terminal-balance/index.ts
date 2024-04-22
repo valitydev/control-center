@@ -1,2 +1,2 @@
-export * from './terminal-balance.service';
-export * from './stores/terminal-balances-store.service';
+export * from './account-balance.service';
+export * from './stores/account-balances-store.service';

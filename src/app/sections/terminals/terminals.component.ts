@@ -1,4 +1,4 @@
-import { Component, DestroyRef, isDevMode } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { TerminalObject } from '@vality/domain-proto/domain';
@@ -7,8 +7,8 @@ import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config';
-import { TerminalBalancesStoreService } from '../../api/terminal-balance';
-import { createPredicateColumn, createCurrencyColumn } from '../../shared';
+import { AccountBalancesStoreService } from '../../api/terminal-balance';
+import { createPredicateColumn, createCurrenciesColumn } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import {
@@ -69,26 +69,34 @@ export class TerminalsComponent {
                 });
             },
         },
-        ...(isDevMode()
-            ? [
-                  createCurrencyColumn<TerminalObject>(
-                      'balance',
-                      (d) =>
-                          this.terminalBalancesStoreService
-                              .getTerminalBalance(d.ref.id)
-                              .pipe(
-                                  map((b) =>
-                                      b?.balance?.amount ? Number(b.balance.amount) : undefined,
-                                  ),
-                              ),
-                      (d) =>
-                          this.terminalBalancesStoreService
-                              .getTerminalBalance(d.ref.id)
-                              .pipe(map((b) => b?.balance?.currency_code)),
-                      { sortable: true },
-                  ),
-              ]
-            : []),
+        createCurrenciesColumn<TerminalObject>(
+            'balances',
+            (d) =>
+                this.accountBalancesStoreService
+                    .getTerminalBalances(d.ref.id, d.data.provider_ref.id)
+                    .pipe(
+                        map((b) =>
+                            b.map((a) => ({
+                                amount: a.balance.amount,
+                                symbolicCode: a.balance.currency_code,
+                            })),
+                        ),
+                    ),
+            {
+                sortable: true,
+                tooltip: (d) =>
+                    this.accountBalancesStoreService
+                        .getTerminalBalances(d.ref.id, d.data.provider_ref.id)
+                        .pipe(
+                            map((accountBalance) =>
+                                accountBalance
+                                    .sort((a, b) => b.balance.amount - a.balance.amount)
+                                    .map((a) => a.account_id)
+                                    .join(', '),
+                            ),
+                        ),
+            },
+        ),
     ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
@@ -99,7 +107,7 @@ export class TerminalsComponent {
         private sidenavInfoService: SidenavInfoService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
-        private terminalBalancesStoreService: TerminalBalancesStoreService,
+        private accountBalancesStoreService: AccountBalancesStoreService,
     ) {}
 
     update() {
