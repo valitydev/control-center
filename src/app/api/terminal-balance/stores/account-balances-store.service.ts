@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
+import isNil from 'lodash-es/isNil';
 import { of, Observable } from 'rxjs';
 import { shareReplay, map, catchError, startWith } from 'rxjs/operators';
 
@@ -29,9 +30,16 @@ export class AccountBalancesStoreService {
         );
     }
 
-    getTerminalBalances(id: string | number) {
+    getTerminalBalances(id: string | number, providerId?: string | number) {
         return this.balances$.pipe(
-            map((balances) => balances.filter((b) => b.terminal.id === String(id))),
+            map((balances) =>
+                balances.filter(
+                    (b) =>
+                        !isNil(providerId) &&
+                        b.provider.id === String(providerId) &&
+                        b.terminal.id === String(id),
+                ),
+            ),
         );
     }
 }

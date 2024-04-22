@@ -1,7 +1,14 @@
-import { inject } from '@angular/core';
-import { CurrencyColumn, PossiblyAsync, getPossiblyAsyncObservable } from '@vality/ng-core';
+import { inject, LOCALE_ID } from '@angular/core';
+import {
+    CurrencyColumn,
+    PossiblyAsync,
+    getPossiblyAsyncObservable,
+    Column,
+    switchCombineWith,
+    formatCurrency,
+} from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
-import { combineLatest, switchMap, of } from 'rxjs';
+import { combineLatest, switchMap, of, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AmountCurrencyService } from '../../services';
@@ -35,4 +42,54 @@ export function createCurrencyColumn<T extends object>(
         },
         ...params,
     };
+}
+
+export function createCurrenciesColumn<T extends object>(
+    field: CurrencyColumn<T>['field'],
+    selectAmountSymbolicCode: (d: T) => PossiblyAsync<{ amount: number; symbolicCode: string }[]>,
+    params: Partial<CurrencyColumn<T>> = {},
+): Column<T> {
+    const amountCurrencyService = inject(AmountCurrencyService);
+    const localeId = inject(LOCALE_ID);
+
+    function getBalancesList(amountCodes$: Observable<{ amount: number; symbolicCode: string }[]>) {
+        return amountCodes$.pipe(
+            switchCombineWith((amountCodes) =>
+                !amountCodes?.length
+                    ? ([] as Observable<number[]>[])
+                    : [
+                          forkJoin(
+                              amountCodes.map((a) =>
+                                  amountCurrencyService.toMajor(a.amount, a.symbolicCode),
+                              ),
+                          ),
+                      ],
+            ),
+            map(([amountCodes, majorAmounts]) =>
+                amountCodes
+                    .map((a, idx) =>
+                        formatCurrency(
+                            majorAmounts[idx],
+                            a.symbolicCode,
+                            undefined,
+                            localeId,
+                            undefined,
+                            true,
+                        ),
+                    )
+                    .join(' / '),
+            ),
+        );
+    }
+
+    const getAmountCodes = (d: T) =>
+        getPossiblyAsyncObservable(selectAmountSymbolicCode(d)).pipe(
+            map((amountCodes) => (amountCodes || []).sort((a, b) => b.amount - a.amount)),
+        );
+    return {
+        field,
+        formatter: (d: T) => getBalancesList(getAmountCodes(d).pipe(map((a) => a?.slice?.(0, 1)))),
+        description: (d: T) => getBalancesList(getAmountCodes(d).pipe(map((a) => a?.slice?.(1)))),
+        ...params,
+    } as Column<T>;
 }
