@@ -2,7 +2,7 @@
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
-    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+    <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
             <v-list-field formControlName="chargeback_ids" label="Chargeback Ids"></v-list-field>
@@ -45,7 +45,7 @@
         [hasMore]="hasMore$ | async"
         [isLoading]="isLoading$ | async"
         (more)="more()"
-        (update)="load($event)"
+        (update)="reload($event)"
     >
         <button
             [disabled]="!selected.length"
