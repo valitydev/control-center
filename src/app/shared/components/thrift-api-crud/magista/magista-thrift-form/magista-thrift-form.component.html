@@ -1,7 +1,9 @@
-<cc-metadata-form
-    [extensions]="extensions"
+<cc-thrift-editor
+    [defaultValue]="defaultValue"
+    [extensions]="extensions$ | async"
     [formControl]="control"
     [metadata]="metadata$ | async"
-    [namespace]="namespace"
+    [namespace]="namespace ?? defaultNamespace"
+    [noToolbar]="noToolbar"
     [type]="type"
-></cc-metadata-form>
+></cc-thrift-editor>

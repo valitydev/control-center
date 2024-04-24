@@ -1,25 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { FormControlSuperclass, createControlProviders } from '@vality/ng-core';
-import { from } from 'rxjs';
+import { createControlProviders, getImportValue } from '@vality/ng-core';
 
-import { MetadataFormModule, MetadataFormExtension } from '../../../metadata-form';
+import { MetadataFormModule } from '../../../metadata-form';
+import { ThriftEditorModule } from '../../../thrift-editor';
+import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
 @Component({
     standalone: true,
     selector: 'cc-magista-thrift-form',
     templateUrl: './magista-thrift-form.component.html',
     providers: createControlProviders(() => MagistaThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, MetadataFormModule],
+    imports: [CommonModule, ReactiveFormsModule, MetadataFormModule, ThriftEditorModule],
 })
-export class MagistaThriftFormComponent extends FormControlSuperclass<unknown> {
-    @Input() namespace: string;
-    @Input() type: string;
-
-    metadata$ = from(
-        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
-    );
-    extensions: MetadataFormExtension[] = [];
+export class MagistaThriftFormComponent extends BaseThriftFormSuperclass {
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
+    defaultNamespace = 'magista';
 }

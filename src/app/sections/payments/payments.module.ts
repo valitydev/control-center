@@ -15,6 +15,8 @@ import { PageLayoutModule, ShopFieldModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
+import { MagistaThriftFormComponent } from '../../shared/components/thrift-api-crud';
+
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import { PaymentsRoutingModule } from './payments-routing.module';
@@ -37,6 +39,7 @@ import { PaymentsComponent } from './payments.component';
         ShopFieldModule,
         InputFieldModule,
         FormsModule,
+        MagistaThriftFormComponent,
     ],
     declarations: [PaymentsComponent, CreatePaymentAdjustmentComponent, PaymentsTableComponent],
 })
