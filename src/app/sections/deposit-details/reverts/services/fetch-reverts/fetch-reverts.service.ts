@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
-import { FetchSuperclass, FetchOptions } from '@vality/ng-core';
+import { FetchSuperclass, FetchOptions, clean } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
 import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
-import { removeEmptyProperties } from '@cc/utils';
 
 import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 
@@ -19,7 +18,7 @@ export class FetchRevertsService extends FetchSuperclass<StatDepositRevert, Fetc
             .GetDepositReverts({
                 dsl: createDsl({
                     deposit_reverts: {
-                        ...removeEmptyProperties(params),
+                        ...clean(params),
                         size: String(options.size),
                     },
                 }),
