@@ -2,9 +2,6 @@ import { InjectionToken } from '@angular/core';
 import { MatDateFormats } from '@angular/material/core';
 import { DATE_QUERY_PARAMS_SERIALIZERS, Serializer } from '@vality/ng-core';
 
-export const SMALL_SEARCH_LIMIT = new InjectionToken<number>('smallSearchLimit');
-export const DEFAULT_SMALL_SEARCH_LIMIT = 5;
-
 export const DEFAULT_QUERY_PARAMS_SERIALIZERS: Serializer[] = DATE_QUERY_PARAMS_SERIALIZERS;
 
 export const DEFAULT_MAT_DATE_FORMATS: MatDateFormats = {

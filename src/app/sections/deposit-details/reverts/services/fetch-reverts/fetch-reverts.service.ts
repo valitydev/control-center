@@ -1,37 +1,31 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
-import { Observable } from 'rxjs';
+import { FetchSuperclass, FetchOptions } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
 import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
-import { FetchResult, PartialFetcher } from '@cc/app/shared/services';
-import { SMALL_SEARCH_LIMIT } from '@cc/app/tokens';
 import { removeEmptyProperties } from '@cc/utils';
 
 import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 
 @Injectable()
-export class FetchRevertsService extends PartialFetcher<StatDepositRevert, FetchRevertsParams> {
-    constructor(
-        private fistfulStatisticsService: FistfulStatisticsService,
-        @Inject(SMALL_SEARCH_LIMIT) private smallSearchLimit: number,
-    ) {
+export class FetchRevertsService extends FetchSuperclass<StatDepositRevert, FetchRevertsParams> {
+    constructor(private fistfulStatisticsService: FistfulStatisticsService) {
         super();
     }
 
-    fetch(
-        params: FetchRevertsParams,
-        continuationToken: string,
-    ): Observable<FetchResult<StatDepositRevert>> {
+    fetch(params: FetchRevertsParams, options: FetchOptions) {
         return this.fistfulStatisticsService
             .GetDepositReverts({
                 dsl: createDsl({
                     deposit_reverts: {
                         ...removeEmptyProperties(params),
-                        size: this.smallSearchLimit.toString(),
+                        size: String(options.size),
                     },
                 }),
-                ...(!!continuationToken && { continuation_token: continuationToken }),
+                ...(!!options.continuationToken && {
+                    continuation_token: options.continuationToken,
+                }),
             })
             .pipe(
                 map((res) => ({

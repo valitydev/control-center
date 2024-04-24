@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DepositStatus, StatDeposit, StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
-import { DialogService, Column } from '@vality/ng-core';
+import { DialogService, Column, UpdateOptions } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
@@ -21,9 +21,9 @@ import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.serv
 export class RevertsComponent implements OnInit {
     @Input() deposit: StatDeposit;
 
-    reverts$ = this.fetchRevertsService.searchResult$;
+    reverts$ = this.fetchRevertsService.result$;
     hasMore$ = this.fetchRevertsService.hasMore$;
-    doAction$ = this.fetchRevertsService.doAction$;
+    isLoading$ = this.fetchRevertsService.isLoading$;
     columns: Column<StatDepositRevert>[] = [
         { field: 'id' },
         {
@@ -53,7 +53,7 @@ export class RevertsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.fetchRevertsService.search({ deposit_id: this.deposit.id });
+        this.fetchRevertsService.load({ deposit_id: this.deposit.id });
     }
 
     createRevert() {
@@ -65,7 +65,7 @@ export class RevertsComponent implements OnInit {
             .afterClosed()
             .pipe(filter((res) => res?.status === 'success'))
             .subscribe(() => {
-                this.fetchRevertsService.refresh();
+                this.fetchRevertsService.reload();
             });
     }
 
@@ -73,11 +73,11 @@ export class RevertsComponent implements OnInit {
         return getUnionKey(status) !== 'succeeded';
     }
 
-    update() {
-        this.fetchRevertsService.refresh();
+    reload(options: UpdateOptions) {
+        this.fetchRevertsService.reload(options);
     }
 
-    fetchMore() {
-        this.fetchRevertsService.fetchMore();
+    more() {
+        this.fetchRevertsService.more();
     }
 }

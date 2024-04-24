@@ -4,9 +4,9 @@
         [columns]="columns"
         [data]="reverts$ | async"
         [hasMore]="hasMore$ | async"
-        [progress]="doAction$ | async"
-        (more)="fetchMore()"
-        (update)="update()"
+        [progress]="isLoading$ | async"
+        (more)="more()"
+        (update)="reload($event)"
     >
         <v-table-actions>
             <button
