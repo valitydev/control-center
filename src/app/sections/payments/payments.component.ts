@@ -19,7 +19,7 @@ import {
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, of, merge, combineLatest } from 'rxjs';
+import { BehaviorSubject, of, merge } from 'rxjs';
 import { startWith, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
@@ -77,20 +77,14 @@ export class PaymentsComponent implements OnInit {
             extension: () => of({ hidden: true }),
         },
     ];
-    active$ = combineLatest([
-        getValueChanges(this.filtersForm),
-        getValueChanges(this.otherFiltersControl),
-    ]).pipe(
-        map(
-            ([filters, otherFilters]) =>
-                countChanged(this.initFiltersValue, filters, { dateRange: isEqualDateRange }) +
-                countChanged(this.initOtherFiltersValue, otherFilters),
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((filters) =>
+            countChanged(this.initFiltersValue, filters, { dateRange: isEqualDateRange }),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     private initFiltersValue = this.filtersForm.value;
-    private initOtherFiltersValue = this.otherFiltersControl.value;
 
     constructor(
         private qp: QueryParamsService<Filters>,
@@ -103,9 +97,13 @@ export class PaymentsComponent implements OnInit {
 
     ngOnInit() {
         this.filtersForm.patchValue(
-            Object.assign(this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
+            Object.assign(
+                {},
+                this.qp.params.filters,
+                clean({ dateRange: this.qp.params.dateRange }),
+            ),
         );
-        this.otherFiltersControl.patchValue(this.qp.params.otherFilters);
+        this.otherFiltersControl.patchValue(Object.assign({}, this.qp.params.otherFilters));
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
             .pipe(
                 startWith(null),
