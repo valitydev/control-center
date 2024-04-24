@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { InvoicePaymentID, InvoiceID, PartyID } from '@vality/domain-proto/domain';
-import { Column, NotifyLogService } from '@vality/ng-core';
+import { Column, UpdateOptions } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 
 import { getUnionKey } from '../../../../utils';
@@ -21,9 +21,9 @@ export class RefundsTableComponent implements OnInit {
     @Input() invoiceID: InvoiceID;
     @Input() partyID: PartyID;
 
-    isLoading$ = this.fetchRefundsService.doAction$;
+    isLoading$ = this.fetchRefundsService.isLoading$;
     hasMore$ = this.fetchRefundsService.hasMore$;
-    refunds$ = this.fetchRefundsService.searchResult$;
+    refunds$ = this.fetchRefundsService.result$;
 
     columns: Column<Refund>[] = [
         { field: 'created_at', type: 'datetime' },
@@ -48,23 +48,21 @@ export class RefundsTableComponent implements OnInit {
         'reason',
     ];
 
-    constructor(
-        private fetchRefundsService: FetchRefundsService,
-        private log: NotifyLogService,
-    ) {}
+    constructor(private fetchRefundsService: FetchRefundsService) {}
 
     ngOnInit() {
-        this.fetchRefundsService.search({
+        this.fetchRefundsService.load({
             common_search_query_params: { party_id: this.partyID },
             payment_id: this.paymentID,
             invoice_ids: [this.invoiceID],
         });
-        this.fetchRefundsService.errors$.subscribe((e) =>
-            this.log.errorOperation(e, 'receive', 'refunds'),
-        );
     }
 
-    fetchMore() {
-        this.fetchRefundsService.fetchMore();
+    more() {
+        this.fetchRefundsService.more();
+    }
+
+    reload(options: UpdateOptions) {
+        this.fetchRefundsService.reload(options);
     }
 }
