@@ -2,7 +2,7 @@
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
-    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+    <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="timespan"></v-date-range-field>
             <v-list-field formControlName="ids" label="IDs"></v-list-field>
@@ -40,9 +40,9 @@
         [progress]="inProgress$ | async"
         [rowSelected]="selected$ | async"
         rowSelectable
-        (more)="fetchMore()"
+        (more)="more()"
         (rowSelectedChange)="selected$.next($event)"
-        (update)="update($event.size)"
+        (update)="reload($event)"
     >
         <v-table-actions>
             <button
