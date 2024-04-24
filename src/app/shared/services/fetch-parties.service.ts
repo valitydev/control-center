@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
-import { NotifyLogService } from '@vality/ng-core';
+import { NotifyLogService, handleError } from '@vality/ng-core';
 import { Observable, of, Subject, defer, BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap, debounceTime } from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
 import { progressTo, inProgressFrom } from '@cc/utils';
-
-import { handleError } from './notification-error';
 
 @Injectable()
 export class FetchPartiesService {
@@ -17,7 +15,7 @@ export class FetchPartiesService {
             text
                 ? this.deanonimusService.searchParty(text).pipe(
                       map((hits) => hits.map((hit) => hit.party)),
-                      handleError(this.log.error, null, of<Party[]>([])),
+                      handleError(this.log.error, []),
                       progressTo(this.progress$),
                   )
                 : of([]),

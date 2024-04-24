@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { RoutingRulesService } from '../../services/routing-rules';
 import { TargetRuleset } from '../../target-ruleset-form';
@@ -31,7 +30,7 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
     constructor(
         private fb: UntypedFormBuilder,
         private routingRulesService: RoutingRulesService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -49,7 +48,7 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => this.dialogRef.close(),
-                error: (err) => this.notificationErrorService.error(err),
+                error: (err) => this.log.error(err),
             });
     }
 }

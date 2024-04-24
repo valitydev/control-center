@@ -2,14 +2,13 @@ import { Injectable, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
-import { NotifyLogService } from '@vality/ng-core';
+import { NotifyLogService, handleError } from '@vality/ng-core';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject, filter, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { inProgressFrom, progressTo, getUnionKey } from '../../../../utils';
 import { DomainSecretService } from '../../../shared/services';
-import { handleError } from '../../../shared/services/notification-error';
 import { RepositoryService } from '../repository.service';
 
 @Injectable({

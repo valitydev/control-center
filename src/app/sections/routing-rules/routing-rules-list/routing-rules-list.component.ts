@@ -19,9 +19,8 @@ import {
     ComponentChanges,
     NotifyLogService,
 } from '@vality/ng-core';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, catchError } from 'rxjs/operators';
 
-import { handleError } from '../../../../utils/operators/handle-error';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 import { RoutingRulesService } from '../services/routing-rules';
@@ -120,7 +119,13 @@ export class RoutingRulesListComponent<
                 delegateIdx: delegateId.delegateIdx,
             })
             .afterClosed()
-            .pipe(handleError(this.log.error), takeUntilDestroyed(this.destroyRef))
+            .pipe(
+                catchError((err) => {
+                    this.log.error(err);
+                    throw err;
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
             .subscribe();
     }
 

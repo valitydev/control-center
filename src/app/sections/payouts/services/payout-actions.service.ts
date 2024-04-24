@@ -1,12 +1,16 @@
 import { Injectable, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
-import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogService,
+    ConfirmDialogComponent,
+    NotifyLogService,
+} from '@vality/ng-core';
 import { switchMap } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 import { CancelPayoutDialogComponent } from '../payouts/components/cancel-payout-dialog/cancel-payout-dialog.component';
 
@@ -15,7 +19,7 @@ export class PayoutActionsService {
     constructor(
         private payoutManagementService: PayoutManagementService,
         private dialogService: DialogService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {}
 
@@ -41,7 +45,7 @@ export class PayoutActionsService {
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }
