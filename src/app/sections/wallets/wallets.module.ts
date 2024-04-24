@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TableModule, ListFieldModule, FiltersModule, SwitchButtonModule } from '@vality/ng-core';
 
-import { AmountCurrencyPipe, PageLayoutModule } from '@cc/app/shared';
+import { PageLayoutModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
 
@@ -30,7 +30,6 @@ import { WalletsComponent } from './wallets.component';
         MerchantFieldModule,
         MatButtonModule,
         MatIconModule,
-        AmountCurrencyPipe,
         PageLayoutModule,
         ListFieldModule,
         FiltersModule,

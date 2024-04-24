@@ -6,6 +6,7 @@ import {
     DialogSuperclass,
     NotifyLogService,
     progressTo,
+    toMinor,
 } from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
@@ -13,7 +14,6 @@ import omitBy from 'lodash-es/omitBy';
 import { BehaviorSubject } from 'rxjs';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { toMinor } from '@cc/utils/to-minor';
 
 interface CreatePayoutDialogForm {
     partyId: string;
@@ -58,7 +58,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
                             party_id: value.partyId,
                         },
                         cash: {
-                            amount: toMinor(value.amount),
+                            amount: toMinor(value.amount, value.currency), // TODO use domain currencies refs
                             currency: { symbolic_code: value.currency },
                         },
                         payout_tool_id: value.payoutToolId,
