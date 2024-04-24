@@ -1,12 +1,16 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { DialogResponseStatus, DialogSuperclass, NotifyLogService } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogSuperclass,
+    NotifyLogService,
+    progressTo,
+} from '@vality/ng-core';
 import { PayoutID } from '@vality/payout-manager-proto/payout_manager';
 import { BehaviorSubject } from 'rxjs';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { progressTo } from '@cc/utils/operators';
 
 @Component({
     selector: 'cc-cancel-payout-dialog',

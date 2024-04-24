@@ -20,6 +20,7 @@ import {
     DialogSuperclass,
     DEFAULT_DIALOG_CONFIG,
     NotifyLogService,
+    progressTo,
 } from '@vality/ng-core';
 import { of, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -27,7 +28,6 @@ import short from 'short-uuid';
 
 import { MetadataFormExtension, isTypeWithAliases } from '@cc/app/shared/components/metadata-form';
 
-import { progressTo } from '../../../../../utils';
 import { ClaimManagementService } from '../../../../api/claim-management';
 import { DomainStoreService } from '../../../../api/domain-config';
 import { DomainThriftFormComponent } from '../../../../shared/components/thrift-api-crud';

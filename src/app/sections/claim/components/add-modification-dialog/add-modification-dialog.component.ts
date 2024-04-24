@@ -4,12 +4,17 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
-import { DialogSuperclass, DEFAULT_DIALOG_CONFIG, NotifyLogService } from '@vality/ng-core';
+import {
+    DialogSuperclass,
+    DEFAULT_DIALOG_CONFIG,
+    NotifyLogService,
+    inProgressFrom,
+    progressTo,
+} from '@vality/ng-core';
 import { BehaviorSubject } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { inProgressFrom, progressTo } from '@cc/utils';
 
 @Component({
     selector: 'cc-add-modification-dialog',

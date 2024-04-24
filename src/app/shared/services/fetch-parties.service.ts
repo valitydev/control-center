@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
-import { NotifyLogService, handleError } from '@vality/ng-core';
+import { NotifyLogService, handleError, progressTo, inProgressFrom } from '@vality/ng-core';
 import { Observable, of, Subject, defer, BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap, debounceTime } from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
-import { progressTo, inProgressFrom } from '@cc/utils';
 
 @Injectable()
 export class FetchPartiesService {

@@ -6,6 +6,7 @@ import {
     DialogSuperclass,
     getValue,
     NotifyLogService,
+    progressTo,
 } from '@vality/ng-core';
 import {
     RepairInvoicesRequest,
@@ -18,7 +19,6 @@ import { map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
-import { progressTo } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
 
 enum Types {

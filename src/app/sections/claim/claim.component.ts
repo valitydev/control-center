@@ -6,13 +6,15 @@ import {
     DialogService,
     NotifyLogService,
     handleError,
+    inProgressFrom,
+    progressTo,
 } from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
+import { getUnionKey } from '@cc/utils';
 
 import { DomainMetadataFormExtensionsService } from '../../shared/services';
 

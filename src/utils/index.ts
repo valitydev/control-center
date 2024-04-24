@@ -7,7 +7,6 @@ export * from './to-major';
 export * from './thrift-utils';
 export * from './has-active-fragments';
 export * from './poll';
-export * from './operators';
 export * from './get-enum-keys';
 export * from './enumerate';
 export * from './thrift-instance';

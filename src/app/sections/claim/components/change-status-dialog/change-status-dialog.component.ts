@@ -2,12 +2,18 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
-import { DialogResponseStatus, DialogSuperclass, NotifyLogService } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogSuperclass,
+    NotifyLogService,
+    inProgressFrom,
+    progressTo,
+} from '@vality/ng-core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
-import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
+import { getUnionKey } from '@cc/utils';
 
 @Component({
     selector: 'cc-change-status-dialog',

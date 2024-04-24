@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { DialogResponseStatus, DialogSuperclass, NotifyLogService } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogSuperclass,
+    NotifyLogService,
+    progressTo,
+} from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { BehaviorSubject } from 'rxjs';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { progressTo } from '@cc/utils/operators';
 import { toMinor } from '@cc/utils/to-minor';
 
 interface CreatePayoutDialogForm {

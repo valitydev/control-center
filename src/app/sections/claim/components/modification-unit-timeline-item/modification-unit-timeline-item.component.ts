@@ -13,6 +13,8 @@ import {
     DialogService,
     ConfirmDialogComponent,
     NotifyLogService,
+    inProgressFrom,
+    progressTo,
 } from '@vality/ng-core';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap, from } from 'rxjs';
@@ -23,7 +25,6 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { Color, StatusColor } from '@cc/app/styles';
-import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
