@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { getEnumValues } from '@vality/ng-core';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
-
-import { getEnumValues } from '../../../utils';
 
 import { RoutingRulesType } from './types/routing-rules-type';
 

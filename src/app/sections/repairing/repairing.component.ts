@@ -17,6 +17,7 @@ import {
     countChanged,
     debounceTimeWithFirst,
     FetchOptions,
+    getEnumKey,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -25,8 +26,6 @@ import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
-
-import { getEnumKey } from '@cc/utils';
 
 import { RepairManagementService } from '../../api/repairer';
 import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
