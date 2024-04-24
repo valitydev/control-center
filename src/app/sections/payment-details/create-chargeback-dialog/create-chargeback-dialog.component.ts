@@ -3,14 +3,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 import { from } from 'rxjs';
 import * as short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { NotificationService } from '@cc/app/shared/services/notification';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
 @Component({
     selector: 'cc-create-chargeback-dialog',
@@ -28,8 +26,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     constructor(
         private invoicingService: InvoicingService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private notificationErrorService: NotificationErrorService,
-        private notificationService: NotificationService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -45,10 +42,10 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
-                    this.notificationService.success('Chargeback created');
+                    this.log.success('Chargeback created');
                     this.closeWithSuccess(res);
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }

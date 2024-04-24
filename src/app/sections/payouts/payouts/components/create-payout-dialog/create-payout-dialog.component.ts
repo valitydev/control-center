@@ -1,18 +1,15 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { BehaviorSubject } from 'rxjs';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { progressTo } from '@cc/utils/operators';
 import { toMinor } from '@cc/utils/to-minor';
-
-import { NotificationErrorService } from '../../../../../shared/services/notification-error';
 
 interface CreatePayoutDialogForm {
     partyId: string;
@@ -40,8 +37,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
     constructor(
         private fb: FormBuilder,
         private payoutManagementService: PayoutManagementService,
-        private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -69,10 +65,10 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
             .pipe(takeUntilDestroyed(this.destroyRef), progressTo(this.progress$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success('Payout created successfully');
+                    this.log.success('Payout created successfully');
                     this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }

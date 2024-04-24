@@ -8,7 +8,12 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
-import { DialogResponseStatus, DialogService, ConfirmDialogComponent } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogService,
+    ConfirmDialogComponent,
+    NotifyLogService,
+} from '@vality/ng-core';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap, from } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
@@ -17,12 +22,10 @@ import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
-import { NotificationService } from '@cc/app/shared/services/notification';
 import { Color, StatusColor } from '@cc/app/styles';
 import { inProgressFrom, progressTo } from '@cc/utils';
 import { getUnionValue } from '@cc/utils/get-union-key';
 
-import { NotificationErrorService } from '../../../../shared/services/notification-error';
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
 
 @Component({
@@ -51,9 +54,8 @@ export class ModificationUnitTimelineItemComponent {
         private partyManagementService: PartyManagementService,
         private dialogService: DialogService,
         private claimManagementService: ClaimManagementService,
-        private notificationService: NotificationService,
+        private log: NotifyLogService,
         private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
-        private notificationErrorService: NotificationErrorService,
         private destroyRef: DestroyRef,
     ) {}
 
@@ -108,10 +110,10 @@ export class ModificationUnitTimelineItemComponent {
             )
             .subscribe({
                 next: () => {
-                    this.notificationService.success();
+                    this.log.success();
                     this.claimChanged.emit();
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }
