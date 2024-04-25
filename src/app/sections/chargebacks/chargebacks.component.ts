@@ -30,7 +30,7 @@ import {
 
 import { createUnion } from '../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
-import { DATE_RANGE_DAYS } from '../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
@@ -81,12 +81,13 @@ export class ChargebacksComponent implements OnInit {
         private dialog: DialogService,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         private dr: DestroyRef,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params, { emitEvent: false });
         getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(500), takeUntilDestroyed(this.dr))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.dr))
             .subscribe(() => {
                 const value = clean(this.filtersForm.value);
                 void this.qp.set(value);

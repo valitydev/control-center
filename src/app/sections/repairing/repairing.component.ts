@@ -29,7 +29,7 @@ import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../api/repairer';
 import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
-import { DATE_RANGE_DAYS } from '../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
@@ -105,12 +105,13 @@ export class RepairingComponent implements OnInit {
         private log: NotifyLogService,
         private destroyRef: DestroyRef,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
         getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(500), takeUntilDestroyed(this.destroyRef))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe((params: Filters) => {
                 const { ids, ns, timespan, provider_id, status, error_message } = params;
                 void this.qp.set(clean(params));

@@ -1,4 +1,4 @@
-import { Component, OnInit, DestroyRef } from '@angular/core';
+import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
@@ -14,6 +14,7 @@ import {
 import { take, map, shareReplay } from 'rxjs/operators';
 
 import { CLAIM_STATUSES } from '../../api/claim-management';
+import { DEBOUNCE_TIME_MS } from '../../tokens';
 import { PartyStoreService } from '../party';
 
 import { CreateClaimDialogComponent } from './components/create-claim-dialog/create-claim-dialog.component';
@@ -49,12 +50,13 @@ export class ClaimsComponent implements OnInit {
         private qp: QueryParamsService<ClaimsComponent['filtersForm']['value']>,
         private destroyRef: DestroyRef,
         private partyStoreService: PartyStoreService,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit(): void {
         this.filtersForm.patchValue(this.qp.params);
         getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(500), takeUntilDestroyed(this.destroyRef))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 const filters = clean(this.filtersForm.value);
                 void this.qp.set(filters);

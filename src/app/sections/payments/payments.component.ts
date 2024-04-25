@@ -24,7 +24,7 @@ import { startWith, map, distinctUntilChanged, shareReplay } from 'rxjs/operator
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
-import { DATE_RANGE_DAYS } from '../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
@@ -93,6 +93,7 @@ export class PaymentsComponent implements OnInit {
         private fb: NonNullableFormBuilder,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         private dr: DestroyRef,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
@@ -107,7 +108,7 @@ export class PaymentsComponent implements OnInit {
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
             .pipe(
                 startWith(null),
-                debounceTimeWithFirst(500),
+                debounceTimeWithFirst(this.debounceTimeMs),
                 map(() => {
                     const { dateRange, ...filters } = clean(this.filtersForm.value);
                     const otherFilters = clean(this.otherFiltersControl.value);

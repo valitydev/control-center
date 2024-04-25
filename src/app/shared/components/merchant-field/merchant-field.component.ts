@@ -1,4 +1,11 @@
-import { Component, Input, AfterViewInit, booleanAttribute, DestroyRef } from '@angular/core';
+import {
+    Component,
+    Input,
+    AfterViewInit,
+    booleanAttribute,
+    DestroyRef,
+    inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
@@ -7,18 +14,14 @@ import {
     FormControlSuperclass,
     createControlProviders,
     getValueChanges,
+    debounceTimeWithFirst,
 } from '@vality/ng-core';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
-import {
-    catchError,
-    debounceTime,
-    map,
-    switchMap,
-    tap,
-    distinctUntilChanged,
-} from 'rxjs/operators';
+import { catchError, map, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
+
+import { DEBOUNCE_TIME_MS } from '../../../tokens';
 
 @Component({
     selector: 'cc-merchant-field',
@@ -39,6 +42,8 @@ export class MerchantFieldComponent
     searchChange$ = new Subject<string>();
     progress$ = new BehaviorSubject(false);
 
+    private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
+
     constructor(
         private deanonimusService: DeanonimusService,
         private log: NotifyLogService,
@@ -55,7 +60,7 @@ export class MerchantFieldComponent
                     this.options$.next([]);
                     this.progress$.next(true);
                 }),
-                debounceTime(600),
+                debounceTimeWithFirst(this.debounceTimeMs),
                 switchMap((term) => this.searchOptions(term)),
                 takeUntilDestroyed(this.destroyRef),
             )
