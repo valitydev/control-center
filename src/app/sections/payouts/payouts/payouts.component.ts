@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { Party, Shop, ShopID, PartyID } from '@vality/domain-proto/domain';
 import { magista } from '@vality/magista-proto';
 import { StatPayout } from '@vality/magista-proto/magista';
@@ -14,18 +14,17 @@ import {
     Column,
     createOperationColumn,
     DateRange,
-    countProps,
-    isEqualDateRange,
     UpdateOptions,
+    debounceTimeWithFirst,
+    countChanged,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
-import omit from 'lodash-es/omit';
 import startCase from 'lodash-es/startCase';
-import { filter } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../../utils';
 import { createCurrencyColumn, createPartyColumn, createShopColumn } from '../../../shared';
-import { DATE_RANGE_DAYS } from '../../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../../tokens';
 import { PayoutActionsService } from '../services/payout-actions.service';
 
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
@@ -102,7 +101,12 @@ export class PayoutsComponent implements OnInit {
     ];
     statusTypeEnum = magista.PayoutStatusType;
     payoutToolTypeEnum = magista.PayoutToolType;
-    active = 0;
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((v) => countChanged(this.initFilters, v)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
+    private initFilters = this.filtersForm.value;
 
     constructor(
         private fetchPayoutsService: FetchPayoutsService,
@@ -110,19 +114,19 @@ export class PayoutsComponent implements OnInit {
         private dialogService: DialogService,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         private payoutActionsService: PayoutActionsService,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         private destroyRef: DestroyRef,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
         getValueChanges(this.filtersForm)
-            .pipe(
-                filter(() => this.filtersForm.valid),
-                takeUntilDestroyed(this.destroyRef),
-            )
-            .subscribe((value) => void this.qp.set(clean(value)));
-        this.qp.params$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.search());
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
+            .subscribe((value) => {
+                void this.qp.set(clean(value));
+                this.search();
+            });
     }
 
     more() {
@@ -130,10 +134,7 @@ export class PayoutsComponent implements OnInit {
     }
 
     search(options?: UpdateOptions) {
-        const value = this.qp.params;
-        if (!value.dateRange) {
-            return;
-        }
+        const value = clean(this.filtersForm.value);
         this.fetchPayoutsService.load(
             clean({
                 common_search_query_params: clean({
@@ -151,9 +152,10 @@ export class PayoutsComponent implements OnInit {
             }),
             options,
         );
-        this.active =
-            countProps(omit(value, 'dateRange')) +
-            +!isEqualDateRange(value.dateRange, createDateRangeToToday(this.dateRangeDays));
+    }
+
+    reload(options?: UpdateOptions) {
+        this.fetchPayoutsService.reload(options);
     }
 
     create() {

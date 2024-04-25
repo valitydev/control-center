@@ -20,4 +20,4 @@ export const DATE_RANGE_DAYS = new InjectionToken<number>('DATE_RANGE_DAYS');
 export const DEFAULT_DATE_RANGE_DAYS: number = 1;
 
 export const DEBOUNCE_TIME_MS = new InjectionToken<number>('DEBOUNCE_TIME_MS');
-export const DEFAULT_DEBOUNCE_TIME_MS: number = 300;
+export const DEFAULT_DEBOUNCE_TIME_MS: number = 500;
