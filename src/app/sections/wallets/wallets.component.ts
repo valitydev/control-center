@@ -8,7 +8,7 @@ import {
     runInInjectionContext,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
 import { IdentityState } from '@vality/fistful-proto/identity';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
@@ -152,7 +152,7 @@ export class WalletsComponent implements OnInit {
         private fetchWalletsService: FetchWalletsService,
         private fetchWalletsTextService: FetchWalletsTextService,
         private qp: QueryParamsService<WalletParams>,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         private walletManagementService: ManagementService,
         private log: NotifyLogService,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,

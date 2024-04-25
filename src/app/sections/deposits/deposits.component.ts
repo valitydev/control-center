@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, Inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StatDeposit, RevertStatus } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -42,7 +42,7 @@ const REVERT_STATUS: { [N in RevertStatus]: string } = {
     providers: [FetchDepositsService],
 })
 export class DepositsComponent implements OnInit {
-    filtersForm = this.fb.nonNullable.group({
+    filtersForm = this.fb.group({
         dateRange: createDateRangeToToday(this.dateRangeDays),
         amount_to: null as number,
         currency_code: null as string,
@@ -129,7 +129,7 @@ export class DepositsComponent implements OnInit {
         private dialog: DialogService,
         private fetchDepositsService: FetchDepositsService,
         private router: Router,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private qp: QueryParamsService<object>,
