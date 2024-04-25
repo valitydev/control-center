@@ -10,15 +10,17 @@ import {
     createDateRangeToToday,
     QueryParamsService,
     clean,
-    countProps,
     isEqualDateRange,
     getNoTimeZoneIsoString,
     DialogService,
     DialogResponseStatus,
+    debounceTimeWithFirst,
+    getValueChanges,
+    countChanged,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
-import { filter, startWith, debounceTime } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 
 import { getUnionKey } from '../../../utils';
 import { QueryDsl } from '../../api/fistful-stat';
@@ -50,8 +52,6 @@ export class DepositsComponent implements OnInit {
         wallet_id: '',
         party_id: null as string,
     });
-    active = 0;
-
     deposits$ = this.fetchDepositsService.result$;
     hasMore$ = this.fetchDepositsService.hasMore$;
     isLoading$ = this.fetchDepositsService.isLoading$;
@@ -118,6 +118,12 @@ export class DepositsComponent implements OnInit {
         ]),
     ];
     depositStatuses: QueryDsl['query']['deposits']['status'][] = ['Pending', 'Succeeded', 'Failed'];
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((v) => countChanged(this.initFilters, v, { dateRange: isEqualDateRange })),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
+    private initFilters = this.filtersForm.value;
 
     constructor(
         private dialog: DialogService,
@@ -132,12 +138,8 @@ export class DepositsComponent implements OnInit {
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
-        this.filtersForm.valueChanges
-            .pipe(
-                startWith(this.filtersForm.value),
-                debounceTime(this.debounceTimeMs),
-                takeUntilDestroyed(this.destroyRef),
-            )
+        getValueChanges(this.filtersForm)
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.update();
             });
@@ -167,9 +169,10 @@ export class DepositsComponent implements OnInit {
             options,
         );
         void this.qp.set({ dateRange, ...filters });
-        this.active =
-            countProps(filters) +
-            +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
+    }
+
+    reload(options?: UpdateOptions) {
+        this.fetchDepositsService.reload(options);
     }
 
     more() {
