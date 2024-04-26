@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 
 import { FistfulAdminService } from '../../../api/fistful-admin';
-import { NotificationService } from '../../../shared/services/notification';
-import { NotificationErrorService } from '../../../shared/services/notification-error';
 
 @Component({
     selector: 'cc-create-source',
@@ -15,8 +13,7 @@ export class CreateSourceComponent extends DialogSuperclass<void> {
 
     constructor(
         private fistfulAdminService: FistfulAdminService,
-        private errorService: NotificationErrorService,
-        private notificationService: NotificationService,
+        private log: NotifyLogService,
     ) {
         super();
     }
@@ -25,10 +22,10 @@ export class CreateSourceComponent extends DialogSuperclass<void> {
         this.fistfulAdminService.CreateSource(this.control.value).subscribe({
             next: () => {
                 this.closeWithSuccess();
-                this.notificationService.success('Source created successfully!');
+                this.log.success('Source created successfully!');
             },
             error: (err) => {
-                this.errorService.error(err);
+                this.log.error(err);
             },
         });
     }

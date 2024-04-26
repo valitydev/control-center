@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
 import {
     DateRange,
@@ -10,14 +10,17 @@ import {
     getNoTimeZoneIsoString,
     createDateRangeToToday,
     isEqualDateRange,
-    countProps,
     DialogService,
     DialogResponseStatus,
+    getValueChanges,
+    createControls,
+    debounceTimeWithFirst,
+    countChanged,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
-import merge from 'lodash-es/merge';
-import { debounceTime, filter } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { filter } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { Overwrite } from 'utility-types';
 
 import {
     CHARGEBACK_STATUSES,
@@ -27,10 +30,18 @@ import {
 
 import { createUnion } from '../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
-import { DATE_RANGE_DAYS } from '../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
+
+type FormValue = {
+    dateRange: DateRange;
+} & Overwrite<
+    Omit<ChargebackSearchQuery, 'common_search_query_params'>,
+    Record<'chargeback_stages' | 'chargeback_categories' | 'chargeback_statuses', string[]>
+> &
+    Pick<ChargebackSearchQuery['common_search_query_params'], 'party_id' | 'shop_ids'>;
 
 @Component({
     selector: 'cc-chargebacks',
@@ -38,17 +49,18 @@ import { FetchChargebacksService } from './fetch-chargebacks.service';
     styles: [],
 })
 export class ChargebacksComponent implements OnInit {
-    active = 0;
-    filtersForm = this.fb.group({
-        dateRange: createDateRangeToToday(this.dateRangeDays),
-        party_id: undefined as ChargebackSearchQuery['common_search_query_params']['party_id'],
-        shop_ids: [undefined as ChargebackSearchQuery['common_search_query_params']['shop_ids']],
-        invoice_ids: [undefined as ChargebackSearchQuery['invoice_ids']],
-        chargeback_ids: [undefined as ChargebackSearchQuery['chargeback_ids']],
-        chargeback_statuses: [undefined as string[]],
-        chargeback_stages: [undefined as string[]],
-        chargeback_categories: [undefined as string[]],
-    });
+    filtersForm = new FormGroup(
+        createControls<FormValue>({
+            dateRange: createDateRangeToToday(this.dateRangeDays),
+            party_id: undefined,
+            shop_ids: undefined,
+            invoice_ids: undefined,
+            chargeback_ids: undefined,
+            chargeback_statuses: undefined,
+            chargeback_stages: undefined,
+            chargeback_categories: undefined,
+        }),
+    );
     chargebacks$ = this.fetchChargebacksService.result$;
     isLoading$ = this.fetchChargebacksService.isLoading$;
     hasMore$ = this.fetchChargebacksService.hasMore$;
@@ -56,27 +68,49 @@ export class ChargebacksComponent implements OnInit {
     stages = CHARGEBACK_STAGES;
     categories = CHARGEBACK_CATEGORIES;
     selected: StatChargeback[] = [];
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((v) => countChanged(this.initFormValue, v, { dateRange: isEqualDateRange })),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
+    private initFormValue = this.filtersForm.value;
 
     constructor(
-        private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<{
-            filters: ChargebacksComponent['filtersForm']['value'];
-            dateRange: DateRange;
-        }>,
+        private qp: QueryParamsService<Partial<FormValue>>,
         private fetchChargebacksService: FetchChargebacksService,
         private dialog: DialogService,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        private destroyRef: DestroyRef,
+        private dr: DestroyRef,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
-        this.filtersForm.patchValue(
-            merge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
-        );
-        this.filtersForm.valueChanges
-            .pipe(startWith(null), debounceTime(500), takeUntilDestroyed(this.destroyRef))
+        this.filtersForm.patchValue(this.qp.params, { emitEvent: false });
+        getValueChanges(this.filtersForm)
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.dr))
             .subscribe(() => {
-                this.load();
+                const value = clean(this.filtersForm.value);
+                void this.qp.set(value);
+                const { dateRange, party_id, shop_ids, ...rootParams } = value;
+                this.load({
+                    ...rootParams,
+                    common_search_query_params: clean({
+                        party_id,
+                        shop_ids,
+                        from_time: getNoTimeZoneIsoString(dateRange.start),
+                        to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
+                    }),
+                    ...clean(
+                        {
+                            chargeback_stages: rootParams.chargeback_stages?.map(createUnion),
+                            chargeback_categories:
+                                rootParams.chargeback_categories?.map(createUnion),
+                            chargeback_statuses: rootParams.chargeback_statuses?.map(createUnion),
+                        },
+                        false,
+                        true,
+                    ),
+                });
             });
     }
 
@@ -84,34 +118,12 @@ export class ChargebacksComponent implements OnInit {
         this.fetchChargebacksService.more();
     }
 
-    load(options?: LoadOptions) {
-        const { dateRange, ...filters } = clean(this.filtersForm.value);
-        void this.qp.set({ filters, dateRange });
-        const { party_id, shop_ids, ...rootParams } = filters;
-        const commonParams = clean({ party_id, shop_ids });
-        this.fetchChargebacksService.load(
-            {
-                ...rootParams,
-                common_search_query_params: {
-                    ...commonParams,
-                    from_time: getNoTimeZoneIsoString(dateRange.start),
-                    to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
-                },
-                ...clean(
-                    {
-                        chargeback_stages: rootParams.chargeback_stages?.map(createUnion),
-                        chargeback_categories: rootParams.chargeback_categories?.map(createUnion),
-                        chargeback_statuses: rootParams.chargeback_statuses?.map(createUnion),
-                    },
-                    false,
-                    true,
-                ),
-            },
-            options,
-        );
-        this.active =
-            countProps(rootParams, commonParams) +
-            +!isEqualDateRange(createDateRangeToToday(this.dateRangeDays), dateRange);
+    reload(options?: LoadOptions) {
+        this.fetchChargebacksService.reload(options);
+    }
+
+    load(params: ChargebackSearchQuery, options?: LoadOptions) {
+        this.fetchChargebacksService.load(params, options);
     }
 
     create() {
@@ -120,7 +132,7 @@ export class ChargebacksComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                takeUntilDestroyed(this.destroyRef),
+                takeUntilDestroyed(this.dr),
             )
             .subscribe((res) => {
                 this.filtersForm.reset({
@@ -136,10 +148,10 @@ export class ChargebacksComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                takeUntilDestroyed(this.destroyRef),
+                takeUntilDestroyed(this.dr),
             )
             .subscribe(() => {
-                this.load();
+                this.reload();
             });
     }
 }

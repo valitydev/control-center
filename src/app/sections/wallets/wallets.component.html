@@ -10,7 +10,12 @@
         <!--            ]"-->
         <!--        ></v-switch-button>-->
     </cc-page-layout-actions>
-    <v-filters *ngIf="isFilterControl.value" [active]="active" merge (clear)="filtersForm.reset()">
+    <v-filters
+        *ngIf="isFilterControl.value"
+        [active]="active$ | async"
+        merge
+        (clear)="filtersForm.reset()"
+    >
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field
                 *ngIf="!(party$ | async)"

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
-import { Column, createOperationColumn, QueryParamsService } from '@vality/ng-core';
+import { Column, createOperationColumn, QueryParamsService, UpdateOptions } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
@@ -16,8 +16,8 @@ import { getUnionKey } from '../../../utils';
 })
 export class SearchPartiesComponent {
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
-    inProgress$ = this.fetchPartiesService.inProgress$;
-    parties$ = this.fetchPartiesService.parties$;
+    inProgress$ = this.fetchPartiesService.isLoading$;
+    parties$ = this.fetchPartiesService.result$;
     columns: Column<Party>[] = [
         { field: 'id' },
         {
@@ -70,10 +70,10 @@ export class SearchPartiesComponent {
 
     searchParamsUpdated(filter: string) {
         void this.qp.set({ text: filter });
-        this.fetchPartiesService.searchParties(filter);
+        this.fetchPartiesService.load(filter);
     }
 
-    update() {
-        this.fetchPartiesService.searchParties(this.qp.params.text);
+    reload(options: UpdateOptions) {
+        this.fetchPartiesService.reload(options);
     }
 }

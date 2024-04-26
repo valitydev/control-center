@@ -36,8 +36,6 @@ import { DomainObjectCardComponent } from './shared/components/thrift-api-crud';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
-    DEFAULT_SMALL_SEARCH_LIMIT,
-    SMALL_SEARCH_LIMIT,
     DATE_RANGE_DAYS,
     DEFAULT_DATE_RANGE_DAYS,
     DEBOUNCE_TIME_MS,
@@ -83,7 +81,6 @@ export let AppInjector: Injector;
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
         { provide: LOCALE_ID, useValue: 'ru' },
-        { provide: SMALL_SEARCH_LIMIT, useValue: DEFAULT_SMALL_SEARCH_LIMIT },
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
         { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },

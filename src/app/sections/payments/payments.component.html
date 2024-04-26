@@ -4,7 +4,7 @@
     </cc-page-layout-actions>
     <v-filters
         #filters
-        [active]="active"
+        [active]="active$ | async"
         merge
         (clear)="filtersForm.reset(); otherFiltersControl.reset()"
     >
@@ -29,13 +29,12 @@
             <v-input-field formControlName="error_message" label="Error message"></v-input-field>
         </ng-template>
         <ng-template vOtherFilters>
-            <cc-metadata-form
+            <cc-magista-thrift-form
                 [extensions]="extensions"
                 [formControl]="otherFiltersControl"
-                [metadata]="metadata$ | async"
-                namespace="magista"
+                noToolbar
                 type="PaymentSearchQuery"
-            ></cc-metadata-form>
+            ></cc-magista-thrift-form>
         </ng-template>
     </v-filters>
     <cc-payments-table
@@ -45,7 +44,7 @@
         [selected]="selected$ | async"
         (more)="more()"
         (selectedChange)="selected$.next($event)"
-        (update)="update($event ?? {})"
+        (update)="reload($event ?? {})"
     >
         <button
             [disabled]="!(selected$ | async)?.length"

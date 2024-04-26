@@ -11,25 +11,25 @@ import {
     NotifyLogService,
     DateRange,
     getNoTimeZoneIsoString,
-    countProps,
     createDateRangeToToday,
     isEqualDateRange,
     getValueChanges,
+    countChanged,
+    debounceTimeWithFirst,
+    FetchOptions,
+    getEnumKey,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';
 import isNil from 'lodash-es/isNil';
-import omit from 'lodash-es/omit';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
-import { filter, switchMap, debounceTime } from 'rxjs/operators';
-
-import { getEnumKey } from '@cc/utils';
+import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../api/repairer';
 import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
-import { DATE_RANGE_DAYS } from '../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
@@ -49,8 +49,8 @@ interface Filters {
     providers: [MachinesService],
 })
 export class RepairingComponent implements OnInit {
-    machines$ = this.machinesService.searchResult$;
-    inProgress$ = this.machinesService.doAction$;
+    machines$ = this.machinesService.result$;
+    inProgress$ = this.machinesService.isLoading$;
     hasMore$ = this.machinesService.hasMore$;
     filtersForm = this.fb.group({
         ids: [null as string[]],
@@ -89,7 +89,12 @@ export class RepairingComponent implements OnInit {
             field: 'error_message',
         },
     ];
-    active = 0;
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((v) => countChanged(this.initFilters, v, { timespan: isEqualDateRange })),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
+    private initFilters = this.filtersForm.value;
 
     constructor(
         private machinesService: MachinesService,
@@ -100,16 +105,17 @@ export class RepairingComponent implements OnInit {
         private log: NotifyLogService,
         private destroyRef: DestroyRef,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
         getValueChanges(this.filtersForm)
-            .pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe((params: Filters) => {
                 const { ids, ns, timespan, provider_id, status, error_message } = params;
                 void this.qp.set(clean(params));
-                this.machinesService.search(
+                this.machinesService.load(
                     clean({
                         ids,
                         ns,
@@ -125,19 +131,15 @@ export class RepairingComponent implements OnInit {
                                 : null,
                     }),
                 );
-                this.active =
-                    countProps(omit(clean(params), 'timespan')) +
-                    +!isEqualDateRange(timespan, createDateRangeToToday(this.dateRangeDays));
             });
     }
 
-    update(size: number) {
-        this.machinesService.refresh(size);
-        this.selected$.next([]);
+    reload(options?: FetchOptions) {
+        this.machinesService.reload(options);
     }
 
-    fetchMore() {
-        this.machinesService.fetchMore();
+    more() {
+        this.machinesService.more();
     }
 
     repair() {

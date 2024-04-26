@@ -3,9 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
 import { Shop } from '@vality/domain-proto/domain';
 import { StatWallet } from '@vality/fistful-proto/fistful_stat';
-import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
-
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
+import { DialogResponseStatus, DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 
 import { RoutingRulesService } from '../../services/routing-rules';
 import { RoutingRulesType } from '../../types/routing-rules-type';
@@ -27,7 +25,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     constructor(
         private fb: FormBuilder,
         private routingRulesService: RoutingRulesService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -49,7 +47,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => this.dialogRef.close({ status: DialogResponseStatus.Success }),
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }

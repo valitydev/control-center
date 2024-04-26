@@ -2,7 +2,7 @@
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
-    <v-filters #filters [active]="active" merge (clear)="filtersForm.reset()">
+    <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="dateRange" required></v-date-range-field>
             <v-input-field formControlName="amount_to" label="Amount To"></v-input-field>
@@ -28,7 +28,7 @@
         [hasMore]="hasMore$ | async"
         [progress]="isLoading$ | async"
         (more)="more()"
-        (update)="update($event)"
+        (update)="reload($event)"
     >
         <v-table-actions>
             <button color="primary" mat-raised-button (click)="createDeposit()">Create</button>

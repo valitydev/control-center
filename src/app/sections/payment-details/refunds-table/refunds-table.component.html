@@ -1,6 +1,8 @@
 <v-table
     [columns]="columns"
     [data]="refunds$ | async"
+    [hasMore]="hasMore$ | async"
     [progress]="isLoading$ | async"
-    (more)="fetchMore()"
+    (more)="more()"
+    (update)="reload($event)"
 ></v-table>

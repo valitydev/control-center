@@ -2,7 +2,7 @@
     <cc-page-layout-actions
         ><v-more-filters-button [filters]="filters"></v-more-filters-button
     ></cc-page-layout-actions>
-    <v-filters #filters [active]="active">
+    <v-filters #filters [active]="active$ | async">
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field
                 *ngIf="!(party$ | async)"
@@ -32,7 +32,7 @@
         [isLoading]="isLoading$ | async"
         [noParty]="!!(party$ | async)"
         (more)="more()"
-        (update)="load($event)"
+        (update)="reload($event)"
     >
         <button color="primary" mat-raised-button (click)="create()">Create</button>
     </cc-claims-table>

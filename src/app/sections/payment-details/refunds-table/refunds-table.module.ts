@@ -3,12 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TableModule } from '@vality/ng-core';
 
-import {
-    StatusModule,
-    CommonPipesModule,
-    ThriftPipesModule,
-    AmountCurrencyPipe,
-} from '../../../shared';
+import { StatusModule, CommonPipesModule, ThriftPipesModule } from '../../../shared';
 
 import { RefundsTableComponent } from './refunds-table.component';
 
@@ -19,7 +14,6 @@ import { RefundsTableComponent } from './refunds-table.component';
         StatusModule,
         ThriftPipesModule,
         CommonPipesModule,
-        AmountCurrencyPipe,
         TableModule,
     ],
     declarations: [RefundsTableComponent],

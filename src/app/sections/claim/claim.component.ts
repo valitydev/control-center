@@ -1,16 +1,22 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogService,
+    NotifyLogService,
+    handleError,
+    inProgressFrom,
+    progressTo,
+} from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
+import { getUnionKey } from '@cc/utils';
 
 import { DomainMetadataFormExtensionsService } from '../../shared/services';
-import { handleError } from '../../shared/services/notification-error';
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';
 import { ChangeStatusDialogComponent } from './components/change-status-dialog/change-status-dialog.component';

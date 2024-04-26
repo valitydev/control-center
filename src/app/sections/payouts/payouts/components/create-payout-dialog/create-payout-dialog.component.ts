@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogSuperclass,
+    NotifyLogService,
+    progressTo,
+    toMinor,
+} from '@vality/ng-core';
 import { PayoutParams } from '@vality/payout-manager-proto/payout_manager';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { BehaviorSubject } from 'rxjs';
 
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
-import { NotificationService } from '@cc/app/shared/services/notification';
-import { progressTo } from '@cc/utils/operators';
-import { toMinor } from '@cc/utils/to-minor';
-
-import { NotificationErrorService } from '../../../../../shared/services/notification-error';
 
 interface CreatePayoutDialogForm {
     partyId: string;
@@ -40,8 +41,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
     constructor(
         private fb: FormBuilder,
         private payoutManagementService: PayoutManagementService,
-        private notificationService: NotificationService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -58,7 +58,7 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
                             party_id: value.partyId,
                         },
                         cash: {
-                            amount: toMinor(value.amount),
+                            amount: toMinor(value.amount, value.currency), // TODO use domain currencies refs
                             currency: { symbolic_code: value.currency },
                         },
                         payout_tool_id: value.payoutToolId,
@@ -69,10 +69,10 @@ export class CreatePayoutDialogComponent extends DialogSuperclass<CreatePayoutDi
             .pipe(takeUntilDestroyed(this.destroyRef), progressTo(this.progress$))
             .subscribe({
                 next: () => {
-                    this.notificationService.success('Payout created successfully');
+                    this.log.success('Payout created successfully');
                     this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }

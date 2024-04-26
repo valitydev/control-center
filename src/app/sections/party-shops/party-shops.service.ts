@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
-import { progressTo } from '@vality/ng-core';
+import { progressTo, debounceTimeWithFirst } from '@vality/ng-core';
 import { defer, merge, Observable, Subject, BehaviorSubject } from 'rxjs';
-import { map, shareReplay, switchMap, startWith, debounceTime } from 'rxjs/operators';
+import { map, shareReplay, switchMap, startWith } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
+
+import { DEBOUNCE_TIME_MS } from '../../tokens';
 
 @Injectable()
 export class PartyShopsService {
@@ -14,7 +16,7 @@ export class PartyShopsService {
         defer(() => this.reload$),
     ).pipe(
         startWith(null),
-        debounceTime(300),
+        debounceTimeWithFirst(this.debounceTimeMs),
         map(() => this.route.snapshot.params.partyID),
         switchMap((partyID) =>
             this.partyManagementService.Get(partyID).pipe(progressTo(this.progress$)),
@@ -33,6 +35,7 @@ export class PartyShopsService {
     constructor(
         private partyManagementService: PartyManagementService,
         private route: ActivatedRoute,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     reload() {

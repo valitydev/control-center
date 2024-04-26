@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, NotifyLogService } from '@vality/ng-core';
-import { first, map } from 'rxjs/operators';
+import { first, map, catchError } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 
-import { handleError } from '../../../../utils';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -73,7 +72,13 @@ export class PartyDelegateRulesetsComponent {
                 type: this.route.snapshot.params.type,
             })
             .afterClosed()
-            .pipe(handleError(this.log.error), takeUntilDestroyed(this.destroyRef))
+            .pipe(
+                catchError((err) => {
+                    this.log.error(err);
+                    throw err;
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
             .subscribe();
     }
 

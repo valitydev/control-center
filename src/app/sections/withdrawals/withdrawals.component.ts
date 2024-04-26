@@ -7,7 +7,6 @@ import {
     QueryParamsService,
     Column,
     UpdateOptions,
-    countProps,
     clean,
     DialogService,
     DateRange,
@@ -17,11 +16,12 @@ import {
     createDateRangeToToday,
     isEqualDateRange,
     getValueChanges,
+    countChanged,
+    debounceTimeWithFirst,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
-import omit from 'lodash-es/omit';
 import startCase from 'lodash-es/startCase';
-import { debounceTime } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
@@ -65,7 +65,10 @@ export class WithdrawalsComponent implements OnInit {
         providerId: null,
         terminalId: null,
     });
-    active = 0;
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((v) => countChanged(this.initFilters, v, { dateRange: isEqualDateRange })),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     withdrawals$ = this.fetchWithdrawalsService.result$;
     inProgress$ = this.fetchWithdrawalsService.isLoading$;
     hasMore$ = this.fetchWithdrawalsService.hasMore$;
@@ -113,6 +116,8 @@ export class WithdrawalsComponent implements OnInit {
     selected: StatWithdrawal[] = [];
     statuses: WithdrawalParams['status'][] = ['Pending', 'Succeeded', 'Failed'];
 
+    private initFilters = this.filtersForm.value;
+
     constructor(
         private fetchWithdrawalsService: FetchWithdrawalsService,
         private fb: NonNullableFormBuilder,
@@ -127,7 +132,7 @@ export class WithdrawalsComponent implements OnInit {
     ngOnInit() {
         this.filtersForm.patchValue(Object.assign({}, this.qp.params));
         getValueChanges(this.filtersForm)
-            .pipe(debounceTime(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.update());
     }
 
@@ -158,13 +163,14 @@ export class WithdrawalsComponent implements OnInit {
             withdrawal_provider_id: providerId,
         });
         this.fetchWithdrawalsService.load(params, options);
-        this.active =
-            countProps(omit(params, 'from_time', 'to_time')) +
-            +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
     more() {
         this.fetchWithdrawalsService.more();
+    }
+
+    reload(options: UpdateOptions) {
+        this.fetchWithdrawalsService.reload(options);
     }
 
     adjustment() {

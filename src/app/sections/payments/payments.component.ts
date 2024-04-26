@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogService,
@@ -12,20 +11,20 @@ import {
     DateRange,
     QueryParamsService,
     createDateRangeToToday,
-    countProps,
     isEqualDateRange,
+    debounceTimeWithFirst,
+    getValueChanges,
+    countChanged,
 } from '@vality/ng-core';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
-import lodashMerge from 'lodash-es/merge';
-import omit from 'lodash-es/omit';
-import { BehaviorSubject, debounceTime, from, of, merge } from 'rxjs';
-import { startWith, map, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, of, merge } from 'rxjs';
+import { startWith, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
-import { DATE_RANGE_DAYS } from '../../tokens';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
@@ -60,9 +59,6 @@ export class PaymentsComponent implements OnInit {
         common_search_query_params: {},
         payment_params: {},
     });
-    metadata$ = from(
-        import('@vality/magista-proto/metadata.json').then((m) => m.default as ThriftAstMetadata[]),
-    );
     extensions: MetadataFormExtension[] = [
         {
             determinant: (data) =>
@@ -81,7 +77,14 @@ export class PaymentsComponent implements OnInit {
             extension: () => of({ hidden: true }),
         },
     ];
-    active = 0;
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((filters) =>
+            countChanged(this.initFiltersValue, filters, { dateRange: isEqualDateRange }),
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
+    private initFiltersValue = this.filtersForm.value;
 
     constructor(
         private qp: QueryParamsService<Filters>,
@@ -89,29 +92,33 @@ export class PaymentsComponent implements OnInit {
         private dialogService: DialogService,
         private fb: NonNullableFormBuilder,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        private destroyRef: DestroyRef,
+        private dr: DestroyRef,
+        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(
-            lodashMerge({}, this.qp.params.filters, clean({ dateRange: this.qp.params.dateRange })),
+            Object.assign(
+                {},
+                this.qp.params.filters,
+                clean({ dateRange: this.qp.params.dateRange }),
+            ),
         );
-        this.otherFiltersControl.patchValue(
-            lodashMerge({}, this.otherFiltersControl.value, this.qp.params.otherFilters || {}),
-        );
+        this.otherFiltersControl.patchValue(Object.assign({}, this.qp.params.otherFilters));
         merge(this.filtersForm.valueChanges, this.otherFiltersControl.valueChanges)
             .pipe(
                 startWith(null),
-                debounceTime(500),
+                debounceTimeWithFirst(this.debounceTimeMs),
                 map(() => {
                     const { dateRange, ...filters } = clean(this.filtersForm.value);
                     const otherFilters = clean(this.otherFiltersControl.value);
                     return { filters, dateRange, otherFilters };
                 }),
                 distinctUntilChanged(isEqual),
-                takeUntilDestroyed(this.destroyRef),
+                takeUntilDestroyed(this.dr),
             )
             .subscribe((filters) => {
+                void this.qp.set(filters);
                 this.load(filters);
             });
     }
@@ -121,7 +128,6 @@ export class PaymentsComponent implements OnInit {
     }
 
     load({ filters, otherFilters, dateRange }: Filters, options?: LoadOptions) {
-        void this.qp.set({ filters, otherFilters, dateRange });
         const { invoice_ids, party_id, shop_ids, external_id, ...paymentParams } = filters;
         const searchParams = clean({
             ...otherFilters,
@@ -137,15 +143,9 @@ export class PaymentsComponent implements OnInit {
             invoice_ids,
         });
         this.fetchPaymentsService.load(searchParams, options);
-        this.active =
-            countProps(
-                omit(searchParams, 'payment_params', 'common_search_query_params'),
-                searchParams.payment_params,
-                omit(searchParams.common_search_query_params, 'from_time', 'to_time'),
-            ) + +!isEqualDateRange(dateRange, createDateRangeToToday(this.dateRangeDays));
     }
 
-    update(options?: LoadOptions) {
+    reload(options?: LoadOptions) {
         this.fetchPaymentsService.reload(options);
     }
 
@@ -157,7 +157,7 @@ export class PaymentsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.update();
+                    this.reload();
                     this.selected$.next([]);
                 } else if (res.data?.errors?.length) {
                     this.selected$.next(res.data.errors.map(({ data }) => data));
@@ -174,7 +174,7 @@ export class PaymentsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.update();
+                    this.reload();
                     this.selected$.next([]);
                 } else if (res.data?.errors?.length) {
                     this.selected$.next(

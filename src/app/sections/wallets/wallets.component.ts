@@ -8,7 +8,7 @@ import {
     runInInjectionContext,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
 import { IdentityState } from '@vality/fistful-proto/identity';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
@@ -18,14 +18,15 @@ import {
     Column,
     QueryParamsService,
     NotifyLogService,
-    countProps,
     FiltersComponent,
     UpdateOptions,
     getValueChanges,
+    countChanged,
+    debounceTimeWithFirst,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import { of } from 'rxjs';
-import { map, shareReplay, catchError, debounceTime, take } from 'rxjs/operators';
+import { map, shareReplay, catchError, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
@@ -137,16 +138,21 @@ export class WalletsComponent implements OnInit {
         currency_code: null as string,
         wallet_id: [null as string[]],
     });
-    active = 0;
+    active$ = getValueChanges(this.filtersForm).pipe(
+        map((v) => countChanged(this.initFilters, v)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     @ViewChild(FiltersComponent) filters!: FiltersComponent;
     typeQp = this.qp.createNamespace<{ isFilter: boolean }>('type');
     party$ = this.partyStoreService.party$;
+
+    private initFilters = this.filtersForm.value;
 
     constructor(
         private fetchWalletsService: FetchWalletsService,
         private fetchWalletsTextService: FetchWalletsTextService,
         private qp: QueryParamsService<WalletParams>,
-        private fb: FormBuilder,
+        private fb: NonNullableFormBuilder,
         private walletManagementService: ManagementService,
         private log: NotifyLogService,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
@@ -168,7 +174,7 @@ export class WalletsComponent implements OnInit {
                 void this.typeQp.set({ isFilter: !!value });
             });
         getValueChanges(this.filtersForm)
-            .pipe(debounceTime(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe((value) => {
                 void this.qp.set(clean(value));
                 this.filterSearch();
@@ -177,7 +183,6 @@ export class WalletsComponent implements OnInit {
 
     filterSearch(opts?: UpdateOptions) {
         const props = clean(this.filtersForm.value);
-        this.active = countProps(props);
         this.partyStoreService.party$.pipe(take(1)).subscribe((p) => {
             this.fetchWalletsService.load(
                 clean({

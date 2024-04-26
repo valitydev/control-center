@@ -2,15 +2,18 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
-import { DialogResponseStatus, DialogSuperclass } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogSuperclass,
+    NotifyLogService,
+    inProgressFrom,
+    progressTo,
+} from '@vality/ng-core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
 import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
-import { NotificationService } from '@cc/app/shared/services/notification';
-import { getUnionKey, inProgressFrom, progressTo } from '@cc/utils';
-
-import { NotificationErrorService } from '../../../../shared/services/notification-error';
+import { getUnionKey } from '@cc/utils';
 
 @Component({
     selector: 'cc-change-status-dialog',
@@ -35,9 +38,8 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
     constructor(
         private fb: FormBuilder,
         private claimManagementService: ClaimManagementService,
-        private notificationService: NotificationService,
+        private log: NotifyLogService,
         private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private notificationErrorService: NotificationErrorService,
         private destroyRef: DestroyRef,
     ) {
         super();
@@ -68,9 +70,9 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
         result$.pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef)).subscribe({
             next: () => {
                 this.dialogRef.close({ status: DialogResponseStatus.Success });
-                this.notificationService.success('Status successfully changed');
+                this.log.success('Status successfully changed');
             },
-            error: this.notificationErrorService.error,
+            error: this.log.error,
         });
     }
 }

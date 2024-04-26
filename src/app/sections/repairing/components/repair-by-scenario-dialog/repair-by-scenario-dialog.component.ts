@@ -1,7 +1,13 @@
 import { Component, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validators, FormControl } from '@angular/forms';
-import { DialogResponseStatus, DialogSuperclass, getValue } from '@vality/ng-core';
+import {
+    DialogResponseStatus,
+    DialogSuperclass,
+    getValue,
+    NotifyLogService,
+    progressTo,
+} from '@vality/ng-core';
 import {
     RepairInvoicesRequest,
     RepairWithdrawalsRequest,
@@ -12,11 +18,8 @@ import { BehaviorSubject, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-import { NotificationErrorService } from '@cc/app/shared/services/notification-error';
 
-import { progressTo } from '../../../../../utils';
 import { RepairManagementService } from '../../../../api/repairer';
-import { NotificationService } from '../../../../shared/services/notification';
 
 enum Types {
     Same,
@@ -58,8 +61,7 @@ export class RepairByScenarioDialogComponent
 
     constructor(
         private repairManagementService: RepairManagementService,
-        private notificationErrorService: NotificationErrorService,
-        private notificationService: NotificationService,
+        private log: NotifyLogService,
         private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
         private destroyRef: DestroyRef,
     ) {
@@ -91,10 +93,10 @@ export class RepairByScenarioDialogComponent
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    this.notificationService.success();
+                    this.log.success();
                     this.dialogRef.close({ status: DialogResponseStatus.Success });
                 },
-                error: this.notificationErrorService.error,
+                error: this.log.error,
             });
     }
 }

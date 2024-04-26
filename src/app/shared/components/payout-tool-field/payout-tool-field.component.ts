@@ -1,13 +1,17 @@
 import { Component, Input, OnInit, booleanAttribute } from '@angular/core';
 import { PayoutTool } from '@vality/domain-proto/domain';
 import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
-import { FormControlSuperclass, Option, createControlProviders } from '@vality/ng-core';
+import {
+    FormControlSuperclass,
+    Option,
+    createControlProviders,
+    NotifyLogService,
+    handleError,
+} from '@vality/ng-core';
 import { BehaviorSubject, combineLatest, defer, Observable, of, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { PartyManagementService } from '@cc/app/api/payment-processing';
-
-import { handleError, NotificationErrorService } from '../../services/notification-error';
 
 @Component({
     selector: 'cc-payout-tool-field',
@@ -47,13 +51,7 @@ export class PayoutToolFieldComponent
                           ),
                           map((contract) => contract.payout_tools),
                       )
-                      .pipe(
-                          handleError(
-                              this.notificationErrorService.error,
-                              null,
-                              of<PayoutTool[]>([]),
-                          ),
-                      )
+                      .pipe(handleError(this.log.error, []))
                 : of<PayoutTool[]>([]),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -61,7 +59,7 @@ export class PayoutToolFieldComponent
 
     constructor(
         private partyManagementService: PartyManagementService,
-        private notificationErrorService: NotificationErrorService,
+        private log: NotifyLogService,
     ) {
         super();
     }
