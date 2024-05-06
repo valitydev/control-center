@@ -210,7 +210,7 @@ export class WalletsComponent implements OnInit {
     getBalance(walletId: string) {
         return this.walletManagementService.GetAccountBalance(walletId).pipe(
             catchError((err) => {
-                this.log.error(err);
+                console.error(err);
                 return of<Partial<AccountBalance>>({});
             }),
             shareReplay({ refCount: true, bufferSize: 1 }),
@@ -221,7 +221,7 @@ export class WalletsComponent implements OnInit {
     getIdentity(id: string) {
         return this.identityManagementService.Get(id, {}).pipe(
             catchError((err) => {
-                this.log.error(err);
+                console.error(err);
                 return of<Partial<IdentityState>>({});
             }),
             shareReplay({ refCount: true, bufferSize: 1 }),
