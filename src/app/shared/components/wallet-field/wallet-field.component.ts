@@ -34,6 +34,7 @@ export class WalletFieldComponent extends FormControlSuperclass<WalletID> implem
     @Input() size?: string;
     @Input() appearance?: string;
     @Input() hint?: string;
+    @Input({ transform: booleanAttribute }) multiple = false;
 
     options$ = new ReplaySubject<Option<WalletID>[]>(1);
     searchChange$ = new Subject<string>();
