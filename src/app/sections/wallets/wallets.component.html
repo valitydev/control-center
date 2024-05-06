@@ -1,14 +1,13 @@
 <cc-page-layout title="Wallets">
     <cc-page-layout-actions>
         <v-more-filters-button *ngIf="filters" [filters]="filters"></v-more-filters-button>
-        <!--TODO wait backend fix-->
-        <!--        <v-switch-button-->
-        <!--            [formControl]="isFilterControl"-->
-        <!--            [states]="[-->
-        <!--                { label: 'full-text search', icon: 'travel_explore' },-->
-        <!--                { label: 'filters', icon: 'manage_search' }-->
-        <!--            ]"-->
-        <!--        ></v-switch-button>-->
+        <v-switch-button
+            [formControl]="isFilterControl"
+            [states]="[
+                { label: 'full-text search', icon: 'travel_explore' },
+                { label: 'filters', icon: 'manage_search' }
+            ]"
+        ></v-switch-button>
     </cc-page-layout-actions>
     <v-filters
         *ngIf="isFilterControl.value"

@@ -46,7 +46,7 @@ import { FetchWalletsService } from './fetch-wallets.service';
     providers: [FetchWalletsService, FetchWalletsTextService, PartyStoreService],
 })
 export class WalletsComponent implements OnInit {
-    isFilterControl = new FormControl(1);
+    isFilterControl = new FormControl(0);
 
     filterWallets$ = this.fetchWalletsService.result$;
     filtersLoading$ = this.fetchWalletsService.isLoading$;
