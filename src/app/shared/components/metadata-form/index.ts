@@ -1,4 +1,4 @@
-export * from './metadata-form.module';
+export * from './thrift-form.module';
 export * from './types/metadata-form-data';
 export { MetadataFormExtension } from './types/metadata-form-extension';
 export { MetadataFormExtensionResult } from './types/metadata-form-extension';

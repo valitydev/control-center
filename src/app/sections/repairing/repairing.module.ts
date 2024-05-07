@@ -23,7 +23,7 @@ import {
 } from '@vality/ng-core';
 
 import { PageLayoutModule, ThriftPipesModule } from '@cc/app/shared';
-import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
@@ -47,7 +47,7 @@ import { RepairingComponent } from './repairing.component';
         MatSelectModule,
         ActionsModule,
         DialogModule,
-        MetadataFormModule,
+        ThriftFormModule,
         MatRadioModule,
         MatChipsModule,
         EnumKeyPipe,

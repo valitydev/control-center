@@ -16,11 +16,11 @@ import {
 
 @Component({
     selector: 'cc-metadata-form',
-    templateUrl: './metadata-form.component.html',
-    styleUrl: `./metadata-form.component.scss`,
-    providers: createControlProviders(() => MetadataFormComponent),
+    templateUrl: './thrift-form.component.html',
+    styleUrl: `./thrift-form.component.scss`,
+    providers: createControlProviders(() => ThriftFormComponent),
 })
-export class MetadataFormComponent<T>
+export class ThriftFormComponent<T>
     extends FormControlSuperclass<T>
     implements OnInit, OnChanges, Validator
 {

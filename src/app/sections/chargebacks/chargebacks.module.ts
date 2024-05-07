@@ -23,7 +23,7 @@ import { MagistaThriftFormComponent } from '@cc/app/shared/components/thrift-api
 
 import { PageLayoutModule, ShopFieldModule, ThriftPipesModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
-import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud/domain/domain-thrift-form';
 
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
@@ -49,7 +49,7 @@ import { CreateChargebacksByFileDialogComponent } from './components/create-char
         MerchantFieldModule,
         ShopFieldModule,
         InputFieldModule,
-        MetadataFormModule,
+        ThriftFormModule,
         MagistaThriftFormComponent,
         SelectFieldModule,
         MatFormFieldModule,

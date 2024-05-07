@@ -22,7 +22,7 @@ import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
 
 import { PageLayoutModule } from '../../shared';
-import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
 import { ClaimRoutingModule } from './claim-routing.module';
@@ -64,7 +64,7 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         MatFormFieldModule,
         MatSelectModule,
         MatInputModule,
-        MetadataFormModule,
+        ThriftFormModule,
         MatMenuModule,
         MatDialogModule,
         MatProgressBarModule,

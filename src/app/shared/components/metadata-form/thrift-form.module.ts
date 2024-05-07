@@ -32,8 +32,8 @@ import { PrimitiveFieldComponent } from './components/primitive-field/primitive-
 import { StructFormComponent } from './components/struct-form/struct-form.component';
 import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
 import { UnionFieldComponent } from './components/union-field/union-field.component';
-import { MetadataFormComponent } from './metadata-form.component';
 import { FieldLabelPipe } from './pipes/field-label.pipe';
+import { ThriftFormComponent } from './thrift-form.component';
 
 @NgModule({
     imports: [
@@ -61,7 +61,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         TagModule,
     ],
     declarations: [
-        MetadataFormComponent,
+        ThriftFormComponent,
         PrimitiveFieldComponent,
         ComplexFormComponent,
         StructFormComponent,
@@ -71,6 +71,6 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         FieldLabelPipe,
         ExtensionFieldComponent,
     ],
-    exports: [MetadataFormComponent],
+    exports: [ThriftFormComponent],
 })
-export class MetadataFormModule {}
+export class ThriftFormModule {}

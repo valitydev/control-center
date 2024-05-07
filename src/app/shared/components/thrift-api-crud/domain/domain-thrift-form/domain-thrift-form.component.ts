@@ -10,7 +10,7 @@ import { combineLatest, filter } from 'rxjs';
 import { shareReplay, startWith, map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '../../../../services';
-import { MetadataFormModule } from '../../../metadata-form';
+import { ThriftFormModule } from '../../../metadata-form';
 import { ThriftEditorModule } from '../../../thrift-editor';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
@@ -19,7 +19,7 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     selector: 'cc-domain-thrift-form',
     templateUrl: './domain-thrift-form.component.html',
     providers: createControlProviders(() => DomainThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, MetadataFormModule, ThriftEditorModule],
+    imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule],
 })
 export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     party = input<Party>();

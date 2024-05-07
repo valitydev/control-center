@@ -19,7 +19,7 @@ import { from, BehaviorSubject } from 'rxjs';
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
-import { MetadataFormModule } from '../metadata-form';
+import { ThriftFormModule } from '../metadata-form';
 
 enum Action {
     Accept,
@@ -42,7 +42,7 @@ const CHANGE_STATUS_METHODS = {
         CommonModule,
         DialogModule,
         MatButtonModule,
-        MetadataFormModule,
+        ThriftFormModule,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
