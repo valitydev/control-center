@@ -16,6 +16,7 @@ import {
     getValueChanges,
     countChanged,
 } from '@vality/ng-core';
+import { isTypeWithAliases } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
@@ -23,7 +24,7 @@ import { BehaviorSubject, of, merge } from 'rxjs';
 import { startWith, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
-import { MetadataFormExtension, isTypeWithAliases } from '../../shared/components/metadata-form';
+import { MetadataFormExtension } from '../../shared/components/metadata-form';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';

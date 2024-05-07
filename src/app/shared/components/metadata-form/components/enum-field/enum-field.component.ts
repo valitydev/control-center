@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { createControlProviders, FormControlSuperclass } from '@vality/ng-core';
-
-import { ThriftData } from '../../types/thrift-data';
+import { ThriftData } from '@vality/ng-thrift';
 
 @Component({
     selector: 'cc-enum-field',

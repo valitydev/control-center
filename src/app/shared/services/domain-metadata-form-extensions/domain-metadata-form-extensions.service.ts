@@ -3,6 +3,7 @@ import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString, getImportValue } from '@vality/ng-core';
+import { ThriftData, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
@@ -10,11 +11,7 @@ import * as short from 'short-uuid';
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
-import {
-    ThriftData,
-    MetadataFormExtension,
-    isTypeWithAliases,
-} from '../../components/metadata-form';
+import { MetadataFormExtension } from '../../components/metadata-form';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';

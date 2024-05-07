@@ -1,11 +1,10 @@
 import { isEmpty } from '@vality/ng-core';
+import { ThriftData } from '@vality/ng-thrift';
 import { SetType, ListType, MapType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, of, switchMap, combineLatest, defer } from 'rxjs';
 import { map, shareReplay, distinctUntilChanged, startWith } from 'rxjs/operators';
-
-import { ThriftData } from '../../metadata-form';
 
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';

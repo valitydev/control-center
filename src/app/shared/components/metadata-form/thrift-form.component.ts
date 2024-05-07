@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { createControlProviders, FormControlSuperclass } from '@vality/ng-core';
+import { ThriftData } from '@vality/ng-thrift';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { Observable, BehaviorSubject, defer, switchMap } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
@@ -12,7 +13,6 @@ import {
     MetadataFormExtensionResult,
     getExtensionsResult,
 } from './types/metadata-form-extension';
-import { ThriftData } from './types/thrift-data';
 
 @Component({
     selector: 'cc-metadata-form',

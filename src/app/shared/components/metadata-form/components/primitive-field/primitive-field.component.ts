@@ -7,7 +7,7 @@ import {
     createControlProviders,
     getValueChanges,
 } from '@vality/ng-core';
-import { getValueTypeTitle } from '@vality/ng-thrift';
+import { getValueTypeTitle, ThriftData, getAliases } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -15,11 +15,9 @@ import { map, shareReplay } from 'rxjs/operators';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,
-    getAliases,
 } from '@cc/app/shared/components/metadata-form';
 
 import { getExtensionsResult } from '../../types/metadata-form-extension';
-import { ThriftData } from '../../types/thrift-data';
 
 @Component({
     selector: 'cc-primitive-field',

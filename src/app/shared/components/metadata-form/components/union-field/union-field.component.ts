@@ -7,13 +7,12 @@ import {
     getErrorsTree,
     ComponentChanges,
 } from '@vality/ng-core';
-import { getFieldLabel } from '@vality/ng-thrift';
+import { getFieldLabel, ThriftData } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 import { merge, ReplaySubject, defer } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
-import { ThriftData } from '../../types/thrift-data';
 import { getDefaultValue } from '../../utils';
 
 @Component({

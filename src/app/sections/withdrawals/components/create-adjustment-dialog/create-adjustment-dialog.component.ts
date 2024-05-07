@@ -4,15 +4,13 @@ import { Validators, FormControl } from '@angular/forms';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { DialogSuperclass, forkJoinToResult, NotifyLogService } from '@vality/ng-core';
+import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import * as short from 'short-uuid';
 
 import { ManagementService } from '@cc/app/api/withdrawal';
 
-import {
-    MetadataFormExtension,
-    isTypeWithAliases,
-} from '../../../../shared/components/metadata-form';
+import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',

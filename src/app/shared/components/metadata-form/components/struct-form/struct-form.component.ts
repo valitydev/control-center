@@ -14,13 +14,13 @@ import {
     getValueChanges,
     getErrorsTree,
 } from '@vality/ng-core';
+import { ThriftData, isRequiredField } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { combineLatest } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
-import { ThriftData, isRequiredField } from '../../types/thrift-data';
 
 @Component({
     selector: 'cc-struct-form',

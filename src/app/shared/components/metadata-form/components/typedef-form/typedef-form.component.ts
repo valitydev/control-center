@@ -1,9 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { createControlProviders, FormControlSuperclass } from '@vality/ng-core';
+import { ThriftData } from '@vality/ng-thrift';
 
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
-import { ThriftData } from '../../types/thrift-data';
-
 @Component({
     selector: 'cc-typedef-form',
     templateUrl: './typedef-form.component.html',

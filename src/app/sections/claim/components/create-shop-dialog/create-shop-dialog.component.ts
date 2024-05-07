@@ -22,11 +22,12 @@ import {
     NotifyLogService,
     progressTo,
 } from '@vality/ng-core';
+import { isTypeWithAliases } from '@vality/ng-thrift';
 import { of, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import short from 'short-uuid';
 
-import { MetadataFormExtension, isTypeWithAliases } from '@cc/app/shared/components/metadata-form';
+import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 
 import { ClaimManagementService } from '../../../../api/claim-management';
 import { DomainStoreService } from '../../../../api/domain-config';
