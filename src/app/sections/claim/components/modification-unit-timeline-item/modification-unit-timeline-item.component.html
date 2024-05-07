@@ -6,7 +6,7 @@
         <cc-timeline-item-header
             [createdAt]="modificationUnit.created_at"
             [removed]="!!modificationUnit.removed_at"
-            [text]="title ?? 'added ' + (modificationUnit.modification | ccUnionKey | keyTitle)"
+            [text]="title ?? 'added ' + (modificationUnit.modification | ngtUnionKey | ngtKeyTitle)"
             [username]="modificationUnit.user_info.username"
         ></cc-timeline-item-header>
         <div>
@@ -34,7 +34,7 @@
             <div #content><ng-content></ng-content></div>
             <mat-expansion-panel *ngIf="!content.innerHTML.trim().length">
                 <mat-expansion-panel-header>
-                    {{ name | keyTitle | titlecase }}
+                    {{ name | ngtKeyTitle | titlecase }}
                 </mat-expansion-panel-header>
                 <cc-json-viewer
                     [extensions]="extensions$ | async"

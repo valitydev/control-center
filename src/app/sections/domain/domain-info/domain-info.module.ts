@@ -9,8 +9,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { PipesModule, ActionsModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { ThriftPipesModule, PageLayoutModule } from '../../../shared';
+import { PageLayoutModule } from '../../../shared';
 import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 

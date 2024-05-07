@@ -20,8 +20,9 @@ import {
     InputFieldModule,
     AutocompleteFieldModule,
 } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule, WalletFieldModule, ThriftPipesModule } from '../../shared';
+import { PageLayoutModule, WalletFieldModule } from '../../shared';
 import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { ThriftFormModule } from '../../shared/components/metadata-form';

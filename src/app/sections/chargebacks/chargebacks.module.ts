@@ -18,10 +18,11 @@ import {
     DialogModule,
     FileUploadModule,
 } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { MagistaThriftFormComponent } from '@cc/app/shared/components/thrift-api-crud';
 
-import { PageLayoutModule, ShopFieldModule, ThriftPipesModule } from '../../shared';
+import { PageLayoutModule, ShopFieldModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud/domain/domain-thrift-form';

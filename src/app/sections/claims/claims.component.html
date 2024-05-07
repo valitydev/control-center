@@ -20,7 +20,7 @@
             <mat-form-field>
                 <mat-select formControlName="statuses" multiple placeholder="Claim statuses">
                     <mat-option *ngFor="let status of claimStatuses" [value]="status">{{
-                        status | keyTitle | titlecase
+                        status | ngtKeyTitle | titlecase
                     }}</mat-option>
                 </mat-select>
             </mat-form-field>

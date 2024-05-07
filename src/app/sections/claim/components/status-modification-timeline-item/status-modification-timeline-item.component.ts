@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Claim, ClaimStatus, ModificationUnit } from '@vality/domain-proto/claim_management';
-
-import { getUnionKey, getUnionValue } from '@cc/utils';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 
 import { CLAIM_STATUS_COLOR } from '../../types/claim-status-color';
 

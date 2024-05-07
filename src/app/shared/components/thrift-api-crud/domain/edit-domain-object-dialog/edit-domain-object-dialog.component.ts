@@ -15,16 +15,14 @@ import {
     progressTo,
     inProgressFrom,
 } from '@vality/ng-core';
-import { isEqualThrift } from '@vality/ng-thrift';
+import { isEqualThrift, getUnionKey, getUnionValue, ThriftPipesModule } from '@vality/ng-thrift';
 import { BehaviorSubject, switchMap, EMPTY, combineLatest, Observable } from 'rxjs';
 import { first, map, shareReplay, catchError, distinctUntilChanged } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { getUnionKey, getUnionValue } from '../../../../../../utils';
 import { DomainStoreService } from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
 import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
-import { ThriftPipesModule } from '../../../../pipes';
 import { DomainSecretService } from '../../../../services';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';

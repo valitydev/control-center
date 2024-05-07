@@ -3,7 +3,7 @@
     [color]="claimStatusColor[status]"
     [icon]="claimStatusIconName[status]"
     [modificationUnit]="modificationUnit"
-    [title]="'changed claim status to ' + (status | keyTitle)"
+    [title]="'changed claim status to ' + (status | ngtKeyTitle)"
     (claimChanged)="claimChanged.emit()"
 >
     <mat-card *ngIf="reason">

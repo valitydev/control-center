@@ -18,11 +18,11 @@ import {
     debounceTimeWithFirst,
     countChanged,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { getUnionKey } from '../../../../utils';
 import { createCurrencyColumn, createPartyColumn, createShopColumn } from '../../../shared';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../../tokens';
 import { PayoutActionsService } from '../services/payout-actions.service';

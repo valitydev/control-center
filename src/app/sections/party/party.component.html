@@ -5,15 +5,15 @@
         <!--        </div>-->
         <v-tag
             *ngIf="party?.blocking"
-            [color]="(party?.blocking | ccUnionKey) === 'blocked' ? 'warn' : 'success'"
+            [color]="(party?.blocking | ngtUnionKey) === 'blocked' ? 'warn' : 'success'"
             style="margin-top: 8px"
-            >{{ party?.blocking | ccUnionKey | titlecase }}</v-tag
+            >{{ party?.blocking | ngtUnionKey | titlecase }}</v-tag
         >
         <v-tag
             *ngIf="party?.suspension"
-            [color]="(party?.suspension | ccUnionKey) === 'suspended' ? 'warn' : 'success'"
+            [color]="(party?.suspension | ngtUnionKey) === 'suspended' ? 'warn' : 'success'"
             style="margin-top: 8px"
-            >{{ party?.suspension | ccUnionKey | titlecase }}</v-tag
+            >{{ party?.suspension | ngtUnionKey | titlecase }}</v-tag
         >
     </div>
 </mat-toolbar>

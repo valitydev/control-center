@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { TerminalRef } from '@vality/domain-proto/domain';
 import { ComponentChanges, TableModule, Column } from '@vality/ng-core';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { getUnionKey, getUnionValue } from '../../../../utils';
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
 import {

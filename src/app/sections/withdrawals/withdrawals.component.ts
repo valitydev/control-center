@@ -19,13 +19,13 @@ import {
     countChanged,
     debounceTimeWithFirst,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
-import { getUnionKey } from '../../../utils';
 import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { AmountCurrencyService } from '../../shared/services';

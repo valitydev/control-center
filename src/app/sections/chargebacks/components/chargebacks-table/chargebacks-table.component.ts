@@ -2,9 +2,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { InvoicePaymentChargebackStatus } from '@vality/magista-proto/internal/proto/domain';
 import { StatChargeback } from '@vality/magista-proto/magista';
 import { LoadOptions, Column, TagColumn } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
-import { getUnionKey } from '../../../../../utils';
 import { AmountCurrencyService } from '../../../../shared/services';
 
 @Component({

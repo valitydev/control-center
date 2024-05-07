@@ -1,7 +1,7 @@
 <cc-page-layout [description]="(payout$ | async)?.id" [progress]="progress$ | async" title="Payout">
     <cc-page-layout-actions *ngIf="payout$ | async as payout">
         <button
-            [disabled]="canBeCancelled(payout.status | ccUnionKey)"
+            [disabled]="canBeCancelled(payout.status | ngtUnionKey)"
             color="warn"
             mat-raised-button
             (click)="cancel(payout.id)"
@@ -9,7 +9,7 @@
             Cancel
         </button>
         <button
-            [disabled]="canBeConfirmed(payout.status | ccUnionKey)"
+            [disabled]="canBeConfirmed(payout.status | ngtUnionKey)"
             color="primary"
             mat-raised-button
             (click)="confirm(payout.id)"
@@ -31,7 +31,7 @@
                         {{ payout.currency.symbolic_code | ccCurrency }}
                     </cc-details-item>
                     <cc-details-item title="Status">{{
-                        payout.status | ccUnionKey
+                        payout.status | ngtUnionKey
                     }}</cc-details-item>
                     <cc-details-item *ngIf="payout.status.cancelled" title="Status Details">{{
                         payout.status.cancelled.details

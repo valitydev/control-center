@@ -15,10 +15,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, DialogModule, PipesModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { StatusModule } from '@cc/app/shared/components/status';
-import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
 
 import { PageLayoutModule } from '../../shared';

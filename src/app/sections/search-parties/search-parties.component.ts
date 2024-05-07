@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
 import { Column, createOperationColumn, QueryParamsService, UpdateOptions } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
 import { FetchPartiesService } from '@cc/app/shared/services/fetch-parties.service';
-
-import { getUnionKey } from '../../../utils';
 
 @Component({
     templateUrl: 'search-parties.component.html',

@@ -11,12 +11,13 @@ import {
     forkJoinToResult,
     Column,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map, shareReplay, tap, startWith } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
-import { parseCsv, unifyCsvItems, getUnionKey } from '@cc/utils';
+import { parseCsv, unifyCsvItems } from '@cc/utils';
 
 import { AmountCurrencyService } from '../../../../shared/services';
 

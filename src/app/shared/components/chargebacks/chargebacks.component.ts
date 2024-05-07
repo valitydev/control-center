@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/payment_processing';
 import { DialogService, Column, TableModule, createOperationColumn } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
 import { createCurrencyColumn } from '@cc/app/shared';
 import { DetailsDialogComponent } from '@cc/app/shared/components/details-dialog/details-dialog.component';
 
-import { getUnionKey } from '../../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
 @Component({

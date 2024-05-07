@@ -13,11 +13,11 @@ import {
     progressTo,
     NotifyLogService,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, switchMap, EMPTY } from 'rxjs';
 import { first, map, catchError } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { getUnionKey } from '../../../../../../utils';
 import { DomainStoreService } from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
 import { MetadataService } from '../../../../../sections/domain/services/metadata.service';

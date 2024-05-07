@@ -4,8 +4,7 @@ import {
     RoutingDelegate,
     RoutingCandidate,
 } from '@vality/domain-proto/domain';
-
-import { getUnionKey } from '../../../../utils';
+import { getUnionKey } from '@vality/ng-thrift';
 
 export interface TerminalShopWalletDelegate {
     delegate: RoutingDelegate;

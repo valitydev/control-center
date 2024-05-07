@@ -7,7 +7,7 @@
                 placeholder="Status"
             >
                 <mat-option *ngFor="let status of statuses" [value]="status">{{
-                    status | keyTitle | titlecase
+                    status | ngtKeyTitle | titlecase
                 }}</mat-option>
             </mat-select>
         </mat-form-field>

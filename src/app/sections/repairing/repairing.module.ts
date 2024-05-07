@@ -21,8 +21,9 @@ import {
     EnumKeysPipe,
     FiltersModule,
 } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule, ThriftPipesModule } from '@cc/app/shared';
+import { PageLayoutModule } from '@cc/app/shared';
 import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 

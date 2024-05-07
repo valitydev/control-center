@@ -1,7 +1,6 @@
 import { Predicate } from '@vality/domain-proto/domain';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
-
-import { getUnionKey, getUnionValue } from '../../../../utils';
 
 export function formatPredicate(predicate: Predicate, level = 0) {
     if (!predicate) {

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { DetailsItemModule } from '@cc/components/details-item';
 
 import { InternationalBankAccountDetailsComponent } from './components/international-bank-account-details/international-bank-account-details.component';

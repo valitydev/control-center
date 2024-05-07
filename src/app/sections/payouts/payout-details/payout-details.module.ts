@@ -5,10 +5,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ActionsModule, TableModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { ShopDetailsModule, PageLayoutModule } from '@cc/app/shared/components';
 import { PayoutToolDetailsModule } from '@cc/app/shared/components/payout-tool-details/payout-tool-details.module';
-import { CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
+import { CommonPipesModule } from '@cc/app/shared/pipes';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 

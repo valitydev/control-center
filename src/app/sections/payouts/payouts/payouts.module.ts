@@ -19,6 +19,7 @@ import {
     FiltersModule,
     EnumKeysPipe,
 } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import {
     PayoutToolFieldModule,
@@ -27,7 +28,7 @@ import {
     PageLayoutModule,
 } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { CommonPipesModule, ThriftPipesModule } from '@cc/app/shared/pipes';
+import { CommonPipesModule } from '@cc/app/shared/pipes';
 
 import { CancelPayoutDialogComponent } from './components/cancel-payout-dialog/cancel-payout-dialog.component';
 import { CreatePayoutDialogComponent } from './components/create-payout-dialog/create-payout-dialog.component';
