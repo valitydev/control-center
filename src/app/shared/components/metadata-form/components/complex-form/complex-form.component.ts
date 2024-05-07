@@ -13,7 +13,7 @@ import { merge } from 'rxjs';
 
 import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
+import { ThriftData } from '../../types/thrift-data';
 
 function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
     formArray.clear({ emitEvent: false });
@@ -35,7 +35,7 @@ export class ComplexFormComponent<V, K = never>
     extends FormComponentSuperclass<ComplexType<V, K>>
     implements OnInit, Validator
 {
-    @Input() data: MetadataFormData<SetType | MapType | ListType>;
+    @Input() data: ThriftData<SetType | MapType | ListType>;
     @Input() extensions: MetadataFormExtension[];
 
     valueControls = new FormArray<AbstractControl<V>>([]);

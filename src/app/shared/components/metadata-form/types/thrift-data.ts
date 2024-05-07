@@ -16,9 +16,9 @@ export enum TypeGroup {
     Object = 'object',
 }
 
-export function getAliases(data: MetadataFormData): MetadataFormData[] {
-    let alias: MetadataFormData = data?.parent;
-    const path: MetadataFormData[] = [];
+export function getAliases(data: ThriftData): ThriftData[] {
+    let alias: ThriftData = data?.parent;
+    const path: ThriftData[] = [];
     while (alias && alias.objectType === 'typedef' && alias.parent) {
         path.push(alias);
         alias = alias?.parent;
@@ -26,21 +26,13 @@ export function getAliases(data: MetadataFormData): MetadataFormData[] {
     return path;
 }
 
-export function getByType(
-    data: MetadataFormData,
-    type: string,
-    namespace: string,
-): MetadataFormData {
+export function getByType(data: ThriftData, type: string, namespace: string): ThriftData {
     return data
         ? [data, ...getAliases(data)].find((d) => d.type === type && d.namespace === namespace)
         : null;
 }
 
-export function isTypeWithAliases(
-    data: MetadataFormData,
-    type: string,
-    namespace: string,
-): boolean {
+export function isTypeWithAliases(data: ThriftData, type: string, namespace: string): boolean {
     return Boolean(getByType(data, type, namespace));
 }
 
@@ -48,10 +40,7 @@ export function isRequiredField(field: Field): boolean {
     return field?.option === 'required'; // optional even if not explicitly stated
 }
 
-export class MetadataFormData<
-    T extends ValueType = ValueType,
-    S extends StructureType = StructureType,
-> {
+export class ThriftData<T extends ValueType = ValueType, S extends StructureType = StructureType> {
     typeGroup: TypeGroup;
 
     namespace: string;
@@ -66,7 +55,7 @@ export class MetadataFormData<
      * Parent who is not typedef
      */
     get trueParent() {
-        let data: MetadataFormData = this.parent;
+        let data: ThriftData = this.parent;
         while (data?.objectType === 'typedef') {
             data = data.parent;
         }
@@ -77,12 +66,12 @@ export class MetadataFormData<
      * Path to the object without aliases
      */
     get trueTypeNode() {
-        const typedefs: MetadataFormData<ValueType, 'typedef'>[] = [];
-        let currentData: MetadataFormData = this as never;
+        const typedefs: ThriftData<ValueType, 'typedef'>[] = [];
+        let currentData: ThriftData = this as never;
         while (currentData.objectType === 'typedef') {
             typedefs.push(currentData as never);
             currentData = currentData.create({
-                type: (currentData as MetadataFormData<ValueType, 'typedef'>).ast.type,
+                type: (currentData as ThriftData<ValueType, 'typedef'>).ast.type,
             });
         }
         return { data: currentData, typedefs };
@@ -97,7 +86,7 @@ export class MetadataFormData<
         namespace: string,
         type: T,
         public field?: Field,
-        public parent?: MetadataFormData,
+        public parent?: ThriftData,
     ) {
         this.setNamespaceType(namespace, type);
         this.setTypeGroup();
@@ -106,8 +95,8 @@ export class MetadataFormData<
         }
     }
 
-    create(params: { type?: ValueType; field?: Field }): MetadataFormData {
-        return new MetadataFormData(
+    create(params: { type?: ValueType; field?: Field }): ThriftData {
+        return new ThriftData(
             this.metadata,
             this.namespace,
             params.type ?? params.field?.type,

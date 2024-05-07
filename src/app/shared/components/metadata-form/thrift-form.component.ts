@@ -7,12 +7,12 @@ import { Field, ValueType } from '@vality/thrift-ts';
 import { Observable, BehaviorSubject, defer, switchMap } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 
-import { MetadataFormData } from './types/metadata-form-data';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
     getExtensionsResult,
 } from './types/metadata-form-extension';
+import { ThriftData } from './types/thrift-data';
 
 @Component({
     selector: 'cc-metadata-form',
@@ -28,12 +28,12 @@ export class ThriftFormComponent<T>
     @Input() namespace: string;
     @Input() type: ValueType;
     @Input() field?: Field;
-    @Input() parent?: MetadataFormData;
+    @Input() parent?: ThriftData;
     @Input() extensions?: MetadataFormExtension[];
 
     @HostBinding('class.cc-metadata-form-hidden') hidden = false;
 
-    data: MetadataFormData;
+    data: ThriftData;
     extensionResult$: Observable<MetadataFormExtensionResult> = defer(() => this.updated$).pipe(
         switchMap(() => getExtensionsResult(this.extensions, this.data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -61,7 +61,7 @@ export class ThriftFormComponent<T>
     ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
             try {
-                this.data = new MetadataFormData(
+                this.data = new ThriftData(
                     this.metadata,
                     this.namespace,
                     this.type,

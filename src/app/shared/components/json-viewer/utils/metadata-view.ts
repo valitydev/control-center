@@ -5,7 +5,7 @@ import isObject from 'lodash-es/isObject';
 import { Observable, of, switchMap, combineLatest, defer } from 'rxjs';
 import { map, shareReplay, distinctUntilChanged, startWith } from 'rxjs/operators';
 
-import { MetadataFormData } from '../../metadata-form';
+import { ThriftData } from '../../metadata-form';
 
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';
@@ -58,8 +58,7 @@ export class MetadataViewItem {
                 items.length > 1 ||
                 isObject(keyValue) ||
                 key?.data ||
-                (data?.trueTypeNode?.data as MetadataFormData<SetType | ListType | MapType>)?.type
-                    ?.name
+                (data?.trueTypeNode?.data as ThriftData<SetType | ListType | MapType>)?.type?.name
             ) {
                 return of([]);
             }
@@ -148,7 +147,7 @@ export class MetadataViewItem {
     constructor(
         private value: unknown,
         private key?: MetadataViewItem,
-        private data?: MetadataFormData,
+        private data?: ThriftData,
         private extensions?: MetadataViewExtension[],
     ) {}
 
@@ -160,7 +159,7 @@ export class MetadataViewItem {
                     if (
                         trueData.objectType === 'struct' ||
                         trueData.objectType === 'union' ||
-                        (trueData as MetadataFormData<SetType | ListType | MapType>).type?.name
+                        (trueData as ThriftData<SetType | ListType | MapType>).type?.name
                     ) {
                         const types = getChildrenTypes(trueData);
                         return getEntries(value).map(([itemKey, itemValue]) => {
@@ -197,10 +196,10 @@ export class MetadataViewItem {
         return isEmpty(value) || ext?.hidden ? null : value;
     }
 
-    private getRenderValue(value: unknown, data: MetadataFormData) {
+    private getRenderValue(value: unknown, data: ThriftData) {
         if (data?.trueTypeNode?.data?.objectType === 'enum') {
             return (
-                (data.trueTypeNode.data as MetadataFormData<ValueType, 'enum'>).ast.items.find(
+                (data.trueTypeNode.data as ThriftData<ValueType, 'enum'>).ast.items.find(
                     (i, idx) => {
                         if ('value' in i) {
                             return i.value === value;

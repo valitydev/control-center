@@ -3,11 +3,11 @@ import { ThemePalette } from '@angular/material/core';
 import { Observable, combineLatest, switchMap, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { MetadataFormData } from './metadata-form-data';
+import { ThriftData } from './thrift-data';
 
 export type MetadataFormExtension = {
-    determinant: (data: MetadataFormData) => Observable<boolean>;
-    extension: (data: MetadataFormData) => Observable<MetadataFormExtensionResult>;
+    determinant: (data: ThriftData) => Observable<boolean>;
+    extension: (data: ThriftData) => Observable<MetadataFormExtensionResult>;
 };
 
 export interface Converter<O = unknown, I = O> {
@@ -35,7 +35,7 @@ export interface MetadataFormExtensionOption {
 
 export function getExtensionsResult(
     sourceExtensions: MetadataFormExtension[],
-    data: MetadataFormData,
+    data: ThriftData,
 ): Observable<MetadataFormExtensionResult> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data))).pipe(

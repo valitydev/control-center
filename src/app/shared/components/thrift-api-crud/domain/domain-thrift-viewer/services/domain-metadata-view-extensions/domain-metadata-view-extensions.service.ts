@@ -14,7 +14,7 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
-import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
+import { isTypeWithAliases, ThriftData } from '@cc/app/shared/components/metadata-form';
 
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
@@ -94,14 +94,11 @@ export class DomainMetadataViewExtensionsService {
     }
 
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {
-        const domainFields = new MetadataFormData<string, 'struct'>(
-            metadata,
-            'domain',
-            'DomainObject',
-        ).ast;
+        const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
+            .ast;
         return domainFields.map((f) => {
             const objectKey = f.name as keyof DomainObject;
-            const objectFields = new MetadataFormData<string, 'struct'>(
+            const objectFields = new ThriftData<string, 'struct'>(
                 metadata,
                 'domain',
                 f.type as string,

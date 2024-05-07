@@ -18,8 +18,8 @@ import {
     getAliases,
 } from '@cc/app/shared/components/metadata-form';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
 import { getExtensionsResult } from '../../types/metadata-form-extension';
+import { ThriftData } from '../../types/thrift-data';
 
 @Component({
     selector: 'cc-primitive-field',
@@ -31,7 +31,7 @@ export class PrimitiveFieldComponent<T>
     extends FormControlSuperclass<T>
     implements OnChanges, OnInit
 {
-    @Input() data: MetadataFormData<ThriftType>;
+    @Input() data: ThriftData<ThriftType>;
     @Input() extensions: MetadataFormExtension[];
 
     extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
@@ -95,7 +95,7 @@ export class PrimitiveFieldComponent<T>
         }
     }
 
-    private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
+    private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
     private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
 
     constructor(private destroyRef: DestroyRef) {

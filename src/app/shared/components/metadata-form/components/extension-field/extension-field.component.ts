@@ -7,13 +7,13 @@ import { ThriftType } from '@vality/thrift-ts';
 import { defer, switchMap, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { shareReplay, first, map, pluck } from 'rxjs/operators';
 
-import { getAliases, MetadataFormData } from '../../types/metadata-form-data';
 import {
     Converter,
     MetadataFormExtension,
     MetadataFormExtensionResult,
     getExtensionsResult,
 } from '../../types/metadata-form-extension';
+import { getAliases, ThriftData } from '../../types/thrift-data';
 
 @Component({
     selector: 'cc-extension-field',
@@ -24,7 +24,7 @@ export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>
     implements Validator, OnChanges, OnInit
 {
-    @Input() data: MetadataFormData<ThriftType>;
+    @Input() data: ThriftData<ThriftType>;
     @Input() extensions: MetadataFormExtension[];
 
     control = new FormControl<T>(null);
@@ -46,7 +46,7 @@ export class ExtensionFieldComponent<T>
             .join(', ');
     }
 
-    private data$ = new ReplaySubject<MetadataFormData>(1);
+    private data$ = new ReplaySubject<ThriftData>(1);
     private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
     private converter$: Observable<Converter> = this.extensionResult$.pipe(
         map(

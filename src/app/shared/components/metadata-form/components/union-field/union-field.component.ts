@@ -12,8 +12,8 @@ import { Field } from '@vality/thrift-ts';
 import { merge, ReplaySubject, defer } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { ThriftData } from '../../types/thrift-data';
 import { getDefaultValue } from '../../utils';
 
 @Component({
@@ -25,7 +25,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnInit, Validator, OnChanges
 {
-    @Input() data: MetadataFormData<string, 'union'>;
+    @Input() data: ThriftData<string, 'union'>;
     @Input() extensions: MetadataFormExtension[];
 
     fieldControl = new FormControl() as FormControl<Field>;
@@ -40,7 +40,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    private data$ = new ReplaySubject<MetadataFormData<string, 'union'>>(1);
+    private data$ = new ReplaySubject<ThriftData<string, 'union'>>(1);
 
     constructor(private destroyRef: DestroyRef) {
         super();

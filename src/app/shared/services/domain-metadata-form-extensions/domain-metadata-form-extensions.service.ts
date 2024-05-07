@@ -11,7 +11,7 @@ import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
 import {
-    MetadataFormData,
+    ThriftData,
     MetadataFormExtension,
     isTypeWithAliases,
 } from '../../components/metadata-form';
@@ -110,11 +110,8 @@ export class DomainMetadataFormExtensionsService {
     }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
-        const domainFields = new MetadataFormData<string, 'struct'>(
-            metadata,
-            'domain',
-            'DomainObject',
-        ).ast;
+        const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
+            .ast;
         return domainFields.map((f) =>
             this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
         );
@@ -125,8 +122,7 @@ export class DomainMetadataFormExtensionsService {
         objectType: string,
         objectKey: keyof DomainObject,
     ): MetadataFormExtension {
-        const objectFields = new MetadataFormData<string, 'struct'>(metadata, 'domain', objectType)
-            .ast;
+        const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
             this.domainStoreService.getObjects(objectKey).pipe(

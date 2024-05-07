@@ -19,8 +19,8 @@ import omitBy from 'lodash-es/omitBy';
 import { combineLatest } from 'rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 
-import { MetadataFormData, isRequiredField } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { ThriftData, isRequiredField } from '../../types/thrift-data';
 
 @Component({
     selector: 'cc-struct-form',
@@ -31,7 +31,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnChanges, OnInit
 {
-    @Input() data: MetadataFormData<string, 'struct'>;
+    @Input() data: ThriftData<string, 'struct'>;
     @Input() extensions: MetadataFormExtension[];
 
     control: FormGroup = this.fb.group<T>({} as T);
