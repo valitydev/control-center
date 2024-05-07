@@ -7,13 +7,14 @@ import {
     getErrorsTree,
     ComponentChanges,
 } from '@vality/ng-core';
+import { getFieldLabel } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 import { merge, ReplaySubject, defer } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
-import { getFieldLabel, getDefaultValue } from '../../utils';
+import { getDefaultValue } from '../../utils';
 
 @Component({
     selector: 'cc-union-field',
