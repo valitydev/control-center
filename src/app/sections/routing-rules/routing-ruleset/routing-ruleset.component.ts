@@ -12,6 +12,7 @@ import {
     DragDrop,
     correctPriorities,
 } from '@vality/ng-core';
+import { objectToJSON } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
@@ -24,7 +25,7 @@ import {
     UpdateThriftDialogComponent,
 } from '@cc/app/shared/components/thrift-api-crud';
 
-import { objectToJSON, getUnionKey } from '../../../../utils';
+import { getUnionKey } from '../../../../utils';
 import { createPredicateColumn } from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';

@@ -8,10 +8,9 @@ import {
     createControlProviders,
     FormControlSuperclass,
 } from '@vality/ng-core';
+import { objectToJSON } from '@vality/ng-thrift';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
-
-import { objectToJSON } from '@cc/utils/thrift-instance';
 
 import { MetadataFormExtension } from '../metadata-form';
 

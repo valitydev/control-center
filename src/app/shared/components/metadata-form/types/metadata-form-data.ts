@@ -1,15 +1,14 @@
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { Field, ValueType } from '@vality/thrift-ts';
-import { JsonAST } from '@vality/thrift-ts/src/thrift-parser';
-import { ValuesType } from 'utility-types';
-
 import {
     isComplexType,
     isPrimitiveType,
     parseNamespaceObjectType,
     parseNamespaceType,
     StructureType,
-} from '@cc/utils/thrift-instance';
+} from '@vality/ng-thrift';
+import { Field, ValueType } from '@vality/thrift-ts';
+import { JsonAST } from '@vality/thrift-ts/src/thrift-parser';
+import { ValuesType } from 'utility-types';
 
 export enum TypeGroup {
     Complex = 'complex',
