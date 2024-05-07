@@ -49,7 +49,7 @@ export class DepositsComponent implements OnInit {
         status: '' as QueryDsl['query']['deposits']['status'],
         deposit_id: '',
         identity_id: '',
-        wallet_id: '',
+        wallet_id: null as string,
         party_id: null as string,
     });
     deposits$ = this.fetchDepositsService.result$;

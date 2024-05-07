@@ -4,3 +4,4 @@ export * from './shop-details';
 export * from './payout-tool-details';
 export * from './payout-tool-field';
 export * from './page-layout';
+export * from './wallet-field';

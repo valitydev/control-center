@@ -19,7 +19,7 @@ import {
     SelectFieldModule,
 } from '@vality/ng-core';
 
-import { PageLayoutModule } from '../../shared';
+import { PageLayoutModule, WalletFieldModule } from '../../shared';
 import { CurrencyFieldComponent } from '../../shared/components/currency-field';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 
@@ -51,6 +51,7 @@ import { DepositsComponent } from './deposits.component';
         AutocompleteFieldModule,
         SelectFieldModule,
         CurrencyFieldComponent,
+        WalletFieldModule,
     ],
     declarations: [DepositsComponent],
 })

@@ -16,10 +16,7 @@
                 </mat-select>
             </mat-form-field>
             <v-list-field formControlName="withdrawalIds" label="Withdrawal IDs"></v-list-field>
-            <mat-form-field>
-                <mat-label>Wallet ID</mat-label>
-                <input formControlName="walletId" matInput />
-            </mat-form-field>
+            <cc-wallet-field formControlName="walletId"></cc-wallet-field>
             <v-number-range-field formControlName="amount" label="Amount"></v-number-range-field>
             <v-input-field formControlName="errorMessage" label="Error message"></v-input-field>
             <v-input-field formControlName="terminalId" label="Terminal ID"></v-input-field>

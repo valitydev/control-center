@@ -18,13 +18,13 @@ import {
     NumberRangeFieldModule,
     DateRangeFieldModule,
     InputFieldModule,
+    AutocompleteFieldModule,
 } from '@vality/ng-core';
 
-import { PageLayoutModule } from '../../shared';
+import { PageLayoutModule, WalletFieldModule, ThriftPipesModule } from '../../shared';
 import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { MetadataFormModule } from '../../shared/components/metadata-form';
-import { ThriftPipesModule } from '../../shared/pipes/thrift';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { WithdrawalsRoutingModule } from './withdrawals-routing.module';
@@ -57,6 +57,8 @@ import { WithdrawalsComponent } from './withdrawals.component';
         InputFieldModule,
         NumberRangeFieldModule,
         FistfulThriftFormComponent,
+        AutocompleteFieldModule,
+        WalletFieldModule,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })
