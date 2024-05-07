@@ -20,10 +20,9 @@ import {
     AutocompleteFieldModule,
     TagModule,
 } from '@vality/ng-core';
-import { ThriftPipesModule } from '@vality/ng-thrift';
+import { ThriftPipesModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
-import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
@@ -50,7 +49,7 @@ import { ThriftFormComponent } from './thrift-form.component';
         OverlayModule,
         MatCardModule,
         MatExpansionModule,
-        ValueTypeTitleModule,
+        ValueTypeTitlePipe,
         MatCheckboxModule,
         MatChipsModule,
         MatRadioModule,
