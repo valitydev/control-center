@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, Output, EventEmitter, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges } from '@vality/ng-core';
-import { objectToJSON } from '@vality/ng-thrift';
+import { toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
@@ -41,13 +41,13 @@ export class ThriftViewerComponent<T> implements OnChanges {
     ngOnChanges(changes: ComponentChanges<ThriftViewerComponent<T>>) {
         if (changes.value) {
             this.valueFile$.next({
-                code: JSON.stringify(objectToJSON(this.value), null, 2),
+                code: JSON.stringify(toJson(this.value), null, 2),
                 language: 'json',
             });
         }
         if (changes.compared) {
             this.comparedFile$.next({
-                code: JSON.stringify(objectToJSON(this.compared), null, 2),
+                code: JSON.stringify(toJson(this.compared), null, 2),
                 language: 'json',
             });
         }

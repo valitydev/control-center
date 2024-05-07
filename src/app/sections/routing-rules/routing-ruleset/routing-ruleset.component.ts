@@ -12,7 +12,7 @@ import {
     DragDrop,
     correctPriorities,
 } from '@vality/ng-core';
-import { objectToJSON } from '@vality/ng-thrift';
+import { toJson } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
@@ -104,7 +104,7 @@ export class RoutingRulesetComponent {
         { field: 'weight', sortable: true },
         {
             field: 'pin',
-            formatter: (d) => JSON.stringify(objectToJSON(d.pin?.features)),
+            formatter: (d) => JSON.stringify(toJson(d.pin?.features)),
             hide: true,
         },
         createOperationColumn<RoutingCandidate>([

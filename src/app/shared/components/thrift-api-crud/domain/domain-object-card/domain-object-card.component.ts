@@ -5,11 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Reference } from '@vality/domain-proto/internal/domain';
 import { ComponentChanges, DialogService } from '@vality/ng-core';
+import { isEqualThrift } from '@vality/ng-thrift';
 import { combineLatest, ReplaySubject, switchMap } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
-import { isEqualThrift } from '@cc/utils';
 
 import { SidenavInfoModule } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';

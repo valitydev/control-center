@@ -8,7 +8,7 @@ import {
     createControlProviders,
     FormControlSuperclass,
 } from '@vality/ng-core';
-import { objectToJSON } from '@vality/ng-thrift';
+import { toJson } from '@vality/ng-thrift';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
@@ -101,6 +101,6 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     }
 
     private createMonacoContent(value: unknown): string {
-        return JSON.stringify(objectToJSON(value), null, 2);
+        return JSON.stringify(toJson(value), null, 2);
     }
 }
