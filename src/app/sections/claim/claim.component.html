@@ -36,7 +36,7 @@
                 >
                     <ng-container
                         *ngSwitchCase="'party_modification'"
-                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ngtUnionKey"
+                        [ngSwitch]="modificationUnit.modification | ngtUnionValue | ngtUnionKey"
                     >
                         <cc-shop-modification-timeline-item
                             *ngSwitchCase="'shop_modification'"
@@ -55,7 +55,7 @@
                     </ng-container>
                     <ng-container
                         *ngSwitchCase="'claim_modification'"
-                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ngtUnionKey"
+                        [ngSwitch]="modificationUnit.modification | ngtUnionValue | ngtUnionKey"
                     >
                         <cc-status-modification-timeline-item
                             *ngSwitchCase="'status_modification'"
