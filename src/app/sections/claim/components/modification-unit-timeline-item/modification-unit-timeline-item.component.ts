@@ -16,6 +16,7 @@ import {
     inProgressFrom,
     progressTo,
 } from '@vality/ng-core';
+import { getUnionValue } from '@vality/ng-thrift';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap, from } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
@@ -25,7 +26,6 @@ import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
 import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { Color, StatusColor } from '@cc/app/styles';
-import { getUnionValue } from '@cc/utils/get-union-key';
 
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
 

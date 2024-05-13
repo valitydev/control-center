@@ -18,11 +18,11 @@ import {
     getValueChanges,
     countChanged,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { filter, map, shareReplay } from 'rxjs/operators';
 
-import { getUnionKey } from '../../../utils';
 import { QueryDsl } from '../../api/fistful-stat';
 import { createCurrencyColumn } from '../../shared';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';

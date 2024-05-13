@@ -1,9 +1,8 @@
 import { Router } from '@angular/router';
 import { Color } from '@vality/ng-core';
+import { ThriftData } from '@vality/ng-thrift';
 import { Observable, combineLatest, switchMap, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { MetadataFormData } from '../../metadata-form';
 
 export interface MetadataViewExtensionResult {
     key?: string;
@@ -17,9 +16,9 @@ export interface MetadataViewExtensionResult {
 }
 
 export type MetadataViewExtension = {
-    determinant: (data: MetadataFormData, value: unknown) => Observable<boolean>;
+    determinant: (data: ThriftData, value: unknown) => Observable<boolean>;
     extension: (
-        data: MetadataFormData,
+        data: ThriftData,
         value: unknown,
         viewValue: unknown,
     ) => Observable<MetadataViewExtensionResult>;
@@ -27,7 +26,7 @@ export type MetadataViewExtension = {
 
 export function getFirstDeterminedExtensionsResult(
     sourceExtensions: MetadataViewExtension[],
-    data: MetadataFormData,
+    data: ThriftData,
     value: unknown,
     viewValue: unknown,
 ): Observable<MetadataViewExtensionResult> {

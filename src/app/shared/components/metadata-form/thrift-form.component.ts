@@ -3,11 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { createControlProviders, FormControlSuperclass } from '@vality/ng-core';
+import { ThriftData } from '@vality/ng-thrift';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { Observable, BehaviorSubject, defer, switchMap } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
 
-import { MetadataFormData } from './types/metadata-form-data';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
@@ -16,11 +16,11 @@ import {
 
 @Component({
     selector: 'cc-metadata-form',
-    templateUrl: './metadata-form.component.html',
-    styleUrl: `./metadata-form.component.scss`,
-    providers: createControlProviders(() => MetadataFormComponent),
+    templateUrl: './thrift-form.component.html',
+    styleUrl: `./thrift-form.component.scss`,
+    providers: createControlProviders(() => ThriftFormComponent),
 })
-export class MetadataFormComponent<T>
+export class ThriftFormComponent<T>
     extends FormControlSuperclass<T>
     implements OnInit, OnChanges, Validator
 {
@@ -28,12 +28,12 @@ export class MetadataFormComponent<T>
     @Input() namespace: string;
     @Input() type: ValueType;
     @Input() field?: Field;
-    @Input() parent?: MetadataFormData;
+    @Input() parent?: ThriftData;
     @Input() extensions?: MetadataFormExtension[];
 
     @HostBinding('class.cc-metadata-form-hidden') hidden = false;
 
-    data: MetadataFormData;
+    data: ThriftData;
     extensionResult$: Observable<MetadataFormExtensionResult> = defer(() => this.updated$).pipe(
         switchMap(() => getExtensionsResult(this.extensions, this.data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -61,7 +61,7 @@ export class MetadataFormComponent<T>
     ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
             try {
-                this.data = new MetadataFormData(
+                this.data = new ThriftData(
                     this.metadata,
                     this.namespace,
                     this.type,

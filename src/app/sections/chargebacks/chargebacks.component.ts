@@ -17,6 +17,7 @@ import {
     debounceTimeWithFirst,
     countChanged,
 } from '@vality/ng-core';
+import { createUnion } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { filter } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -28,7 +29,6 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
-import { createUnion } from '../../../utils';
 import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 

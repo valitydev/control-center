@@ -1,7 +1,6 @@
 import { Modification } from '@vality/domain-proto/claim_management';
+import { getUnionKey } from '@vality/ng-thrift';
 import isObject from 'lodash-es/isObject';
-
-import { getUnionKey } from '../../../../utils';
 
 import { MODIFICATIONS_NAME_TREE } from './types/modifications-name-tree';
 

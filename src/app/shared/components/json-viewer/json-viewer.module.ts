@@ -8,8 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TagModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { ThriftPipesModule } from '@cc/app/shared';
 import { DetailsItemModule } from '@cc/components/details-item';
 
 import { KeyComponent } from './components/key/key.component';

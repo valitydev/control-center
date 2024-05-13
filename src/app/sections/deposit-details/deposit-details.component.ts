@@ -4,17 +4,16 @@ import { ActivatedRoute } from '@angular/router';
 import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat';
 import { Timestamp } from '@vality/fistful-proto/internal/base';
 import { formatCurrency, getImportValue } from '@vality/ng-core';
+import { getUnionKey, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { of, Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
-import { getUnionKey, getUnionValue } from '../../../utils';
 import { ManagementService } from '../../api/wallet';
 import {
     MetadataViewExtension,
     MetadataViewExtensionResult,
 } from '../../shared/components/json-viewer';
-import { isTypeWithAliases } from '../../shared/components/metadata-form';
 import { AmountCurrencyService } from '../../shared/services';
 import { FetchSourcesService } from '../sources';
 

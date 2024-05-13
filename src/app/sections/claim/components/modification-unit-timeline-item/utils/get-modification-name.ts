@@ -1,6 +1,5 @@
+import { getUnionKey } from '@vality/ng-thrift';
 import isObject from 'lodash-es/isObject';
-
-import { getUnionKey } from '@cc/utils';
 
 export function getModificationNameParts(modification: unknown): string[] {
     const parts: string[] = [];

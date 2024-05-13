@@ -1,8 +1,7 @@
+import { ThriftData, TypeGroup } from '@vality/ng-thrift';
 import { ValueType, Field, SetType, MapType, ListType } from '@vality/thrift-ts';
 
-import { MetadataFormData, TypeGroup } from '../../metadata-form';
-
-export function getChildrenTypes(sourceData: MetadataFormData): {
+export function getChildrenTypes(sourceData: ThriftData): {
     keyType?: ValueType;
     valueType?: ValueType;
     fields?: Field[];
@@ -12,21 +11,21 @@ export function getChildrenTypes(sourceData: MetadataFormData): {
         case TypeGroup.Object: {
             switch (data.objectType) {
                 case 'struct':
-                    return { fields: (data as MetadataFormData<ValueType, 'struct'>).ast };
+                    return { fields: (data as ThriftData<ValueType, 'struct'>).ast };
                 case 'union':
-                    return { fields: (data as MetadataFormData<ValueType, 'union'>).ast };
+                    return { fields: (data as ThriftData<ValueType, 'union'>).ast };
             }
             return;
         }
         case TypeGroup.Complex: {
-            if ((data as MetadataFormData<SetType | MapType | ListType>).type.name === 'map') {
+            if ((data as ThriftData<SetType | MapType | ListType>).type.name === 'map') {
                 return {
-                    keyType: (data as MetadataFormData<MapType>).type.keyType,
-                    valueType: (data as MetadataFormData<MapType>).type.valueType,
+                    keyType: (data as ThriftData<MapType>).type.keyType,
+                    valueType: (data as ThriftData<MapType>).type.valueType,
                 };
             }
             return {
-                valueType: (data as MetadataFormData<SetType | ListType>).type.valueType,
+                valueType: (data as ThriftData<SetType | ListType>).type.valueType,
             };
         }
     }

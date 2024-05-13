@@ -3,6 +3,7 @@ import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString, getImportValue } from '@vality/ng-core';
+import { ThriftData, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import * as short from 'short-uuid';
@@ -10,11 +11,7 @@ import * as short from 'short-uuid';
 import { DomainStoreService } from '@cc/app/api/domain-config';
 
 import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
-import {
-    MetadataFormData,
-    MetadataFormExtension,
-    isTypeWithAliases,
-} from '../../components/metadata-form';
+import { MetadataFormExtension } from '../../components/metadata-form';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
@@ -110,11 +107,8 @@ export class DomainMetadataFormExtensionsService {
     }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
-        const domainFields = new MetadataFormData<string, 'struct'>(
-            metadata,
-            'domain',
-            'DomainObject',
-        ).ast;
+        const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
+            .ast;
         return domainFields.map((f) =>
             this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
         );
@@ -125,8 +119,7 @@ export class DomainMetadataFormExtensionsService {
         objectType: string,
         objectKey: keyof DomainObject,
     ): MetadataFormExtension {
-        const objectFields = new MetadataFormData<string, 'struct'>(metadata, 'domain', objectType)
-            .ast;
+        const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
             this.domainStoreService.getObjects(objectKey).pipe(

@@ -1,9 +1,8 @@
 import { DomainObject } from '@vality/domain-proto/domain';
 import { inlineJson } from '@vality/ng-core';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { PickByValue, ValuesType } from 'utility-types';
-
-import { getUnionKey, getUnionValue } from '../../../../../../utils';
 
 export interface DomainObjectDetails {
     id: number | string;

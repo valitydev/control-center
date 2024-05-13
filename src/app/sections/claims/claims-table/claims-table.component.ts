@@ -10,10 +10,10 @@ import {
 import { Router } from '@angular/router';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import isObject from 'lodash-es/isObject';
 import startCase from 'lodash-es/startCase';
 
-import { getUnionKey } from '../../../../utils';
 import { createPartyColumn } from '../../../shared';
 
 @Component({

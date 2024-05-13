@@ -3,8 +3,8 @@
         {{ data.type | fieldLabel: data.field }}
         <span class="mat-secondary-text">
             ({{ data.type.name | titlecase }}:
-            {{ isKeyValue ? (keyType | valueTypeTitle | titlecase) + ' - ' : '' }}
-            {{ data.type.valueType | valueTypeTitle | titlecase }})
+            {{ isKeyValue ? (keyType | ngtValueTypeTitle | titlecase) + ' - ' : '' }}
+            {{ data.type.valueType | ngtValueTypeTitle | titlecase }})
         </span>
     </span>
     <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px', overflow: 'hidden' }">
@@ -29,7 +29,7 @@
                             </ng-template>
                         </ng-container>
                         <ng-template #edited>
-                            {{ data.type.valueType | valueTypeTitle }}
+                            {{ data.type.valueType | ngtValueTypeTitle }}
                         </ng-template>
                     </div>
                     <div *ngIf="isKeyValue && !panel.expanded">
@@ -68,5 +68,5 @@
             </ng-template>
         </mat-expansion-panel>
     </mat-accordion>
-    <button mat-button (click)="add()">Add {{ data.type.valueType | valueTypeTitle }}</button>
+    <button mat-button (click)="add()">Add {{ data.type.valueType | ngtValueTypeTitle }}</button>
 </div>

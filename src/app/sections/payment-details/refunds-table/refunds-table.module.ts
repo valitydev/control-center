@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TableModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { StatusModule, CommonPipesModule, ThriftPipesModule } from '../../../shared';
+import { StatusModule, CommonPipesModule } from '../../../shared';
 
 import { RefundsTableComponent } from './refunds-table.component';
 

@@ -15,12 +15,12 @@ import {
     DialogResponseStatus,
     ComponentChanges,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map, switchMap, Subject, defer, combineLatest } from 'rxjs';
 import { filter, shareReplay, startWith, take, first } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { getUnionKey } from '../../../../utils';
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartyManagementService } from '../../../api/payment-processing';
 import { PartyDelegateRulesetsService } from '../../../sections/routing-rules/party-delegate-rulesets';

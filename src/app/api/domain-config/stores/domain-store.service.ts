@@ -3,11 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService, handleError, inProgressFrom, progressTo } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject, filter, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
-import { getUnionKey } from '../../../../utils';
 import { DomainSecretService } from '../../../shared/services';
 import { RepositoryService } from '../repository.service';
 

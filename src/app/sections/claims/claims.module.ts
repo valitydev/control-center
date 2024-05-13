@@ -13,10 +13,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '@cc/app/shared/components';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { ThriftPipesModule } from '@cc/app/shared/pipes';
 
 import { ClaimsComponentRouting } from './claims-routing.module';
 import { ClaimsTableComponent } from './claims-table/claims-table.component';

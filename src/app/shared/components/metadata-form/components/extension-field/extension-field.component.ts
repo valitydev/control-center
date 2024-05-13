@@ -2,13 +2,11 @@ import { Component, Input, OnChanges, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator, ValidationErrors, FormControl, Validators } from '@angular/forms';
 import { FormComponentSuperclass, ComponentChanges, createControlProviders } from '@vality/ng-core';
+import { getValueTypeTitle, getAliases, ThriftData } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { defer, switchMap, ReplaySubject, Observable, combineLatest } from 'rxjs';
 import { shareReplay, first, map, pluck } from 'rxjs/operators';
 
-import { getValueTypeTitle } from '@cc/app/shared/pipes';
-
-import { getAliases, MetadataFormData } from '../../types/metadata-form-data';
 import {
     Converter,
     MetadataFormExtension,
@@ -25,7 +23,7 @@ export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>
     implements Validator, OnChanges, OnInit
 {
-    @Input() data: MetadataFormData<ThriftType>;
+    @Input() data: ThriftData<ThriftType>;
     @Input() extensions: MetadataFormExtension[];
 
     control = new FormControl<T>(null);
@@ -47,7 +45,7 @@ export class ExtensionFieldComponent<T>
             .join(', ');
     }
 
-    private data$ = new ReplaySubject<MetadataFormData>(1);
+    private data$ = new ReplaySubject<ThriftData>(1);
     private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
     private converter$: Observable<Converter> = this.extensionResult$.pipe(
         map(

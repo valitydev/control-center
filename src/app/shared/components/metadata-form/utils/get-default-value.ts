@@ -1,16 +1,15 @@
 import { ThriftAstMetadata } from '@vality/domain-proto';
+import { ThriftData, TypeGroup } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
-
-import { MetadataFormData, TypeGroup } from '../types/metadata-form-data';
 
 export function getDefaultValue(metadata: ThriftAstMetadata[], namespace: string, type: ValueType) {
     if (!type) {
         return null;
     }
-    let data: MetadataFormData;
+    let data: ThriftData;
     do {
-        data = new MetadataFormData(metadata, namespace, type);
+        data = new ThriftData(metadata, namespace, type);
         type = (data.ast as TypeDefs[string])?.type;
     } while (data.objectType === 'typedef');
     switch (data.typeGroup) {

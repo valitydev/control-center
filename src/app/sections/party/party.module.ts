@@ -5,8 +5,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbar } from '@angular/material/toolbar';
 import { NavComponent, TagModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule, ThriftPipesModule } from '../../shared';
+import { PageLayoutModule } from '../../shared';
 
 import { PartyRouting } from './party-routing.module';
 import { PartyComponent } from './party.component';

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PayoutID, PayoutStatus } from '@vality/magista-proto/magista';
 import { Column, progressTo } from '@vality/ng-core';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { FinalCashFlowPosting } from '@vality/payout-manager-proto/internal/proto/domain';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, BehaviorSubject } from 'rxjs';
@@ -10,7 +11,6 @@ import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { PartyManagementService } from '@cc/app/api/payment-processing';
 import { PayoutManagementService } from '@cc/app/api/payout-manager';
 
-import { getUnionKey, getUnionValue } from '../../../../utils';
 import { createCurrencyColumn } from '../../../shared';
 import { PayoutActionsService } from '../services/payout-actions.service';
 

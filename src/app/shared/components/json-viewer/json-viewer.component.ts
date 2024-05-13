@@ -1,11 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ThriftAstMetadata } from '@vality/domain-proto';
+import { ThriftData } from '@vality/ng-thrift';
 import { ValueType, Field } from '@vality/thrift-ts';
 import { map } from 'rxjs';
 import yaml from 'yaml';
-
-import { MetadataFormData } from '../metadata-form';
 
 import { MetadataViewItem } from './utils/metadata-view';
 import {
@@ -27,9 +26,9 @@ export class JsonViewerComponent implements OnChanges {
     @Input() namespace: string;
     @Input() type: ValueType;
     @Input() field?: Field;
-    @Input() parent?: MetadataFormData;
+    @Input() parent?: ThriftData;
 
-    @Input() data: MetadataFormData;
+    @Input() data: ThriftData;
     @Input() extensions: MetadataViewExtension[];
 
     view: MetadataViewItem;
@@ -43,7 +42,7 @@ export class JsonViewerComponent implements OnChanges {
     ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
             try {
-                this.data = new MetadataFormData(
+                this.data = new ThriftData(
                     this.metadata,
                     this.namespace,
                     this.type,

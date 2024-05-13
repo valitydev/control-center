@@ -13,7 +13,7 @@ import {
 
 import { PageLayoutModule, ShopFieldModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { MagistaThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
@@ -34,7 +34,7 @@ import { PaymentsComponent } from './payments.component';
         ReactiveFormsModule,
         TableModule,
         DialogModule,
-        MetadataFormModule,
+        ThriftFormModule,
         MatButtonModule,
         ShopFieldModule,
         InputFieldModule,

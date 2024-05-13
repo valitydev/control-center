@@ -10,7 +10,7 @@ import { TableModule, ListFieldModule, FiltersModule, SwitchButtonModule } from 
 
 import { PageLayoutModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { MetadataFormModule } from '@cc/app/shared/components/metadata-form';
+import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { CurrencyFieldComponent } from '../../shared/components/currency-field';
 
@@ -24,7 +24,7 @@ import { WalletsComponent } from './wallets.component';
         MatCardModule,
         TableModule,
         MatProgressSpinnerModule,
-        MetadataFormModule,
+        ThriftFormModule,
         ReactiveFormsModule,
         MatInputModule,
         MerchantFieldModule,

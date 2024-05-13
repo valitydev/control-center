@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
-import { NotifyLogService } from '@vality/ng-core';
-import { merge, ReplaySubject, Subject, EMPTY } from 'rxjs';
+import { NotifyLogService, inProgressFrom, progressTo } from '@vality/ng-core';
+import { ReplaySubject, Subject, EMPTY, defer, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, shareReplay, map } from 'rxjs/operators';
 
 import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
-import { progress } from '@cc/app/shared/custom-operators';
 
 @Injectable()
 export class ReceiveDepositService {
-    private receiveDeposit$ = new ReplaySubject<string>();
-    private error$ = new Subject<boolean>();
-
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    deposit$ = this.receiveDeposit$.pipe(
+    deposit$ = defer(() => this.receiveDeposit$).pipe(
         switchMap((depositId) =>
             this.fistfulStatisticsService
                 .GetDeposits({ dsl: createDsl({ deposits: { deposit_id: depositId, size: 1 } }) })
@@ -22,14 +17,17 @@ export class ReceiveDepositService {
                         this.log.error(err);
                         return EMPTY;
                     }),
-                ),
+                )
+                .pipe(progressTo(this.progress$)),
         ),
         map(({ data }) => data?.deposits[0]),
         shareReplay(1),
     );
+    isLoading$ = inProgressFrom(() => this.progress$, this.deposit$);
 
-    // eslint-disable-next-line @typescript-eslint/member-ordering
-    isLoading$ = progress(this.receiveDeposit$, merge(this.deposit$, this.error$));
+    private receiveDeposit$ = new ReplaySubject<string>();
+    private error$ = new Subject<boolean>();
+    private progress$ = new BehaviorSubject(0);
 
     constructor(
         private fistfulStatisticsService: FistfulStatisticsService,

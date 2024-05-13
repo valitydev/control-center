@@ -15,14 +15,14 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, DialogModule, PipesModule } from '@vality/ng-core';
+import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
 import { StatusModule } from '@cc/app/shared/components/status';
-import { ThriftPipesModule } from '@cc/app/shared/pipes';
 import { TimelineModule } from '@cc/components/timeline';
 
 import { PageLayoutModule } from '../../shared';
-import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
 import { ClaimRoutingModule } from './claim-routing.module';
@@ -64,7 +64,7 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         MatFormFieldModule,
         MatSelectModule,
         MatInputModule,
-        MetadataFormModule,
+        ThriftFormModule,
         MatMenuModule,
         MatDialogModule,
         MatProgressBarModule,

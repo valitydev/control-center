@@ -17,7 +17,7 @@
                 <mat-label>Statuses</mat-label>
                 <mat-select formControlName="chargeback_statuses" multiple>
                     <mat-option *ngFor="let status of statuses" [value]="status">
-                        {{ status | keyTitle | titlecase }}
+                        {{ status | ngtKeyTitle | titlecase }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -25,7 +25,7 @@
                 <mat-label>Stages</mat-label>
                 <mat-select formControlName="chargeback_stages" multiple>
                     <mat-option *ngFor="let stage of stages" [value]="stage">
-                        {{ stage | keyTitle | titlecase }}
+                        {{ stage | ngtKeyTitle | titlecase }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -33,7 +33,7 @@
                 <mat-label>Categories</mat-label>
                 <mat-select formControlName="chargeback_categories" multiple>
                     <mat-option *ngFor="let category of categories" [value]="category">
-                        {{ category | keyTitle | titlecase }}
+                        {{ category | ngtKeyTitle | titlecase }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

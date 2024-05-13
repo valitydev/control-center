@@ -6,6 +6,7 @@ import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/ng-core';
+import { getUnionValue, isTypeWithAliases, ThriftData } from '@vality/ng-thrift';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
 import { of, Observable } from 'rxjs';
@@ -13,9 +14,7 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
-import { isTypeWithAliases, MetadataFormData } from '@cc/app/shared/components/metadata-form';
 
-import { getUnionValue } from '../../../../../../../../utils';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { getDomainObjectDetails } from '../../../utils';
@@ -94,14 +93,11 @@ export class DomainMetadataViewExtensionsService {
     }
 
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {
-        const domainFields = new MetadataFormData<string, 'struct'>(
-            metadata,
-            'domain',
-            'DomainObject',
-        ).ast;
+        const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
+            .ast;
         return domainFields.map((f) => {
             const objectKey = f.name as keyof DomainObject;
-            const objectFields = new MetadataFormData<string, 'struct'>(
+            const objectFields = new ThriftData<string, 'struct'>(
                 metadata,
                 'domain',
                 f.type as string,

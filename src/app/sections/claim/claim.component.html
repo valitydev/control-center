@@ -1,7 +1,7 @@
 <cc-page-layout description="#{{ (claim$ | async)?.id }}" title="Claim">
     <cc-page-layout-actions *ngIf="claim$ | async as claim">
-        <cc-status [color]="statusColor[claim.status | ccUnionKey]">{{
-            claim.status | ccUnionKey | keyTitle | titlecase
+        <cc-status [color]="statusColor[claim.status | ngtUnionKey]">{{
+            claim.status | ngtUnionKey | ngtKeyTitle | titlecase
         }}</cc-status>
     </cc-page-layout-actions>
 
@@ -32,11 +32,11 @@
                 </cc-timeline-item>
                 <ng-container
                     *ngFor="let modificationUnit of claim.changeset"
-                    [ngSwitch]="modificationUnit.modification | ccUnionKey"
+                    [ngSwitch]="modificationUnit.modification | ngtUnionKey"
                 >
                     <ng-container
                         *ngSwitchCase="'party_modification'"
-                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ccUnionKey"
+                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ngtUnionKey"
                     >
                         <cc-shop-modification-timeline-item
                             *ngSwitchCase="'shop_modification'"
@@ -55,7 +55,7 @@
                     </ng-container>
                     <ng-container
                         *ngSwitchCase="'claim_modification'"
-                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ccUnionKey"
+                        [ngSwitch]="modificationUnit.modification | ccUnionValue | ngtUnionKey"
                     >
                         <cc-status-modification-timeline-item
                             *ngSwitchCase="'status_modification'"

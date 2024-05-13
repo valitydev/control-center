@@ -1,11 +1,11 @@
 import { Claim, PayoutToolModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
+import { isTypeWithAliases } from '@vality/ng-thrift';
 import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
 import * as short from 'short-uuid';
 
 import {
-    isTypeWithAliases,
     MetadataFormExtension,
     MetadataFormExtensionOption,
 } from '../../../components/metadata-form';

@@ -20,10 +20,9 @@ import {
     AutocompleteFieldModule,
     TagModule,
 } from '@vality/ng-core';
+import { ThriftPipesModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
-import { ThriftPipesModule } from '@cc/app/shared/pipes/thrift';
-import { ValueTypeTitleModule } from '@cc/app/shared/pipes/value-type-title';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
@@ -32,8 +31,8 @@ import { PrimitiveFieldComponent } from './components/primitive-field/primitive-
 import { StructFormComponent } from './components/struct-form/struct-form.component';
 import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
 import { UnionFieldComponent } from './components/union-field/union-field.component';
-import { MetadataFormComponent } from './metadata-form.component';
 import { FieldLabelPipe } from './pipes/field-label.pipe';
+import { ThriftFormComponent } from './thrift-form.component';
 
 @NgModule({
     imports: [
@@ -50,7 +49,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         OverlayModule,
         MatCardModule,
         MatExpansionModule,
-        ValueTypeTitleModule,
+        ValueTypeTitlePipe,
         MatCheckboxModule,
         MatChipsModule,
         MatRadioModule,
@@ -61,7 +60,7 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         TagModule,
     ],
     declarations: [
-        MetadataFormComponent,
+        ThriftFormComponent,
         PrimitiveFieldComponent,
         ComplexFormComponent,
         StructFormComponent,
@@ -71,6 +70,6 @@ import { FieldLabelPipe } from './pipes/field-label.pipe';
         FieldLabelPipe,
         ExtensionFieldComponent,
     ],
-    exports: [MetadataFormComponent],
+    exports: [ThriftFormComponent],
 })
-export class MetadataFormModule {}
+export class ThriftFormModule {}

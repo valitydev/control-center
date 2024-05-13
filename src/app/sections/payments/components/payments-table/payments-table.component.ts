@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { InvoicePaymentStatus } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
 import { Column, TagColumn, LoadOptions, createOperationColumn } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
 import { AmountCurrencyService } from '@cc/app/shared/services';
-import { getUnionKey } from '@cc/utils';
 
 import { createFailureColumn, createPartyColumn, createShopColumn } from '../../../../shared';
 import { createProviderColumn } from '../../../../shared/utils/table/create-provider-column';

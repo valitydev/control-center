@@ -7,13 +7,13 @@ import {
     getErrorsTree,
     ComponentChanges,
 } from '@vality/ng-core';
+import { getFieldLabel, ThriftData } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 import { merge, ReplaySubject, defer } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
-import { MetadataFormData } from '../../types/metadata-form-data';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
-import { getFieldLabel, getDefaultValue } from '../../utils';
+import { getDefaultValue } from '../../utils';
 
 @Component({
     selector: 'cc-union-field',
@@ -24,7 +24,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnInit, Validator, OnChanges
 {
-    @Input() data: MetadataFormData<string, 'union'>;
+    @Input() data: ThriftData<string, 'union'>;
     @Input() extensions: MetadataFormExtension[];
 
     fieldControl = new FormControl() as FormControl<Field>;
@@ -39,7 +39,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    private data$ = new ReplaySubject<MetadataFormData<string, 'union'>>(1);
+    private data$ = new ReplaySubject<ThriftData<string, 'union'>>(1);
 
     constructor(private destroyRef: DestroyRef) {
         super();

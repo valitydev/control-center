@@ -10,15 +10,14 @@ import {
     formatCurrency,
     Color,
 } from '@vality/ng-core';
+import { getUnionKey, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { Subject, merge, defer, Observable, of } from 'rxjs';
 import { shareReplay, switchMap, map } from 'rxjs/operators';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 
-import { getUnionKey, getUnionValue } from '../../../utils';
 import { MetadataViewExtension } from '../../shared/components/json-viewer';
-import { isTypeWithAliases } from '../../shared/components/metadata-form';
 import { DomainMetadataViewExtensionsService } from '../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { AmountCurrencyService } from '../../shared/services';
 

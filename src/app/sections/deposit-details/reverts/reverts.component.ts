@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DepositStatus, StatDeposit, StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
 import { DialogService, Column, UpdateOptions } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
 import { createCurrencyColumn } from '@cc/app/shared/utils';
-
-import { getUnionKey } from '../../../../utils';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
 import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.service';

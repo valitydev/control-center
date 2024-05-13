@@ -7,6 +7,7 @@ import {
     createControlProviders,
     getValueChanges,
 } from '@vality/ng-core';
+import { getValueTypeTitle, ThriftData, getAliases } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -14,11 +15,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,
-    getAliases,
 } from '@cc/app/shared/components/metadata-form';
 
-import { getValueTypeTitle } from '../../../../pipes';
-import { MetadataFormData } from '../../types/metadata-form-data';
 import { getExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({
@@ -31,7 +29,7 @@ export class PrimitiveFieldComponent<T>
     extends FormControlSuperclass<T>
     implements OnChanges, OnInit
 {
-    @Input() data: MetadataFormData<ThriftType>;
+    @Input() data: ThriftData<ThriftType>;
     @Input() extensions: MetadataFormExtension[];
 
     extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
@@ -95,7 +93,7 @@ export class PrimitiveFieldComponent<T>
         }
     }
 
-    private data$ = new ReplaySubject<MetadataFormData<ThriftType>>(1);
+    private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
     private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
 
     constructor(private destroyRef: DestroyRef) {

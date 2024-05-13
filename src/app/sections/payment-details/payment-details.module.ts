@@ -13,7 +13,7 @@ import { HeadlineModule } from '@cc/components/headline';
 
 import { ChargebacksComponent } from '../../shared/components/chargebacks/chargebacks.component';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
-import { MetadataFormModule } from '../../shared/components/metadata-form';
+import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
 
@@ -36,7 +36,7 @@ import { RefundsTableModule } from './refunds-table';
         ChargebacksComponent,
         ActionsModule,
         DialogModule,
-        MetadataFormModule,
+        ThriftFormModule,
         ReactiveFormsModule,
         PageLayoutModule,
         ThriftViewerModule,

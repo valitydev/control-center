@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
-
-import { getUnionKey } from '@cc/utils/get-union-key';
 
 @Pipe({
     name: 'toStatus',
