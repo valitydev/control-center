@@ -24,7 +24,7 @@ export class DominatorService {
             map(toWachterHeaders('Dominator')),
         );
         const metadata$ = from(
-            import('@vality/fistful-proto/metadata.json').then(
+            import('@vality/dominator-proto/metadata.json').then(
                 (m) => m.default as ThriftAstMetadata[],
             ),
         );

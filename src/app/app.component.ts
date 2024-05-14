@@ -18,6 +18,7 @@ import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
+import { ROUTING_CONFIG as TARIFFS_ROUTING_CONFIG } from './sections/tariffs/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
@@ -80,6 +81,11 @@ export class AppComponent {
                     url: '/sources',
                     services: SOURCES_ROUTING_CONFIG.services,
                 },
+                {
+                    label: 'Tariffs',
+                    url: '/tariffs',
+                    services: TARIFFS_ROUTING_CONFIG.services,
+                },
             ],
             [
                 {
@@ -103,41 +109,40 @@ export class AppComponent {
                     services: CLAIMS_ROUTING_CONFIG.services,
                 },
             ],
-            sortBy(
-                [
-                    {
-                        label: 'Payments',
-                        url: '/payments',
-                        services: PAYMENTS_ROUTING_CONFIG.services,
-                    },
-                    {
-                        label: 'Payouts',
-                        url: '/payouts',
-                        services: PAYOUTS_ROUTING_CONFIG.services,
-                    },
-                    {
-                        label: 'Chargebacks',
-                        url: '/chargebacks',
-                        services: WALLETS_ROUTING_CONFIG.services,
-                    },
-                    {
-                        label: 'Deposits',
-                        url: '/deposits',
-                        services: DEPOSITS_ROUTING_CONFIG.services,
-                    },
-                    {
-                        label: 'Withdrawals',
-                        url: '/withdrawals',
-                        services: WITHDRAWALS_ROUTING_CONFIG.services,
-                    },
-                ],
-                'label',
-            ),
+            [
+                {
+                    label: 'Payments',
+                    url: '/payments',
+                    services: PAYMENTS_ROUTING_CONFIG.services,
+                },
+                {
+                    label: 'Payouts',
+                    url: '/payouts',
+                    services: PAYOUTS_ROUTING_CONFIG.services,
+                },
+                {
+                    label: 'Chargebacks',
+                    url: '/chargebacks',
+                    services: WALLETS_ROUTING_CONFIG.services,
+                },
+                {
+                    label: 'Deposits',
+                    url: '/deposits',
+                    services: DEPOSITS_ROUTING_CONFIG.services,
+                },
+                {
+                    label: 'Withdrawals',
+                    url: '/withdrawals',
+                    services: WITHDRAWALS_ROUTING_CONFIG.services,
+                },
+            ],
         ];
-        return menuItems.map((group) =>
-            group.filter((item) =>
-                this.appAuthGuardService.userHasSomeServiceMethods(item.services),
-            ),
-        );
+        return menuItems
+            .map((group) =>
+                group.filter((item) =>
+                    this.appAuthGuardService.userHasSomeServiceMethods(item.services),
+                ),
+            )
+            .map((group) => sortBy(group, 'label'));
     }
 }

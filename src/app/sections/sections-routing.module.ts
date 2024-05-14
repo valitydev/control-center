@@ -65,6 +65,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./shops').then((m) => m.ShopsModule),
     },
     {
+        path: 'tariffs',
+        loadChildren: () => import('./tariffs').then((m) => m.TariffsModule),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },
