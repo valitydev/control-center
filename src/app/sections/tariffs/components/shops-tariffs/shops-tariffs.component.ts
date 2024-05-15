@@ -75,19 +75,9 @@ export class ShopsTariffsComponent implements OnInit {
     hasMore$ = this.shopsTariffsService.hasMore$;
     isLoading$ = this.shopsTariffsService.isLoading$;
     columns: Column<ShopTermSet>[] = [
-        //     owner_id: domain.PartyID;
-        // shop_id?: domain.ShopID;
-        // contract_id: domain.ContractID;
-        // shop_name: string;
-        // term_set_name: string;
-        // currency: string;
-        // current_term_set: domain.TermSetHierarchyObject;
-        // term_set_history?: domain.TermSetHierarchyObject[];
-
         createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id),
         createPartyColumn<ShopTermSet>('owner_id'),
         { field: 'contract_id' },
-        { field: 'term_set_name' },
         { field: 'currency' },
         {
             field: 'current_term_set',
