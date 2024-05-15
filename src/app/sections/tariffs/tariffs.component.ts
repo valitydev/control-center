@@ -15,7 +15,7 @@ import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 export class TariffsComponent {
     links: Link[] = [
         {
-            label: 'Shops tariffs',
+            label: 'Shops',
             url: 'shops',
         },
     ];
