@@ -27,6 +27,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import {
+    createContractColumn,
     createPartyColumn,
     createShopColumn,
     PageLayoutModule,
@@ -78,6 +79,11 @@ export class ShopsTariffsComponent implements OnInit {
         createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id),
         createPartyColumn<ShopTermSet>('owner_id'),
         { field: 'contract_id' },
+        createContractColumn<ShopTermSet>(
+            (d) => d.contract_id,
+            (d) => d.owner_id,
+            (d) => d.shop_id,
+        ),
         { field: 'currency' },
         {
             field: 'current_term_set',
