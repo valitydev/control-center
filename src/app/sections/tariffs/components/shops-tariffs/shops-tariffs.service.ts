@@ -35,7 +35,7 @@ export class ShopsTariffsService extends FetchSuperclass<ShopTermSet, ShopSearch
             .pipe(
                 map(({ terms, continuation_token }) => ({
                     result: terms,
-                    continuation_token,
+                    continuationToken: continuation_token,
                 })),
                 handleError(this.log.error),
             );
