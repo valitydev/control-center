@@ -78,7 +78,6 @@ export class ShopsTariffsComponent implements OnInit {
     columns: Column<ShopTermSet>[] = [
         createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id),
         createPartyColumn<ShopTermSet>('owner_id'),
-        { field: 'contract_id' },
         createContractColumn<ShopTermSet>(
             (d) => d.contract_id,
             (d) => d.owner_id,
