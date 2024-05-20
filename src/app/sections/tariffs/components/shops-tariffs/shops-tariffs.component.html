@@ -1,0 +1,27 @@
+<cc-page-layout title="Shops tariffs">
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active$ | async" (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
+            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+            <cc-shop-field
+                [partyId]="filtersForm.value.party_id"
+                formControlName="shop_ids"
+                multiple
+            ></cc-shop-field>
+            <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
+            <v-list-field formControlName="term_sets_names" label="Term sets names"></v-list-field>
+            <v-list-field formControlName="term_sets_ids" label="Term sets IDs"></v-list-field>
+        </ng-template>
+    </v-filters>
+
+    <v-table
+        [columns]="columns"
+        [data]="tariffs$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="isLoading$ | async"
+        (more)="more()"
+        (update)="update($event)"
+    ></v-table>
+</cc-page-layout>

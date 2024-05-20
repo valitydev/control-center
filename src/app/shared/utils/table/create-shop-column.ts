@@ -2,9 +2,11 @@ import { inject } from '@angular/core';
 import { PossiblyAsync, ColumnObject, getPossiblyAsyncObservable } from '@vality/ng-core';
 import get from 'lodash-es/get';
 import { combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
+import { ShopCardComponent } from '../../components/shop-card/shop-card.component';
+import { SidenavInfoService } from '../../components/sidenav-info';
 
 export function createShopColumn<T extends object>(
     field: ColumnObject<T>['field'],
@@ -16,7 +18,7 @@ export function createShopColumn<T extends object>(
         selectShopId = (d) => get(d, field);
     }
     const partiesStoreService = inject(PartiesStoreService);
-    // const sidenavInfoService = inject(SidenavInfoService);
+    const sidenavInfoService = inject(SidenavInfoService);
     return {
         field,
         header: 'Shop',
@@ -31,14 +33,16 @@ export function createShopColumn<T extends object>(
                 ),
                 map(([party, shopId]) => party.shops.get(shopId).details.name),
             ),
-        // TODO
-        // click: (d) => {
-        //     combineLatest([selectPartyId(d), selectShopId(d)])
-        //         .pipe(take(1))
-        //         .subscribe(([partyId, id]) => {
-        //             sidenavInfoService.toggle(ShopCardComponent, { id, partyId });
-        //         });
-        // },
+        click: (d) => {
+            combineLatest([
+                getPossiblyAsyncObservable(selectPartyId(d)),
+                getPossiblyAsyncObservable(selectShopId(d)),
+            ])
+                .pipe(take(1))
+                .subscribe(([partyId, id]) => {
+                    sidenavInfoService.toggle(ShopCardComponent, { id, partyId });
+                });
+        },
         ...params,
     } as ColumnObject<T>;
 }

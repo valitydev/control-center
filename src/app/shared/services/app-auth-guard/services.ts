@@ -8,4 +8,5 @@ export enum Services {
     Invoicing = 'Invoicing',
     RepairManagement = 'RepairManagement',
     PayoutManagement = 'PayoutManagement',
+    Dominator = 'Dominator',
 }
