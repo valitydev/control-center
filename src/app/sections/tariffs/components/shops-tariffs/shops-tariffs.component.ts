@@ -26,6 +26,7 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
+import { TermsetsCardComponent } from '@cc/app/sections/tariffs/components/termsets-card/termsets-card.component';
 import {
     createContractColumn,
     createPartyColumn,
@@ -35,6 +36,7 @@ import {
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
+import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
@@ -88,7 +90,11 @@ export class ShopsTariffsComponent implements OnInit {
             field: 'current_term_set',
             formatter: (d) => d.current_term_set?.data?.name,
             description: (d) => d.current_term_set?.data?.description,
-            tooltip: (d) => d.current_term_set,
+            // tooltip: (d) => d.current_term_set,
+            click: (d) =>
+                this.sidenavInfoService.toggle(TermsetsCardComponent, {
+                    data: d?.current_term_set,
+                }),
         },
         {
             field: 'term_set_history',
@@ -109,6 +115,7 @@ export class ShopsTariffsComponent implements OnInit {
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private dr: DestroyRef,
+        private sidenavInfoService: SidenavInfoService,
     ) {}
 
     ngOnInit() {
