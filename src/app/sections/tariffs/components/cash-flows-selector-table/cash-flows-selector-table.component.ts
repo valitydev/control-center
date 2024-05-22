@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Rational } from '@vality/domain-proto/internal/base';
 import {
     CashFlowDecision,
@@ -6,7 +6,6 @@ import {
     CashFlowSelector,
     CashVolume,
 } from '@vality/domain-proto/internal/domain';
-import { TimedTermSet } from '@vality/dominator-proto/internal/proto/domain';
 import { Column, formatCurrency, TableModule } from '@vality/ng-core';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import round from 'lodash-es/round';
@@ -54,20 +53,15 @@ function formatCashFlowDecisions(d: CashFlowDecision[]) {
 }
 
 @Component({
-    selector: 'cc-termsets-table',
+    selector: 'cc-cash-flows-selector-table',
     standalone: true,
     imports: [TableModule],
-    templateUrl: './termsets-table.component.html',
+    templateUrl: './cash-flows-selector-table.component.html',
     styles: ``,
 })
-export class TermsetsTableComponent {
-    data = input<TimedTermSet[]>();
-    cashFlowsData = computed(
-        () =>
-            this.data()
-                ?.map?.((t) => t?.terms?.payments?.fees)
-                ?.filter(Boolean),
-    );
+export class CashFlowsSelectorTableComponent {
+    data = input<CashFlowSelector[]>();
+
     columns: Column<CashFlowSelector>[] = [
         {
             field: 'decisions',

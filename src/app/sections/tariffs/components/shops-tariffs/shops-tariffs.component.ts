@@ -92,7 +92,7 @@ export class ShopsTariffsComponent implements OnInit {
             description: (d) => d.current_term_set?.data?.description,
             // tooltip: (d) => d.current_term_set,
             click: (d) =>
-                this.sidenavInfoService.toggle(TermsetsCardComponent, {
+                this.sidenavInfoService.open(TermsetsCardComponent, {
                     data: d?.current_term_set,
                 }),
         },
