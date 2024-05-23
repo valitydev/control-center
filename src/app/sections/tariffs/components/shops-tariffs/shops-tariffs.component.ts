@@ -29,6 +29,7 @@ import {
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { map, shareReplay } from 'rxjs/operators';
+import { DomainObjectCardComponent } from 'src/app/shared/components/thrift-api-crud';
 import { Overwrite } from 'utility-types';
 
 import {
@@ -111,12 +112,6 @@ function getInlineDecisions(
         }
         return acc;
     }, [] as InlineCashFlowSelector[]);
-    // .filter(
-    //     (v) =>
-    //         !v?.value ||
-    //         (getUnionKey(v?.value?.source) === 'merchant' &&
-    //             getUnionKey(v?.value?.destination) === 'system'),
-    // );
 }
 
 @Component({
@@ -165,11 +160,10 @@ export class ShopsTariffsComponent implements OnInit {
                 d.current_term_set?.data?.description ||
                 (d.current_term_set?.ref?.id ? `#${d.current_term_set?.ref?.id}` : ''),
             description: (d) => d.current_term_set?.data?.description,
-            // tooltip: (d) => d.current_term_set,
-            // click: (d) =>
-            //     this.sidenavInfoService.open(TermsetsCardComponent, {
-            //         data: d?.current_term_set,
-            //     }),
+            click: (d) =>
+                this.sidenavInfoService.open(DomainObjectCardComponent, {
+                    ref: { term_set_hierarchy: d?.current_term_set?.ref },
+                }),
         },
         {
             field: 'decision',
