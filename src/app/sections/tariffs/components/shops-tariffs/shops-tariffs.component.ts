@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Inject, OnInit, viewChild, type TemplateRef } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
+import {
+    TermSetHierarchyRef,
+    type CashFlowSelector,
+    type CashFlowPosting,
+} from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
     ShopSearchQuery,
@@ -34,13 +38,12 @@ import {
     PageLayoutModule,
     ShopFieldModule,
     formatCashVolume,
+    formatPredicate,
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
-
-import { formatCashFlowDecisions } from '../cash-flows-selector-table/format-cash-flow.decisions';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
 
@@ -56,6 +59,64 @@ function getViewedCashFlowSelectors(d: ShopTermSet) {
             ?.map?.((t) => t?.terms?.payments?.fees)
             ?.filter?.(Boolean) ?? []
     );
+}
+
+interface InlineCashFlowSelector {
+    if?: string;
+    value?: string;
+    parent?: InlineCashFlowSelector;
+    level: number;
+}
+
+function getInlineDecisions(
+    d: CashFlowSelector[],
+    filterValue: (v: CashFlowPosting) => boolean = (v) =>
+        getUnionKey(v?.source) === 'merchant' && getUnionKey(v?.destination) === 'system',
+    level = 0,
+): InlineCashFlowSelector[] {
+    return d.reduce((acc, c) => {
+        if (c.value) {
+            acc.push({
+                value: c.value
+                    .filter(filterValue)
+                    .map((v) => formatCashVolume(v.volume))
+                    .join(' + '),
+                level,
+            });
+        }
+        if (c.decisions?.length) {
+            acc.push(
+                ...c.decisions
+                    .map((d) => {
+                        const thenInlineDecisions = getInlineDecisions(
+                            [d.then_],
+                            filterValue,
+                            level + 1,
+                        );
+                        if (d.if_) {
+                            const ifInlineDecision = {
+                                if: `${' '.repeat(level)}${
+                                    formatPredicate(d.if_) || (level > 0 ? '↳' : '')
+                                }`,
+                                level,
+                            };
+                            return thenInlineDecisions.length > 1
+                                ? [ifInlineDecision, ...thenInlineDecisions]
+                                : [{ ...ifInlineDecision, value: thenInlineDecisions[0].value }];
+                        }
+                        return thenInlineDecisions;
+                    })
+                    .flat(),
+            );
+        }
+        return acc;
+    }, [] as InlineCashFlowSelector[]);
+    // .filter(
+    //     (v) =>
+    //         !v?.value ||
+    //         (getUnionKey(v?.value?.source) === 'merchant' &&
+    //             getUnionKey(v?.value?.destination) === 'system'),
+    // );
 }
 
 @Component({
@@ -88,9 +149,8 @@ export class ShopsTariffsComponent implements OnInit {
     tariffs$ = this.shopsTariffsService.result$;
     hasMore$ = this.shopsTariffsService.hasMore$;
     isLoading$ = this.shopsTariffsService.isLoading$;
-    arrayColumnTemplate = viewChild<TemplateRef<unknown>>('arrayColumnTemplate');
     columns: Column<ShopTermSet>[] = [
-        createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id),
+        createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id, undefined, { pinned: 'left' }),
         createPartyColumn<ShopTermSet>('owner_id'),
         createContractColumn<ShopTermSet>(
             (d) => d.contract_id,
@@ -112,27 +172,12 @@ export class ShopsTariffsComponent implements OnInit {
             //     }),
         },
         {
-            field: 'decisions',
-            formatter: (d) =>
-                getViewedCashFlowSelectors(d).map((f) => formatCashFlowDecisions(f?.decisions)),
-            cellTemplate: this.arrayColumnTemplate(),
+            field: 'decision',
+            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
         },
         {
             field: 'value',
-            formatter: (d) =>
-                getViewedCashFlowSelectors(d).map(
-                    (f) =>
-                        f?.value
-                            ?.filter(
-                                (c) =>
-                                    getUnionKey(c?.source) === 'merchant' &&
-                                    getUnionKey(c?.destination) === 'system',
-                            )
-                            ?.sort()
-                            ?.map((c) => formatCashVolume(c.volume))
-                            .join(' + '),
-                ),
-            cellTemplate: this.arrayColumnTemplate(),
+            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.value),
         },
         {
             field: 'term_set_history',

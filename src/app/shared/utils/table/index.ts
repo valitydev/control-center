@@ -4,7 +4,6 @@ export * from './create-shop-column';
 export * from './create-predicate-column';
 export * from './create-failure-column';
 export * from './create-contract-column';
-export * from './format-cash-flow-posting';
 export * from './format-cash-volume';
 export * from './format-rational';
 export * from './format-predicate';

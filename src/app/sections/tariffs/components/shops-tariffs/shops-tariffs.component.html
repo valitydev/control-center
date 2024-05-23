@@ -17,6 +17,10 @@
     </v-filters>
 
     <v-table
+        [cellTemplate]="{
+            decision: arrayColumnTemplate,
+            value: arrayColumnTemplate
+        }"
         [columns]="columns"
         [data]="tariffs$ | async"
         [hasMore]="hasMore$ | async"
@@ -25,8 +29,9 @@
         (update)="update($event)"
     ></v-table>
 
-    <ng-template #arrayColumnTemplate let-rowData="rowData">
-        <div *ngFor="let item of rowData">
+    <ng-template #arrayColumnTemplate let-value="value">
+        {{ rowData?.length }}
+        <div *ngFor="let item of value" style="white-space: nowrap">
             {{ item }}
         </div>
     </ng-template>
