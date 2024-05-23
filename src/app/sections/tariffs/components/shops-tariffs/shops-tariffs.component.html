@@ -24,4 +24,10 @@
         (more)="more()"
         (update)="update($event)"
     ></v-table>
+
+    <ng-template #arrayColumnTemplate let-rowData="rowData">
+        <div *ngFor="let item of rowData">
+            {{ item }}
+        </div>
+    </ng-template>
 </cc-page-layout>

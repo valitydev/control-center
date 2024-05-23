@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit, viewChild, type TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
@@ -23,21 +23,24 @@ import {
     TableModule,
     UpdateOptions,
 } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { TermsetsCardComponent } from '@cc/app/sections/tariffs/components/termsets-card/termsets-card.component';
 import {
     createContractColumn,
     createPartyColumn,
     createShopColumn,
     PageLayoutModule,
     ShopFieldModule,
+    formatCashVolume,
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
+
+import { formatCashFlowDecisions } from '../cash-flows-selector-table/format-cash-flow.decisions';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
 
@@ -46,6 +49,14 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         Omit<ShopSearchQuery, 'common_search_query_params'>,
         { term_sets_ids?: TermSetHierarchyRef['id'][] }
     >;
+
+function getViewedCashFlowSelectors(d: ShopTermSet) {
+    return (
+        d.current_term_set.data.term_sets
+            ?.map?.((t) => t?.terms?.payments?.fees)
+            ?.filter?.(Boolean) ?? []
+    );
+}
 
 @Component({
     selector: 'cc-shops-tariffs',
@@ -77,6 +88,7 @@ export class ShopsTariffsComponent implements OnInit {
     tariffs$ = this.shopsTariffsService.result$;
     hasMore$ = this.shopsTariffsService.hasMore$;
     isLoading$ = this.shopsTariffsService.isLoading$;
+    arrayColumnTemplate = viewChild<TemplateRef<unknown>>('arrayColumnTemplate');
     columns: Column<ShopTermSet>[] = [
         createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id),
         createPartyColumn<ShopTermSet>('owner_id'),
@@ -88,13 +100,39 @@ export class ShopsTariffsComponent implements OnInit {
         { field: 'currency' },
         {
             field: 'current_term_set',
-            formatter: (d) => d.current_term_set?.data?.name,
+            formatter: (d) =>
+                d.current_term_set?.data?.name ||
+                d.current_term_set?.data?.description ||
+                (d.current_term_set?.ref?.id ? `#${d.current_term_set?.ref?.id}` : ''),
             description: (d) => d.current_term_set?.data?.description,
             // tooltip: (d) => d.current_term_set,
-            click: (d) =>
-                this.sidenavInfoService.open(TermsetsCardComponent, {
-                    data: d?.current_term_set,
-                }),
+            // click: (d) =>
+            //     this.sidenavInfoService.open(TermsetsCardComponent, {
+            //         data: d?.current_term_set,
+            //     }),
+        },
+        {
+            field: 'decisions',
+            formatter: (d) =>
+                getViewedCashFlowSelectors(d).map((f) => formatCashFlowDecisions(f?.decisions)),
+            cellTemplate: this.arrayColumnTemplate(),
+        },
+        {
+            field: 'value',
+            formatter: (d) =>
+                getViewedCashFlowSelectors(d).map(
+                    (f) =>
+                        f?.value
+                            ?.filter(
+                                (c) =>
+                                    getUnionKey(c?.source) === 'merchant' &&
+                                    getUnionKey(c?.destination) === 'system',
+                            )
+                            ?.sort()
+                            ?.map((c) => formatCashVolume(c.volume))
+                            .join(' + '),
+                ),
+            cellTemplate: this.arrayColumnTemplate(),
         },
         {
             field: 'term_set_history',
