@@ -9,7 +9,11 @@ export function formatCashVolume(d: CashVolume) {
         case 'fixed':
             return formatCurrency(d?.fixed?.cash?.amount, d?.fixed?.cash?.currency?.symbolic_code);
         case 'share':
-            return formatRational(d?.share?.parts);
+            return (
+                formatRational(d?.share?.parts) +
+                (d?.share?.of === 2 ? ' of surplus' : '') +
+                (d?.share?.rounding_method === 1 ? ' (round .5+)' : '')
+            );
         case 'product':
             return `${getUnionKey(d.product).slice(0, -3)}(${Array.from(getUnionValue(d.product))
                 .map((c) => formatCashVolume(c))
