@@ -29,7 +29,10 @@ import {
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { map, shareReplay } from 'rxjs/operators';
-import { DomainObjectCardComponent } from 'src/app/shared/components/thrift-api-crud';
+import {
+    DomainObjectCardComponent,
+    getDomainObjectDetails,
+} from 'src/app/shared/components/thrift-api-crud';
 import { Overwrite } from 'utility-types';
 
 import {
@@ -156,10 +159,7 @@ export class ShopsTariffsComponent implements OnInit {
         {
             field: 'current_term_set',
             formatter: (d) =>
-                d.current_term_set?.data?.name ||
-                d.current_term_set?.data?.description ||
-                (d.current_term_set?.ref?.id ? `#${d.current_term_set?.ref?.id}` : ''),
-            description: (d) => d.current_term_set?.data?.description,
+                getDomainObjectDetails({ term_set_hierarchy: d.current_term_set })?.label,
             click: (d) =>
                 this.sidenavInfoService.open(DomainObjectCardComponent, {
                     ref: { term_set_hierarchy: d?.current_term_set?.ref },
