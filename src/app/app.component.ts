@@ -1,4 +1,4 @@
-import { Component, isDevMode } from '@angular/core';
+import { Component } from '@angular/core';
 import { Link } from '@vality/ng-core';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
@@ -81,15 +81,11 @@ export class AppComponent {
                     url: '/sources',
                     services: SOURCES_ROUTING_CONFIG.services,
                 },
-                ...(isDevMode()
-                    ? [
-                          {
-                              label: 'Tariffs',
-                              url: '/tariffs',
-                              services: TARIFFS_ROUTING_CONFIG.services,
-                          },
-                      ]
-                    : []),
+                {
+                    label: 'Tariffs',
+                    url: '/tariffs',
+                    services: TARIFFS_ROUTING_CONFIG.services,
+                },
             ],
             [
                 {
