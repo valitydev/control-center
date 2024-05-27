@@ -174,11 +174,11 @@ export class ShopsTariffsComponent implements OnInit {
                 }),
         },
         {
-            field: 'decision',
+            field: 'condition',
             formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
         },
         {
-            field: 'value',
+            field: 'fee',
             formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.value),
         },
         {
