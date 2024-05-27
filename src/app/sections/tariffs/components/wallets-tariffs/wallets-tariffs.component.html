@@ -6,6 +6,7 @@
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
             <cc-wallet-field formControlName="wallet_ids" multiple></cc-wallet-field>
+            <v-list-field formControlName="identity_ids" label="Identity IDs"></v-list-field>
             <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
             <v-list-field formControlName="term_sets_names" label="Term sets names"></v-list-field>
             <v-list-field formControlName="term_sets_ids" label="Term sets IDs"></v-list-field>

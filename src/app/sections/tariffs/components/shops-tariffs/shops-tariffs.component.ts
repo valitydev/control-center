@@ -148,7 +148,15 @@ export class ShopsTariffsComponent implements OnInit {
     hasMore$ = this.shopsTariffsService.hasMore$;
     isLoading$ = this.shopsTariffsService.isLoading$;
     columns: Column<ShopTermSet>[] = [
-        createShopColumn<ShopTermSet>('shop_id', (d) => d.owner_id, undefined, { pinned: 'left' }),
+        createShopColumn<ShopTermSet>(
+            'shop_id',
+            (d) => d.owner_id,
+            undefined,
+            (d) => d.shop_name,
+            {
+                pinned: 'left',
+            },
+        ),
         createPartyColumn<ShopTermSet>('owner_id'),
         createContractColumn<ShopTermSet>(
             (d) => d.contract_id,

@@ -6,6 +6,7 @@ import {
     TermSetHierarchyRef,
     type CashFlowSelector,
     type CashFlowPosting,
+    type IdentityProviderRef,
 } from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
@@ -43,6 +44,7 @@ import {
     formatCashVolume,
     formatPredicate,
     WalletFieldModule,
+    createWalletColumn,
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
@@ -52,7 +54,7 @@ import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
         Omit<WalletSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][] }
+        { term_sets_ids?: TermSetHierarchyRef['id'][]; identity_ids?: IdentityProviderRef['id'][] }
     >;
 
 function getViewedCashFlowSelectors(d: WalletTermSet) {
@@ -140,15 +142,22 @@ export class WalletsTariffsComponent implements OnInit {
             wallet_ids: null,
             term_sets_names: null,
             term_sets_ids: null,
+            identity_ids: null,
         }),
     );
     tariffs$ = this.walletsTariffsService.result$;
     hasMore$ = this.walletsTariffsService.hasMore$;
     isLoading$ = this.walletsTariffsService.isLoading$;
     columns: Column<WalletTermSet>[] = [
-        // createShopColumn<WalletTermSet>('shop_id', (d) => d.owner_id, undefined, {
-        //     pinned: 'left',
-        // }),
+        createWalletColumn<WalletTermSet>(
+            'wallet_id',
+            (d) => d.owner_id,
+            undefined,
+            (d) => d.wallet_name,
+            {
+                pinned: 'left',
+            },
+        ),
         createPartyColumn<WalletTermSet>('owner_id'),
         createContractColumn<WalletTermSet>(
             (d) => d.contract_id,
@@ -206,11 +215,12 @@ export class WalletsTariffsComponent implements OnInit {
     }
 
     load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, ...otherParams } = params;
+        const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
         this.walletsTariffsService.load(
             clean({
                 common_search_query_params: { currencies },
                 term_sets_ids: term_sets_ids?.map((id) => ({ id })),
+                identity_ids: identity_ids?.map((id) => ({ id })),
                 ...otherParams,
             }),
             options,
