@@ -43,6 +43,7 @@ import {
     PageLayoutModule,
     WalletFieldModule,
     createWalletColumn,
+    formatCashVolume,
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
@@ -139,12 +140,24 @@ export class WalletsTariffsComponent implements OnInit {
             formatter: (d) =>
                 getInlineDecisions(
                     getViewedCashFlowSelectors(d),
-                    (v) => !(v?.source?.wallet === 1 && v?.destination?.system === 0),
+                    (v) =>
+                        !(
+                            (v?.source?.wallet === 1 && v?.destination?.system === 0) ||
+                            (v?.source?.wallet === 1 &&
+                                v?.destination?.wallet === 3 &&
+                                formatCashVolume(v?.volume) === '100%')
+                        ),
                 ).map((v) => v.value),
             tooltip: (d) =>
                 getInlineDecisions(
                     getViewedCashFlowSelectors(d),
-                    (v) => !(v?.source?.wallet === 1 && v?.destination?.system === 0),
+                    (v) =>
+                        !(
+                            (v?.source?.wallet === 1 && v?.destination?.system === 0) ||
+                            (v?.source?.wallet === 1 &&
+                                v?.destination?.wallet === 3 &&
+                                formatCashVolume(v?.volume) === '100%')
+                        ),
                 ).map((v) => v.description),
         },
         {
