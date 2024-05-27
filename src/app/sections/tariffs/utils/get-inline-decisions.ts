@@ -1,10 +1,11 @@
 import { getUnionKey } from '@vality/ng-thrift';
-import { formatCashVolume, formatPredicate } from 'src/app/shared';
 
 import type {
     CashFlowPosting,
     CashFlowSelector,
 } from '@vality/dominator-proto/internal/proto/domain';
+
+import { formatPredicate, formatCashVolumes } from '@cc/app/shared';
 
 export interface InlineCashFlowSelector {
     if?: string;
@@ -21,10 +22,7 @@ export function getInlineDecisions(
     return d.reduce((acc, c) => {
         if (c.value) {
             acc.push({
-                value: c.value
-                    .filter(filterValue)
-                    .map((v) => formatCashVolume(v.volume))
-                    .join(' + '),
+                value: formatCashVolumes(c.value.filter(filterValue).map((v) => v.volume)),
                 level,
             });
         }
@@ -46,7 +44,7 @@ export function getInlineDecisions(
                             };
                             return thenInlineDecisions.length > 1
                                 ? [ifInlineDecision, ...thenInlineDecisions]
-                                : [{ ...ifInlineDecision, value: thenInlineDecisions[0].value }];
+                                : [{ ...thenInlineDecisions[0], ...ifInlineDecision }];
                         }
                         return thenInlineDecisions;
                     })

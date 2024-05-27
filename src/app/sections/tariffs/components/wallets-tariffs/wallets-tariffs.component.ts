@@ -26,7 +26,6 @@ import {
     TableModule,
     UpdateOptions,
 } from '@vality/ng-core';
-import { getUnionKey } from '@vality/ng-thrift';
 import { map, shareReplay } from 'rxjs/operators';
 import { WalletsTariffsService } from 'src/app/sections/tariffs/components/wallets-tariffs/wallets-tariffs.service';
 import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
@@ -121,22 +120,14 @@ export class WalletsTariffsComponent implements OnInit {
         },
         {
             field: 'condition',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
-                    (v) =>
-                        getUnionKey(v?.source) === 'wallet' &&
-                        getUnionKey(v?.destination) === 'system',
-                ).map((v) => v.if),
+            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
         },
         {
             field: 'fee',
             formatter: (d) =>
                 getInlineDecisions(
                     getViewedCashFlowSelectors(d),
-                    (v) =>
-                        getUnionKey(v?.source) === 'wallet' &&
-                        getUnionKey(v?.destination) === 'system',
+                    (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
                 ).map((v) => v.value),
         },
         {

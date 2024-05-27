@@ -19,7 +19,8 @@
     <v-table
         [cellTemplate]="{
             condition: arrayColumnTemplate,
-            fee: arrayColumnTemplate
+            fee: arrayColumnTemplate,
+            rreserve: arrayColumnTemplate
         }"
         [columns]="columns"
         [data]="tariffs$ | async"

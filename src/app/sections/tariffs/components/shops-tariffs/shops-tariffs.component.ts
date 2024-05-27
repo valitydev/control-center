@@ -23,7 +23,6 @@ import {
     TableModule,
     UpdateOptions,
 } from '@vality/ng-core';
-import { getUnionKey } from '@vality/ng-thrift';
 import { map, shareReplay } from 'rxjs/operators';
 import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
 import {
@@ -118,22 +117,23 @@ export class ShopsTariffsComponent implements OnInit {
         },
         {
             field: 'condition',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
-                    (v) =>
-                        getUnionKey(v?.source) === 'merchant' &&
-                        getUnionKey(v?.destination) === 'system',
-                ).map((v) => v.if),
+            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
         },
         {
             field: 'fee',
             formatter: (d) =>
                 getInlineDecisions(
                     getViewedCashFlowSelectors(d),
-                    (v) =>
-                        getUnionKey(v?.source) === 'merchant' &&
-                        getUnionKey(v?.destination) === 'system',
+                    (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
+                ).map((v) => v.value),
+        },
+        {
+            field: 'rreserve',
+            header: 'RReserve',
+            formatter: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
                 ).map((v) => v.value),
         },
         {
