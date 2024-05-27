@@ -20,7 +20,8 @@
         [cellTemplate]="{
             condition: arrayColumnTemplate,
             fee: arrayColumnTemplate,
-            rreserve: arrayColumnTemplate
+            rreserve: arrayColumnTemplate,
+            other: arrayColumnTemplate
         }"
         [columns]="columns"
         [data]="tariffs$ | async"
@@ -30,10 +31,16 @@
         (update)="update($event)"
     ></v-table>
 
-    <ng-template #arrayColumnTemplate let-value="value">
-        {{ rowData?.length }}
-        <div *ngFor="let item of value" style="white-space: nowrap">
-            {{ item }}
-        </div>
+    <ng-template #arrayColumnTemplate let-colDef="colDef" let-rowData="rowData" let-value="value">
+        <ng-container *ngIf="(rowData | vSelect: colDef.tooltip : '' : [colDef]) || ' ' as tooltip">
+            <div
+                *ngFor="let item of value; let index = index"
+                [matTooltip]="tooltip[index]"
+                matTooltipPosition="right"
+                style="white-space: nowrap; cursor: default"
+            >
+                {{ item }}
+            </div>
+        </ng-container>
     </ng-template>
 </cc-page-layout>

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
@@ -22,6 +23,7 @@ import {
     QueryParamsService,
     TableModule,
     UpdateOptions,
+    VSelectPipe,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
@@ -73,6 +75,8 @@ function getViewedCashFlowSelectors(d: ShopTermSet) {
         ShopFieldModule,
         ListFieldModule,
         CurrencyFieldComponent,
+        VSelectPipe,
+        MatTooltip,
     ],
     templateUrl: './shops-tariffs.component.html',
 })
@@ -135,6 +139,27 @@ export class ShopsTariffsComponent implements OnInit {
                     getViewedCashFlowSelectors(d),
                     (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
                 ).map((v) => v.value),
+        },
+        {
+            field: 'other',
+            formatter: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) =>
+                        !(
+                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
+                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
+                        ),
+                ).map((v) => v.value),
+            tooltip: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) =>
+                        !(
+                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
+                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
+                        ),
+                ).map((v) => v.description),
         },
         {
             field: 'term_set_history',

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 import {
     TermSetHierarchyRef,
     type IdentityProviderRef,
@@ -25,6 +26,7 @@ import {
     QueryParamsService,
     TableModule,
     UpdateOptions,
+    VSelectPipe,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { WalletsTariffsService } from 'src/app/sections/tariffs/components/wallets-tariffs/wallets-tariffs.service';
@@ -75,6 +77,8 @@ function getViewedCashFlowSelectors(d: WalletTermSet) {
         ListFieldModule,
         CurrencyFieldComponent,
         WalletFieldModule,
+        MatTooltip,
+        VSelectPipe,
     ],
     templateUrl: './wallets-tariffs.component.html',
 })
@@ -129,6 +133,19 @@ export class WalletsTariffsComponent implements OnInit {
                     getViewedCashFlowSelectors(d),
                     (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
                 ).map((v) => v.value),
+        },
+        {
+            field: 'other',
+            formatter: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) => !(v?.source?.wallet === 1 && v?.destination?.system === 0),
+                ).map((v) => v.value),
+            tooltip: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) => !(v?.source?.wallet === 1 && v?.destination?.system === 0),
+                ).map((v) => v.description),
         },
         {
             field: 'term_set_history',

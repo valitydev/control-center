@@ -10,7 +10,7 @@ const CASH_VOLUME_PRIORITY: Record<keyof CashVolume, number> = {
     product: 2,
 };
 
-function compareCashVolumes(a: CashVolume, b: CashVolume) {
+export function compareCashVolumes(a: CashVolume, b: CashVolume) {
     return CASH_VOLUME_PRIORITY[getUnionKey(a)] - CASH_VOLUME_PRIORITY[getUnionKey(b)];
 }
 
