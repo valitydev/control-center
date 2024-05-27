@@ -4,8 +4,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
     TermSetHierarchyRef,
-    type CashFlowSelector,
-    type CashFlowPosting,
     type IdentityProviderRef,
 } from '@vality/domain-proto/internal/domain';
 import {
@@ -31,6 +29,7 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 import { map, shareReplay } from 'rxjs/operators';
 import { WalletsTariffsService } from 'src/app/sections/tariffs/components/wallets-tariffs/wallets-tariffs.service';
+import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
 import {
     DomainObjectCardComponent,
     getDomainObjectDetails,
@@ -41,8 +40,6 @@ import {
     createContractColumn,
     createPartyColumn,
     PageLayoutModule,
-    formatCashVolume,
-    formatPredicate,
     WalletFieldModule,
     createWalletColumn,
 } from '@cc/app/shared';
@@ -60,61 +57,9 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
 function getViewedCashFlowSelectors(d: WalletTermSet) {
     return (
         d.current_term_set.data.term_sets
-            ?.map?.((t) => t?.terms?.payments?.fees)
+            ?.map?.((t) => t?.terms?.wallets?.withdrawals?.cash_flow)
             ?.filter?.(Boolean) ?? []
     );
-}
-
-interface InlineCashFlowSelector {
-    if?: string;
-    value?: string;
-    parent?: InlineCashFlowSelector;
-    level: number;
-}
-
-function getInlineDecisions(
-    d: CashFlowSelector[],
-    filterValue: (v: CashFlowPosting) => boolean = (v) =>
-        getUnionKey(v?.source) === 'merchant' && getUnionKey(v?.destination) === 'system',
-    level = 0,
-): InlineCashFlowSelector[] {
-    return d.reduce((acc, c) => {
-        if (c.value) {
-            acc.push({
-                value: c.value
-                    .filter(filterValue)
-                    .map((v) => formatCashVolume(v.volume))
-                    .join(' + '),
-                level,
-            });
-        }
-        if (c.decisions?.length) {
-            acc.push(
-                ...c.decisions
-                    .map((d) => {
-                        const thenInlineDecisions = getInlineDecisions(
-                            [d.then_],
-                            filterValue,
-                            level + 1,
-                        );
-                        if (d.if_) {
-                            const ifInlineDecision = {
-                                if: `${' '.repeat(level)}${
-                                    formatPredicate(d.if_) || (level > 0 ? '↳' : '')
-                                }`,
-                                level,
-                            };
-                            return thenInlineDecisions.length > 1
-                                ? [ifInlineDecision, ...thenInlineDecisions]
-                                : [{ ...ifInlineDecision, value: thenInlineDecisions[0].value }];
-                        }
-                        return thenInlineDecisions;
-                    })
-                    .flat(),
-            );
-        }
-        return acc;
-    }, [] as InlineCashFlowSelector[]);
 }
 
 @Component({
@@ -176,11 +121,23 @@ export class WalletsTariffsComponent implements OnInit {
         },
         {
             field: 'condition',
-            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
+            formatter: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) =>
+                        getUnionKey(v?.source) === 'wallet' &&
+                        getUnionKey(v?.destination) === 'system',
+                ).map((v) => v.if),
         },
         {
             field: 'fee',
-            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.value),
+            formatter: (d) =>
+                getInlineDecisions(
+                    getViewedCashFlowSelectors(d),
+                    (v) =>
+                        getUnionKey(v?.source) === 'wallet' &&
+                        getUnionKey(v?.destination) === 'system',
+                ).map((v) => v.value),
         },
         {
             field: 'term_set_history',
