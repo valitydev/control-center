@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AppAuthGuardService } from '../../shared/services';
 
 import { ShopsTariffsComponent } from './components/shops-tariffs/shops-tariffs.component';
+import { WalletsTariffsComponent } from './components/wallets-tariffs/wallets-tariffs.component';
 import { ROUTING_CONFIG } from './routing-config';
 import { TariffsComponent } from './tariffs.component';
 
@@ -19,6 +20,10 @@ import { TariffsComponent } from './tariffs.component';
                     {
                         path: 'shops',
                         component: ShopsTariffsComponent,
+                    },
+                    {
+                        path: 'wallets',
+                        component: WalletsTariffsComponent,
                     },
                     {
                         path: '',
