@@ -13,10 +13,10 @@ import {
     NotifyLogService,
     FormControlSuperclass,
     createControlProviders,
-    getValueChanges,
     debounceTimeWithFirst,
+    progressTo,
 } from '@vality/ng-core';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject, concat, forkJoin } from 'rxjs';
 import { catchError, map, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
 
 import { DeanonimusService } from '@cc/app/api/deanonimus';
@@ -28,7 +28,10 @@ import { DEBOUNCE_TIME_MS } from '../../../tokens';
     templateUrl: 'wallet-field.component.html',
     providers: createControlProviders(() => WalletFieldComponent),
 })
-export class WalletFieldComponent extends FormControlSuperclass<WalletID> implements AfterViewInit {
+export class WalletFieldComponent
+    extends FormControlSuperclass<WalletID | WalletID[]>
+    implements AfterViewInit
+{
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
     @Input() size?: string;
@@ -38,7 +41,7 @@ export class WalletFieldComponent extends FormControlSuperclass<WalletID> implem
 
     options$ = new ReplaySubject<Option<WalletID>[]>(1);
     searchChange$ = new Subject<string>();
-    progress$ = new BehaviorSubject(false);
+    progress$ = new BehaviorSubject(0);
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
 
@@ -51,20 +54,27 @@ export class WalletFieldComponent extends FormControlSuperclass<WalletID> implem
     }
 
     ngAfterViewInit() {
-        merge(getValueChanges(this.control), this.searchChange$)
-            .pipe(
+        concat(
+            of(this.control.value).pipe(
+                switchMap((term) =>
+                    forkJoin(
+                        (Array.isArray(term) ? term : [term ?? '']).map((t) => this.findOption(t)),
+                    ),
+                ),
+                map((o) => o.filter(Boolean)),
+            ),
+            this.searchChange$.pipe(
                 distinctUntilChanged(),
                 tap(() => {
                     this.options$.next([]);
-                    this.progress$.next(true);
                 }),
                 debounceTimeWithFirst(this.debounceTimeMs),
                 switchMap((term) => this.searchOptions(term)),
-                takeUntilDestroyed(this.destroyRef),
-            )
+            ),
+        )
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((options) => {
                 this.options$.next(options);
-                this.progress$.next(false);
             });
     }
 
@@ -84,6 +94,13 @@ export class WalletFieldComponent extends FormControlSuperclass<WalletID> implem
                 this.log.error(err, 'Search error');
                 return of([]);
             }),
+            progressTo(this.progress$),
+        );
+    }
+
+    private findOption(id: WalletID) {
+        return this.searchOptions(id).pipe(
+            map((options) => (options?.length ? options.find((o) => o.value === id) : null)),
         );
     }
 }
