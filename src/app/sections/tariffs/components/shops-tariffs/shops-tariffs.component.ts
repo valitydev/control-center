@@ -33,6 +33,8 @@ import {
 } from 'src/app/shared/components/thrift-api-crud';
 import { Overwrite } from 'utility-types';
 
+import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
+
 import {
     createContractColumn,
     createPartyColumn,
@@ -43,6 +45,7 @@ import {
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
+import { TermsetsHistoryCardComponent } from '@cc/app/shared/components/termsets-history-card/termsets-history-card.component';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
@@ -53,12 +56,8 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         { term_sets_ids?: TermSetHierarchyRef['id'][] }
     >;
 
-function getViewedCashFlowSelectors(d: ShopTermSet) {
-    return (
-        d.current_term_set.data.term_sets
-            ?.map?.((t) => t?.terms?.payments?.fees)
-            ?.filter?.(Boolean) ?? []
-    );
+function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
+    return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
 }
 
 @Component({
@@ -121,13 +120,16 @@ export class ShopsTariffsComponent implements OnInit {
         },
         {
             field: 'condition',
-            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
+            formatter: (d) =>
+                getInlineDecisions(getViewedCashFlowSelectors(d?.current_term_set)).map(
+                    (v) => v.if,
+                ),
         },
         {
             field: 'fee',
             formatter: (d) =>
                 getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
+                    getViewedCashFlowSelectors(d?.current_term_set),
                     (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
                 ).map((v) => v.value),
         },
@@ -136,7 +138,7 @@ export class ShopsTariffsComponent implements OnInit {
             header: 'RReserve',
             formatter: (d) =>
                 getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
+                    getViewedCashFlowSelectors(d?.current_term_set),
                     (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
                 ).map((v) => v.value),
         },
@@ -144,7 +146,7 @@ export class ShopsTariffsComponent implements OnInit {
             field: 'other',
             formatter: (d) =>
                 getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
+                    getViewedCashFlowSelectors(d?.current_term_set),
                     (v) =>
                         !(
                             (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
@@ -153,7 +155,7 @@ export class ShopsTariffsComponent implements OnInit {
                 ).map((v) => v.value),
             tooltip: (d) =>
                 getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
+                    getViewedCashFlowSelectors(d?.current_term_set),
                     (v) =>
                         !(
                             (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
@@ -163,8 +165,14 @@ export class ShopsTariffsComponent implements OnInit {
         },
         {
             field: 'term_set_history',
-            formatter: (d) => d.term_set_history?.length,
-            tooltip: (d) => d.term_set_history,
+            formatter: (d) => d.term_set_history?.length || '',
+            click: (d) =>
+                this.sidenavInfoService.open(TermsetsHistoryCardComponent, {
+                    data: d?.term_set_history?.map((d) => ({
+                        object: d,
+                        fees: getViewedCashFlowSelectors(d),
+                    })),
+                }),
         },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(
