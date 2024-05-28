@@ -38,7 +38,6 @@ import {
 import { Overwrite } from 'utility-types';
 
 import {
-    createContractColumn,
     createPartyColumn,
     PageLayoutModule,
     WalletFieldModule,
@@ -108,11 +107,8 @@ export class WalletsTariffsComponent implements OnInit {
             },
         ),
         createPartyColumn<WalletTermSet>('owner_id'),
-        createContractColumn<WalletTermSet>(
-            (d) => d.contract_id,
-            (d) => d.owner_id,
-            (d) => d.wallet_id,
-        ),
+        { field: 'contract_id', header: 'Contract' },
+        { field: 'identity_id.id', header: 'Identity' },
         { field: 'currency' },
         {
             field: 'term_set',
