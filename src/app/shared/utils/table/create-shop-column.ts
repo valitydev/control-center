@@ -12,18 +12,15 @@ export function createShopColumn<T extends object>(
     field: ColumnObject<T>['field'],
     selectPartyId: (d: T) => PossiblyAsync<string>,
     selectShopId?: (d: T) => PossiblyAsync<string>,
+    selectShopName?: (d: T) => PossiblyAsync<string>,
     params: Partial<ColumnObject<T>> = {},
 ): ColumnObject<T> {
     if (!selectShopId) {
         selectShopId = (d) => get(d, field);
     }
-    const partiesStoreService = inject(PartiesStoreService);
-    const sidenavInfoService = inject(SidenavInfoService);
-    return {
-        field,
-        header: 'Shop',
-        description: (d) => selectShopId(d),
-        formatter: (d) =>
+    if (!selectShopName) {
+        const partiesStoreService = inject(PartiesStoreService);
+        selectShopName = (d) =>
             getPossiblyAsyncObservable(selectPartyId(d)).pipe(
                 switchMap((partyId) =>
                     combineLatest([
@@ -32,7 +29,14 @@ export function createShopColumn<T extends object>(
                     ]),
                 ),
                 map(([party, shopId]) => party.shops.get(shopId).details.name),
-            ),
+            );
+    }
+    const sidenavInfoService = inject(SidenavInfoService);
+    return {
+        field,
+        header: 'Shop',
+        description: (d) => getPossiblyAsyncObservable(selectShopId(d)),
+        formatter: (d) => getPossiblyAsyncObservable(selectShopName(d)),
         click: (d) => {
             combineLatest([
                 getPossiblyAsyncObservable(selectPartyId(d)),

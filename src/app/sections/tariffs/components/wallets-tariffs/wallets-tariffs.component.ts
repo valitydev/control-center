@@ -3,11 +3,14 @@ import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
+import {
+    TermSetHierarchyRef,
+    type IdentityProviderRef,
+} from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
-    ShopSearchQuery,
-    ShopTermSet,
+    type WalletTermSet,
+    type WalletSearchQuery,
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
@@ -26,6 +29,7 @@ import {
     VSelectPipe,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
+import { WalletsTariffsService } from 'src/app/sections/tariffs/components/wallets-tariffs/wallets-tariffs.service';
 import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
 import {
     DomainObjectCardComponent,
@@ -36,33 +40,32 @@ import { Overwrite } from 'utility-types';
 import {
     createContractColumn,
     createPartyColumn,
-    createShopColumn,
     PageLayoutModule,
-    ShopFieldModule,
+    WalletFieldModule,
+    createWalletColumn,
+    formatCashVolume,
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
-import { ShopsTariffsService } from './shops-tariffs.service';
-
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
-        Omit<ShopSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][] }
+        Omit<WalletSearchQuery, 'common_search_query_params'>,
+        { term_sets_ids?: TermSetHierarchyRef['id'][]; identity_ids?: IdentityProviderRef['id'][] }
     >;
 
-function getViewedCashFlowSelectors(d: ShopTermSet) {
+function getViewedCashFlowSelectors(d: WalletTermSet) {
     return (
         d.current_term_set.data.term_sets
-            ?.map?.((t) => t?.terms?.payments?.fees)
+            ?.map?.((t) => t?.terms?.wallets?.withdrawals?.cash_flow)
             ?.filter?.(Boolean) ?? []
     );
 }
 
 @Component({
-    selector: 'cc-shops-tariffs',
+    selector: 'cc-wallets-tariffs',
     standalone: true,
     imports: [
         CommonModule,
@@ -72,42 +75,43 @@ function getViewedCashFlowSelectors(d: ShopTermSet) {
         FiltersModule,
         ReactiveFormsModule,
         MerchantFieldModule,
-        ShopFieldModule,
         ListFieldModule,
         CurrencyFieldComponent,
-        VSelectPipe,
+        WalletFieldModule,
         MatTooltip,
+        VSelectPipe,
     ],
-    templateUrl: './shops-tariffs.component.html',
+    templateUrl: './wallets-tariffs.component.html',
 })
-export class ShopsTariffsComponent implements OnInit {
+export class WalletsTariffsComponent implements OnInit {
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
             party_id: null,
-            shop_ids: null,
+            wallet_ids: null,
             term_sets_names: null,
             term_sets_ids: null,
+            identity_ids: null,
         }),
     );
-    tariffs$ = this.shopsTariffsService.result$;
-    hasMore$ = this.shopsTariffsService.hasMore$;
-    isLoading$ = this.shopsTariffsService.isLoading$;
-    columns: Column<ShopTermSet>[] = [
-        createShopColumn<ShopTermSet>(
-            'shop_id',
+    tariffs$ = this.walletsTariffsService.result$;
+    hasMore$ = this.walletsTariffsService.hasMore$;
+    isLoading$ = this.walletsTariffsService.isLoading$;
+    columns: Column<WalletTermSet>[] = [
+        createWalletColumn<WalletTermSet>(
+            'wallet_id',
             (d) => d.owner_id,
             undefined,
-            (d) => d.shop_name,
+            (d) => d.wallet_name,
             {
                 pinned: 'left',
             },
         ),
-        createPartyColumn<ShopTermSet>('owner_id'),
-        createContractColumn<ShopTermSet>(
+        createPartyColumn<WalletTermSet>('owner_id'),
+        createContractColumn<WalletTermSet>(
             (d) => d.contract_id,
             (d) => d.owner_id,
-            (d) => d.shop_id,
+            (d) => d.wallet_id,
         ),
         { field: 'currency' },
         {
@@ -128,16 +132,7 @@ export class ShopsTariffsComponent implements OnInit {
             formatter: (d) =>
                 getInlineDecisions(
                     getViewedCashFlowSelectors(d),
-                    (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
-                ).map((v) => v.value),
-        },
-        {
-            field: 'rreserve',
-            header: 'RReserve',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
-                    (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
+                    (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
                 ).map((v) => v.value),
         },
         {
@@ -147,8 +142,10 @@ export class ShopsTariffsComponent implements OnInit {
                     getViewedCashFlowSelectors(d),
                     (v) =>
                         !(
-                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
-                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
+                            (v?.source?.wallet === 1 && v?.destination?.system === 0) ||
+                            (v?.source?.wallet === 1 &&
+                                v?.destination?.wallet === 3 &&
+                                formatCashVolume(v?.volume) === '100%')
                         ),
                 ).map((v) => v.value),
             tooltip: (d) =>
@@ -156,8 +153,10 @@ export class ShopsTariffsComponent implements OnInit {
                     getViewedCashFlowSelectors(d),
                     (v) =>
                         !(
-                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
-                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
+                            (v?.source?.wallet === 1 && v?.destination?.system === 0) ||
+                            (v?.source?.wallet === 1 &&
+                                v?.destination?.wallet === 3 &&
+                                formatCashVolume(v?.volume) === '100%')
                         ),
                 ).map((v) => v.description),
         },
@@ -175,7 +174,7 @@ export class ShopsTariffsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private shopsTariffsService: ShopsTariffsService,
+        private walletsTariffsService: WalletsTariffsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
@@ -194,11 +193,12 @@ export class ShopsTariffsComponent implements OnInit {
     }
 
     load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, ...otherParams } = params;
-        this.shopsTariffsService.load(
+        const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
+        this.walletsTariffsService.load(
             clean({
                 common_search_query_params: { currencies },
                 term_sets_ids: term_sets_ids?.map((id) => ({ id })),
+                identity_ids: identity_ids?.map((id) => ({ id })),
                 ...otherParams,
             }),
             options,
@@ -206,10 +206,10 @@ export class ShopsTariffsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        this.shopsTariffsService.reload(options);
+        this.walletsTariffsService.reload(options);
     }
 
     more() {
-        this.shopsTariffsService.more();
+        this.walletsTariffsService.more();
     }
 }

@@ -7,3 +7,4 @@ export * from './create-contract-column';
 export * from './format-cash-volume';
 export * from './format-rational';
 export * from './format-predicate';
+export * from './create-wallet-column';

@@ -1,15 +1,12 @@
-<cc-page-layout title="Shops terms">
+<cc-page-layout title="Wallets terms">
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
     <v-filters #filters [active]="active$ | async" (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
-            <cc-shop-field
-                [partyId]="filtersForm.value.party_id"
-                formControlName="shop_ids"
-                multiple
-            ></cc-shop-field>
+            <cc-wallet-field formControlName="wallet_ids" multiple></cc-wallet-field>
+            <v-list-field formControlName="identity_ids" label="Identity IDs"></v-list-field>
             <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
             <v-list-field formControlName="term_sets_names" label="Term sets names"></v-list-field>
             <v-list-field formControlName="term_sets_ids" label="Term sets IDs"></v-list-field>
@@ -20,7 +17,6 @@
         [cellTemplate]="{
             condition: arrayColumnTemplate,
             fee: arrayColumnTemplate,
-            rreserve: arrayColumnTemplate,
             other: arrayColumnTemplate
         }"
         [columns]="columns"
