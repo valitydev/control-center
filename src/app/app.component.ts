@@ -82,7 +82,7 @@ export class AppComponent {
                     services: SOURCES_ROUTING_CONFIG.services,
                 },
                 {
-                    label: 'Tariffs',
+                    label: 'Terms',
                     url: '/tariffs',
                     services: TARIFFS_ROUTING_CONFIG.services,
                 },
