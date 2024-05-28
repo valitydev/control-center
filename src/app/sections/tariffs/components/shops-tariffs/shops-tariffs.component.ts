@@ -111,7 +111,7 @@ export class ShopsTariffsComponent implements OnInit {
         ),
         { field: 'currency' },
         {
-            field: 'current_term_set',
+            field: 'term_set',
             formatter: (d) =>
                 getDomainObjectDetails({ term_set_hierarchy: d.current_term_set })?.label,
             click: (d) =>
