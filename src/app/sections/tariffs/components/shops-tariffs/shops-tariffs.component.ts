@@ -168,9 +168,9 @@ export class ShopsTariffsComponent implements OnInit {
             formatter: (d) => d.term_set_history?.length || '',
             click: (d) =>
                 this.sidenavInfoService.open(TermsetsHistoryCardComponent, {
-                    data: d?.term_set_history?.map((d) => ({
+                    data: d?.term_set_history?.reverse()?.map((d) => ({
                         object: d,
-                        fees: getViewedCashFlowSelectors(d),
+                        fees: getViewedCashFlowSelectors(d.term_set),
                     })),
                 }),
         },

@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
-import { TermSetHierarchyObject } from '@vality/domain-proto/internal/domain';
 import { TableModule, type Column } from '@vality/ng-core';
 
+import type { TermSetHistory } from '@vality/dominator-proto/internal/dominator';
 import type { CashFlowSelector } from '@vality/dominator-proto/internal/proto/domain';
 
 import { getInlineDecisions } from '@cc/app/sections/tariffs/utils/get-inline-decisions';
@@ -10,7 +10,7 @@ import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { getDomainObjectDetails } from '../thrift-api-crud';
 
 export interface TermSetHierarchyObjectFees {
-    object: TermSetHierarchyObject;
+    object: TermSetHistory;
     fees: CashFlowSelector[];
 }
 
@@ -24,11 +24,13 @@ export interface TermSetHierarchyObjectFees {
 export class TermsetsHistoryCardComponent {
     data = input<TermSetHierarchyObjectFees[]>();
     columns: Column<TermSetHierarchyObjectFees>[] = [
+        { field: 'object.applied_at', type: 'datetime' },
         {
             field: 'term_set',
-            formatter: (d) => getDomainObjectDetails({ term_set_hierarchy: d?.object })?.label,
+            formatter: (d) =>
+                getDomainObjectDetails({ term_set_hierarchy: d?.object?.term_set })?.label,
             description: (d) =>
-                getDomainObjectDetails({ term_set_hierarchy: d?.object })?.description,
+                getDomainObjectDetails({ term_set_hierarchy: d?.object?.term_set })?.description,
         },
         {
             field: 'condition',
