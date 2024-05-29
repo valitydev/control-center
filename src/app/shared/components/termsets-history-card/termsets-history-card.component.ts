@@ -1,13 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
-import { TableModule, type Column } from '@vality/ng-core';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TableModule, type Column, VSelectPipe } from '@vality/ng-core';
 
 import type { TermSetHistory } from '@vality/dominator-proto/internal/dominator';
 import type { CashFlowSelector } from '@vality/dominator-proto/internal/proto/domain';
 
-import { getInlineDecisions } from '@cc/app/sections/tariffs/utils/get-inline-decisions';
-
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { getDomainObjectDetails } from '../thrift-api-crud';
+
+import { createFeesColumns } from './utils/create-fees-columns';
 
 export interface TermSetHierarchyObjectFees {
     object: TermSetHistory;
@@ -17,7 +19,7 @@ export interface TermSetHierarchyObjectFees {
 @Component({
     selector: 'cc-termsets-card',
     standalone: true,
-    imports: [CardComponent, TableModule],
+    imports: [CommonModule, CardComponent, TableModule, VSelectPipe, MatTooltip],
     templateUrl: './termsets-history-card.component.html',
     styles: ``,
 })
@@ -32,38 +34,10 @@ export class TermsetsHistoryCardComponent {
             description: (d) =>
                 getDomainObjectDetails({ term_set_hierarchy: d?.object?.term_set })?.description,
         },
-        {
-            field: 'condition',
-            formatter: (d) => getInlineDecisions(d?.fees).map((v) => v.if),
-        },
-        {
-            field: 'fee',
-            formatter: (d) =>
-                getInlineDecisions(
-                    d?.fees,
-                    (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
-                ).map((v) => v.value),
-        },
-        {
-            field: 'rreserve',
-            header: 'RReserve',
-            formatter: (d) =>
-                getInlineDecisions(
-                    d?.fees,
-                    (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
-                ).map((v) => v.value),
-        },
-        {
-            field: 'other',
-            formatter: (d) =>
-                getInlineDecisions(
-                    d?.fees,
-                    (v) =>
-                        !(
-                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
-                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
-                        ),
-                ).map((v) => v.value),
-        },
+        ...createFeesColumns<TermSetHierarchyObjectFees>(
+            (d) => d?.fees,
+            (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
+            (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
+        ),
     ];
 }

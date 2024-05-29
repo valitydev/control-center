@@ -26,11 +26,6 @@ import {
     VSelectPipe,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
-import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
-import {
-    DomainObjectCardComponent,
-    getDomainObjectDetails,
-} from 'src/app/shared/components/thrift-api-crud';
 import { Overwrite } from 'utility-types';
 
 import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
@@ -45,7 +40,11 @@ import {
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { TermsetsHistoryCardComponent } from '@cc/app/shared/components/termsets-history-card/termsets-history-card.component';
+import {
+    createFeesColumns,
+    TermsetsHistoryCardComponent,
+} from '@cc/app/shared/components/termsets-history-card';
+import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
@@ -109,60 +108,12 @@ export class ShopsTariffsComponent implements OnInit {
             (d) => d.shop_id,
         ),
         { field: 'currency' },
-        {
-            field: 'term_set',
-            formatter: (d) =>
-                getDomainObjectDetails({ term_set_hierarchy: d.current_term_set })?.label,
-            click: (d) =>
-                this.sidenavInfoService.open(DomainObjectCardComponent, {
-                    ref: { term_set_hierarchy: d?.current_term_set?.ref },
-                }),
-        },
-        {
-            field: 'condition',
-            formatter: (d) =>
-                getInlineDecisions(getViewedCashFlowSelectors(d?.current_term_set)).map(
-                    (v) => v.if,
-                ),
-        },
-        {
-            field: 'fee',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d?.current_term_set),
-                    (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
-                ).map((v) => v.value),
-        },
-        {
-            field: 'rreserve',
-            header: 'RReserve',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d?.current_term_set),
-                    (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
-                ).map((v) => v.value),
-        },
-        {
-            field: 'other',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d?.current_term_set),
-                    (v) =>
-                        !(
-                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
-                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
-                        ),
-                ).map((v) => v.value),
-            tooltip: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d?.current_term_set),
-                    (v) =>
-                        !(
-                            (v?.source?.merchant === 0 && v?.destination?.system === 0) ||
-                            (v?.source?.merchant === 0 && v?.destination?.merchant === 1)
-                        ),
-                ).map((v) => v.description),
-        },
+        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref),
+        ...createFeesColumns<ShopTermSet>(
+            (d) => getViewedCashFlowSelectors(d?.current_term_set),
+            (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
+            (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
+        ),
         {
             field: 'term_set_history',
             formatter: (d) => d.term_set_history?.length || '',
