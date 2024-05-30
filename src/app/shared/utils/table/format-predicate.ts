@@ -35,14 +35,14 @@ export function formatPredicate(predicate: Predicate, level = 0) {
                     return `category: #${condition.category_is.id}`;
                 case 'cost_in':
                     return `cost: ${
-                        getUnionKey(condition.cost_in.upper) === 'inclusive' ? '[' : '('
+                        getUnionKey(condition.cost_in.lower) === 'inclusive' ? '[' : '('
                     }${formatCurrency(
-                        getUnionValue(condition.cost_in.upper)?.amount,
-                        getUnionValue(condition.cost_in.upper)?.currency?.symbolic_code,
-                    )}, ${formatCurrency(
                         getUnionValue(condition.cost_in.lower)?.amount,
                         getUnionValue(condition.cost_in.lower)?.currency?.symbolic_code,
-                    )}${getUnionKey(condition.cost_in.lower) === 'inclusive' ? ']' : ')'}`;
+                    )}, ${formatCurrency(
+                        getUnionValue(condition.cost_in.upper)?.amount,
+                        getUnionValue(condition.cost_in.upper)?.currency?.symbolic_code,
+                    )}${getUnionKey(condition.cost_in.upper) === 'inclusive' ? ']' : ')'}`;
                 case 'cost_is_multiple_of':
                     return `cost_is_multiple: ${formatCurrency(
                         condition.cost_is_multiple_of.amount,

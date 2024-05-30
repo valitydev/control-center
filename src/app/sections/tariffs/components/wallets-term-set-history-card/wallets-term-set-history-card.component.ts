@@ -18,6 +18,7 @@ import { createWalletFeesColumn } from '../wallets-tariffs/utils/create-wallet-f
 })
 export class WalletsTermSetHistoryCardComponent {
     data = input<TermSetHistory[]>();
+    walletId = input<string>();
     columns: Column<TermSetHistory>[] = [
         { field: 'applied_at', type: 'datetime' },
         {
@@ -26,6 +27,9 @@ export class WalletsTermSetHistoryCardComponent {
             description: (d) =>
                 getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.description,
         },
-        ...createWalletFeesColumn<TermSetHistory>((d) => d.term_set),
+        ...createWalletFeesColumn<TermSetHistory>(
+            (d) => d.term_set,
+            () => this.walletId(),
+        ),
     ];
 }

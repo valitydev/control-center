@@ -32,8 +32,15 @@
             <div
                 *ngFor="let item of value; let index = index"
                 [matTooltip]="tooltip[index]"
+                [title]="item"
                 matTooltipPosition="right"
-                style="white-space: nowrap; cursor: default"
+                style="
+                    white-space: nowrap;
+                    cursor: default;
+                    max-width: 50vw;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                "
             >
                 {{ item }}
             </div>
