@@ -29,9 +29,11 @@ export function formatCashVolume(d: CashVolume) {
                 (d?.share?.rounding_method === 1 ? ' (round .5+)' : '')
             );
         case 'product':
-            return `${getUnionKey(d.product).slice(0, -3)}(${Array.from(getUnionValue(d.product))
-                .sort(compareCashVolumes)
-                .map((c) => formatCashVolume(c))
-                .join(', ')})`;
+            return getUnionValue(d.product).size <= 1
+                ? formatCashVolume(getUnionValue(d.product)[0])
+                : `${getUnionKey(d.product).slice(0, -3)}(${Array.from(getUnionValue(d.product))
+                      .sort(compareCashVolumes)
+                      .map((c) => formatCashVolume(c))
+                      .join(', ')})`;
     }
 }
