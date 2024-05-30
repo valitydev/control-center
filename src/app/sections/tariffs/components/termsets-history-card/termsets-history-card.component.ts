@@ -6,8 +6,8 @@ import { TableModule, type Column, VSelectPipe } from '@vality/ng-core';
 import type { TermSetHistory } from '@vality/dominator-proto/internal/dominator';
 import type { CashFlowSelector } from '@vality/dominator-proto/internal/proto/domain';
 
-import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { getDomainObjectDetails } from '../thrift-api-crud';
+import { CardComponent } from '../../../../shared/components/sidenav-info/components/card/card.component';
+import { getDomainObjectDetails } from '../../../../shared/components/thrift-api-crud';
 
 import { createFeesColumns } from './utils/create-fees-columns';
 

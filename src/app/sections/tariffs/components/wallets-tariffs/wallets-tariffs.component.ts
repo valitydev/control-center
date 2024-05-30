@@ -44,15 +44,13 @@ import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import {
-    createFeesColumns,
-    TermsetsHistoryCardComponent,
-} from '@cc/app/shared/components/termsets-history-card';
-import {
     DomainObjectCardComponent,
     getDomainObjectDetails,
 } from '@cc/app/shared/components/thrift-api-crud';
 import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
+
+import { createFeesColumns, TermsetsHistoryCardComponent } from '../termsets-history-card';
 
 import { WalletsTariffsService } from './wallets-tariffs.service';
 
