@@ -4,7 +4,7 @@ import type {
 } from '@vality/dominator-proto/internal/proto/domain';
 import type { Column } from '@vality/ng-core';
 
-import { getInlineDecisions } from '@cc/app/sections/tariffs/utils/get-inline-decisions';
+import { getInlineDecisions } from './get-inline-decisions';
 
 export function createFeesColumns<T extends object>(
     getFees: (d: T) => CashFlowSelector[],

@@ -50,7 +50,10 @@ import {
 import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
-import { createFeesColumns, TermsetsHistoryCardComponent } from '../termsets-history-card';
+import {
+    createFeesColumns,
+    ShopsTermSetHistoryCardComponent,
+} from '../shops-term-set-history-card';
 
 import { WalletsTariffsService } from './wallets-tariffs.service';
 
@@ -138,11 +141,8 @@ export class WalletsTariffsComponent implements OnInit {
             field: 'term_set_history',
             formatter: (d) => d.term_set_history?.length || '',
             click: (d) =>
-                this.sidenavInfoService.open(TermsetsHistoryCardComponent, {
-                    data: d?.term_set_history?.reverse()?.map((d) => ({
-                        object: d,
-                        fees: getViewedCashFlowSelectors(d.term_set),
-                    })),
+                this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, {
+                    data: d?.term_set_history,
                 }),
         },
     ];

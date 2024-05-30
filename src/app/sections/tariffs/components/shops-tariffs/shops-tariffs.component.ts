@@ -28,8 +28,6 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
-
 import {
     createContractColumn,
     createPartyColumn,
@@ -43,19 +41,16 @@ import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
-import { createFeesColumns, TermsetsHistoryCardComponent } from '../termsets-history-card';
+import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
+import { createShopFeesColumn } from './utils/create-shop-fees-column';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
         Omit<ShopSearchQuery, 'common_search_query_params'>,
         { term_sets_ids?: TermSetHierarchyRef['id'][] }
     >;
-
-function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
-    return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
-}
 
 @Component({
     selector: 'cc-shops-tariffs',
@@ -107,20 +102,13 @@ export class ShopsTariffsComponent implements OnInit {
         ),
         { field: 'currency' },
         createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref),
-        ...createFeesColumns<ShopTermSet>(
-            (d) => getViewedCashFlowSelectors(d?.current_term_set),
-            (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
-            (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
-        ),
+        ...createShopFeesColumn<ShopTermSet>((d) => d?.current_term_set),
         {
             field: 'term_set_history',
             formatter: (d) => d.term_set_history?.length || '',
             click: (d) =>
-                this.sidenavInfoService.open(TermsetsHistoryCardComponent, {
-                    data: d?.term_set_history?.reverse()?.map((d) => ({
-                        object: d,
-                        fees: getViewedCashFlowSelectors(d.term_set),
-                    })),
+                this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, {
+                    data: d?.term_set_history?.reverse(),
                 }),
         },
     ];
