@@ -101,7 +101,9 @@ export class ShopsTariffsComponent implements OnInit {
             (d) => d.shop_id,
         ),
         { field: 'currency' },
-        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref),
+        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
+            header: 'Term Set',
+        }),
         ...createShopFeesColumn<ShopTermSet>((d) => d?.current_term_set),
         {
             field: 'term_set_history',

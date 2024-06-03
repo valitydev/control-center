@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Reference } from '@vality/domain-proto/domain';
-import { Column, PossiblyAsync, getPossiblyAsyncObservable } from '@vality/ng-core';
+import { PossiblyAsync, getPossiblyAsyncObservable, type ColumnObject } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { map, switchMap, first } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
@@ -15,7 +15,8 @@ import {
 export function createDomainObjectColumn<T extends object>(
     objectKey: keyof Reference,
     selectDomainObjectRef: (d: T) => PossiblyAsync<ValuesType<Reference>>,
-): Column<T> {
+    params: Partial<ColumnObject<T>> = {},
+): ColumnObject<T> {
     const domainStoreService = inject(DomainStoreService);
     const sidenavInfoService = inject(SidenavInfoService);
     const getObjectRef = (d: T) =>
@@ -36,5 +37,6 @@ export function createDomainObjectColumn<T extends object>(
                     sidenavInfoService.toggle(DomainObjectCardComponent, { ref });
                 });
         },
-    };
+        ...params,
+    } as ColumnObject<T>;
 }

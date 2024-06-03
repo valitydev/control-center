@@ -40,10 +40,6 @@ import {
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import {
-    DomainObjectCardComponent,
-    getDomainObjectDetails,
-} from '@cc/app/shared/components/thrift-api-crud';
 import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
@@ -105,16 +101,9 @@ export class WalletsTariffsComponent implements OnInit {
         { field: 'contract_id', header: 'Contract' },
         { field: 'identity_id.id', header: 'Identity' },
         { field: 'currency' },
-        {
-            field: 'term_set',
-            formatter: (d) =>
-                getDomainObjectDetails({ term_set_hierarchy: d.current_term_set })?.label,
-            click: (d) =>
-                this.sidenavInfoService.open(DomainObjectCardComponent, {
-                    ref: { term_set_hierarchy: d?.current_term_set?.ref },
-                }),
-        },
-        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref),
+        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
+            header: 'Term Set',
+        }),
         ...createWalletFeesColumn<WalletTermSet>(
             (d) => d.current_term_set,
             (d) => d.wallet_id,
