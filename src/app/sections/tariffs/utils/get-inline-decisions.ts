@@ -4,12 +4,13 @@ import type {
     CashFlowPosting,
     CashFlowSelector,
     CashFlowAccount,
+    Predicate,
 } from '@vality/dominator-proto/internal/proto/domain';
 
 import { formatPredicate, formatCashVolumes, compareCashVolumes } from '@cc/app/shared';
 
 export interface InlineCashFlowSelector {
-    if?: string;
+    if?: Predicate;
     value?: string;
     parent?: InlineCashFlowSelector;
     description?: string;
@@ -55,6 +56,10 @@ function formatCashFlowAccount(acc: CashFlowAccount) {
     );
 }
 
+export function formatLevelPredicate(v: InlineCashFlowSelector) {
+    return `${' '.repeat(v.level)}${formatPredicate(v.if) || (v.level > 0 ? '↳' : '')}`;
+}
+
 export function getInlineDecisions(
     d: CashFlowSelector[],
     filterValue: (v: CashFlowPosting) => boolean = Boolean,
@@ -88,9 +93,7 @@ export function getInlineDecisions(
                         );
                         if (d.if_) {
                             const ifInlineDecision = {
-                                if: `${' '.repeat(level)}${
-                                    formatPredicate(d.if_) || (level > 0 ? '↳' : '')
-                                }`,
+                                if: d.if_,
                                 level,
                             };
                             return thenInlineDecisions.length > 1

@@ -65,7 +65,7 @@ const ROUTES: Routes = [
         loadChildren: () => import('./shops').then((m) => m.ShopsModule),
     },
     {
-        path: 'tariffs',
+        path: 'terms',
         loadChildren: () => import('./tariffs').then((m) => m.TariffsModule),
     },
     {

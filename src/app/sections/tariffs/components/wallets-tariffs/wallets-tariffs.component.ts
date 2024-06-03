@@ -29,40 +29,30 @@ import {
     VSelectPipe,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
-import { WalletsTariffsService } from 'src/app/sections/tariffs/components/wallets-tariffs/wallets-tariffs.service';
-import { getInlineDecisions } from 'src/app/sections/tariffs/utils/get-inline-decisions';
-import {
-    DomainObjectCardComponent,
-    getDomainObjectDetails,
-} from 'src/app/shared/components/thrift-api-crud';
 import { Overwrite } from 'utility-types';
 
 import {
-    createContractColumn,
     createPartyColumn,
     PageLayoutModule,
     WalletFieldModule,
     createWalletColumn,
-    formatCashVolume,
 } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
+import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
+
+import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
+
+import { createWalletFeesColumn } from './utils/create-wallet-fees-column';
+import { WalletsTariffsService } from './wallets-tariffs.service';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
         Omit<WalletSearchQuery, 'common_search_query_params'>,
         { term_sets_ids?: TermSetHierarchyRef['id'][]; identity_ids?: IdentityProviderRef['id'][] }
     >;
-
-function getViewedCashFlowSelectors(d: WalletTermSet) {
-    return (
-        d.current_term_set.data.term_sets
-            ?.map?.((t) => t?.terms?.wallets?.withdrawals?.cash_flow)
-            ?.filter?.(Boolean) ?? []
-    );
-}
 
 @Component({
     selector: 'cc-wallets-tariffs',
@@ -108,62 +98,24 @@ export class WalletsTariffsComponent implements OnInit {
             },
         ),
         createPartyColumn<WalletTermSet>('owner_id'),
-        createContractColumn<WalletTermSet>(
-            (d) => d.contract_id,
-            (d) => d.owner_id,
+        { field: 'contract_id', header: 'Contract' },
+        { field: 'identity_id.id', header: 'Identity' },
+        { field: 'currency' },
+        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
+            header: 'Term Set',
+        }),
+        ...createWalletFeesColumn<WalletTermSet>(
+            (d) => d.current_term_set,
             (d) => d.wallet_id,
         ),
-        { field: 'currency' },
-        {
-            field: 'current_term_set',
-            formatter: (d) =>
-                getDomainObjectDetails({ term_set_hierarchy: d.current_term_set })?.label,
-            click: (d) =>
-                this.sidenavInfoService.open(DomainObjectCardComponent, {
-                    ref: { term_set_hierarchy: d?.current_term_set?.ref },
-                }),
-        },
-        {
-            field: 'condition',
-            formatter: (d) => getInlineDecisions(getViewedCashFlowSelectors(d)).map((v) => v.if),
-        },
-        {
-            field: 'fee',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
-                    (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
-                ).map((v) => v.value),
-        },
-        {
-            field: 'other',
-            formatter: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
-                    (v) =>
-                        !(
-                            (v?.source?.wallet === 1 && v?.destination?.system === 0) ||
-                            (v?.source?.wallet === 1 &&
-                                v?.destination?.wallet === 3 &&
-                                formatCashVolume(v?.volume) === '100%')
-                        ),
-                ).map((v) => v.value),
-            tooltip: (d) =>
-                getInlineDecisions(
-                    getViewedCashFlowSelectors(d),
-                    (v) =>
-                        !(
-                            (v?.source?.wallet === 1 && v?.destination?.system === 0) ||
-                            (v?.source?.wallet === 1 &&
-                                v?.destination?.wallet === 3 &&
-                                formatCashVolume(v?.volume) === '100%')
-                        ),
-                ).map((v) => v.description),
-        },
         {
             field: 'term_set_history',
-            formatter: (d) => d.term_set_history?.length,
-            tooltip: (d) => d.term_set_history,
+            formatter: (d) => d.term_set_history?.length || '',
+            click: (d) =>
+                this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
+                    data: d?.term_set_history?.reverse(),
+                    walletId: d?.wallet_id,
+                }),
         },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(
