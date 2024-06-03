@@ -1,0 +1,47 @@
+<cc-page-layout title="Terminals terms">
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active$ | async" (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
+            <v-list-field formControlName="terminal_ids" label="Terminal IDs"></v-list-field>
+            <v-list-field formControlName="provider_ids" label="Provider IDs"></v-list-field>
+            <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
+        </ng-template>
+    </v-filters>
+
+    <v-table
+        [cellTemplate]="{
+            payments_condition: arrayColumnTemplate,
+            payments: arrayColumnTemplate,
+            wallets_condition: arrayColumnTemplate,
+            wallets: arrayColumnTemplate
+        }"
+        [columns]="columns"
+        [data]="tariffs$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="isLoading$ | async"
+        (more)="more()"
+        (update)="update($event)"
+    ></v-table>
+
+    <ng-template #arrayColumnTemplate let-colDef="colDef" let-rowData="rowData" let-value="value">
+        <ng-container *ngIf="(rowData | vSelect: colDef.tooltip : '' : [colDef]) || ' ' as tooltip">
+            <div
+                *ngFor="let item of value; let index = index"
+                [matTooltip]="tooltip[index]"
+                [title]="item"
+                matTooltipPosition="right"
+                style="
+                    white-space: nowrap;
+                    cursor: default;
+                    max-width: 50vw;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                "
+            >
+                {{ item }}
+            </div>
+        </ng-container>
+    </ng-template>
+</cc-page-layout>
