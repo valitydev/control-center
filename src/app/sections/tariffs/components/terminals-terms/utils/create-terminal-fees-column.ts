@@ -10,16 +10,30 @@ export function createTerminalFeesColumn<T extends object>(
         {
             field: 'payments_condition',
             formatter: (d) =>
-                getInlineDecisions([fn(d)?.payments?.cash_flow].filter(Boolean)).map((v) =>
-                    formatLevelPredicate(v),
-                ),
+                getInlineDecisions(
+                    [fn(d)?.payments?.cash_flow].filter(Boolean),
+                    (d) =>
+                        !(
+                            d.source.provider === 0 &&
+                            d.destination.merchant === 0 &&
+                            d.volume?.share?.parts?.p === 1 &&
+                            d.volume?.share?.parts?.q === 1
+                        ),
+                ).map((v) => formatLevelPredicate(v)),
         },
         {
             field: 'payments',
             formatter: (d) =>
-                getInlineDecisions([fn(d)?.payments?.cash_flow].filter(Boolean)).map(
-                    (v) => v?.value,
-                ),
+                getInlineDecisions(
+                    [fn(d)?.payments?.cash_flow].filter(Boolean),
+                    (d) =>
+                        !(
+                            d.source.provider === 0 &&
+                            d.destination.merchant === 0 &&
+                            d.volume?.share?.parts?.p === 1 &&
+                            d.volume?.share?.parts?.q === 1
+                        ),
+                ).map((v) => v?.value),
         },
         {
             field: 'wallets_condition',
