@@ -13,16 +13,13 @@ import {
 export function createFeesColumns<T extends object>(
     getFees: (d: T) => CashFlowSelector[],
     filterFee: (v: CashFlowPosting) => boolean,
-    filterRreserve?: (v: CashFlowPosting) => boolean,
     filterOther?: (v: CashFlowPosting) => boolean,
     walletId?: (d: T) => string,
 ): Column<T>[] {
     const filterOtherFn: (v: CashFlowPosting) => boolean = (v) =>
-        !(
-            filterFee(v) ||
-            (filterRreserve ? filterRreserve(v) : false) ||
-            (filterOther ? filterOther(v) : false)
-        );
+        !filterFee(v) &&
+        (!filterOther || filterOther(v)) &&
+        !(v?.volume?.share?.parts?.p === 1 && v?.volume?.share?.parts?.q === 1);
     const filterFn = (d: T) => (v: InlineCashFlowSelector) =>
         !v?.if?.condition?.party || v?.if?.condition?.party?.definition?.wallet_is === walletId(d);
     return [
@@ -40,18 +37,6 @@ export function createFeesColumns<T extends object>(
                     .filter(filterFn(d))
                     .map((v) => v.value),
         },
-        ...(filterRreserve
-            ? [
-                  {
-                      field: 'rreserve',
-                      header: 'RReserve',
-                      formatter: (d) =>
-                          getInlineDecisions(getFees(d), filterRreserve)
-                              .filter(filterFn(d))
-                              .map((v) => v.value),
-                  },
-              ]
-            : []),
         {
             field: 'other',
             formatter: (d) =>

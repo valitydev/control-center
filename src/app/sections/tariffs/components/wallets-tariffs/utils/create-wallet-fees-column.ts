@@ -1,6 +1,5 @@
 import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
 
-import { formatCashVolume } from '../../../../../shared';
 import { createFeesColumns } from '../../../utils/create-fees-columns';
 
 export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
@@ -19,10 +18,6 @@ export function createWalletFeesColumn<T extends object = TermSetHierarchyObject
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
         undefined,
-        (v) =>
-            v?.source?.wallet === 1 &&
-            v?.destination?.wallet === 3 &&
-            formatCashVolume(v?.volume) === '100%',
         getWalletId,
     );
 }
