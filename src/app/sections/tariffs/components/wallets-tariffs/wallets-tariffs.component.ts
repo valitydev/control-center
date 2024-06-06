@@ -107,6 +107,7 @@ export class WalletsTariffsComponent implements OnInit {
         ...createWalletFeesColumn<WalletTermSet>(
             (d) => d.current_term_set,
             (d) => d.wallet_id,
+            (d) => d.currency,
         ),
         {
             field: 'term_set_history',
@@ -115,6 +116,7 @@ export class WalletsTariffsComponent implements OnInit {
                 this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
                     data: d?.term_set_history?.reverse(),
                     walletId: d?.wallet_id,
+                    currency: d?.currency,
                 }),
         },
     ];

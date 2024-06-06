@@ -14,13 +14,17 @@ export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
 export function createWalletFeesColumn<T extends object = TermSetHierarchyObject>(
     fn: (d: T) => TermSetHierarchyObject = (d) => d as never,
     getWalletId: (d: T) => string,
+    getCurrency: (d: T) => string,
 ) {
     return createFeesColumns<T>(
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
         undefined,
         (d: T) => (v: InlineCashFlowSelector) =>
-            !v?.if?.condition?.party ||
-            v?.if?.condition?.party?.definition?.wallet_is === getWalletId(d),
+            (!v?.if?.condition?.party?.definition?.wallet_is ||
+                v?.if?.condition?.party?.definition?.wallet_is === getWalletId(d)) &&
+            (!getCurrency(d) ||
+                !v?.if?.condition?.currency_is?.symbolic_code ||
+                v?.if?.condition?.currency_is?.symbolic_code === getCurrency(d)),
     );
 }

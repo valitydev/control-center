@@ -104,14 +104,17 @@ export class ShopsTariffsComponent implements OnInit {
         createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
             header: 'Term Set',
         }),
-        ...createShopFeesColumn<ShopTermSet>((d) => d?.current_term_set),
+        ...createShopFeesColumn<ShopTermSet>(
+            (d) => d?.current_term_set,
+            (d) => d.owner_id,
+            (d) => d.shop_id,
+            (d) => d.currency,
+        ),
         {
             field: 'term_set_history',
             formatter: (d) => d.term_set_history?.length || '',
             click: (d) =>
-                this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, {
-                    data: d?.term_set_history?.reverse(),
-                }),
+                this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
         },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(

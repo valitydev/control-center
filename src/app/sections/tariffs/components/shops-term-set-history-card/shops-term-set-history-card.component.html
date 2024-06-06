@@ -7,7 +7,7 @@
             other: arrayColumnTemplate
         }"
         [columns]="columns"
-        [data]="data()"
+        [data]="historyData()"
     ></v-table>
 
     <ng-template #arrayColumnTemplate let-colDef="colDef" let-rowData="rowData" let-value="value">
