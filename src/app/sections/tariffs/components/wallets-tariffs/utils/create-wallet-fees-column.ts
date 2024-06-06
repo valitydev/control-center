@@ -1,3 +1,4 @@
+import type { InlineCashFlowSelector } from '../../../utils/get-inline-decisions';
 import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
@@ -18,6 +19,8 @@ export function createWalletFeesColumn<T extends object = TermSetHierarchyObject
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
         undefined,
-        getWalletId,
+        (d: T) => (v: InlineCashFlowSelector) =>
+            !v?.if?.condition?.party ||
+            v?.if?.condition?.party?.definition?.wallet_is === getWalletId(d),
     );
 }
