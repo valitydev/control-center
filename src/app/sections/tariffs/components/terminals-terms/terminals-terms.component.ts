@@ -35,6 +35,9 @@ import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
+import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
+import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-history-card';
+
 import { TerminalsTermsService } from './terminals-terms.service';
 import { createTerminalFeesColumn } from './utils/create-terminal-fees-column';
 
@@ -76,16 +79,16 @@ export class TerminalsTermsComponent implements OnInit {
     columns: Column<TerminalTermSet>[] = [
         createDomainObjectColumn<TerminalTermSet>('terminal', (d) => d.terminal_id),
         createDomainObjectColumn<TerminalTermSet>('provider', (d) => d.provider_id),
+        { field: 'currency' },
         ...createTerminalFeesColumn<TerminalTermSet>((d) => d.current_term_set),
-        // {
-        //     field: 'term_set_history',
-        //     formatter: (d) => d.term_set_history?.length || '',
-        //     click: (d) =>
-        //         this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
-        //             data: d?.term_set_history?.reverse(),
-        //             walletId: d?.wallet_id,
-        //         }),
-        // },
+        {
+            field: 'term_set_history',
+            formatter: (d) => d.term_set_history?.length || '',
+            click: (d) =>
+                this.sidenavInfoService.open(TerminalsTermSetHistoryCardComponent, {
+                    data: d?.term_set_history?.reverse(),
+                }),
+        },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(
         map((filters) => countChanged(this.initFiltersValue, filters)),
@@ -100,6 +103,7 @@ export class TerminalsTermsComponent implements OnInit {
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private dr: DestroyRef,
+        private sidenavInfoService: SidenavInfoService,
     ) {}
 
     ngOnInit() {
