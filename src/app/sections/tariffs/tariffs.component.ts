@@ -22,6 +22,10 @@ export class TariffsComponent {
             label: 'Wallets',
             url: 'wallets',
         },
+        {
+            label: 'Terminals',
+            url: 'terminals',
+        },
     ];
 
     constructor(public sidenavInfoService: SidenavInfoService) {}

@@ -4,13 +4,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
-    TermSetHierarchyRef,
-    type IdentityProviderRef,
-} from '@vality/domain-proto/internal/domain';
-import {
     CommonSearchQueryParams,
-    type WalletTermSet,
-    type WalletSearchQuery,
+    type TerminalSearchQuery,
+    type TerminalTermSet,
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
@@ -31,31 +27,28 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import {
-    createPartyColumn,
-    PageLayoutModule,
-    WalletFieldModule,
-    createWalletColumn,
-} from '@cc/app/shared';
+import type { ProviderRef, TerminalRef } from '@vality/dominator-proto/internal/proto/domain';
+
+import { PageLayoutModule } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
-import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
+import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
+import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-history-card';
 
-import { createWalletFeesColumn } from './utils/create-wallet-fees-column';
-import { WalletsTariffsService } from './wallets-tariffs.service';
+import { TerminalsTermsService } from './terminals-terms.service';
+import { createTerminalFeesColumn } from './utils/create-terminal-fees-column';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
-        Omit<WalletSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][]; identity_ids?: IdentityProviderRef['id'][] }
+        Omit<TerminalSearchQuery, 'common_search_query_params'>,
+        { provider_ids?: ProviderRef['id'][]; terminal_ids?: TerminalRef['id'][] }
     >;
 
 @Component({
-    selector: 'cc-wallets-tariffs',
+    selector: 'cc-terminals-tariffs',
     standalone: true,
     imports: [
         CommonModule,
@@ -67,54 +60,33 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         MerchantFieldModule,
         ListFieldModule,
         CurrencyFieldComponent,
-        WalletFieldModule,
         MatTooltip,
         VSelectPipe,
     ],
-    templateUrl: './wallets-tariffs.component.html',
+    templateUrl: './terminals-terms.component.html',
 })
-export class WalletsTariffsComponent implements OnInit {
+export class TerminalsTermsComponent implements OnInit {
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
-            party_id: null,
-            wallet_ids: null,
-            term_sets_names: null,
-            term_sets_ids: null,
-            identity_ids: null,
+            provider_ids: null,
+            terminal_ids: null,
         }),
     );
-    tariffs$ = this.walletsTariffsService.result$;
-    hasMore$ = this.walletsTariffsService.hasMore$;
-    isLoading$ = this.walletsTariffsService.isLoading$;
-    columns: Column<WalletTermSet>[] = [
-        createWalletColumn<WalletTermSet>(
-            'wallet_id',
-            (d) => d.owner_id,
-            undefined,
-            (d) => d.wallet_name,
-            {
-                pinned: 'left',
-            },
-        ),
-        createPartyColumn<WalletTermSet>('owner_id'),
-        { field: 'contract_id', header: 'Contract' },
-        { field: 'identity_id.id', header: 'Identity' },
+    tariffs$ = this.terminalsTermsService.result$;
+    hasMore$ = this.terminalsTermsService.hasMore$;
+    isLoading$ = this.terminalsTermsService.isLoading$;
+    columns: Column<TerminalTermSet>[] = [
+        createDomainObjectColumn<TerminalTermSet>('terminal', (d) => d.terminal_id),
+        createDomainObjectColumn<TerminalTermSet>('provider', (d) => d.provider_id),
         { field: 'currency' },
-        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
-            header: 'Term Set',
-        }),
-        ...createWalletFeesColumn<WalletTermSet>(
-            (d) => d.current_term_set,
-            (d) => d.wallet_id,
-        ),
+        ...createTerminalFeesColumn<TerminalTermSet>((d) => d.current_term_set),
         {
             field: 'term_set_history',
             formatter: (d) => d.term_set_history?.length || '',
             click: (d) =>
-                this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
+                this.sidenavInfoService.open(TerminalsTermSetHistoryCardComponent, {
                     data: d?.term_set_history?.reverse(),
-                    walletId: d?.wallet_id,
                 }),
         },
     ];
@@ -126,7 +98,7 @@ export class WalletsTariffsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private walletsTariffsService: WalletsTariffsService,
+        private terminalsTermsService: TerminalsTermsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
@@ -145,12 +117,12 @@ export class WalletsTariffsComponent implements OnInit {
     }
 
     load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
-        this.walletsTariffsService.load(
+        const { currencies, provider_ids, terminal_ids, ...otherParams } = params;
+        this.terminalsTermsService.load(
             clean({
                 common_search_query_params: { currencies },
-                term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
-                identity_ids: identity_ids?.map?.((id) => ({ id })),
+                provider_ids: provider_ids?.map?.((id) => ({ id })),
+                terminal_ids: terminal_ids?.map?.((id) => ({ id })),
                 ...otherParams,
             }),
             options,
@@ -158,10 +130,10 @@ export class WalletsTariffsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        this.walletsTariffsService.reload(options);
+        this.terminalsTermsService.reload(options);
     }
 
     more() {
-        this.walletsTariffsService.more();
+        this.terminalsTermsService.more();
     }
 }

@@ -145,7 +145,7 @@ export class ShopsTariffsComponent implements OnInit {
         this.shopsTariffsService.load(
             clean({
                 common_search_query_params: { currencies },
-                term_sets_ids: term_sets_ids?.map((id) => ({ id })),
+                term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
                 ...otherParams,
             }),
             options,
