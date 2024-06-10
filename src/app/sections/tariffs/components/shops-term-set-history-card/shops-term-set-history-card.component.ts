@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TableModule, type Column, VSelectPipe } from '@vality/ng-core';
 
-import type { TermSetHistory } from '@vality/dominator-proto/internal/dominator';
+import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getDomainObjectDetails } from '../../../../shared/components/thrift-api-crud';
@@ -17,7 +17,9 @@ import { createShopFeesColumn } from '../shops-tariffs/utils/create-shop-fees-co
     styles: ``,
 })
 export class ShopsTermSetHistoryCardComponent {
-    data = input<TermSetHistory[]>();
+    data = input<ShopTermSet>();
+    historyData = computed(() => this.data()?.term_set_history?.reverse?.());
+
     columns: Column<TermSetHistory>[] = [
         { field: 'applied_at', type: 'datetime' },
         {
@@ -26,6 +28,11 @@ export class ShopsTermSetHistoryCardComponent {
             description: (d) =>
                 getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.description,
         },
-        ...createShopFeesColumn<TermSetHistory>((d) => d.term_set),
+        ...createShopFeesColumn<TermSetHistory>(
+            (d) => d.term_set,
+            () => this.data().owner_id,
+            () => this.data().shop_id,
+            () => this.data().currency,
+        ),
     ];
 }

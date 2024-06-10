@@ -1,6 +1,13 @@
-import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
+import type {
+    TermSetHierarchyObject,
+    CashFlowPosting,
+} from '@vality/dominator-proto/internal/proto/domain';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
+import {
+    getInlineDecisions,
+    type InlineCashFlowSelector,
+} from '../../../utils/get-inline-decisions';
 
 export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
     return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
@@ -8,10 +15,34 @@ export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
 
 export function createShopFeesColumn<T extends object = TermSetHierarchyObject>(
     fn: (d: T) => TermSetHierarchyObject = (d) => d as never,
+    getPartyId: (d: T) => string,
+    getShopId: (d: T) => string,
+    getCurrency: (d: T) => string,
 ) {
-    return createFeesColumns<T>(
+    const filterRreserve = (v: CashFlowPosting) =>
+        v?.source?.merchant === 0 && v?.destination?.merchant === 1;
+    const cols = createFeesColumns<T>(
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
-        (v) => v?.source?.merchant === 0 && v?.destination?.merchant === 1,
+        (v) => !filterRreserve(v),
+        (d: T) => (v: InlineCashFlowSelector) =>
+            (!v?.if?.condition?.party?.definition?.shop_is ||
+                (v?.if?.condition?.party?.id === getPartyId(d) &&
+                    v?.if?.condition?.party?.definition?.shop_is === getShopId(d))) &&
+            (!getCurrency(d) ||
+                !v?.if?.condition?.currency_is?.symbolic_code ||
+                v?.if?.condition?.currency_is?.symbolic_code === getCurrency(d)),
     );
+    return [
+        ...cols.slice(0, -1),
+        {
+            field: 'rreserve',
+            header: 'RReserve',
+            formatter: (d) =>
+                getInlineDecisions(getViewedCashFlowSelectors(fn(d)), filterRreserve).map(
+                    (v) => v.value,
+                ),
+        },
+        cols.at(-1),
+    ];
 }

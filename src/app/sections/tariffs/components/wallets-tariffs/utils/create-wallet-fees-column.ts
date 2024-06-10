@@ -1,6 +1,6 @@
+import type { InlineCashFlowSelector } from '../../../utils/get-inline-decisions';
 import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
 
-import { formatCashVolume } from '../../../../../shared';
 import { createFeesColumns } from '../../../utils/create-fees-columns';
 
 export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
@@ -14,15 +14,17 @@ export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
 export function createWalletFeesColumn<T extends object = TermSetHierarchyObject>(
     fn: (d: T) => TermSetHierarchyObject = (d) => d as never,
     getWalletId: (d: T) => string,
+    getCurrency: (d: T) => string,
 ) {
     return createFeesColumns<T>(
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.wallet === 1 && v?.destination?.system === 0,
         undefined,
-        (v) =>
-            v?.source?.wallet === 1 &&
-            v?.destination?.wallet === 3 &&
-            formatCashVolume(v?.volume) === '100%',
-        getWalletId,
+        (d: T) => (v: InlineCashFlowSelector) =>
+            (!v?.if?.condition?.party?.definition?.wallet_is ||
+                v?.if?.condition?.party?.definition?.wallet_is === getWalletId(d)) &&
+            (!getCurrency(d) ||
+                !v?.if?.condition?.currency_is?.symbolic_code ||
+                v?.if?.condition?.currency_is?.symbolic_code === getCurrency(d)),
     );
 }
