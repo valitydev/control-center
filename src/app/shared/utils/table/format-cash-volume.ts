@@ -28,12 +28,15 @@ export function formatCashVolume(d: CashVolume) {
                 (d?.share?.of === 2 ? ' of surplus' : '') +
                 (d?.share?.rounding_method === 1 ? ' (round .5+)' : '')
             );
-        case 'product':
-            return getUnionValue(d.product).size <= 1
-                ? formatCashVolume(getUnionValue(d.product)[0])
-                : `${getUnionKey(d.product).slice(0, -3)}(${Array.from(getUnionValue(d.product))
-                      .sort(compareCashVolumes)
-                      .map((c) => formatCashVolume(c))
-                      .join(', ')})`;
+        case 'product': {
+            const products = Array.from(getUnionValue(d.product));
+            if (products.length === 1) {
+                return formatCashVolume(products[0]);
+            }
+            return `${getUnionKey(d.product).slice(0, -3)}(${products
+                .sort(compareCashVolumes)
+                .map((c) => formatCashVolume(c))
+                .join(', ')})`;
+        }
     }
 }
