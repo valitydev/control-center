@@ -67,11 +67,11 @@ export function getInlineDecisions(
 ): InlineCashFlowSelector[] {
     return d.reduce((acc, c) => {
         if (c.value) {
+            const value = c.value.filter(filterValue);
             acc.push({
-                value: formatCashVolumes(c.value.filter(filterValue).map((v) => v.volume)),
+                value: formatCashVolumes(value.map((v) => v.volume)),
                 level,
-                description: c.value
-                    .filter(filterValue)
+                description: value
                     .sort((a, b) => compareCashVolumes(a.volume, b.volume))
                     .map(
                         (v) =>

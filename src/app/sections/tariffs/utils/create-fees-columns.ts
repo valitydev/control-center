@@ -24,7 +24,7 @@ export function createFeesColumns<T extends object>(
         {
             field: 'condition',
             formatter: (d) =>
-                getInlineDecisions(getFees(d))
+                getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
                     .map((v) => formatLevelPredicate(v)),
         },
