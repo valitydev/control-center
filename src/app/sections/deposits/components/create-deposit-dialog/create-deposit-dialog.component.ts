@@ -57,17 +57,19 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                     (sources) =>
                         sources.find((s) => s.id === sourceCash.sourceId).currency_symbolic_code,
                 ),
-                map(
-                    (symbolicCode): DepositParams => ({
-                        ...value,
-                        source_id: sourceCash.sourceId,
-                        body: {
-                            amount: sourceCash.amount,
-                            currency: { symbolic_code: symbolicCode },
+                switchMap((symbolicCode) =>
+                    this.depositManagementService.Create(
+                        {
+                            ...value,
+                            source_id: sourceCash.sourceId,
+                            body: {
+                                amount: sourceCash.amount,
+                                currency: { symbolic_code: symbolicCode },
+                            },
                         },
-                    }),
+                        new Map(),
+                    ),
                 ),
-                switchMap((params) => this.depositManagementService.Create(params, new Map())),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.destroyRef),
             )

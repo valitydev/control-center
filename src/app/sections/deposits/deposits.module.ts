@@ -23,7 +23,7 @@ import { PageLayoutModule, WalletFieldModule } from '../../shared';
 import { CurrencyFieldComponent } from '../../shared/components/currency-field';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 
-import { CreateDepositDialogModule } from './create-deposit-dialog/create-deposit-dialog.module';
+import { CreateDepositDialogModule } from './components/create-deposit-dialog/create-deposit-dialog.module';
 import { DepositsRoutingModule } from './deposits-routing.module';
 import { DepositsComponent } from './deposits.component';
 
