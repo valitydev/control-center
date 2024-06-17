@@ -1,36 +1,5 @@
 <v-dialog [progress]="progress$ | async" title="Create chargebacks">
-    <div style="display: flex; flex-direction: column; gap: 16px">
-        <mat-checkbox [formControl]="hasHeaderControl">CSV with header</mat-checkbox>
-
-        <v-file-upload [extensions]="['csv']" (upload)="loadFile($event)"></v-file-upload>
-
-        <mat-accordion>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Default format</mat-panel-title>
-                </mat-expansion-panel-header>
-                <div class="mat-body-1">
-                    <code style="word-wrap: break-word; word-break: break-word">{{
-                        defaultFormat
-                    }}</code>
-                </div>
-                <div class="mat-body-1">
-                    Categories: fraud, dispute, authorisation, processing_error
-                </div>
-                <div class="mat-body-1">Starting with "body" optional</div>
-                <div class="mat-body-1">Separator dot comma (;)</div>
-            </mat-expansion-panel>
-        </mat-accordion>
-
-        <v-table
-            [(rowSelected)]="selectedChargebacks"
-            [columns]="columns"
-            [data]="chargebacks$ | async"
-            noActions
-            rowSelectable
-        ></v-table>
-    </div>
-
+    <cc-upload-csv [props]="props" (selectedChange)="selected = $event"></cc-upload-csv>
     <v-dialog-actions>
         <button
             *ngIf="successfullyChargebacks?.length"
@@ -41,7 +10,7 @@
             Close and find {{ successfullyChargebacks.length }} successful chargebacks
         </button>
         <button
-            [disabled]="!selectedChargebacks?.length || !!(progress$ | async)"
+            [disabled]="!selected?.length || !!(progress$ | async)"
             color="primary"
             mat-button
             (click)="create()"

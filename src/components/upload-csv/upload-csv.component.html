@@ -1,0 +1,46 @@
+<div style="display: flex; flex-direction: column; gap: 16px">
+    <mat-checkbox [formControl]="hasHeaderControl">CSV with header</mat-checkbox>
+
+    <v-file-upload [extensions]="['csv']" (upload)="loadFile($event)"></v-file-upload>
+
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Default format</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="mat-body-1">
+                Header for CSV file (or if without it, then the order should be like this):
+            </div>
+            <div class="mat-body-1">
+                <code
+                    *ngIf="props().required"
+                    style="word-wrap: break-word; word-break: break-word; font-weight: bold"
+                    >{{ props().required.join(separator) }}</code
+                ><code
+                    *ngIf="props().optional"
+                    style="word-wrap: break-word; word-break: break-word; font-style: italic"
+                    >{{ props().required && props().optional ? separator : '' }}</code
+                ><code
+                    *ngIf="props().optional"
+                    style="word-wrap: break-word; word-break: break-word; font-style: italic"
+                    >{{ props().optional.join(separator) }}</code
+                >
+            </div>
+            <div class="mat-body-1">
+                <ul>
+                    <li>Required columns are indicated in bold.</li>
+                    <li>Separator: "{{ separator }}"</li>
+                </ul>
+            </div>
+            <div *ngIf="formatDescription()" class="mat-body-1">{{ formatDescription() }}</div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <v-table
+        [(rowSelected)]="selectedCsv"
+        [columns]="columns()"
+        [data]="data$ | async"
+        noActions
+        rowSelectable
+    ></v-table>
+</div>
