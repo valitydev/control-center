@@ -8,11 +8,11 @@ import { BehaviorSubject, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { SourceCash } from '../../../../components/source-cash-field';
-import { DepositManagementService } from '../../../api/deposit';
-import { MetadataFormExtension } from '../../../shared/components/metadata-form';
-import { UserInfoBasedIdGeneratorService } from '../../../shared/services';
-import { FetchSourcesService } from '../../sources';
+import { SourceCash } from '../../../../../components/source-cash-field';
+import { DepositManagementService } from '../../../../api/deposit';
+import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
+import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
+import { FetchSourcesService } from '../../../sources';
 
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',
