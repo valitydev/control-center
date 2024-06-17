@@ -30,9 +30,9 @@
                 <ul>
                     <li>Required columns are indicated in bold.</li>
                     <li>Separator: "{{ separator }}"</li>
+                    <li *ngFor="let desc of formatDescription() || []">{{ desc }}</li>
                 </ul>
             </div>
-            <div *ngIf="formatDescription()" class="mat-body-1">{{ formatDescription() }}</div>
         </mat-expansion-panel>
     </mat-accordion>
 

@@ -1,5 +1,6 @@
 import { CodegenClient } from '@vality/domain-proto/internal/payment_processing-Invoicing';
 import { clean } from '@vality/ng-core';
+import isNil from 'lodash-es/isNil';
 import short from 'short-uuid';
 
 import { CsvChargeback } from '../types/csv-chargeback';
@@ -24,8 +25,7 @@ export function getCreateChargebackArgs(
                     },
                 },
                 body:
-                    (c['body.amount'] || typeof c['body.amount'] === 'number') &&
-                    c['body.currency.symbolic_code']
+                    !isNil(c['body.amount']) && c['body.currency.symbolic_code']
                         ? {
                               amount: Number(c['body.amount']),
                               currency: {

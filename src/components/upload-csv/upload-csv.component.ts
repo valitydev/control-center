@@ -70,7 +70,7 @@ function getCsvObjectErrors<R extends string, O extends string>(
 })
 export class UploadCsvComponent<R extends string, O extends string> implements OnInit {
     props = input<CsvProps<R, O>>({});
-    formatDescription = input<string>();
+    formatDescription = input<string[]>();
 
     selected = input<CsvObject<R, O>[]>([]);
     @Output() selectedChange = new EventEmitter<CsvObject<R, O>[]>();
