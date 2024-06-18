@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import * as short from 'short-uuid';
+import short from 'short-uuid';
 
 @Injectable()
 export class UserInfoBasedIdGeneratorService {
