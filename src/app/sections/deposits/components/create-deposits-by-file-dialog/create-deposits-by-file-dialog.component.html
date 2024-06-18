@@ -1,17 +1,13 @@
-<v-dialog [progress]="progress$ | async" title="Create chargebacks">
-    <cc-upload-csv
-        [formatDescription]="['reason.category: fraud, dispute, authorisation, processing_error']"
-        [props]="props"
-        (selectedChange)="selected = $event"
-    ></cc-upload-csv>
+<v-dialog [progress]="progress$ | async" title="Create deposits">
+    <cc-upload-csv [props]="props" (selectedChange)="selected = $event"></cc-upload-csv>
     <v-dialog-actions>
         <button
-            *ngIf="successfullyChargebacks?.length"
+            *ngIf="successfully?.length"
             [disabled]="!!(progress$ | async)"
             mat-button
             (click)="closeWithSuccess()"
         >
-            Close and find {{ successfullyChargebacks.length }} successful chargebacks
+            Close and find {{ successfully.length }} successful deposits
         </button>
         <button
             [disabled]="!selected?.length || !!(progress$ | async)"

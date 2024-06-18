@@ -8,11 +8,11 @@ import { BehaviorSubject, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { SourceCash } from '../../../../components/source-cash-field';
-import { DepositManagementService } from '../../../api/deposit';
-import { MetadataFormExtension } from '../../../shared/components/metadata-form';
-import { UserInfoBasedIdGeneratorService } from '../../../shared/services';
-import { FetchSourcesService } from '../../sources';
+import { SourceCash } from '../../../../../components/source-cash-field';
+import { DepositManagementService } from '../../../../api/deposit';
+import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
+import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
+import { FetchSourcesService } from '../../../sources';
 
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',
@@ -57,17 +57,19 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                     (sources) =>
                         sources.find((s) => s.id === sourceCash.sourceId).currency_symbolic_code,
                 ),
-                map(
-                    (symbolicCode): DepositParams => ({
-                        ...value,
-                        source_id: sourceCash.sourceId,
-                        body: {
-                            amount: sourceCash.amount,
-                            currency: { symbolic_code: symbolicCode },
+                switchMap((symbolicCode) =>
+                    this.depositManagementService.Create(
+                        {
+                            ...value,
+                            source_id: sourceCash.sourceId,
+                            body: {
+                                amount: sourceCash.amount,
+                                currency: { symbolic_code: symbolicCode },
+                            },
                         },
-                    }),
+                        new Map(),
+                    ),
                 ),
-                switchMap((params) => this.depositManagementService.Create(params, new Map())),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.destroyRef),
             )

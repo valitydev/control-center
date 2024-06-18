@@ -27,7 +27,8 @@ import { QueryDsl } from '../../api/fistful-stat';
 import { createCurrencyColumn } from '../../shared';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
-import { CreateDepositDialogComponent } from './create-deposit-dialog/create-deposit-dialog.component';
+import { CreateDepositDialogComponent } from './components/create-deposit-dialog/create-deposit-dialog.component';
+import { CreateDepositsByFileDialogComponent } from './components/create-deposits-by-file-dialog/create-deposits-by-file-dialog.component';
 import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.service';
 
 const REVERT_STATUS: { [N in RevertStatus]: string } = {
@@ -133,13 +134,13 @@ export class DepositsComponent implements OnInit {
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private qp: QueryParamsService<object>,
-        private destroyRef: DestroyRef,
+        private dr: DestroyRef,
     ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);
         getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
+            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.dr))
             .subscribe(() => {
                 this.update();
             });
@@ -151,7 +152,7 @@ export class DepositsComponent implements OnInit {
             .afterClosed()
             .pipe(
                 filter((res) => res.status === DialogResponseStatus.Success),
-                takeUntilDestroyed(this.destroyRef),
+                takeUntilDestroyed(this.dr),
             )
             .subscribe(() => {
                 this.update();
@@ -177,5 +178,20 @@ export class DepositsComponent implements OnInit {
 
     more() {
         this.fetchDepositsService.more();
+    }
+
+    createByFile() {
+        this.dialog
+            .open(CreateDepositsByFileDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((res) => res.status === DialogResponseStatus.Success),
+                takeUntilDestroyed(this.dr),
+            )
+            .subscribe(() => {
+                this.filtersForm.reset({
+                    dateRange: createDateRangeToToday(this.dateRangeDays),
+                });
+            });
     }
 }

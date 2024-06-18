@@ -20,12 +20,14 @@ import {
 } from '@vality/ng-core';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { MagistaThriftFormComponent } from '@cc/app/shared/components/thrift-api-crud';
-
+import { UploadCsvComponent } from '../../../components/upload-csv';
 import { PageLayoutModule, ShopFieldModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
-import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud/domain/domain-thrift-form';
+import {
+    MagistaThriftFormComponent,
+    DomainThriftFormComponent,
+} from '../../shared/components/thrift-api-crud';
 
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
@@ -64,6 +66,7 @@ import { CreateChargebacksByFileDialogComponent } from './components/create-char
         MatExpansionModule,
         MatInputModule,
         MatCheckboxModule,
+        UploadCsvComponent,
     ],
 })
 export class ChargebacksModule {}
