@@ -28,7 +28,7 @@ import { switchMap, map, tap, shareReplay } from 'rxjs/operators';
 
 import { parseCsv, unifyCsvItems } from '../../utils';
 
-const DEFAULT_DELIMETER = ';';
+const DEFAULT_DELIMITER = ';';
 
 export type CsvProps<R extends string = string, O extends string = string> = {
     required?: R[];
@@ -75,7 +75,7 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
     selected = input<CsvObject<R, O>[]>([]);
     @Output() selectedChange = new EventEmitter<CsvObject<R, O>[]>();
 
-    separator = DEFAULT_DELIMETER;
+    delimiter = DEFAULT_DELIMITER;
     propsList = computed<string[]>(() => [
         ...(this.props().required ?? []),
         ...(this.props().optional ?? []),
@@ -89,7 +89,7 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
         map((content) =>
             parseCsv(content, {
                 header: this.hasHeaderControl.value || false,
-                delimiter: this.separator,
+                delimiter: this.delimiter,
             }),
         ),
         tap((d) => {
