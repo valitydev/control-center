@@ -1,6 +1,7 @@
 <v-dialog [progress]="progress$ | async" title="Create chargebacks">
     <cc-upload-csv
         [(selected)]="selected"
+        [errors]="errors"
         [formatDescription]="['reason.category: fraud, dispute, authorisation, processing_error']"
         [props]="props"
     ></cc-upload-csv>

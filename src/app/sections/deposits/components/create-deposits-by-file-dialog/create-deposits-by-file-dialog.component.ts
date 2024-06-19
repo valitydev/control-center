@@ -35,6 +35,7 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     selected: CsvDeposit[] = [];
     successfully: DepositState[] = [];
     props = CSV_DEPOSIT_PROPS;
+    errors?: Map<CsvDeposit, unknown>;
 
     constructor(
         private depositManagementService: DepositManagementService,
@@ -66,6 +67,7 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
                             `Creating ${withError.length} deposits ended in an error. They were re-selected in the table.`,
                         );
                         this.selected = withError.map((c) => selected[c.index]);
+                        this.errors = new Map(withError.map((c) => [selected[c.index], c.error]));
                     } else {
                         this.log.successOperation('create', 'deposits');
                         this.closeWithSuccess();

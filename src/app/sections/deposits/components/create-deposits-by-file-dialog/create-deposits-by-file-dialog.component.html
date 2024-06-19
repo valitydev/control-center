@@ -1,5 +1,5 @@
 <v-dialog [progress]="progress$ | async" title="Create deposits">
-    <cc-upload-csv [(selected)]="selected" [props]="props"></cc-upload-csv>
+    <cc-upload-csv [(selected)]="selected" [errors]="errors" [props]="props"></cc-upload-csv>
     <v-dialog-actions>
         <button
             *ngIf="successfully?.length"
