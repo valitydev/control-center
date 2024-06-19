@@ -53,7 +53,7 @@
     "short-uuid": "4.2.2",
     "tslib": "2.3.1",
     "utility-types": "3.10.0",
-    "yaml": "2.3.1",
+    "yaml": "2.4.5",
     "zone.js": "0.14.2"
   },
   "devDependencies": {
