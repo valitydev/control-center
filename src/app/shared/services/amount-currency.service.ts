@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { toMajorByExponent } from '@vality/ng-core';
+import { toMajorByExponent, toMinorByExponent } from '@vality/ng-core';
 import { map, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
@@ -14,6 +14,13 @@ export class AmountCurrencyService {
         return this.getCurrency(symbolicCode).pipe(
             first(),
             map((currency) => toMajorByExponent(amount, currency?.data?.exponent)),
+        );
+    }
+
+    toMinor(amount: number, symbolicCode: string) {
+        return this.getCurrency(symbolicCode).pipe(
+            first(),
+            map((currency) => toMinorByExponent(amount, currency?.data?.exponent)),
         );
     }
 

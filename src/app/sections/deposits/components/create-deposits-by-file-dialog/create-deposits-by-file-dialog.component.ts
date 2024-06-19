@@ -10,7 +10,7 @@ import {
     DialogModule,
     forkJoinToResult,
 } from '@vality/ng-core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, switchMap } from 'rxjs';
 
 import { UploadCsvComponent } from '../../../../../components/upload-csv';
 import { DepositManagementService } from '../../../../api/deposit';
@@ -49,8 +49,8 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
         const selected = this.selected;
         forkJoinToResult(
             selected.map((c) =>
-                this.depositManagementService.Create(
-                    ...runInInjectionContext(this.injector, () => getCreateDepositArgs(c)),
+                runInInjectionContext(this.injector, () => getCreateDepositArgs(c)).pipe(
+                    switchMap((params) => this.depositManagementService.Create(...params)),
                 ),
             ),
             this.progress$,
