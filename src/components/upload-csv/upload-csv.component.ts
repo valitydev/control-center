@@ -71,6 +71,7 @@ function getCsvObjectErrors<R extends string, O extends string>(
 export class UploadCsvComponent<R extends string, O extends string> implements OnInit {
     props = input<CsvProps<R, O>>({});
     formatDescription = input<string[]>();
+    errors = input<Map<CsvProps<R, O>, { name?: string; message?: string }>>();
 
     selected = input<CsvObject<R, O>[]>([]);
     @Output() selectedChange = new EventEmitter<CsvObject<R, O>[]>();
@@ -116,12 +117,18 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    columns = computed<Column<CsvObject<R, O>>[]>(() =>
-        this.propsList().map((p) => ({
+    columns = computed<Column<CsvObject<R, O>>[]>(() => [
+        ...this.propsList().map((p) => ({
             field: p,
             header: startCase(p),
         })),
-    );
+        ...(this.errors()?.size
+            ? [
+                  { field: 'error_code', formatter: (d) => this.errors().get(d)?.name },
+                  { field: 'error_message', formatter: (d) => this.errors().get(d)?.message },
+              ]
+            : []),
+    ]);
 
     constructor(
         private log: NotifyLogService,
