@@ -15,12 +15,11 @@
             "prefix": "cc",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:application",
+                    "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": {
-                          "base": "dist/control-center"
-                        },
+                        "outputPath": "dist/control-center",
                         "index": "src/index.html",
+                        "main": "src/main.ts",
                         "polyfills": ["zone.js"],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
@@ -53,8 +52,7 @@
                             "@vality/file-storage-proto",
                             "@vality/thrift-ts",
                             "papaparse"
-                        ],
-                        "browser": "src/main.ts"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -79,7 +77,9 @@
                             "outputHashing": "all"
                         },
                         "development": {
-                          "optimization": false,
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
                             "extractLicenses": false,
                             "sourceMap": true,
                             "namedChunks": true
