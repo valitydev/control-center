@@ -29,6 +29,7 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
     selected: CsvChargeback[] = [];
     successfullyChargebacks: InvoicePaymentChargeback[] = [];
     props = CSV_CHARGEBACK_PROPS;
+    errors?: Map<CsvChargeback, unknown>;
 
     constructor(
         private invoicingService: InvoicingService,
@@ -59,6 +60,9 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
                             `Creating ${chargebacksWithError.length} chargebacks ended in an error. They were re-selected in the table.`,
                         );
                         this.selected = chargebacksWithError.map((c) => selected[c.index]);
+                        this.errors = new Map(
+                            chargebacksWithError.map((c) => [selected[c.index], c.error]),
+                        );
                     } else {
                         this.log.successOperation('create', 'chargebacks');
                         this.closeWithSuccess();

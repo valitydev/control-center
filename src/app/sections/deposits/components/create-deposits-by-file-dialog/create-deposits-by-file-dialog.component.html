@@ -1,5 +1,5 @@
 <v-dialog [progress]="progress$ | async" title="Create deposits">
-    <cc-upload-csv [props]="props" (selectedChange)="selected = $event"></cc-upload-csv>
+    <cc-upload-csv [(selected)]="selected" [errors]="errors" [props]="props"></cc-upload-csv>
     <v-dialog-actions>
         <button
             *ngIf="successfully?.length"
@@ -7,7 +7,7 @@
             mat-button
             (click)="closeWithSuccess()"
         >
-            Close and find {{ successfully.length }} successful deposits
+            Close and reload list ({{ successfully.length }} successful)
         </button>
         <button
             [disabled]="!selected?.length || !!(progress$ | async)"
