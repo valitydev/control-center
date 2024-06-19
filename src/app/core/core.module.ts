@@ -27,7 +27,9 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
         ),
     ]);
 
-@NgModule({ imports: [CommonModule, KeycloakAngularModule], providers: [
+@NgModule({
+    imports: [CommonModule, KeycloakAngularModule],
+    providers: [
         ConfigService,
         {
             provide: APP_INITIALIZER,
@@ -36,5 +38,6 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
             deps: [KeycloakService, ConfigService],
         },
         provideHttpClient(withInterceptorsFromDi()),
-    ] })
+    ],
+})
 export class CoreModule {}
