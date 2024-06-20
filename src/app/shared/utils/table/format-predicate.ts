@@ -28,13 +28,13 @@ export function formatPredicate(predicate: Predicate, level = 0) {
             const condition = predicate.condition;
             switch (getUnionKey(condition)) {
                 case 'currency_is':
-                    return `currency: ${condition.currency_is.symbolic_code}`;
+                    return `currency = ${condition.currency_is.symbolic_code}`;
                 case 'bin_data':
-                    return `bin_data: ${inlineJson(toJson(condition.bin_data), Infinity)}`;
+                    return `bin_data = ${inlineJson(toJson(condition.bin_data), Infinity)}`;
                 case 'category_is':
-                    return `category: #${condition.category_is.id}`;
+                    return `category = #${condition.category_is.id}`;
                 case 'cost_in':
-                    return `cost: ${
+                    return `cost = ${
                         getUnionKey(condition.cost_in.lower) === 'inclusive' ? '[' : '('
                     }${formatCurrency(
                         getUnionValue(condition.cost_in.lower)?.amount,
@@ -44,22 +44,26 @@ export function formatPredicate(predicate: Predicate, level = 0) {
                         getUnionValue(condition.cost_in.upper)?.currency?.symbolic_code,
                     )}${getUnionKey(condition.cost_in.upper) === 'inclusive' ? ']' : ')'}`;
                 case 'cost_is_multiple_of':
-                    return `cost_is_multiple: ${formatCurrency(
+                    return `cost_is_multiple = ${formatCurrency(
                         condition.cost_is_multiple_of.amount,
                         condition.cost_is_multiple_of.currency.symbolic_code,
                     )}`;
                 case 'identification_level_is':
-                    return `identification_level: ${condition.identification_level_is}`; // TODO: fix enum value
+                    return `identification_level = ${condition.identification_level_is}`; // TODO: fix enum value
                 case 'p2p_tool':
-                    return `p2p_tool: ${inlineJson(toJson(condition.p2p_tool), Infinity)}`;
+                    return `p2p_tool = ${inlineJson(toJson(condition.p2p_tool), Infinity)}`;
                 case 'party':
-                    return `party: ${inlineJson(toJson(condition.party), Infinity)}`;
+                    return `party = (#${condition.party.id}${
+                        condition.party?.definition
+                            ? ' & ' + inlineJson(toJson(condition.party?.definition), Infinity)
+                            : ''
+                    })`;
                 case 'payment_tool':
-                    return `payment_tool: ${inlineJson(toJson(condition.payment_tool), Infinity)}`;
+                    return `payment_tool = ${inlineJson(toJson(condition.payment_tool), Infinity)}`;
                 case 'payout_method_is':
-                    return `payout_method: #${condition.payout_method_is.id}`; // TODO: fix enum value
+                    return `payout_method = ${condition.payout_method_is.id}`; // TODO: fix enum value
                 case 'shop_location_is':
-                    return `shop_url: ${condition.shop_location_is.url}`;
+                    return `shop_url = ${condition.shop_location_is.url}`;
             }
             return '';
         }
