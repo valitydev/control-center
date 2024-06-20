@@ -40,7 +40,7 @@
                     text-overflow: ellipsis;
                 "
             >
-                {{ item }}
+                {{ value?.length > 1 ? item || '-' : item }}
             </div>
         </ng-container>
     </ng-template>
