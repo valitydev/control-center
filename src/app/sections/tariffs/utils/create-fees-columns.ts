@@ -23,12 +23,10 @@ export function createFeesColumns<T extends object>(
     return [
         {
             field: 'condition',
-            formatter: (d) => {
-                console.log(getInlineDecisions(getFees(d), filterFee).filter(filterDecisions(d)));
-                return getInlineDecisions(getFees(d), filterFee)
+            formatter: (d) =>
+                getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => formatLevelPredicate(v));
-            },
+                    .map((v) => formatLevelPredicate(v)),
         },
         {
             field: 'fee',
