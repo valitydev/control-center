@@ -1,6 +1,6 @@
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
-import { LOCALE_ID, NgModule, Injector } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -43,12 +43,6 @@ import {
 } from './tokens';
 
 registerLocaleData(localeRu);
-
-// Do not use in code! Only for extending windows methods
-/* eslint-disable @typescript-eslint/naming-convention */
-/** @internal */
-export let AppInjector: Injector;
-/* eslint-enable @typescript-eslint/naming-convention */
 
 @NgModule({
     declarations: [AppComponent],
@@ -102,10 +96,8 @@ export class AppModule {
     constructor(
         private matIconRegistry: MatIconRegistry,
         private domSanitizer: DomSanitizer,
-        private injector: Injector,
     ) {
         this.registerIcons();
-        AppInjector = this.injector;
     }
 
     registerIcons(): void {

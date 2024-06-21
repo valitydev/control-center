@@ -5,7 +5,7 @@ import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
 import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
 import { from } from 'rxjs';
-import * as short from 'short-uuid';
+import short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';

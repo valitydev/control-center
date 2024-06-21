@@ -6,7 +6,7 @@ import { getNoTimeZoneIsoString, getImportValue } from '@vality/ng-core';
 import { ThriftData, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import * as short from 'short-uuid';
+import short from 'short-uuid';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 

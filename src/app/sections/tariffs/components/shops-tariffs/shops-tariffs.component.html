@@ -39,7 +39,7 @@
                 matTooltipPosition="right"
                 style="white-space: nowrap; cursor: default"
             >
-                {{ item }}
+                {{ value?.length > 1 ? item || '-' : item }}
             </div>
         </ng-container>
     </ng-template>

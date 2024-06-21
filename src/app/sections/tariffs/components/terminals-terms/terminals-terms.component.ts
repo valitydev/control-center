@@ -79,7 +79,7 @@ export class TerminalsTermsComponent implements OnInit {
     columns: Column<TerminalTermSet>[] = [
         createDomainObjectColumn<TerminalTermSet>('terminal', (d) => d.terminal_id),
         createDomainObjectColumn<TerminalTermSet>('provider', (d) => d.provider_id),
-        { field: 'currency' },
+        { field: 'currencies', formatter: (d) => d.currencies.join(', ') },
         ...createTerminalFeesColumn<TerminalTermSet>((d) => d.current_term_set),
         {
             field: 'term_set_history',

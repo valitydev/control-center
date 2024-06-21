@@ -21,17 +21,18 @@ export function createShopFeesColumn<T extends object = TermSetHierarchyObject>(
 ) {
     const filterRreserve = (v: CashFlowPosting) =>
         v?.source?.merchant === 0 && v?.destination?.merchant === 1;
+    const filterDecisions = (d: T) => (v: InlineCashFlowSelector) =>
+        (!v?.if?.condition?.party?.definition?.shop_is ||
+            (v?.if?.condition?.party?.id === getPartyId(d) &&
+                v?.if?.condition?.party?.definition?.shop_is === getShopId(d))) &&
+        (!getCurrency(d) ||
+            !v?.if?.condition?.currency_is?.symbolic_code ||
+            v?.if?.condition?.currency_is?.symbolic_code === getCurrency(d));
     const cols = createFeesColumns<T>(
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
         (v) => !filterRreserve(v),
-        (d: T) => (v: InlineCashFlowSelector) =>
-            (!v?.if?.condition?.party?.definition?.shop_is ||
-                (v?.if?.condition?.party?.id === getPartyId(d) &&
-                    v?.if?.condition?.party?.definition?.shop_is === getShopId(d))) &&
-            (!getCurrency(d) ||
-                !v?.if?.condition?.currency_is?.symbolic_code ||
-                v?.if?.condition?.currency_is?.symbolic_code === getCurrency(d)),
+        filterDecisions,
     );
     return [
         ...cols.slice(0, -1),
@@ -39,9 +40,9 @@ export function createShopFeesColumn<T extends object = TermSetHierarchyObject>(
             field: 'rreserve',
             header: 'RReserve',
             formatter: (d) =>
-                getInlineDecisions(getViewedCashFlowSelectors(fn(d)), filterRreserve).map(
-                    (v) => v.value,
-                ),
+                getInlineDecisions(getViewedCashFlowSelectors(fn(d)), filterRreserve)
+                    .filter(filterDecisions(d))
+                    .map((v) => v.value),
         },
         cols.at(-1),
     ];

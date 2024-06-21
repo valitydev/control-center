@@ -6,7 +6,7 @@ import { AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { DialogSuperclass, forkJoinToResult, NotifyLogService } from '@vality/ng-core';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
-import * as short from 'short-uuid';
+import short from 'short-uuid';
 
 import { ManagementService } from '@cc/app/api/withdrawal';
 

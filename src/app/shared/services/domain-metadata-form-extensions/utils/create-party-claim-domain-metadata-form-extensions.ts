@@ -3,7 +3,7 @@ import { Party } from '@vality/domain-proto/domain';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
-import * as short from 'short-uuid';
+import short from 'short-uuid';
 
 import {
     MetadataFormExtension,

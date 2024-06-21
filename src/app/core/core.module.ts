@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
@@ -28,7 +28,7 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
     ]);
 
 @NgModule({
-    imports: [CommonModule, HttpClientModule, KeycloakAngularModule],
+    imports: [CommonModule, KeycloakAngularModule],
     providers: [
         ConfigService,
         {
@@ -37,6 +37,7 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
             multi: true,
             deps: [KeycloakService, ConfigService],
         },
+        provideHttpClient(withInterceptorsFromDi()),
     ],
 })
 export class CoreModule {}

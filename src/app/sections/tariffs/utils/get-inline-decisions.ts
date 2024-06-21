@@ -57,7 +57,9 @@ function formatCashFlowAccount(acc: CashFlowAccount) {
 }
 
 export function formatLevelPredicate(v: InlineCashFlowSelector) {
-    return `${' '.repeat(v.level)}${formatPredicate(v.if) || (v.level > 0 ? '↳' : '')}`;
+    return `${'\xa0'.repeat(Math.max(v.level - 1, 0))}${v.level > 0 ? '↳' : ''} ${formatPredicate(
+        v.if,
+    )}`;
 }
 
 export function getInlineDecisions(
