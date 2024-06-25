@@ -7,11 +7,18 @@ import type {
     Predicate,
 } from '@vality/dominator-proto/internal/proto/domain';
 
-import { formatPredicate, formatCashVolumes, compareCashVolumes } from '@cc/app/shared';
+import {
+    formatPredicate,
+    formatCashVolumes,
+    compareCashVolumes,
+    getCashVolumeParts,
+    CashVolumeParts,
+} from '@cc/app/shared';
 
 export interface InlineCashFlowSelector {
     if?: Predicate;
     value?: string;
+    parts?: CashVolumeParts;
     parent?: InlineCashFlowSelector;
     description?: string;
     level: number;
@@ -72,6 +79,7 @@ export function getInlineDecisions(
             const value = c.value.filter(filterValue);
             acc.push({
                 value: formatCashVolumes(value.map((v) => v.volume)),
+                parts: getCashVolumeParts(value.map((v) => v.volume)),
                 level,
                 description: value
                     .sort((a, b) => compareCashVolumes(a.volume, b.volume))
