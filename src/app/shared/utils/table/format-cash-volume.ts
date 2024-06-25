@@ -18,7 +18,7 @@ export function formatCashVolumes(c: CashVolume[]) {
     return c.sort(compareCashVolumes).map(formatCashVolume).join(' + ');
 }
 
-export function formatCashVolume(d: CashVolume) {
+export function formatCashVolume(d: CashVolume): string {
     switch (getUnionKey(d)) {
         case 'fixed':
             return formatCurrency(d?.fixed?.cash?.amount, d?.fixed?.cash?.currency?.symbolic_code);
@@ -33,10 +33,13 @@ export function formatCashVolume(d: CashVolume) {
             if (products.length === 1) {
                 return formatCashVolume(products[0]);
             }
-            return `${getUnionKey(d.product).slice(0, -3)}(${products
+            const childrenCashVolumes = products
                 .sort(compareCashVolumes)
-                .map((c) => formatCashVolume(c))
-                .join(', ')})`;
+                .map((c) => formatCashVolume(c));
+            if (getUnionKey(d.product) === 'sum_of') {
+                return childrenCashVolumes.join(' + ');
+            }
+            return `${getUnionKey(d.product).slice(0, -3)}(${childrenCashVolumes.join(', ')})`;
         }
     }
 }

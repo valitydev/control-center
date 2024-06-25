@@ -21,7 +21,7 @@ export function formatPredicate(predicate: Predicate, level = 0) {
             }
             const res = Array.from(predicatesSet)
                 .map((p) => formatPredicate(p, level + 1))
-                .join(type === 'all_of' ? ' & ' : ' OR ');
+                .join(type === 'all_of' ? ' & ' : ' ∨ ');
             return level === 0 ? `(${res})` : res;
         }
         case 'condition': {
