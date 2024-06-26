@@ -8,3 +8,4 @@ export * from './format-cash-volume';
 export * from './format-rational';
 export * from './format-predicate';
 export * from './create-wallet-column';
+export * from './get-cash-volume-parts';
