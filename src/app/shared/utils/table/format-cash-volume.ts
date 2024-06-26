@@ -5,8 +5,8 @@ import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { formatRational } from './format-rational';
 
 const CASH_VOLUME_PRIORITY: Record<keyof CashVolume, number> = {
-    fixed: 0,
-    share: 1,
+    share: 0,
+    fixed: 1,
     product: 2,
 };
 

@@ -29,11 +29,36 @@ export function createFeesColumns<T extends object>(
                     .map((v) => formatLevelPredicate(v)),
         },
         {
-            field: 'fee',
+            field: 'feeShare',
+            header: 'Fee, %',
             formatter: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.value),
+                    .map((v) => v.parts?.share),
+        },
+        {
+            field: 'feeFixed',
+            header: 'Fee, fix',
+            formatter: (d) =>
+                getInlineDecisions(getFees(d), filterFee)
+                    .filter(filterDecisions(d))
+                    .map((v) => v.parts?.fixed),
+        },
+        {
+            field: 'feeMin',
+            header: 'Fee, min',
+            formatter: (d) =>
+                getInlineDecisions(getFees(d), filterFee)
+                    .filter(filterDecisions(d))
+                    .map((v) => v.parts?.min),
+        },
+        {
+            field: 'feeMax',
+            header: 'Fee, max',
+            formatter: (d) =>
+                getInlineDecisions(getFees(d), filterFee)
+                    .filter(filterDecisions(d))
+                    .map((v) => v.parts?.max),
         },
         {
             field: 'other',
