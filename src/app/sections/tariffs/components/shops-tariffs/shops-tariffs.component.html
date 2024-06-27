@@ -16,34 +16,12 @@
         </ng-template>
     </v-filters>
 
-    <v-table
-        [cellTemplate]="{
-            condition: arrayColumnTemplate,
-            feeShare: arrayColumnTemplate,
-            feeFixed: arrayColumnTemplate,
-            feeMin: arrayColumnTemplate,
-            feeMax: arrayColumnTemplate,
-            rreserve: arrayColumnTemplate,
-            other: arrayColumnTemplate
-        }"
+    <v-table2
         [columns]="columns"
         [data]="tariffs$ | async"
         [hasMore]="hasMore$ | async"
         [progress]="isLoading$ | async"
         (more)="more()"
         (update)="update($event)"
-    ></v-table>
-
-    <ng-template #arrayColumnTemplate let-colDef="colDef" let-rowData="rowData" let-value="value">
-        <ng-container *ngIf="(rowData | vSelect: colDef.tooltip : '' : [colDef]) || ' ' as tooltip">
-            <div
-                *ngFor="let item of value; let index = index"
-                [matTooltip]="tooltip[index]"
-                matTooltipPosition="right"
-                style="white-space: nowrap; cursor: default"
-            >
-                {{ value?.length > 1 ? item || '-' : item }}
-            </div>
-        </ng-container>
-    </ng-template>
+    ></v-table2>
 </cc-page-layout>
