@@ -5,7 +5,7 @@ import type {
     CashFlowPosting,
 } from '@vality/dominator-proto/internal/proto/domain';
 
-import { createFeesColumns2 } from '../../../utils/create-fees-columns';
+import { createFeesColumns } from '../../../utils/create-fees-columns';
 import {
     getInlineDecisions,
     type InlineCashFlowSelector,
@@ -30,7 +30,7 @@ export function createShopFeesColumn<T extends object>(
         (!getCurrency(d) ||
             !v?.if?.condition?.currency_is?.symbolic_code ||
             v?.if?.condition?.currency_is?.symbolic_code === getCurrency(d));
-    const cols = createFeesColumns2<T>(
+    const cols = createFeesColumns<T>(
         (d) => getViewedCashFlowSelectors(fn(d)),
         (v) => v?.source?.merchant === 0 && v?.destination?.system === 0,
         (v) => !filterRreserve(v),

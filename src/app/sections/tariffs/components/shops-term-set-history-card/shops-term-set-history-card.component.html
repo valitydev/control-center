@@ -1,25 +1,3 @@
 <cc-card [title]="'Term Sets History'">
-    <v-table
-        [cellTemplate]="{
-            condition: arrayColumnTemplate,
-            fee: arrayColumnTemplate,
-            rreserve: arrayColumnTemplate,
-            other: arrayColumnTemplate
-        }"
-        [columns]="columns"
-        [data]="historyData()"
-    ></v-table>
-
-    <ng-template #arrayColumnTemplate let-colDef="colDef" let-rowData="rowData" let-value="value">
-        <ng-container *ngIf="(rowData | vSelect: colDef.tooltip : '' : [colDef]) || ' ' as tooltip">
-            <div
-                *ngFor="let item of value; let index = index"
-                [matTooltip]="tooltip[index]"
-                matTooltipPosition="right"
-                style="white-space: nowrap; cursor: default"
-            >
-                {{ value?.length > 1 ? item || '-' : item }}
-            </div>
-        </ng-container>
-    </ng-template>
+    <v-table2 [columns]="columns" [data]="historyData()"></v-table2>
 </cc-card>
