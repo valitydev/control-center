@@ -24,7 +24,6 @@ export class PageLayoutComponent {
     @Input() description?: string;
     @Input() id?: string;
     @Input() progress?: boolean;
-    @Input({ transform: booleanAttribute }) noOffset = false;
     @Input() tags?: { value: string; color: Color }[] | null;
 
     @Output() idLinkClick = new EventEmitter<MouseEvent>();
@@ -32,6 +31,7 @@ export class PageLayoutComponent {
     backLink = input<unknown[]>();
     upLink = input<unknown[]>();
     idLink = input<unknown[]>();
+    fullHeight = input(false, { transform: booleanAttribute });
 
     isBackAvailable = computed(
         () =>

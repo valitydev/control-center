@@ -1,4 +1,4 @@
-<cc-page-layout title="Shops terms">
+<cc-page-layout fullHeight title="Shops terms">
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
@@ -21,6 +21,7 @@
         [data]="tariffs$ | async"
         [hasMore]="hasMore$ | async"
         [progress]="isLoading$ | async"
+        infinityScroll
         (more)="more()"
         (update)="update($event)"
     ></v-table2>
