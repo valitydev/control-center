@@ -50,7 +50,7 @@ export function createFeesColumns<T extends object>(
             formatter: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.parts?.min),
+                    .map((v) => v.parts?.max),
         },
         {
             field: 'feeMax',
@@ -58,7 +58,7 @@ export function createFeesColumns<T extends object>(
             formatter: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.parts?.max),
+                    .map((v) => v.parts?.min),
         },
         {
             field: 'other',
