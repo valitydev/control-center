@@ -1,6 +1,14 @@
 @use '@vality/ng-core' as v;
 @import './all-component-themes';
 
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
 $app-theme: v.create-light-theme();
 
 @include v.core();
