@@ -26,8 +26,8 @@ export class ShopsTermSetHistoryCardComponent {
             field: 'term_set',
             cell: (d) => ({
                 value: getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.label,
-                description: (d) =>
-                    getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.description,
+                description: getDomainObjectDetails({ term_set_hierarchy: d?.term_set })
+                    ?.description,
             }),
         },
         ...createShopFeesColumn<TermSetHistory>(
