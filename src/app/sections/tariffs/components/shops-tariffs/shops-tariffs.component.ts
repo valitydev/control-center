@@ -111,7 +111,7 @@ export class ShopsTariffsComponent implements OnInit {
             field: 'term_set_history',
             cell: (d) => ({
                 value: d.term_set_history?.length || '',
-                click: (d) =>
+                click: () =>
                     this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
             }),
         },

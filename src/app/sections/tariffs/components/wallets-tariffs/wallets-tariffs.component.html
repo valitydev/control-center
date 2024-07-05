@@ -17,6 +17,7 @@
         [columns]="columns"
         [data]="tariffs$ | async"
         [hasMore]="hasMore$ | async"
+        [maxSize]="250"
         [progress]="isLoading$ | async"
         infinityScroll
         (more)="more()"
