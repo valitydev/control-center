@@ -18,7 +18,7 @@ export const createPartyColumn = createColumn(
             map((partyName) => ({
                 value: partyName,
                 description: id,
-                click: () => {
+                link: () => {
                     void inject(Router).navigate([`/party/${id}`]);
                 },
             })),
