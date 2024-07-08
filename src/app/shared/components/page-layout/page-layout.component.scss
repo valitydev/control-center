@@ -1,10 +1,14 @@
-.wrapper {
-    &__offset {
-        padding: 24px;
-    }
+$offset: 24px;
 
-    display: grid;
+.wrapper {
+    display: flex;
+    flex-direction: column;
     gap: 24px;
+    padding: $offset;
+
+    &__full-height {
+        height: calc(100vh - var(--mat-toolbar-standard-height) - ($offset * 2));
+    }
 
     .header {
         display: flex;

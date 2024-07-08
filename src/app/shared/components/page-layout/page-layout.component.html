@@ -5,7 +5,7 @@
         }}</v-tag>
     </div>
 </mat-toolbar>
-<div [ngClass]="{ wrapper__offset: !noOffset }" class="wrapper">
+<div [ngClass]="{ 'wrapper__full-height': fullHeight() }" class="wrapper">
     <div *ngIf="title" style="display: flex; flex-direction: column; gap: 8px">
         <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">
             <ng-container *ngFor="let p of path$ | async; let index = index">

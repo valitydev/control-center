@@ -1,3 +1,5 @@
+import { Column2 } from '@vality/ng-core';
+
 import type {
     TermSetHierarchyObject,
     CashFlowPosting,
@@ -13,12 +15,12 @@ export function getViewedCashFlowSelectors(d: TermSetHierarchyObject) {
     return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
 }
 
-export function createShopFeesColumn<T extends object = TermSetHierarchyObject>(
+export function createShopFeesColumn<T extends object>(
     fn: (d: T) => TermSetHierarchyObject = (d) => d as never,
     getPartyId: (d: T) => string,
     getShopId: (d: T) => string,
     getCurrency: (d: T) => string,
-) {
+): Column2<T>[] {
     const filterRreserve = (v: CashFlowPosting) =>
         v?.source?.merchant === 0 && v?.destination?.merchant === 1;
     const filterDecisions = (d: T) => (v: InlineCashFlowSelector) =>
@@ -39,10 +41,11 @@ export function createShopFeesColumn<T extends object = TermSetHierarchyObject>(
         {
             field: 'rreserve',
             header: 'RReserve',
-            formatter: (d) =>
-                getInlineDecisions(getViewedCashFlowSelectors(fn(d)), filterRreserve)
+            cell: (d) => ({
+                value: getInlineDecisions(getViewedCashFlowSelectors(fn(d)), filterRreserve)
                     .filter(filterDecisions(d))
                     .map((v) => v.value),
+            }),
         },
         cols.at(-1),
     ];

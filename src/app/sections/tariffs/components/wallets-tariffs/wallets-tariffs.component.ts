@@ -14,7 +14,6 @@ import {
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
-    Column,
     countChanged,
     createControls,
     debounceTimeWithFirst,
@@ -27,20 +26,20 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
+    Column2,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import {
-    createPartyColumn,
-    PageLayoutModule,
-    WalletFieldModule,
-    createWalletColumn,
-} from '@cc/app/shared';
+import { PageLayoutModule, WalletFieldModule } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
+import {
+    createDomainObjectColumn,
+    createPartyColumn,
+    createWalletColumn,
+} from '@cc/app/shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
@@ -87,21 +86,15 @@ export class WalletsTariffsComponent implements OnInit {
     tariffs$ = this.walletsTariffsService.result$;
     hasMore$ = this.walletsTariffsService.hasMore$;
     isLoading$ = this.walletsTariffsService.isLoading$;
-    columns: Column<WalletTermSet>[] = [
-        createWalletColumn<WalletTermSet>(
-            'wallet_id',
-            (d) => d.owner_id,
-            undefined,
-            (d) => d.wallet_name,
-            {
-                pinned: 'left',
-            },
-        ),
-        createPartyColumn<WalletTermSet>('owner_id'),
+    columns: Column2<WalletTermSet>[] = [
+        createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
+            sticky: 'start',
+        }),
+        createPartyColumn((d) => ({ id: d.owner_id })),
         { field: 'contract_id', header: 'Contract' },
         { field: 'identity_id.id', header: 'Identity' },
         { field: 'currency' },
-        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
+        createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',
         }),
         ...createWalletFeesColumn<WalletTermSet>(
@@ -111,13 +104,15 @@ export class WalletsTariffsComponent implements OnInit {
         ),
         {
             field: 'term_set_history',
-            formatter: (d) => d.term_set_history?.length || '',
-            click: (d) =>
-                this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
-                    data: d?.term_set_history?.reverse(),
-                    walletId: d?.wallet_id,
-                    currency: d?.currency,
-                }),
+            cell: (d) => ({
+                value: d.term_set_history?.length || '',
+                click: () =>
+                    this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
+                        data: d?.term_set_history?.reverse(),
+                        walletId: d?.wallet_id,
+                        currency: d?.currency,
+                    }),
+            }),
         },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(

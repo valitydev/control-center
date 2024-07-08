@@ -2,7 +2,7 @@ import type {
     CashFlowSelector,
     CashFlowPosting,
 } from '@vality/dominator-proto/internal/proto/domain';
-import type { Column } from '@vality/ng-core';
+import type { Column2 } from '@vality/ng-core';
 
 import {
     getInlineDecisions,
@@ -15,7 +15,7 @@ export function createFeesColumns<T extends object>(
     filterFee: (v: CashFlowPosting) => boolean,
     filterOther: (v: CashFlowPosting) => boolean = () => true,
     filterDecisions: (d: T) => (v: InlineCashFlowSelector) => boolean = () => () => true,
-): Column<T>[] {
+): Column2<T>[] {
     const filterOtherFn: (v: CashFlowPosting) => boolean = (v) =>
         !filterFee(v) &&
         filterOther(v) &&
@@ -23,53 +23,49 @@ export function createFeesColumns<T extends object>(
     return [
         {
             field: 'condition',
-            formatter: (d) =>
+            cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => formatLevelPredicate(v)),
+                    .map((v) => ({ value: formatLevelPredicate(v) })),
         },
         {
             field: 'feeShare',
             header: 'Fee, %',
-            formatter: (d) =>
+            cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.parts?.share),
+                    .map((v) => ({ value: v.parts?.share })),
         },
         {
             field: 'feeFixed',
             header: 'Fee, fix',
-            formatter: (d) =>
+            cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.parts?.fixed),
+                    .map((v) => ({ value: v.parts?.fixed })),
         },
         {
             field: 'feeMin',
             header: 'Fee, min',
-            formatter: (d) =>
+            cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.parts?.max),
+                    .map((v) => ({ value: v.parts?.max })),
         },
         {
             field: 'feeMax',
             header: 'Fee, max',
-            formatter: (d) =>
+            cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => v.parts?.min),
+                    .map((v) => ({ value: v.parts?.min })),
         },
         {
             field: 'other',
-            formatter: (d) =>
+            cell: (d) =>
                 getInlineDecisions(getFees(d), filterOtherFn)
                     .filter(filterDecisions(d))
-                    .map((v) => v.value),
-            tooltip: (d) =>
-                getInlineDecisions(getFees(d), filterOtherFn)
-                    .filter(filterDecisions(d))
-                    .map((v) => v.description),
+                    .map((v) => ({ value: v.value, tooltip: v.description })),
         },
     ];
 }

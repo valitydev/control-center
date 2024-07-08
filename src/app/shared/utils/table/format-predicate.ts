@@ -83,7 +83,7 @@ export function formatPredicate(predicate: Predicate, level = 0, not = false) {
             }`;
         case 'is_not': {
             if (getUnionKey(getUnionValue(predicate) as Predicate) !== 'is_not') {
-                return formatPredicate(predicate.is_not, level + 1, !not);
+                return formatPredicate(predicate.is_not, level, !not);
             }
             return '';
         }

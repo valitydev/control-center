@@ -1,0 +1,7 @@
+<cc-card title="Contract #{{ (contract$ | async)?.id }}">
+    <cc-domain-thrift-viewer
+        [progress]="!!(progress$ | async)"
+        [value]="contract$ | async"
+        type="Contract"
+    ></cc-domain-thrift-viewer>
+</cc-card>

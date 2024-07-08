@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TableModule, type Column, VSelectPipe } from '@vality/ng-core';
+import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
 
 import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 
@@ -20,13 +20,15 @@ export class ShopsTermSetHistoryCardComponent {
     data = input<ShopTermSet>();
     historyData = computed(() => this.data()?.term_set_history?.reverse?.());
 
-    columns: Column<TermSetHistory>[] = [
-        { field: 'applied_at', type: 'datetime' },
+    columns: Column2<TermSetHistory>[] = [
+        { field: 'applied_at', cell: { type: 'datetime' } },
         {
             field: 'term_set',
-            formatter: (d) => getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.label,
-            description: (d) =>
-                getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.description,
+            cell: (d) => ({
+                value: getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.label,
+                description: getDomainObjectDetails({ term_set_hierarchy: d?.term_set })
+                    ?.description,
+            }),
         },
         ...createShopFeesColumn<TermSetHistory>(
             (d) => d.term_set,

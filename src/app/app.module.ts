@@ -101,6 +101,7 @@ export class AppModule {
     }
 
     registerIcons(): void {
+        this.matIconRegistry.setDefaultFontSetClass('material-symbols-outlined');
         for (const name of icons) {
             this.matIconRegistry.addSvgIcon(
                 name,

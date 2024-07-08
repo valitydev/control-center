@@ -11,7 +11,6 @@ import {
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
-    Column,
     countChanged,
     createControls,
     debounceTimeWithFirst,
@@ -24,23 +23,23 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
+    Column2,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import {
-    createContractColumn,
-    createPartyColumn,
-    createShopColumn,
-    PageLayoutModule,
-    ShopFieldModule,
-} from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
+import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
+import {
+    createShopColumn,
+    createPartyColumn,
+    createContractColumn,
+    createDomainObjectColumn,
+} from '../../../../shared/utils/table2';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
@@ -84,24 +83,22 @@ export class ShopsTariffsComponent implements OnInit {
     tariffs$ = this.shopsTariffsService.result$;
     hasMore$ = this.shopsTariffsService.hasMore$;
     isLoading$ = this.shopsTariffsService.isLoading$;
-    columns: Column<ShopTermSet>[] = [
-        createShopColumn<ShopTermSet>(
-            'shop_id',
-            (d) => d.owner_id,
-            undefined,
-            (d) => d.shop_name,
-            {
-                pinned: 'left',
-            },
+    columns: Column2<ShopTermSet>[] = [
+        createShopColumn(
+            (d) => ({
+                shopId: d.shop_id,
+                partyId: d.owner_id,
+                shopName: d.shop_name,
+            }),
+            { sticky: 'start' },
         ),
-        createPartyColumn<ShopTermSet>('owner_id'),
-        createContractColumn<ShopTermSet>(
-            (d) => d.contract_id,
-            (d) => d.owner_id,
-            (d) => d.shop_id,
-        ),
+        createPartyColumn((d) => ({ id: d.owner_id })),
+        createContractColumn((d) => ({
+            id: d.contract_id,
+            partyId: d.owner_id,
+        })),
         { field: 'currency' },
-        createDomainObjectColumn('term_set_hierarchy', (d) => d.current_term_set.ref, {
+        createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',
         }),
         ...createShopFeesColumn<ShopTermSet>(
@@ -112,9 +109,11 @@ export class ShopsTariffsComponent implements OnInit {
         ),
         {
             field: 'term_set_history',
-            formatter: (d) => d.term_set_history?.length || '',
-            click: (d) =>
-                this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
+            cell: (d) => ({
+                value: d.term_set_history?.length || '',
+                click: () =>
+                    this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
+            }),
         },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(
