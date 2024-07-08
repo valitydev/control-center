@@ -38,7 +38,7 @@ export interface ShopParty {
     shop: Shop;
     party: {
         id: Party['id'];
-        email: Party['contact_info']['email'];
+        email: Party['contact_info']['registration_email'];
     };
 }
 

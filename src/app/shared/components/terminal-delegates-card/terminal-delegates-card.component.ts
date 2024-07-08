@@ -55,7 +55,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
             formatter: (d) =>
                 this.partiesStoreService
                     .get(d.delegate.allowed.condition?.party?.id)
-                    .pipe(map((p) => p.contact_info.email)),
+                    .pipe(map((p) => p.contact_info.registration_email)),
             description: (d) => d.delegate.allowed.condition?.party?.id,
             link: (d) => `/party/${d.delegate.allowed.condition.party.id}`,
         },
