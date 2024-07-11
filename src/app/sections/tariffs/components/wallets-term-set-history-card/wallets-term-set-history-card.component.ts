@@ -1,13 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
 
-import type { TermSetHistory } from '@vality/dominator-proto/internal/dominator';
+import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/internal/dominator';
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getDomainObjectDetails } from '../../../../shared/components/thrift-api-crud';
-import { createWalletFeesColumn } from '../wallets-tariffs/utils/create-wallet-fees-column';
+import { getInlineDecisions2 } from '../../utils/get-inline-decisions';
+import {
+    WALLET_FEES_COLUMNS,
+    isWalletTermSetDecision,
+    getWalletCashFlowSelectors,
+} from '../wallets-tariffs/utils/wallet-fees-columns';
 
 @Component({
     selector: 'cc-wallets-term-set-history-card',
@@ -17,9 +22,20 @@ import { createWalletFeesColumn } from '../wallets-tariffs/utils/create-wallet-f
     styles: ``,
 })
 export class WalletsTermSetHistoryCardComponent {
-    data = input<TermSetHistory[]>();
-    walletId = input<string>();
-    currency = input<string>();
+    data = input<WalletTermSet>();
+    historyData = computed(() =>
+        (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
+            value: t,
+            children: getInlineDecisions2(getWalletCashFlowSelectors(t.term_set)).filter((v) =>
+                isWalletTermSetDecision(v, {
+                    partyId: this.data().owner_id,
+                    walletId: this.data().wallet_id,
+                    currency: this.data().currency,
+                }),
+            ),
+        })),
+    );
+
     columns: Column2<TermSetHistory>[] = [
         { field: 'applied_at', cell: { type: 'datetime' } },
         {
@@ -30,10 +46,6 @@ export class WalletsTermSetHistoryCardComponent {
                     ?.description,
             }),
         },
-        ...createWalletFeesColumn<TermSetHistory>(
-            (d) => d.term_set,
-            () => this.walletId(),
-            () => this.currency(),
-        ),
+        ...WALLET_FEES_COLUMNS,
     ];
 }
