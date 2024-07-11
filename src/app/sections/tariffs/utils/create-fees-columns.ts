@@ -26,7 +26,7 @@ export function createFeesColumns<T extends object>(
             cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => ({ value: formatLevelPredicate(v) })),
+                    .map((v) => ({ value: formatLevelPredicate(v) })) as any,
         },
         {
             field: 'feeShare',
@@ -34,7 +34,7 @@ export function createFeesColumns<T extends object>(
             cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => ({ value: v.parts?.share })),
+                    .map((v) => ({ value: v.parts?.share })) as any,
         },
         {
             field: 'feeFixed',
@@ -42,7 +42,7 @@ export function createFeesColumns<T extends object>(
             cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => ({ value: v.parts?.fixed })),
+                    .map((v) => ({ value: v.parts?.fixed })) as any,
         },
         {
             field: 'feeMin',
@@ -50,7 +50,7 @@ export function createFeesColumns<T extends object>(
             cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => ({ value: v.parts?.max })),
+                    .map((v) => ({ value: v.parts?.max })) as any,
         },
         {
             field: 'feeMax',
@@ -58,14 +58,14 @@ export function createFeesColumns<T extends object>(
             cell: (d) =>
                 getInlineDecisions(getFees(d), filterFee)
                     .filter(filterDecisions(d))
-                    .map((v) => ({ value: v.parts?.min })),
+                    .map((v) => ({ value: v.parts?.min })) as any,
         },
         {
             field: 'other',
             cell: (d) =>
                 getInlineDecisions(getFees(d), filterOtherFn)
                     .filter(filterDecisions(d))
-                    .map((v) => ({ value: v.value, tooltip: v.description })),
+                    .map((v) => ({ value: v.value, tooltip: v.description })) as any,
         },
     ];
 }

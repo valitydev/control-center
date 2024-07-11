@@ -7,7 +7,12 @@ import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/intern
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getDomainObjectDetails } from '../../../../shared/components/thrift-api-crud';
-import { createShopFeesColumn } from '../shops-tariffs/utils/create-shop-fees-column';
+import { getInlineDecisions2 } from '../../utils/get-inline-decisions';
+import {
+    getShopCashFlowSelectors,
+    isShopTermSetDecision,
+    SHOP_FEES_COLUMNS,
+} from '../shops-tariffs/utils/shop-fees-columns';
 
 @Component({
     selector: 'cc-shops-term-set-history-card',
@@ -18,7 +23,18 @@ import { createShopFeesColumn } from '../shops-tariffs/utils/create-shop-fees-co
 })
 export class ShopsTermSetHistoryCardComponent {
     data = input<ShopTermSet>();
-    historyData = computed(() => this.data()?.term_set_history?.reverse?.());
+    historyData = computed(() =>
+        (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
+            value: t,
+            children: getInlineDecisions2(getShopCashFlowSelectors(t.term_set)).filter((v) =>
+                isShopTermSetDecision(v, {
+                    partyId: this.data().owner_id,
+                    shopId: this.data().shop_id,
+                    currency: this.data().currency,
+                }),
+            ),
+        })),
+    );
 
     columns: Column2<TermSetHistory>[] = [
         { field: 'applied_at', cell: { type: 'datetime' } },
@@ -30,11 +46,6 @@ export class ShopsTermSetHistoryCardComponent {
                     ?.description,
             }),
         },
-        ...createShopFeesColumn<TermSetHistory>(
-            (d) => d.term_set,
-            () => this.data().owner_id,
-            () => this.data().shop_id,
-            () => this.data().currency,
-        ),
+        ...SHOP_FEES_COLUMNS,
     ];
 }

@@ -18,10 +18,10 @@
 
     <v-table2
         [columns]="columns"
-        [data]="tariffs$ | async"
         [hasMore]="hasMore$ | async"
         [maxSize]="250"
         [progress]="isLoading$ | async"
+        [treeData]="tariffs$ | async"
         infinityScroll
         (more)="more()"
         (update)="update($event)"

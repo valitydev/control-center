@@ -1,3 +1,4 @@
+import { CashFlow } from '@vality/domain-proto/internal/domain';
 import { getUnionKey } from '@vality/ng-thrift';
 
 import type {
@@ -63,7 +64,7 @@ function formatCashFlowAccount(acc: CashFlowAccount) {
     );
 }
 
-export function formatLevelPredicate(v: InlineCashFlowSelector) {
+export function formatLevelPredicate(v: { level: number; if?: Predicate }) {
     return `${'\xa0'.repeat(Math.max(v.level - 1, 0))}${v.level > 0 ? '↳' : ''} ${formatPredicate(
         v.if,
     )}`;
@@ -117,4 +118,39 @@ export function getInlineDecisions(
         }
         return acc;
     }, [] as InlineCashFlowSelector[]);
+}
+
+export interface InlineDecision2 {
+    value: CashFlow;
+    level: number;
+    if?: Predicate;
+}
+
+export function getInlineDecisions2(d: CashFlowSelector[], level = 0) {
+    return d.reduce<InlineDecision2[]>((acc, c) => {
+        if (c.value) {
+            acc.push({
+                value: c.value.sort((a, b) => compareCashVolumes(a.volume, b.volume)),
+                level,
+            });
+        }
+        if (c.decisions?.length) {
+            acc.push(
+                ...c.decisions.flatMap((d) => {
+                    const thenInlineDecisions = getInlineDecisions2([d.then_], level + 1);
+                    if (d.if_) {
+                        const ifInlineDecision = {
+                            if: d.if_,
+                            level,
+                        };
+                        return thenInlineDecisions.length > 1
+                            ? [{ ...ifInlineDecision, value: [] }, ...thenInlineDecisions]
+                            : [{ ...thenInlineDecisions[0], ...ifInlineDecision }];
+                    }
+                    return thenInlineDecisions;
+                }),
+            );
+        }
+        return acc;
+    }, []);
 }
