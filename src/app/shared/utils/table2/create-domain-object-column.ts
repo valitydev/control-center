@@ -10,16 +10,19 @@ import {
     getDomainObjectDetails,
 } from '../../components/thrift-api-crud';
 
-export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference }) => {
-    return inject(DomainStoreService)
-        .getObject(ref)
-        .pipe(
-            map((obj) => ({
-                value: getDomainObjectDetails(obj).label,
-                description: getDomainObjectDetails(obj).id,
-                click: () => {
-                    inject(SidenavInfoService).toggle(DomainObjectCardComponent, { ref });
-                },
-            })),
-        );
-}, 'Object');
+export const createDomainObjectColumn = createColumn(
+    ({ ref }: { ref: Reference }) => {
+        return inject(DomainStoreService)
+            .getObject(ref)
+            .pipe(
+                map((obj) => ({
+                    value: getDomainObjectDetails(obj).label,
+                    description: getDomainObjectDetails(obj).id,
+                    click: () => {
+                        inject(SidenavInfoService).toggle(DomainObjectCardComponent, { ref });
+                    },
+                })),
+            );
+    },
+    { header: 'Object' },
+);

@@ -24,5 +24,5 @@ export const createPartyColumn = createColumn(
             })),
         );
     },
-    'Party',
+    { header: 'Party' },
 );

@@ -22,7 +22,6 @@
         [maxSize]="250"
         [progress]="isLoading$ | async"
         [treeData]="tariffs$ | async"
-        infinityScroll
         (more)="more()"
         (update)="update($event)"
     ></v-table2>

@@ -26,5 +26,5 @@ export const createShopColumn = createColumn(
             })),
         );
     },
-    'Shop',
+    { header: 'Shop' },
 );

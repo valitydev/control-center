@@ -1,20 +1,23 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { InvoicePaymentStatus } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { Column, TagColumn, LoadOptions, createOperationColumn } from '@vality/ng-core';
+import { LoadOptions, Column2, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
 import { AmountCurrencyService } from '@cc/app/shared/services';
 
-import { createFailureColumn, createPartyColumn, createShopColumn } from '../../../../shared';
-import { createProviderColumn } from '../../../../shared/utils/table/create-provider-column';
-import { createTerminalColumn } from '../../../../shared/utils/table/create-terminal-column';
+import { createFailureColumn2 } from '../../../../shared';
+import {
+    createPartyColumn,
+    createShopColumn,
+    createDomainObjectColumn,
+} from '../../../../shared/utils/table2';
 
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
+    styles: `:host { height: 100%; }`,
 })
 export class PaymentsTableComponent {
     @Input() data!: StatPayment[];
@@ -26,64 +29,72 @@ export class PaymentsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column<StatPayment>[] = [
-        { field: 'id', click: (d) => this.toDetails(d), pinned: 'left' },
-        { field: 'invoice_id', pinned: 'left' },
+    columns: Column2<StatPayment>[] = [
+        { field: 'id', cell: (d) => ({ click: () => this.toDetails(d) }), sticky: 'start' },
+        { field: 'invoice_id', sticky: 'start' },
         {
             field: 'amount',
-            type: 'currency',
-            formatter: (data) =>
-                this.amountCurrencyService.toMajor(data.amount, data.currency_symbolic_code),
-            typeParameters: {
-                currencyCode: 'currency_symbolic_code',
-            },
+            cell: (d) => ({
+                type: 'currency',
+                value: d.amount,
+                params: {
+                    code: d.currency_symbolic_code,
+                },
+            }),
         },
         {
             field: 'fee',
-            type: 'currency',
-            formatter: (data) =>
-                this.amountCurrencyService.toMajor(data.fee, data.currency_symbolic_code),
-            typeParameters: {
-                currencyCode: 'currency_symbolic_code',
-            },
+            cell: (d) => ({
+                type: 'currency',
+                value: d.fee,
+                params: {
+                    code: d.currency_symbolic_code,
+                },
+            }),
         },
         {
             field: 'status',
-            type: 'tag',
-            formatter: (data) => getUnionKey(data.status),
-            typeParameters: {
-                label: (data) => startCase(getUnionKey(data.status)),
-                tags: {
-                    captured: { color: 'success' },
-                    refunded: { color: 'success' },
-                    charged_back: { color: 'success' },
-                    pending: { color: 'pending' },
-                    processed: { color: 'pending' },
-                    failed: { color: 'warn' },
-                    cancelled: { color: 'neutral' },
-                },
-            },
-        } as TagColumn<StatPayment, keyof InvoicePaymentStatus>,
-        { field: 'created_at', type: 'datetime' },
-        createPartyColumn('owner_id'),
-        createShopColumn('shop_id', (d) => d.owner_id),
-        'domain_revision',
-        createTerminalColumn((d) => d.terminal_id.id),
-        createProviderColumn((d) => d.provider_id.id),
-        'external_id',
-        createFailureColumn<StatPayment>(
-            (d) => d.status?.failed?.failure?.failure,
-            (d) =>
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.status)),
+                color: (
+                    {
+                        captured: 'success',
+                        refunded: 'success',
+                        charged_back: 'success',
+                        pending: 'pending',
+                        processed: 'pending',
+                        failed: 'warn',
+                        cancelled: 'neutral',
+                    } as const
+                )[getUnionKey(d.status)],
+            }),
+        },
+        { field: 'created_at', cell: { type: 'datetime' } },
+        createPartyColumn((d) => ({ id: d.owner_id })),
+        createShopColumn((d) => ({ partyId: d.owner_id, shopId: d.shop_id })),
+        { field: 'domain_revision' },
+        createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal_id } }), {
+            header: 'Terminal',
+        }),
+        createDomainObjectColumn((d) => ({ ref: { provider: d.provider_id } }), {
+            header: 'Provider',
+        }),
+        { field: 'external_id' },
+        createFailureColumn2((d) => ({
+            failure: d.status?.failed?.failure?.failure,
+            noFailureMessage:
                 getUnionKey(d.status?.failed?.failure) === 'failure'
                     ? ''
                     : startCase(getUnionKey(d.status?.failed?.failure)),
-        ),
-        createOperationColumn<StatPayment>([
-            {
-                label: 'Details',
-                click: (data) => this.toDetails(data),
-            },
-        ]),
+        })),
+        createMenuColumn((d) => ({
+            items: [
+                {
+                    label: 'Details',
+                    click: () => this.toDetails(d),
+                },
+            ],
+        })),
     ];
 
     constructor(
