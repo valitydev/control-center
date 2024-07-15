@@ -42,9 +42,14 @@ import {
 } from '@cc/app/shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
+import { InlineDecision2, getInlineDecisions2 } from '../../utils/get-inline-decisions';
 import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
 
-import { createWalletFeesColumn } from './utils/create-wallet-fees-column';
+import {
+    WALLET_FEES_COLUMNS,
+    getWalletCashFlowSelectors,
+    isWalletTermSetDecision,
+} from './utils/wallet-fees-columns';
 import { WalletsTariffsService } from './wallets-tariffs.service';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
@@ -83,10 +88,25 @@ export class WalletsTariffsComponent implements OnInit {
             identity_ids: null,
         }),
     );
-    tariffs$ = this.walletsTariffsService.result$;
+    tariffs$ = this.walletsTariffsService.result$.pipe(
+        map((terms) =>
+            terms.map((t) => ({
+                value: t,
+                children: getInlineDecisions2(
+                    getWalletCashFlowSelectors(t.current_term_set),
+                ).filter((v) =>
+                    isWalletTermSetDecision(v, {
+                        partyId: t.owner_id,
+                        walletId: t.wallet_id,
+                        currency: t.currency,
+                    }),
+                ),
+            })),
+        ),
+    );
     hasMore$ = this.walletsTariffsService.hasMore$;
     isLoading$ = this.walletsTariffsService.isLoading$;
-    columns: Column2<WalletTermSet>[] = [
+    columns: Column2<WalletTermSet, InlineDecision2>[] = [
         createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
             sticky: 'start',
         }),
@@ -97,21 +117,13 @@ export class WalletsTariffsComponent implements OnInit {
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',
         }),
-        ...createWalletFeesColumn<WalletTermSet>(
-            (d) => d.current_term_set,
-            (d) => d.wallet_id,
-            (d) => d.currency,
-        ),
+        ...WALLET_FEES_COLUMNS,
         {
             field: 'term_set_history',
             cell: (d) => ({
                 value: d.term_set_history?.length || '',
                 click: () =>
-                    this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, {
-                        data: d?.term_set_history?.reverse(),
-                        walletId: d?.wallet_id,
-                        currency: d?.currency,
-                    }),
+                    this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, { data: d }),
             }),
         },
     ];

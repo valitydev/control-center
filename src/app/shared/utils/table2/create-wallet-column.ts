@@ -20,5 +20,5 @@ export const createWalletColumn = createColumn(
             })),
         );
     },
-    'Wallet',
+    { header: 'Wallet' },
 );
