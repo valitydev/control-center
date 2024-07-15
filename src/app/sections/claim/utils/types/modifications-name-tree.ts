@@ -47,6 +47,12 @@ export const MODIFICATIONS_NAME_TREE: ModificationsNameTree<Modification> = {
                         creation: 'Contract Adjustment Creation',
                     },
                 },
+                payout_tool_modification: {
+                    modification: {
+                        creation: 'Contract Payout Tool Creation',
+                        info_modification: 'Contract Payout Tool Info',
+                    },
+                },
                 legal_agreement_binding: 'Contract Legal Agreement Binding',
                 report_preferences_modification: 'Contract Report Preferences',
                 contractor_modification: 'Contract Contractor',
@@ -58,8 +64,10 @@ export const MODIFICATIONS_NAME_TREE: ModificationsNameTree<Modification> = {
                 category_modification: 'Shop Category',
                 details_modification: 'Shop Details',
                 contract_modification: 'Shop Contract',
+                payout_tool_modification: 'Shop Payout Tool',
                 location_modification: 'Shop Location',
                 shop_account_creation: 'Shop Account Creation',
+                payout_schedule_modification: 'Shop Schedule',
                 cash_register_modification_unit: {
                     modification: {
                         creation: 'Shop Cash Register Creation',
@@ -72,11 +80,6 @@ export const MODIFICATIONS_NAME_TREE: ModificationsNameTree<Modification> = {
                 creation: 'Old Wallet Creation',
                 account_creation: 'Old Wallet Account Creation',
             },
-        },
-        additional_info_modification: {
-            party_name: 'Party Name',
-            manager_contact_emails: 'Party Manager Contract Emails',
-            comment: 'Party Comment',
         },
     },
     identity_modification: {
