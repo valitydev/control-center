@@ -1,5 +1,10 @@
 import { Failure } from '@vality/domain-proto/domain';
-import { PossiblyAsync, ColumnObject, getPossiblyAsyncObservable } from '@vality/ng-core';
+import {
+    PossiblyAsync,
+    ColumnObject,
+    getPossiblyAsyncObservable,
+    createColumn,
+} from '@vality/ng-core';
 import { of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -45,3 +50,12 @@ export function createFailureColumn<T extends object>(
         ...params,
     } as ColumnObject<T>;
 }
+
+export const createFailureColumn2 = createColumn(
+    ({ failure, noFailureMessage }: { failure: Failure; noFailureMessage: string }) => ({
+        value: noFailureMessage || getFailureMessageTree(failure, false, 2),
+        description: failure?.reason || '',
+        tooltip: failure?.sub?.sub ? JSON.stringify(failure.sub.sub, null, 2) : '',
+    }),
+    { header: 'Failure' },
+);

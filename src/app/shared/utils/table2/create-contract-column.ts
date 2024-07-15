@@ -14,5 +14,5 @@ export const createContractColumn = createColumn(
             },
         };
     },
-    'Contract',
+    { header: 'Contract' },
 );

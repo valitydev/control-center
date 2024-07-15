@@ -22,4 +22,4 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
                 },
             })),
         );
-}, 'Object');
+});

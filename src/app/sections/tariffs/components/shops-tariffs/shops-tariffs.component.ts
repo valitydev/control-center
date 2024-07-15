@@ -40,10 +40,15 @@ import {
     createContractColumn,
     createDomainObjectColumn,
 } from '../../../../shared/utils/table2';
+import { getInlineDecisions2, InlineDecision2 } from '../../utils/get-inline-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
 import { ShopsTariffsService } from './shops-tariffs.service';
-import { createShopFeesColumn } from './utils/create-shop-fees-column';
+import {
+    isShopTermSetDecision,
+    SHOP_FEES_COLUMNS,
+    getShopCashFlowSelectors,
+} from './utils/shop-fees-columns';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
@@ -80,10 +85,24 @@ export class ShopsTariffsComponent implements OnInit {
             term_sets_ids: null,
         }),
     );
-    tariffs$ = this.shopsTariffsService.result$;
+    tariffs$ = this.shopsTariffsService.result$.pipe(
+        map((terms) =>
+            terms.map((t) => ({
+                value: t,
+                children: getInlineDecisions2(getShopCashFlowSelectors(t.current_term_set)).filter(
+                    (v) =>
+                        isShopTermSetDecision(v, {
+                            partyId: t.owner_id,
+                            shopId: t.shop_id,
+                            currency: t.currency,
+                        }),
+                ),
+            })),
+        ),
+    );
     hasMore$ = this.shopsTariffsService.hasMore$;
     isLoading$ = this.shopsTariffsService.isLoading$;
-    columns: Column2<ShopTermSet>[] = [
+    columns: Column2<ShopTermSet, InlineDecision2>[] = [
         createShopColumn(
             (d) => ({
                 shopId: d.shop_id,
@@ -101,12 +120,7 @@ export class ShopsTariffsComponent implements OnInit {
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',
         }),
-        ...createShopFeesColumn<ShopTermSet>(
-            (d) => d?.current_term_set,
-            (d) => d.owner_id,
-            (d) => d.shop_id,
-            (d) => d.currency,
-        ),
+        ...SHOP_FEES_COLUMNS,
         {
             field: 'term_set_history',
             cell: (d) => ({
