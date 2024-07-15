@@ -12,6 +12,7 @@ import {
     createPartyColumn,
     createShopColumn,
     createDomainObjectColumn,
+    createCurrencyColumn,
 } from '../../../../shared/utils/table2';
 
 @Component({
@@ -32,26 +33,12 @@ export class PaymentsTableComponent {
     columns: Column2<StatPayment>[] = [
         { field: 'id', cell: (d) => ({ click: () => this.toDetails(d) }), sticky: 'start' },
         { field: 'invoice_id', sticky: 'start' },
-        {
+        createCurrencyColumn((d) => ({ amount: d.amount, code: d.currency_symbolic_code }), {
             field: 'amount',
-            cell: (d) => ({
-                type: 'currency',
-                value: d.amount,
-                params: {
-                    code: d.currency_symbolic_code,
-                },
-            }),
-        },
-        {
+        }),
+        createCurrencyColumn((d) => ({ amount: d.fee, code: d.currency_symbolic_code }), {
             field: 'fee',
-            cell: (d) => ({
-                type: 'currency',
-                value: d.fee,
-                params: {
-                    code: d.currency_symbolic_code,
-                },
-            }),
-        },
+        }),
         {
             field: 'status',
             cell: (d) => ({
