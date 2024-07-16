@@ -33,7 +33,7 @@ export class DomainMetadataViewExtensionsService {
                 extension: (_, partyId: PartyID) =>
                     this.partiesStoreService.get(partyId).pipe(
                         map((p) => ({
-                            value: p.contact_info.email,
+                            value: p.contact_info.registration_email,
                             link: [[`/party/${p.id}`]],
                             tooltip: p.id,
                         })),

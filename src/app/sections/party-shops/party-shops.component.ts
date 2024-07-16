@@ -17,7 +17,7 @@ export class PartyShopsComponent {
         map(([shops, party]) =>
             shops.map((shop) => ({
                 shop,
-                party: { id: party.id, email: party.contact_info?.email },
+                party: { id: party.id, email: party.contact_info?.registration_email },
             })),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),

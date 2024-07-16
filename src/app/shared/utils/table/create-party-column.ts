@@ -24,9 +24,9 @@ export function createPartyColumn<T extends object>(
                 switchMap((partyId) =>
                     partyId
                         ? partiesStoreService.get(partyId)
-                        : of({ contact_info: { email: '' } }),
+                        : of({ contact_info: { registration_email: '' } }),
                 ),
-                map((p) => p.contact_info.email),
+                map((p) => p.contact_info.registration_email),
             );
     }
     return {

@@ -13,7 +13,7 @@ export const createPartyColumn = createColumn(
                 ? of(params.partyName)
                 : inject(PartiesStoreService)
                       .get(id)
-                      .pipe(map((party) => party.contact_info.email));
+                      .pipe(map((party) => party.contact_info.registration_email));
         return partyName$.pipe(
             map((partyName) => ({
                 value: partyName,

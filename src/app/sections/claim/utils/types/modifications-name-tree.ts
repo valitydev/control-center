@@ -81,6 +81,7 @@ export const MODIFICATIONS_NAME_TREE: ModificationsNameTree<Modification> = {
                 account_creation: 'Old Wallet Account Creation',
             },
         },
+        additional_info_modification: 'Party Additional Info',
     },
     identity_modification: {
         modification: {
