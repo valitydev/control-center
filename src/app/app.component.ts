@@ -116,6 +116,11 @@ export class AppComponent {
                     services: PAYMENTS_ROUTING_CONFIG.services,
                 },
                 {
+                    label: 'Old Payments',
+                    url: '/old-payments',
+                    services: PAYMENTS_ROUTING_CONFIG.services,
+                },
+                {
                     label: 'Payouts',
                     url: '/payouts',
                     services: PAYOUTS_ROUTING_CONFIG.services,
