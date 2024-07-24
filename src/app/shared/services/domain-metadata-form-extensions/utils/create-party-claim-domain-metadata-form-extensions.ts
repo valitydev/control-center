@@ -1,4 +1,4 @@
-import { Claim, PayoutToolModificationUnit } from '@vality/domain-proto/claim_management';
+import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import uniqBy from 'lodash-es/uniqBy';
@@ -28,20 +28,6 @@ function createClaimOptions(
             label: 'From claim',
             details: unit.modification as object,
             value: unit.id,
-            color: 'primary',
-        })),
-        'value',
-    );
-}
-
-function createClaimPayoutToolOptions(
-    modificationUnits: PayoutToolModificationUnit[],
-): MetadataFormExtensionOption[] {
-    return uniqBy(
-        modificationUnits.map((unit) => ({
-            label: 'From claim',
-            details: unit.modification,
-            value: unit.payout_tool_id,
             color: 'primary',
         })),
         'value',
@@ -136,23 +122,6 @@ export function createPartyClaimDomainMetadataFormExtensions(
                         createPartyOptions(party.wallets.values()),
                     ),
                     generate,
-                    isIdentifier: true,
-                }),
-        },
-        {
-            determinant: (data) => of(isTypeWithAliases(data, 'PayoutToolID', 'domain')),
-            extension: () =>
-                of({
-                    options: createClaimPayoutToolOptions(
-                        claim.changeset
-                            .map(
-                                (unit) =>
-                                    unit.modification.party_modification?.contract_modification
-                                        ?.modification?.payout_tool_modification,
-                            )
-                            .filter(Boolean),
-                    ),
-                    generate: () => of(short().generate()),
                     isIdentifier: true,
                 }),
         },
