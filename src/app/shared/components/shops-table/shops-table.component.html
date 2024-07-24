@@ -1,7 +1,7 @@
 <v-table
     [(sort)]="sort"
     [columns]="columns$ | async"
-    [data]="shops"
+    [data]="shops()"
     [externalFilter]="filterChange.observed"
     [progress]="progress"
     [size]="100"
