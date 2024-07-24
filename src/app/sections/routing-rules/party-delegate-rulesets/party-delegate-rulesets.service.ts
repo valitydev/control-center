@@ -6,7 +6,8 @@ import {
     RoutingDelegate,
     RoutingRulesObject,
 } from '@vality/domain-proto/domain';
-import { combineLatest, Observable } from 'rxjs';
+import isNil from 'lodash-es/isNil';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
@@ -14,6 +15,12 @@ import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
+
+export interface DelegateWithPaymentInstitution {
+    partyDelegate: RoutingDelegate;
+    paymentInstitution: PaymentInstitutionObject;
+    mainRoutingRule: RoutingRulesObject;
+}
 
 @Injectable()
 export class PartyDelegateRulesetsService {
@@ -32,10 +39,13 @@ export class PartyDelegateRulesetsService {
         private routingRulesService: RoutingRulesService,
     ) {}
 
-    getDelegatesWithPaymentInstitution(type?: RoutingRulesType) {
+    getDelegatesWithPaymentInstitution(
+        type?: RoutingRulesType,
+        partyId?: PartyID,
+    ): Observable<DelegateWithPaymentInstitution[]> {
         return combineLatest([
             this.getPaymentInstitutionsWithRoutingRule(type),
-            this.partyID$,
+            isNil(partyId) ? this.partyID$ : of(partyId),
         ]).pipe(
             map(([paymentInstitutionsWithRoutingRule, partyID]) =>
                 paymentInstitutionsWithRoutingRule
