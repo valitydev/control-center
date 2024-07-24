@@ -27,13 +27,16 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
-import { map, switchMap, Subject, defer, combineLatest } from 'rxjs';
+import { map, switchMap, Subject, defer, combineLatest, of } from 'rxjs';
 import { filter, shareReplay, startWith, take, first } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartyManagementService } from '../../../api/payment-processing';
-import { PartyDelegateRulesetsService } from '../../../sections/routing-rules/party-delegate-rulesets';
+import {
+    PartyDelegateRulesetsService,
+    DelegateWithPaymentInstitution,
+} from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
@@ -77,17 +80,21 @@ export class ShopsTableComponent implements OnChanges {
 
     columns$ = combineLatest([
         toObservable(this.shops).pipe(
-            startWith([]),
-            map((shops) => (shops ? Array.from(new Set(shops.map((s) => s.party.id))) : [])),
+            startWith(null),
+            map((shops) =>
+                shops?.length ? Array.from(new Set(shops.map((s) => s.party.id))) : [],
+            ),
             switchMap((parties) =>
-                combineLatest(
-                    parties.map((id) =>
-                        this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
-                            RoutingRulesType.Payment,
-                            id,
-                        ),
-                    ),
-                ).pipe(map((rules) => new Map(rules.map((r, idx) => [parties[idx], r])))),
+                parties?.length
+                    ? combineLatest(
+                          parties.map((id) =>
+                              this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
+                                  RoutingRulesType.Payment,
+                                  id,
+                              ),
+                          ),
+                      ).pipe(map((rules) => new Map(rules.map((r, idx) => [parties[idx], r]))))
+                    : of(new Map<string, DelegateWithPaymentInstitution[]>()),
             ),
             map((delegatesWithPaymentInstitutionByParty) => ({
                 delegatesWithPaymentInstitutionByParty,
