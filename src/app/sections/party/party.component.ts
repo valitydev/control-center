@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Link } from '@vality/ng-core';
+import { getUnionKey } from '@vality/ng-thrift';
+import startCase from 'lodash-es/startCase';
+import { map } from 'rxjs/operators';
 
 import { AppAuthGuardService, Services } from '@cc/app/shared/services';
 
@@ -48,6 +51,26 @@ export class PartyComponent {
         },
     ].filter((item) => this.appAuthGuardService.userHasSomeServiceMethods(item.services));
     party$ = this.partyStoreService.party$;
+    tags$ = this.party$.pipe(
+        map((party) => [
+            ...(party?.blocking
+                ? [
+                      {
+                          title: startCase(getUnionKey(party.blocking)),
+                          color: getUnionKey(party.blocking) === 'blocked' ? 'warn' : 'success',
+                      },
+                  ]
+                : []),
+            ...(party?.suspension
+                ? [
+                      {
+                          title: startCase(getUnionKey(party.suspension)),
+                          color: getUnionKey(party.suspension) === 'suspended' ? 'warn' : 'success',
+                      },
+                  ]
+                : []),
+        ]),
+    );
 
     constructor(
         private appAuthGuardService: AppAuthGuardService,
