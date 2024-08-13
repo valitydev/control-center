@@ -5,9 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/ng-core';
 
-import { StatusModule, PageLayoutModule } from '@cc/app/shared/components';
+import { StatusModule, PageLayoutModule, SubPageLayoutComponent } from '@cc/app/shared/components';
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
@@ -43,6 +44,8 @@ import { RefundsTableModule } from './refunds-table';
         JsonViewerModule,
         RefundsTableModule,
         MagistaThriftViewerComponent,
+        SubPageLayoutComponent,
+        RouterOutlet,
     ],
     declarations: [PaymentDetailsComponent, CreateChargebackDialogComponent],
 })

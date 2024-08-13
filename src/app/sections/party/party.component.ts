@@ -56,7 +56,7 @@ export class PartyComponent {
             ...(party?.blocking
                 ? [
                       {
-                          title: startCase(getUnionKey(party.blocking)),
+                          value: startCase(getUnionKey(party.blocking)),
                           color: getUnionKey(party.blocking) === 'blocked' ? 'warn' : 'success',
                       },
                   ]
@@ -64,7 +64,7 @@ export class PartyComponent {
             ...(party?.suspension
                 ? [
                       {
-                          title: startCase(getUnionKey(party.suspension)),
+                          value: startCase(getUnionKey(party.suspension)),
                           color: getUnionKey(party.suspension) === 'suspended' ? 'warn' : 'success',
                       },
                   ]

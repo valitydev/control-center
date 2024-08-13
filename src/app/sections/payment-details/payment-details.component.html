@@ -1,41 +1,14 @@
-<cc-page-layout
-    [progress]="isLoading$ | async"
+<cc-sub-page-layout
+    [links]="[
+        { label: 'Payment', url: 'details' },
+        { label: 'Refunds', url: 'refunds' },
+        { label: 'Chargebacks', url: 'chargebacks' }
+    ]"
     [tags]="tags$ | async"
     id="{{
         (payment$ | async) ? (payment$ | async)?.invoice_id + '.' + (payment$ | async)?.id : ''
     }}"
     title="Payment"
 >
-    <ng-container *ngIf="payment$ | async as payment">
-        <mat-card>
-            <mat-card-content>
-                <cc-magista-thrift-viewer
-                    [extensions]="extensions$ | async"
-                    [value]="payment"
-                    type="StatPayment"
-                ></cc-magista-thrift-viewer>
-            </mat-card-content>
-        </mat-card>
-
-        <h2 class="mat-h1 mat-no-margin">Refunds</h2>
-        <cc-refunds-table
-            [invoiceID]="payment.invoice_id"
-            [partyID]="payment.owner_id"
-            [paymentID]="payment.id"
-        ></cc-refunds-table>
-
-        <div style="display: flex; place-content: stretch space-between">
-            <h2 class="mat-h1 mat-no-margin">Chargebacks</h2>
-            <v-actions>
-                <button color="primary" mat-button (click)="createChargeback()">
-                    Create chargeback
-                </button>
-            </v-actions>
-        </div>
-        <cc-chargebacks
-            [chargebacks]="chargebacks$ | async"
-            [invoiceId]="payment.invoice_id"
-            [paymentId]="payment.id"
-        ></cc-chargebacks>
-    </ng-container>
-</cc-page-layout>
+    <router-outlet></router-outlet>
+</cc-sub-page-layout>

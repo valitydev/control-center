@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { MatSidenav, MatSidenavContent, MatSidenavContainer } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
-import { NavComponent, TagModule, Color, Link } from '@vality/ng-core';
+import { NavComponent, TagModule, Color, Link, ActionsModule } from '@vality/ng-core';
 
 import { SidenavInfoService } from '../../../sidenav-info';
 
@@ -17,13 +17,16 @@ import { SidenavInfoService } from '../../../sidenav-info';
         MatToolbar,
         TagModule,
         MatSidenavContainer,
+        ActionsModule,
     ],
     templateUrl: './sub-page-layout.component.html',
     styles: ``,
 })
 export class SubPageLayoutComponent {
+    title = input<string>();
+    id = input<string>();
     links = input<Link[]>([]);
-    tags = input<{ title: string; color?: Color }[]>([]);
+    tags = input<{ value: string; color: Color }[] | null>([]);
 
     constructor(protected sidenavInfoService: SidenavInfoService) {}
 }
