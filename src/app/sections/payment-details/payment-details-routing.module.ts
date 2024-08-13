@@ -37,6 +37,13 @@ import { ROUTING_CONFIG } from './routing-config';
                             ),
                     },
                     {
+                        path: 'events',
+                        loadComponent: () =>
+                            import('./components/payment-events/payment-events.component').then(
+                                (m) => m.PaymentEventsComponent,
+                            ),
+                    },
+                    {
                         path: '',
                         redirectTo: 'details',
                         pathMatch: 'full',
