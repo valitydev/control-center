@@ -127,4 +127,9 @@ export class InvoicingService {
             switchMap((c) => c.CancelChargeback(id, paymentId, chargebackId, params)),
         );
     }
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    GetEvents(...args: Parameters<payment_processing_InvoicingCodegenClient['GetEvents']>) {
+        return this.client$.pipe(switchMap((c) => c.GetEvents(...args)));
+    }
 }
