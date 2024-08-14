@@ -2,31 +2,33 @@
     <cc-timeline>
         @for (e of events$ | async; track e) {
             <cc-timeline-item>
-                <cc-timeline-item-badge>
-                    <mat-icon>create</mat-icon>
+                <cc-timeline-item-badge [color]="e.color">
+                    <mat-icon>{{ e.icon }}</mat-icon>
                 </cc-timeline-item-badge>
                 <cc-timeline-item-title>
                     <cc-timeline-item-header
-                        [date]="e.event.created_at"
-                        [text]="e.change | ngtUnionKey | ngtKeyTitle | titlecase"
+                        [date]="e.date"
+                        [text]="e.title"
                     ></cc-timeline-item-header>
                 </cc-timeline-item-title>
-                <cc-timeline-item-content>
-                    <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{ e.change | ngtUnionKey | ngtKeyTitle | titlecase }}
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <ng-template matExpansionPanelContent>
-                            <cc-domain-thrift-viewer
-                                [type]="e.type"
-                                [value]="e.change"
-                                namespace="payment_processing"
-                            ></cc-domain-thrift-viewer>
-                        </ng-template>
-                    </mat-expansion-panel>
-                </cc-timeline-item-content>
+                @if (e.change) {
+                    <cc-timeline-item-content>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{ e.expansionTitle }}
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ng-template matExpansionPanelContent>
+                                <cc-domain-thrift-viewer
+                                    [namespace]="e.namespace"
+                                    [type]="e.type"
+                                    [value]="e.change"
+                                ></cc-domain-thrift-viewer>
+                            </ng-template>
+                        </mat-expansion-panel>
+                    </cc-timeline-item-content>
+                }
             </cc-timeline-item>
         }
     </cc-timeline>
