@@ -11,6 +11,22 @@
                         e.event.created_at | humanizedDuration: { hasAgoEnding: true }
                     }})
                 </cc-timeline-item-title>
+                <cc-timeline-item-content>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{ e.invoiceChange | ngtUnionKey | ngtKeyTitle | titlecase }}
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <ng-template matExpansionPanelContent>
+                            <cc-domain-thrift-viewer
+                                [value]="e.invoiceChange"
+                                namespace="payment_processing"
+                                type="InvoiceChange"
+                            ></cc-domain-thrift-viewer>
+                        </ng-template>
+                    </mat-expansion-panel>
+                </cc-timeline-item-content>
             </cc-timeline-item>
         }
     </cc-timeline>

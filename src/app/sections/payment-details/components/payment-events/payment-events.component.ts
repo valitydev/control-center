@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { HumanizedDurationPipe } from '@vality/ng-core';
 import { ThriftPipesModule } from '@vality/ng-thrift';
@@ -9,6 +10,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { TimelineModule } from '../../../../../components/timeline';
 import { InvoicingService } from '../../../../api/payment-processing';
 import { PageLayoutModule } from '../../../../shared';
+import { DomainThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { PaymentDetailsService } from '../../payment-details.service';
 
 @Component({
@@ -21,6 +23,8 @@ import { PaymentDetailsService } from '../../payment-details.service';
         MatIcon,
         HumanizedDurationPipe,
         ThriftPipesModule,
+        DomainThriftViewerComponent,
+        MatExpansionModule,
     ],
     templateUrl: './payment-events.component.html',
     styles: ``,

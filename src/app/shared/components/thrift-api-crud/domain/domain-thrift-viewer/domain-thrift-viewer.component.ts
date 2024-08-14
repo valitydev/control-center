@@ -20,6 +20,7 @@ export class DomainThriftViewerComponent<T> {
     @Input() compared?: T;
     @Input() type: ValueType;
     @Input({ transform: booleanAttribute }) progress: boolean = false;
+    @Input() namespace = 'domain';
     // @Input() extensions?: MetadataViewExtension[];
 
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
