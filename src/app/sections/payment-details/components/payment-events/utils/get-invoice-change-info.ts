@@ -263,6 +263,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 type: 'FinalCashFlow',
                                 namespace: 'domain',
                                 expansionTitle: 'Cash Flow',
+                                icon: 'account_tree',
                             };
                         case 'invoice_payment_chargeback_body_changed':
                             return {
@@ -271,6 +272,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 type: 'Cash',
                                 namespace: 'domain',
                                 expansionTitle: 'Cash',
+                                icon: 'price_change',
                             };
                         case 'invoice_payment_chargeback_levy_changed':
                             return {
@@ -279,6 +281,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 type: 'Cash',
                                 namespace: 'domain',
                                 expansionTitle: 'Cash',
+                                icon: 'price_change',
                             };
                         case 'invoice_payment_chargeback_stage_changed':
                             return {
@@ -303,6 +306,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 type: 'AccounterClock',
                                 namespace: 'domain',
                                 expansionTitle: 'Clock',
+                                icon: 'more_time',
                             };
                     }
                     return chargebackChange;
