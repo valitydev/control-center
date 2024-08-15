@@ -1,6 +1,7 @@
 import { InvoiceChange, Event } from '@vality/domain-proto/internal/payment_processing';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import isEmpty from 'lodash-es/isEmpty';
+import startCase from 'lodash-es/startCase';
 
 import { StatusColor } from '../../../../../styles';
 
@@ -96,19 +97,57 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         icon: 'account_tree',
                     };
                 }
-                // TODO: switch
                 case 'invoice_payment_status_changed': {
-                    return {
+                    const statusChange = {
                         change: payload.invoice_payment_status_changed.status,
                         type: 'InvoicePaymentStatus',
                         namespace: 'domain',
                         title: `Invoice payment status changed to ${getKeyTitle(
                             getUnionKey(payload.invoice_payment_status_changed.status),
                         )}`,
-                        expansionTitle: 'Status',
+                        expansionTitle: startCase(
+                            getKeyTitle(getUnionKey(payload.invoice_payment_status_changed.status)),
+                        ),
                         date: e.created_at,
-                        icon: 'edit',
+                        icon: 'priority_high',
                     };
+                    switch (getUnionKey(payload.invoice_payment_status_changed.status)) {
+                        case 'pending':
+                            return {
+                                ...statusChange,
+                                color: 'pending',
+                                icon: 'pending',
+                                change: null,
+                            };
+                        case 'processed':
+                            return {
+                                ...statusChange,
+                                color: 'pending',
+                                icon: 'process_chart',
+                                change: null,
+                            };
+                        case 'captured':
+                            return { ...statusChange, color: 'success', icon: 'check' };
+                        case 'cancelled':
+                            return { ...statusChange, color: 'neutral', icon: 'block' };
+                        case 'refunded':
+                            return {
+                                ...statusChange,
+                                color: 'success',
+                                icon: 'undo',
+                                change: null,
+                            };
+                        case 'failed':
+                            return { ...statusChange, color: 'warn', icon: 'priority_high' };
+                        case 'charged_back':
+                            return {
+                                ...statusChange,
+                                color: 'success',
+                                icon: 'undo',
+                                change: null,
+                            };
+                    }
+                    return statusChange;
                 }
                 case 'invoice_payment_session_change': {
                     const sessionChange = {
@@ -118,7 +157,11 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         title: `Invoice payment ${getKeyTitle(
                             getUnionKey(payload.invoice_payment_session_change.payload),
                         )}`,
-                        expansionTitle: 'Session Change',
+                        expansionTitle: startCase(
+                            getKeyTitle(
+                                getUnionKey(payload.invoice_payment_session_change.payload),
+                            ),
+                        ),
                         date: e.created_at,
                         icon: 'edit',
                     };
@@ -146,6 +189,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                             return {
                                 ...sessionChange,
                                 icon: 'pause',
+                                color: 'pending',
                             };
                         case 'session_activated':
                             return {
@@ -165,7 +209,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         case 'session_interaction_changed':
                             return {
                                 ...sessionChange,
-                                icon: 'ads_clickl',
+                                icon: 'ads_click',
                             };
                     }
                     return sessionChange;
