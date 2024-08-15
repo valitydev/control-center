@@ -227,15 +227,85 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                 }
                 // TODO: add internal
                 case 'invoice_payment_chargeback_change': {
-                    return {
-                        change: payload.invoice_payment_chargeback_change.payload,
+                    const p = payload.invoice_payment_chargeback_change.payload;
+                    const chargebackChange = {
+                        change: p,
                         type: 'InvoicePaymentChargebackChangePayload',
                         namespace: 'payment_processing',
-                        title: `Invoice payment chargeback #${payload.invoice_payment_chargeback_change.id} changed`,
+                        title: `${getKeyTitle(startCase(getUnionKey(p)))} #${
+                            payload.invoice_payment_chargeback_change.id
+                        }`,
                         expansionTitle: 'Chargeback change',
                         date: e.created_at,
                         icon: 'edit',
                     };
+                    switch (getUnionKey(p)) {
+                        case 'invoice_payment_chargeback_created':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_created.chargeback,
+                                type: 'InvoicePaymentChargeback',
+                                namespace: 'domain',
+                                expansionTitle: 'Chargeback',
+                            };
+                        case 'invoice_payment_chargeback_status_changed':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_status_changed.status,
+                                type: 'InvoicePaymentChargebackStatus',
+                                namespace: 'domain',
+                                expansionTitle: 'Status',
+                            };
+                        case 'invoice_payment_chargeback_cash_flow_changed':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_cash_flow_changed.cash_flow,
+                                type: 'FinalCashFlow',
+                                namespace: 'domain',
+                                expansionTitle: 'Cash Flow',
+                            };
+                        case 'invoice_payment_chargeback_body_changed':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_body_changed.body,
+                                type: 'Cash',
+                                namespace: 'domain',
+                                expansionTitle: 'Cash',
+                            };
+                        case 'invoice_payment_chargeback_levy_changed':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_levy_changed.levy,
+                                type: 'Cash',
+                                namespace: 'domain',
+                                expansionTitle: 'Cash',
+                            };
+                        case 'invoice_payment_chargeback_stage_changed':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_stage_changed.stage,
+                                type: 'InvoicePaymentChargebackStage',
+                                namespace: 'domain',
+                                expansionTitle: 'Stage',
+                            };
+                        case 'invoice_payment_chargeback_target_status_changed':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_target_status_changed.status,
+                                type: 'InvoicePaymentChargebackStatus',
+                                namespace: 'domain',
+                                expansionTitle: 'Status',
+                            };
+                        case 'invoice_payment_chargeback_clock_update':
+                            return {
+                                ...chargebackChange,
+                                change: p.invoice_payment_chargeback_clock_update.clock,
+                                type: 'AccounterClock',
+                                namespace: 'domain',
+                                expansionTitle: 'Clock',
+                            };
+                    }
+                    return chargebackChange;
                 }
                 case 'invoice_payment_rollback_started': {
                     return {
