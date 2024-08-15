@@ -15,7 +15,7 @@ import { PartyManagementService } from '../../api/payment-processing';
 
 @Injectable()
 export class PartyStoreService {
-    party$: Observable<Party | Pick<Party, 'id'> | null> = this.route.params.pipe(
+    party$: Observable<Party | Partial<Party> | null> = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         switchMap(({ partyID }) =>
             partyID

@@ -1,0 +1,10 @@
+<cc-page-layout [progress]="isLoading$ | async" title="Chargebacks">
+    <cc-page-layout-actions>
+        <button color="primary" mat-raised-button (click)="createChargeback()">Create</button>
+    </cc-page-layout-actions>
+    <cc-chargebacks
+        [chargebacks]="chargebacks$ | async"
+        [invoiceId]="(payment$ | async).invoice_id"
+        [paymentId]="(payment$ | async).id"
+    ></cc-chargebacks>
+</cc-page-layout>

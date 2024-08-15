@@ -1,35 +1,3 @@
-<mat-toolbar *ngIf="party$ | async as party" style="height: 48px; padding: 0 24px">
-    <div style="display: flex; gap: 8px; align-items: center">
-        <!--        <div class="mat-body-2 mat-no-margin">-->
-        <!--            {{ party?.contact_info?.email }}-->
-        <!--        </div>-->
-        <v-tag
-            *ngIf="party?.blocking"
-            [color]="(party?.blocking | ngtUnionKey) === 'blocked' ? 'warn' : 'success'"
-            style="margin-top: 8px"
-            >{{ party?.blocking | ngtUnionKey | titlecase }}</v-tag
-        >
-        <v-tag
-            *ngIf="party?.suspension"
-            [color]="(party?.suspension | ngtUnionKey) === 'suspended' ? 'warn' : 'success'"
-            style="margin-top: 8px"
-            >{{ party?.suspension | ngtUnionKey | titlecase }}</v-tag
-        >
-    </div>
-</mat-toolbar>
-
-<mat-sidenav-container autosize>
-    <mat-sidenav-content style="overflow: unset"
-        ><router-outlet></router-outlet
-    ></mat-sidenav-content>
-    <mat-sidenav
-        [fixedTopGap]="64 + 48"
-        [opened]="!(sidenavInfoService.opened$ | async)"
-        fixedInViewport="true"
-        mode="side"
-        position="end"
-        style="background: transparent; border: none; padding: 24px 0 24px 0"
-    >
-        <v-nav [links]="links" type="secondary"></v-nav
-    ></mat-sidenav>
-</mat-sidenav-container>
+<cc-sub-page-layout [links]="links" [tags]="tags$ | async"
+    ><router-outlet></router-outlet
+></cc-sub-page-layout>

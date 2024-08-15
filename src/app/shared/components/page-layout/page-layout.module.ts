@@ -10,6 +10,7 @@ import { ActionsModule, TagModule } from '@vality/ng-core';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutActionsComponent } from './components/page-layout-actions/page-layout-actions.component';
+import { SubPageLayoutComponent } from './components/sub-page-layout/sub-page-layout.component';
 import { PageLayoutComponent } from './page-layout.component';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { PageLayoutComponent } from './page-layout.component';
         MatToolbar,
         TagModule,
         ThriftPipesModule,
+        SubPageLayoutComponent,
     ],
     declarations: [PageLayoutComponent, PageLayoutActionsComponent],
     exports: [PageLayoutComponent, PageLayoutActionsComponent],
