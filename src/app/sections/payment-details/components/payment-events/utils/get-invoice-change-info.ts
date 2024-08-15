@@ -1,5 +1,6 @@
 import { InvoiceChange, Event } from '@vality/domain-proto/internal/payment_processing';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
+import { upperFirst } from 'lodash-es';
 import isEmpty from 'lodash-es/isEmpty';
 import startCase from 'lodash-es/startCase';
 
@@ -8,6 +9,13 @@ import { StatusColor } from '../../../../../styles';
 function getKeyTitle(v: unknown) {
     return String(v).replaceAll('_', ' ');
 }
+
+const STATUS_ICONS = {
+    warn: 'priority_high',
+    neutral: 'block',
+    success: 'check',
+    pending: 'pending',
+};
 
 export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
     switch (getUnionKey(change)) {
@@ -19,7 +27,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                 title: 'Invoice created',
                 expansionTitle: 'Invoice',
                 date: e.created_at,
-                icon: 'create',
+                icon: 'request_quote',
             };
         }
         case 'invoice_status_changed': {
@@ -32,10 +40,10 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                 expansionTitle: 'Details',
                 date: e.created_at,
                 icon: {
-                    unpaid: 'priority_high',
-                    paid: 'check',
-                    cancelled: 'block',
-                    fulfilled: 'check',
+                    unpaid: STATUS_ICONS.warn,
+                    paid: STATUS_ICONS.success,
+                    cancelled: STATUS_ICONS.neutral,
+                    fulfilled: STATUS_ICONS.success,
                 }[getUnionKey(status)],
                 color: {
                     unpaid: StatusColor.Warn,
@@ -225,14 +233,13 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         icon: 'capture',
                     };
                 }
-                // TODO: add internal
                 case 'invoice_payment_chargeback_change': {
                     const p = payload.invoice_payment_chargeback_change.payload;
                     const chargebackChange = {
                         change: p,
                         type: 'InvoicePaymentChargebackChangePayload',
                         namespace: 'payment_processing',
-                        title: `${getKeyTitle(startCase(getUnionKey(p)))} #${
+                        title: `${upperFirst(getKeyTitle(getUnionKey(p)))} #${
                             payload.invoice_payment_chargeback_change.id
                         }`,
                         expansionTitle: 'Chargeback change',
@@ -247,14 +254,27 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 type: 'InvoicePaymentChargeback',
                                 namespace: 'domain',
                                 expansionTitle: 'Chargeback',
+                                icon: 'source_notes',
                             };
                         case 'invoice_payment_chargeback_status_changed':
                             return {
                                 ...chargebackChange,
-                                change: p.invoice_payment_chargeback_status_changed.status,
-                                type: 'InvoicePaymentChargebackStatus',
-                                namespace: 'domain',
-                                expansionTitle: 'Status',
+                                change: null,
+                                title: `${chargebackChange.title} to ${getKeyTitle(
+                                    getUnionKey(p.invoice_payment_chargeback_status_changed.status),
+                                )}`,
+                                icon: {
+                                    pending: STATUS_ICONS.pending,
+                                    accepted: STATUS_ICONS.success,
+                                    rejected: STATUS_ICONS.warn,
+                                    cancelled: STATUS_ICONS.neutral,
+                                }[getUnionKey(p.invoice_payment_chargeback_status_changed.status)],
+                                color: {
+                                    pending: StatusColor.Pending,
+                                    accepted: StatusColor.Success,
+                                    rejected: StatusColor.Warn,
+                                    cancelled: StatusColor.Neutral,
+                                }[getUnionKey(p.invoice_payment_chargeback_status_changed.status)],
                             };
                         case 'invoice_payment_chargeback_cash_flow_changed':
                             return {
@@ -294,10 +314,32 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         case 'invoice_payment_chargeback_target_status_changed':
                             return {
                                 ...chargebackChange,
-                                change: p.invoice_payment_chargeback_target_status_changed.status,
-                                type: 'InvoicePaymentChargebackStatus',
-                                namespace: 'domain',
-                                expansionTitle: 'Status',
+                                change: null,
+                                title: `${chargebackChange.title} to ${getKeyTitle(
+                                    getUnionKey(
+                                        p.invoice_payment_chargeback_target_status_changed.status,
+                                    ),
+                                )}`,
+                                icon: {
+                                    pending: STATUS_ICONS.pending,
+                                    accepted: STATUS_ICONS.success,
+                                    rejected: STATUS_ICONS.warn,
+                                    cancelled: STATUS_ICONS.neutral,
+                                }[
+                                    getUnionKey(
+                                        p.invoice_payment_chargeback_target_status_changed.status,
+                                    )
+                                ],
+                                color: {
+                                    pending: StatusColor.Pending,
+                                    accepted: StatusColor.Success,
+                                    rejected: StatusColor.Warn,
+                                    cancelled: StatusColor.Neutral,
+                                }[
+                                    getUnionKey(
+                                        p.invoice_payment_chargeback_target_status_changed.status,
+                                    )
+                                ],
                             };
                         case 'invoice_payment_chargeback_clock_update':
                             return {
