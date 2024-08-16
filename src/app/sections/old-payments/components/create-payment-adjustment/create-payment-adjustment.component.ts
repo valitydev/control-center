@@ -55,6 +55,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
             ),
             this.progress$,
             payments,
+            2,
         )
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {

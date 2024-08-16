@@ -55,6 +55,8 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
                 } as AdjustmentParams),
             ),
             this.progress$,
+            this.dialogData.withdrawals,
+            2,
         )
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
