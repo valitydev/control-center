@@ -1,92 +1,125 @@
 import {
-    ChangeDetectionStrategy,
     Component,
     Input,
-    OnChanges,
-    OnInit,
     booleanAttribute,
     DestroyRef,
+    inject,
+    AfterViewInit,
+    input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Shop } from '@vality/domain-proto/domain';
-import { PartyID, ShopID } from '@vality/domain-proto/payment_processing';
+import { PartyID, Shop, Party } from '@vality/domain-proto/internal/domain';
+import { ShopID } from '@vality/domain-proto/payment_processing';
 import {
     createControlProviders,
     FormControlSuperclass,
-    setDisabled,
-    isEmpty,
-    ComponentChanges,
+    getValueChanges,
+    debounceTimeWithFirst,
+    Option,
+    NotifyLogService,
 } from '@vality/ng-core';
-import { BehaviorSubject, defer, of } from 'rxjs';
-import { filter, map, share, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, of, Observable, ReplaySubject, Subject, concat } from 'rxjs';
+import { map, switchMap, distinctUntilChanged, tap, catchError, first } from 'rxjs/operators';
 
-import { PartyManagementService } from '@cc/app/api/payment-processing';
+import { DeanonimusService } from '../../../api/deanonimus';
+import { PartyManagementService } from '../../../api/payment-processing';
+import { DEBOUNCE_TIME_MS } from '../../../tokens';
 
 @Component({
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
-    styleUrls: ['./shop-field.component.scss'],
     providers: createControlProviders(() => ShopFieldComponent),
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShopFieldComponent<M extends boolean = boolean>
-    extends FormControlSuperclass<
-        M extends true ? Shop[] : Shop,
-        M extends true ? ShopID[] : ShopID
-    >
-    implements OnChanges, OnInit
+export class ShopFieldComponent
+    extends FormControlSuperclass<ShopID | ShopID[]>
+    implements AfterViewInit
 {
-    @Input() partyId: PartyID;
-    @Input({ transform: booleanAttribute }) multiple: M;
+    @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
+    @Input() size?: string;
+    @Input() appearance?: string;
+    @Input() hint?: string;
+    @Input({ transform: booleanAttribute }) multiple = false;
+    partyId = input<PartyID>();
 
-    shops$ = defer(() => this.partyId$).pipe(
-        switchMap((partyId) =>
-            partyId
-                ? this.partyManagementService
-                      .Get(partyId)
-                      .pipe(map(({ shops }) => Array.from(shops.values())))
-                : of<Shop[]>([]),
-        ),
-        share(),
-    );
+    options$ = new ReplaySubject<Option<ShopID>[]>(1);
+    searchChange$ = new Subject<string>();
+    progress$ = new BehaviorSubject(false);
 
-    private partyId$ = new BehaviorSubject<PartyID>(null);
+    private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
 
     constructor(
         private partyManagementService: PartyManagementService,
+        private deanonimusService: DeanonimusService,
+        private log: NotifyLogService,
         private destroyRef: DestroyRef,
     ) {
         super();
     }
 
-    setDisabledState(isDisabled: boolean) {
-        super.setDisabledState(!this.partyId || isDisabled);
-    }
-
-    ngOnChanges(changes: ComponentChanges<ShopFieldComponent>): void {
-        super.ngOnChanges(changes);
-        if (changes.partyId && this.partyId !== this.partyId$.value) {
-            this.partyId$.next(changes.partyId.currentValue);
-            setDisabled(this.control, !this.partyId);
-        }
-    }
-
-    ngOnInit() {
-        this.shops$
-            .pipe(
-                filter(
-                    (shops) =>
-                        !isEmpty(this.control.value) &&
-                        (Array.isArray(this.control.value)
-                            ? !this.control.value.every((v) => shops.some((s) => s.id === v))
-                            : !shops.some((s) => s.id === this.control.value)),
+    ngAfterViewInit() {
+        concat(
+            getValueChanges(this.control).pipe(
+                first(),
+                switchMap((term) =>
+                    Array.isArray(term)
+                        ? of(
+                              term.map((id) => ({
+                                  label: `#${id}`,
+                                  value: id,
+                              })),
+                          )
+                        : this.searchOptions(term),
                 ),
-                takeUntilDestroyed(this.destroyRef),
-            )
-            .subscribe(() => {
-                this.control.setValue(null);
+            ),
+            this.searchChange$.pipe(
+                distinctUntilChanged(),
+                tap(() => {
+                    this.options$.next([]);
+                    this.progress$.next(true);
+                }),
+                debounceTimeWithFirst(this.debounceTimeMs),
+                switchMap((term) => this.searchOptions(term)),
+            ),
+        )
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((options) => {
+                this.options$.next(options);
+                this.progress$.next(false);
             });
-        super.ngOnInit();
+    }
+
+    private searchOptions(str: string): Observable<Option<ShopID>[]> {
+        if (!str) {
+            return of([]);
+        }
+        return (
+            (this.partyId
+                ? this.partyManagementService
+                      .Get(this.partyId())
+                      .pipe(
+                          map((party) =>
+                              Array.from(party.shops.values()).map((shop) => ({ party, shop })),
+                          ),
+                      )
+                : this.deanonimusService.searchShopText(str)) as Observable<
+                {
+                    shop: Shop;
+                    party: Party;
+                }[]
+            >
+        ).pipe(
+            map((partyShops) =>
+                partyShops.map((p) => ({
+                    label: p.shop.details.name,
+                    value: p.shop.id,
+                    description: p.shop.id,
+                })),
+            ),
+            catchError((err) => {
+                this.log.error(err, 'Search error');
+                return of([]);
+            }),
+        );
     }
 }
