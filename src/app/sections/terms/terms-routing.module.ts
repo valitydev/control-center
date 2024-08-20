@@ -5,7 +5,7 @@ import { AppAuthGuardService } from '../../shared/services';
 
 import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
 import { TerminalsTermsComponent } from './components/terminals-terms/terminals-terms.component';
-import { WalletsTariffsComponent } from './components/wallets-tariffs/wallets-tariffs.component';
+import { WalletsTermsComponent } from './components/wallets-terms/wallets-terms.component';
 import { ROUTING_CONFIG } from './routing-config';
 import { TariffsComponent } from './tariffs.component';
 
@@ -24,7 +24,7 @@ import { TariffsComponent } from './tariffs.component';
                     },
                     {
                         path: 'wallets',
-                        component: WalletsTariffsComponent,
+                        component: WalletsTermsComponent,
                     },
                     {
                         path: 'terminals',

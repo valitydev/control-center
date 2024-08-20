@@ -50,7 +50,7 @@ import {
     getWalletCashFlowSelectors,
     isWalletTermSetDecision,
 } from './utils/wallet-fees-columns';
-import { WalletsTariffsService } from './wallets-tariffs.service';
+import { WalletsTermsService } from './wallets-terms.service';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
@@ -75,9 +75,9 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         MatTooltip,
         VSelectPipe,
     ],
-    templateUrl: './wallets-tariffs.component.html',
+    templateUrl: './wallets-terms.component.html',
 })
-export class WalletsTariffsComponent implements OnInit {
+export class WalletsTermsComponent implements OnInit {
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
@@ -135,7 +135,7 @@ export class WalletsTariffsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private walletsTariffsService: WalletsTariffsService,
+        private walletsTariffsService: WalletsTermsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,

@@ -12,7 +12,7 @@ import {
     WALLET_FEES_COLUMNS,
     isWalletTermSetDecision,
     getWalletCashFlowSelectors,
-} from '../wallets-tariffs/utils/wallet-fees-columns';
+} from '../wallets-terms/utils/wallet-fees-columns';
 
 @Component({
     selector: 'cc-wallets-term-set-history-card',
