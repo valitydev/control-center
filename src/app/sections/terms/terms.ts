@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
-import { TariffsRoutingModule } from './tariffs-routing.module';
+import { TermsRoutingModule } from './terms-routing.module';
 
 @NgModule({
-    imports: [CommonModule, TariffsRoutingModule, ShopsTermsComponent],
+    imports: [CommonModule, TermsRoutingModule, ShopsTermsComponent],
 })
-export class TariffsModule {}
+export class Terms {}

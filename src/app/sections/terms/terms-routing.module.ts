@@ -41,4 +41,4 @@ import { TariffsComponent } from './tariffs.component';
     ],
     exports: [RouterModule],
 })
-export class TariffsRoutingModule {}
+export class TermsRoutingModule {}
