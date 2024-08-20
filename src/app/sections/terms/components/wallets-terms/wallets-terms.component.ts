@@ -59,7 +59,7 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     >;
 
 @Component({
-    selector: 'cc-wallets-tariffs',
+    selector: 'cc-wallets-terms',
     standalone: true,
     imports: [
         CommonModule,
@@ -88,7 +88,7 @@ export class WalletsTermsComponent implements OnInit {
             identity_ids: null,
         }),
     );
-    tariffs$ = this.walletsTariffsService.result$.pipe(
+    terms$ = this.walletsTermsService.result$.pipe(
         map((terms) =>
             terms.map((t) => ({
                 value: t,
@@ -104,8 +104,8 @@ export class WalletsTermsComponent implements OnInit {
             })),
         ),
     );
-    hasMore$ = this.walletsTariffsService.hasMore$;
-    isLoading$ = this.walletsTariffsService.isLoading$;
+    hasMore$ = this.walletsTermsService.hasMore$;
+    isLoading$ = this.walletsTermsService.isLoading$;
     columns: Column2<WalletTermSet, InlineDecision2>[] = [
         createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
             sticky: 'start',
@@ -135,7 +135,7 @@ export class WalletsTermsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private walletsTariffsService: WalletsTermsService,
+        private walletsTermsService: WalletsTermsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
@@ -155,7 +155,7 @@ export class WalletsTermsComponent implements OnInit {
 
     load(params: Params, options?: LoadOptions) {
         const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
-        this.walletsTariffsService.load(
+        this.walletsTermsService.load(
             clean({
                 common_search_query_params: { currencies },
                 term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
@@ -167,10 +167,10 @@ export class WalletsTermsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        this.walletsTariffsService.reload(options);
+        this.walletsTermsService.reload(options);
     }
 
     more() {
-        this.walletsTariffsService.more();
+        this.walletsTermsService.more();
     }
 }

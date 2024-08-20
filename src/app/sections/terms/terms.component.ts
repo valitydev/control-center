@@ -12,7 +12,7 @@ import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
     imports: [CommonModule, RouterOutlet, MatSidenavModule, NavComponent],
     templateUrl: './terms.component.html',
 })
-export class TariffsComponent {
+export class TermsComponent {
     links: Link[] = [
         {
             label: 'Shops',

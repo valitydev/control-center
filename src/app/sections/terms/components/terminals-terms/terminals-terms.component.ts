@@ -48,7 +48,7 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     >;
 
 @Component({
-    selector: 'cc-terminals-tariffs',
+    selector: 'cc-terminals-terms',
     standalone: true,
     imports: [
         CommonModule,
@@ -73,7 +73,7 @@ export class TerminalsTermsComponent implements OnInit {
             terminal_ids: null,
         }),
     );
-    tariffs$ = this.terminalsTermsService.result$;
+    terms$ = this.terminalsTermsService.result$;
     hasMore$ = this.terminalsTermsService.hasMore$;
     isLoading$ = this.terminalsTermsService.isLoading$;
     columns: Column<TerminalTermSet>[] = [

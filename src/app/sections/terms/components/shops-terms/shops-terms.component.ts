@@ -85,7 +85,7 @@ export class ShopsTermsComponent implements OnInit {
             term_sets_ids: null,
         }),
     );
-    tariffs$ = this.shopsTariffsService.result$.pipe(
+    terms$ = this.shopsTermsService.result$.pipe(
         map((terms) =>
             terms.map((t) => ({
                 value: t,
@@ -100,8 +100,8 @@ export class ShopsTermsComponent implements OnInit {
             })),
         ),
     );
-    hasMore$ = this.shopsTariffsService.hasMore$;
-    isLoading$ = this.shopsTariffsService.isLoading$;
+    hasMore$ = this.shopsTermsService.hasMore$;
+    isLoading$ = this.shopsTermsService.isLoading$;
     columns: Column2<ShopTermSet, InlineDecision2>[] = [
         createShopColumn(
             (d) => ({
@@ -138,7 +138,7 @@ export class ShopsTermsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private shopsTariffsService: ShopsTermsService,
+        private shopsTermsService: ShopsTermsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
@@ -158,7 +158,7 @@ export class ShopsTermsComponent implements OnInit {
 
     load(params: Params, options?: LoadOptions) {
         const { currencies, term_sets_ids, ...otherParams } = params;
-        this.shopsTariffsService.load(
+        this.shopsTermsService.load(
             clean({
                 common_search_query_params: { currencies },
                 term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
@@ -169,10 +169,10 @@ export class ShopsTermsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        this.shopsTariffsService.reload(options);
+        this.shopsTermsService.reload(options);
     }
 
     more() {
-        this.shopsTariffsService.more();
+        this.shopsTermsService.more();
     }
 }
