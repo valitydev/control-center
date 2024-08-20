@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '../../shared/services';
 
-import { ShopsTariffsComponent } from './components/shops-tariffs/shops-tariffs.component';
+import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
 import { TerminalsTermsComponent } from './components/terminals-terms/terminals-terms.component';
 import { WalletsTariffsComponent } from './components/wallets-tariffs/wallets-tariffs.component';
 import { ROUTING_CONFIG } from './routing-config';
@@ -20,7 +20,7 @@ import { TariffsComponent } from './tariffs.component';
                 children: [
                     {
                         path: 'shops',
-                        component: ShopsTariffsComponent,
+                        component: ShopsTermsComponent,
                     },
                     {
                         path: 'wallets',

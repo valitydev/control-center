@@ -43,7 +43,7 @@ import {
 import { getInlineDecisions2, InlineDecision2 } from '../../utils/get-inline-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
-import { ShopsTariffsService } from './shops-tariffs.service';
+import { ShopsTermsService } from './shops-terms.service';
 import {
     isShopTermSetDecision,
     SHOP_FEES_COLUMNS,
@@ -57,7 +57,7 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     >;
 
 @Component({
-    selector: 'cc-shops-tariffs',
+    selector: 'cc-shops-terms',
     standalone: true,
     imports: [
         CommonModule,
@@ -73,9 +73,9 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         VSelectPipe,
         MatTooltip,
     ],
-    templateUrl: './shops-tariffs.component.html',
+    templateUrl: './shops-terms.component.html',
 })
-export class ShopsTariffsComponent implements OnInit {
+export class ShopsTermsComponent implements OnInit {
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
@@ -138,7 +138,7 @@ export class ShopsTariffsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private shopsTariffsService: ShopsTariffsService,
+        private shopsTariffsService: ShopsTermsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,

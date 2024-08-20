@@ -14,7 +14,7 @@ import { DominatorService } from '@cc/app/api/dominator';
 @Injectable({
     providedIn: 'root',
 })
-export class ShopsTariffsService extends FetchSuperclass<ShopTermSet, ShopSearchQuery> {
+export class ShopsTermsService extends FetchSuperclass<ShopTermSet, ShopSearchQuery> {
     constructor(
         private dominatorService: DominatorService,
         private log: NotifyLogService,

@@ -12,7 +12,7 @@ import {
     getShopCashFlowSelectors,
     isShopTermSetDecision,
     SHOP_FEES_COLUMNS,
-} from '../shops-tariffs/utils/shop-fees-columns';
+} from '../shops-terms/utils/shop-fees-columns';
 
 @Component({
     selector: 'cc-shops-term-set-history-card',

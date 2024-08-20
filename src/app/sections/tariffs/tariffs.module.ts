@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { ShopsTariffsComponent } from './components/shops-tariffs/shops-tariffs.component';
+import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
 import { TariffsRoutingModule } from './tariffs-routing.module';
 
 @NgModule({
-    imports: [CommonModule, TariffsRoutingModule, ShopsTariffsComponent],
+    imports: [CommonModule, TariffsRoutingModule, ShopsTermsComponent],
 })
 export class TariffsModule {}
