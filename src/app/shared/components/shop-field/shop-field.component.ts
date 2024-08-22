@@ -6,20 +6,20 @@ import {
     inject,
     AfterViewInit,
     input,
+    Injector,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { PartyID, Shop, Party } from '@vality/domain-proto/internal/domain';
 import { ShopID } from '@vality/domain-proto/payment_processing';
 import {
     createControlProviders,
     FormControlSuperclass,
-    getValueChanges,
     debounceTimeWithFirst,
     Option,
     NotifyLogService,
 } from '@vality/ng-core';
-import { BehaviorSubject, of, Observable, ReplaySubject, Subject, concat } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, tap, catchError, first } from 'rxjs/operators';
+import { BehaviorSubject, of, ReplaySubject, Subject, combineLatest } from 'rxjs';
+import { map, switchMap, distinctUntilChanged, tap, catchError, startWith } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../../api/deanonimus';
 import { PartyManagementService } from '../../../api/payment-processing';
@@ -52,63 +52,47 @@ export class ShopFieldComponent
         private partyManagementService: PartyManagementService,
         private deanonimusService: DeanonimusService,
         private log: NotifyLogService,
-        private destroyRef: DestroyRef,
+        private dr: DestroyRef,
+        private injector: Injector,
     ) {
         super();
     }
 
     ngAfterViewInit() {
-        concat(
-            getValueChanges(this.control).pipe(
-                first(),
-                switchMap((term) =>
-                    Array.isArray(term)
-                        ? of(
-                              term.map((id) => ({
-                                  label: `#${id}`,
-                                  value: id,
-                              })),
-                          )
-                        : this.searchOptions(term),
+        combineLatest([
+            this.searchChange$.pipe(
+                startWith(
+                    ...(Array.isArray(this.control.value)
+                        ? this.control.value
+                        : [this.control.value ?? '']),
+                ),
+                distinctUntilChanged(),
+            ),
+            toObservable(this.partyId, { injector: this.injector }).pipe(
+                switchMap((partyId) =>
+                    partyId ? this.partyManagementService.Get(partyId) : of(null),
                 ),
             ),
-            this.searchChange$.pipe(
-                distinctUntilChanged(),
+        ])
+            .pipe(
+                debounceTimeWithFirst(this.debounceTimeMs),
                 tap(() => {
                     this.options$.next([]);
                     this.progress$.next(true);
                 }),
-                debounceTimeWithFirst(this.debounceTimeMs),
-                switchMap((term) => this.searchOptions(term)),
-            ),
-        )
-            .pipe(takeUntilDestroyed(this.destroyRef))
+                switchMap(([term, party]) =>
+                    party ? of(this.searchShopsByParty(party, term)) : this.searchShops(term),
+                ),
+                tap(() => this.progress$.next(false)),
+                takeUntilDestroyed(this.dr),
+            )
             .subscribe((options) => {
                 this.options$.next(options);
-                this.progress$.next(false);
             });
     }
 
-    private searchOptions(str: string): Observable<Option<ShopID>[]> {
-        if (!str) {
-            return of([]);
-        }
-        return (
-            (this.partyId
-                ? this.partyManagementService
-                      .Get(this.partyId())
-                      .pipe(
-                          map((party) =>
-                              Array.from(party.shops.values()).map((shop) => ({ party, shop })),
-                          ),
-                      )
-                : this.deanonimusService.searchShopText(str)) as Observable<
-                {
-                    shop: Shop;
-                    party: Party;
-                }[]
-            >
-        ).pipe(
+    private searchShops(search: string) {
+        return this.deanonimusService.searchShopText(search).pipe(
             map((partyShops) =>
                 partyShops.map((p) => ({
                     label: p.shop.details.name,
@@ -120,6 +104,29 @@ export class ShopFieldComponent
                 this.log.error(err, 'Search error');
                 return of([]);
             }),
+        );
+    }
+
+    private searchShopsByParty(party: Party, search: string) {
+        const searchStr = search.trim().toLowerCase();
+        return Array.from(party.shops.values())
+            .map((shop) => ({ party, shop }))
+            .sort(
+                (a, b) =>
+                    +this.includeSearchStr(a, searchStr) - +this.includeSearchStr(b, searchStr),
+            )
+            .map((p) => ({
+                label: p.shop.details.name,
+                value: p.shop.id,
+                description: p.shop.id,
+            }));
+    }
+
+    private includeSearchStr({ shop, party }: { party: Party; shop: Shop }, searchStr: string) {
+        return [shop.id, shop.details.name, party.id, party.party_name].some((v) =>
+            String(v ?? '')
+                .toLowerCase()
+                .includes(searchStr),
         );
     }
 }
