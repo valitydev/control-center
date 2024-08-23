@@ -111,7 +111,6 @@ export class ShopFieldComponent
                         return acc;
                     }, options),
                 );
-                console.log(oldOptions, options, this.options$.value);
             });
     }
 
