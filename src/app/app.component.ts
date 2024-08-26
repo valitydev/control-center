@@ -18,8 +18,8 @@ import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
-import { ROUTING_CONFIG as TARIFFS_ROUTING_CONFIG } from './sections/tariffs/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
+import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 import { SidenavInfoService } from './shared/components/sidenav-info';
@@ -84,7 +84,7 @@ export class AppComponent {
                 {
                     label: 'Terms',
                     url: '/terms',
-                    services: TARIFFS_ROUTING_CONFIG.services,
+                    services: TERMS_ROUTING_CONFIG.services,
                 },
             ],
             [

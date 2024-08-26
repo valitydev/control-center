@@ -70,7 +70,7 @@ const ROUTES: Routes = [
     },
     {
         path: 'terms',
-        loadChildren: () => import('./tariffs').then((m) => m.TariffsModule),
+        loadChildren: () => import('./terms').then((m) => m.Terms),
     },
     {
         path: '404',

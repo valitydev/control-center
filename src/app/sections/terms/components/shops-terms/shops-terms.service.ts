@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    type WalletSearchQuery,
-    type WalletTermSet,
-} from '@vality/dominator-proto/internal/dominator';
+import { ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 import {
     FetchOptions,
     FetchSuperclass,
@@ -17,7 +14,7 @@ import { DominatorService } from '@cc/app/api/dominator';
 @Injectable({
     providedIn: 'root',
 })
-export class WalletsTariffsService extends FetchSuperclass<WalletTermSet, WalletSearchQuery> {
+export class ShopsTermsService extends FetchSuperclass<ShopTermSet, ShopSearchQuery> {
     constructor(
         private dominatorService: DominatorService,
         private log: NotifyLogService,
@@ -25,9 +22,9 @@ export class WalletsTariffsService extends FetchSuperclass<WalletTermSet, Wallet
         super();
     }
 
-    protected fetch(params: WalletSearchQuery, options: FetchOptions<string>) {
+    protected fetch(params: ShopSearchQuery, options: FetchOptions<string>) {
         return this.dominatorService
-            .SearchWalletTermSets({
+            .SearchShopTermSets({
                 ...params,
                 common_search_query_params: clean({
                     continuation_token: options.continuationToken,

@@ -3,33 +3,33 @@ import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
 
-import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/internal/dominator';
+import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getDomainObjectDetails } from '../../../../shared/components/thrift-api-crud';
 import { getInlineDecisions2 } from '../../utils/get-inline-decisions';
 import {
-    WALLET_FEES_COLUMNS,
-    isWalletTermSetDecision,
-    getWalletCashFlowSelectors,
-} from '../wallets-tariffs/utils/wallet-fees-columns';
+    getShopCashFlowSelectors,
+    isShopTermSetDecision,
+    SHOP_FEES_COLUMNS,
+} from '../shops-terms/utils/shop-fees-columns';
 
 @Component({
-    selector: 'cc-wallets-term-set-history-card',
+    selector: 'cc-shops-term-set-history-card',
     standalone: true,
     imports: [CommonModule, SidenavInfoModule, TableModule, VSelectPipe, MatTooltip],
-    templateUrl: './wallets-term-set-history-card.component.html',
+    templateUrl: './shops-term-set-history-card.component.html',
     styles: ``,
 })
-export class WalletsTermSetHistoryCardComponent {
-    data = input<WalletTermSet>();
+export class ShopsTermSetHistoryCardComponent {
+    data = input<ShopTermSet>();
     historyData = computed(() =>
         (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
             value: t,
-            children: getInlineDecisions2(getWalletCashFlowSelectors(t.term_set)).filter((v) =>
-                isWalletTermSetDecision(v, {
+            children: getInlineDecisions2(getShopCashFlowSelectors(t.term_set)).filter((v) =>
+                isShopTermSetDecision(v, {
                     partyId: this.data().owner_id,
-                    walletId: this.data().wallet_id,
+                    shopId: this.data().shop_id,
                     currency: this.data().currency,
                 }),
             ),
@@ -46,6 +46,6 @@ export class WalletsTermSetHistoryCardComponent {
                     ?.description,
             }),
         },
-        ...WALLET_FEES_COLUMNS,
+        ...SHOP_FEES_COLUMNS,
     ];
 }

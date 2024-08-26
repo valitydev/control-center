@@ -7,12 +7,12 @@ import { Link, NavComponent } from '@vality/ng-core';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 
 @Component({
-    selector: 'cc-tariffs',
+    selector: 'cc-terms',
     standalone: true,
     imports: [CommonModule, RouterOutlet, MatSidenavModule, NavComponent],
-    templateUrl: './tariffs.component.html',
+    templateUrl: './terms.component.html',
 })
-export class TariffsComponent {
+export class TermsComponent {
     links: Link[] = [
         {
             label: 'Shops',

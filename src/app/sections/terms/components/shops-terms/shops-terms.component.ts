@@ -3,14 +3,11 @@ import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
-import {
-    TermSetHierarchyRef,
-    type IdentityProviderRef,
-} from '@vality/domain-proto/internal/domain';
+import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
-    type WalletTermSet,
-    type WalletSearchQuery,
+    ShopSearchQuery,
+    ShopTermSet,
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
@@ -31,35 +28,36 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { PageLayoutModule, WalletFieldModule } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import {
-    createDomainObjectColumn,
-    createPartyColumn,
-    createWalletColumn,
-} from '@cc/app/shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
-import { InlineDecision2, getInlineDecisions2 } from '../../utils/get-inline-decisions';
-import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
-
+import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
 import {
-    WALLET_FEES_COLUMNS,
-    getWalletCashFlowSelectors,
-    isWalletTermSetDecision,
-} from './utils/wallet-fees-columns';
-import { WalletsTariffsService } from './wallets-tariffs.service';
+    createShopColumn,
+    createPartyColumn,
+    createContractColumn,
+    createDomainObjectColumn,
+} from '../../../../shared/utils/table2';
+import { getInlineDecisions2, InlineDecision2 } from '../../utils/get-inline-decisions';
+import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
+
+import { ShopsTermsService } from './shops-terms.service';
+import {
+    isShopTermSetDecision,
+    SHOP_FEES_COLUMNS,
+    getShopCashFlowSelectors,
+} from './utils/shop-fees-columns';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
-        Omit<WalletSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][]; identity_ids?: IdentityProviderRef['id'][] }
+        Omit<ShopSearchQuery, 'common_search_query_params'>,
+        { term_sets_ids?: TermSetHierarchyRef['id'][] }
     >;
 
 @Component({
-    selector: 'cc-wallets-tariffs',
+    selector: 'cc-shops-terms',
     standalone: true,
     imports: [
         CommonModule,
@@ -69,61 +67,66 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         FiltersModule,
         ReactiveFormsModule,
         MerchantFieldModule,
+        ShopFieldModule,
         ListFieldModule,
         CurrencyFieldComponent,
-        WalletFieldModule,
-        MatTooltip,
         VSelectPipe,
+        MatTooltip,
     ],
-    templateUrl: './wallets-tariffs.component.html',
+    templateUrl: './shops-terms.component.html',
 })
-export class WalletsTariffsComponent implements OnInit {
+export class ShopsTermsComponent implements OnInit {
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
             party_id: null,
-            wallet_ids: null,
+            shop_ids: null,
             term_sets_names: null,
             term_sets_ids: null,
-            identity_ids: null,
         }),
     );
-    tariffs$ = this.walletsTariffsService.result$.pipe(
+    terms$ = this.shopsTermsService.result$.pipe(
         map((terms) =>
             terms.map((t) => ({
                 value: t,
-                children: getInlineDecisions2(
-                    getWalletCashFlowSelectors(t.current_term_set),
-                ).filter((v) =>
-                    isWalletTermSetDecision(v, {
-                        partyId: t.owner_id,
-                        walletId: t.wallet_id,
-                        currency: t.currency,
-                    }),
+                children: getInlineDecisions2(getShopCashFlowSelectors(t.current_term_set)).filter(
+                    (v) =>
+                        isShopTermSetDecision(v, {
+                            partyId: t.owner_id,
+                            shopId: t.shop_id,
+                            currency: t.currency,
+                        }),
                 ),
             })),
         ),
     );
-    hasMore$ = this.walletsTariffsService.hasMore$;
-    isLoading$ = this.walletsTariffsService.isLoading$;
-    columns: Column2<WalletTermSet, InlineDecision2>[] = [
-        createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
-            sticky: 'start',
-        }),
+    hasMore$ = this.shopsTermsService.hasMore$;
+    isLoading$ = this.shopsTermsService.isLoading$;
+    columns: Column2<ShopTermSet, InlineDecision2>[] = [
+        createShopColumn(
+            (d) => ({
+                shopId: d.shop_id,
+                partyId: d.owner_id,
+                shopName: d.shop_name,
+            }),
+            { sticky: 'start' },
+        ),
         createPartyColumn((d) => ({ id: d.owner_id })),
-        { field: 'contract_id', header: 'Contract' },
-        { field: 'identity_id.id', header: 'Identity' },
+        createContractColumn((d) => ({
+            id: d.contract_id,
+            partyId: d.owner_id,
+        })),
         { field: 'currency' },
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',
         }),
-        ...WALLET_FEES_COLUMNS,
+        ...SHOP_FEES_COLUMNS,
         {
             field: 'term_set_history',
             cell: (d) => ({
                 value: d.term_set_history?.length || '',
                 click: () =>
-                    this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, { data: d }),
+                    this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
             }),
         },
     ];
@@ -135,7 +138,7 @@ export class WalletsTariffsComponent implements OnInit {
     private initFiltersValue = this.filtersForm.value;
 
     constructor(
-        private walletsTariffsService: WalletsTariffsService,
+        private shopsTermsService: ShopsTermsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Params>,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
@@ -154,12 +157,11 @@ export class WalletsTariffsComponent implements OnInit {
     }
 
     load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
-        this.walletsTariffsService.load(
+        const { currencies, term_sets_ids, ...otherParams } = params;
+        this.shopsTermsService.load(
             clean({
                 common_search_query_params: { currencies },
                 term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
-                identity_ids: identity_ids?.map?.((id) => ({ id })),
                 ...otherParams,
             }),
             options,
@@ -167,10 +169,10 @@ export class WalletsTariffsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        this.walletsTariffsService.reload(options);
+        this.shopsTermsService.reload(options);
     }
 
     more() {
-        this.walletsTariffsService.more();
+        this.shopsTermsService.more();
     }
 }

@@ -1,8 +1,13 @@
-<mat-form-field>
-    <mat-label>{{ multiple ? 'Shops' : 'Shop' }}</mat-label>
-    <mat-select [formControl]="control" [multiple]="multiple" [required]="required">
-        <mat-option *ngFor="let shop of shops$ | async" [value]="shop.id">
-            {{ shop.details.name }}
-        </mat-option>
-    </mat-select>
-</mat-form-field>
+<v-select-field
+    [appearance]="appearance"
+    [formControl]="control"
+    [hint]="hint"
+    [label]="label || (multiple ? 'Shops' : 'Shop')"
+    [multiple]="multiple"
+    [options]="options$ | async"
+    [progress]="!!(progress$ | async)"
+    [required]="required"
+    [size]="size"
+    externalSearch
+    (searchChange)="this.searchChange$.next($event)"
+></v-select-field>
