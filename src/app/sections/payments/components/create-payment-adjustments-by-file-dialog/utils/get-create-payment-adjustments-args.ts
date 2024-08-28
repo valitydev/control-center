@@ -12,19 +12,33 @@ export function getCreatePaymentAdjustmentsArgs(
         clean(
             {
                 reason: c.reason,
-                scenario: {
-                    status_change: {
-                        target_status: {
-                            [c['scenario.status_change.target_status']]: JSON.parse(
-                                c['scenario.status_change.target_status.data'],
-                            ),
-                        },
+                scenario: clean(
+                    {
+                        status_change: c['scenario.status_change.target_status']
+                            ? {
+                                  target_status: {
+                                      [c['scenario.status_change.target_status']]: c[
+                                          'scenario.status_change.target_status.data'
+                                      ]
+                                          ? JSON.parse(
+                                                c['scenario.status_change.target_status.data'],
+                                            )
+                                          : {},
+                                  },
+                              }
+                            : undefined,
+                        cash_flow: clean({
+                            domain_revision: c['scenario.cash_flow.domain_revision']
+                                ? Number(c['scenario.cash_flow.domain_revision'])
+                                : undefined,
+                            new_amount: c['scenario.cash_flow.new_amount']
+                                ? Number(c['scenario.cash_flow.new_amount'])
+                                : undefined,
+                        }),
                     },
-                    cash_flow: {
-                        domain_revision: Number(c['scenario.cash_flow.domain_revision']),
-                        new_amount: Number(c['scenario.cash_flow.new_amount']),
-                    },
-                },
+                    false,
+                    true,
+                ),
             },
             false,
             true,

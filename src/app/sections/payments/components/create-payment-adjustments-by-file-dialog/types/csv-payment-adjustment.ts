@@ -8,6 +8,7 @@ export const CSV_PAYMENT_ADJUSTMENT_PROPS = {
         'scenario.cash_flow.domain_revision',
         'scenario.cash_flow.new_amount',
         'scenario.status_change.target_status',
+        'scenario.status_change.target_status.data',
     ],
 } as const satisfies DeepReadonly<CsvProps>;
 
