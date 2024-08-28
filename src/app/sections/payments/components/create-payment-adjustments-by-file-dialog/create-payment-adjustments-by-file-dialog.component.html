@@ -1,0 +1,25 @@
+<v-dialog [progress]="progress$ | async" title="Create payment adjustments">
+    <cc-upload-csv
+        [(selected)]="selected"
+        [errors]="errors"
+        [formatDescription]="[
+            'scenario.status_change.target_status: pending, processed, captured, cancelled, refunded, failed, charged_back'
+        ]"
+        [props]="props"
+    ></cc-upload-csv>
+    <v-dialog-actions>
+        @if (successfully?.length) {
+            <button [disabled]="!!(progress$ | async)" mat-button (click)="closeWithSuccess()">
+                Close and find {{ successfully.length }} successful payment adjustments
+            </button>
+        }
+        <button
+            [disabled]="!selected?.length || !!(progress$ | async)"
+            color="primary"
+            mat-button
+            (click)="create()"
+        >
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

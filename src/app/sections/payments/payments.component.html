@@ -53,6 +53,9 @@
         >
             Fail machines
         </button>
+        <button mat-raised-button (click)="createPaymentAdjustments()">
+            Create adjustments by file
+        </button>
         <button
             [disabled]="!(selected$ | async)?.length"
             color="primary"

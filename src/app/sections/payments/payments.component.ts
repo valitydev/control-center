@@ -28,6 +28,7 @@ import { MetadataFormExtension } from '../../shared/components/metadata-form';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
+import { CreatePaymentAdjustmentsByFileDialogComponent } from './components/create-payment-adjustments-by-file-dialog/create-payment-adjustments-by-file-dialog.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
 
 interface Filters {
@@ -164,6 +165,13 @@ export class PaymentsComponent implements OnInit {
                     this.selected$.next(res.data.errors.map(({ data }) => data));
                 }
             });
+    }
+
+    createPaymentAdjustments() {
+        this.dialogService
+            .open(CreatePaymentAdjustmentsByFileDialogComponent)
+            .afterClosed()
+            .subscribe();
     }
 
     failMachines() {
