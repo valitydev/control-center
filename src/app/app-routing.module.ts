@@ -9,7 +9,7 @@ import { AppAuthGuardService } from '@cc/app/shared/services';
             [
                 {
                     path: '',
-                    redirectTo: '/payouts',
+                    redirectTo: '/payments',
                     pathMatch: 'full',
                 },
             ],

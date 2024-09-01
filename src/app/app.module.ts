@@ -24,7 +24,6 @@ import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
 import { CoreModule } from './core/core.module';
 import icons from './icons.json';
 import { ClaimsModule } from './sections/claims/claims.module';
-import { PayoutsModule } from './sections/payouts';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
@@ -60,7 +59,6 @@ registerLocaleData(localeRu);
         SearchPartiesModule,
         ClaimsModule,
         KeycloakTokenInfoModule,
-        PayoutsModule,
         SectionsModule,
         SidenavInfoComponent,
         ToolbarComponent,
