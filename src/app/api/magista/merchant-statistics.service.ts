@@ -9,8 +9,6 @@ import {
     StatPaymentResponse,
     RefundSearchQuery,
     StatRefundResponse,
-    PayoutSearchQuery,
-    StatPayoutResponse,
     ChargebackSearchQuery,
 } from '@vality/magista-proto/magista';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
@@ -56,11 +54,6 @@ export class MerchantStatisticsService {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchRefunds(refundSearchQuery: RefundSearchQuery): Observable<StatRefundResponse> {
         return this.client$.pipe(switchMap((c) => c.SearchRefunds(refundSearchQuery)));
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    SearchPayouts(payoutSearchQuery: PayoutSearchQuery): Observable<StatPayoutResponse> {
-        return this.client$.pipe(switchMap((c) => c.SearchPayouts(payoutSearchQuery)));
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention

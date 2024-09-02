@@ -153,6 +153,7 @@ export class CreateShopDialogComponent
             this.form.value;
         const contractorId = short().uuid();
         const contractId = short().uuid();
+        const payoutToolId = short().generate();
         const shopId = short().uuid();
         this.claimManagementService
             .UpdateClaim(
@@ -186,6 +187,27 @@ export class CreateShopDialogComponent
                     },
                     {
                         party_modification: {
+                            contract_modification: {
+                                id: contractId,
+                                modification: {
+                                    payout_tool_modification: {
+                                        payout_tool_id: payoutToolId,
+                                        modification: {
+                                            creation: {
+                                                currency: currency,
+                                                tool_info: {
+                                                    russian_bank_account:
+                                                        DEFAULT_RUSSIAN_BANK_ACCOUNT,
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    {
+                        party_modification: {
                             shop_modification: {
                                 id: shopId,
                                 modification: {
@@ -194,6 +216,7 @@ export class CreateShopDialogComponent
                                         category: category,
                                         location: DEFAULT_SHOP_LOCATION,
                                         contract_id: contractId,
+                                        payout_tool_id: payoutToolId,
                                     },
                                 },
                             },
