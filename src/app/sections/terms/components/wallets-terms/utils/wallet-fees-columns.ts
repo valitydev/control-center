@@ -4,13 +4,11 @@ import {
     Predicate,
     WalletID,
 } from '@vality/domain-proto/internal/domain';
-import { Column2 } from '@vality/ng-core';
 
 import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
 
-import { getCashVolumeParts, formatCashVolumes } from '../../../../../shared';
-import { InlineDecision2, formatLevelPredicate } from '../../../utils/get-inline-decisions';
-import { isOneHundredPercentCashFlowPosting } from '../../../utils/is-one-hundred-percent-cash-flow-posting';
+import { createFeesColumns } from '../../../utils/create-fees-columns';
+import { InlineDecision2 } from '../../../utils/get-inline-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
 export function getWalletCashFlowSelectors(d: TermSetHierarchyObject) {
@@ -43,47 +41,6 @@ export function isWalletTermSetDecision(
     );
 }
 
-export const WALLET_FEES_COLUMNS = [
-    {
-        field: 'condition',
-        child: (d) => ({ value: formatLevelPredicate(d) }),
-    },
-    {
-        field: 'feeShare',
-        header: 'Fee, %',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isWalletFee).map((v) => v.volume))?.share,
-        }),
-    },
-    {
-        field: 'feeFixed',
-        header: 'Fee, fix',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isWalletFee).map((v) => v.volume))?.fixed,
-        }),
-    },
-    {
-        field: 'feeMin',
-        header: 'Fee, min',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isWalletFee).map((v) => v.volume))?.max,
-        }),
-    },
-    {
-        field: 'feeMax',
-        header: 'Fee, max',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isWalletFee).map((v) => v.volume))?.min,
-        }),
-    },
-    {
-        field: 'other',
-        child: (d) => ({
-            value: formatCashVolumes(
-                d.value
-                    .filter((v) => !isWalletFee(v) && !isOneHundredPercentCashFlowPosting(v))
-                    .map((v) => v.volume),
-            ),
-        }),
-    },
-] satisfies Column2<object, InlineDecision2>[];
+export const WALLET_FEES_COLUMNS = createFeesColumns({
+    feeFilter: isWalletFee,
+});

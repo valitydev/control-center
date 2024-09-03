@@ -10,7 +10,7 @@ import {
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
-    Column,
+    Column2,
     countChanged,
     createControls,
     debounceTimeWithFirst,
@@ -32,14 +32,14 @@ import type { ProviderRef, TerminalRef } from '@vality/dominator-proto/internal/
 import { PageLayoutModule } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table/create-domain-object-column';
+import { createDomainObjectColumn } from '@cc/app/shared/utils/table2/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-history-card';
 
 import { TerminalsTermsService } from './terminals-terms.service';
-import { createTerminalFeesColumn } from './utils/create-terminal-fees-column';
+import { TERMINAL_FEES_COLUMNS, getTerminalTreeDataItem } from './utils/terminal-fees-columns';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
@@ -73,21 +73,28 @@ export class TerminalsTermsComponent implements OnInit {
             terminal_ids: null,
         }),
     );
-    terms$ = this.terminalsTermsService.result$;
+    terms$ = this.terminalsTermsService.result$.pipe(
+        map((terms) => terms.map(getTerminalTreeDataItem((d) => d.current_term_set))),
+    );
     hasMore$ = this.terminalsTermsService.hasMore$;
     isLoading$ = this.terminalsTermsService.isLoading$;
-    columns: Column<TerminalTermSet>[] = [
-        createDomainObjectColumn<TerminalTermSet>('terminal', (d) => d.terminal_id),
-        createDomainObjectColumn<TerminalTermSet>('provider', (d) => d.provider_id),
-        { field: 'currencies', formatter: (d) => d.currencies.join(', ') },
-        ...createTerminalFeesColumn<TerminalTermSet>((d) => d.current_term_set),
+    columns: Column2<TerminalTermSet>[] = [
+        createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal_id } }), {
+            header: 'Terminal',
+            sticky: 'start',
+        }),
+        createDomainObjectColumn((d) => ({ ref: { provider: d.provider_id } }), {
+            header: 'Provider',
+        }),
+        { field: 'currencies', cell: (d) => ({ value: d.currencies.join(', ') }) },
+        ...TERMINAL_FEES_COLUMNS,
         {
             field: 'term_set_history',
-            formatter: (d) => d.term_set_history?.length || '',
-            click: (d) =>
-                this.sidenavInfoService.open(TerminalsTermSetHistoryCardComponent, {
-                    data: d?.term_set_history?.reverse(),
-                }),
+            cell: (d) => ({
+                value: d.term_set_history?.length || '',
+                click: () =>
+                    this.sidenavInfoService.open(TerminalsTermSetHistoryCardComponent, { data: d }),
+            }),
         },
     ];
     active$ = getValueChanges(this.filtersForm).pipe(
