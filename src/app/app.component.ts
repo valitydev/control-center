@@ -115,11 +115,6 @@ export class AppComponent {
                     services: PAYMENTS_ROUTING_CONFIG.services,
                 },
                 {
-                    label: 'Old Payments',
-                    url: '/old-payments',
-                    services: PAYMENTS_ROUTING_CONFIG.services,
-                },
-                {
                     label: 'Chargebacks',
                     url: '/chargebacks',
                     services: WALLETS_ROUTING_CONFIG.services,
