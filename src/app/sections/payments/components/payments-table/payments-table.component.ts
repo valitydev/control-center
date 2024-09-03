@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { LoadOptions, Column2, createMenuColumn } from '@vality/ng-core';
+import { LoadOptions, Column2, createMenuColumn, TABLE_WRAPPER_STYLE } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
@@ -18,7 +18,7 @@ import {
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
-    styles: `:host { height: 100%; }`,
+    host: { style: TABLE_WRAPPER_STYLE },
 })
 export class PaymentsTableComponent {
     @Input() data!: StatPayment[];
