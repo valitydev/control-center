@@ -1,6 +1,6 @@
 import { CashFlowPosting } from '@vality/domain-proto/internal/domain';
+import { Column2 } from '@vality/ng-core';
 
-import { Column2 } from '../../../../../../ng-libs/projects/ng-core/dist';
 import { getCashVolumeParts, formatCashVolumes } from '../../../shared';
 
 import {
