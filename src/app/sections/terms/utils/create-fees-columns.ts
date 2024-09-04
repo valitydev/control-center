@@ -11,18 +11,18 @@ import {
 import { isOneHundredPercentCashFlowPosting } from './is-one-hundred-percent-cash-flow-posting';
 
 export function createFeesColumns<T extends object>({
-    selectInlineDecision = (d) => d as never,
+    selectFlatDecision = (d) => d as never,
     conditionLabel = 'Condition',
     feeFilter = () => true,
     otherFilter = () => true,
 }: {
-    selectInlineDecision?: (d: T) => FlatDecision;
+    selectFlatDecision?: (d: T) => FlatDecision;
     conditionLabel?: string;
     feeFilter?: (v: CashFlowPosting) => boolean;
     otherFilter?: (v: CashFlowPosting) => boolean;
 } = {}): Column2<object, T>[] {
     function getFeeCashVolumeParts(d: T) {
-        const decision = selectInlineDecision(d);
+        const decision = selectFlatDecision(d);
         return decision
             ? getCashVolumeParts(decision.value.filter(feeFilter).map((v) => v.volume))
             : null;
@@ -32,9 +32,7 @@ export function createFeesColumns<T extends object>({
             field: conditionLabel,
             header: conditionLabel,
             child: (d) => ({
-                value: selectInlineDecision(d)
-                    ? formatLevelPredicate(selectInlineDecision(d))
-                    : null,
+                value: selectFlatDecision(d) ? formatLevelPredicate(selectFlatDecision(d)) : null,
             }),
         },
         {
@@ -69,7 +67,7 @@ export function createFeesColumns<T extends object>({
             field: `${conditionLabel}_other`,
             header: 'Other',
             child: (d) => {
-                const decision = selectInlineDecision(d);
+                const decision = selectFlatDecision(d);
                 if (!decision) {
                     return null;
                 }

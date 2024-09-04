@@ -48,11 +48,11 @@ export const TERMINAL_FEES_COLUMNS = [
     ...createFeesColumns<TerminalChild>({
         conditionLabel: 'Payment Condition',
         feeFilter: isPaymentFee,
-        selectInlineDecision: (d) => d.payment,
+        selectFlatDecision: (d) => d.payment,
     }),
     ...createFeesColumns<TerminalChild>({
         conditionLabel: 'Withdrawal Condition',
         feeFilter: isWithdrawalFee,
-        selectInlineDecision: (d) => d.withdrawal,
+        selectFlatDecision: (d) => d.withdrawal,
     }),
 ] satisfies Column2<object, TerminalChild>[];

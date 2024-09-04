@@ -82,17 +82,17 @@ export function getFlatDecisions(d: CashFlowSelector[], level = 0) {
         if (c.decisions?.length) {
             acc.push(
                 ...c.decisions.flatMap((d) => {
-                    const thenInlineDecisions = getFlatDecisions([d.then_], level + 1);
+                    const thenFlatDecisions = getFlatDecisions([d.then_], level + 1);
                     if (d.if_) {
-                        const ifInlineDecision = {
+                        const ifFlatDecision = {
                             if: d.if_,
                             level,
                         };
-                        return thenInlineDecisions.length > 1
-                            ? [{ ...ifInlineDecision, value: [] }, ...thenInlineDecisions]
-                            : [{ ...thenInlineDecisions[0], ...ifInlineDecision }];
+                        return thenFlatDecisions.length > 1
+                            ? [{ ...ifFlatDecision, value: [] }, ...thenFlatDecisions]
+                            : [{ ...thenFlatDecisions[0], ...ifFlatDecision }];
                     }
-                    return thenInlineDecisions;
+                    return thenFlatDecisions;
                 }),
             );
         }
