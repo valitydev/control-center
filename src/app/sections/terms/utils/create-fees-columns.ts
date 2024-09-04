@@ -6,8 +6,8 @@ import { getCashVolumeParts, formatCashVolumes } from '../../../shared';
 import {
     formatLevelPredicate,
     formatCashFlowSourceDestination,
-    InlineDecision2,
-} from './get-inline-decisions';
+    FlatDecision,
+} from './get-flat-decisions';
 import { isOneHundredPercentCashFlowPosting } from './is-one-hundred-percent-cash-flow-posting';
 
 export function createFeesColumns<T extends object>({
@@ -16,7 +16,7 @@ export function createFeesColumns<T extends object>({
     feeFilter = () => true,
     otherFilter = () => true,
 }: {
-    selectInlineDecision?: (d: T) => InlineDecision2;
+    selectInlineDecision?: (d: T) => FlatDecision;
     conditionLabel?: string;
     feeFilter?: (v: CashFlowPosting) => boolean;
     otherFilter?: (v: CashFlowPosting) => boolean;

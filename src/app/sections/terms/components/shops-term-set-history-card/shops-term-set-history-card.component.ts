@@ -7,7 +7,7 @@ import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/intern
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { createDomainObjectColumn } from '../../../../shared/utils/table2';
-import { getInlineDecisions2 } from '../../utils/get-inline-decisions';
+import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     getShopCashFlowSelectors,
     isShopTermSetDecision,
@@ -26,7 +26,7 @@ export class ShopsTermSetHistoryCardComponent {
     historyData = computed(() =>
         (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
             value: t,
-            children: getInlineDecisions2(getShopCashFlowSelectors(t.term_set)).filter((v) =>
+            children: getFlatDecisions(getShopCashFlowSelectors(t.term_set)).filter((v) =>
                 isShopTermSetDecision(v, {
                     partyId: this.data().owner_id,
                     shopId: this.data().shop_id,

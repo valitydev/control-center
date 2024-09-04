@@ -42,7 +42,7 @@ import {
 } from '@cc/app/shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
-import { InlineDecision2, getInlineDecisions2 } from '../../utils/get-inline-decisions';
+import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
 import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
 
 import {
@@ -92,21 +92,20 @@ export class WalletsTermsComponent implements OnInit {
         map((terms) =>
             terms.map((t) => ({
                 value: t,
-                children: getInlineDecisions2(
-                    getWalletCashFlowSelectors(t.current_term_set),
-                ).filter((v) =>
-                    isWalletTermSetDecision(v, {
-                        partyId: t.owner_id,
-                        walletId: t.wallet_id,
-                        currency: t.currency,
-                    }),
+                children: getFlatDecisions(getWalletCashFlowSelectors(t.current_term_set)).filter(
+                    (v) =>
+                        isWalletTermSetDecision(v, {
+                            partyId: t.owner_id,
+                            walletId: t.wallet_id,
+                            currency: t.currency,
+                        }),
                 ),
             })),
         ),
     );
     hasMore$ = this.walletsTermsService.hasMore$;
     isLoading$ = this.walletsTermsService.isLoading$;
-    columns: Column2<WalletTermSet, InlineDecision2>[] = [
+    columns: Column2<WalletTermSet, FlatDecision>[] = [
         createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
             sticky: 'start',
         }),

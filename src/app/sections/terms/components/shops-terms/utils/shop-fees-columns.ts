@@ -9,7 +9,7 @@ import { Column2 } from '@vality/ng-core';
 
 import { formatCashVolumes } from '../../../../../shared';
 import { createFeesColumns } from '../../../utils/create-fees-columns';
-import { InlineDecision2 } from '../../../utils/get-inline-decisions';
+import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
 export function getShopCashFlowSelectors(d: TermSetHierarchyObject) {
@@ -32,7 +32,7 @@ export function isThatShopParty(predicate: Predicate, partyId: PartyID, shopId: 
 }
 
 export function isShopTermSetDecision(
-    v: InlineDecision2,
+    v: FlatDecision,
     params: { partyId: PartyID; shopId: ShopID; currency: string },
 ) {
     return (
@@ -57,4 +57,4 @@ export const SHOP_FEES_COLUMNS = [
         }),
     },
     BASE_SHOP_FEES_COLUMNS.at(-1),
-] satisfies Column2<object, InlineDecision2>[];
+] satisfies Column2<object, FlatDecision>[];

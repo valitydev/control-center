@@ -7,7 +7,7 @@ import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/inte
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { createDomainObjectColumn } from '../../../../shared/utils/table2';
-import { getInlineDecisions2 } from '../../utils/get-inline-decisions';
+import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     WALLET_FEES_COLUMNS,
     isWalletTermSetDecision,
@@ -26,7 +26,7 @@ export class WalletsTermSetHistoryCardComponent {
     historyData = computed(() =>
         (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
             value: t,
-            children: getInlineDecisions2(getWalletCashFlowSelectors(t.term_set)).filter((v) =>
+            children: getFlatDecisions(getWalletCashFlowSelectors(t.term_set)).filter((v) =>
                 isWalletTermSetDecision(v, {
                     partyId: this.data().owner_id,
                     walletId: this.data().wallet_id,

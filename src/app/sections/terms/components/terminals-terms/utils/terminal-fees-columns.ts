@@ -2,11 +2,11 @@ import { ProvisionTermSet, CashFlowPosting } from '@vality/domain-proto/internal
 import { Column2, TreeDataItem } from '@vality/ng-core';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
-import { InlineDecision2, getInlineDecisions2 } from '../../../utils/get-inline-decisions';
+import { FlatDecision, getFlatDecisions } from '../../../utils/get-flat-decisions';
 
 export interface TerminalChild {
-    payment: InlineDecision2;
-    withdrawal: InlineDecision2;
+    payment: FlatDecision;
+    withdrawal: FlatDecision;
 }
 
 export function getTerminalPaymentsCashFlowSelectors(d: ProvisionTermSet) {
@@ -30,12 +30,8 @@ export function getTerminalTreeDataItem<T extends object>(
 ) {
     return (d: T): TreeDataItem<T, TerminalChild> => {
         const termSet = selectTermSet(d);
-        const paymentsDecisions = getInlineDecisions2(
-            getTerminalPaymentsCashFlowSelectors(termSet),
-        );
-        const withdrawalsDecisions = getInlineDecisions2(
-            getTerminalWalletsCashFlowSelectors(termSet),
-        );
+        const paymentsDecisions = getFlatDecisions(getTerminalPaymentsCashFlowSelectors(termSet));
+        const withdrawalsDecisions = getFlatDecisions(getTerminalWalletsCashFlowSelectors(termSet));
         return {
             value: d,
             children: new Array(Math.max(paymentsDecisions.length, withdrawalsDecisions.length))

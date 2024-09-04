@@ -8,7 +8,7 @@ import {
 import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
-import { InlineDecision2 } from '../../../utils/get-inline-decisions';
+import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
 export function getWalletCashFlowSelectors(d: TermSetHierarchyObject) {
@@ -31,7 +31,7 @@ export function isThatWalletParty(predicate: Predicate, partyId: PartyID, wallet
 }
 
 export function isWalletTermSetDecision(
-    v: InlineDecision2,
+    v: FlatDecision,
     params: { partyId: PartyID; walletId: WalletID; currency: string },
 ) {
     return (

@@ -40,7 +40,7 @@ import {
     createContractColumn,
     createDomainObjectColumn,
 } from '../../../../shared/utils/table2';
-import { getInlineDecisions2, InlineDecision2 } from '../../utils/get-inline-decisions';
+import { getFlatDecisions, FlatDecision } from '../../utils/get-flat-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
 import { ShopsTermsService } from './shops-terms.service';
@@ -89,7 +89,7 @@ export class ShopsTermsComponent implements OnInit {
         map((terms) =>
             terms.map((t) => ({
                 value: t,
-                children: getInlineDecisions2(getShopCashFlowSelectors(t.current_term_set)).filter(
+                children: getFlatDecisions(getShopCashFlowSelectors(t.current_term_set)).filter(
                     (v) =>
                         isShopTermSetDecision(v, {
                             partyId: t.owner_id,
@@ -102,7 +102,7 @@ export class ShopsTermsComponent implements OnInit {
     );
     hasMore$ = this.shopsTermsService.hasMore$;
     isLoading$ = this.shopsTermsService.isLoading$;
-    columns: Column2<ShopTermSet, InlineDecision2>[] = [
+    columns: Column2<ShopTermSet, FlatDecision>[] = [
         createShopColumn(
             (d) => ({
                 shopId: d.shop_id,
