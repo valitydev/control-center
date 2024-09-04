@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { LoadOptions, Column2, createMenuColumn } from '@vality/ng-core';
+import { LoadOptions, Column2, createMenuColumn, TABLE_WRAPPER_STYLE } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
@@ -18,7 +18,7 @@ import {
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
-    styles: `:host { height: 100%; }`,
+    host: { style: TABLE_WRAPPER_STYLE },
 })
 export class PaymentsTableComponent {
     @Input() data!: StatPayment[];
@@ -31,8 +31,15 @@ export class PaymentsTableComponent {
     @Output() more = new EventEmitter<void>();
 
     columns: Column2<StatPayment>[] = [
-        { field: 'id', cell: (d) => ({ click: () => this.toDetails(d) }), sticky: 'start' },
-        { field: 'invoice_id', sticky: 'start' },
+        {
+            field: 'id',
+            cell: (d) => ({
+                value: `${d.invoice_id}.${d.id}`,
+                click: () => this.toDetails(d),
+            }),
+            sticky: 'start',
+        },
+        { field: 'external_id' },
         createCurrencyColumn((d) => ({ amount: d.amount, code: d.currency_symbolic_code }), {
             field: 'amount',
         }),
@@ -66,7 +73,6 @@ export class PaymentsTableComponent {
         createDomainObjectColumn((d) => ({ ref: { provider: d.provider_id } }), {
             header: 'Provider',
         }),
-        { field: 'external_id' },
         createFailureColumn2((d) => ({
             failure: d.status?.failed?.failure?.failure,
             noFailureMessage:

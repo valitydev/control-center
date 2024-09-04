@@ -7,9 +7,9 @@ import {
 } from '@vality/domain-proto/internal/domain';
 import { Column2 } from '@vality/ng-core';
 
-import { getCashVolumeParts, formatCashVolumes } from '../../../../../shared';
-import { InlineDecision2, formatLevelPredicate } from '../../../utils/get-inline-decisions';
-import { isOneHundredPercentCashFlowPosting } from '../../../utils/is-one-hundred-percent-cash-flow-posting';
+import { formatCashVolumes } from '../../../../../shared';
+import { createFeesColumns } from '../../../utils/create-fees-columns';
+import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
 export function getShopCashFlowSelectors(d: TermSetHierarchyObject) {
@@ -32,7 +32,7 @@ export function isThatShopParty(predicate: Predicate, partyId: PartyID, shopId: 
 }
 
 export function isShopTermSetDecision(
-    v: InlineDecision2,
+    v: FlatDecision,
     params: { partyId: PartyID; shopId: ShopID; currency: string },
 ) {
     return (
@@ -42,39 +42,13 @@ export function isShopTermSetDecision(
     );
 }
 
+const BASE_SHOP_FEES_COLUMNS = createFeesColumns({
+    feeFilter: isShopFee,
+    otherFilter: (v) => !isShopRreserve(v),
+});
+
 export const SHOP_FEES_COLUMNS = [
-    {
-        field: 'condition',
-        child: (d) => ({ value: formatLevelPredicate(d) }),
-    },
-    {
-        field: 'feeShare',
-        header: 'Fee, %',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isShopFee).map((v) => v.volume))?.share,
-        }),
-    },
-    {
-        field: 'feeFixed',
-        header: 'Fee, fix',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isShopFee).map((v) => v.volume))?.fixed,
-        }),
-    },
-    {
-        field: 'feeMin',
-        header: 'Fee, min',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isShopFee).map((v) => v.volume))?.max,
-        }),
-    },
-    {
-        field: 'feeMax',
-        header: 'Fee, max',
-        child: (d) => ({
-            value: getCashVolumeParts(d.value.filter(isShopFee).map((v) => v.volume))?.min,
-        }),
-    },
+    ...BASE_SHOP_FEES_COLUMNS.slice(0, -1),
     {
         field: 'rreserve',
         header: 'RReserve',
@@ -82,19 +56,5 @@ export const SHOP_FEES_COLUMNS = [
             value: formatCashVolumes(d.value.filter(isShopRreserve).map((v) => v.volume)),
         }),
     },
-    {
-        field: 'other',
-        child: (d) => ({
-            value: formatCashVolumes(
-                d.value
-                    .filter(
-                        (v) =>
-                            !isShopFee(v) &&
-                            !isShopRreserve(v) &&
-                            !isOneHundredPercentCashFlowPosting(v),
-                    )
-                    .map((v) => v.volume),
-            ),
-        }),
-    },
-] satisfies Column2<object, InlineDecision2>[];
+    BASE_SHOP_FEES_COLUMNS.at(-1),
+] satisfies Column2<object, FlatDecision>[];

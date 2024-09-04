@@ -6,8 +6,8 @@ import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
 import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
-import { getDomainObjectDetails } from '../../../../shared/components/thrift-api-crud';
-import { getInlineDecisions2 } from '../../utils/get-inline-decisions';
+import { createDomainObjectColumn } from '../../../../shared/utils/table2';
+import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     getShopCashFlowSelectors,
     isShopTermSetDecision,
@@ -26,7 +26,7 @@ export class ShopsTermSetHistoryCardComponent {
     historyData = computed(() =>
         (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
             value: t,
-            children: getInlineDecisions2(getShopCashFlowSelectors(t.term_set)).filter((v) =>
+            children: getFlatDecisions(getShopCashFlowSelectors(t.term_set)).filter((v) =>
                 isShopTermSetDecision(v, {
                     partyId: this.data().owner_id,
                     shopId: this.data().shop_id,
@@ -38,14 +38,9 @@ export class ShopsTermSetHistoryCardComponent {
 
     columns: Column2<TermSetHistory>[] = [
         { field: 'applied_at', cell: { type: 'datetime' } },
-        {
-            field: 'term_set',
-            cell: (d) => ({
-                value: getDomainObjectDetails({ term_set_hierarchy: d?.term_set })?.label,
-                description: getDomainObjectDetails({ term_set_hierarchy: d?.term_set })
-                    ?.description,
-            }),
-        },
+        createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d?.term_set?.ref } }), {
+            header: 'Term Set',
+        }),
         ...SHOP_FEES_COLUMNS,
     ];
 }
