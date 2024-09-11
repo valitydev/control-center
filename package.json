@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "ng serve --port 4200",
+    "prod": "ng serve --port 4200 --configuration=production",
     "stage": "cross-env NODE_ENV=stage ng serve --port 4201 --configuration=stage",
     "build": "ng build",
     "test": "ng test",
@@ -29,7 +30,7 @@
     "@angular/router": "18.2.2",
     "@ngneat/input-mask": "6.0.0",
     "@vality/deanonimus-proto": "2.0.1-2a02d87.0",
-    "@vality/domain-proto": "2.0.1-e5d3c83.0",
+    "@vality/domain-proto": "2.0.1-9d4aa51.0",
     "@vality/dominator-proto": "1.0.1-41bee97.0",
     "@vality/fistful-proto": "2.0.1-88e69a5.0",
     "@vality/machinegun-proto": "1.0.0",

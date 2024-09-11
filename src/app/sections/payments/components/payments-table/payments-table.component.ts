@@ -34,9 +34,12 @@ export class PaymentsTableComponent {
         {
             field: 'id',
             cell: (d) => ({
-                value: `${d.invoice_id}.${d.id}`,
                 click: () => this.toDetails(d),
             }),
+            sticky: 'start',
+        },
+        {
+            field: 'invoice_id',
             sticky: 'start',
         },
         { field: 'external_id' },
