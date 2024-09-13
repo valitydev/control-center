@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "ng serve --port 4200",
+    "prod": "cross-env NODE_ENV=stage ng serve --port 4200 --configuration=production",
     "stage": "cross-env NODE_ENV=stage ng serve --port 4201 --configuration=stage",
     "build": "ng build",
     "test": "ng test",

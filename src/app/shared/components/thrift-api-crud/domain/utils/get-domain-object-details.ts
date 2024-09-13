@@ -1,6 +1,7 @@
 import { DomainObject } from '@vality/domain-proto/domain';
 import { inlineJson } from '@vality/ng-core';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
+import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
 import { PickByValue, ValuesType } from 'utility-types';
 
@@ -81,7 +82,10 @@ export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
     const result = getDomainObjectValueDetailsFn(getUnionKey(o))(getUnionValue(o));
     return {
         id: result.id,
-        label: result.label || result.description || String(result.id) || startCase(getUnionKey(o)),
+        label:
+            result.label ||
+            result.description ||
+            `${startCase(getUnionKey(o))}${isNil(result.id) ? '' : ' ' + result.id}`,
         description: result.label ? result.description : '',
         type: startCase(getUnionKey(o)),
     };
