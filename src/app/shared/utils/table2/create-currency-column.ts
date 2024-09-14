@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { createColumn } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
-import { of } from 'rxjs';
+import { of, concat, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AmountCurrencyService } from '../../services';
@@ -9,13 +9,19 @@ import { AmountCurrencyService } from '../../services';
 export const createCurrencyColumn = createColumn(
     ({ amount, code }: { amount: number; code: string }) => {
         const amountCurrencyService = inject(AmountCurrencyService);
-        return (isNil(amount) ? of(undefined) : amountCurrencyService.toMajor(amount, code)).pipe(
-            map((value) => ({
-                value,
+        if (isNil(amount)) {
+            return of(undefined);
+        }
+        return concat(
+            amount === 0 ? of(0) : EMPTY,
+            amountCurrencyService.getCurrency(code).pipe(map((c) => c?.data?.exponent)),
+        ).pipe(
+            map((exponent) => ({
+                value: amount,
                 type: 'currency',
                 params: {
                     code,
-                    major: true,
+                    exponent,
                 },
             })),
         );
