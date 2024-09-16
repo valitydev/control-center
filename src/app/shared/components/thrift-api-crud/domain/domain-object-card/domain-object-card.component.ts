@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
 import { Reference } from '@vality/domain-proto/internal/domain';
 import { ComponentChanges, DialogService } from '@vality/ng-core';
 import { isEqualThrift } from '@vality/ng-thrift';
@@ -50,7 +49,6 @@ export class DomainObjectCardComponent implements OnChanges {
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
-        private router: Router,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<DomainObjectCardComponent>) {
