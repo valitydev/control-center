@@ -51,8 +51,16 @@ export class DomainStoreService {
         map(([s]) => s?.domain),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    private objects$ = this.rawDomain$.pipe(
-        map((domain) => new Map(Array.from(domain).map(([r, d]) => [createObjectHash(r), d]))),
+    private objects$ = combineLatest([this.rawDomain$, this.domain$]).pipe(
+        map(
+            ([rawDomain, domain]) =>
+                new Map(
+                    Array.from(rawDomain).map(([ref, raw]) => [
+                        createObjectHash(ref),
+                        { raw, reduced: domain.get(ref) },
+                    ]),
+                ),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
@@ -69,10 +77,7 @@ export class DomainStoreService {
 
     getObject(ref: Reference, raw = false): Observable<DomainObject> {
         return this.objects$.pipe(
-            map((objects) => {
-                const res = objects.get(createObjectHash(ref));
-                return raw || !this.domainSecretService.isExcludedObject(res) ? res : undefined;
-            }),
+            map((objects) => objects.get(createObjectHash(ref))?.[raw ? 'raw' : 'reduced']),
         );
     }
 
