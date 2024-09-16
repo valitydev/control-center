@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Domain, DomainObject } from '@vality/domain-proto/domain';
+import { getUnionKey } from '@vality/ng-thrift';
 import { KeycloakService } from 'keycloak-angular';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isNil from 'lodash-es/isNil';
@@ -20,6 +21,10 @@ export class DomainSecretService {
     );
 
     constructor(private keycloakService: KeycloakService) {}
+
+    isExcludedObject(obj: DomainObject) {
+        return !this.hasDominantSecretRole && EXCLUDE_OBJECTS.includes(getUnionKey(obj));
+    }
 
     reduceDomain(domain: Domain): Domain {
         if (this.hasDominantSecretRole) {

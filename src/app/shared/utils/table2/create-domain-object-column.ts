@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { Reference } from '@vality/domain-proto/internal/domain';
 import { createColumn } from '@vality/ng-core';
-import { map } from 'rxjs/operators';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
+import { map, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { SidenavInfoService } from '../../components/sidenav-info';
@@ -14,9 +15,12 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
     return inject(DomainStoreService)
         .getObject(ref)
         .pipe(
+            startWith({
+                [getUnionKey(ref)]: { ref: getUnionValue(ref), data: {} },
+            }),
             map((obj) => ({
-                value: getDomainObjectDetails(obj).label,
-                description: getDomainObjectDetails(obj).id,
+                value: getDomainObjectDetails(obj).label || '',
+                description: getDomainObjectDetails(obj).id || '',
                 click: () => {
                     inject(SidenavInfoService).toggle(DomainObjectCardComponent, { ref });
                 },
