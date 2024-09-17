@@ -76,6 +76,15 @@ export class DomainMetadataFormExtensionsService {
                         generate: () => of('authorization_failed:unknown'),
                     }),
             },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'DataRevision', 'domain')),
+                extension: () =>
+                    this.domainStoreService.version$.pipe(
+                        map(() => ({
+                            generate: () => this.domainStoreService.version$,
+                        })),
+                    ),
+            },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
