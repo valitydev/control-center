@@ -36,6 +36,7 @@ export class PaymentsTableComponent {
             cell: (d) => ({
                 click: () => this.toDetails(d),
             }),
+            sticky: 'start',
         },
         { field: 'invoice_id', sticky: 'start' },
         { field: 'external_id' },
