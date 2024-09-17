@@ -7,7 +7,7 @@ import startCase from 'lodash-es/startCase';
 
 import { AmountCurrencyService } from '@cc/app/shared/services';
 
-import { createFailureColumn2 } from '../../../../shared';
+import { createFailureColumn } from '../../../../shared';
 import {
     createPartyColumn,
     createShopColumn,
@@ -72,7 +72,7 @@ export class PaymentsTableComponent {
         createDomainObjectColumn((d) => ({ ref: { provider: d.provider_id } }), {
             header: 'Provider',
         }),
-        createFailureColumn2((d) => ({
+        createFailureColumn((d) => ({
             failure: d.status?.failed?.failure?.failure,
             noFailureMessage:
                 getUnionKey(d.status?.failed?.failure) === 'failure'

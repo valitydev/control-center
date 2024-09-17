@@ -1,12 +1,5 @@
 import { Failure } from '@vality/domain-proto/domain';
-import {
-    PossiblyAsync,
-    ColumnObject,
-    getPossiblyAsyncObservable,
-    createColumn,
-} from '@vality/ng-core';
-import { of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { createColumn } from '@vality/ng-core';
 
 function getFailureMessageTree(failure: Failure, withReason = true, level = Infinity) {
     if (!failure) {
@@ -21,38 +14,8 @@ function getFailureMessageTree(failure: Failure, withReason = true, level = Infi
     );
 }
 
-export function createFailureColumn<T extends object>(
-    selectFailure: (d: T) => PossiblyAsync<Failure>,
-    selectNoFailureMessage: (d: T) => PossiblyAsync<string> = () => '',
-    params: Partial<ColumnObject<T>> = {},
-): ColumnObject<T> {
-    return {
-        field: 'failure',
-        formatter: (d) =>
-            getPossiblyAsyncObservable(selectNoFailureMessage(d)).pipe(
-                switchMap((msg) => {
-                    if (msg) {
-                        return of(msg);
-                    }
-                    return getPossiblyAsyncObservable(selectFailure(d)).pipe(
-                        map((failure) => getFailureMessageTree(failure, false, 2)),
-                    );
-                }),
-            ),
-        description: (d) =>
-            getPossiblyAsyncObservable(selectFailure(d)).pipe(
-                map((failure) => failure?.reason || ''),
-            ),
-        tooltip: (d) =>
-            getPossiblyAsyncObservable(selectFailure(d)).pipe(
-                map((failure) => getFailureMessageTree(failure?.sub?.sub)),
-            ),
-        ...params,
-    } as ColumnObject<T>;
-}
-
-export const createFailureColumn2 = createColumn(
-    ({ failure, noFailureMessage }: { failure: Failure; noFailureMessage: string }) => ({
+export const createFailureColumn = createColumn(
+    ({ failure, noFailureMessage }: { failure: Failure; noFailureMessage?: string }) => ({
         value: noFailureMessage || getFailureMessageTree(failure, false, 2),
         description: failure?.reason || '',
         tooltip: failure?.sub?.sub ? JSON.stringify(failure.sub.sub, null, 2) : '',
