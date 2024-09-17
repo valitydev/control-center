@@ -1,7 +1,7 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DialogResponseStatus } from '@vality/ng-core';
+import { DialogService, DialogResponseStatus, compareDifferentTypes } from '@vality/ng-core';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
@@ -165,20 +165,39 @@ export class PartyRoutingRulesetComponent {
             this.partyRoutingRulesetService.wallets$,
             this.routingRulesTypeService.routingRulesType$,
             this.partyRoutingRulesetService.partyID$,
+            this.partyRuleset$,
         ])
             .pipe(
                 take(1),
-                switchMap(([refID, shops, wallets, type, partyID]) =>
-                    this.dialogService
+                switchMap(([refID, shops, wallets, type, partyID, ruleset]) => {
+                    return this.dialogService
                         .open(AddPartyRoutingRuleDialogComponent, {
                             refID,
-                            shops,
-                            wallets,
+                            shops: shops
+                                .filter((s) =>
+                                    ruleset.data.decisions.delegates.every(
+                                        (d) =>
+                                            d?.allowed?.condition?.party?.definition?.shop_is !==
+                                            s.id,
+                                    ),
+                                )
+                                .sort((a, b) =>
+                                    compareDifferentTypes(a.details.name, b.details.name),
+                                ),
+                            wallets: wallets
+                                .filter((w) =>
+                                    ruleset.data.decisions.delegates.every(
+                                        (d) =>
+                                            d?.allowed?.condition?.party?.definition?.wallet_is !==
+                                            w.id,
+                                    ),
+                                )
+                                .sort((a, b) => compareDifferentTypes(a.name, b.name)),
                             type,
                             partyID,
                         })
-                        .afterClosed(),
-                ),
+                        .afterClosed();
+                }),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
