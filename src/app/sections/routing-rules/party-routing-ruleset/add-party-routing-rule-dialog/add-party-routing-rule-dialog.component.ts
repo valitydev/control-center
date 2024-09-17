@@ -2,8 +2,9 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
 import { Shop } from '@vality/domain-proto/domain';
+import { ShopID, WalletID } from '@vality/domain-proto/internal/domain';
 import { StatWallet } from '@vality/fistful-proto/fistful_stat';
-import { DialogResponseStatus, DialogSuperclass, NotifyLogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogSuperclass, NotifyLogService, Option } from '@vality/ng-core';
 
 import { RoutingRulesService } from '../../services/routing-rules';
 import { RoutingRulesType } from '../../types/routing-rules-type';
@@ -16,11 +17,23 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     { refID: number; partyID: string; shops: Shop[]; wallets: StatWallet[]; type: RoutingRulesType }
 > {
     form = this.fb.group<{ shopID: string; walletID: string; name: string; description: string }>({
-        shopID: '',
-        walletID: '',
+        shopID: null,
+        walletID: null,
         name: 'Ruleset[candidates]',
         description: '',
     });
+
+    shopsOptions: Option<ShopID>[] = this.dialogData.shops.map((s) => ({
+        value: s.id,
+        label: s.details.name,
+        description: s.id,
+    }));
+
+    walletsOptions: Option<WalletID>[] = this.dialogData.wallets.map((s) => ({
+        value: s.id,
+        label: s.name,
+        description: s.id,
+    }));
 
     constructor(
         private fb: FormBuilder,
