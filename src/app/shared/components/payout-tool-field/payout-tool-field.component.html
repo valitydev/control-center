@@ -1,7 +1,0 @@
-<v-select-field
-    [disabled]="!(partyId$ | async) || !(shopId$ | async)"
-    [formControl]="control"
-    [label]="label || 'Payout Tool'"
-    [options]="options$ | async"
-    [required]="required"
-></v-select-field>

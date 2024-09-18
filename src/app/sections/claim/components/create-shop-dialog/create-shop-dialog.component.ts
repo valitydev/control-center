@@ -74,7 +74,10 @@ const DEFAULT_SHOP_LOCATION: ShopLocation = {
     styles: ``,
 })
 export class CreateShopDialogComponent
-    extends DialogSuperclass<CreateShopDialogComponent, { party: Party; claim: Claim }>
+    extends DialogSuperclass<
+        CreateShopDialogComponent,
+        { party: Party; claim: Claim; withoutPayout: boolean }
+    >
     implements OnInit
 {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
@@ -185,27 +188,31 @@ export class CreateShopDialogComponent
                             },
                         },
                     },
-                    {
-                        party_modification: {
-                            contract_modification: {
-                                id: contractId,
-                                modification: {
-                                    payout_tool_modification: {
-                                        payout_tool_id: payoutToolId,
-                                        modification: {
-                                            creation: {
-                                                currency: currency,
-                                                tool_info: {
-                                                    russian_bank_account:
-                                                        DEFAULT_RUSSIAN_BANK_ACCOUNT,
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
+                    ...(this.dialogData.withoutPayout
+                        ? []
+                        : [
+                              {
+                                  party_modification: {
+                                      contract_modification: {
+                                          id: contractId,
+                                          modification: {
+                                              payout_tool_modification: {
+                                                  payout_tool_id: payoutToolId,
+                                                  modification: {
+                                                      creation: {
+                                                          currency: currency,
+                                                          tool_info: {
+                                                              russian_bank_account:
+                                                                  DEFAULT_RUSSIAN_BANK_ACCOUNT,
+                                                          },
+                                                      },
+                                                  },
+                                              },
+                                          },
+                                      },
+                                  },
+                              },
+                          ]),
                     {
                         party_modification: {
                             shop_modification: {
@@ -216,7 +223,9 @@ export class CreateShopDialogComponent
                                         category: category,
                                         location: DEFAULT_SHOP_LOCATION,
                                         contract_id: contractId,
-                                        payout_tool_id: payoutToolId,
+                                        ...(this.dialogData.withoutPayout
+                                            ? {}
+                                            : { payout_tool_id: payoutToolId }),
                                     },
                                 },
                             },
