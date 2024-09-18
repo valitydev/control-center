@@ -24,6 +24,7 @@ import {
     UpdateOptions,
     VSelectPipe,
     Column2,
+    cachedHeadMap,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
@@ -86,19 +87,17 @@ export class ShopsTermsComponent implements OnInit {
         }),
     );
     terms$ = this.shopsTermsService.result$.pipe(
-        map((terms) =>
-            terms.map((t) => ({
-                value: t,
-                children: getFlatDecisions(getShopCashFlowSelectors(t.current_term_set)).filter(
-                    (v) =>
-                        isShopTermSetDecision(v, {
-                            partyId: t.owner_id,
-                            shopId: t.shop_id,
-                            currency: t.currency,
-                        }),
-                ),
-            })),
-        ),
+        cachedHeadMap((t) => ({
+            value: t,
+            children: getFlatDecisions(getShopCashFlowSelectors(t.current_term_set)).filter((v) =>
+                isShopTermSetDecision(v, {
+                    partyId: t.owner_id,
+                    shopId: t.shop_id,
+                    currency: t.currency,
+                }),
+            ),
+        })),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     hasMore$ = this.shopsTermsService.hasMore$;
     isLoading$ = this.shopsTermsService.isLoading$;

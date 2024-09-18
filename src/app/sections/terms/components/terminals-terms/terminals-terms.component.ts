@@ -23,6 +23,7 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
+    cachedHeadMap,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
@@ -74,7 +75,8 @@ export class TerminalsTermsComponent implements OnInit {
         }),
     );
     terms$ = this.terminalsTermsService.result$.pipe(
-        map((terms) => terms.map(getTerminalTreeDataItem((d) => d.current_term_set))),
+        cachedHeadMap(getTerminalTreeDataItem((d) => d.current_term_set)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     hasMore$ = this.terminalsTermsService.hasMore$;
     isLoading$ = this.terminalsTermsService.isLoading$;
