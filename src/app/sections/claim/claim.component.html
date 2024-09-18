@@ -92,7 +92,10 @@
                 Change status
             </button>
             <button mat-raised-button (click)="createWallet()">Add wallet modification</button>
-            <button mat-raised-button (click)="createShop()">Add shop modifications</button>
+            <button mat-raised-button (click)="createShop(false)">Add shop modifications</button>
+            <button mat-raised-button (click)="createShop(true)">
+                Add shop modifications without payout
+            </button>
             <button color="primary" mat-raised-button (click)="addModification()">
                 Add modification
             </button>
