@@ -53,7 +53,7 @@ export class ToolbarComponent implements OnInit {
         this.partyIdControl.valueChanges
             .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
             .subscribe((partyId) => {
-                const currentPartyId = this.getPartyId();
+                const currentPartyId = this.getPartyId() || null;
                 if (partyId) {
                     if (currentPartyId !== partyId) {
                         void this.router.navigate([`/party/${partyId}`]);
@@ -63,13 +63,9 @@ export class ToolbarComponent implements OnInit {
                 }
             });
         this.urlService.path$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((path) => {
-            const partyId = this.getPartyId(path);
-            if (partyId) {
-                if (partyId !== this.partyIdControl.value) {
-                    this.partyIdControl.setValue(partyId, { emitEvent: false });
-                }
-            } else if (this.partyIdControl.value) {
-                this.partyIdControl.setValue(null, { emitEvent: false });
+            const partyId = this.getPartyId(path) || null;
+            if (partyId !== this.partyIdControl.value) {
+                this.partyIdControl.setValue(partyId);
             }
         });
     }
