@@ -27,6 +27,7 @@ import {
     UpdateOptions,
     VSelectPipe,
     Column2,
+    cachedHeadMap,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
@@ -89,19 +90,17 @@ export class WalletsTermsComponent implements OnInit {
         }),
     );
     terms$ = this.walletsTermsService.result$.pipe(
-        map((terms) =>
-            terms.map((t) => ({
-                value: t,
-                children: getFlatDecisions(getWalletCashFlowSelectors(t.current_term_set)).filter(
-                    (v) =>
-                        isWalletTermSetDecision(v, {
-                            partyId: t.owner_id,
-                            walletId: t.wallet_id,
-                            currency: t.currency,
-                        }),
-                ),
-            })),
-        ),
+        cachedHeadMap((t) => ({
+            value: t,
+            children: getFlatDecisions(getWalletCashFlowSelectors(t.current_term_set)).filter((v) =>
+                isWalletTermSetDecision(v, {
+                    partyId: t.owner_id,
+                    walletId: t.wallet_id,
+                    currency: t.currency,
+                }),
+            ),
+        })),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     hasMore$ = this.walletsTermsService.hasMore$;
     isLoading$ = this.walletsTermsService.isLoading$;

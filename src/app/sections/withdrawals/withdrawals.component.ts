@@ -5,7 +5,6 @@ import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
     QueryParamsService,
-    Column,
     UpdateOptions,
     clean,
     DialogService,
@@ -18,6 +17,7 @@ import {
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
+    Column2,
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
@@ -28,9 +28,7 @@ import { WithdrawalParams } from '@cc/app/api/fistful-stat';
 
 import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
-import { AmountCurrencyService } from '../../shared/services';
-import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
-import { createTerminalColumn } from '../../shared/utils/table/create-terminal-column';
+import { createDomainObjectColumn, createCurrencyColumn } from '../../shared/utils/table2';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
@@ -72,46 +70,39 @@ export class WithdrawalsComponent implements OnInit {
     withdrawals$ = this.fetchWithdrawalsService.result$;
     inProgress$ = this.fetchWithdrawalsService.isLoading$;
     hasMore$ = this.fetchWithdrawalsService.hasMore$;
-    columns: Column<StatWithdrawal>[] = [
-        { field: 'id' },
-        { field: 'created_at', type: 'datetime' },
-        'identity_id',
-        'source_id',
-        'destination_id',
-        'external_id',
-        {
+    columns: Column2<StatWithdrawal>[] = [
+        { field: 'id', sticky: 'start' },
+        { field: 'external_id' },
+        { field: 'created_at', cell: { type: 'datetime' } },
+        { field: 'identity_id' },
+        { field: 'source_id' },
+        { field: 'destination_id' },
+        createCurrencyColumn((d) => ({ amount: d.amount, code: d.currency_symbolic_code }), {
             field: 'amount',
-            type: 'currency',
-            formatter: (d) =>
-                this.amountCurrencyService.toMajor(d.amount, d.currency_symbolic_code),
-            typeParameters: {
-                currencyCode: (d) => d.currency_symbolic_code,
-            },
-        },
-        {
+        }),
+        createCurrencyColumn((d) => ({ amount: d.fee, code: d.currency_symbolic_code }), {
             field: 'fee',
-            type: 'currency',
-            formatter: (d) => this.amountCurrencyService.toMajor(d.fee, d.currency_symbolic_code),
-            typeParameters: {
-                currencyCode: (d) => d.currency_symbolic_code,
-            },
-        },
+        }),
         {
             field: 'status',
-            type: 'tag',
-            formatter: (d) => getUnionKey(d.status),
-            typeParameters: {
-                label: (d) => startCase(getUnionKey(d.status)),
-                tags: {
-                    pending: { color: 'pending' },
-                    succeeded: { color: 'success' },
-                    failed: { color: 'warn' },
-                },
-            },
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.status)),
+                color: (
+                    {
+                        pending: 'pending',
+                        succeeded: 'success',
+                        failed: 'warn',
+                    } as const
+                )[getUnionKey(d.status)],
+            }),
         },
-        createTerminalColumn((d) => d.terminal_id),
-        createProviderColumn((d) => d.provider_id),
-        createFailureColumn<StatWithdrawal>((d) => d.status?.failed?.base_failure),
+        createDomainObjectColumn((d) => ({ ref: { terminal: { id: d.terminal_id } } }), {
+            header: 'Terminal',
+        }),
+        createDomainObjectColumn((d) => ({ ref: { provider: { id: d.provider_id } } }), {
+            header: 'Provider',
+        }),
+        createFailureColumn((d) => ({ failure: d.status?.failed?.base_failure })),
     ];
     selected: StatWithdrawal[] = [];
     statuses: WithdrawalParams['status'][] = ['Pending', 'Succeeded', 'Failed'];
@@ -122,7 +113,6 @@ export class WithdrawalsComponent implements OnInit {
         private fetchWithdrawalsService: FetchWithdrawalsService,
         private fb: NonNullableFormBuilder,
         private qp: QueryParamsService<Partial<WithdrawalsForm>>,
-        private amountCurrencyService: AmountCurrencyService,
         private dialogService: DialogService,
         private destroyRef: DestroyRef,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,

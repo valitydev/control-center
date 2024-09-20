@@ -1,4 +1,4 @@
-<cc-page-layout title="Withdrawals">
+<cc-page-layout fullHeight title="Withdrawals">
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
@@ -24,7 +24,7 @@
         </ng-template>
     </v-filters>
 
-    <v-table
+    <v-table2
         [(rowSelected)]="selected"
         [columns]="columns"
         [data]="withdrawals$ | async"
@@ -35,12 +35,7 @@
         (update)="reload($event)"
     >
         <v-table-actions>
-            <button
-                [disabled]="!selected?.length"
-                color="primary"
-                mat-raised-button
-                (click)="failMachines()"
-            >
+            <button [disabled]="!selected?.length" mat-raised-button (click)="failMachines()">
                 Fail machines
             </button>
             <button
@@ -52,5 +47,5 @@
                 Create adjustments
             </button>
         </v-table-actions>
-    </v-table>
+    </v-table2>
 </cc-page-layout>

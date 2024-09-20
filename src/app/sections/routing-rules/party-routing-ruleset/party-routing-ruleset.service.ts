@@ -43,6 +43,7 @@ export class PartyRoutingRulesetService {
     shops$ = defer(() => this.party$).pipe(
         map((p) => p.shops),
         map((shops) => Array.from(shops.values())),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     wallets$ = defer(() => this.partyID$).pipe(
         switchMap((partyID) =>
