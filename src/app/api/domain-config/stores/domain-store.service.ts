@@ -1,27 +1,23 @@
 import { Injectable, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DomainObject, Reference } from '@vality/domain-proto/domain';
+import { Domain, DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService, handleError, inProgressFrom, progressTo } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
+import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, defer, Observable, of, ReplaySubject, filter, combineLatest } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { DomainSecretService } from '../../../shared/services';
 import { RepositoryService } from '../repository.service';
-import { createObjectHash } from '../utils/create-object-hash';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainStoreService {
-    domain$ = defer(() => this.rawDomain$).pipe(
-        map((d) => this.domainSecretService.reduceDomain(d)),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-    version$ = defer(() => this.loadedSnapshot$).pipe(
+    version$ = combineLatest([defer(() => this.snapshot$), defer(() => this.progress$)]).pipe(
+        filter(([, p]) => !p),
         map(([s]) => s.version),
-        shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isLoading$ = inProgressFrom(
         () => this.progress$,
@@ -38,31 +34,8 @@ export class DomainStoreService {
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
-    private loadedSnapshot$ = combineLatest([
-        defer(() => this.snapshot$),
-        defer(() => this.progress$),
-    ]).pipe(
-        filter(([, p]) => !p),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
     private reload$ = new ReplaySubject<void>(1);
     private progress$ = new BehaviorSubject(0);
-    private rawDomain$ = this.loadedSnapshot$.pipe(
-        map(([s]) => s?.domain),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-    private objects$ = combineLatest([this.rawDomain$, this.domain$]).pipe(
-        map(
-            ([rawDomain, domain]) =>
-                new Map(
-                    Array.from(rawDomain).map(([ref, raw]) => [
-                        createObjectHash(ref),
-                        { raw, reduced: domain.get(ref) },
-                    ]),
-                ),
-        ),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
 
     constructor(
         private repositoryService: RepositoryService,
@@ -75,9 +48,17 @@ export class DomainStoreService {
         this.reload$.next();
     }
 
+    getDomain(raw = false): Observable<Domain> {
+        return combineLatest([defer(() => this.snapshot$), defer(() => this.progress$)]).pipe(
+            filter(([, p]) => !p),
+            map(([s]) => s?.domain),
+            map((d) => (raw ? d : this.domainSecretService.reduceDomain(d))),
+        );
+    }
+
     getObject(ref: Reference, raw = false): Observable<DomainObject> {
-        return this.objects$.pipe(
-            map((objects) => objects.get(createObjectHash(ref))?.[raw ? 'raw' : 'reduced']),
+        return this.getDomain(raw).pipe(
+            map((domain) => Array.from(domain).find(([r]) => isEqual(ref, r))?.[1]),
         );
     }
 
@@ -88,7 +69,7 @@ export class DomainStoreService {
     getObjectsRefs<T extends keyof DomainObject>(
         objectType: T,
     ): Observable<[Reference, DomainObject][]> {
-        return this.domain$.pipe(
+        return this.getDomain().pipe(
             map((d) => Array.from(d).filter(([, o]) => getUnionKey(o) === objectType)),
         );
     }
