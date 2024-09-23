@@ -59,7 +59,7 @@ export class DomainObjectsTableComponent implements OnInit {
         (this.qp.params.types as (keyof DomainObject)[]) || [],
     );
     objects$: Observable<DomainObjectData[]> = combineLatest([
-        this.domainStoreService.domain$,
+        this.domainStoreService.getDomain(),
         this.typesControl.valueChanges.pipe(startWith(this.typesControl.value)),
     ]).pipe(
         switchMap(([objects, types]) =>
