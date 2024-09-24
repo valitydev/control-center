@@ -34,7 +34,7 @@ export class DomainObjectCardComponent implements OnChanges {
 
     ref$ = new ReplaySubject<Reference>(1);
     progress$ = this.domainStoreService.isLoading$;
-    domainObject$ = combineLatest([this.domainStoreService.getDomain(), this.ref$]).pipe(
+    domainObject$ = combineLatest([this.domainStoreService.domain$, this.ref$]).pipe(
         map(([domain, ref]) =>
             domain.get(Array.from(domain.keys()).find((k) => isEqualThrift(k, ref))),
         ),
