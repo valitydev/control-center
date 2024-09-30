@@ -74,10 +74,7 @@ const DEFAULT_SHOP_LOCATION: ShopLocation = {
     styles: ``,
 })
 export class CreateShopDialogComponent
-    extends DialogSuperclass<
-        CreateShopDialogComponent,
-        { party: Party; claim: Claim; withoutPayout: boolean }
-    >
+    extends DialogSuperclass<CreateShopDialogComponent, { party: Party; claim: Claim }>
     implements OnInit
 {
     static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
@@ -156,7 +153,6 @@ export class CreateShopDialogComponent
             this.form.value;
         const contractorId = short().uuid();
         const contractId = short().uuid();
-        const payoutToolId = short().generate();
         const shopId = short().uuid();
         this.claimManagementService
             .UpdateClaim(
@@ -188,31 +184,6 @@ export class CreateShopDialogComponent
                             },
                         },
                     },
-                    ...(this.dialogData.withoutPayout
-                        ? []
-                        : [
-                              {
-                                  party_modification: {
-                                      contract_modification: {
-                                          id: contractId,
-                                          modification: {
-                                              payout_tool_modification: {
-                                                  payout_tool_id: payoutToolId,
-                                                  modification: {
-                                                      creation: {
-                                                          currency: currency,
-                                                          tool_info: {
-                                                              russian_bank_account:
-                                                                  DEFAULT_RUSSIAN_BANK_ACCOUNT,
-                                                          },
-                                                      },
-                                                  },
-                                              },
-                                          },
-                                      },
-                                  },
-                              },
-                          ]),
                     {
                         party_modification: {
                             shop_modification: {
@@ -223,9 +194,6 @@ export class CreateShopDialogComponent
                                         category: category,
                                         location: DEFAULT_SHOP_LOCATION,
                                         contract_id: contractId,
-                                        ...(this.dialogData.withoutPayout
-                                            ? {}
-                                            : { payout_tool_id: payoutToolId }),
                                     },
                                 },
                             },
