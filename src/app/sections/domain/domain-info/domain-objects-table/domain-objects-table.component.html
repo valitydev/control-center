@@ -1,8 +1,8 @@
 <v-table2
+    [(sort)]="sort"
     [columns]="columns"
     [data]="objects$ | async"
     [progress]="isLoading$ | async"
-    [sort]="{ active: 'id', direction: 'asc' }"
     sortOnFront
     standaloneFilter
     (update)="update()"

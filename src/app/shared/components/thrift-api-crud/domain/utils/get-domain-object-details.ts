@@ -46,12 +46,12 @@ const GET_DOMAIN_OBJECTS_DETAILS: {
         description: o.data.name,
     }),
     payment_method: (o) => ({
-        id: inlineJson(o.ref.id, Infinity),
+        id: inlineJson(o.ref.id, Infinity, true),
         label: o.data.name,
         description: o.data.description,
     }),
     globals: (o) => ({
-        id: inlineJson(o.ref),
+        id: 'Global',
         label: startCase(getUnionKey(o.data)),
         description: inlineJson(o.data),
     }),

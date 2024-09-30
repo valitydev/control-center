@@ -146,6 +146,7 @@ export class DomainObjectsTableComponent implements OnInit {
         ),
     );
     isLoading$ = this.domainStoreService.isLoading$;
+    sort = { active: 'id', direction: 'asc' };
 
     constructor(
         private domainStoreService: DomainStoreService,
