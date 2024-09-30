@@ -115,13 +115,13 @@ export class ClaimComponent {
             });
     }
 
-    createShop(withoutPayout = true) {
+    createShop() {
         combineLatest([this.party$, this.claim$])
             .pipe(
                 first(),
                 switchMap(([party, claim]) =>
                     this.dialogService
-                        .open(CreateShopDialogComponent, { party, claim, withoutPayout })
+                        .open(CreateShopDialogComponent, { party, claim })
                         .afterClosed(),
                 ),
                 takeUntilDestroyed(this.destroyRef),
