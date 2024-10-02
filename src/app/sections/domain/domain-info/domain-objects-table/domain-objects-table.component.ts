@@ -3,17 +3,17 @@ import { Component, OnInit, DestroyRef, Output, EventEmitter } from '@angular/co
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { Sort } from '@angular/material/sort';
 import { Reference, DomainObject } from '@vality/domain-proto/domain';
 import {
     QueryParamsService,
-    Column,
-    createOperationColumn,
     SelectFieldModule,
     TableModule,
     ActionsModule,
     DialogService,
     getValueChanges,
+    Column2,
+    createMenuColumn,
+    TABLE_WRAPPER_STYLE,
 } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
@@ -51,6 +51,7 @@ interface DomainObjectData {
         ActionsModule,
         MatButtonModule,
     ],
+    host: { style: TABLE_WRAPPER_STYLE },
 })
 export class DomainObjectsTableComponent implements OnInit {
     @Output() selectedChange = new EventEmitter<string[]>();
@@ -77,54 +78,59 @@ export class DomainObjectsTableComponent implements OnInit {
         map(([objects, types]) => objects.filter((o) => types.includes(o.type))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    columns: Column<DomainObjectData>[] = [
+    columns: Column2<DomainObjectData>[] = [
         {
             field: 'id',
-            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).id,
-            sortable: true,
+            cell: (d) => ({ value: getDomainObjectDetails(d.obj).id }),
+            sort: true,
+            sticky: 'start',
         },
         {
             field: 'name',
-            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).label,
-            sortable: true,
-            click: (d) => {
-                this.details(d);
-            },
+            cell: (d) => ({
+                value: getDomainObjectDetails(d.obj).label,
+                click: () => this.details(d),
+            }),
+            sort: true,
+            style: { width: 0 },
         },
         {
             field: 'description',
-            formatter: (d: DomainObjectData) => getDomainObjectDetails(d.obj).description,
-            sortable: true,
+            cell: (d) => ({ value: getDomainObjectDetails(d.obj).description }),
+            sort: true,
         },
         {
             field: 'type',
-            sortable: true,
-            formatter: (d) => startCase(d.type),
+            sort: true,
+            cell: (d) => ({ value: startCase(d.type) }),
+            hidden: getValueChanges(this.typesControl).pipe(map((t) => t.length <= 1)),
         },
-        createOperationColumn([
-            {
-                label: 'Details',
-                click: (d) => {
-                    this.details(d);
+        createMenuColumn((d) => ({
+            items: [
+                {
+                    label: 'Details',
+                    click: () => {
+                        this.details(d);
+                    },
                 },
-            },
-            {
-                label: 'Edit',
-                click: (d) => {
-                    this.dialogService
-                        .open(EditDomainObjectDialogComponent, { domainObject: d.obj })
-                        .afterClosed()
-                        .pipe(takeUntilDestroyed(this.destroyRef))
-                        .subscribe();
+                {
+                    label: 'Edit',
+                    click: () => {
+                        this.dialogService
+                            .open(EditDomainObjectDialogComponent, { domainObject: d.obj })
+                            .afterClosed()
+                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .subscribe();
+                    },
                 },
-            },
-            {
-                label: 'Delete',
-                click: (d) => {
-                    this.deleteDomainObjectService.delete(d.ref);
+                {
+                    label: 'Delete',
+                    click: () => {
+                        this.deleteDomainObjectService.delete(d.ref);
+                    },
                 },
-            },
-        ]),
+            ],
+        })),
     ];
     fields$ = this.metadataService.getDomainFields().pipe(
         map((fields) => sortBy(fields, 'type')),
@@ -140,7 +146,7 @@ export class DomainObjectsTableComponent implements OnInit {
         ),
     );
     isLoading$ = this.domainStoreService.isLoading$;
-    sort: Sort = { active: 'id', direction: 'asc' };
+    sort = { active: 'id', direction: 'asc' };
 
     constructor(
         private domainStoreService: DomainStoreService,

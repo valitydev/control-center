@@ -1,11 +1,9 @@
-<v-table
+<v-table2
     [(sort)]="sort"
     [columns]="columns"
     [data]="objects$ | async"
-    [filterByColumns]="[]"
     [progress]="isLoading$ | async"
-    [size]="50"
-    noActions
+    noDownload
     sortOnFront
     standaloneFilter
     (update)="update()"
@@ -19,4 +17,4 @@
             style="overflow: auto"
         ></v-select-field>
     </v-table-inputs>
-</v-table>
+</v-table2>

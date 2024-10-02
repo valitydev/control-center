@@ -45,13 +45,49 @@ const GET_DOMAIN_OBJECTS_DETAILS: {
         label: o.ref.symbolic_code,
         description: o.data.name,
     }),
-    payment_method: (o) => ({
-        id: inlineJson(o.ref.id, Infinity),
-        label: o.data.name,
-        description: o.data.description,
-    }),
+    payment_method: (o) => {
+        let id: string;
+        const type = ` (${startCase(getUnionKey(o.ref.id))})`;
+        switch (getUnionKey(o.ref.id)) {
+            case 'payment_terminal':
+                id = o.ref.id.payment_terminal.id + type;
+                break;
+            case 'digital_wallet':
+                id = o.ref.id.digital_wallet.id + type;
+                break;
+            case 'generic':
+                id = `${o.ref.id.generic.payment_service.id} (Payment Service)`;
+                break;
+            case 'mobile':
+                id = o.ref.id.mobile.id + type;
+                break;
+            case 'crypto_currency':
+                id = o.ref.id.crypto_currency.id + type;
+                break;
+            case 'bank_card':
+                id =
+                    [
+                        o.ref.id.bank_card.payment_system?.id,
+                        o.ref.id.bank_card.payment_token?.id
+                            ? `(${o.ref.id.bank_card.payment_token?.id})`
+                            : null,
+                        o.ref.id.bank_card.tokenization_method === 0 ? '(DPAN)' : null,
+                        o.ref.id.bank_card.is_cvv_empty ? '(No CVV)' : null,
+                    ]
+                        .filter(Boolean)
+                        .join(' ') + type;
+                break;
+            default:
+                id = inlineJson(o.ref.id, Infinity, true);
+        }
+        return {
+            id,
+            label: o.data.name,
+            description: o.data.description,
+        };
+    },
     globals: (o) => ({
-        id: inlineJson(o.ref),
+        id: 'Global',
         label: startCase(getUnionKey(o.data)),
         description: inlineJson(o.data),
     }),
