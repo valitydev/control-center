@@ -73,7 +73,7 @@
     "cross-env": "^7.0.3",
     "cspell": "^8.3.2",
     "eslint": "^8.57.0",
-    "jasmine-core": "4.2.0",
+    "jasmine-core": "4.6.1",
     "jasmine-spec-reporter": "7.0.0",
     "jwt-decode": "2.2.0",
     "karma": "6.4.0",
