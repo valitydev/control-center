@@ -30,14 +30,20 @@ export class AccountBalancesStoreService {
         );
     }
 
-    getTerminalBalances(id: string | number, providerId?: string | number) {
+    getTerminalBalances(
+        id: string | number,
+        providerId?: string | number,
+    ): Observable<AccountBalance[]> {
+        if (isNil(providerId)) {
+            return of([]);
+        }
         return this.balances$.pipe(
             map((balances) =>
                 balances.filter(
                     (b) =>
-                        !isNil(providerId) &&
                         b.provider.id === String(providerId) &&
-                        b.terminal.id === String(id),
+                        b.terminal.id === String(id) &&
+                        b.balance,
                 ),
             ),
         );

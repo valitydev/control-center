@@ -73,7 +73,7 @@ export class TerminalsComponent {
             'balances',
             (d) =>
                 this.accountBalancesStoreService
-                    .getTerminalBalances(d.ref.id, d.data.provider_ref.id)
+                    .getTerminalBalances(d.ref.id, d.data.provider_ref?.id)
                     .pipe(
                         map((b) =>
                             b.map((a) => ({
@@ -86,7 +86,7 @@ export class TerminalsComponent {
                 sortable: true,
                 tooltip: (d) =>
                     this.accountBalancesStoreService
-                        .getTerminalBalances(d.ref.id, d.data.provider_ref.id)
+                        .getTerminalBalances(d.ref.id, d.data.provider_ref?.id)
                         .pipe(
                             map((accountBalance) =>
                                 accountBalance
