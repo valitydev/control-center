@@ -58,8 +58,8 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "18.2.4",
-    "@angular-eslint/builder": "18.0.1",
-    "@angular-eslint/schematics": "18.0.1",
+    "@angular-eslint/builder": "18.3.1",
+    "@angular-eslint/schematics": "18.3.1",
     "@angular/cli": "18.2.4",
     "@angular/compiler-cli": "18.2.4",
     "@types/inputmask": "5.0.3",
