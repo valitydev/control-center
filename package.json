@@ -57,10 +57,10 @@
     "zone.js": "0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "18.2.4",
+    "@angular-devkit/build-angular": "18.2.7",
     "@angular-eslint/builder": "18.0.1",
     "@angular-eslint/schematics": "18.0.1",
-    "@angular/cli": "18.2.4",
+    "@angular/cli": "18.2.7",
     "@angular/compiler-cli": "18.2.4",
     "@types/inputmask": "5.0.3",
     "@types/jasmine": "4.0.3",
