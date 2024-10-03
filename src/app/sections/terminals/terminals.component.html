@@ -1,16 +1,14 @@
-<cc-page-layout title="Terminals">
+<cc-page-layout fullHeight title="Terminals">
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="create()">Create</button>
     </cc-page-layout-actions>
-    <v-table
+    <v-table2
         [(sort)]="sort"
         [columns]="columns"
         [data]="data$ | async"
-        [filterByColumns]="[]"
         [progress]="progress$ | async"
         name="terminals"
-        sortOnFront
         standaloneFilter
         (update)="update()"
-    ></v-table>
+    ></v-table2>
 </cc-page-layout>
