@@ -38,7 +38,7 @@ jobs:
     needs: [deploy]
     steps:
       - uses: actions/checkout@v4
-      - uses: valitydev/action-mattermost-notify@v0.1.4
+      - uses: valitydev/action-mattermost-notify@v0.1.6
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: 'control-center-improvements'
