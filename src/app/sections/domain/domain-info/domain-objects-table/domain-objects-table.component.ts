@@ -82,7 +82,6 @@ export class DomainObjectsTableComponent implements OnInit {
         {
             field: 'id',
             cell: (d) => ({ value: getDomainObjectDetails(d.obj).id }),
-            sort: true,
             sticky: 'start',
         },
         {
@@ -91,17 +90,14 @@ export class DomainObjectsTableComponent implements OnInit {
                 value: getDomainObjectDetails(d.obj).label,
                 click: () => this.details(d),
             }),
-            sort: true,
             style: { width: 0 },
         },
         {
             field: 'description',
             cell: (d) => ({ value: getDomainObjectDetails(d.obj).description }),
-            sort: true,
         },
         {
             field: 'type',
-            sort: true,
             cell: (d) => ({ value: startCase(d.type) }),
             hidden: getValueChanges(this.typesControl).pipe(map((t) => t.length <= 1)),
         },

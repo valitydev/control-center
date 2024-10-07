@@ -22,13 +22,12 @@ export class TerminalBalancesCardComponent {
     terminalId = input<number>();
     providerId = input<number>();
     columns: Column2<AccountBalance>[] = [
-        { field: 'account_id', sort: true },
+        { field: 'account_id' },
         createCurrencyColumn((d) => ({ code: d.balance.currency_code, amount: d.balance.amount }), {
             header: 'Balance',
-            sort: true,
             field: 'balance',
         }),
-        { field: 'last_updated', cell: { type: 'datetime' }, sort: true },
+        { field: 'last_updated', cell: { type: 'datetime' } },
     ];
     balances$ = combineLatest([toObservable(this.terminalId), toObservable(this.providerId)]).pipe(
         switchMap(([terminalId, providerId]) =>

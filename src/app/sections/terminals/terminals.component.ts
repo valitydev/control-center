@@ -28,7 +28,7 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
 })
 export class TerminalsComponent {
     columns: Column2<TerminalObject>[] = [
-        { field: 'ref.id', sort: true, sticky: 'start' },
+        { field: 'ref.id', sticky: 'start' },
         {
             field: 'data.name',
             cell: (d) => ({
@@ -39,20 +39,17 @@ export class TerminalsComponent {
                     });
                 },
             }),
-            sort: true,
         },
         createDomainObjectColumn((d) => ({ ref: { provider: d.data.provider_ref } }), {
             header: 'Provider',
         }),
         createPredicateColumn((d) => ({ predicate: d.data.terms?.payments?.global_allow }), {
             header: 'Payments Global Allow',
-            sort: true,
         }),
         createPredicateColumn(
             (d) => ({ predicate: d.data.terms?.wallet?.withdrawals?.global_allow }),
             {
                 header: 'Withdrawals Global Allow',
-                sort: true,
             },
         ),
         {
@@ -68,7 +65,6 @@ export class TerminalsComponent {
                         },
                     })),
                 ),
-            sort: true,
         },
         createCurrencyColumn(
             (d) =>
@@ -85,7 +81,6 @@ export class TerminalsComponent {
                     ),
             {
                 header: 'Balances (Summarized)',
-                sort: true,
                 cell: (d) => ({
                     click: () => {
                         this.toggleBalancesCard(d);
@@ -107,7 +102,6 @@ export class TerminalsComponent {
                     ),
             {
                 header: 'Balances',
-                sort: true,
                 cell: (d) => ({
                     click: () => {
                         this.toggleBalancesCard(d);
