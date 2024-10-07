@@ -56,9 +56,9 @@ export const createCurrencyColumn = createColumn(
             );
         }
         return combineLatest(currencyValuesByCodeList.map((g) => formatCurrencyValues(g))).pipe(
-            map((currencyValueStrs) => ({
-                value: currencyValueStrs[0],
-                description: currencyValueStrs.slice(1).join('; '),
+            map((currencyValueStrings) => ({
+                value: currencyValueStrings[0],
+                description: currencyValueStrings.slice(1).join('; '),
             })),
         );
     },
