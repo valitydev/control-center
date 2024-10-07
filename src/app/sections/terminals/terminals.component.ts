@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { DomainStoreService } from '../../api/domain-config';
 import { AccountBalancesStoreService } from '../../api/terminal-balance';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
+import { TerminalBalancesCardComponent } from '../../shared/components/terminal-balances-card/terminal-balances-card.component';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import {
     DomainObjectCardComponent,
@@ -82,7 +83,15 @@ export class TerminalsComponent {
                             isSum: true,
                         })),
                     ),
-            { header: 'Balances (Summarized)', sort: true },
+            {
+                header: 'Balances (Summarized)',
+                sort: true,
+                cell: (d) => ({
+                    click: () => {
+                        this.toggleBalancesCard(d);
+                    },
+                }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
@@ -96,7 +105,15 @@ export class TerminalsComponent {
                             })),
                         })),
                     ),
-            { header: 'Balances', sort: true },
+            {
+                header: 'Balances',
+                sort: true,
+                cell: (d) => ({
+                    click: () => {
+                        this.toggleBalancesCard(d);
+                    },
+                }),
+            },
         ),
     ];
     data$ = this.domainStoreService.getObjects('terminal');
@@ -124,5 +141,12 @@ export class TerminalsComponent {
         return this.domainStoreService
             .getObjects('routing_rules')
             .pipe(map((rules) => getTerminalShopWalletDelegates(rules, terminalObj)));
+    }
+
+    private toggleBalancesCard(d: TerminalObject) {
+        this.sidenavInfoService.toggle(TerminalBalancesCardComponent, {
+            terminalId: d.ref.id,
+            providerId: d.data.provider_ref.id,
+        });
     }
 }

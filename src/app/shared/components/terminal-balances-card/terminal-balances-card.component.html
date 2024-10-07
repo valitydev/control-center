@@ -1,0 +1,3 @@
+<cc-card title="Terminal #{{ terminalId() }} balances">
+    <v-table2 [(sort)]="sort" [columns]="columns" [data]="balances$ | async"></v-table2>
+</cc-card>
