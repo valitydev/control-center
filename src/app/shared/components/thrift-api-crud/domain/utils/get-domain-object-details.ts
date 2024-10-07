@@ -112,7 +112,7 @@ export function getDomainObjectValueDetailsFn(key: keyof DomainObject): GetDomai
 }
 
 export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
-    if (!o || !getUnionValue(o)) {
+    if (!o || !getUnionValue(o)?.ref || !getUnionValue(o)?.data) {
         return { id: null, label: '', description: '', type: '' };
     }
     const result = getDomainObjectValueDetailsFn(getUnionKey(o))(getUnionValue(o));

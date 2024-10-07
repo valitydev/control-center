@@ -1,10 +1,8 @@
-import { Component, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { TerminalObject } from '@vality/domain-proto/domain';
 import { DialogService, Column2 } from '@vality/ng-core';
-import { of } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config';
 import { AccountBalancesStoreService } from '../../api/terminal-balance';
@@ -13,8 +11,13 @@ import { TerminalDelegatesCardComponent } from '../../shared/components/terminal
 import {
     DomainObjectCardComponent,
     CreateDomainObjectDialogComponent,
+    getDomainObjectDetails,
 } from '../../shared/components/thrift-api-crud';
-import { createPredicateColumn, createCurrencyColumn } from '../../shared/utils/table2';
+import {
+    createCurrencyColumn,
+    createPredicateColumn,
+    createDomainObjectColumn,
+} from '../../shared/utils/table2';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
@@ -28,7 +31,7 @@ export class TerminalsComponent {
         {
             field: 'data.name',
             cell: (d) => ({
-                description: d.data.description,
+                description: getDomainObjectDetails({ terminal: d }).description,
                 click: () => {
                     this.sidenavInfoService.toggle(DomainObjectCardComponent, {
                         ref: { terminal: d.ref },
@@ -37,30 +40,9 @@ export class TerminalsComponent {
             }),
             sort: true,
         },
-        {
-            field: 'data.provider_ref.id',
+        createDomainObjectColumn((d) => ({ ref: { provider: d.data.provider_ref } }), {
             header: 'Provider',
-            cell: (d) =>
-                this.getProvider(d).pipe(
-                    map((p) => ({
-                        value: p?.data?.name || '',
-                        description: d.data.provider_ref?.id,
-                        click: () => {
-                            this.getProvider(d)
-                                .pipe(take(1), takeUntilDestroyed(this.destroyRef))
-                                .subscribe((provider) => {
-                                    if (!provider) {
-                                        return;
-                                    }
-                                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                                        ref: { provider: provider.ref },
-                                    });
-                                });
-                        },
-                    })),
-                ),
-            sort: true,
-        },
+        }),
         createPredicateColumn((d) => ({ predicate: d.data.terms?.payments?.global_allow }), {
             header: 'Payments Global Allow',
             sort: true,
@@ -92,18 +74,27 @@ export class TerminalsComponent {
                 this.accountBalancesStoreService
                     .getTerminalBalances(d.ref.id, d.data.provider_ref?.id)
                     .pipe(
-                        map((b) => {
-                            const res = b
-                                .map((a) => ({
-                                    amount: a.balance.amount,
-                                    code: a.balance.currency_code,
-                                }))
-                                .sort((a, b) => b.amount - a.amount);
-                            return {
-                                ...res[0],
-                                other: res.slice(1),
-                            };
-                        }),
+                        map((balances) => ({
+                            values: balances.map((a) => ({
+                                amount: a.balance.amount,
+                                code: a.balance.currency_code,
+                            })),
+                            isSum: true,
+                        })),
+                    ),
+            { header: 'Balances (Summarized)', sort: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.accountBalancesStoreService
+                    .getTerminalBalances(d.ref.id, d.data.provider_ref?.id)
+                    .pipe(
+                        map((balances) => ({
+                            values: balances.map((a) => ({
+                                amount: a.balance.amount,
+                                code: a.balance.currency_code,
+                            })),
+                        })),
                     ),
             { header: 'Balances', sort: true },
         ),
@@ -115,7 +106,6 @@ export class TerminalsComponent {
     constructor(
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
-        private destroyRef: DestroyRef,
         private dialogService: DialogService,
         private accountBalancesStoreService: AccountBalancesStoreService,
     ) {}
@@ -128,18 +118,6 @@ export class TerminalsComponent {
         this.dialogService.open(CreateDomainObjectDialogComponent, {
             objectType: 'TerminalObject',
         });
-    }
-
-    private getProvider(terminalObj: TerminalObject) {
-        return terminalObj.data.provider_ref
-            ? this.domainStoreService
-                  .getObjects('provider')
-                  .pipe(
-                      map((providers) =>
-                          providers.find((p) => p.ref.id === terminalObj.data.provider_ref.id),
-                      ),
-                  )
-            : of(null);
     }
 
     private getTerminalShopWalletDelegates(terminalObj: TerminalObject) {

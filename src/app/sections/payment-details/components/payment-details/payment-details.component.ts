@@ -35,10 +35,10 @@ export class PaymentDetailsComponent {
                         map((c) => ({
                             value: formatCurrency(
                                 amount,
-                                c.data.symbolic_code,
+                                c.symbolic_code,
                                 'long',
                                 this._locale,
-                                c.data.exponent,
+                                c.exponent,
                             ),
                         })),
                     ),
