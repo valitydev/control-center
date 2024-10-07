@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { createColumn } from '@vality/ng-core';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { ShopCardComponent } from '../../components/shop-card/shop-card.component';
@@ -16,14 +16,21 @@ export const createShopColumn = createColumn(
                       .get(partyId)
                       .pipe(map((party) => party.shops.get(shopId).details.name));
         const sidenavInfoService = inject(SidenavInfoService);
+        const shopCell = {
+            description: shopId,
+            click: () => {
+                sidenavInfoService.toggle(ShopCardComponent, { id: shopId, partyId });
+            },
+        };
         return shopName$.pipe(
             map((shopName) => ({
+                ...shopCell,
                 value: shopName,
-                description: shopId,
-                click: () => {
-                    sidenavInfoService.toggle(ShopCardComponent, { id: shopId, partyId });
-                },
             })),
+            startWith({
+                ...shopCell,
+                inProgress: true,
+            }),
         );
     },
     { header: 'Shop' },

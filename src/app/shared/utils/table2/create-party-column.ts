@@ -17,14 +17,21 @@ export const createPartyColumn = createColumn(
                           map((party) => party.contact_info.registration_email),
                           startWith(''),
                       );
+        const partyCell = {
+            description: id,
+            link: () => {
+                void inject(Router).navigate([`/party/${id}`]);
+            },
+        };
         return partyName$.pipe(
             map((partyName) => ({
+                ...partyCell,
                 value: partyName,
-                description: id,
-                link: () => {
-                    void inject(Router).navigate([`/party/${id}`]);
-                },
             })),
+            startWith({
+                ...partyCell,
+                inProgress: true,
+            }),
         );
     },
     { header: 'Party' },
