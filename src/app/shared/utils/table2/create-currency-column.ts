@@ -5,6 +5,7 @@ import { groupBy, uniq } from 'lodash-es';
 import { of, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { DomainStoreService } from '../../../api/domain-config';
 import { AmountCurrencyService } from '../../services';
 
 interface CurrencyValue {
@@ -55,10 +56,15 @@ export const createCurrencyColumn = createColumn(
                 ),
             );
         }
-        return combineLatest(currencyValuesByCodeList.map((g) => formatCurrencyValues(g))).pipe(
-            map((currencyValueStrings) => ({
+        const domainStoreService = inject(DomainStoreService);
+        return combineLatest([
+            combineLatest(currencyValuesByCodeList.map((g) => formatCurrencyValues(g))),
+            domainStoreService.isLoading$,
+        ]).pipe(
+            map(([currencyValueStrings, inProgress]) => ({
                 value: currencyValueStrings[0],
                 description: currencyValueStrings.slice(1).join('; '),
+                inProgress,
             })),
         );
     },
