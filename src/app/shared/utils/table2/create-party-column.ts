@@ -13,10 +13,7 @@ export const createPartyColumn = createColumn(
                 ? of(params.partyName)
                 : inject(PartiesStoreService)
                       .get(id)
-                      .pipe(
-                          map((party) => party.contact_info.registration_email),
-                          startWith(''),
-                      );
+                      .pipe(map((party) => party.contact_info.registration_email));
         const partyCell = {
             description: id,
             link: () => {
