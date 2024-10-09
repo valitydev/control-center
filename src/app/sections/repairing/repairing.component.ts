@@ -5,7 +5,6 @@ import {
     DialogResponseStatus,
     DialogService,
     clean,
-    Column,
     ConfirmDialogComponent,
     QueryParamsService,
     NotifyLogService,
@@ -18,6 +17,7 @@ import {
     debounceTimeWithFirst,
     FetchOptions,
     getEnumKey,
+    Column2,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -27,10 +27,13 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
+import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
+import { createDomainObjectColumn } from '@cc/app/shared/utils/table2';
+
 import { RepairManagementService } from '../../api/repairer';
-import { createProviderColumn } from '../../shared/utils/table/create-provider-column';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
+import { MachineStatusHistoryCardComponent } from './components/machine-status-history-card.component';
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
 
@@ -62,28 +65,36 @@ export class RepairingComponent implements OnInit {
     });
     selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
-    columns: Column<Machine>[] = [
-        { field: 'id' },
+    columns: Column2<Machine>[] = [
+        { field: 'id', sticky: 'start' },
         { header: 'Namespace', field: 'ns' },
-        { field: 'created_at', type: 'datetime' },
-        createProviderColumn((d) => Number(d.provider_id)),
+        { field: 'created_at', cell: { type: 'datetime' } },
+        createDomainObjectColumn((d) => ({ ref: { terminal: { id: Number(d.provider_id) } } }), {
+            header: 'Terminal',
+        }),
         {
             field: 'status',
-            formatter: (d) => getEnumKey(repairer.RepairStatus, d.status),
-            type: 'tag',
-            typeParameters: {
-                label: (d) => startCase(getEnumKey(repairer.RepairStatus, d.status)),
-                tags: {
-                    failed: { color: 'warn' },
-                    in_progress: { color: 'pending' },
-                    repaired: { color: 'success' },
-                },
-            },
+            cell: (d) => ({
+                value: startCase(getEnumKey(repairer.RepairStatus, d.status)),
+                color: (
+                    {
+                        failed: 'warn',
+                        in_progress: 'pending',
+                        repaired: 'success',
+                    } as const
+                )[getEnumKey(repairer.RepairStatus, d.status)],
+            }),
         },
         {
             field: 'history',
-            formatter: (data) => (data.history?.length ? String(data.history.length) : ''),
-            tooltip: 'history',
+            cell: (d) => ({
+                value: d.history?.length ? String(d.history.length) : '',
+                click: () => {
+                    this.sidenavInfoService.toggle(MachineStatusHistoryCardComponent, {
+                        history: d.history,
+                    });
+                },
+            }),
         },
         {
             field: 'error_message',
@@ -106,6 +117,7 @@ export class RepairingComponent implements OnInit {
         private destroyRef: DestroyRef,
         @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
+        private sidenavInfoService: SidenavInfoService,
     ) {}
 
     ngOnInit() {
