@@ -13,18 +13,22 @@ export const createPartyColumn = createColumn(
                 ? of(params.partyName)
                 : inject(PartiesStoreService)
                       .get(id)
-                      .pipe(
-                          map((party) => party.contact_info.registration_email),
-                          startWith(''),
-                      );
+                      .pipe(map((party) => party.contact_info.registration_email));
+        const partyCell = {
+            description: id,
+            link: () => {
+                void inject(Router).navigate([`/party/${id}`]);
+            },
+        };
         return partyName$.pipe(
             map((partyName) => ({
+                ...partyCell,
                 value: partyName,
-                description: id,
-                link: () => {
-                    void inject(Router).navigate([`/party/${id}`]);
-                },
             })),
+            startWith({
+                ...partyCell,
+                inProgress: true,
+            }),
         );
     },
     { header: 'Party' },

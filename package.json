@@ -35,7 +35,7 @@
     "@vality/fistful-proto": "2.0.1-88e69a5.0",
     "@vality/machinegun-proto": "1.0.1-3decc8f.0",
     "@vality/magista-proto": "2.0.2-ec1bdb9.0",
-    "@vality/ng-core": "^18.4.1-pr-69-2efb51f.0",
+    "@vality/ng-core": "18.4.1-pr-74-55d4acd.0",
     "@vality/ng-thrift": "18.0.1-pr-13-bdb6d51.0",
     "@vality/repairer-proto": "2.0.2-07b73e9.0",
     "@vality/scrooge-proto": "0.1.1-9ce7fc6.0",

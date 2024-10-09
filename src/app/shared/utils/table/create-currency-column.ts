@@ -37,7 +37,7 @@ export function createCurrencyColumn<T extends object>(
             exponent: (d: T) =>
                 getPossiblyAsyncObservable(selectSymbolicCode(d)).pipe(
                     switchMap((code) => amountCurrencyService.getCurrency(code)),
-                    map((c) => c?.data?.exponent),
+                    map((c) => c?.exponent),
                 ),
         },
         ...params,

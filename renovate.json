@@ -3,11 +3,11 @@
     "extends": ["local>valitydev/.github:renovate-config"],
     "packageRules": [
         {
-            "groupName": "Minor Updates",
+            "groupName": "Minor",
             "matchUpdateTypes": ["minor", "patch"]
         },
         {
-            "groupName": "Major Updates",
+            "groupName": "Major",
             "matchUpdateTypes": ["major"]
         }
     ]
