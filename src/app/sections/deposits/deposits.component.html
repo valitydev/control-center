@@ -1,4 +1,4 @@
-<cc-page-layout title="Deposits">
+<cc-page-layout fullHeight title="Deposits">
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
@@ -22,7 +22,7 @@
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
         </ng-template>
     </v-filters>
-    <v-table
+    <v-table2
         [columns]="columns"
         [data]="deposits$ | async"
         [hasMore]="hasMore$ | async"
@@ -36,5 +36,5 @@
             </button>
             <button color="primary" mat-raised-button (click)="createDeposit()">Create</button>
         </v-table-actions>
-    </v-table>
+    </v-table2>
 </cc-page-layout>

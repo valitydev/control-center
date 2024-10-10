@@ -9,7 +9,7 @@ import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
 @Component({
-    selector: 'cc-contract-card',
+    selector: 'cc-shop-contract-card',
     standalone: true,
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent],
     templateUrl: './shop-contract-card.component.html',
