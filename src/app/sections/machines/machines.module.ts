@@ -28,13 +28,13 @@ import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
 import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
-import { RepairingRoutingModule } from './repairing-routing.module';
-import { RepairingComponent } from './repairing.component';
+import { MachinesRoutingModule } from './machines-routing.module';
+import { MachinesComponent } from './machines.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        RepairingRoutingModule,
+        MachinesRoutingModule,
         TableModule,
         MatCardModule,
         ReactiveFormsModule,
@@ -59,6 +59,6 @@ import { RepairingComponent } from './repairing.component';
         ThriftPipesModule,
         FiltersModule,
     ],
-    declarations: [RepairingComponent, RepairByScenarioDialogComponent],
+    declarations: [MachinesComponent, RepairByScenarioDialogComponent],
 })
-export class RepairingModule {}
+export class MachinesModule {}

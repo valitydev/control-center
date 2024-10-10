@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '../../shared/services';
 
-import { RepairingComponent } from './repairing.component';
+import { MachinesComponent } from './machines.component';
 import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
@@ -11,7 +11,7 @@ import { ROUTING_CONFIG } from './routing-config';
         RouterModule.forChild([
             {
                 path: '',
-                component: RepairingComponent,
+                component: MachinesComponent,
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
             },
@@ -19,4 +19,4 @@ import { ROUTING_CONFIG } from './routing-config';
     ],
     exports: [RouterModule],
 })
-export class RepairingRoutingModule {}
+export class MachinesRoutingModule {}

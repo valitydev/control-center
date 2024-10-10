@@ -12,8 +12,8 @@ import { environment } from '../environments/environment';
 import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/claims/routing-config';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
 import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './sections/domain/routing-config';
+import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';
-import { ROUTING_CONFIG as REPAIRING_ROUTING_CONFIG } from './sections/repairing/routing-config';
 import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
@@ -73,7 +73,7 @@ export class AppComponent {
                 {
                     label: 'Machines',
                     url: '/machines',
-                    services: REPAIRING_ROUTING_CONFIG.services,
+                    services: MACHINES_ROUTING_CONFIG.services,
                 },
                 {
                     label: 'Sources',

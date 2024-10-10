@@ -47,11 +47,11 @@ interface Filters {
 }
 
 @Component({
-    selector: 'cc-repairing',
-    templateUrl: './repairing.component.html',
+    selector: 'cc-machines',
+    templateUrl: './machines.component.html',
     providers: [MachinesService],
 })
-export class RepairingComponent implements OnInit {
+export class MachinesComponent implements OnInit {
     machines$ = this.machinesService.result$;
     inProgress$ = this.machinesService.isLoading$;
     hasMore$ = this.machinesService.hasMore$;

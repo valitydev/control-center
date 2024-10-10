@@ -34,7 +34,7 @@ const ROUTES: Routes = [
     },
     {
         path: 'machines',
-        loadChildren: () => import('./repairing/repairing.module').then((m) => m.RepairingModule),
+        loadChildren: () => import('./machines/machines.module').then((m) => m.MachinesModule),
     },
     {
         path: 'payments',
