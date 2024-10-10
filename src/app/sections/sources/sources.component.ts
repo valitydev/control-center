@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { Source } from '@vality/fistful-proto/internal/source';
-import { DialogService, Column } from '@vality/ng-core';
+import { DialogService, Column2 } from '@vality/ng-core';
 
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { FetchSourcesService } from './fetch-sources.service';
@@ -11,13 +12,14 @@ import { FetchSourcesService } from './fetch-sources.service';
 export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
-    columns: Column<Source>[] = [
+    columns: Column2<Source>[] = [
         { field: 'id' },
-        { field: 'name', sortable: true },
-        'identity',
-        { field: 'currency_symbolic_code', sortable: true },
-        { field: 'created_at', type: 'datetime' },
+        { field: 'name' },
+        { field: 'identity' },
+        { field: 'currency_symbolic_code' },
+        { field: 'created_at', cell: { type: 'datetime' } },
     ];
+    sort: Sort = { direction: 'asc', active: 'name' };
 
     constructor(
         private fetchSourcesService: FetchSourcesService,

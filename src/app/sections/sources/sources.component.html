@@ -1,13 +1,12 @@
-<cc-page-layout title="Sources">
+<cc-page-layout fullHeight title="Sources">
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="create()">Create</button>
     </cc-page-layout-actions>
-    <v-table
+    <v-table2
+        [(sort)]="sort"
         [columns]="columns"
         [data]="sources$ | async"
         [progress]="!!(progress$ | async)"
-        [sort]="{ direction: 'asc', active: 'name' }"
-        noActions
-        sortOnFront
-    ></v-table>
+        standaloneFilter
+    ></v-table2>
 </cc-page-layout>
