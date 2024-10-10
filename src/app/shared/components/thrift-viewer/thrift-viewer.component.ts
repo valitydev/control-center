@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, Output, EventEmitter, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { ComponentChanges } from '@vality/ng-core';
+import { ComponentChanges, UnionEnum } from '@vality/ng-core';
 import { toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
@@ -19,7 +19,7 @@ export enum ViewerKind {
     styleUrls: ['./thrift-viewer.component.scss'],
 })
 export class ThriftViewerComponent<T> implements OnChanges {
-    @Input() kind: ViewerKind = ViewerKind.Component;
+    @Input() kind: UnionEnum<ViewerKind> = ViewerKind.Component;
     @Input() value: T;
     @Input() compared?: T;
     @Input({ transform: booleanAttribute }) progress: boolean = false;
@@ -62,6 +62,6 @@ export class ThriftViewerComponent<T> implements OnChanges {
                 this.kind = ViewerKind.Editor;
                 break;
         }
-        this.changeKind.emit(this.kind);
+        this.changeKind.emit(this.kind as ViewerKind);
     }
 }

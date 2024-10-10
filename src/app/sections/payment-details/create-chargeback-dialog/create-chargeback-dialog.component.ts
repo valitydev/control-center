@@ -3,8 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
-import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
-import { from } from 'rxjs';
+import { DialogSuperclass, getImportValue, NotifyLogService } from '@vality/ng-core';
+import { ThriftAstMetadata } from '@vality/ng-thrift';
 import short from 'short-uuid';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
@@ -20,7 +20,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     InvoicePaymentChargeback
 > {
     form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: short().generate() });
-    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     constructor(

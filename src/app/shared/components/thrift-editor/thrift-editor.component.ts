@@ -9,6 +9,7 @@ import {
     FormControlSuperclass,
 } from '@vality/ng-core';
 import { toJson } from '@vality/ng-thrift';
+import { ValueType } from '@vality/thrift-ts';
 import { merge, defer, of, Subject } from 'rxjs';
 import { map, filter, shareReplay } from 'rxjs/operators';
 
@@ -32,7 +33,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
 
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;
-    @Input() type: string;
+    @Input() type: ValueType;
     @Input() extensions: MetadataFormExtension[];
     @Input({ transform: booleanAttribute }) noChangeKind = false;
     @Input({ transform: booleanAttribute }) noToolbar = false;

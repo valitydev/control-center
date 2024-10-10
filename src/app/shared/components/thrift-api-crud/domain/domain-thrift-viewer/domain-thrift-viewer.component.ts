@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { getImportValue } from '@vality/ng-core';
+import { getImportValue, UnionEnum } from '@vality/ng-core';
 import { ValueType } from '@vality/thrift-ts';
 
 import { ThriftViewerModule, ViewerKind } from '../../../thrift-viewer';
@@ -15,7 +15,7 @@ import { DomainMetadataViewExtensionsService } from './services/domain-metadata-
     imports: [CommonModule, ThriftViewerModule],
 })
 export class DomainThriftViewerComponent<T> {
-    @Input() kind: ViewerKind = ViewerKind.Component;
+    @Input() kind: UnionEnum<ViewerKind> = ViewerKind.Component;
     @Input() value: T;
     @Input() compared?: T;
     @Input() type: ValueType;

@@ -13,8 +13,10 @@ import {
     NotifyLogService,
     EnumKeysPipe,
     EnumKeyPipe,
+    getImportValue,
 } from '@vality/ng-core';
-import { from, BehaviorSubject } from 'rxjs';
+import { ThriftAstMetadata } from '@vality/ng-thrift';
+import { BehaviorSubject } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
@@ -57,7 +59,7 @@ export class ChangeChargebacksStatusDialogComponent
     >
     implements OnInit
 {
-    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     control = new FormControl();
     actionControl = new FormControl<Action>(null, Validators.required);
