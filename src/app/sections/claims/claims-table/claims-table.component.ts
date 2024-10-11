@@ -6,20 +6,23 @@ import {
     booleanAttribute,
     input,
     computed,
+    runInInjectionContext,
+    Injector,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
-import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
+import { Claim } from '@vality/domain-proto/claim_management';
+import { Column2, LoadOptions, TABLE_WRAPPER_STYLE, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
-import isObject from 'lodash-es/isObject';
 import startCase from 'lodash-es/startCase';
 
-import { createPartyColumn } from '../../../shared';
+import { createPartyColumn } from '@cc/app/shared/utils/table2';
 
 @Component({
     selector: 'cc-claims-table',
     templateUrl: './claims-table.component.html',
     styleUrls: ['./claims-table.component.scss'],
+    host: {
+        style: TABLE_WRAPPER_STYLE,
+    },
 })
 export class ClaimsTableComponent {
     @Input() data!: Claim[];
@@ -30,48 +33,38 @@ export class ClaimsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns = computed<Column<Claim>[]>(() =>
-        this.sourceColumns.filter(
-            (c) => (isObject(c) && c?.field !== 'party_id') || !this.noParty(),
-        ),
-    );
-    private sourceColumns: Column<Claim>[] = [
-        { field: 'id', link: (d) => this.getClaimLink(d.party_id, d.id) },
-        createPartyColumn('party_id'),
-        {
-            field: 'status',
-            type: 'tag',
-            formatter: (claim) => getUnionKey(claim.status),
-            typeParameters: {
-                label: (claim) => startCase(getUnionKey(claim.status)),
-                tags: {
-                    pending: { color: 'pending' },
-                    review: { color: 'pending' },
-                    pending_acceptance: { color: 'pending' },
-                    accepted: { color: 'success' },
-                    denied: { color: 'warn' },
-                    revoked: { color: 'neutral' },
-                },
-            },
-        } as TagColumn<Claim, keyof ClaimStatus>,
-        'revision',
-        { field: 'created_at', type: 'datetime' },
-        { field: 'updated_at', type: 'datetime' },
-        createOperationColumn<Claim>([
+    columns = computed<Column2<Claim>[]>(() =>
+        runInInjectionContext(this.injector, () => [
+            { field: 'id', cell: (d) => ({ link: () => `/party/${d.party_id}/claim/${d.id}` }) },
+            createPartyColumn((d) => ({ id: d.party_id }), { hidden: this.noParty() }),
             {
-                label: 'Details',
-                click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
+                field: 'status',
+                type: 'tag',
+                cell: (d) => ({
+                    value: startCase(getUnionKey(d.status)),
+                    tags: {
+                        pending: 'pending',
+                        review: 'pending',
+                        pending_acceptance: 'pending',
+                        accepted: 'success',
+                        denied: 'warn',
+                        revoked: 'neutral',
+                    },
+                }),
             },
+            { field: 'revision' },
+            { field: 'created_at', cell: { type: 'datetime' } },
+            { field: 'updated_at', cell: { type: 'datetime' } },
+            createMenuColumn((d) => ({
+                items: [
+                    {
+                        label: 'Details',
+                        link: () => `/party/${d.party_id}/claim/${d.id}`,
+                    },
+                ],
+            })),
         ]),
-    ];
+    );
 
-    constructor(private router: Router) {}
-
-    navigateToClaim(partyId: string, claimID: number) {
-        void this.router.navigate([this.getClaimLink(partyId, claimID)]);
-    }
-
-    private getClaimLink(partyId: string, claimID: number): string {
-        return `/party/${partyId}/claim/${claimID}`;
-    }
+    constructor(private injector: Injector) {}
 }
