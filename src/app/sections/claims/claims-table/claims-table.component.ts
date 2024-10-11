@@ -1,14 +1,5 @@
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    booleanAttribute,
-    input,
-    computed,
-    runInInjectionContext,
-    Injector,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, booleanAttribute, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { Column2, LoadOptions, TABLE_WRAPPER_STYLE, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
@@ -33,38 +24,33 @@ export class ClaimsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns = computed<Column2<Claim>[]>(() =>
-        runInInjectionContext(this.injector, () => [
-            { field: 'id', cell: (d) => ({ link: () => `/party/${d.party_id}/claim/${d.id}` }) },
-            createPartyColumn((d) => ({ id: d.party_id }), { hidden: this.noParty() }),
-            {
-                field: 'status',
-                type: 'tag',
-                cell: (d) => ({
-                    value: startCase(getUnionKey(d.status)),
-                    tags: {
-                        pending: 'pending',
-                        review: 'pending',
-                        pending_acceptance: 'pending',
-                        accepted: 'success',
-                        denied: 'warn',
-                        revoked: 'neutral',
-                    },
-                }),
-            },
-            { field: 'revision' },
-            { field: 'created_at', cell: { type: 'datetime' } },
-            { field: 'updated_at', cell: { type: 'datetime' } },
-            createMenuColumn((d) => ({
-                items: [
-                    {
-                        label: 'Details',
-                        link: () => `/party/${d.party_id}/claim/${d.id}`,
-                    },
-                ],
-            })),
-        ]),
-    );
-
-    constructor(private injector: Injector) {}
+    columns: Column2<Claim>[] = [
+        { field: 'id', cell: (d) => ({ link: () => `/party/${d.party_id}/claim/${d.id}` }) },
+        createPartyColumn((d) => ({ id: d.party_id }), { hidden: toObservable(this.noParty) }),
+        {
+            field: 'status',
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.status)),
+                tags: {
+                    pending: 'pending',
+                    review: 'pending',
+                    pending_acceptance: 'pending',
+                    accepted: 'success',
+                    denied: 'warn',
+                    revoked: 'neutral',
+                },
+            }),
+        },
+        { field: 'revision' },
+        { field: 'created_at', cell: { type: 'datetime' } },
+        { field: 'updated_at', cell: { type: 'datetime' } },
+        createMenuColumn((d) => ({
+            items: [
+                {
+                    label: 'Details',
+                    link: () => `/party/${d.party_id}/claim/${d.id}`,
+                },
+            ],
+        })),
+    ];
 }
