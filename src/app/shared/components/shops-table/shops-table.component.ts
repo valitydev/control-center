@@ -5,8 +5,8 @@ import {
     EventEmitter,
     Input,
     booleanAttribute,
-    OnChanges,
     input,
+    Injector,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
@@ -16,18 +16,18 @@ import { Shop, Party, PartyID, RoutingRulesetRef } from '@vality/domain-proto/do
 import {
     InputFieldModule,
     TableModule,
-    Column,
-    createOperationColumn,
     DialogService,
     NotifyLogService,
     ConfirmDialogComponent,
     DialogResponseStatus,
-    ComponentChanges,
+    TABLE_WRAPPER_STYLE,
+    Column2,
+    createMenuColumn,
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
-import isNil from 'lodash-es/isNil';
+import { isNil } from 'lodash-es';
 import startCase from 'lodash-es/startCase';
-import { map, switchMap, Subject, defer, combineLatest, of } from 'rxjs';
+import { map, switchMap, combineLatest, of } from 'rxjs';
 import { filter, shareReplay, startWith, take, first } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
@@ -67,173 +67,150 @@ export interface ShopParty {
     ],
     templateUrl: './shops-table.component.html',
     providers: [PartyDelegateRulesetsService],
+    host: {
+        style: TABLE_WRAPPER_STYLE,
+    },
 })
-export class ShopsTableComponent implements OnChanges {
+export class ShopsTableComponent {
     shops = input<ShopParty[]>([]);
-    @Input({ transform: booleanAttribute }) changed!: boolean;
     @Input() progress: number | boolean = false;
     @Output() update = new EventEmitter<void>();
     @Output() filterChange = new EventEmitter<string>();
 
-    @Input({ transform: booleanAttribute }) noSort: boolean = false;
-    @Input({ transform: booleanAttribute }) noPartyColumn: boolean = false;
+    noPartyColumn = input(false, { transform: booleanAttribute });
 
-    columns$ = combineLatest([
-        toObservable(this.shops).pipe(
-            startWith(null),
-            map((shops) =>
-                shops?.length ? Array.from(new Set(shops.map((s) => s.party.id))) : [],
-            ),
-            switchMap((parties) =>
-                parties?.length
-                    ? combineLatest(
-                          parties.map((id) =>
-                              this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
-                                  RoutingRulesType.Payment,
-                                  id,
-                              ),
-                          ),
-                      ).pipe(map((rules) => new Map(rules.map((r, idx) => [parties[idx], r]))))
-                    : of(new Map<string, DelegateWithPaymentInstitution[]>()),
-            ),
-            map((delegatesWithPaymentInstitutionByParty) => ({
-                delegatesWithPaymentInstitutionByParty,
-                rulesetIds: Array.from(
-                    Array.from(delegatesWithPaymentInstitutionByParty.values()).reduce((acc, d) => {
-                        d?.map((v) => v?.partyDelegate?.ruleset?.id).forEach((v) => acc.add(v));
-                        return acc;
-                    }, new Set<number>([])),
-                ),
-            })),
-        ),
-        defer(() => this.updateColumns$).pipe(startWith(null)),
-    ]).pipe(
-        map(([delegatesByParty]): Column<ShopParty>[] => [
-            {
-                field: 'shop.id',
-                sortable: !this.noSort,
-            },
-            {
-                field: 'shop.details.name',
-                description: 'shop.details.description',
-                click: (d) => {
+    columns: Column2<ShopParty>[] = [
+        {
+            field: 'shop.id',
+        },
+        {
+            field: 'shop.details.name',
+            cell: (d) => ({
+                description: d.shop.details.description,
+                click: () => {
                     this.sidenavInfoService.toggle(ShopCardComponent, {
                         partyId: d.party.id,
                         id: d.shop.id,
                     });
                 },
-                sortable: !this.noSort,
-            },
-            ...(this.noPartyColumn
-                ? []
-                : [
-                      {
-                          field: 'party.email',
-                          header: 'Party',
-                          description: 'party.id',
-                          link: (d) => `/party/${d.party.id}`,
-                      },
-                  ]),
-            {
-                field: 'shop.contract_id',
-                header: 'Contract',
-                click: (d) => {
+            }),
+        },
+        {
+            field: 'party.email',
+            header: 'Party',
+            cell: (d) => ({
+                description: d.party.id,
+                link: () => `/party/${d.party.id}`,
+            }),
+            hidden: toObservable(this.noPartyColumn),
+        },
+        {
+            field: 'shop.contract_id',
+            header: 'Contract',
+            cell: (d) => ({
+                click: () => {
                     this.sidenavInfoService.toggle(ShopContractCardComponent, {
                         partyId: d.party.id,
                         id: d.shop.id,
                     });
                 },
-            },
-            {
-                field: 'terms',
-                formatter: (d) =>
-                    this.getTerms(d.party.id, d.shop.id).pipe(
-                        map((terms) => getDomainObjectDetails(terms).label),
-                    ),
-                description: (d) =>
-                    this.getTerms(d.party.id, d.shop.id).pipe(
-                        map((terms) => getDomainObjectDetails(terms).id),
-                    ),
-                lazy: true,
-                click: (d) => {
-                    this.getTerms(d.party.id, d.shop.id).subscribe((terms) => {
-                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                            ref: { term_set_hierarchy: terms.term_set_hierarchy.ref },
-                        });
-                    });
-                },
-            },
-            {
-                field: 'shop.location.url',
-            },
-            {
-                field: 'shop.account.currency.symbolic_code',
-                header: 'Currency',
-            },
-            {
-                field: 'shop.blocking',
-                type: 'tag',
-                formatter: ({ shop }) => getUnionKey(shop.blocking),
-                typeParameters: {
-                    label: ({ shop }) => startCase(getUnionKey(shop.blocking)),
-                    tags: {
-                        blocked: { color: 'warn' },
-                        unblocked: { color: 'success' },
-                    },
-                },
-            },
-            {
-                field: 'shop.suspension',
-                type: 'tag',
-                formatter: ({ shop }) => getUnionKey(shop.suspension),
-                typeParameters: {
-                    label: ({ shop }) => startCase(getUnionKey(shop.suspension)),
-                    tags: {
-                        suspended: { color: 'warn' },
-                        active: { color: 'success' },
-                    },
-                },
-            },
-            createOperationColumn<ShopParty>([
-                ...delegatesByParty.rulesetIds.map((id) => ({
-                    label: `Routing rules #${id}`,
-                    click: ({ shop, party }) =>
-                        this.openRoutingRules(
-                            delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                .get(party.id)
-                                .find((d) => d?.partyDelegate?.ruleset?.id === id)?.partyDelegate
-                                ?.ruleset?.id,
-                            shop.id,
-                            party.id,
-                        ),
-                    disabled: ({ party }) =>
-                        isNil(
-                            delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                .get(party.id)
-                                .find((d) => d?.partyDelegate?.ruleset?.id === id)?.partyDelegate
-                                ?.ruleset?.id,
-                        ),
+            }),
+        },
+        {
+            field: 'terms',
+            lazyCell: (d) =>
+                this.getTerms(d.party.id, d.shop.id).pipe(
+                    map((terms) => getDomainObjectDetails(terms)),
+                    map((details) => ({
+                        value: details.label,
+                        description: details.description,
+                        click: () => {
+                            this.getTerms(d.party.id, d.shop.id).subscribe((terms) => {
+                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                    ref: {
+                                        term_set_hierarchy: terms.term_set_hierarchy.ref,
+                                    },
+                                });
+                            });
+                        },
+                    })),
+                ),
+        },
+        {
+            field: 'shop.location.url',
+        },
+        {
+            field: 'shop.account.currency.symbolic_code',
+            header: 'Currency',
+        },
+        {
+            field: 'shop.blocking',
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.shop.blocking)),
+                color: (
+                    {
+                        blocked: 'warn',
+                        unblocked: 'success',
+                    } as const
+                )[getUnionKey(d.shop.blocking)],
+            }),
+        },
+        {
+            field: 'shop.suspension',
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.shop.suspension)),
+                color: (
+                    {
+                        suspended: 'warn',
+                        active: 'success',
+                    } as const
+                )[getUnionKey(d.shop.suspension)],
+            }),
+        },
+        createMenuColumn((d) =>
+            this.getDelegatesByParty().pipe(
+                map((delegatesByParty) => ({
+                    items: [
+                        ...delegatesByParty.rulesetIds.map((id) => ({
+                            label: `Routing rules #${id}`,
+                            click: () =>
+                                this.openRoutingRules(
+                                    delegatesByParty.delegatesWithPaymentInstitutionByParty
+                                        .get(d.party.id)
+                                        .find((d) => d?.partyDelegate?.ruleset?.id === id)
+                                        ?.partyDelegate?.ruleset?.id,
+                                    d.shop.id,
+                                    d.party.id,
+                                ),
+                            disabled: () =>
+                                isNil(
+                                    delegatesByParty.delegatesWithPaymentInstitutionByParty
+                                        .get(d.party.id)
+                                        .find((v) => v?.partyDelegate?.ruleset?.id === id)
+                                        ?.partyDelegate?.ruleset?.id,
+                                ),
+                        })),
+                        {
+                            label:
+                                getUnionKey(d.shop.suspension) === 'suspended'
+                                    ? 'Activate'
+                                    : 'Suspend',
+                            click: () => {
+                                this.toggleSuspension(d);
+                            },
+                        },
+                        {
+                            label: getUnionKey(d.shop.blocking) === 'blocked' ? 'Unblock' : 'Block',
+                            click: () => {
+                                this.toggleBlocking(d);
+                            },
+                        },
+                    ],
                 })),
-                {
-                    label: ({ shop }) =>
-                        getUnionKey(shop.suspension) === 'suspended' ? 'Activate' : 'Suspend',
-                    click: (d) => {
-                        this.toggleSuspension(d);
-                    },
-                },
-                {
-                    label: ({ shop }) =>
-                        getUnionKey(shop.blocking) === 'blocked' ? 'Unblock' : 'Block',
-                    click: (d) => {
-                        this.toggleBlocking(d);
-                    },
-                },
-            ]),
-        ]),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+            ),
+        ),
+    ];
     sort: Sort = { active: 'shop.details.name', direction: 'asc' };
-    private updateColumns$ = new Subject<void>();
 
     constructor(
         private sidenavInfoService: SidenavInfoService,
@@ -243,16 +220,8 @@ export class ShopsTableComponent implements OnChanges {
         private router: Router,
         private partyDelegateRulesetsService: PartyDelegateRulesetsService,
         private domainStoreService: DomainStoreService,
+        private injector: Injector,
     ) {}
-
-    ngOnChanges(changes: ComponentChanges<ShopsTableComponent>) {
-        if (changes.noSort || changes.noPartyColumn) {
-            if (this.noSort) {
-                this.sort = { active: '', direction: '' };
-            }
-            this.updateColumns$.next();
-        }
-    }
 
     toggleBlocking({ party, shop }: ShopParty) {
         this.dialogService
@@ -368,5 +337,35 @@ export class ShopsTableComponent implements OnChanges {
                     },
                 });
             });
+    }
+
+    private getDelegatesByParty() {
+        return toObservable(this.shops, { injector: this.injector }).pipe(
+            startWith(null),
+            map((shops) =>
+                shops?.length ? Array.from(new Set(shops.map((s) => s.party.id))) : [],
+            ),
+            switchMap((parties) =>
+                parties?.length
+                    ? combineLatest(
+                          parties.map((id) =>
+                              this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
+                                  RoutingRulesType.Payment,
+                                  id,
+                              ),
+                          ),
+                      ).pipe(map((rules) => new Map(rules.map((r, idx) => [parties[idx], r]))))
+                    : of(new Map<string, DelegateWithPaymentInstitution[]>()),
+            ),
+            map((delegatesWithPaymentInstitutionByParty) => ({
+                delegatesWithPaymentInstitutionByParty,
+                rulesetIds: Array.from(
+                    Array.from(delegatesWithPaymentInstitutionByParty.values()).reduce((acc, d) => {
+                        d?.map((v) => v?.partyDelegate?.ruleset?.id).forEach((v) => acc.add(v));
+                        return acc;
+                    }, new Set<number>([])),
+                ),
+            })),
+        );
     }
 }
