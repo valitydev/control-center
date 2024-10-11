@@ -20,6 +20,8 @@ import {
 } from '@vality/ng-core';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
+import { ChargebacksTableComponent } from '@cc/app/shared/components/chargebacks-table';
+
 import { UploadCsvComponent } from '../../../components/upload-csv';
 import { PageLayoutModule, ShopFieldModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
@@ -31,15 +33,10 @@ import {
 
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
-import { ChargebacksTableComponent } from './components/chargebacks-table/chargebacks-table.component';
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 
 @NgModule({
-    declarations: [
-        ChargebacksComponent,
-        ChargebacksTableComponent,
-        CreateChargebacksByFileDialogComponent,
-    ],
+    declarations: [ChargebacksComponent, CreateChargebacksByFileDialogComponent],
     imports: [
         CommonModule,
         ChargebacksRoutingModule,
@@ -67,6 +64,7 @@ import { CreateChargebacksByFileDialogComponent } from './components/create-char
         MatInputModule,
         MatCheckboxModule,
         UploadCsvComponent,
+        ChargebacksTableComponent,
     ],
 })
 export class ChargebacksModule {}

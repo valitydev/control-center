@@ -6,9 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 
 import { MerchantStatisticsService } from '../../api/magista';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class FetchChargebacksService extends FetchSuperclass<
     StatChargeback,
     ChargebackSearchQuery

@@ -1,10 +1,12 @@
-<cc-page-layout [progress]="isLoading$ | async" title="Chargebacks">
-    <cc-page-layout-actions>
+<cc-page-layout [progress]="isLoading$ | async" fullHeight title="Chargebacks">
+    <cc-chargebacks-table
+        [data]="chargebacks$ | async"
+        [hasMore]="fetchChargebacksService.hasMore$ | async"
+        [isLoading]="isLoading$ | async"
+        onePayment
+        (more)="fetchChargebacksService.more()"
+        (update)="update()"
+    >
         <button color="primary" mat-raised-button (click)="createChargeback()">Create</button>
-    </cc-page-layout-actions>
-    <cc-chargebacks
-        [chargebacks]="chargebacks$ | async"
-        [invoiceId]="(payment$ | async).invoice_id"
-        [paymentId]="(payment$ | async).id"
-    ></cc-chargebacks>
+    </cc-chargebacks-table>
 </cc-page-layout>

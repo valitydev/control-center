@@ -29,7 +29,6 @@ import {
     CHARGEBACK_CATEGORIES,
 } from '@cc/app/api/fistful-stat';
 
-import { ChangeChargebacksStatusDialogComponent } from '../../shared/components/change-chargebacks-status-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
@@ -46,7 +45,7 @@ type FormValue = {
 @Component({
     selector: 'cc-chargebacks',
     templateUrl: './chargebacks.component.html',
-    styles: [],
+    providers: [FetchChargebacksService],
 })
 export class ChargebacksComponent implements OnInit {
     filtersForm = new FormGroup(
@@ -139,19 +138,6 @@ export class ChargebacksComponent implements OnInit {
                     dateRange: createDateRangeToToday(this.dateRangeDays),
                     chargeback_ids: res.data.map((c) => c.id),
                 });
-            });
-    }
-
-    changeStatuses() {
-        this.dialog
-            .open(ChangeChargebacksStatusDialogComponent, { chargebacks: this.selected })
-            .afterClosed()
-            .pipe(
-                filter((res) => res.status === DialogResponseStatus.Success),
-                takeUntilDestroyed(this.dr),
-            )
-            .subscribe(() => {
-                this.reload();
             });
     }
 }
