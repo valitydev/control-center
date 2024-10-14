@@ -1,4 +1,4 @@
-<cc-page-layout title="Wallets">
+<cc-page-layout fullHeight title="Wallets">
     <cc-page-layout-actions>
         <v-more-filters-button *ngIf="filters" [filters]="filters"></v-more-filters-button>
         <v-switch-button
@@ -29,25 +29,25 @@
         </ng-template>
     </v-filters>
 
-    <v-table
+    <v-table2
         *ngIf="isFilterControl.value"
-        [columns]="filterColumns$ | async"
+        [columns]="filterColumns"
         [data]="filterWallets$ | async"
         [hasMore]="filterHasMore$ | async"
         [progress]="filtersLoading$ | async"
         name="filterWallets"
         (more)="filterMore()"
         (update)="filterSearch($event)"
-    ></v-table>
-    <v-table
+    ></v-table2>
+    <v-table2
         *ngIf="!isFilterControl.value"
         [columns]="fullTextSearchColumns"
         [data]="fullTextSearchWallets$ | async"
         [progress]="fullTextSearchLoading$ | async"
         externalFilter
         name="ftsWallets"
-        noActions
+        standaloneFilter
         (filterChange)="fullTextSearch($event)"
         (update)="fullTextSearchReload()"
-    ></v-table>
+    ></v-table2>
 </cc-page-layout>

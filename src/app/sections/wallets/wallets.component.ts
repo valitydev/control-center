@@ -1,12 +1,4 @@
-import {
-    Component,
-    OnInit,
-    Inject,
-    ViewChild,
-    DestroyRef,
-    Injector,
-    runInInjectionContext,
-} from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
@@ -15,14 +7,14 @@ import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
 import {
     clean,
-    Column,
     QueryParamsService,
-    NotifyLogService,
     FiltersComponent,
     UpdateOptions,
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
+    Column2,
+    DebounceTime,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
 import { of } from 'rxjs';
@@ -33,7 +25,7 @@ import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
 
 import { IdentityManagementService } from '../../api/identity';
-import { createCurrencyColumn, createPartyColumn } from '../../shared';
+import { createCurrencyColumn, createPartyColumn } from '../../shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 import { PartyStoreService } from '../party';
 
@@ -55,81 +47,81 @@ export class WalletsComponent implements OnInit {
     fullTextSearchWallets$ = this.fetchWalletsTextService.result$;
     fullTextSearchLoading$ = this.fetchWalletsTextService.isLoading$;
 
-    filterColumns$ = this.partyStoreService.party$.pipe(
-        map((party) =>
-            runInInjectionContext(this.injector, () => [
-                { field: 'id' },
-                { field: 'name' },
-                'currency_symbolic_code',
-                'identity_id',
-                { field: 'created_at', type: 'datetime' },
-                createCurrencyColumn<StatWallet>(
-                    'balance',
-                    (d) => this.getBalance(d.id).pipe(map((b) => b.current)),
-                    (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
-                    { lazy: true },
+    filterColumns: Column2<StatWallet>[] = [
+        { field: 'id' },
+        { field: 'name' },
+        { field: 'currency_symbolic_code' },
+        { field: 'identity_id' },
+        { field: 'created_at', cell: { type: 'datetime' } },
+        createCurrencyColumn(
+            (d) =>
+                this.getBalance(d.id).pipe(
+                    map((b) => ({ amount: b.current, code: b.currency.symbolic_code })),
                 ),
-                createCurrencyColumn<StatWallet>(
-                    'hold',
-                    (d) => this.getBalance(d.id).pipe(map((b) => b.current - b.expected_min)),
-                    (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
-                    { lazy: true },
-                ),
-                createCurrencyColumn<StatWallet>(
-                    'expected_min',
-                    (d) => this.getBalance(d.id).pipe(map((b) => b.expected_min)),
-                    (d) => this.getBalance(d.id).pipe(map((b) => b.currency.symbolic_code)),
-                    { lazy: true },
-                ),
-                {
-                    field: 'contract_id',
-                    formatter: (d) =>
-                        this.getIdentity(d.identity_id).pipe(
-                            map((identity) => identity.contract_id),
-                        ),
-                    lazy: true,
-                },
-                ...(party
-                    ? []
-                    : [
-                          createPartyColumn<StatWallet>(
-                              'party',
-                              (d) =>
-                                  this.getIdentity(d.identity_id).pipe(
-                                      map((identity) => identity.party_id),
-                                  ),
-                              undefined,
-                              { lazy: true },
-                          ),
-                      ]),
-            ]),
+            { header: 'Balance', isLazyCell: true },
         ),
-    );
-    fullTextSearchColumns: Column<SearchWalletHit>[] = [
+        createCurrencyColumn(
+            (d) =>
+                this.getBalance(d.id).pipe(
+                    map((b) => ({
+                        amount: b.current - b.expected_min,
+                        code: b.currency.symbolic_code,
+                    })),
+                ),
+            { header: 'Hold', isLazyCell: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.getBalance(d.id).pipe(
+                    map((b) => ({ amount: b.expected_min, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Expected Min', isLazyCell: true },
+        ),
+        {
+            field: 'contract_id',
+            lazyCell: (d) =>
+                this.getIdentity(d.identity_id).pipe(
+                    map((identity) => ({ value: identity.contract_id })),
+                ),
+        },
+        createPartyColumn(
+            (d) =>
+                this.getIdentity(d.identity_id).pipe(
+                    map((identity) => ({ id: identity.party_id })),
+                ),
+            { hidden: this.partyStoreService.party$.pipe(map((p) => !p)) },
+        ),
+    ];
+    fullTextSearchColumns: Column2<SearchWalletHit>[] = [
         { field: 'wallet.id' },
         { field: 'wallet.name' },
-        createPartyColumn<SearchWalletHit>(
-            'party',
-            (d) => d.party.id,
-            (d) => d.party.email,
+        createPartyColumn((d) => ({
+            id: d.party.id,
+            partyName: d.party.email,
+        })),
+        createCurrencyColumn(
+            (d) =>
+                this.getBalance(d.wallet.id).pipe(
+                    map((b) => ({ amount: b.current, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Balance', isLazyCell: true },
         ),
-        createCurrencyColumn<SearchWalletHit>(
-            'balance',
-            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.current)),
-            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.currency.symbolic_code)),
-            { lazy: true },
+        createCurrencyColumn(
+            (d) =>
+                this.getBalance(d.wallet.id).pipe(
+                    map((b) => ({
+                        amount: b.current - b.expected_min,
+                        code: b.currency.symbolic_code,
+                    })),
+                ),
+            { header: 'Hold', isLazyCell: true },
         ),
-        createCurrencyColumn<SearchWalletHit>(
-            'hold',
-            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.current - b.expected_min)),
-            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.currency.symbolic_code)),
-            { lazy: true },
-        ),
-        createCurrencyColumn<SearchWalletHit>(
-            'expected_min',
-            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.expected_min)),
-            (d) => this.getBalance(d.wallet.id).pipe(map((b) => b.currency.symbolic_code)),
-            { lazy: true },
+        createCurrencyColumn(
+            (d) =>
+                this.getBalance(d.wallet.id).pipe(
+                    map((b) => ({ amount: b.expected_min, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Expected Min', isLazyCell: true },
         ),
     ];
     filtersForm = this.fb.group({
@@ -154,12 +146,10 @@ export class WalletsComponent implements OnInit {
         private qp: QueryParamsService<WalletParams>,
         private fb: NonNullableFormBuilder,
         private walletManagementService: ManagementService,
-        private log: NotifyLogService,
         @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
         private destroyRef: DestroyRef,
         private identityManagementService: IdentityManagementService,
         private partyStoreService: PartyStoreService,
-        private injector: Injector,
     ) {}
 
     ngOnInit() {
@@ -198,6 +188,7 @@ export class WalletsComponent implements OnInit {
         this.fetchWalletsService.more();
     }
 
+    @DebounceTime()
     fullTextSearch(text: string) {
         this.fetchWalletsTextService.load(text);
     }
