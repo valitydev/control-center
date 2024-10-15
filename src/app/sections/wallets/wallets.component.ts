@@ -17,7 +17,7 @@ import {
     DebounceTime,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
-import { of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { map, shareReplay, catchError, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
@@ -137,6 +137,10 @@ export class WalletsComponent implements OnInit {
     @ViewChild(FiltersComponent) filters!: FiltersComponent;
     typeQp = this.qp.createNamespace<{ isFilter: boolean }>('type');
     party$ = this.partyStoreService.party$;
+    isFilterTable$ = combineLatest([getValueChanges(this.isFilterControl), this.party$]).pipe(
+        map(([isFilterControl, party]) => isFilterControl || !!party),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     private initFilters = this.filtersForm.value;
 
