@@ -20,7 +20,6 @@ import {
     NotifyLogService,
     ConfirmDialogComponent,
     DialogResponseStatus,
-    TABLE_WRAPPER_STYLE,
     Column2,
     createMenuColumn,
 } from '@vality/ng-core';
@@ -67,9 +66,6 @@ export interface ShopParty {
     ],
     templateUrl: './shops-table.component.html',
     providers: [PartyDelegateRulesetsService],
-    host: {
-        style: TABLE_WRAPPER_STYLE,
-    },
 })
 export class ShopsTableComponent {
     shops = input<ShopParty[]>([]);

@@ -15,7 +15,6 @@ import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     LoadOptions,
     Column2,
-    TABLE_WRAPPER_STYLE,
     TableModule,
     DialogService,
     createMenuColumn,
@@ -32,9 +31,6 @@ import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-st
     standalone: true,
     selector: 'cc-chargebacks-table',
     templateUrl: './chargebacks-table.component.html',
-    host: {
-        style: TABLE_WRAPPER_STYLE,
-    },
     imports: [CommonModule, TableModule, MatButtonModule],
 })
 export class ChargebacksTableComponent {

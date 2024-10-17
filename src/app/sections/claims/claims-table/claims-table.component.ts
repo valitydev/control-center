@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Claim } from '@vality/domain-proto/claim_management';
-import { Column2, LoadOptions, TABLE_WRAPPER_STYLE, createMenuColumn } from '@vality/ng-core';
+import { Column2, LoadOptions, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
@@ -11,9 +11,6 @@ import { createPartyColumn } from '@cc/app/shared/utils/table2';
     selector: 'cc-claims-table',
     templateUrl: './claims-table.component.html',
     styleUrls: ['./claims-table.component.scss'],
-    host: {
-        style: TABLE_WRAPPER_STYLE,
-    },
 })
 export class ClaimsTableComponent {
     @Input() data!: Claim[];

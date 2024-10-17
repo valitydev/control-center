@@ -16,4 +16,9 @@ $offset: 24px;
         min-height: 48px;
         gap: 8px;
     }
+
+    ::ng-deep & > *:last-child {
+        min-height: 0;
+        height: 100%;
+    }
 }
