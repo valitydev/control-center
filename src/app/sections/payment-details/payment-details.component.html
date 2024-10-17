@@ -5,7 +5,6 @@
         { label: 'Refunds', url: 'refunds' },
         { label: 'Chargebacks', url: 'chargebacks' }
     ]"
-    [tags]="tags$ | async"
     id="{{
         (payment$ | async) ? (payment$ | async)?.invoice_id + '.' + (payment$ | async)?.id : ''
     }}"
