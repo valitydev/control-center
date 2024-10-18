@@ -1,5 +1,5 @@
-<v-table
-    [columns]="columns()"
+<v-table2
+    [columns]="columns"
     [data]="data"
     [hasMore]="hasMore"
     [progress]="isLoading"
@@ -7,4 +7,4 @@
     (update)="update.emit($event)"
 >
     <v-table-actions><ng-content></ng-content></v-table-actions>
-</v-table>
+</v-table2>

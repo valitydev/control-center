@@ -12,7 +12,6 @@ import { StatusModule, PageLayoutModule, SubPageLayoutComponent } from '@cc/app/
 import { DetailsItemModule } from '@cc/components/details-item';
 import { HeadlineModule } from '@cc/components/headline';
 
-import { ChargebacksComponent } from '../../shared/components/chargebacks/chargebacks.component';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
@@ -34,7 +33,6 @@ import { RefundsTableModule } from './refunds-table';
         MatProgressSpinnerModule,
         MatButtonModule,
         MatDialogModule,
-        ChargebacksComponent,
         ActionsModule,
         DialogModule,
         ThriftFormModule,

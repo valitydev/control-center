@@ -13,7 +13,6 @@ import {
     getValueChanges,
     Column2,
     createMenuColumn,
-    TABLE_WRAPPER_STYLE,
 } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
@@ -51,7 +50,6 @@ interface DomainObjectData {
         ActionsModule,
         MatButtonModule,
     ],
-    host: { style: TABLE_WRAPPER_STYLE },
 })
 export class DomainObjectsTableComponent implements OnInit {
     @Output() selectedChange = new EventEmitter<string[]>();

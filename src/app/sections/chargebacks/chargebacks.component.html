@@ -1,4 +1,4 @@
-<cc-page-layout title="Chargebacks">
+<cc-page-layout fullHeight title="Chargebacks">
     <cc-page-layout-actions>
         <v-more-filters-button [filters]="filters"></v-more-filters-button>
     </cc-page-layout-actions>
@@ -47,14 +47,6 @@
         (more)="more()"
         (update)="reload($event)"
     >
-        <button
-            [disabled]="!selected.length"
-            color="primary"
-            mat-raised-button
-            (click)="changeStatuses()"
-        >
-            Change statuses
-        </button>
         <button color="primary" mat-raised-button (click)="create()">Create by file</button>
     </cc-chargebacks-table>
 </cc-page-layout>

@@ -18,6 +18,7 @@ import {
     Option,
     NotifyLogService,
     progressTo,
+    SelectFieldComponent,
 } from '@vality/ng-core';
 import {
     BehaviorSubject,
@@ -47,8 +48,8 @@ export class ShopFieldComponent
 {
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
-    @Input() size?: string;
-    @Input() appearance?: string;
+    @Input() size?: SelectFieldComponent['size'];
+    @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;
     @Input({ transform: booleanAttribute }) multiple = false;
     partyId = input<PartyID>();

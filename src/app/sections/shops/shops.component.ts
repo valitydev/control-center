@@ -2,7 +2,14 @@ import { Component } from '@angular/core';
 import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
 import { Column, progressTo, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
-import { switchMap, shareReplay, catchError, map } from 'rxjs/operators';
+import {
+    switchMap,
+    shareReplay,
+    catchError,
+    map,
+    debounceTime,
+    distinctUntilChanged,
+} from 'rxjs/operators';
 
 import { DeanonimusService } from '../../api/deanonimus';
 import { ShopParty } from '../../shared/components/shops-table';
@@ -14,7 +21,7 @@ import { ShopParty } from '../../shared/components/shops-table';
 export class ShopsComponent {
     filterChange$ = new Subject<string>();
     shopsParty$: Observable<ShopParty[]> = combineLatest([
-        this.filterChange$,
+        this.filterChange$.pipe(distinctUntilChanged(), debounceTime(500)),
         defer(() => this.updateShops$),
     ]).pipe(
         switchMap(([search]) =>

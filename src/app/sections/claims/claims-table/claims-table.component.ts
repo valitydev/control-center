@@ -1,20 +1,11 @@
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    booleanAttribute,
-    input,
-    computed,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
-import { Column, LoadOptions, TagColumn, createOperationColumn } from '@vality/ng-core';
+import { Component, Input, Output, EventEmitter, booleanAttribute, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Claim } from '@vality/domain-proto/claim_management';
+import { Column2, LoadOptions, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
-import isObject from 'lodash-es/isObject';
 import startCase from 'lodash-es/startCase';
 
-import { createPartyColumn } from '../../../shared';
+import { createPartyColumn } from '@cc/app/shared/utils/table2';
 
 @Component({
     selector: 'cc-claims-table',
@@ -30,48 +21,33 @@ export class ClaimsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns = computed<Column<Claim>[]>(() =>
-        this.sourceColumns.filter(
-            (c) => (isObject(c) && c?.field !== 'party_id') || !this.noParty(),
-        ),
-    );
-    private sourceColumns: Column<Claim>[] = [
-        { field: 'id', link: (d) => this.getClaimLink(d.party_id, d.id) },
-        createPartyColumn('party_id'),
+    columns: Column2<Claim>[] = [
+        { field: 'id', cell: (d) => ({ link: () => `/party/${d.party_id}/claim/${d.id}` }) },
+        createPartyColumn((d) => ({ id: d.party_id }), { hidden: toObservable(this.noParty) }),
         {
             field: 'status',
-            type: 'tag',
-            formatter: (claim) => getUnionKey(claim.status),
-            typeParameters: {
-                label: (claim) => startCase(getUnionKey(claim.status)),
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.status)),
                 tags: {
-                    pending: { color: 'pending' },
-                    review: { color: 'pending' },
-                    pending_acceptance: { color: 'pending' },
-                    accepted: { color: 'success' },
-                    denied: { color: 'warn' },
-                    revoked: { color: 'neutral' },
+                    pending: 'pending',
+                    review: 'pending',
+                    pending_acceptance: 'pending',
+                    accepted: 'success',
+                    denied: 'warn',
+                    revoked: 'neutral',
                 },
-            },
-        } as TagColumn<Claim, keyof ClaimStatus>,
-        'revision',
-        { field: 'created_at', type: 'datetime' },
-        { field: 'updated_at', type: 'datetime' },
-        createOperationColumn<Claim>([
-            {
-                label: 'Details',
-                click: (claim) => this.navigateToClaim(claim.party_id, claim.id),
-            },
-        ]),
+            }),
+        },
+        { field: 'revision' },
+        { field: 'created_at', cell: { type: 'datetime' } },
+        { field: 'updated_at', cell: { type: 'datetime' } },
+        createMenuColumn((d) => ({
+            items: [
+                {
+                    label: 'Details',
+                    link: () => `/party/${d.party_id}/claim/${d.id}`,
+                },
+            ],
+        })),
     ];
-
-    constructor(private router: Router) {}
-
-    navigateToClaim(partyId: string, claimID: number) {
-        void this.router.navigate([this.getClaimLink(partyId, claimID)]);
-    }
-
-    private getClaimLink(partyId: string, claimID: number): string {
-        return `/party/${partyId}/claim/${claimID}`;
-    }
 }

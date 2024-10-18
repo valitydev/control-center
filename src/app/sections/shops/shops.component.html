@@ -1,9 +1,7 @@
-<cc-page-layout title="Shops">
-    <cc-page-layout-actions></cc-page-layout-actions>
+<cc-page-layout fullHeight title="Shops">
     <cc-shops-table
         [progress]="progress$ | async"
         [shops]="shopsParty$ | async"
-        noSort
         (filterChange)="filterChange$.next($event)"
         (update)="update()"
     ></cc-shops-table>

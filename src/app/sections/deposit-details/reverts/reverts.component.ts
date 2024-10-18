@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DepositStatus, StatDeposit, StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
-import { DialogService, Column, UpdateOptions } from '@vality/ng-core';
+import { DialogService, UpdateOptions, Column2 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
-import { createCurrencyColumn } from '@cc/app/shared/utils';
+import { createCurrencyColumn } from '@cc/app/shared/utils/table2';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
 import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.service';
@@ -23,27 +23,29 @@ export class RevertsComponent implements OnInit {
     reverts$ = this.fetchRevertsService.result$;
     hasMore$ = this.fetchRevertsService.hasMore$;
     isLoading$ = this.fetchRevertsService.isLoading$;
-    columns: Column<StatDepositRevert>[] = [
+    columns: Column2<StatDepositRevert>[] = [
         { field: 'id' },
         {
             field: 'status',
-            type: 'tag',
-            formatter: (d) => getUnionKey(d.status),
-            typeParameters: {
-                label: (d) => startCase(getUnionKey(d.status)),
-                tags: {
-                    pending: { color: 'pending' },
-                    succeeded: { color: 'success' },
-                    failed: { color: 'warn' },
-                },
-            },
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.status)),
+                color: (
+                    {
+                        pending: 'pending',
+                        succeeded: 'success',
+                        failed: 'warn',
+                    } as const
+                )[getUnionKey(d.status)],
+            }),
         },
         createCurrencyColumn(
-            'amount',
-            (d) => d.body.amount,
-            (d) => d.body.currency.symbolic_code,
+            (d) => ({
+                amount: d.body.amount,
+                code: d.body.currency.symbolic_code,
+            }),
+            { header: 'Amount' },
         ),
-        { field: 'created_at', type: 'datetime' },
+        { field: 'created_at', cell: { type: 'datetime' } },
     ];
 
     constructor(

@@ -1,5 +1,4 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { createColumn } from '@vality/ng-core';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -16,9 +15,7 @@ export const createPartyColumn = createColumn(
                       .pipe(map((party) => party.contact_info.registration_email));
         const partyCell = {
             description: id,
-            link: () => {
-                void inject(Router).navigate([`/party/${id}`]);
-            },
+            link: () => `/party/${id}`,
         };
         return partyName$.pipe(
             map((partyName) => ({

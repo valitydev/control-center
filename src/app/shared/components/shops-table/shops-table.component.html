@@ -1,14 +1,11 @@
-<v-table
+<v-table2
     [(sort)]="sort"
-    [columns]="columns$ | async"
+    [columns]="columns"
     [data]="shops()"
     [externalFilter]="filterChange.observed"
     [progress]="progress"
-    [size]="100"
     name="shops"
-    noActions
-    sortOnFront
     standaloneFilter
     (filterChange)="filterChange.emit($event)"
     (update)="update.emit()"
-></v-table>
+></v-table2>
