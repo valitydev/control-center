@@ -37,6 +37,7 @@ import {
     DelegateWithPaymentInstitution,
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
+import { createPartyColumn } from '../../utils/table2';
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
@@ -91,15 +92,15 @@ export class ShopsTableComponent {
                 },
             }),
         },
-        {
-            field: 'party.email',
-            header: 'Party',
-            cell: (d) => ({
-                description: d.party.id,
-                link: () => `/party/${d.party.id}`,
+        createPartyColumn(
+            (d) => ({
+                id: d.party.id,
+                partyName: d.party.email,
             }),
-            hidden: toObservable(this.noPartyColumn),
-        },
+            {
+                hidden: toObservable(this.noPartyColumn),
+            },
+        ),
         {
             field: 'shop.contract_id',
             header: 'Contract',
@@ -167,25 +168,19 @@ export class ShopsTableComponent {
             this.getDelegatesByParty().pipe(
                 map((delegatesByParty) => ({
                     items: [
-                        ...delegatesByParty.rulesetIds.map((id) => ({
-                            label: `Routing rules #${id}`,
-                            click: () =>
-                                this.openRoutingRules(
-                                    delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                        .get(d.party.id)
-                                        .find((d) => d?.partyDelegate?.ruleset?.id === id)
-                                        ?.partyDelegate?.ruleset?.id,
-                                    d.shop.id,
-                                    d.party.id,
-                                ),
-                            disabled: () =>
-                                isNil(
-                                    delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                        .get(d.party.id)
-                                        .find((v) => v?.partyDelegate?.ruleset?.id === id)
-                                        ?.partyDelegate?.ruleset?.id,
-                                ),
-                        })),
+                        ...delegatesByParty.rulesetIds.map((id) => {
+                            const rulesetId =
+                                delegatesByParty.delegatesWithPaymentInstitutionByParty
+                                    ?.get?.(d.party.id)
+                                    ?.find?.((v) => v?.partyDelegate?.ruleset?.id === id)
+                                    ?.partyDelegate?.ruleset?.id;
+                            return {
+                                label: `Routing rules #${id}`,
+                                click: () =>
+                                    this.openRoutingRules(rulesetId, d.shop.id, d.party.id),
+                                disabled: isNil(rulesetId),
+                            };
+                        }),
                         {
                             label:
                                 getUnionKey(d.shop.suspension) === 'suspended'
