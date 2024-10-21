@@ -36,11 +36,11 @@
         </mat-expansion-panel>
     </mat-accordion>
 
-    <v-table
+    <v-table2
         [(rowSelected)]="selectedCsv"
         [columns]="columns()"
         [data]="data$ | async"
-        noActions
+        noDownload
         rowSelectable
-    ></v-table>
+    ></v-table2>
 </div>
