@@ -69,8 +69,8 @@ export class MachinesComponent implements OnInit {
         { field: 'id', sticky: 'start' },
         { header: 'Namespace', field: 'ns' },
         { field: 'created_at', cell: { type: 'datetime' } },
-        createDomainObjectColumn((d) => ({ ref: { terminal: { id: Number(d.provider_id) } } }), {
-            header: 'Terminal',
+        createDomainObjectColumn((d) => ({ ref: { provider: { id: Number(d.provider_id) } } }), {
+            header: 'Provider',
         }),
         {
             field: 'status',
