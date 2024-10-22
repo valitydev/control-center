@@ -9,7 +9,7 @@ import { SidenavInfoService } from '../../components/sidenav-info';
 
 export const createShopColumn = createColumn(
     ({ shopId, partyId, ...params }: { shopId: string; partyId: string; shopName?: string }) => {
-        const shopName$ =
+        const name$ =
             'shopName' in params
                 ? of(params.shopName)
                 : inject(PartiesStoreService)
@@ -22,7 +22,7 @@ export const createShopColumn = createColumn(
                 sidenavInfoService.toggle(ShopCardComponent, { id: shopId, partyId });
             },
         };
-        return shopName$.pipe(
+        return name$.pipe(
             map((shopName) => ({
                 ...shopCell,
                 value: shopName,

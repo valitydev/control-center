@@ -1,17 +1,22 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, NotifyLogService } from '@vality/ng-core';
+import { Column2, DialogService, NotifyLogService } from '@vality/ng-core';
 import { first, map, catchError } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { createDomainObjectColumn } from '@cc/app/shared/utils/table2';
 
+import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
-import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service';
+import {
+    DelegateWithPaymentInstitution,
+    PartyDelegateRulesetsService,
+} from './party-delegate-rulesets.service';
 
 @Component({
     selector: 'cc-party-delegate-rulesets',
@@ -20,31 +25,37 @@ import { PartyDelegateRulesetsService } from './party-delegate-rulesets.service'
     providers: [PartyDelegateRulesetsService, RoutingRulesTypeService],
 })
 export class PartyDelegateRulesetsComponent {
-    displayedColumns = [
-        { key: 'partyDelegate', name: 'Party delegate' },
-        { key: 'paymentInstitution', name: 'Payment institution' },
-        { key: 'mainRuleset', name: 'Main ruleset' },
+    columns: Column2<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
+        {
+            field: 'partyDelegate',
+            cell: (d) => ({
+                value: d.item.partyDelegate?.description || `#${d.item.partyDelegate?.ruleset?.id}`,
+                description: d.item.partyDelegate?.ruleset?.id,
+                click: () => this.navigateToPartyRuleset(d.parentRefId, d.delegateIdx),
+            }),
+        },
+        createDomainObjectColumn(
+            (d) => ({
+                ref: { payment_institution: d.item.paymentInstitution.ref },
+            }),
+            { header: 'Payment Institution' },
+        ),
+        createDomainObjectColumn(
+            (d) => ({
+                ref: { routing_rules: d.item.mainRoutingRule.ref },
+            }),
+            { header: 'Main Ruleset' },
+        ),
     ];
     isLoading$ = this.domainStoreService.isLoading$;
     data$ = this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution().pipe(
-        map((rules) =>
-            rules.map(({ mainRoutingRule, partyDelegate, paymentInstitution }) => ({
-                parentRefId: mainRoutingRule?.ref?.id,
-                delegateIdx: mainRoutingRule?.data?.decisions?.delegates?.findIndex(
-                    (d) => d === partyDelegate,
+        map((rules): RoutingRulesListItem<DelegateWithPaymentInstitution>[] =>
+            rules.map((item) => ({
+                parentRefId: item.mainRoutingRule?.ref?.id,
+                delegateIdx: item.mainRoutingRule?.data?.decisions?.delegates?.findIndex(
+                    (d) => d === item.partyDelegate,
                 ),
-                paymentInstitution: {
-                    text: paymentInstitution?.data?.name,
-                    caption: paymentInstitution?.ref?.id,
-                },
-                mainRuleset: {
-                    text: mainRoutingRule?.data?.name,
-                    caption: mainRoutingRule?.ref?.id,
-                },
-                partyDelegate: {
-                    text: partyDelegate?.description,
-                    caption: partyDelegate?.ruleset?.id,
-                },
+                item,
             })),
         ),
     );

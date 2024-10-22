@@ -1,23 +1,28 @@
 import { inject } from '@angular/core';
 import { createColumn } from '@vality/ng-core';
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../../api/payment-processing';
+import { PartiesStoreService } from '@cc/app/api/payment-processing';
 
 export const createWalletColumn = createColumn(
     ({ id, partyId, ...params }: { id: string; partyId: string; name?: string }) => {
-        const shopName$ =
+        const name$ =
             'name' in params
                 ? of(params.name)
                 : inject(PartiesStoreService)
-                      .get(partyId)
-                      .pipe(map((party) => party.wallets.get(id).name));
-        return shopName$.pipe(
+                      .getWallet(id, partyId)
+                      .pipe(map((wallet) => wallet?.name));
+        const cell = { description: id };
+        return name$.pipe(
             map((name) => ({
+                ...cell,
                 value: name,
-                description: id,
             })),
+            startWith({
+                ...cell,
+                inProgress: true,
+            }),
         );
     },
     { header: 'Wallet' },

@@ -1,15 +1,23 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DialogResponseStatus, compareDifferentTypes } from '@vality/ng-core';
+import { RoutingDelegate } from '@vality/domain-proto/domain';
+import {
+    DialogService,
+    DialogResponseStatus,
+    compareDifferentTypes,
+    Column2,
+} from '@vality/ng-core';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
+import { createShopColumn, createWalletColumn } from '@cc/app/shared/utils/table2';
 
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
+import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
@@ -27,65 +35,69 @@ export class PartyRoutingRulesetComponent {
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.domainStoreService.isLoading$;
 
-    shopsDisplayedColumns = [
-        { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
-        { key: 'shop', name: 'Shop' },
+    shopsDisplayedColumns: Column2<RoutingRulesListItem<RoutingDelegate>>[] = [
+        {
+            field: 'id',
+            header: 'Delegate (Ruleset Ref ID)',
+            cell: (d) => ({
+                value: d.item?.description || `#${d.item?.ruleset?.id}`,
+                description: d.item?.ruleset?.id,
+                click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
+            }),
+        },
+        createShopColumn((d) =>
+            this.partyRoutingRulesetService.partyID$.pipe(
+                map((partyId) => ({
+                    shopId: d.item?.allowed?.condition?.party?.definition?.shop_is,
+                    partyId,
+                })),
+            ),
+        ),
     ];
-    walletsDisplayedColumns = [
-        { key: 'id', name: 'Delegate (Ruleset Ref ID)' },
-        { key: 'wallet', name: 'Wallet' },
+    walletsDisplayedColumns: Column2<RoutingRulesListItem<RoutingDelegate>>[] = [
+        {
+            field: 'id',
+            header: 'Delegate (Ruleset Ref ID)',
+            cell: (d) => ({
+                value: d.item?.description || `#${d.item?.ruleset?.id}`,
+                description: d.item?.ruleset?.id,
+                click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
+            }),
+        },
+        createWalletColumn((d) =>
+            this.partyRoutingRulesetService.partyID$.pipe(
+                map((partyId) => ({
+                    id: d.item?.allowed?.condition?.party?.definition?.wallet_is,
+                    partyId,
+                })),
+            ),
+        ),
     ];
-    shopsData$ = combineLatest([
-        this.partyRuleset$,
-        this.partyRoutingRulesetService.shops$.pipe(startWith([])),
-    ]).pipe(
-        filter(([r]) => !!r),
-        map(([ruleset, shops]) =>
+    shopsData$ = this.partyRuleset$.pipe(
+        filter(Boolean),
+        map((ruleset): RoutingRulesListItem<RoutingDelegate>[] =>
             ruleset.data.decisions.delegates
                 .filter((d) => d?.allowed?.condition?.party?.definition?.shop_is)
-                .map((delegate, delegateIdx) => {
-                    const shopId = delegate?.allowed?.condition?.party?.definition?.shop_is;
-                    return {
-                        parentRefId: ruleset.ref.id,
-                        delegateIdx,
-                        id: {
-                            text: delegate?.description,
-                            caption: delegate?.ruleset?.id,
-                        },
-                        shop: {
-                            text: shops?.find((s) => s?.id === shopId)?.details?.name,
-                            caption: shopId,
-                        },
-                    };
-                }),
+                .map((delegate, delegateIdx) => ({
+                    parentRefId: ruleset.ref.id,
+                    delegateIdx,
+                    item: delegate,
+                })),
         ),
         startWith([]),
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
-    walletsData$ = combineLatest([
-        this.partyRuleset$,
-        this.partyRoutingRulesetService.wallets$.pipe(startWith([])),
-    ]).pipe(
-        filter(([r]) => !!r),
-        map(([ruleset, wallets]) =>
+    walletsData$ = this.partyRuleset$.pipe(
+        filter(Boolean),
+        map((ruleset): RoutingRulesListItem<RoutingDelegate>[] =>
             ruleset.data.decisions.delegates
                 .filter((d) => d?.allowed?.condition?.party?.definition?.wallet_is)
-                .map((delegate, delegateIdx) => {
-                    const walletId = delegate?.allowed?.condition?.party?.definition?.wallet_is;
-                    return {
-                        parentRefId: ruleset.ref.id,
-                        delegateIdx,
-                        id: {
-                            text: delegate?.description,
-                            caption: delegate?.ruleset?.id,
-                        },
-                        wallet: {
-                            text: wallets?.find((w) => w?.id === walletId)?.name,
-                            caption: walletId,
-                        },
-                    };
-                }),
+                .map((delegate, delegateIdx) => ({
+                    parentRefId: ruleset.ref.id,
+                    delegateIdx,
+                    item: delegate,
+                })),
         ),
         startWith([]),
         takeUntilDestroyed(this.destroyRef),
