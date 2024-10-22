@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { InvoicePaymentID, InvoiceID, PartyID } from '@vality/domain-proto/domain';
-import { Column, UpdateOptions } from '@vality/ng-core';
+import { Column2, UpdateOptions } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
 import { Refund } from '../../../api/fistful-stat';
-import { createCurrencyColumn } from '../../../shared';
+import { createCurrencyColumn } from '../../../shared/utils/table2';
 
 import { FetchRefundsService } from './services/fetch-refunds.service';
 
@@ -25,27 +25,25 @@ export class RefundsTableComponent implements OnInit {
     hasMore$ = this.fetchRefundsService.hasMore$;
     refunds$ = this.fetchRefundsService.result$;
 
-    columns: Column<Refund>[] = [
-        { field: 'created_at', type: 'datetime' },
+    columns: Column2<Refund>[] = [
+        { field: 'created_at', cell: { type: 'datetime' } },
         {
             field: 'status',
-            type: 'tag',
-            formatter: (d) => getUnionKey(d.status),
-            typeParameters: {
-                label: (d) => startCase(getUnionKey(d.status)),
-                tags: {
-                    pending: { color: 'pending' },
-                    succeeded: { color: 'success' },
-                    failed: { color: 'warn' },
-                },
-            },
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.status)),
+                color: (
+                    {
+                        pending: 'pending',
+                        succeeded: 'success',
+                        failed: 'warn',
+                    } as const
+                )[getUnionKey(d.status)],
+            }),
         },
-        createCurrencyColumn(
-            'amount',
-            (d) => d.amount,
-            (d) => d.currency_symbolic_code,
-        ),
-        'reason',
+        createCurrencyColumn((d) => ({ amount: d.amount, code: d.currency_symbolic_code }), {
+            header: 'Amount',
+        }),
+        { field: 'reason' },
     ];
 
     constructor(private fetchRefundsService: FetchRefundsService) {}
