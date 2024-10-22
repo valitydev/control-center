@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
-import { Column, createOperationColumn, QueryParamsService, UpdateOptions } from '@vality/ng-core';
+import {
+    Column2,
+    createMenuColumn,
+    DebounceTime,
+    QueryParamsService,
+    UpdateOptions,
+} from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
@@ -17,48 +23,48 @@ export class SearchPartiesComponent {
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchPartiesService.isLoading$;
     parties$ = this.fetchPartiesService.result$;
-    columns: Column<Party>[] = [
+    columns: Column2<Party>[] = [
         { field: 'id' },
         {
             field: 'email',
-            link: (party) => `/party/${party.id}`,
+            cell: (party) => ({ link: () => `/party/${party.id}` }),
         },
         {
             field: 'blocking',
-            type: 'tag',
-            formatter: (party) => getUnionKey(party.blocking),
-            typeParameters: {
-                label: (party) => startCase(getUnionKey(party.blocking)),
-                tags: {
-                    blocked: { color: 'warn' },
-                    unblocked: { color: 'success' },
-                },
-            },
+            cell: (party) => ({
+                value: startCase(getUnionKey(party.blocking)),
+                color: (
+                    {
+                        blocked: 'warn',
+                        unblocked: 'success',
+                    } as const
+                )[getUnionKey(party.blocking)],
+            }),
         },
         {
             field: 'suspension',
-            type: 'tag',
-            formatter: (party) => getUnionKey(party.suspension),
-            typeParameters: {
-                label: (party) => startCase(getUnionKey(party.suspension)),
-                tags: {
-                    suspended: { color: 'warn' },
-                    active: { color: 'success' },
-                },
-            },
+            cell: (party) => ({
+                value: startCase(getUnionKey(party.suspension)),
+                color: (
+                    {
+                        suspended: 'warn',
+                        active: 'success',
+                    } as const
+                )[getUnionKey(party.suspension)],
+            }),
         },
         {
             field: 'shops',
-            formatter: (party) => party.shops.size,
+            cell: (party) => ({ value: party.shops.size }),
         },
-        createOperationColumn([
-            {
-                label: 'Details',
-                click: (party) => {
-                    this.router.navigate([`/party/${party.id}`]);
+        createMenuColumn((party) => ({
+            items: [
+                {
+                    label: 'Details',
+                    click: () => this.router.navigate([`/party/${party.id}`]),
                 },
-            },
-        ]),
+            ],
+        })),
     ];
 
     constructor(
@@ -67,6 +73,7 @@ export class SearchPartiesComponent {
         private router: Router,
     ) {}
 
+    @DebounceTime()
     searchParamsUpdated(filter: string) {
         void this.qp.set({ text: filter });
         this.fetchPartiesService.load(filter);

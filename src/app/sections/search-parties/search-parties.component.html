@@ -1,12 +1,12 @@
-<cc-page-layout title="Merchants">
-    <v-table
+<cc-page-layout fullHeight title="Merchants">
+    <v-table2
         [columns]="columns"
         [data]="parties$ | async"
         [filter]="initSearchParams$ | async"
         [progress]="inProgress$ | async"
         externalFilter
-        noActions
+        standaloneFilter
         (filterChange)="searchParamsUpdated($event)"
         (update)="reload($event)"
-    ></v-table>
+    ></v-table2>
 </cc-page-layout>
