@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { ComponentChanges, TableModule, Column } from '@vality/ng-core';
+import { ComponentChanges, TableModule, Column2 } from '@vality/ng-core';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
@@ -13,7 +13,7 @@ import {
     getTerminalShopWalletDelegates,
     TerminalShopWalletDelegate,
 } from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
-import { createPredicateColumn } from '../../utils';
+import { createPartyColumn, createPredicateColumn } from '../../utils/table2';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent, DomainObjectCardComponent } from '../thrift-api-crud';
@@ -28,76 +28,73 @@ export class TerminalDelegatesCardComponent implements OnChanges {
     @Input() ref: TerminalRef;
 
     progress$ = this.domainStoreService.isLoading$;
-    columns: Column<TerminalShopWalletDelegate>[] = [
+    columns: Column2<TerminalShopWalletDelegate>[] = [
         {
             header: 'Routing Rule',
             field: 'terminalRule.data.name',
-            description: 'terminalRule.ref.id',
-            click: (d) => {
-                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                    ref: { routing_rules: { id: d.terminalRule.ref.id } },
-                });
-            },
+            cell: (d) => ({
+                description: d.terminalRule.ref.id,
+                click: () => {
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: { routing_rules: { id: d.terminalRule.ref.id } },
+                    });
+                },
+            }),
         },
         {
             header: 'Ruleset',
             field: 'rule.data.name',
-            description: 'rule.ref.id',
-            click: (d) => {
-                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                    ref: { routing_rules: { id: d.rule.ref.id } },
-                });
-            },
+            cell: (d) => ({
+                description: d.rule.ref.id,
+                click: () => {
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: { routing_rules: { id: d.rule.ref.id } },
+                    });
+                },
+            }),
         },
-        createPredicateColumn('allowed', (d) => d.candidates[0].allowed),
-        {
-            field: 'party',
-            formatter: (d) =>
-                this.partiesStoreService
-                    .get(d.delegate.allowed.condition?.party?.id)
-                    .pipe(map((p) => p.contact_info.registration_email)),
-            description: (d) => d.delegate.allowed.condition?.party?.id,
-            link: (d) => `/party/${d.delegate.allowed.condition.party.id}`,
-        },
+        createPredicateColumn((d) => ({ predicate: d.candidates[0].allowed }), {
+            header: 'Allowed',
+        }),
+        createPartyColumn((d) => ({ id: d.delegate.allowed.condition?.party?.id })),
         {
             field: 'type',
-            formatter: (d) =>
-                startCase(
+            cell: (d) => ({
+                value: startCase(
                     getUnionKey(d.delegate.allowed.condition?.party?.definition).slice(0, -3),
                 ),
+            }),
         },
         {
             field: 'definition',
-            formatter: (d) =>
-                this.partiesStoreService
-                    .get(d.delegate.allowed.condition?.party?.id)
-                    .pipe(
-                        map(
-                            (p) =>
-                                (getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
+            cell: (d) =>
+                this.partiesStoreService.get(d.delegate.allowed.condition?.party?.id).pipe(
+                    map((p) => ({
+                        value:
+                            (getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
+                            'shop_is'
+                                ? p.shops.get(
+                                      getUnionValue(
+                                          d.delegate.allowed.condition?.party?.definition,
+                                      ),
+                                  )?.details?.name
+                                : p.wallets.get(
+                                      getUnionValue(
+                                          d.delegate.allowed.condition?.party?.definition,
+                                      ),
+                                  )?.name) ??
+                            `#${getUnionValue(d.delegate.allowed.condition?.party?.definition)}`,
+
+                        description: getUnionValue(d.delegate.allowed.condition?.party?.definition),
+                        link: () =>
+                            `/party/${d.delegate.allowed.condition.party.id}/routing-rules/${
+                                getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
                                 'shop_is'
-                                    ? p.shops.get(
-                                          getUnionValue(
-                                              d.delegate.allowed.condition?.party?.definition,
-                                          ),
-                                      )?.details?.name
-                                    : p.wallets.get(
-                                          getUnionValue(
-                                              d.delegate.allowed.condition?.party?.definition,
-                                          ),
-                                      )?.name) ??
-                                `#${getUnionValue(
-                                    d.delegate.allowed.condition?.party?.definition,
-                                )}`,
-                        ),
-                    ),
-            description: (d) => getUnionValue(d.delegate.allowed.condition?.party?.definition),
-            link: (d) =>
-                `/party/${d.delegate.allowed.condition.party.id}/routing-rules/${
-                    getUnionKey(d.delegate.allowed.condition?.party?.definition) === 'shop_is'
-                        ? 'payment'
-                        : 'withdrawal'
-                }/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                    ? 'payment'
+                                    : 'withdrawal'
+                            }/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                    })),
+                ),
         },
     ];
     terminalObj$ = defer(() => this.ref$).pipe(
