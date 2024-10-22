@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Sort } from '@angular/material/sort';
 import { TerminalObject } from '@vality/domain-proto/domain';
 import { DialogService, Column2 } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
@@ -112,7 +111,6 @@ export class TerminalsComponent {
     ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
-    sort: Sort = { active: 'data.name', direction: 'asc' };
 
     constructor(
         private domainStoreService: DomainStoreService,

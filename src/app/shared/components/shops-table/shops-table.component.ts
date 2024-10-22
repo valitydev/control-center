@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
-import { Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { Shop, Party, PartyID, RoutingRulesetRef } from '@vality/domain-proto/domain';
 import {
@@ -201,7 +200,6 @@ export class ShopsTableComponent {
             ),
         ),
     ];
-    sort: Sort = { active: 'shop.details.name', direction: 'asc' };
 
     constructor(
         private sidenavInfoService: SidenavInfoService,
