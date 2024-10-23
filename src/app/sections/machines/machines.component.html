@@ -33,7 +33,7 @@
         </ng-template>
     </v-filters>
 
-    <v-table2
+    <v-table
         [columns]="columns"
         [data]="machines$ | async"
         [hasMore]="hasMore$ | async"
@@ -61,5 +61,5 @@
                 Simple repair
             </button>
         </v-table-actions>
-    </v-table2>
+    </v-table>
 </cc-page-layout>

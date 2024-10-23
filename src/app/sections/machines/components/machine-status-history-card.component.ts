@@ -9,7 +9,7 @@ import { SidenavInfoModule } from '@cc/app/shared/components/sidenav-info';
 @Component({
     standalone: true,
     template: `<cc-card title="Machine #{{ id() }} Status History"
-        ><v-table2 [columns]="columns" [data]="history()"></v-table2
+        ><v-table [columns]="columns" [data]="history()"></v-table
     ></cc-card>`,
     imports: [TableModule, SidenavInfoModule],
 })

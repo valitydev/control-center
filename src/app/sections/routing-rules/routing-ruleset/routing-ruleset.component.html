@@ -15,7 +15,7 @@
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="addRule()">Add</button>
     </cc-page-layout-actions>
-    <v-table2
+    <v-table
         [(sort)]="sort"
         [columns]="columns"
         [data]="(candidates$ | async) || []"
@@ -23,5 +23,5 @@
         [rowDragDrop]="['priority']"
         standaloneFilter
         (rowDropped)="drop($event)"
-    ></v-table2>
+    ></v-table>
 </cc-page-layout>
