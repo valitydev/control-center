@@ -20,16 +20,15 @@ import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { createDomainObjectColumn, createPredicateColumn } from '@cc/app/shared';
 import {
     DomainThriftFormDialogComponent,
     DomainObjectCardComponent,
     UpdateThriftDialogComponent,
 } from '@cc/app/shared/components/thrift-api-crud';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table2';
 
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
-import { createPredicateColumn } from '../../../shared/utils/table2';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { RoutingRulesetService } from './routing-ruleset.service';

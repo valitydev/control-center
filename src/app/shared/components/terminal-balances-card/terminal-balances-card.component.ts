@@ -6,8 +6,9 @@ import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
 import { combineLatest } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';
 
+import { createCurrencyColumn } from '@cc/app/shared';
+
 import { AccountBalancesStoreService } from '../../../api/terminal-balance';
-import { createCurrencyColumn } from '../../utils/table2';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 

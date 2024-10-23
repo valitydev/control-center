@@ -5,7 +5,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
 
-import { createCurrencyColumn } from '@cc/app/shared/utils/table2';
+import { createCurrencyColumn } from '@cc/app/shared';
 
 import { CreateRevertDialogComponent } from './create-revert-dialog/create-revert-dialog.component';
 import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.service';

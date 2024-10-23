@@ -5,15 +5,14 @@ import { LoadOptions, Column2, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
-import { AmountCurrencyService } from '@cc/app/shared/services';
-
-import { createFailureColumn } from '../../../../shared';
 import {
     createPartyColumn,
     createShopColumn,
     createDomainObjectColumn,
     createCurrencyColumn,
-} from '../../../../shared/utils/table2';
+    createFailureColumn,
+} from '@cc/app/shared';
+import { AmountCurrencyService } from '@cc/app/shared/services';
 
 @Component({
     selector: 'cc-payments-table',

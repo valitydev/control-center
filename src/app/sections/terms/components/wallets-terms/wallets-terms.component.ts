@@ -32,15 +32,16 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { PageLayoutModule, WalletFieldModule } from '@cc/app/shared';
-import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
-import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import {
+    PageLayoutModule,
+    WalletFieldModule,
     createDomainObjectColumn,
     createPartyColumn,
     createWalletColumn,
-} from '@cc/app/shared/utils/table2';
+} from '@cc/app/shared';
+import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
+import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
+import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';

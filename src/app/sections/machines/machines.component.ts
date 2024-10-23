@@ -27,8 +27,8 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
+import { createDomainObjectColumn } from '@cc/app/shared';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table2';
 
 import { RepairManagementService } from '../../api/repairer';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';

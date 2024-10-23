@@ -23,9 +23,9 @@ import { MemoizeExpiring } from 'typescript-memoize';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
+import { createCurrencyColumn, createPartyColumn } from '@cc/app/shared';
 
 import { IdentityManagementService } from '../../api/identity';
-import { createCurrencyColumn, createPartyColumn } from '../../shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 import { PartyStoreService } from '../party';
 

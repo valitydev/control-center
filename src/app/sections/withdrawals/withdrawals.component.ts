@@ -25,10 +25,10 @@ import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
+import { createDomainObjectColumn, createCurrencyColumn } from '@cc/app/shared';
 
 import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
-import { createDomainObjectColumn, createCurrencyColumn } from '../../shared/utils/table2';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';

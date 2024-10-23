@@ -5,8 +5,9 @@ import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
 
 import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 
+import { createDomainObjectColumn } from '@cc/app/shared';
+
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
-import { createDomainObjectColumn } from '../../../../shared/utils/table2';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     getShopCashFlowSelectors,

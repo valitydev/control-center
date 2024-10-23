@@ -6,7 +6,7 @@ import { first, map, catchError } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table2';
+import { createDomainObjectColumn } from '@cc/app/shared';
 
 import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';

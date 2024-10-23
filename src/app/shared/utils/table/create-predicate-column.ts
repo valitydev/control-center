@@ -1,7 +1,7 @@
 import { Predicate } from '@vality/domain-proto/domain';
 import { createColumn } from '@vality/ng-core';
 
-import { formatPredicate } from '../table';
+import { formatPredicate } from '.';
 
 export const createPredicateColumn = createColumn(
     ({ predicate }: { predicate: Predicate }) => {

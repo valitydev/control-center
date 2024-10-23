@@ -25,7 +25,7 @@ import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { filter, map, shareReplay } from 'rxjs/operators';
 
-import { createCurrencyColumn } from '@cc/app/shared/utils/table2';
+import { createCurrencyColumn } from '@cc/app/shared';
 
 import { QueryDsl } from '../../api/fistful-stat';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';

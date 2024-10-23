@@ -7,13 +7,14 @@ import startCase from 'lodash-es/startCase';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { createPartyColumn, createPredicateColumn } from '@cc/app/shared';
+
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
 import {
     getTerminalShopWalletDelegates,
     TerminalShopWalletDelegate,
 } from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
-import { createPartyColumn, createPredicateColumn } from '../../utils/table2';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent, DomainObjectCardComponent } from '../thrift-api-crud';

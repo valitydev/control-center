@@ -29,18 +29,18 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
+import {
+    createShopColumn,
+    createPartyColumn,
+    createContractColumn,
+    createDomainObjectColumn,
+} from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
-import {
-    createShopColumn,
-    createPartyColumn,
-    createContractColumn,
-    createDomainObjectColumn,
-} from '../../../../shared/utils/table2';
 import { getFlatDecisions, FlatDecision } from '../../utils/get-flat-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 

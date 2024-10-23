@@ -5,7 +5,7 @@ import { Column2, createMenuColumn, LoadOptions } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { startCase } from 'lodash-es';
 
-import { createPartyColumn } from '@cc/app/shared/utils/table2';
+import { createPartyColumn } from '@cc/app/shared';
 
 @Component({
     selector: 'cc-claims-table',

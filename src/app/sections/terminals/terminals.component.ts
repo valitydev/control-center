@@ -3,6 +3,12 @@ import { TerminalObject } from '@vality/domain-proto/domain';
 import { DialogService, Column2 } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
+import {
+    createCurrencyColumn,
+    createPredicateColumn,
+    createDomainObjectColumn,
+} from '@cc/app/shared';
+
 import { DomainStoreService } from '../../api/domain-config';
 import { AccountBalancesStoreService } from '../../api/terminal-balance';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
@@ -13,11 +19,6 @@ import {
     CreateDomainObjectDialogComponent,
     getDomainObjectDetails,
 } from '../../shared/components/thrift-api-crud';
-import {
-    createCurrencyColumn,
-    createPredicateColumn,
-    createDomainObjectColumn,
-} from '../../shared/utils/table2';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
