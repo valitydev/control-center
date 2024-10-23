@@ -19,7 +19,7 @@ import {
     NotifyLogService,
     ConfirmDialogComponent,
     DialogResponseStatus,
-    Column2,
+    Column,
     createMenuColumn,
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
@@ -76,7 +76,7 @@ export class ShopsTableComponent {
 
     noPartyColumn = input(false, { transform: booleanAttribute });
 
-    columns: Column2<ShopParty>[] = [
+    columns: Column<ShopParty>[] = [
         {
             field: 'shop.id',
         },

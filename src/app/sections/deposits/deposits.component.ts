@@ -16,7 +16,7 @@ import {
     debounceTimeWithFirst,
     getValueChanges,
     countChanged,
-    Column2,
+    Column,
     getEnumKey,
     createMenuColumn,
 } from '@vality/ng-core';
@@ -53,7 +53,7 @@ export class DepositsComponent implements OnInit {
     deposits$ = this.fetchDepositsService.result$;
     hasMore$ = this.fetchDepositsService.hasMore$;
     isLoading$ = this.fetchDepositsService.isLoading$;
-    columns: Column2<StatDeposit>[] = [
+    columns: Column<StatDeposit>[] = [
         {
             field: 'id',
             cell: (d) => ({

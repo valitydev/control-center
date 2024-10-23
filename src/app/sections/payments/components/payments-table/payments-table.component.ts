@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { LoadOptions, Column2, createMenuColumn } from '@vality/ng-core';
+import { LoadOptions, Column, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
@@ -27,7 +27,7 @@ export class PaymentsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column2<StatPayment>[] = [
+    columns: Column<StatPayment>[] = [
         {
             field: 'id',
             cell: (d) => ({

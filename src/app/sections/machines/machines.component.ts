@@ -17,7 +17,7 @@ import {
     debounceTimeWithFirst,
     FetchOptions,
     getEnumKey,
-    Column2,
+    Column,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -65,7 +65,7 @@ export class MachinesComponent implements OnInit {
     });
     selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
-    columns: Column2<Machine>[] = [
+    columns: Column<Machine>[] = [
         { field: 'id', sticky: 'start' },
         { header: 'Namespace', field: 'ns' },
         { field: 'created_at', cell: { type: 'datetime' } },

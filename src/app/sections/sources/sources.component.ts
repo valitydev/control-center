@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Source } from '@vality/fistful-proto/internal/source';
-import { DialogService, Column2 } from '@vality/ng-core';
+import { DialogService, Column } from '@vality/ng-core';
 
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { FetchSourcesService } from './fetch-sources.service';
@@ -11,7 +11,7 @@ import { FetchSourcesService } from './fetch-sources.service';
 export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
-    columns: Column2<Source>[] = [
+    columns: Column<Source>[] = [
         { field: 'id' },
         { field: 'name' },
         { field: 'identity' },

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
 import {
-    Column2,
+    Column,
     createMenuColumn,
     DebounceTime,
     QueryParamsService,
@@ -23,7 +23,7 @@ export class SearchPartiesComponent {
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchPartiesService.isLoading$;
     parties$ = this.fetchPartiesService.result$;
-    columns: Column2<Party>[] = [
+    columns: Column<Party>[] = [
         { field: 'id' },
         {
             field: 'email',

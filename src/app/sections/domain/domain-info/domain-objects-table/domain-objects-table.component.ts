@@ -11,7 +11,7 @@ import {
     ActionsModule,
     DialogService,
     getValueChanges,
-    Column2,
+    Column,
     createMenuColumn,
 } from '@vality/ng-core';
 import sortBy from 'lodash-es/sortBy';
@@ -76,7 +76,7 @@ export class DomainObjectsTableComponent implements OnInit {
         map(([objects, types]) => objects.filter((o) => types.includes(o.type))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    columns: Column2<DomainObjectData>[] = [
+    columns: Column<DomainObjectData>[] = [
         {
             field: 'id',
             cell: (d) => ({ value: getDomainObjectDetails(d.obj).id }),

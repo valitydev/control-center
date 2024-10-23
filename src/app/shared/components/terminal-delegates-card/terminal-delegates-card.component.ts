@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { ComponentChanges, TableModule, Column2 } from '@vality/ng-core';
+import { ComponentChanges, TableModule, Column } from '@vality/ng-core';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
@@ -29,7 +29,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
     @Input() ref: TerminalRef;
 
     progress$ = this.domainStoreService.isLoading$;
-    columns: Column2<TerminalShopWalletDelegate>[] = [
+    columns: Column<TerminalShopWalletDelegate>[] = [
         {
             header: 'Routing Rule',
             field: 'terminalRule.data.name',

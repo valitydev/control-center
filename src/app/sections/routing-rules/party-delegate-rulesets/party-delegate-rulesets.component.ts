@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Column2, DialogService, NotifyLogService } from '@vality/ng-core';
+import { Column, DialogService, NotifyLogService } from '@vality/ng-core';
 import { first, map, catchError } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
@@ -25,7 +25,7 @@ import {
     providers: [PartyDelegateRulesetsService, RoutingRulesTypeService],
 })
 export class PartyDelegateRulesetsComponent {
-    columns: Column2<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
+    columns: Column<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
         {
             field: 'partyDelegate',
             cell: (d) => ({

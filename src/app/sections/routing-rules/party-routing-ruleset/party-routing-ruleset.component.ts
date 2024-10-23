@@ -6,7 +6,7 @@ import {
     DialogService,
     DialogResponseStatus,
     compareDifferentTypes,
-    Column2,
+    Column,
 } from '@vality/ng-core';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class PartyRoutingRulesetComponent {
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.domainStoreService.isLoading$;
 
-    shopsDisplayedColumns: Column2<RoutingRulesListItem<RoutingDelegate>>[] = [
+    shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         {
             field: 'id',
             header: 'Delegate (Ruleset Ref ID)',
@@ -54,7 +54,7 @@ export class PartyRoutingRulesetComponent {
             ),
         ),
     ];
-    walletsDisplayedColumns: Column2<RoutingRulesListItem<RoutingDelegate>>[] = [
+    walletsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         {
             field: 'id',
             header: 'Delegate (Ruleset Ref ID)',

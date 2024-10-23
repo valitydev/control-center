@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { InvoicePaymentID, InvoiceID, PartyID } from '@vality/domain-proto/domain';
-import { Column2, UpdateOptions } from '@vality/ng-core';
+import { Column, UpdateOptions } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
@@ -26,7 +26,7 @@ export class RefundsTableComponent implements OnInit {
     hasMore$ = this.fetchRefundsService.hasMore$;
     refunds$ = this.fetchRefundsService.result$;
 
-    columns: Column2<Refund>[] = [
+    columns: Column<Refund>[] = [
         { field: 'created_at', cell: { type: 'datetime' } },
         {
             field: 'status',

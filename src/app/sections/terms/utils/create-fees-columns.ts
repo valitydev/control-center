@@ -1,5 +1,5 @@
 import { CashFlowPosting } from '@vality/domain-proto/internal/domain';
-import { Column2 } from '@vality/ng-core';
+import { Column } from '@vality/ng-core';
 
 import { getCashVolumeParts, formatCashVolumes } from '../../../shared';
 
@@ -20,7 +20,7 @@ export function createFeesColumns<T extends object>({
     conditionLabel?: string;
     feeFilter?: (v: CashFlowPosting) => boolean;
     otherFilter?: (v: CashFlowPosting) => boolean;
-} = {}): Column2<object, T>[] {
+} = {}): Column<object, T>[] {
     function getFeeCashVolumeParts(d: T) {
         const decision = selectFlatDecision(d);
         return decision

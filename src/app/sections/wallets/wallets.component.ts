@@ -13,7 +13,7 @@ import {
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
-    Column2,
+    Column,
     DebounceTime,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
@@ -47,7 +47,7 @@ export class WalletsComponent implements OnInit {
     fullTextSearchWallets$ = this.fetchWalletsTextService.result$;
     fullTextSearchLoading$ = this.fetchWalletsTextService.isLoading$;
 
-    filterColumns: Column2<StatWallet>[] = [
+    filterColumns: Column<StatWallet>[] = [
         { field: 'id' },
         { field: 'name' },
         { field: 'currency_symbolic_code' },
@@ -92,7 +92,7 @@ export class WalletsComponent implements OnInit {
             { hidden: this.partyStoreService.party$.pipe(map((p) => !p)) },
         ),
     ];
-    fullTextSearchColumns: Column2<SearchWalletHit>[] = [
+    fullTextSearchColumns: Column<SearchWalletHit>[] = [
         { field: 'wallet.id' },
         { field: 'wallet.name' },
         createPartyColumn((d) => ({

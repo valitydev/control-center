@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TerminalObject } from '@vality/domain-proto/domain';
-import { DialogService, Column2 } from '@vality/ng-core';
+import { DialogService, Column } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
 
 import {
@@ -27,7 +27,7 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
     templateUrl: './terminals.component.html',
 })
 export class TerminalsComponent {
-    columns: Column2<TerminalObject>[] = [
+    columns: Column<TerminalObject>[] = [
         { field: 'ref.id', sticky: 'start' },
         {
             field: 'data.name',

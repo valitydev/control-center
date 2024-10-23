@@ -23,7 +23,7 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
-    Column2,
+    Column,
     cachedHeadMap,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
@@ -101,7 +101,7 @@ export class ShopsTermsComponent implements OnInit {
     );
     hasMore$ = this.shopsTermsService.hasMore$;
     isLoading$ = this.shopsTermsService.isLoading$;
-    columns: Column2<ShopTermSet, FlatDecision>[] = [
+    columns: Column<ShopTermSet, FlatDecision>[] = [
         createShopColumn(
             (d) => ({
                 shopId: d.shop_id,

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { TableModule, Column2 } from '@vality/ng-core';
+import { TableModule, Column } from '@vality/ng-core';
 import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
 import { combineLatest } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 export class TerminalBalancesCardComponent {
     terminalId = input<number>();
     providerId = input<number>();
-    columns: Column2<AccountBalance>[] = [
+    columns: Column<AccountBalance>[] = [
         { field: 'account_id' },
         createCurrencyColumn((d) => ({ code: d.balance.currency_code, amount: d.balance.amount }), {
             header: 'Balance',

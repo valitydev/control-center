@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
+import { TableModule, VSelectPipe, Column } from '@vality/ng-core';
 
 import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 
@@ -37,7 +37,7 @@ export class ShopsTermSetHistoryCardComponent {
         })),
     );
 
-    columns: Column2<TermSetHistory>[] = [
+    columns: Column<TermSetHistory>[] = [
         { field: 'applied_at', cell: { type: 'datetime' } },
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d?.term_set?.ref } }), {
             header: 'Term Set',

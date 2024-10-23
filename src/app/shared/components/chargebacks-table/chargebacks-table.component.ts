@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     LoadOptions,
-    Column2,
+    Column,
     TableModule,
     DialogService,
     createMenuColumn,
@@ -45,7 +45,7 @@ export class ChargebacksTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column2<StatChargeback>[] = [
+    columns: Column<StatChargeback>[] = [
         { field: 'chargeback_id', header: 'Id' },
         {
             field: 'chargeback_reason',

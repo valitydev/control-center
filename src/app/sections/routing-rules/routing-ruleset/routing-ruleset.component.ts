@@ -10,7 +10,7 @@ import {
     NotifyLogService,
     DragDrop,
     correctPriorities,
-    Column2,
+    Column,
     createMenuColumn,
 } from '@vality/ng-core';
 import { toJson, getUnionKey } from '@vality/ng-thrift';
@@ -59,7 +59,7 @@ export class RoutingRulesetComponent {
     routingRulesType$ = this.route.params.pipe(map((p) => p.type)) as Observable<RoutingRulesType>;
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.domainStoreService.isLoading$;
-    columns: Column2<RoutingCandidate>[] = [
+    columns: Column<RoutingCandidate>[] = [
         { field: 'priority' },
         {
             field: 'candidate',

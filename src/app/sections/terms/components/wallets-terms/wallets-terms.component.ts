@@ -26,7 +26,7 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
-    Column2,
+    Column,
     cachedHeadMap,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
@@ -105,7 +105,7 @@ export class WalletsTermsComponent implements OnInit {
     );
     hasMore$ = this.walletsTermsService.hasMore$;
     isLoading$ = this.walletsTermsService.isLoading$;
-    columns: Column2<WalletTermSet, FlatDecision>[] = [
+    columns: Column<WalletTermSet, FlatDecision>[] = [
         createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
             sticky: 'start',
         }),

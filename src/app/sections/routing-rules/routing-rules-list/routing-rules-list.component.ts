@@ -18,7 +18,7 @@ import {
     DialogService,
     ConfirmDialogComponent,
     NotifyLogService,
-    Column2,
+    Column,
     createMenuColumn,
 } from '@vality/ng-core';
 import { filter, switchMap, catchError } from 'rxjs/operators';
@@ -41,11 +41,11 @@ export type RoutingRulesListItem<T> = DelegateId & { item: T };
 })
 export class RoutingRulesListComponent<T> {
     @Input() data: T[];
-    displayedColumns = input<Column2<RoutingRulesListItem<T>>[]>([]);
+    displayedColumns = input<Column<RoutingRulesListItem<T>>[]>([]);
     @Input({ transform: booleanAttribute }) progress: boolean = false;
     @Output() toDetails = new EventEmitter<DelegateId>();
 
-    columns = computed<Column2<RoutingRulesListItem<T>>[]>(() =>
+    columns = computed<Column<RoutingRulesListItem<T>>[]>(() =>
         runInInjectionContext(this.injector, () => [
             ...this.displayedColumns(),
             createMenuColumn((d) => ({

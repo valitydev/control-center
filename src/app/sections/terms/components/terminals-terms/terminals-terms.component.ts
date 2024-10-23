@@ -10,7 +10,7 @@ import {
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
-    Column2,
+    Column,
     countChanged,
     createControls,
     debounceTimeWithFirst,
@@ -79,7 +79,7 @@ export class TerminalsTermsComponent implements OnInit {
     );
     hasMore$ = this.terminalsTermsService.hasMore$;
     isLoading$ = this.terminalsTermsService.isLoading$;
-    columns: Column2<TerminalTermSet>[] = [
+    columns: Column<TerminalTermSet>[] = [
         createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal_id } }), {
             header: 'Terminal',
             sticky: 'start',

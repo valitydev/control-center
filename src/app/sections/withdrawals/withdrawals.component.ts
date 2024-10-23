@@ -17,7 +17,7 @@ import {
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
-    Column2,
+    Column,
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
@@ -70,7 +70,7 @@ export class WithdrawalsComponent implements OnInit {
     withdrawals$ = this.fetchWithdrawalsService.result$;
     inProgress$ = this.fetchWithdrawalsService.isLoading$;
     hasMore$ = this.fetchWithdrawalsService.hasMore$;
-    columns: Column2<StatWithdrawal>[] = [
+    columns: Column<StatWithdrawal>[] = [
         { field: 'id', sticky: 'start' },
         { field: 'external_id' },
         { field: 'created_at', cell: { type: 'datetime' } },

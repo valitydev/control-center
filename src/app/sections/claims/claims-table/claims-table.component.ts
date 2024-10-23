@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Claim } from '@vality/domain-proto/claim_management';
-import { Column2, createMenuColumn, LoadOptions } from '@vality/ng-core';
+import { Column, createMenuColumn, LoadOptions } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { startCase } from 'lodash-es';
 
@@ -21,7 +21,7 @@ export class ClaimsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column2<Claim>[] = [
+    columns: Column<Claim>[] = [
         { field: 'id', cell: (d) => ({ link: () => `/party/${d.party_id}/claim/${d.id}` }) },
         createPartyColumn((d) => ({ id: d.party_id }), { hidden: toObservable(this.noParty) }),
         {

@@ -20,7 +20,7 @@ import {
     loadFileContent,
     getValueChanges,
     NotifyLogService,
-    Column2,
+    Column,
 } from '@vality/ng-core';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
@@ -117,7 +117,7 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    columns = computed<Column2<CsvObject<R, O>>[]>(() => [
+    columns = computed<Column<CsvObject<R, O>>[]>(() => [
         ...this.propsList().map((p) => ({
             field: p,
             header: startCase(p),

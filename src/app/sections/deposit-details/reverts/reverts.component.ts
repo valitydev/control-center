@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DepositStatus, StatDeposit, StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
-import { DialogService, UpdateOptions, Column2 } from '@vality/ng-core';
+import { DialogService, UpdateOptions, Column } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class RevertsComponent implements OnInit {
     reverts$ = this.fetchRevertsService.result$;
     hasMore$ = this.fetchRevertsService.hasMore$;
     isLoading$ = this.fetchRevertsService.isLoading$;
-    columns: Column2<StatDepositRevert>[] = [
+    columns: Column<StatDepositRevert>[] = [
         { field: 'id' },
         {
             field: 'status',
