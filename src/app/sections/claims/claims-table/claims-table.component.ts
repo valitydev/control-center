@@ -28,14 +28,16 @@ export class ClaimsTableComponent {
             field: 'status',
             cell: (d) => ({
                 value: startCase(getUnionKey(d.status)),
-                tags: {
-                    pending: 'pending',
-                    review: 'pending',
-                    pending_acceptance: 'pending',
-                    accepted: 'success',
-                    denied: 'warn',
-                    revoked: 'neutral',
-                },
+                color: (
+                    {
+                        pending: 'pending',
+                        review: 'pending',
+                        pending_acceptance: 'pending',
+                        accepted: 'success',
+                        denied: 'warn',
+                        revoked: 'neutral',
+                    } as const
+                )[getUnionKey(d.status)],
             }),
         },
         { field: 'revision' },
