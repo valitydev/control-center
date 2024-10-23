@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Claim } from '@vality/domain-proto/claim_management';
-import { Column2, LoadOptions, createMenuColumn } from '@vality/ng-core';
+import { Column2, createMenuColumn, LoadOptions } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
+import { startCase } from 'lodash-es';
 
 import { createPartyColumn } from '@cc/app/shared/utils/table2';
 
