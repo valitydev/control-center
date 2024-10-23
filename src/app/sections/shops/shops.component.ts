@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
-import { Column, progressTo, NotifyLogService } from '@vality/ng-core';
+import { progressTo, NotifyLogService } from '@vality/ng-core';
 import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
 import {
     switchMap,
@@ -43,7 +43,6 @@ export class ShopsComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    columns: Column<SearchShopHit>[] = [{ field: 'shop.details.name', description: 'shop.id' }];
     progress$ = new BehaviorSubject(0);
 
     private updateShops$ = new BehaviorSubject<void>(undefined);

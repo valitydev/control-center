@@ -12,7 +12,6 @@ import {
     createCurrencyColumn,
     createFailureColumn,
 } from '@cc/app/shared';
-import { AmountCurrencyService } from '@cc/app/shared/services';
 
 @Component({
     selector: 'cc-payments-table',
@@ -88,10 +87,7 @@ export class PaymentsTableComponent {
         })),
     ];
 
-    constructor(
-        private amountCurrencyService: AmountCurrencyService,
-        private router: Router,
-    ) {}
+    constructor(private router: Router) {}
 
     private toDetails(data: StatPayment) {
         return void this.router.navigate([
