@@ -1,5 +1,5 @@
 import { ProvisionTermSet, CashFlowPosting } from '@vality/domain-proto/internal/domain';
-import { Column2, TreeDataItem } from '@vality/ng-core';
+import { Column, TreeDataItem } from '@vality/ng-core';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision, getFlatDecisions } from '../../../utils/get-flat-decisions';
@@ -55,4 +55,4 @@ export const TERMINAL_FEES_COLUMNS = [
         feeFilter: isWithdrawalFee,
         selectFlatDecision: (d) => d.withdrawal,
     }),
-] satisfies Column2<object, TerminalChild>[];
+] satisfies Column<object, TerminalChild>[];

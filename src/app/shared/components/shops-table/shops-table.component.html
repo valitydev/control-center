@@ -1,5 +1,4 @@
-<v-table2
-    [(sort)]="sort"
+<v-table
     [columns]="columns"
     [data]="shops()"
     [externalFilter]="filterChange.observed"
@@ -8,4 +7,4 @@
     standaloneFilter
     (filterChange)="filterChange.emit($event)"
     (update)="update.emit()"
-></v-table2>
+></v-table>

@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
+import { TableModule, VSelectPipe, Column } from '@vality/ng-core';
 
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/internal/dominator';
 
+import { createDomainObjectColumn } from '@cc/app/shared';
+
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
-import { createDomainObjectColumn } from '../../../../shared/utils/table2';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     WALLET_FEES_COLUMNS,
@@ -36,7 +37,7 @@ export class WalletsTermSetHistoryCardComponent {
         })),
     );
 
-    columns: Column2<TermSetHistory>[] = [
+    columns: Column<TermSetHistory>[] = [
         { field: 'applied_at', cell: { type: 'datetime' } },
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d?.term_set?.ref } }), {
             header: 'Term Set',

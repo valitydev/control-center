@@ -16,7 +16,7 @@
         </ng-template>
     </v-filters>
 
-    <v-table2
+    <v-table
         [columns]="columns"
         [hasMore]="hasMore$ | async"
         [maxSize]="250"
@@ -24,5 +24,5 @@
         [treeData]="terms$ | async"
         (more)="more()"
         (update)="update($event)"
-    ></v-table2>
+    ></v-table>
 </cc-page-layout>

@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
-import { Sort } from '@angular/material/sort';
 import { TerminalObject } from '@vality/domain-proto/domain';
-import { DialogService, Column2 } from '@vality/ng-core';
+import { DialogService, Column } from '@vality/ng-core';
 import { map } from 'rxjs/operators';
+
+import {
+    createCurrencyColumn,
+    createPredicateColumn,
+    createDomainObjectColumn,
+} from '@cc/app/shared';
 
 import { DomainStoreService } from '../../api/domain-config';
 import { AccountBalancesStoreService } from '../../api/terminal-balance';
@@ -14,11 +19,6 @@ import {
     CreateDomainObjectDialogComponent,
     getDomainObjectDetails,
 } from '../../shared/components/thrift-api-crud';
-import {
-    createCurrencyColumn,
-    createPredicateColumn,
-    createDomainObjectColumn,
-} from '../../shared/utils/table2';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
@@ -27,7 +27,7 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
     templateUrl: './terminals.component.html',
 })
 export class TerminalsComponent {
-    columns: Column2<TerminalObject>[] = [
+    columns: Column<TerminalObject>[] = [
         { field: 'ref.id', sticky: 'start' },
         {
             field: 'data.name',
@@ -112,7 +112,6 @@ export class TerminalsComponent {
     ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
-    sort: Sort = { active: 'data.name', direction: 'asc' };
 
     constructor(
         private domainStoreService: DomainStoreService,

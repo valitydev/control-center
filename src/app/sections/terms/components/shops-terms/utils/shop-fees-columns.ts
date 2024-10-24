@@ -5,7 +5,7 @@ import {
     ShopID,
     TermSetHierarchyObject,
 } from '@vality/domain-proto/internal/domain';
-import { Column2 } from '@vality/ng-core';
+import { Column } from '@vality/ng-core';
 
 import { formatCashVolumes } from '../../../../../shared';
 import { createFeesColumns } from '../../../utils/create-fees-columns';
@@ -57,4 +57,4 @@ export const SHOP_FEES_COLUMNS = [
         }),
     },
     BASE_SHOP_FEES_COLUMNS.at(-1),
-] satisfies Column2<object, FlatDecision>[];
+] satisfies Column<object, FlatDecision>[];

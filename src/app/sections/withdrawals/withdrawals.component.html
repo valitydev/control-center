@@ -24,7 +24,7 @@
         </ng-template>
     </v-filters>
 
-    <v-table2
+    <v-table
         [(rowSelected)]="selected"
         [columns]="columns"
         [data]="withdrawals$ | async"
@@ -47,5 +47,5 @@
                 Create adjustments
             </button>
         </v-table-actions>
-    </v-table2>
+    </v-table>
 </cc-page-layout>

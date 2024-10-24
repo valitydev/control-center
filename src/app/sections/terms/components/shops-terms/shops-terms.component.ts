@@ -23,24 +23,24 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
-    Column2,
+    Column,
     cachedHeadMap,
 } from '@vality/ng-core';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
+import {
+    createShopColumn,
+    createPartyColumn,
+    createContractColumn,
+    createDomainObjectColumn,
+} from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
-import {
-    createShopColumn,
-    createPartyColumn,
-    createContractColumn,
-    createDomainObjectColumn,
-} from '../../../../shared/utils/table2';
 import { getFlatDecisions, FlatDecision } from '../../utils/get-flat-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
@@ -101,7 +101,7 @@ export class ShopsTermsComponent implements OnInit {
     );
     hasMore$ = this.shopsTermsService.hasMore$;
     isLoading$ = this.shopsTermsService.isLoading$;
-    columns: Column2<ShopTermSet, FlatDecision>[] = [
+    columns: Column<ShopTermSet, FlatDecision>[] = [
         createShopColumn(
             (d) => ({
                 shopId: d.shop_id,

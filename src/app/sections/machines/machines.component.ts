@@ -17,7 +17,7 @@ import {
     debounceTimeWithFirst,
     FetchOptions,
     getEnumKey,
-    Column2,
+    Column,
 } from '@vality/ng-core';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
@@ -27,8 +27,8 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
+import { createDomainObjectColumn } from '@cc/app/shared';
 import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table2';
 
 import { RepairManagementService } from '../../api/repairer';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
@@ -65,12 +65,12 @@ export class MachinesComponent implements OnInit {
     });
     selected$ = new BehaviorSubject<Machine[]>([]);
     status = repairer.RepairStatus;
-    columns: Column2<Machine>[] = [
+    columns: Column<Machine>[] = [
         { field: 'id', sticky: 'start' },
         { header: 'Namespace', field: 'ns' },
         { field: 'created_at', cell: { type: 'datetime' } },
-        createDomainObjectColumn((d) => ({ ref: { terminal: { id: Number(d.provider_id) } } }), {
-            header: 'Terminal',
+        createDomainObjectColumn((d) => ({ ref: { provider: { id: Number(d.provider_id) } } }), {
+            header: 'Provider',
         }),
         {
             field: 'status',

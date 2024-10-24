@@ -1,5 +1,6 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { RoutingCandidate } from '@vality/domain-proto/domain';
 import { Predicate } from '@vality/domain-proto/internal/domain';
@@ -7,10 +8,10 @@ import {
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
-    Column,
-    createOperationColumn,
     DragDrop,
     correctPriorities,
+    Column,
+    createMenuColumn,
 } from '@vality/ng-core';
 import { toJson, getUnionKey } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -19,16 +20,15 @@ import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
 import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
+import { createDomainObjectColumn, createPredicateColumn } from '@cc/app/shared';
 import {
     DomainThriftFormDialogComponent,
     DomainObjectCardComponent,
     UpdateThriftDialogComponent,
 } from '@cc/app/shared/components/thrift-api-crud';
 
-import { createPredicateColumn } from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
-import { createTerminalColumn } from '../../../shared/utils/table/create-terminal-column';
 import { RoutingRulesService } from '../services/routing-rules';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
@@ -60,95 +60,114 @@ export class RoutingRulesetComponent {
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.domainStoreService.isLoading$;
     columns: Column<RoutingCandidate>[] = [
-        { field: 'priority', sortable: true },
+        { field: 'priority' },
         {
             field: 'candidate',
-            description: 'description',
-            sortable: true,
-            formatter: (d) => this.getCandidateIdx(d).pipe(map((idx) => `#${idx + 1}`)),
-            click: (d) => {
-                combineLatest([this.getCandidateIdx(d), this.routingRulesetService.ruleset$])
-                    .pipe(takeUntilDestroyed(this.destroyRef))
-                    .subscribe(([idx, ruleset]) => {
-                        this.sidenavInfoService.toggle(CandidateCardComponent, {
-                            idx,
-                            ref: ruleset.ref,
-                        });
-                    });
-            },
+            cell: (d) =>
+                this.getCandidateIdx(d).pipe(
+                    map((idx) => ({
+                        value: `#${idx + 1}`,
+                        description: d.description,
+                        click: () => {
+                            this.routingRulesetService.ruleset$
+                                .pipe(first())
+                                .subscribe((ruleset) => {
+                                    this.sidenavInfoService.toggle(CandidateCardComponent, {
+                                        idx,
+                                        ref: ruleset.ref,
+                                    });
+                                });
+                        },
+                    })),
+                ),
         },
-        createTerminalColumn((d) => d.terminal.id),
-        createPredicateColumn('global_allow', (d) =>
-            combineLatest([
-                this.domainStoreService.getObjects('terminal'),
-                this.routingRulesType$,
-            ]).pipe(
-                map(([terminals, type]) => {
-                    const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
-                    return type === RoutingRulesType.Payment
-                        ? terms?.payments?.global_allow
-                        : terms?.wallet?.withdrawals?.global_allow;
-                }),
-            ),
-        ),
-        createPredicateColumn('allowed', (d) => d.allowed, {
-            click: (d) => {
-                this.getCandidateIdx(d)
-                    .pipe(takeUntilDestroyed(this.destroyRef))
-                    .subscribe((idx) => {
-                        void this.toggleAllow(idx);
-                    });
-            },
+        createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal } }), {
+            header: 'Terminal',
         }),
-        { field: 'weight', sortable: true },
-        {
-            field: 'pin',
-            formatter: (d) => JSON.stringify(toJson(d.pin?.features)),
-            hide: true,
-        },
-        createOperationColumn<RoutingCandidate>([
-            {
-                label: 'Edit',
-                click: (d) => {
-                    this.getCandidateIdx(d)
-                        .pipe(takeUntilDestroyed(this.destroyRef))
-                        .subscribe((idx) => {
-                            this.editRule(idx);
-                        });
-                },
-            },
-            {
-                label: 'Duplicate',
-                click: (d) => {
-                    this.getCandidateIdx(d)
-                        .pipe(takeUntilDestroyed(this.destroyRef))
-                        .subscribe((idx) => {
-                            void this.duplicateRule(idx);
-                        });
-                },
-            },
-            {
-                label: (d) => (togglePredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow'),
-                click: (d) => {
+        createPredicateColumn(
+            (d) =>
+                combineLatest([
+                    this.domainStoreService.getObjects('terminal'),
+                    this.routingRulesType$,
+                ]).pipe(
+                    map(([terminals, type]) => {
+                        const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
+                        return {
+                            predicate:
+                                type === RoutingRulesType.Payment
+                                    ? terms?.payments?.global_allow
+                                    : terms?.wallet?.withdrawals?.global_allow,
+                        };
+                    }),
+                ),
+            { header: 'Global Allow' },
+        ),
+        createPredicateColumn((d) => ({ predicate: d.allowed }), {
+            header: 'Allowed',
+            cell: (d) => ({
+                click: () => {
                     this.getCandidateIdx(d)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
                             void this.toggleAllow(idx);
                         });
                 },
-            },
-            {
-                label: 'Remove',
-                click: (d) => {
-                    this.getCandidateIdx(d)
-                        .pipe(takeUntilDestroyed(this.destroyRef))
-                        .subscribe((idx) => {
-                            void this.removeRule(idx);
-                        });
+            }),
+        }),
+        { field: 'weight' },
+        {
+            field: 'pin',
+            cell: (d) => ({
+                value: JSON.stringify(toJson(d.pin?.features)),
+            }),
+            hidden: true,
+        },
+        createMenuColumn((d) => ({
+            items: [
+                {
+                    label: 'Edit',
+                    click: () => {
+                        this.getCandidateIdx(d)
+                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .subscribe((idx) => {
+                                this.editRule(idx);
+                            });
+                    },
                 },
-            },
-        ]),
+                {
+                    label: 'Duplicate',
+                    click: () => {
+                        this.getCandidateIdx(d)
+                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .subscribe((idx) => {
+                                void this.duplicateRule(idx);
+                            });
+                    },
+                },
+                {
+                    label: togglePredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow',
+                    click: () => {
+                        this.getCandidateIdx(d)
+                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .subscribe((idx) => {
+                                void this.toggleAllow(idx);
+                            });
+                    },
+                },
+                {
+                    label: 'Remove',
+                    click: () => {
+                        this.getCandidateIdx(d)
+                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .subscribe((idx) => {
+                                void this.removeRule(idx);
+                            });
+                    },
+                },
+            ],
+        })),
     ];
+    sort: Sort = { active: 'priority', direction: 'desc' };
 
     constructor(
         private dialog: DialogService,

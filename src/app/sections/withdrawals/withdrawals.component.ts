@@ -17,7 +17,7 @@ import {
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
-    Column2,
+    Column,
 } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
@@ -25,10 +25,10 @@ import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { WithdrawalParams } from '@cc/app/api/fistful-stat';
+import { createDomainObjectColumn, createCurrencyColumn } from '@cc/app/shared';
 
 import { createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
-import { createDomainObjectColumn, createCurrencyColumn } from '../../shared/utils/table2';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
@@ -70,7 +70,7 @@ export class WithdrawalsComponent implements OnInit {
     withdrawals$ = this.fetchWithdrawalsService.result$;
     inProgress$ = this.fetchWithdrawalsService.isLoading$;
     hasMore$ = this.fetchWithdrawalsService.hasMore$;
-    columns: Column2<StatWithdrawal>[] = [
+    columns: Column<StatWithdrawal>[] = [
         { field: 'id', sticky: 'start' },
         { field: 'external_id' },
         { field: 'created_at', cell: { type: 'datetime' } },

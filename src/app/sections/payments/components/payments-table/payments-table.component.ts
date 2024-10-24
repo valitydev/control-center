@@ -1,19 +1,17 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { LoadOptions, Column2, createMenuColumn } from '@vality/ng-core';
+import { LoadOptions, Column, createMenuColumn } from '@vality/ng-core';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
-import { AmountCurrencyService } from '@cc/app/shared/services';
-
-import { createFailureColumn } from '../../../../shared';
 import {
     createPartyColumn,
     createShopColumn,
     createDomainObjectColumn,
     createCurrencyColumn,
-} from '../../../../shared/utils/table2';
+    createFailureColumn,
+} from '@cc/app/shared';
 
 @Component({
     selector: 'cc-payments-table',
@@ -29,7 +27,7 @@ export class PaymentsTableComponent {
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 
-    columns: Column2<StatPayment>[] = [
+    columns: Column<StatPayment>[] = [
         {
             field: 'id',
             cell: (d) => ({
@@ -89,10 +87,7 @@ export class PaymentsTableComponent {
         })),
     ];
 
-    constructor(
-        private amountCurrencyService: AmountCurrencyService,
-        private router: Router,
-    ) {}
+    constructor(private router: Router) {}
 
     private toDetails(data: StatPayment) {
         return void this.router.navigate([

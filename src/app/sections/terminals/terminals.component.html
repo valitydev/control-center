@@ -2,13 +2,12 @@
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="create()">Create</button>
     </cc-page-layout-actions>
-    <v-table2
-        [(sort)]="sort"
+    <v-table
         [columns]="columns"
         [data]="data$ | async"
         [progress]="progress$ | async"
         name="terminals"
         standaloneFilter
         (update)="update()"
-    ></v-table2>
+    ></v-table>
 </cc-page-layout>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, computed } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TableModule, VSelectPipe, Column2 } from '@vality/ng-core';
+import { TableModule, VSelectPipe, Column } from '@vality/ng-core';
 
 import type {
     TerminalTermSet,
@@ -29,7 +29,7 @@ export class TerminalsTermSetHistoryCardComponent {
         ),
     );
 
-    columns: Column2<ProvisionTermSetHistory>[] = [
+    columns: Column<ProvisionTermSetHistory>[] = [
         { field: 'applied_at', cell: { type: 'datetime' } },
         ...TERMINAL_FEES_COLUMNS,
     ];

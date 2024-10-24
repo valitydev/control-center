@@ -1,95 +1,71 @@
+import { getCurrencySymbol } from '@angular/common';
 import { inject, LOCALE_ID } from '@angular/core';
-import {
-    CurrencyColumn,
-    PossiblyAsync,
-    getPossiblyAsyncObservable,
-    Column,
-    switchCombineWith,
-    formatCurrency,
-} from '@vality/ng-core';
-import isNil from 'lodash-es/isNil';
-import { combineLatest, switchMap, of, forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { createColumn, formatCurrency } from '@vality/ng-core';
+import { groupBy, uniq } from 'lodash-es';
+import { of, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
+import { DomainStoreService } from '../../../api/domain-config';
 import { AmountCurrencyService } from '../../services';
 
-export function createCurrencyColumn<T extends object>(
-    field: CurrencyColumn<T>['field'],
-    selectAmount: (d: T) => PossiblyAsync<number>,
-    selectSymbolicCode: (d: T) => PossiblyAsync<string>,
-    params: Partial<CurrencyColumn<T>> = {},
-): CurrencyColumn<T> {
-    const amountCurrencyService = inject(AmountCurrencyService);
-    return {
-        field,
-        type: 'currency',
-        formatter: (d: T) =>
-            combineLatest([
-                getPossiblyAsyncObservable(selectAmount(d)),
-                getPossiblyAsyncObservable(selectSymbolicCode(d)),
-            ]).pipe(
-                switchMap(([amount, code]) =>
-                    isNil(amount) ? of(undefined) : amountCurrencyService.toMajor(amount, code),
-                ),
-            ),
-        typeParameters: {
-            currencyCode: (d: T) => getPossiblyAsyncObservable(selectSymbolicCode(d)),
-            exponent: (d: T) =>
-                getPossiblyAsyncObservable(selectSymbolicCode(d)).pipe(
-                    switchMap((code) => amountCurrencyService.getCurrency(code)),
-                    map((c) => c?.exponent),
-                ),
-        },
-        ...params,
-    };
+interface CurrencyValue {
+    amount: number;
+    code: string;
 }
 
-export function createCurrenciesColumn<T extends object>(
-    field: CurrencyColumn<T>['field'],
-    selectAmountSymbolicCode: (d: T) => PossiblyAsync<{ amount: number; symbolicCode: string }[]>,
-    params: Partial<CurrencyColumn<T>> = {},
-): Column<T> {
+function formatCurrencyValue(value: CurrencyValue) {
     const amountCurrencyService = inject(AmountCurrencyService);
-    const localeId = inject(LOCALE_ID);
-
-    function getBalancesList(amountCodes$: Observable<{ amount: number; symbolicCode: string }[]>) {
-        return amountCodes$.pipe(
-            switchCombineWith((amountCodes) =>
-                !amountCodes?.length
-                    ? ([] as Observable<number[]>[])
-                    : [
-                          forkJoin(
-                              amountCodes.map((a) =>
-                                  amountCurrencyService.toMajor(a.amount, a.symbolicCode),
-                              ),
-                          ),
-                      ],
-            ),
-            map(([amountCodes, majorAmounts]) =>
-                amountCodes
-                    .map((a, idx) =>
-                        formatCurrency(
-                            majorAmounts[idx],
-                            a.symbolicCode,
-                            undefined,
-                            localeId,
-                            undefined,
-                            true,
-                        ),
-                    )
-                    .join(' / '),
-            ),
-        );
-    }
-
-    const getAmountCodes = (d: T) =>
-        getPossiblyAsyncObservable(selectAmountSymbolicCode(d)).pipe(
-            map((amountCodes) => (amountCodes || []).sort((a, b) => b.amount - a.amount)),
-        );
-    return {
-        field,
-        formatter: (d: T) => getBalancesList(getAmountCodes(d).pipe(map((a) => a?.slice?.(0, 1)))),
-        description: (d: T) => getBalancesList(getAmountCodes(d).pipe(map((a) => a?.slice?.(1)))),
-        ...params,
-    } as Column<T>;
+    const locale = inject(LOCALE_ID);
+    return amountCurrencyService.getCurrency(value.code).pipe(
+        map((currencyObj) =>
+            formatCurrency(value.amount, value.code, 'long', locale, currencyObj?.exponent),
+        ),
+        startWith(
+            (value.amount === 0 ? '0' : '…') +
+                ' ' +
+                getCurrencySymbol(value.code, 'narrow', locale),
+        ),
+    );
 }
+
+function formatCurrencyValues(values: CurrencyValue[], separator = ' | ') {
+    return combineLatest(values.map(formatCurrencyValue)).pipe(map((v) => v.join(separator)));
+}
+
+export const createCurrencyColumn = createColumn(
+    (currencyValue: CurrencyValue | { values: CurrencyValue[]; isSum?: boolean }) => {
+        const isSum = 'isSum' in currencyValue ? currencyValue.isSum : false;
+        const currencyValues = ('values' in currencyValue ? currencyValue.values : [currencyValue])
+            .filter(Boolean)
+            .sort((a, b) => b.amount - a.amount);
+        if (!currencyValues?.length) {
+            return of(undefined);
+        }
+        const currencyValuesByCode = groupBy(currencyValues, 'code');
+        let currencyValuesByCodeList = uniq(currencyValues.map((v) => v.code)).map(
+            (code) => currencyValuesByCode[code],
+        );
+        if (isSum) {
+            currencyValuesByCodeList = currencyValuesByCodeList.map((g) =>
+                g.reduce(
+                    (sum, v) => {
+                        sum[0].amount += v.amount;
+                        return sum;
+                    },
+                    [{ code: g[0].code, amount: 0 }],
+                ),
+            );
+        }
+        const domainStoreService = inject(DomainStoreService);
+        return combineLatest([
+            combineLatest(currencyValuesByCodeList.map((g) => formatCurrencyValues(g))),
+            domainStoreService.isLoading$,
+        ]).pipe(
+            map(([currencyValueStrings, inProgress]) => ({
+                value: currencyValueStrings[0],
+                description: currencyValueStrings.slice(1).join('; '),
+                inProgress,
+            })),
+        );
+    },
+);

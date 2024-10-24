@@ -1,6 +1,6 @@
 <div style="display: flex; flex-direction: column; gap: 24px">
     <h1 class="mat-headline-5">Reverts</h1>
-    <v-table2
+    <v-table
         [columns]="columns"
         [data]="reverts$ | async"
         [hasMore]="hasMore$ | async"
@@ -18,5 +18,5 @@
                 Create revert
             </button>
         </v-table-actions>
-    </v-table2>
+    </v-table>
 </div>
