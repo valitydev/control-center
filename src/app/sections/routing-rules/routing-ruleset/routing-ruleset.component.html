@@ -9,20 +9,19 @@
             '/' +
             (partyRulesetRefID$ | async)
     ]"
+    fullHeight
     (idLinkClick)="openRefId()"
 >
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="addRule()">Add</button>
     </cc-page-layout-actions>
     <v-table
+        [(sort)]="sort"
         [columns]="columns"
         [data]="(candidates$ | async) || []"
         [progress]="isLoading$ | async"
         [rowDragDrop]="['priority']"
-        [size]="100"
-        [sort]="{ active: 'priority', direction: 'desc' }"
-        noActions
-        sortOnFront
+        standaloneFilter
         (rowDropped)="drop($event)"
     ></v-table>
 </cc-page-layout>

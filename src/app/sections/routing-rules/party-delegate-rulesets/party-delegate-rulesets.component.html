@@ -1,13 +1,14 @@
 <cc-page-layout
     [progress]="isLoading$ | async"
     [title]="(routingRulesTypeService.routingRulesType$ | async | titlecase) + ' Routing Rules'"
+    fullHeight
 >
     <cc-page-layout-actions>
         <button color="primary" mat-raised-button (click)="attachNewRuleset()">Add</button>
     </cc-page-layout-actions>
     <cc-routing-rules-list
         [data]="data$ | async"
-        [displayedColumns]="displayedColumns"
+        [displayedColumns]="columns"
         [progress]="isLoading$ | async"
         (toDetails)="navigateToPartyRuleset($event.parentRefId, $event.delegateIdx)"
     ></cc-routing-rules-list>

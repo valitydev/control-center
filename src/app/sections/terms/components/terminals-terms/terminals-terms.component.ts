@@ -10,7 +10,7 @@ import {
 } from '@vality/dominator-proto/internal/dominator';
 import {
     clean,
-    Column2,
+    Column,
     countChanged,
     createControls,
     debounceTimeWithFirst,
@@ -30,10 +30,9 @@ import { Overwrite } from 'utility-types';
 
 import type { ProviderRef, TerminalRef } from '@vality/dominator-proto/internal/proto/domain';
 
-import { PageLayoutModule } from '@cc/app/shared';
+import { PageLayoutModule, createDomainObjectColumn } from '@cc/app/shared';
 import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { createDomainObjectColumn } from '@cc/app/shared/utils/table2/create-domain-object-column';
 import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
@@ -80,7 +79,7 @@ export class TerminalsTermsComponent implements OnInit {
     );
     hasMore$ = this.terminalsTermsService.hasMore$;
     isLoading$ = this.terminalsTermsService.isLoading$;
-    columns: Column2<TerminalTermSet>[] = [
+    columns: Column<TerminalTermSet>[] = [
         createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal_id } }), {
             header: 'Terminal',
             sticky: 'start',

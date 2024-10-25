@@ -4,9 +4,12 @@ import {
     EventEmitter,
     Input,
     Output,
-    OnChanges,
     booleanAttribute,
     DestroyRef,
+    input,
+    computed,
+    runInInjectionContext,
+    Injector,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
@@ -14,10 +17,9 @@ import {
     DialogResponseStatus,
     DialogService,
     ConfirmDialogComponent,
-    Column,
-    createOperationColumn,
-    ComponentChanges,
     NotifyLogService,
+    Column,
+    createMenuColumn,
 } from '@vality/ng-core';
 import { filter, switchMap, catchError } from 'rxjs/operators';
 
@@ -30,62 +32,27 @@ type DelegateId = {
     delegateIdx: number;
 };
 
+export type RoutingRulesListItem<T> = DelegateId & { item: T };
+
 @Component({
     selector: 'cc-routing-rules-list',
     templateUrl: 'routing-rules-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RoutingRulesListComponent<
-    T extends { [N in PropertyKey]: unknown } & DelegateId = {
-        [N in PropertyKey]: unknown;
-    } & DelegateId,
-> implements OnChanges
-{
+export class RoutingRulesListComponent<T> {
     @Input() data: T[];
-    @Input() displayedColumns: { key: keyof T; name: string }[];
+    displayedColumns = input<Column<RoutingRulesListItem<T>>[]>([]);
     @Input({ transform: booleanAttribute }) progress: boolean = false;
-
     @Output() toDetails = new EventEmitter<DelegateId>();
 
-    columns: Column<T>[] = [];
-
-    constructor(
-        private dialogService: DialogService,
-        private log: NotifyLogService,
-        private routingRulesService: RoutingRulesService,
-        private route: ActivatedRoute,
-        private destroyRef: DestroyRef,
-    ) {}
-
-    ngOnChanges(changes: ComponentChanges<RoutingRulesListComponent<T>>) {
-        if (changes.displayedColumns) {
-            this.columns = [
-                ...this.displayedColumns.map(
-                    (c, idx): Column<T> => ({
-                        field: `${c.key as string}.text`,
-                        formatter:
-                            idx === 0
-                                ? (d) => {
-                                      const v = d?.[c.key] as { caption: string; text: string };
-                                      return v?.text || `#${v?.caption}`;
-                                  }
-                                : undefined,
-                        click:
-                            idx === 0
-                                ? (d) =>
-                                      this.toDetails.emit({
-                                          parentRefId: d?.parentRefId,
-                                          delegateIdx: d?.delegateIdx,
-                                      })
-                                : undefined,
-                        header: c.name,
-                        description: `${c.key as string}.caption`,
-                    }),
-                ),
-                createOperationColumn([
+    columns = computed<Column<RoutingRulesListItem<T>>[]>(() =>
+        runInInjectionContext(this.injector, () => [
+            ...this.displayedColumns(),
+            createMenuColumn((d) => ({
+                items: [
                     {
                         label: 'Details',
-                        click: (d) =>
+                        click: () =>
                             this.toDetails.emit({
                                 parentRefId: d?.parentRefId,
                                 delegateIdx: d?.delegateIdx,
@@ -93,24 +60,33 @@ export class RoutingRulesListComponent<
                     },
                     {
                         label: 'Change delegate ruleset',
-                        click: (d) => this.changeDelegateRuleset(d),
+                        click: () => this.changeDelegateRuleset(d),
                     },
                     {
                         label: 'Change main ruleset',
-                        click: (d) => this.changeTarget(d),
+                        click: () => this.changeTarget(d),
                     },
                     {
                         label: 'Clone delegate ruleset',
-                        click: (d) => this.cloneDelegateRuleset(d),
+                        click: () => this.cloneDelegateRuleset(d),
                     },
                     {
                         label: 'Delete',
-                        click: (d) => this.delete(d),
+                        click: () => this.delete(d),
                     },
-                ]),
-            ];
-        }
-    }
+                ],
+            })),
+        ]),
+    );
+
+    constructor(
+        private dialogService: DialogService,
+        private log: NotifyLogService,
+        private routingRulesService: RoutingRulesService,
+        private route: ActivatedRoute,
+        private destroyRef: DestroyRef,
+        private injector: Injector,
+    ) {}
 
     changeDelegateRuleset(delegateId: DelegateId) {
         this.dialogService

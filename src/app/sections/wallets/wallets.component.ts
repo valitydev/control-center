@@ -13,7 +13,7 @@ import {
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
-    Column2,
+    Column,
     DebounceTime,
 } from '@vality/ng-core';
 import isNil from 'lodash-es/isNil';
@@ -23,9 +23,9 @@ import { MemoizeExpiring } from 'typescript-memoize';
 
 import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
 import { ManagementService } from '@cc/app/api/wallet';
+import { createCurrencyColumn, createPartyColumn } from '@cc/app/shared';
 
 import { IdentityManagementService } from '../../api/identity';
-import { createCurrencyColumn, createPartyColumn } from '../../shared/utils/table2';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 import { PartyStoreService } from '../party';
 
@@ -47,7 +47,7 @@ export class WalletsComponent implements OnInit {
     fullTextSearchWallets$ = this.fetchWalletsTextService.result$;
     fullTextSearchLoading$ = this.fetchWalletsTextService.isLoading$;
 
-    filterColumns: Column2<StatWallet>[] = [
+    filterColumns: Column<StatWallet>[] = [
         { field: 'id' },
         { field: 'name' },
         { field: 'currency_symbolic_code' },
@@ -92,7 +92,7 @@ export class WalletsComponent implements OnInit {
             { hidden: this.partyStoreService.party$.pipe(map((p) => !p)) },
         ),
     ];
-    fullTextSearchColumns: Column2<SearchWalletHit>[] = [
+    fullTextSearchColumns: Column<SearchWalletHit>[] = [
         { field: 'wallet.id' },
         { field: 'wallet.name' },
         createPartyColumn((d) => ({
