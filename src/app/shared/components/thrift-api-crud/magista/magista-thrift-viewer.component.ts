@@ -18,6 +18,6 @@ export class MagistaThriftViewerComponent<T> extends ThriftViewerSuperclass<T> {
 
     defaultNamespace = 'magista';
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
-    extensions$: Observable<MetadataViewExtension[]> =
+    override extensions$: Observable<MetadataViewExtension[]> =
         this.domainMetadataViewExtensionsService.extensions$;
 }

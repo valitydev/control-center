@@ -20,7 +20,7 @@ import { ThriftEditorModule } from '../thrift-editor';
 })
 export class FistfulThriftFormComponent extends BaseThriftFormSuperclass {
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
-    internalExtensions$ = of<MetadataFormExtension[]>([
+    override internalExtensions$ = of<MetadataFormExtension[]>([
         {
             determinant: (data) => of(isTypeWithAliases(data, 'SourceID', 'fistful')),
             extension: () => of({ generate: () => of(short().uuid()), isIdentifier: true }),

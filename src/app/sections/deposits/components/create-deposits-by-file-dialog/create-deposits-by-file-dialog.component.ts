@@ -29,7 +29,7 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     void,
     DepositState[]
 > {
-    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     progress$ = new BehaviorSubject(0);
     selected: CsvDeposit[] = [];

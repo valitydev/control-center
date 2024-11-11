@@ -62,7 +62,7 @@ export class ExtensionFieldComponent<T>
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         this.control.valueChanges
             .pipe(
                 switchMap(() => this.converter$),
@@ -81,11 +81,11 @@ export class ExtensionFieldComponent<T>
             });
     }
 
-    validate(): ValidationErrors | null {
+    override validate(): ValidationErrors | null {
         return null;
     }
 
-    ngOnChanges(changes: ComponentChanges<ExtensionFieldComponent<T>>) {
+    override ngOnChanges(changes: ComponentChanges<ExtensionFieldComponent<T>>) {
         if (changes.data) {
             this.data$.next(this.data);
             this.control.setValidators(this.data.isRequired ? Validators.required : []);

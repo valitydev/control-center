@@ -45,7 +45,7 @@ export class ThriftFormComponent<T>
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         super.ngOnInit();
         this.extensionResult$
             .pipe(
@@ -58,7 +58,7 @@ export class ThriftFormComponent<T>
             });
     }
 
-    ngOnChanges() {
+    override ngOnChanges() {
         if (this.metadata && this.namespace && this.type) {
             try {
                 this.data = new ThriftData(

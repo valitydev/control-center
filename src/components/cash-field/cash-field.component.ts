@@ -110,7 +110,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         super.ngOnInit();
         combineLatest([
             combineLatest([getValueChanges(this.amountControl), this.currencyExponent$]).pipe(
@@ -139,7 +139,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
             });
     }
 
-    validate(): ValidationErrors | null {
+    override validate(): ValidationErrors | null {
         return !this.amountControl.value || !this.currencyControl.value
             ? { invalidCash: true }
             : null;

@@ -26,7 +26,7 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     claim = input<Claim>();
 
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
-    internalExtensions$ = combineLatest([
+    override internalExtensions$ = combineLatest([
         this.domainMetadataFormExtensionsService.extensions$,
         combineLatest([toObservable(this.party), toObservable(this.claim)]).pipe(
             filter(([party, claim]) => !!party && !!claim),

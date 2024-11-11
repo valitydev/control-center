@@ -29,7 +29,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
         createModification?: DeepPartial<Modification>;
     }
 > {
-    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     control = this.fb.control<Modification | ModificationChange>(
         this.dialogData.modificationUnit?.modification ||

@@ -26,7 +26,7 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
     },
     { object?: T; result?: R; error?: unknown }
 > {
-    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     control = this.fb.control<T>((this.dialogData.object as T) ?? null);
 

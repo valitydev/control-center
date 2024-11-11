@@ -52,7 +52,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         combineLatest([getValueChanges(this.control), getValueChanges(this.labelControl)])
             .pipe(
                 map(([value, labelValue]) =>
@@ -67,7 +67,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         return super.ngOnInit();
     }
 
-    ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
+    override ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
         if (changes.data) {
             const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
             Object.keys(this.control.controls).forEach((name) => {
@@ -93,7 +93,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         this.setLabelControl(!!(value && Object.keys(value).length));
     }
 
-    validate(_control: AbstractControl): ValidationErrors | null {
+    override validate(_control: AbstractControl): ValidationErrors | null {
         return this.labelControl.value ? getErrorsTree(this.control) : null;
     }
 

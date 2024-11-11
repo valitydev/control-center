@@ -113,7 +113,7 @@ export class SourceCashFieldComponent
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         super.ngOnInit();
         combineLatest([
             combineLatest([getValueChanges(this.amountControl), this.currencyExponent$]).pipe(
@@ -142,7 +142,7 @@ export class SourceCashFieldComponent
             });
     }
 
-    validate(): ValidationErrors | null {
+    override validate(): ValidationErrors | null {
         return !this.amountControl.value || !this.sourceControl.value
             ? { invalidCash: true }
             : null;

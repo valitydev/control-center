@@ -45,7 +45,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)
             .pipe(
                 map(() => {
@@ -64,14 +64,14 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         });
     }
 
-    ngOnChanges(changes: ComponentChanges<UnionFieldComponent<T>>) {
+    override ngOnChanges(changes: ComponentChanges<UnionFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.data) {
             this.data$.next(this.data);
         }
     }
 
-    validate(): ValidationErrors | null {
+    override validate(): ValidationErrors | null {
         return (
             this.fieldControl.errors ||
             (this.fieldControl.value ? getErrorsTree(this.internalControl) : null)

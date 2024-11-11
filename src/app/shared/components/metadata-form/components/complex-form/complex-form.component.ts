@@ -58,7 +58,7 @@ export class ComplexFormComponent<V, K = never>
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         merge(this.valueControls.valueChanges, this.keyControls.valueChanges)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
@@ -94,7 +94,7 @@ export class ComplexFormComponent<V, K = never>
         updateFormArray(this.valueControls, values);
     }
 
-    validate(): ValidationErrors | null {
+    override validate(): ValidationErrors | null {
         return getErrorsTree(this.keyControls) || getErrorsTree(this.valueControls);
     }
 

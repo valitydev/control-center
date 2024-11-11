@@ -77,7 +77,7 @@ export class CreateShopDialogComponent
     extends DialogSuperclass<CreateShopDialogComponent, { party: Party; claim: Claim }>
     implements OnInit
 {
-    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
     extensions: MetadataFormExtension[] = [
         {
             determinant: (d) =>

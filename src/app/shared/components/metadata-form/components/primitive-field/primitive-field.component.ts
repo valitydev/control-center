@@ -100,7 +100,7 @@ export class PrimitiveFieldComponent<T>
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         super.ngOnInit();
         getValueChanges(this.control)
             .pipe(takeUntilDestroyed(this.destroyRef))
@@ -109,7 +109,7 @@ export class PrimitiveFieldComponent<T>
             });
     }
 
-    ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
+    override ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.data) {
             this.data$.next(this.data);

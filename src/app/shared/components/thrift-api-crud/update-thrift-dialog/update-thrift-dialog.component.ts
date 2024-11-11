@@ -28,14 +28,14 @@ export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
     },
     { object: T }
 > {
-    static defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     progress$ = new BehaviorSubject(0);
 
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);
 
-    closeWithSuccess() {
+    override closeWithSuccess() {
         if (this.dialogData.action) {
             this.dialogData
                 .action()
