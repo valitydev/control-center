@@ -85,7 +85,7 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
         ...(this.props().required ?? []),
         ...(this.props().optional ?? []),
     ]);
-    selectedCsv = model<CsvObject<R, O>[]>();
+    selectedCsv = model<CsvObject<R, O>[]>([]);
 
     hasHeaderControl = new FormControl(null, { nonNullable: true });
     upload$ = new BehaviorSubject<File | null>(null);
@@ -126,12 +126,16 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
             field: p,
             header: startCase(p),
         })),
-        ...(this.errors()?.size
-            ? [
-                  { field: 'error_code', formatter: (d) => this.errors().get(d)?.name },
-                  { field: 'error_message', formatter: (d) => this.errors().get(d)?.message },
-              ]
-            : []),
+        {
+            field: 'error_code',
+            cell: (d) => ({ value: this.errors()?.get(d)?.name }),
+            hidden: !this.errors()?.size,
+        },
+        {
+            field: 'error_message',
+            cell: (d) => ({ value: this.errors()?.get(d)?.message }),
+            hidden: !this.errors()?.size,
+        },
     ]);
 
     constructor(
@@ -153,7 +157,9 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
             });
     }
 
-    async loadFile(file: File) {
-        this.upload$.next(file);
+    async loadFile(file?: File | null) {
+        if (file) {
+            this.upload$.next(file);
+        }
     }
 }

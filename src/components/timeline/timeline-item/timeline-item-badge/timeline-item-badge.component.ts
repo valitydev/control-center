@@ -8,7 +8,7 @@ import { Color, StatusColor } from '@cc/app/styles';
     styleUrls: ['timeline-item-badge.component.scss'],
 })
 export class TimelineItemBadgeComponent {
-    @Input() color: StatusColor | Color;
+    @Input() color!: StatusColor | Color;
 
     statusColorEnum = StatusColor;
     colorEnum = Color;

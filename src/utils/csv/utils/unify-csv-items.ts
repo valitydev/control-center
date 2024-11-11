@@ -6,7 +6,7 @@ export function unifyCsvItems<T>(
         return [];
     }
     if (Array.isArray(csv?.[0])) {
-        return csv.map((d) =>
+        return (csv as string[][]).map((d) =>
             Object.fromEntries(d.map((prop, idx) => [defaultProps[idx], prop])),
         ) as T[];
     }
