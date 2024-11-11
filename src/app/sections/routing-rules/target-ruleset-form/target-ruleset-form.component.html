@@ -12,7 +12,7 @@
         </mat-radio-group>
 
         <div
-            *ngIf="form.controls.target.value === target.PaymentInstitution"
+            *ngIf="form.controls['target'].value === target.PaymentInstitution"
             style="display: flex; flex-direction: column; gap: 16px"
         >
             <mat-form-field>
@@ -34,7 +34,7 @@
                 <mat-divider></mat-divider>
             </ng-container>
         </div>
-        <mat-form-field *ngIf="form.controls.target.value === target.Manual">
+        <mat-form-field *ngIf="form.controls['target'].value === target.Manual">
             <mat-label>Main Ruleset</mat-label>
             <mat-select formControlName="mainRulesetRefID" required>
                 <mat-option *ngFor="let i of rulesets$ | async" [value]="i.ref.id">

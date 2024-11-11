@@ -132,7 +132,7 @@ export class DepositDetailsComponent implements OnInit {
         this.route.params
             .pipe(
                 take(1),
-                map((p) => p.depositID),
+                map((p) => p['depositID']),
             )
             .subscribe((depositID) => this.fetchDepositService.receiveDeposit(depositID));
     }

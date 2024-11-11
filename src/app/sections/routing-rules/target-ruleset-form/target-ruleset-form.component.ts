@@ -61,17 +61,17 @@ export class TargetRulesetFormComponent implements OnChanges {
         private routingRulesService: RoutingRulesService,
         private destroyRef: DestroyRef,
     ) {
-        this.form.controls.target.valueChanges
+        this.form.controls['target'].valueChanges
             .pipe(startWith(this.form.value.target), takeUntilDestroyed(this.destroyRef))
             .subscribe((target) => {
                 switch (target) {
                     case Target.Manual:
-                        this.form.controls.paymentInstitution.disable();
-                        this.form.controls.mainRulesetRefID.enable();
+                        this.form.controls['paymentInstitution'].disable();
+                        this.form.controls['mainRulesetRefID'].enable();
                         break;
                     case Target.PaymentInstitution:
-                        this.form.controls.paymentInstitution.enable();
-                        this.form.controls.mainRulesetRefID.disable();
+                        this.form.controls['paymentInstitution'].enable();
+                        this.form.controls['mainRulesetRefID'].disable();
                         break;
                 }
             });

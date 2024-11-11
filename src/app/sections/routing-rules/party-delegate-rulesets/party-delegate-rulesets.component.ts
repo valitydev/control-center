@@ -61,7 +61,7 @@ export class PartyDelegateRulesetsComponent {
     );
 
     private get partyID() {
-        return this.route.snapshot.params.partyID as string;
+        return this.route.snapshot.params['partyID'] as string;
     }
 
     constructor(
@@ -80,7 +80,7 @@ export class PartyDelegateRulesetsComponent {
         this.dialogService
             .open(AttachNewRulesetDialogComponent, {
                 partyID: this.partyID,
-                type: this.route.snapshot.params.type,
+                type: this.route.snapshot.params['type'],
             })
             .afterClosed()
             .pipe(
@@ -102,7 +102,7 @@ export class PartyDelegateRulesetsComponent {
                     'party',
                     this.partyID,
                     'routing-rules',
-                    this.route.snapshot.params.type as RoutingRulesType,
+                    this.route.snapshot.params['type'] as RoutingRulesType,
                     parent.data.decisions.delegates[delegateIdx].ruleset.id,
                 ]);
             });

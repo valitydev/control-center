@@ -26,11 +26,11 @@ export interface DelegateWithPaymentInstitution {
 export class PartyDelegateRulesetsService {
     private partyID$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        map((p) => p.partyID),
+        map((p) => p['partyID']),
     ) as Observable<PartyID>;
     private routingRulesType$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        map((p) => p.type),
+        map((p) => p['type']),
     ) as Observable<RoutingRulesType>;
 
     constructor(

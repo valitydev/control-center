@@ -110,7 +110,7 @@ export class RoutingRulesListComponent<T> {
             .open(ChangeTargetDialogComponent, {
                 mainRulesetRefID: delegateId.parentRefId,
                 delegateIdx: delegateId.delegateIdx,
-                type: this.route.snapshot.params.type,
+                type: this.route.snapshot.params['type'],
             })
             .afterClosed()
             .pipe(takeUntilDestroyed(this.destroyRef))

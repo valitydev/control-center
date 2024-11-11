@@ -131,9 +131,9 @@ export class PartyRoutingRulesetComponent {
             .subscribe((ruleset) =>
                 this.router.navigate([
                     'party',
-                    this.route.snapshot.params.partyID,
+                    this.route.snapshot.params['partyID'],
                     'routing-rules',
-                    this.route.snapshot.params.type,
+                    this.route.snapshot.params['type'],
                     parentRefId,
                     'delegate',
                     ruleset?.data?.decisions?.delegates?.[delegateIdx]?.ruleset?.id,

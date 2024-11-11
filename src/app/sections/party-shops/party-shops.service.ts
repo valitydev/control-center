@@ -17,7 +17,7 @@ export class PartyShopsService {
     ).pipe(
         startWith(null),
         debounceTimeWithFirst(this.debounceTimeMs),
-        map(() => this.route.snapshot.params.partyID),
+        map(() => this.route.snapshot.params['partyID']),
         switchMap((partyID) =>
             this.partyManagementService.Get(partyID).pipe(progressTo(this.progress$)),
         ),

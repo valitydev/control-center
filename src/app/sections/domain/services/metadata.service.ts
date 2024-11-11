@@ -56,7 +56,7 @@ export class MetadataService {
 
     getDomainFields(): Observable<Field[]> {
         return this.metadata$.pipe(
-            map((m) => m.find(({ name }) => name === 'domain').ast.union.DomainObject),
+            map((m) => m.find(({ name }) => name === 'domain').ast.union['DomainObject']),
         );
     }
 }
