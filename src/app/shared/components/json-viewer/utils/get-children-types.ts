@@ -15,7 +15,7 @@ export function getChildrenTypes(sourceData: ThriftData): {
                 case 'union':
                     return { fields: (data as ThriftData<ValueType, 'union'>).ast };
             }
-            return;
+            return undefined;
         }
         case TypeGroup.Complex: {
             if ((data as ThriftData<SetType | MapType | ListType>).type.name === 'map') {
@@ -29,4 +29,5 @@ export function getChildrenTypes(sourceData: ThriftData): {
             };
         }
     }
+    return undefined;
 }

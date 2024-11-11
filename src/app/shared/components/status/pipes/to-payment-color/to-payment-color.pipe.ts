@@ -26,4 +26,5 @@ const getStatusColor = (status: string): StatusColor => {
         case 'refunded':
             return StatusColor.Neutral;
     }
+    return undefined;
 };

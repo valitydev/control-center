@@ -52,6 +52,7 @@ export class ComplexFormComponent<V, K = never>
         if ('keyType' in this.data.type) {
             return this.data.type.keyType;
         }
+        return undefined;
     }
 
     constructor(private destroyRef: DestroyRef) {
