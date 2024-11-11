@@ -15,11 +15,11 @@
             "prefix": "cc",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-devkit/build-angular:application",
                     "options": {
                         "outputPath": "dist/control-center",
                         "index": "src/index.html",
-                        "main": "src/main.ts",
+                        "browser": "src/main.ts",
                         "polyfills": ["zone.js"],
                         "tsConfig": "tsconfig.app.json",
                         "inlineStyleLanguage": "scss",
@@ -33,38 +33,20 @@
                             }
                         ],
                         "styles": ["src/app/styles/styles.scss"],
-                        "scripts": [],
-                        "allowedCommonJsDependencies": [
-                            "uuid",
-                            "short-uuid",
-                            "js-sha256",
-                            "jwt-decode",
-                            "base64-js",
-                            "@vality/deanonimus-proto",
-                            "@vality/domain-proto",
-                            "@vality/dominant-cache-proto",
-                            "@vality/machinegun-proto",
-                            "@vality/magista-proto",
-                            "@vality/messages-proto",
-                            "@vality/repairer-proto",
-                            "@vality/fistful-proto",
-                            "@vality/file-storage-proto",
-                            "@vality/thrift-ts",
-                            "papaparse"
-                        ]
+                        "scripts": []
                     },
                     "configurations": {
                         "production": {
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "7mb",
-                                    "maximumError": "8mb"
+                                    "maximumWarning": "500kB",
+                                    "maximumError": "1MB"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "2kb",
-                                    "maximumError": "4kb"
+                                    "maximumWarning": "2kB",
+                                    "maximumError": "4kB"
                                 }
                             ],
                             "fileReplacements": [
@@ -76,12 +58,9 @@
                             "outputHashing": "all"
                         },
                         "development": {
-                            "buildOptimizer": false,
                             "optimization": false,
-                            "vendorChunk": true,
                             "extractLicenses": false,
-                            "sourceMap": true,
-                            "namedChunks": true
+                            "sourceMap": true
                         },
                         "stage": {
                             "fileReplacements": [
@@ -110,10 +89,7 @@
                     "defaultConfiguration": "development"
                 },
                 "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
-                    "options": {
-                        "buildTarget": "control-center:build"
-                    }
+                    "builder": "@angular-devkit/build-angular:extract-i18n"
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
