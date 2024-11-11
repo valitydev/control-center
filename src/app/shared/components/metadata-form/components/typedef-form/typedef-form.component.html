@@ -4,6 +4,6 @@
     [formControl]="control"
     [metadata]="data.metadata"
     [namespace]="data.namespace"
-    [parent]="data"
+    [parent]="$any(data)"
     [type]="data.ast.type"
 ></cc-metadata-form>

@@ -27,7 +27,7 @@
         [formControl]="internalControl"
         [metadata]="data.metadata"
         [namespace]="data.namespace"
-        [parent]="data"
+        [parent]="$any(data)"
         [type]="fieldControl.value.type"
     ></cc-metadata-form>
 </div>

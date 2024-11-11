@@ -15,6 +15,7 @@ import {
     createControlProviders,
     getValueChanges,
     debounceTimeWithFirst,
+    SelectFieldComponent,
 } from '@vality/ng-core';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
 import { catchError, map, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
@@ -34,8 +35,8 @@ export class MerchantFieldComponent
 {
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
-    @Input() size?: string;
-    @Input() appearance?: string;
+    @Input() size?: SelectFieldComponent['size'];
+    @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;
 
     options$ = new ReplaySubject<Option<PartyID>[]>(1);

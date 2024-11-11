@@ -12,11 +12,11 @@
             *ngFor="let field of data.ast"
             [extensions]="extensions"
             [field]="field"
-            [formControl]="control.get(field.name)"
+            [formControl]="$any(control.get(field.name))"
             [metadata]="data.metadata"
             [namespace]="data.namespace"
             [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
-            [parent]="data"
+            [parent]="$any(data)"
             [type]="field.type"
         ></cc-metadata-form>
     </ng-container>

@@ -31,7 +31,7 @@ import { TargetRuleset } from './types/target-ruleset';
 export class TargetRulesetFormComponent implements OnChanges {
     @Output() valid = new EventEmitter<boolean>();
     @Output() valueChanges = new EventEmitter<TargetRuleset>();
-    @Input() value: TargetRuleset;
+    @Input() value: Partial<TargetRuleset>;
     @Input() type: RoutingRulesType;
 
     form = this.fb.group({

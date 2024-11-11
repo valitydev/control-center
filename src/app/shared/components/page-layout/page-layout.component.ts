@@ -22,7 +22,7 @@ import { map } from 'rxjs/operators';
 export class PageLayoutComponent {
     @Input() title!: string;
     @Input() description?: string;
-    @Input() id?: string;
+    @Input() id?: string | number;
     @Input() progress?: boolean;
     @Input() tags?: { value: string; color: Color }[] | null;
 

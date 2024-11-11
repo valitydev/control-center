@@ -22,6 +22,6 @@
         [progress]="isLoading$ | async"
         [rowDragDrop]="['priority']"
         standaloneFilter
-        (rowDropped)="drop($event)"
+        (rowDropped)="drop($any($event))"
     ></v-table>
 </cc-page-layout>

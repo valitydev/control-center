@@ -40,7 +40,7 @@ export type RoutingRulesListItem<T> = DelegateId & { item: T };
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RoutingRulesListComponent<T> {
-    @Input() data: T[];
+    @Input() data: RoutingRulesListItem<T>[];
     displayedColumns = input<Column<RoutingRulesListItem<T>>[]>([]);
     @Input({ transform: booleanAttribute }) progress: boolean = false;
     @Output() toDetails = new EventEmitter<DelegateId>();
