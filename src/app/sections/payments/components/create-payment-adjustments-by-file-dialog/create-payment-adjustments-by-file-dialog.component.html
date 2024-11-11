@@ -1,11 +1,11 @@
 <v-dialog [progress]="progress$ | async" title="Create payment adjustments">
     <cc-upload-csv
         [(selected)]="selected"
-        [errors]="errors"
+        [errors]="$any(errors)"
         [formatDescription]="[
             'scenario.status_change.target_status: pending, processed, captured, cancelled, refunded, failed, charged_back'
         ]"
-        [props]="props"
+        [props]="$any(props)"
     ></cc-upload-csv>
     <v-dialog-actions>
         @if (successfully?.length) {

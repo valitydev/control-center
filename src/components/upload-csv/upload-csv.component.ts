@@ -68,12 +68,16 @@ function getCsvObjectErrors<R extends string, O extends string>(
     templateUrl: './upload-csv.component.html',
     styles: ``,
 })
-export class UploadCsvComponent<R extends string, O extends string> implements OnInit {
+export class UploadCsvComponent<R extends string = string, O extends string = string>
+    implements OnInit
+{
     props = input<CsvProps<R, O>>({});
     formatDescription = input<string[]>();
     errors = input<Map<CsvProps<R, O>, { name?: string; message?: string }>>();
 
-    selected = input<CsvObject<R, O>[]>([]);
+    selected = input<CsvObject<R, O>[], unknown>([], {
+        transform: (v) => (v as CsvObject<R, O>[]) ?? [],
+    });
     @Output() selectedChange = new EventEmitter<CsvObject<R, O>[]>();
 
     delimiter = DEFAULT_DELIMITER;

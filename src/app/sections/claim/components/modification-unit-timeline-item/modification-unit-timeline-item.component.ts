@@ -15,10 +15,11 @@ import {
     NotifyLogService,
     inProgressFrom,
     progressTo,
+    getImportValue,
 } from '@vality/ng-core';
-import { getUnionValue } from '@vality/ng-thrift';
+import { getUnionValue, ThriftAstMetadata } from '@vality/ng-thrift';
 import isEmpty from 'lodash-es/isEmpty';
-import { BehaviorSubject, switchMap, from } from 'rxjs';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
 import { ClaimManagementService } from '@cc/app/api/claim-management';
@@ -46,7 +47,7 @@ export class ModificationUnitTimelineItemComponent {
     @Output() claimChanged = new EventEmitter<void>();
 
     isLoading$ = inProgressFrom(() => this.progress$);
-    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     private progress$ = new BehaviorSubject(0);

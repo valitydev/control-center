@@ -9,8 +9,10 @@ import {
     forkJoinToResult,
     splitResultsErrors,
     ForkJoinErrorResult,
+    getImportValue,
 } from '@vality/ng-core';
-import { BehaviorSubject, from } from 'rxjs';
+import { ThriftAstMetadata } from '@vality/ng-thrift';
+import { BehaviorSubject } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
@@ -27,7 +29,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
 > {
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
-    metadata$ = from(import('@vality/domain-proto/metadata.json').then((m) => m.default));
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 
