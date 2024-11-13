@@ -33,7 +33,7 @@ export class PartyStoreService {
     );
 
     private get partyId() {
-        return this.route.snapshot.params.partyID;
+        return this.route.snapshot.params['partyID'];
     }
 
     constructor(

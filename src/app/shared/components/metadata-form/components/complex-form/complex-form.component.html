@@ -48,7 +48,7 @@
                         <span class="mat-body-2">Key</span>
                         <cc-metadata-form
                             [extensions]="extensions"
-                            [formControl]="keyControls.controls[i]"
+                            [formControl]="$any(keyControls.controls[i])"
                             [metadata]="data.metadata"
                             [namespace]="data.namespace"
                             [parent]="data"
@@ -58,7 +58,7 @@
                     </ng-container>
                     <cc-metadata-form
                         [extensions]="extensions"
-                        [formControl]="valueControl"
+                        [formControl]="$any(valueControl)"
                         [metadata]="data.metadata"
                         [namespace]="data.namespace"
                         [parent]="data"

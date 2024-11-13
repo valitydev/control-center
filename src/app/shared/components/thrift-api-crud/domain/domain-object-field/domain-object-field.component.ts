@@ -53,7 +53,7 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
         super();
     }
 
-    ngOnChanges(changes: ComponentChanges<DomainObjectFieldComponent<T>>) {
+    override ngOnChanges(changes: ComponentChanges<DomainObjectFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.name) {
             this.name$.next(this.name);

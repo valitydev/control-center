@@ -56,7 +56,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
         super();
     }
 
-    validate(control: AbstractControl): ValidationErrors | null {
+    override validate(control: AbstractControl): ValidationErrors | null {
         if (this.kind === EditorKind.Editor) {
             return this.editorError ? { jsonParse: this.editorError } : null;
         }

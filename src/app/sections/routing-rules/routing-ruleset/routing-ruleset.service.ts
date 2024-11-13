@@ -15,16 +15,16 @@ import { RoutingRulesService as RoutingRulesDamselService } from '../services/ro
 @Injectable()
 export class RoutingRulesetService {
     partyID$: Observable<string> = this.route.params.pipe(
-        map((r) => r.partyID),
+        map((r) => r['partyID']),
         shareReplay(1),
     );
     partyRulesetRefID$: Observable<number> = this.route.params.pipe(
-        map((r) => r.partyRefID),
+        map((r) => r['partyRefID']),
         map((p) => +p),
         shareReplay(1),
     );
     refID$: Observable<number> = this.route.params.pipe(
-        map((r) => r.refID),
+        map((r) => r['refID']),
         map((p) => +p),
         shareReplay(1),
     );

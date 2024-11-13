@@ -145,7 +145,7 @@ export class MetadataViewItem {
 
     constructor(
         private value: unknown,
-        private key?: MetadataViewItem,
+        public key?: MetadataViewItem,
         private data?: ThriftData,
         private extensions?: MetadataViewExtension[],
     ) {}

@@ -6,7 +6,7 @@
     [rowSelected]="selected"
     rowSelectable
     (more)="more.emit()"
-    (rowSelectedChange)="selectedChange.emit($event)"
+    (rowSelectedChange)="selectedChange.emit($any($event))"
     (update)="update.emit($event)"
 >
     <v-table-actions>

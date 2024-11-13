@@ -41,7 +41,7 @@
         [rowSelected]="selected$ | async"
         rowSelectable
         (more)="more()"
-        (rowSelectedChange)="selected$.next($event)"
+        (rowSelectedChange)="selected$.next($any($event))"
         (update)="reload($event)"
     >
         <v-table-actions>

@@ -10,7 +10,7 @@ import { RoutingRulesType } from './types/routing-rules-type';
 export class RoutingRulesTypeService {
     routingRulesType$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        map((p) => (getEnumValues(RoutingRulesType).includes(p.type) ? p.type : null)),
+        map((p) => (getEnumValues(RoutingRulesType).includes(p['type']) ? p['type'] : null)),
     ) as Observable<RoutingRulesType>;
 
     constructor(private route: ActivatedRoute) {}

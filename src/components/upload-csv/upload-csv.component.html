@@ -15,7 +15,7 @@
                 <code
                     *ngIf="props().required"
                     style="word-wrap: break-word; word-break: break-word; font-weight: bold"
-                    >{{ props().required.join(delimiter) }}</code
+                    >{{ props().required?.join(delimiter) }}</code
                 ><code
                     *ngIf="props().optional"
                     style="word-wrap: break-word; word-break: break-word; font-style: italic"
@@ -23,7 +23,7 @@
                 ><code
                     *ngIf="props().optional"
                     style="word-wrap: break-word; word-break: break-word; font-style: italic"
-                    >{{ props().optional.join(delimiter) }}</code
+                    >{{ props().optional?.join(delimiter) }}</code
                 >
             </div>
             <div class="mat-body-1">

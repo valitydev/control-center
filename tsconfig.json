@@ -1,16 +1,16 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": "./",
         "outDir": "./dist/out-tsc",
-        "forceConsistentCasingInFileNames": true,
         "strict": false,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
         "esModuleInterop": true,
-        "noImplicitOverride": false,
-        "noPropertyAccessFromIndexSignature": false,
-        "noImplicitReturns": false,
-        "noFallthroughCasesInSwitch": false,
         "sourceMap": true,
         "declaration": false,
         "experimentalDecorators": true,
@@ -19,19 +19,16 @@
         "target": "ES2022",
         "module": "ES2022",
         "useDefineForClassFields": false,
-        "lib": ["ESNext", "DOM"],
+        "lib": ["ES2022", "dom"],
         "resolveJsonModule": true,
-        "skipLibCheck": true,
         "paths": {
-            "@cc/*": ["src/*"],
-            // necessary for local work with the library (ng-core), so that the node does not use the second angular from the local library node_modules
-            "@angular/*": ["./node_modules/@angular/*"]
+            "@cc/*": ["./src/*"]
         }
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
         "strictInjectionParameters": true,
         "strictInputAccessModifiers": true,
-        "strictTemplates": false
+        "strictTemplates": true
     }
 }

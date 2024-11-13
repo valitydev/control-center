@@ -4,17 +4,19 @@ import { Validators, FormControl } from '@angular/forms';
 import {
     DialogResponseStatus,
     DialogSuperclass,
+    getImportValue,
     getValue,
     NotifyLogService,
     progressTo,
 } from '@vality/ng-core';
+import { ThriftAstMetadata } from '@vality/ng-thrift';
 import {
     RepairInvoicesRequest,
     RepairWithdrawalsRequest,
     Machine,
 } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
-import { BehaviorSubject, from } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
@@ -48,7 +50,7 @@ export class RepairByScenarioDialogComponent
         null,
         Validators.required,
     );
-    metadata$ = from(import('@vality/repairer-proto/metadata.json').then((m) => m.default));
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/repairer-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 

@@ -51,7 +51,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     EditDomainObjectDialogComponent,
     { domainObject: DomainObject }
 > {
-    static defaultDialogConfig: ValuesType<DialogConfig> = {
+    static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     };

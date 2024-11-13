@@ -68,12 +68,16 @@ function getCsvObjectErrors<R extends string, O extends string>(
     templateUrl: './upload-csv.component.html',
     styles: ``,
 })
-export class UploadCsvComponent<R extends string, O extends string> implements OnInit {
+export class UploadCsvComponent<R extends string = string, O extends string = string>
+    implements OnInit
+{
     props = input<CsvProps<R, O>>({});
     formatDescription = input<string[]>();
     errors = input<Map<CsvProps<R, O>, { name?: string; message?: string }>>();
 
-    selected = input<CsvObject<R, O>[]>([]);
+    selected = input<CsvObject<R, O>[], unknown>([], {
+        transform: (v) => (v as CsvObject<R, O>[]) ?? [],
+    });
     @Output() selectedChange = new EventEmitter<CsvObject<R, O>[]>();
 
     delimiter = DEFAULT_DELIMITER;
@@ -81,7 +85,7 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
         ...(this.props().required ?? []),
         ...(this.props().optional ?? []),
     ]);
-    selectedCsv = model<CsvObject<R, O>[]>();
+    selectedCsv = model<CsvObject<R, O>[]>([]);
 
     hasHeaderControl = new FormControl(null, { nonNullable: true });
     upload$ = new BehaviorSubject<File | null>(null);
@@ -122,12 +126,16 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
             field: p,
             header: startCase(p),
         })),
-        ...(this.errors()?.size
-            ? [
-                  { field: 'error_code', formatter: (d) => this.errors().get(d)?.name },
-                  { field: 'error_message', formatter: (d) => this.errors().get(d)?.message },
-              ]
-            : []),
+        {
+            field: 'error_code',
+            cell: (d) => ({ value: this.errors()?.get(d)?.name }),
+            hidden: !this.errors()?.size,
+        },
+        {
+            field: 'error_message',
+            cell: (d) => ({ value: this.errors()?.get(d)?.message }),
+            hidden: !this.errors()?.size,
+        },
     ]);
 
     constructor(
@@ -149,7 +157,9 @@ export class UploadCsvComponent<R extends string, O extends string> implements O
             });
     }
 
-    async loadFile(file: File) {
-        this.upload$.next(file);
+    async loadFile(file?: File | null) {
+        if (file) {
+            this.upload$.next(file);
+        }
     }
 }

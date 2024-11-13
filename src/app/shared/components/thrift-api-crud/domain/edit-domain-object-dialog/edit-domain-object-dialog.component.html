@@ -5,7 +5,7 @@
         title="Edit domain object"
     >
         <cc-domain-thrift-form
-            [defaultValue]="(currentObject$ | async)?.data"
+            [defaultValue]="(currentObject$ | async | ngtUnionValue)?.data"
             [formControl]="control"
             [type]="dataType$ | async"
         ></cc-domain-thrift-form>

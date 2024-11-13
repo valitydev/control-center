@@ -4,7 +4,7 @@ import { upperFirst } from 'lodash-es';
 import isEmpty from 'lodash-es/isEmpty';
 import startCase from 'lodash-es/startCase';
 
-import { StatusColor } from '../../../../../styles';
+import { StatusColor } from '@cc/app/styles';
 
 function getKeyTitle(v: unknown) {
     return String(v).replaceAll('_', ' ');
@@ -17,7 +17,19 @@ const STATUS_ICONS = {
     pending: 'pending',
 };
 
-export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
+export function getInvoiceChangeInfo(
+    e: Event,
+    change: InvoiceChange,
+): {
+    title: string;
+    date: string;
+    icon: string;
+    change?: unknown;
+    type?: string;
+    namespace?: string;
+    expansionTitle?: string;
+    color?: StatusColor;
+} {
     switch (getUnionKey(change)) {
         case 'invoice_created': {
             return {
@@ -123,39 +135,44 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         case 'pending':
                             return {
                                 ...statusChange,
-                                color: 'pending',
+                                color: StatusColor.Pending,
                                 icon: 'pending',
                                 change: null,
                             };
                         case 'processed':
                             return {
                                 ...statusChange,
-                                color: 'pending',
+                                color: StatusColor.Pending,
                                 icon: 'process_chart',
                                 change: null,
                             };
                         case 'captured':
-                            return { ...statusChange, color: 'success', icon: 'check' };
+                            return { ...statusChange, color: StatusColor.Success, icon: 'check' };
                         case 'cancelled':
-                            return { ...statusChange, color: 'neutral', icon: 'block' };
+                            return { ...statusChange, color: StatusColor.Neutral, icon: 'block' };
                         case 'refunded':
                             return {
                                 ...statusChange,
-                                color: 'success',
+                                color: StatusColor.Success,
                                 icon: 'undo',
                                 change: null,
                             };
                         case 'failed':
-                            return { ...statusChange, color: 'warn', icon: 'priority_high' };
+                            return {
+                                ...statusChange,
+                                color: StatusColor.Warn,
+                                icon: 'priority_high',
+                            };
                         case 'charged_back':
                             return {
                                 ...statusChange,
-                                color: 'success',
+                                color: StatusColor.Success,
                                 icon: 'undo',
                                 change: null,
                             };
+                        default:
+                            return undefined;
                     }
-                    return statusChange;
                 }
                 case 'invoice_payment_session_change': {
                     const sessionChange = {
@@ -197,7 +214,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                             return {
                                 ...sessionChange,
                                 icon: 'pause',
-                                color: 'pending',
+                                color: StatusColor.Pending,
                             };
                         case 'session_activated':
                             return {
@@ -219,8 +236,9 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 ...sessionChange,
                                 icon: 'ads_click',
                             };
+                        default:
+                            return undefined;
                     }
-                    return sessionChange;
                 }
                 case 'invoice_payment_capture_started': {
                     return {
@@ -350,8 +368,9 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                                 expansionTitle: 'Clock',
                                 icon: 'more_time',
                             };
+                        default:
+                            return undefined;
                     }
-                    return chargebackChange;
                 }
                 case 'invoice_payment_rollback_started': {
                     return {
@@ -398,7 +417,7 @@ export function getInvoiceChangeInfo(e: Event, change: InvoiceChange) {
                         title: 'Invoice payment shop limit applied',
                         date: e.created_at,
                         icon: 'production_quantity_limits',
-                        color: 'success',
+                        color: StatusColor.Success,
                     };
                 }
             }

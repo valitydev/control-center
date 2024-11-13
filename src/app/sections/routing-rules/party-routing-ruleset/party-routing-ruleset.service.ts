@@ -17,12 +17,12 @@ export const MAIN_REF = 'main';
 @Injectable()
 export class PartyRoutingRulesetService {
     partyID$ = this.route.params.pipe(
-        map((r) => r.partyID),
+        map((r) => r['partyID']),
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     ) as Observable<string>;
     refID$ = this.route.params.pipe(
-        map((r) => r.partyRefID),
+        map((r) => r['partyRefID']),
         switchMap((r) =>
             r === MAIN_REF
                 ? this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution().pipe(

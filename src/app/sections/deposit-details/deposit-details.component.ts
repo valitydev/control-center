@@ -4,7 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat';
 import { Timestamp } from '@vality/fistful-proto/internal/base';
 import { formatCurrency, getImportValue } from '@vality/ng-core';
-import { getUnionKey, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
+import {
+    getUnionKey,
+    getUnionValue,
+    isTypeWithAliases,
+    ThriftAstMetadata,
+} from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { of, Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
@@ -27,7 +32,7 @@ import { ReceiveDepositService } from './services/receive-deposit/receive-deposi
 export class DepositDetailsComponent implements OnInit {
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
-    metadata$ = getImportValue(import('@vality/fistful-proto/metadata.json'));
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
     extensions$: Observable<MetadataViewExtension[]> = this.fetchDepositService.deposit$.pipe(
         map((deposit) => [
             {
@@ -132,7 +137,7 @@ export class DepositDetailsComponent implements OnInit {
         this.route.params
             .pipe(
                 take(1),
-                map((p) => p.depositID),
+                map((p) => p['depositID']),
             )
             .subscribe((depositID) => this.fetchDepositService.receiveDeposit(depositID));
     }

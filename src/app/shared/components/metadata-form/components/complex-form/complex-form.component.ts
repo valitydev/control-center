@@ -52,13 +52,14 @@ export class ComplexFormComponent<V, K = never>
         if ('keyType' in this.data.type) {
             return this.data.type.keyType;
         }
+        return undefined;
     }
 
     constructor(private destroyRef: DestroyRef) {
         super();
     }
 
-    ngOnInit() {
+    override ngOnInit() {
         merge(this.valueControls.valueChanges, this.keyControls.valueChanges)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
@@ -94,7 +95,7 @@ export class ComplexFormComponent<V, K = never>
         updateFormArray(this.valueControls, values);
     }
 
-    validate(): ValidationErrors | null {
+    override validate(): ValidationErrors | null {
         return getErrorsTree(this.keyControls) || getErrorsTree(this.valueControls);
     }
 
