@@ -18,8 +18,8 @@ jobs:
           registry-access-token: ${{ secrets.GITHUB_TOKEN }}
       - name: set config
         run: |
-          printf "$APP_ENV_FILE" > dist/control-center/assets/appConfig.json
-          printf "$AUTH_ENV_FILE" > dist/control-center/assets/authConfig.json
+          printf "$APP_ENV_FILE" > dist/control-center/browser/assets/appConfig.json
+          printf "$AUTH_ENV_FILE" > dist/control-center/browser/assets/authConfig.json
         env:
           APP_ENV_FILE: ${{secrets.APP_CONF}}
           AUTH_ENV_FILE: ${{secrets.AUTH_CONF}}
@@ -29,7 +29,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: 'cc'
-          directory: 'dist/control-center'
+          directory: 'dist/control-center/browser'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           branch: main
   notify:
