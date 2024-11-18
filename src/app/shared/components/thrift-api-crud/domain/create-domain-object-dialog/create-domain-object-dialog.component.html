@@ -1,40 +1,23 @@
 <v-dialog
-    *ngIf="!isReview; else reviewTpl"
     [progress]="!!(progress$ | async)"
-    title="Create domain object"
+    title="{{ isReview ? 'Review' : 'Create' }} domain object"
 >
-    <cc-domain-thrift-form [formControl]="control" type="DomainObject"></cc-domain-thrift-form>
-    <v-dialog-actions>
-        <button
-            *ngIf="!isReview"
-            [disabled]="control.invalid"
-            color="primary"
-            mat-flat-button
-            (click)="isReview = true"
-        >
-            Review
-        </button>
-    </v-dialog-actions>
-</v-dialog>
-
-<ng-template #reviewTpl>
-    <v-dialog [progress]="!!(progress$ | async)" title="Review domain object">
+    @if (isReview) {
         <cc-domain-thrift-viewer
             [value]="control.value"
             kind="editor"
             type="DomainObject"
         ></cc-domain-thrift-viewer>
-        <v-dialog-actions>
-            <button
-                *ngIf="isReview"
-                [disabled]="!!(progress$ | async)"
-                mat-flat-button
-                (click)="isReview = false"
-            >
+    } @else {
+        <cc-domain-thrift-form [formControl]="control" type="DomainObject"></cc-domain-thrift-form>
+    }
+
+    <v-dialog-actions>
+        @if (isReview) {
+            <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="isReview = false">
                 Edit
             </button>
             <button
-                *ngIf="isReview"
                 [disabled]="!!(progress$ | async)"
                 color="primary"
                 mat-flat-button
@@ -42,6 +25,15 @@
             >
                 Create
             </button>
-        </v-dialog-actions>
-    </v-dialog>
-</ng-template>
+        } @else {
+            <button
+                [disabled]="control.invalid"
+                color="primary"
+                mat-flat-button
+                (click)="isReview = true"
+            >
+                Review
+            </button>
+        }
+    </v-dialog-actions>
+</v-dialog>
