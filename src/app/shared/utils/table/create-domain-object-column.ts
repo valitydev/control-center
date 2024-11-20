@@ -15,22 +15,22 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
     const sourceObj = {
         [getUnionKey(ref)]: { ref: getUnionValue(ref), data: {} },
     };
+    const sidenavInfoService = inject(SidenavInfoService);
+    const click = () => {
+        sidenavInfoService.toggle(DomainObjectCardComponent, { ref });
+    };
     return inject(DomainStoreService)
         .getObject(ref)
         .pipe(
             map((obj) => ({
                 value: getDomainObjectDetails(obj).label || '',
                 description: getDomainObjectDetails(obj).id || '',
-                click: () => {
-                    inject(SidenavInfoService).toggle(DomainObjectCardComponent, { ref });
-                },
+                click,
             })),
             startWith({
                 value: getDomainObjectDetails(sourceObj).label || '',
                 description: getDomainObjectDetails(sourceObj).id || '',
-                click: () => {
-                    inject(SidenavInfoService).toggle(DomainObjectCardComponent, { ref });
-                },
+                click,
                 inProgress: true,
             }),
         );

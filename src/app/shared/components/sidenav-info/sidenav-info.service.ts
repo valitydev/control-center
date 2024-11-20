@@ -52,11 +52,15 @@ export class SidenavInfoService {
             });
     }
 
+    // TODO: Switch to string imports only, there may be problems with component imports
     toggle<C extends Type<unknown>>(
-        component: PossiblyAsync<C>,
+        component: PossiblyAsync<C> | string,
         inputs: InputType<InstanceType<C>> = {},
     ) {
-        getPossiblyAsyncObservable(component).subscribe((comp) => {
+        const component$ = getPossiblyAsyncObservable(
+            typeof component === 'string' ? this.getComponentById(component) : component,
+        );
+        component$.subscribe((comp) => {
             if (this.isEqual(comp, inputs)) {
                 this.close();
             } else {
