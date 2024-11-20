@@ -53,10 +53,13 @@ export class SidenavInfoService {
     }
 
     toggle<C extends Type<unknown>>(
-        component: PossiblyAsync<C>,
+        component: PossiblyAsync<C> | string,
         inputs: InputType<InstanceType<C>> = {},
     ) {
-        getPossiblyAsyncObservable(component).subscribe((comp) => {
+        const component$ = getPossiblyAsyncObservable(
+            typeof component === 'string' ? this.getComponentById(component) : component,
+        );
+        component$.subscribe((comp) => {
             if (this.isEqual(comp, inputs)) {
                 this.close();
             } else {

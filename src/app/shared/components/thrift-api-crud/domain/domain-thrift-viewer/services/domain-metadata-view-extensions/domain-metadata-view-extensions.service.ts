@@ -13,7 +13,8 @@ import { of, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '@cc/app/api/domain-config';
-import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
+import type { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
+import { ShopCardComponent } from '@cc/app/shared/components/shop-card/shop-card.component';
 
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
@@ -77,15 +78,10 @@ export class DomainMetadataViewExtensionsService {
                         value: p.details.name,
                         tooltip: shopId,
                         click: () => {
-                            this.sidenavInfoService.toggle(
-                                import('../../../../../shop-card/shop-card.component').then(
-                                    (r) => r.ShopCardComponent,
-                                ),
-                                {
-                                    partyId,
-                                    id: shopId,
-                                },
-                            );
+                            this.sidenavInfoService.toggle(ShopCardComponent, {
+                                partyId,
+                                id: shopId,
+                            });
                         },
                     })),
                 ),
@@ -131,12 +127,7 @@ export class DomainMetadataViewExtensionsService {
                                       }
                                     : { ref: getUnionValue(ref) },
                                 click: () => {
-                                    this.sidenavInfoService.toggle(
-                                        import(
-                                            '../../../domain-object-card/domain-object-card.component'
-                                        ).then((r) => r.DomainObjectCardComponent),
-                                        { ref },
-                                    );
+                                    this.sidenavInfoService.toggle('domainObject', { ref });
                                 },
                             };
                         }),
