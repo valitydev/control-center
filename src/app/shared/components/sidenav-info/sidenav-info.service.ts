@@ -52,6 +52,7 @@ export class SidenavInfoService {
             });
     }
 
+    // TODO: Switch to string imports only, there may be problems with component imports
     toggle<C extends Type<unknown>>(
         component: PossiblyAsync<C> | string,
         inputs: InputType<InstanceType<C>> = {},
