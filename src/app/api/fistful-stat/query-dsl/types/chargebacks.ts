@@ -16,6 +16,7 @@ export const CHARGEBACK_CATEGORIES: (keyof InvoicePaymentChargebackCategory)[] =
     'dispute',
     'fraud',
     'processing_error',
+    'system_set',
 ];
 
 export const CHARGEBACK_STAGES: (keyof InvoicePaymentChargebackStage)[] = [
