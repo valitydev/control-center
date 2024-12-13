@@ -2,7 +2,10 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "outDir": "../../dist/out-tsc",
-        "types": []
+        "types": [],
+        "paths": {
+            "@cc/*": ["apps/control-center/src/*"]
+        }
     },
     "files": ["src/main.ts"],
     "include": ["src/**/*.d.ts"]
