@@ -1,46 +1,55 @@
 {
-    "defaultBase": "main",
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "namedInputs": {
-        "sharedGlobals": [],
         "default": ["{projectRoot}/**/*", "sharedGlobals"],
         "production": [
             "default",
-            "!{projectRoot}/tsconfig.spec.json",
-            "!{projectRoot}/**/*.spec.[jt]s",
-            "!{projectRoot}/karma.conf.js",
             "!{projectRoot}/.eslintrc.json",
             "!{projectRoot}/eslint.config.js",
             "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+            "!{projectRoot}/tsconfig.spec.json",
             "!{projectRoot}/jest.config.[jt]s",
             "!{projectRoot}/src/test-setup.[jt]s",
             "!{projectRoot}/test-setup.[jt]s"
-        ]
+        ],
+        "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
     },
+    "nxCloudId": "675c0ff7be8db72a233909ea",
     "targetDefaults": {
-        "build": {
+        "@angular-devkit/build-angular:application": {
+            "cache": true,
             "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
-            "cache": true
+            "inputs": ["production", "^production"]
         },
-        "test": {
-            "inputs": ["default", "^production", "{workspaceRoot}/karma.conf.js"],
-            "cache": true
-        },
-        "lint": {
+        "@nx/eslint:lint": {
+            "cache": true,
             "inputs": [
                 "default",
                 "{workspaceRoot}/.eslintrc.json",
+                "{workspaceRoot}/.eslintignore",
                 "{workspaceRoot}/eslint.config.js"
-            ],
-            "cache": true
-        }
-    },
-    "plugins": [
-        {
-            "plugin": "@nx/jest/plugin",
+            ]
+        },
+        "@nx/jest:jest": {
+            "cache": true,
+            "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
             "options": {
-                "targetName": "test"
+                "passWithNoTests": true
+            },
+            "configurations": {
+                "ci": {
+                    "ci": true,
+                    "codeCoverage": true
+                }
             }
         }
-    ]
+    },
+    "generators": {
+        "@nx/angular:application": {
+            "e2eTestRunner": "none",
+            "linter": "eslint",
+            "style": "scss",
+            "unitTestRunner": "jest"
+        }
+    }
 }
