@@ -1,51 +1,43 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function (config) {
-    config.set({
+const { join } = require('path');
+const { constants } = require('karma');
+
+module.exports = () => {
+    return {
         basePath: '',
         frameworks: ['jasmine', '@angular-devkit/build-angular'],
         plugins: [
             require('karma-jasmine'),
             require('karma-chrome-launcher'),
             require('karma-jasmine-html-reporter'),
-            require('karma-spec-reporter'),
-            require('karma-coverage-istanbul-reporter'),
+            require('karma-coverage'),
             require('@angular-devkit/build-angular/plugins/karma'),
         ],
         client: {
+            jasmine: {
+                // you can add configuration options for Jasmine here
+                // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
+                // for example, you can disable the random execution with `random: false`
+                // or set a specific seed with `seed: 4321`
+            },
             clearContext: false, // leave Jasmine Spec Runner output visible in browser
         },
-        coverageIstanbulReporter: {
-            dir: require('path').join(__dirname, './coverage/control-center'),
-            reports: ['html', 'lcovonly', 'text-summary'],
-            fixWebpackSourcePaths: true,
+        jasmineHtmlReporter: {
+            suppressAll: true, // removes the duplicated traces
         },
-        reporters: ['progress', 'kjhtml', 'spec'],
+        coverageReporter: {
+            dir: join(__dirname, './coverage'),
+            subdir: '.',
+            reporters: [{ type: 'html' }, { type: 'text-summary' }],
+        },
+        reporters: ['progress', 'kjhtml'],
         port: 9876,
         colors: true,
-        logLevel: config.LOG_INFO,
+        logLevel: constants.LOG_INFO,
         autoWatch: true,
-        browsers: ['ChromeHeadless_no_sandbox'],
-        browserNoActivityTimeout: 30 * 60 * 1000,
-        browserDisconnectTimeout: 30 * 60 * 1000,
-        captureTimeout: 300000,
-        customLaunchers: {
-            ChromeHeadless_no_sandbox: {
-                base: 'ChromeHeadless',
-                flags: ['--no-sandbox', '--disable-setuid-sandbox', '--headless', '--disable-gpu'],
-            },
-        },
-        singleRun: false,
-        restartOnFileChange: true,
-        specReporter: {
-            maxLogLines: 5, // limit number of lines logged per test
-            suppressErrorSummary: false, // do not print error summary
-            suppressFailed: false, // do not print information about failed tests
-            suppressPassed: false, // do not print information about passed tests
-            suppressSkipped: true, // do not print information about skipped tests
-            showSpecTiming: true, // print the time elapsed for each spec
-            failFast: false, // test would finish with error when a first fail occurs.
-        },
-    });
+        browsers: ['Chrome'],
+        singleRun: true,
+    };
 };

@@ -21,4 +21,4 @@ Dockerfile
 *.ico
 *.ttf
 
-src/assets/icons/
+apps/control-center/src/assets/icons/

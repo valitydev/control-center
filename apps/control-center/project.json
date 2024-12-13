@@ -1,0 +1,116 @@
+{
+    "name": "control-center",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "generators": {
+        "@schematics/angular:component": {
+            "style": "scss"
+        }
+    },
+    "sourceRoot": "apps/control-center/src",
+    "prefix": "cc",
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:application",
+            "options": {
+                "outputPath": "dist/apps/control-center",
+                "index": "apps/control-center/src/index.html",
+                "browser": "apps/control-center/src/main.ts",
+                "polyfills": ["zone.js"],
+                "tsConfig": "apps/control-center/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                    "apps/control-center/src/favicon.ico",
+                    "apps/control-center/src/assets",
+                    {
+                        "glob": "**/*",
+                        "input": "apps/control-center/node_modules/monaco-editor",
+                        "output": "/assets/monaco/"
+                    }
+                ],
+                "styles": ["apps/control-center/src/app/styles/styles.scss"],
+                "scripts": []
+            },
+            "configurations": {
+                "production": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "9MB",
+                            "maximumError": "10MB"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "2kB",
+                            "maximumError": "4kB"
+                        }
+                    ],
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/control-center/src/environments/environment.ts",
+                            "with": "apps/control-center/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "outputHashing": "all"
+                },
+                "development": {
+                    "optimization": false,
+                    "extractLicenses": false,
+                    "sourceMap": true
+                },
+                "stage": {
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/control-center/src/environments/environment.ts",
+                            "with": "apps/control-center/src/environments/environment.stage.ts"
+                        }
+                    ]
+                }
+            },
+            "defaultConfiguration": "production"
+        },
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+                "production": {
+                    "buildTarget": "control-center:build:production"
+                },
+                "development": {
+                    "buildTarget": "control-center:build:development"
+                },
+                "stage": {
+                    "buildTarget": "control-center:build:development,stage"
+                }
+            },
+            "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+            "executor": "@angular-devkit/build-angular:karma",
+            "options": {
+                "polyfills": ["zone.js", "zone.js/testing"],
+                "tsConfig": "apps/control-center/tsconfig.spec.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                    "apps/control-center/src/favicon.ico",
+                    "apps/control-center/src/assets",
+                    {
+                        "glob": "**/*",
+                        "input": "apps/control-center/node_modules/monaco-editor",
+                        "output": "/assets/monaco/"
+                    }
+                ],
+                "styles": ["apps/control-center/src/app/styles/styles.scss"],
+                "scripts": []
+            }
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint",
+            "options": {
+                "lintFilePatterns": ["apps/control-center/**/*.ts", "apps/control-center/**/*.html"]
+            }
+        }
+    }
+}
