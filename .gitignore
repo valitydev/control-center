@@ -48,10 +48,9 @@ Thumbs.db
 
 # Env and configs
 .env*
-/apps/control-center/src/assets/appConfig*.json
-/apps/control-center/src/assets/authConfig*.json
+appConfig*.json
+authConfig*.json
 
-
-
+# Nx
 .nx/cache
 .nx/workspace-data
