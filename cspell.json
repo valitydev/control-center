@@ -2,15 +2,5 @@
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
     "version": "0.2",
     "import": "./node_modules/@vality/cspell-config/cspell.config.js",
-    "words": [
-        "submain",
-        "papaparse",
-        "msgpack",
-        "termsets",
-        "rreserve",
-        "wght",
-        "opsz",
-        "dpan",
-        "buildable"
-    ]
+    "words": ["papaparse", "msgpack", "rreserve", "wght", "opsz", "dpan", "buildable"]
 }
