@@ -1,9 +1,13 @@
 {
-    "recommendations": [
-        "hediet.tasks-statusbar",
-        "streetsidesoftware.code-spell-checker-russian",
-        "wmaurer.change-case",
-        "johnpapa.vscode-peacock",
-        "streetsidesoftware.code-spell-checker"
-    ]
+  "recommendations": [
+    "hediet.tasks-statusbar",
+    "streetsidesoftware.code-spell-checker-russian",
+    "wmaurer.change-case",
+    "johnpapa.vscode-peacock",
+    "streetsidesoftware.code-spell-checker",
+    "nrwl.angular-console",
+    "angular.ng-template",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
 }
