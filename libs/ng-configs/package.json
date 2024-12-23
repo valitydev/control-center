@@ -1,4 +1,10 @@
 {
     "name": "@vality/ng-configs",
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "dependencies": {
+        "prettier-plugin-organize-attributes": "^1.0.0"
+    },
+    "peerDependencies": {
+        "prettier": "^3.0.0"
+    }
 }

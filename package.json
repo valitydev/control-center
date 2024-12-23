@@ -81,7 +81,6 @@
         "@typescript-eslint/utils": "^8.18.0",
         "@vality/cspell-config": "^8.0.1-pr-57-482a037.0",
         "@vality/eslint-config-ng": "18.1.0",
-        "@vality/prettier-config": "3.1.0",
         "angular-eslint": "^19.0.2",
         "cross-env": "^7.0.3",
         "cspell": "^8.3.2",
@@ -100,5 +99,6 @@
     },
     "nx": {
         "includedScripts": []
-    }
+    },
+    "workspaces": ["libs/*"]
 }
