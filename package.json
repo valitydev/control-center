@@ -66,6 +66,7 @@
         "@nx/eslint-plugin": "^20.2.2",
         "@nx/jest": "^20.2.2",
         "@nx/js": "20.2.2",
+        "@nx/node": "^20.2.2",
         "@nx/workspace": "20.2.2",
         "@schematics/angular": "18.2.4",
         "@swc-node/register": "~1.9.1",
