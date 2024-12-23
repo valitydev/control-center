@@ -8,7 +8,15 @@ module.exports = [
             '@nx/dependency-checks': [
                 'error',
                 {
-                    ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
+                    ignoredFiles: [
+                        '{projectRoot}/eslint.config.{js,cjs,mjs}',
+                        '{projectRoot}/vite.config.{js,ts,mjs,mts}',
+                    ],
+                    ignoredDependencies: [
+                        'prettier',
+                        'eslint-plugin-import',
+                        'prettier-plugin-organize-attributes',
+                    ],
                 },
             ],
         },

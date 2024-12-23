@@ -1,5 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 const baseConfig = require('../../eslint.config.js');
+const { appEslintConfig } = require('../../dist/libs/ng-configs');
 
 module.exports = [
     ...baseConfig,
@@ -35,4 +36,5 @@ module.exports = [
             '@angular-eslint/template/interactive-supports-focus': 'off',
         },
     },
+    ...appEslintConfig({ internalPatterns: ['@cc/**'] }),
 ];

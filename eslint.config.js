@@ -1,4 +1,12 @@
 const nx = require('@nx/eslint-plugin');
+const baseConfig = (() => {
+    try {
+        return require('./dist/libs/ng-configs')?.baseEslintConfig;
+    } catch (e) {
+        console.warn('Not init');
+        return [];
+    }
+})();
 
 module.exports = [
     ...nx.configs['flat/base'],
@@ -44,4 +52,5 @@ module.exports = [
             ],
         },
     },
+    ...baseConfig,
 ];
