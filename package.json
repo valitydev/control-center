@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
+        "postinstall": "nx reset && nx build ng-configs && cd dist/libs/ng-configs && npm i",
         "start": "nx serve control-center --port 4200",
         "prod": "cross-env NODE_ENV=stage nx serve --port 4200 --configuration=production",
         "stage": "cross-env NODE_ENV=stage nx serve --port 4201 --configuration=stage",
@@ -15,7 +16,7 @@
         "spell": "cspell --no-progress **",
         "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
         "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
-        "postinstall": "nx reset && nx build ng-configs && cd dist/libs/ng-configs && npm i"
+        "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\""
     },
     "dependencies": {
         "@angular/animations": "18.2.4",
@@ -82,6 +83,7 @@
         "@typescript-eslint/utils": "^8.18.0",
         "@vality/cspell-config": "^8.0.1-pr-57-482a037.0",
         "angular-eslint": "^19.0.2",
+        "concurrently": "^9.1.0",
         "cross-env": "^7.0.3",
         "cspell": "^8.3.2",
         "eslint": "^8.57.0",
@@ -100,5 +102,7 @@
     "nx": {
         "includedScripts": []
     },
-    "workspaces": ["libs/*"]
+    "workspaces": [
+        "libs/*"
+    ]
 }
