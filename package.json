@@ -8,7 +8,7 @@
         "stage": "cross-env NODE_ENV=stage nx serve --port 4201 --configuration=stage",
         "build": "nx build control-center",
         "test": "nx test",
-        "lint": "nx run-many -t lint -p control-center ng-configs",
+        "lint": "nx run-many -t lint",
         "lint:fix": "npm run lint -- --fix=true",
         "format": "prettier ** --list-different",
         "format:fix": "prettier ** --write --log-level=warn",
