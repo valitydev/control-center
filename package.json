@@ -1,5 +1,5 @@
 {
-    "name": "control-center",
+    "name": "control-center-monorepo",
     "version": "0.0.0",
     "private": true,
     "scripts": {
