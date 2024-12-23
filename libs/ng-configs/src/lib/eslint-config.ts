@@ -48,7 +48,7 @@ export const baseEslintConfig = [
                     caughtErrors: 'all',
                     caughtErrorsIgnorePattern: '^_',
                     destructuredArrayIgnorePattern: '^_',
-                    varsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_|^[A-Z]$',
                     ignoreRestSiblings: true,
                 },
             ],
