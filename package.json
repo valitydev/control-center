@@ -76,6 +76,7 @@
         "@types/jasmine": "4.0.3",
         "@types/jwt-decode": "2.2.1",
         "@types/lodash-es": "^4.17.12",
+        "@types/node": "18.16.9",
         "@types/papaparse": "^5.3.14",
         "@typescript-eslint/utils": "^8.18.0",
         "@vality/cspell-config": "^8.0.1-pr-57-482a037.0",
@@ -94,6 +95,10 @@
         "nx": "20.2.2",
         "prettier": "~3.1.1",
         "typescript": "~5.4.5",
-        "typescript-memoize": "1.1.1"
+        "typescript-memoize": "1.1.1",
+        "verdaccio": "^5.0.4"
+    },
+    "nx": {
+        "includedScripts": []
     }
 }
