@@ -7,7 +7,7 @@
         "start": "nx serve control-center --port 4200",
         "prod": "cross-env NODE_ENV=stage nx serve --port 4200 --configuration=production",
         "stage": "cross-env NODE_ENV=stage nx serve --port 4201 --configuration=stage",
-        "build": "nx build control-center",
+        "build": "nx run-many -t build",
         "test": "nx test",
         "lint": "nx run-many -t lint",
         "lint:fix": "npm run lint -- --fix=true",
