@@ -37,36 +37,19 @@ function getImportOrderConfig(internalPatterns: string[] = []) {
 
 export const baseEslintConfig = [
     {
-        files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-        rules: {
-            '@typescript-eslint/no-inferrable-types': 'off',
-            '@typescript-eslint/no-unused-vars': [
-                'error',
-                {
-                    args: 'all',
-                    argsIgnorePattern: '^_',
-                    caughtErrors: 'all',
-                    caughtErrorsIgnorePattern: '^_',
-                    destructuredArrayIgnorePattern: '^_',
-                    varsIgnorePattern: '^_|^[A-Z]$',
-                    ignoreRestSiblings: true,
-                },
-            ],
-        },
-    },
-    {
         files: ['**/*.ts'],
         plugins: {
             'unused-imports': unusedImportsPlugin,
         },
         rules: {
-            '@typescript-eslint/no-unused-vars': 'off',
+            '@typescript-eslint/no-inferrable-types': 'off',
+            '@typescript-eslint/no-unused-vars': 'off', // for unused-imports
             'unused-imports/no-unused-imports': 'error',
             'unused-imports/no-unused-vars': [
                 'error',
                 {
                     vars: 'all',
-                    varsIgnorePattern: '^_',
+                    varsIgnorePattern: '^_|^[A-Z]$',
                     args: 'after-used',
                     argsIgnorePattern: '^_',
                 },
