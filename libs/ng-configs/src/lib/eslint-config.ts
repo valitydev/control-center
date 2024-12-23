@@ -1,10 +1,63 @@
-import * as unusedImports from 'eslint-plugin-unused-imports';
+import * as importPlugin from 'eslint-plugin-import';
+import * as unusedImportsPlugin from 'eslint-plugin-unused-imports';
+
+function getImportOrderConfig(internalPatterns: string[] = []) {
+    return {
+        files: ['**/*.ts'],
+        plugins: {
+            import: importPlugin,
+        },
+        rules: {
+            'import/order': [
+                'error',
+                {
+                    groups: [
+                        ['builtin', 'external'],
+                        'type',
+                        'internal',
+                        'parent',
+                        ['index', 'sibling'],
+                        'object',
+                    ],
+                    pathGroups: internalPatterns.map((pattern) => ({
+                        pattern,
+                        group: 'internal',
+                    })),
+                    pathGroupsExcludedImportTypes: ['builtin'],
+                    'newlines-between': 'always',
+                    alphabetize: {
+                        order: 'asc',
+                        caseInsensitive: true,
+                    },
+                },
+            ],
+        },
+    };
+}
 
 export const baseEslintConfig = [
     {
-        files: ['*.ts'],
+        files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+        rules: {
+            '@typescript-eslint/no-inferrable-types': 'off',
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    args: 'all',
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'all',
+                    caughtErrorsIgnorePattern: '^_',
+                    destructuredArrayIgnorePattern: '^_',
+                    varsIgnorePattern: '^_',
+                    ignoreRestSiblings: true,
+                },
+            ],
+        },
+    },
+    {
+        files: ['**/*.ts'],
         plugins: {
-            'unused-imports': unusedImports,
+            'unused-imports': unusedImportsPlugin,
         },
         rules: {
             '@typescript-eslint/no-unused-vars': 'off',
@@ -20,35 +73,17 @@ export const baseEslintConfig = [
             ],
         },
     },
+    getImportOrderConfig(),
 ];
 
 export const appEslintConfig = (options: { internalPatterns?: string[] } = {}) => [
     {
-        files: ['*.ts'],
+        files: ['**/*.html'],
         rules: {
-            'import/order': [
-                'error',
-                {
-                    groups: [
-                        ['builtin', 'external'],
-                        'type',
-                        'internal',
-                        'parent',
-                        ['index', 'sibling'],
-                        'object',
-                    ],
-                    pathGroups: (options.internalPatterns ?? []).map((pattern) => ({
-                        pattern,
-                        group: 'internal',
-                    })),
-                    pathGroupsExcludedImportTypes: ['builtin'],
-                    'newlines-between': 'always',
-                    alphabetize: {
-                        order: 'asc',
-                        caseInsensitive: true,
-                    },
-                },
-            ],
+            '@angular-eslint/template/no-negated-async': 'off',
+            '@angular-eslint/template/click-events-have-key-events': 'off',
+            '@angular-eslint/template/interactive-supports-focus': 'off',
         },
     },
+    getImportOrderConfig(options?.internalPatterns),
 ];

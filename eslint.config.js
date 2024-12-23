@@ -29,21 +29,7 @@ module.exports = [
     {
         files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
         // Override or add rules here
-        rules: {
-            '@typescript-eslint/no-inferrable-types': 'off',
-            '@typescript-eslint/no-unused-vars': [
-                'error',
-                {
-                    args: 'all',
-                    argsIgnorePattern: '^_',
-                    caughtErrors: 'all',
-                    caughtErrorsIgnorePattern: '^_',
-                    destructuredArrayIgnorePattern: '^_',
-                    varsIgnorePattern: '^_',
-                    ignoreRestSiblings: true,
-                },
-            ],
-        },
+        rules: {},
     },
     ...(getEslintConfigs()?.baseEslintConfig ?? []),
 ];
