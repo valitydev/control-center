@@ -1,1 +1,1 @@
-export * from './lib/ng-configs';
+export * from './lib/prettier-config';

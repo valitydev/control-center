@@ -14,7 +14,8 @@
         "format:fix": "prettier ** --write --log-level=warn",
         "spell": "cspell --no-progress **",
         "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
-        "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix"
+        "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
+        "postinstall": "nx run-many -t build -p ng-configs"
     },
     "dependencies": {
         "@angular/animations": "18.2.4",
