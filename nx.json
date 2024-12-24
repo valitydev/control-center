@@ -41,6 +41,11 @@
                     "codeCoverage": true
                 }
             }
+        },
+        "@nx/js:tsc": {
+            "cache": true,
+            "dependsOn": ["^build"],
+            "inputs": ["production", "^production"]
         }
     },
     "generators": {
@@ -51,5 +56,18 @@
             "unitTestRunner": "jest"
         }
     },
-    "neverConnectToCloud": true
+    "neverConnectToCloud": true,
+    "release": {
+        "version": {
+            "preVersionCommand": "npx nx run-many -t build"
+        }
+    },
+    "plugins": [
+        {
+            "plugin": "@nx/eslint/plugin",
+            "options": {
+                "targetName": "eslint:lint"
+            }
+        }
+    ]
 }

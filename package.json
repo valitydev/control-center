@@ -1,20 +1,22 @@
 {
-    "name": "control-center",
+    "name": "control-center-monorepo",
     "version": "0.0.0",
     "private": true,
     "scripts": {
+        "postinstall": "nx reset && nx build ng-configs && cd dist/libs/ng-configs && npm i",
         "start": "nx serve control-center --port 4200",
         "prod": "cross-env NODE_ENV=stage nx serve --port 4200 --configuration=production",
         "stage": "cross-env NODE_ENV=stage nx serve --port 4201 --configuration=stage",
-        "build": "nx build control-center",
+        "build": "nx run-many -t build",
         "test": "nx test",
-        "lint": "nx lint control-center",
+        "lint": "nx run-many -t lint",
         "lint:fix": "npm run lint -- --fix=true",
-        "format": "prettier ** --list-different",
-        "format:fix": "prettier ** --write --log-level=warn",
+        "format": "nx format",
+        "format:fix": "nx format:write",
         "spell": "cspell --no-progress **",
         "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
-        "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix"
+        "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
+        "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\""
     },
     "dependencies": {
         "@angular/animations": "18.2.4",
@@ -66,6 +68,7 @@
         "@nx/eslint-plugin": "^20.2.2",
         "@nx/jest": "^20.2.2",
         "@nx/js": "20.2.2",
+        "@nx/node": "^20.2.2",
         "@nx/workspace": "20.2.2",
         "@schematics/angular": "18.2.4",
         "@swc-node/register": "~1.9.1",
@@ -75,12 +78,12 @@
         "@types/jasmine": "4.0.3",
         "@types/jwt-decode": "2.2.1",
         "@types/lodash-es": "^4.17.12",
+        "@types/node": "18.16.9",
         "@types/papaparse": "^5.3.14",
         "@typescript-eslint/utils": "^8.18.0",
         "@vality/cspell-config": "^8.0.1-pr-57-482a037.0",
-        "@vality/eslint-config-ng": "18.1.0",
-        "@vality/prettier-config": "3.1.0",
         "angular-eslint": "^19.0.2",
+        "concurrently": "^9.1.0",
         "cross-env": "^7.0.3",
         "cspell": "^8.3.2",
         "eslint": "^8.57.0",
@@ -93,6 +96,13 @@
         "nx": "20.2.2",
         "prettier": "~3.1.1",
         "typescript": "~5.4.5",
-        "typescript-memoize": "1.1.1"
-    }
+        "typescript-memoize": "1.1.1",
+        "verdaccio": "^5.0.4"
+    },
+    "nx": {
+        "includedScripts": []
+    },
+    "workspaces": [
+        "libs/*"
+    ]
 }

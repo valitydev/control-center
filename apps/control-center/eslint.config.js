@@ -1,5 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 const baseConfig = require('../../eslint.config.js');
+const getEslintConfigs = require('../../tools/utils/get-eslint-configs');
 
 module.exports = [
     ...baseConfig,
@@ -29,10 +30,7 @@ module.exports = [
     {
         files: ['**/*.html'],
         // Override or add rules here
-        rules: {
-            '@angular-eslint/template/no-negated-async': 'off',
-            '@angular-eslint/template/click-events-have-key-events': 'off',
-            '@angular-eslint/template/interactive-supports-focus': 'off',
-        },
+        rules: {},
     },
+    ...(getEslintConfigs()?.appEslintConfig?.({ internalPatterns: ['@cc/**'] }) ?? []),
 ];

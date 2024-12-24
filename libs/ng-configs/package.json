@@ -1,0 +1,12 @@
+{
+    "name": "@vality/ng-configs",
+    "version": "0.0.1",
+    "dependencies": {
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-unused-imports": "^4.1.4",
+        "prettier-plugin-organize-attributes": "^1.0.0"
+    },
+    "peerDependencies": {
+        "prettier": "^3.0.0"
+    }
+}
