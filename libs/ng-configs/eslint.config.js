@@ -14,8 +14,9 @@ module.exports = [
                     ],
                     ignoredDependencies: [
                         'prettier',
-                        'eslint-plugin-import',
                         'prettier-plugin-organize-attributes',
+                        'cspell',
+                        '@cspell/dict-ru_ru',
                     ],
                     checkMissingDependencies: false,
                 },
