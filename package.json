@@ -14,9 +14,10 @@
         "format": "nx format",
         "format:fix": "nx format:write",
         "spell": "cspell --no-progress **",
+        "spell:unused": "npx cspell-check-unused-words",
         "spell:fix": "cspell --no-progress --show-suggestions --show-context **",
         "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
-        "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\""
+        "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\"",
     },
     "dependencies": {
         "@angular/animations": "18.2.4",
