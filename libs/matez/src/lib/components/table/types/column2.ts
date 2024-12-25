@@ -68,7 +68,7 @@ export class NormColumn<T extends object, C extends object = object> {
         { field, header, cell, child, hidden, sort, lazyCell, ...params }: Column<T, C>,
         commonParams: ColumnParams = {},
     ) {
-        this.field = field ?? (typeof header === 'string' ? header : Math.random());
+        this.field = field ?? (typeof header === 'string' ? header : String(Math.random()));
         const defaultHeaderValue = startCase((field || '').split('.').at(-1));
         this.header = getPossiblyAsyncObservable(header).pipe(
             map((value) =>

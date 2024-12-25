@@ -1,6 +1,11 @@
 {
   "name": "@vality/matez",
   "version": "0.1.0",
+  "exports": {
+    ".": {
+      "sass": "./_index.scss"
+    }
+  },
   "peerDependencies": {
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",
@@ -24,5 +29,11 @@
     "@s-libs/rxjs-core": "^18.0.0",
     "papaparse": "^5.4.1"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.14"
+  }
 }

@@ -249,7 +249,7 @@ export class TableComponent<T extends object, C extends object> implements OnIni
                     if (isTreeData) {
                         return source;
                     }
-                    const filteredData =
+                    const filteredData: DisplayedData<T, C> =
                         !isExternalFilter && search ? filterData(data, search) : source;
                     return sortData(filteredData, data, columns, sort);
                 }),

@@ -1,4 +1,4 @@
-@use '@vality/matez' as v;
+@use '../../../../../../../libs/matez/index' as v;
 
 @mixin cc-status-theme($theme) {
     .cc-status {

@@ -17,7 +17,9 @@ export class ConfirmDialogComponent extends DialogSuperclass<
 
     confirm() {
         this.closeWithSuccess(
-            this.dialogData?.hasReason ? { reason: this.control.value } : undefined,
+            this.dialogData && this.dialogData?.hasReason
+                ? { reason: this.control.value }
+                : undefined,
         );
     }
 }
