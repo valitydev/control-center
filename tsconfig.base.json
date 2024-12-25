@@ -16,6 +16,7 @@
         "baseUrl": ".",
         "resolveJsonModule": true,
         "paths": {
+            "@vality/matez": ["libs/matez/src/index.ts"],
             "@vality/ng-configs": ["libs/ng-configs/src/index.ts"]
         }
     },
