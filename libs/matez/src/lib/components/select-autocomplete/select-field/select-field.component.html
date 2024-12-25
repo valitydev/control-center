@@ -1,0 +1,56 @@
+<mat-form-field [appearance]="appearance" [ngClass]="{ 'v-input-field__small': size === 'small' }">
+    <mat-label>{{ label }}</mat-label>
+
+    <mtx-select
+        [closeOnSelect]="!multiple"
+        [formControl]="control"
+        [items]="options"
+        [loading]="progress"
+        [markFirst]="true"
+        [multiple]="multiple"
+        [notFoundText]="externalSearch && !searchStr ? 'Enter your search term' : 'No items found'"
+        [required]="required"
+        [searchable]="true"
+        [searchFn]="search"
+        [selectableGroup]="true"
+        [selectableGroupAsModel]="false"
+        bindLabel="label"
+        bindValue="value"
+        groupBy="type"
+        (clear)="searchChange.emit(''); searchStr = ''"
+        (search)="searchChange.emit($event.term); searchStr = $event.term"
+    >
+        <ng-template let-index="index" let-item="item" let-item$="item$" ng-optgroup-tmp>
+            <mat-checkbox
+                *ngIf="multiple; else text"
+                [ngModel]="item$.selected"
+                class="checkbox-option"
+                id="item-{{ index }}"
+            >
+                {{ item.type | uppercase }}
+            </mat-checkbox>
+            <ng-template #text>
+                {{ item.type | uppercase }}
+            </ng-template>
+        </ng-template>
+        <ng-template let-index="index" let-item="item" let-item$="item$" ng-option-tmp>
+            <mat-checkbox
+                *ngIf="multiple; else text"
+                [ngModel]="item$.selected"
+                class="checkbox-option"
+                id="item-{{ index }}"
+            >
+                <ng-container *ngTemplateOutlet="text"></ng-container>
+            </mat-checkbox>
+            <ng-template #text>
+                <div class="label">{{ item.label }}</div>
+                <div *ngIf="item.description" class="description mat-caption mat-secondary-text">
+                    {{ item.description }}
+                </div>
+            </ng-template>
+        </ng-template>
+    </mtx-select>
+
+    <mat-hint>{{ hintText }}</mat-hint>
+    <mat-error>{{ error }}</mat-error>
+</mat-form-field>

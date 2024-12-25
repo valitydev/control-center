@@ -1,0 +1,130 @@
+@let columnsData = columnsData$$ | async;
+
+<div class="wrapper">
+    <v-table-info-bar
+        [(filter)]="filter"
+        [columns]="normColumns()"
+        [count]="(dataSource.data$ | async)?.length"
+        [dataProgress]="!!(columnsDataProgress$ | async) && !hasMore()"
+        [filteredCount]="displayedCount$ | async"
+        [hasInputs]="!!tableInputsContent?.nativeElement"
+        [hasLoad]="update$.observed"
+        [hasMore]="hasMore()"
+        [isPreload]="isPreload()"
+        [noDownload]="noDownload()"
+        [noToolbar]="noToolbar()"
+        [preloadSize]="maxSize()"
+        [progress]="progress()"
+        [selectedCount]="rowSelected()?.length"
+        [size]="size()"
+        [standaloneFilter]="standaloneFilter()"
+        (downloadCsv)="downloadCsv()"
+        (load)="load()"
+        (preload)="preload()"
+    >
+        <ng-content select="v-table-actions"></ng-content>
+        <v-table-inputs><ng-content select="v-table-inputs"></ng-content></v-table-inputs>
+    </v-table-info-bar>
+    <mat-card #scrollViewport class="card">
+        <v-no-records
+            [noRecords]="!(displayedCount$ | async)"
+            [progress]="progress()"
+        ></v-no-records>
+        <table
+            #matTable
+            [cdkDropListDisabled]="dragDisabled"
+            [dataSource]="dataSource"
+            [matSortActive]="(columnsDataProgress$ | async) || progress() ? '' : sort().active"
+            [matSortDirection]="sort().direction"
+            cdkDropList
+            cdkDropListData="dataSource"
+            mat-table
+            matSort
+            (cdkDropListDropped)="drop($event)"
+            (matSortChange)="sort.set($event)"
+        >
+            <ng-container [matColumnDef]="columnDefs.drag" [sticky]="true">
+                <th *matHeaderCellDef mat-header-cell></th>
+                <td *matCellDef="let row; let index = index" mat-cell>
+                    <div class="position">
+                        <mat-icon class="dragCursor" (mousedown)="dragDisabled = false"
+                            >reorder</mat-icon
+                        >
+                        <!-- <span>{{ index + 1 }}</span>-->
+                    </div>
+                </td>
+            </ng-container>
+            @if (rowSelectable()) {
+                <v-select-column
+                    [(selected)]="rowSelected"
+                    [data]="displayedData$ | async"
+                    [name]="columnDefs.select"
+                    [progress]="progress()"
+                ></v-select-column>
+            }
+            @for (col of displayedNormColumns$ | async; track col; let colIndex = $index) {
+                @let stickyStart = col.params.sticky === 'start';
+                @let stickyEnd = col.params.sticky === 'end';
+                @let columnClasses =
+                    {
+                        column: true,
+                        'column__sticky-start': stickyStart,
+                        'column__sticky-end': stickyEnd,
+                    };
+                <ng-container
+                    [matColumnDef]="col.field"
+                    [sticky]="stickyStart"
+                    [stickyEnd]="stickyEnd"
+                >
+                    <th
+                        *matHeaderCellDef
+                        [disabled]="(col.sort | async) === false || hasMore() || progress()"
+                        [mat-sort-header]="col.field"
+                        [ngClass]="columnClasses"
+                        mat-header-cell
+                    >
+                        <v-value [value]="col?.header | async" emptySymbol="" inline></v-value>
+                    </th>
+
+                    <ng-template let-element let-rowIndex="index" matCellDef>
+                        @let cell = columnsData?.get?.(element)?.get(col);
+                        <td
+                            [ngClass]="columnClasses"
+                            [ngStyle]="col?.params?.style"
+                            [style.border-bottom]="cell?.isNextChild && !col.child ? 'none' : ''"
+                            mat-cell
+                        >
+                            <v-value
+                                [emptySymbol]="!(cell?.isChild && !col?.child)"
+                                [highlight]="filter$ | async"
+                                [lazyValue]="cell?.lazyValue"
+                                [lazyVisible]="loadedLazyItems.has(element)"
+                                [value]="cell?.value | async"
+                                inline
+                                (lazyVisibleChange)="loadedLazyItems.set(element, true)"
+                            ></v-value>
+                        </td>
+                    </ng-template>
+                    <td *matFooterCellDef [ngClass]="columnClasses" mat-footer-cell>
+                        <v-content-loading></v-content-loading>
+                    </td>
+                </ng-container>
+            }
+
+            <tr *matHeaderRowDef="displayedColumns$ | async; sticky: true" mat-header-row></tr>
+            <tr
+                *matRowDef="let row; columns: displayedColumns$ | async"
+                [cdkDragData]="row"
+                cdkDrag
+                mat-row
+            ></tr>
+            <tr
+                *matFooterRowDef="displayedColumns$ | async"
+                [ngClass]="{ row__hidden: !(hasAutoShowMore$ | async) || !tableRow }"
+                [vInfinityScroll]="!progress()"
+                mat-footer-row
+                (vInfinityScrollMore)="showMore()"
+            ></tr>
+        </table>
+    </mat-card>
+</div>

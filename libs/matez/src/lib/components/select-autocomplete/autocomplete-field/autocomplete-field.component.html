@@ -1,0 +1,53 @@
+<mat-form-field style="width: 100%">
+    <mat-label>{{ label }}</mat-label>
+
+    <input
+        #trigger="matAutocompleteTrigger"
+        [formControl]="control"
+        [matAutocomplete]="auto"
+        [ngClass]="{ 'mat-mono': mono }"
+        [required]="required"
+        [type]="options?.length ? 'text' : type"
+        matInput
+    />
+
+    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+        @for (option of filteredOptions$ | async; track option) {
+            <mat-option [value]="option.value">
+                <div [ngClass]="{ 'mat-mono': mono }" class="label">{{ option.label }}</div>
+                @if (option.description) {
+                    <div
+                        [ngClass]="{ 'mat-mono': mono }"
+                        class="description mat-caption mat-secondary-text"
+                    >
+                        {{ option.description }}
+                    </div>
+                }
+            </mat-option>
+        }
+    </mat-autocomplete>
+
+    <div matSuffix style="display: flex; gap: 4px">
+        @if (control.value) {
+            <button mat-icon-button (click)="control.reset(); $event.stopPropagation()">
+                <mat-icon>clear</mat-icon>
+            </button>
+        }
+        @if (options?.length) {
+            <button
+                mat-icon-button
+                (click)="
+                    auto.isOpen ? trigger.closePanel() : trigger.openPanel();
+                    $event.stopPropagation()
+                "
+            >
+                <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+        }
+    </div>
+    <mat-hint>{{ hintText }}</mat-hint>
+    <mat-error>{{
+        error ??
+            ((selected$ | async) ? (selected$ | async)?.label + (hint ? ' | ' + hint : '') : hint)
+    }}</mat-error>
+</mat-form-field>

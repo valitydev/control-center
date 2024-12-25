@@ -1,0 +1,32 @@
+$bold: 500;
+
+.v-nav {
+    display: flex;
+    flex-direction: column;
+
+    .item {
+        cursor: pointer;
+        padding: 12px 24px 12px 12px;
+
+        &__active {
+            font-weight: $bold;
+        }
+
+        // Normal text used the same width as bold text so that the width would not change when switching
+        &::after {
+            display: block;
+            content: attr(title);
+            font-weight: $bold;
+            height: 0;
+            color: transparent;
+            overflow: hidden;
+            visibility: hidden;
+        }
+    }
+
+    &__secondary {
+        .item {
+            border-left: solid 4px;
+        }
+    }
+}

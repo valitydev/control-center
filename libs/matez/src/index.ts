@@ -1,1 +1,1 @@
-export * from './lib/matez/matez.component';
+export * from './lib';

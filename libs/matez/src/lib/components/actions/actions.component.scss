@@ -1,0 +1,20 @@
+::ng-deep .v-actions {
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    & > *:first-child:not(:last-child) {
+        margin-right: auto;
+    }
+    & > *:first-child:last-child {
+        margin-left: auto;
+    }
+
+    @media screen and (max-width: 600px) {
+        & > * {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }
+}

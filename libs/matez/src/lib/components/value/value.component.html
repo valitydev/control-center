@@ -1,0 +1,67 @@
+@if (!value() && lazyValue() && !lazyVisible()) {
+    <button class="button" mat-icon-button (click)="lazyVisible.set(true)">
+        <mat-icon>sync</mat-icon>
+    </button>
+} @else {
+    @if (value$ | async; as v) {
+        @if (v.template) {
+            <ng-container *ngTemplateOutlet="v.template; context: {}"></ng-container>
+        } @else {
+            @if (v.color) {
+                <v-tag [color]="v.color">
+                    <ng-container *ngTemplateOutlet="tooltipTemplate"></ng-container>
+                </v-tag>
+            } @else {
+                <ng-container *ngTemplateOutlet="tooltipTemplate"></ng-container>
+            }
+
+            <ng-template #tooltipTemplate>
+                @if (v.tooltip) {
+                    <span [matTooltip]="v.tooltip ?? ''" class="tooltip">
+                        <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
+                    </span>
+                } @else {
+                    <span [title]="v.value">
+                        <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
+                    </span>
+                }
+            </ng-template>
+
+            <ng-template #valueTemplate>
+                @switch (v.type) {
+                    @case ('menu') {
+                        <v-menu-value [value]="v"></v-menu-value>
+                    }
+                    @default {
+                        @let valueText = valueText$ | async;
+                        @if (inProgress$ | async) {
+                            <v-content-loading [hiddenText]="valueText"></v-content-loading>
+                        } @else if (valueText) {
+                            <span
+                                [ngClass]="{ value__click: v.click, value__link: v.link }"
+                                [vHighlightSearch]="highlight"
+                                [vHighlightText]="valueText"
+                                vHighlight
+                                (click)="click($event)"
+                            ></span>
+                        } @else if (emptySymbol) {
+                            <span style="color: #ccc">{{ emptySymbol }}</span>
+                        }
+                    }
+                }
+            </ng-template>
+        }
+
+        @if (v.description) {
+            <div
+                [title]="v.description"
+                [vHighlightSearch]="highlight"
+                [vHighlightText]="v.description"
+                class="description mat-caption mat-secondary-text"
+                vHighlight
+            ></div>
+        }
+    } @else {
+        <v-content-loading></v-content-loading>
+    }
+}

@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+@import './utils/get-color';
+
+@mixin typography-hierarchy($theme, $selector: '.mat-typography') {
+    @include mat.typography-hierarchy($theme, $selector);
+
+    .mat-secondary-text,
+    #{$selector} .mat-secondary-text {
+        &#{&} {
+            color: get-color($theme, foreground, secondary-text);
+        }
+    }
+
+    .mat-no-margin,
+    #{$selector} .mat-no-margin {
+        &#{&} {
+            margin: 0;
+        }
+    }
+
+    .mat-mono,
+    #{$selector} .mat-mono {
+        &#{&} {
+            font-family: 'Roboto Mono', monospace;
+        }
+    }
+
+    .mat-action,
+    #{$selector} .mat-action {
+        &#{&} {
+            cursor: pointer;
+            color: get-color($theme, primary);
+
+            &:hover {
+                color: get-color($theme, primary, darker);
+                text-decoration: underline;
+                text-decoration-style: dotted;
+            }
+        }
+    }
+
+    .mat-link,
+    #{$selector} .mat-link {
+        &#{&} {
+            cursor: pointer;
+            color: get-color($theme, primary);
+
+            &:hover {
+                color: get-color($theme, primary, darker);
+                text-decoration: underline;
+            }
+        }
+    }
+}

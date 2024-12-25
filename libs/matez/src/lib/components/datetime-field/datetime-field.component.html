@@ -1,0 +1,22 @@
+<div class="wrapper">
+    <mat-form-field class="date">
+        <mat-label>
+            {{ label }}
+        </mat-label>
+        <mat-hint>{{ hint }}</mat-hint>
+        <input
+            [matDatepicker]="picker"
+            [required]="required"
+            [value]="datetime"
+            matInput
+            (dateInput)="dateChanged($event)"
+        />
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    @if (datetime) {
+        <mat-form-field class="time">
+            <input [value]="time" matInput type="time" (input)="timeChanged($event)" />
+        </mat-form-field>
+    }
+</div>
