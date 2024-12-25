@@ -8,10 +8,7 @@
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "useDefineForClassFields": false,
-        "paths": {
-            "@cc/*": ["apps/control-center/src/*"]
-        }
+        "useDefineForClassFields": false
     },
     "files": [],
     "include": [],

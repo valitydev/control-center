@@ -1,5 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 const baseConfig = require('../../eslint.config.js');
+const { appEslintConfig } = require('../../dist/libs/ng-configs');
 
 module.exports = [
     ...baseConfig,
@@ -45,4 +46,5 @@ module.exports = [
         // Override or add rules here
         rules: {},
     },
+    ...appEslintConfig(),
 ];
