@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { TagModule } from '@vality/ng-core';
+import { TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { DetailsItemModule } from '@cc/components/details-item';

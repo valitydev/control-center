@@ -5,7 +5,7 @@ import {
     getPossiblyAsyncObservable,
     PossiblyAsync,
     UrlService,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';

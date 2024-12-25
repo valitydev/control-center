@@ -13,7 +13,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { DialogModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/matez';
 
 import { DetailsItemModule } from '@cc/components/details-item';
 

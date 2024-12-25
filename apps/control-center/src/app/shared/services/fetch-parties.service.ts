@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
-import {
-    NotifyLogService,
-    handleError,
-    FetchOptions,
-    SingleFetchSuperclass,
-} from '@vality/ng-core';
+import { NotifyLogService, handleError, FetchOptions, SingleFetchSuperclass } from '@vality/matez';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 

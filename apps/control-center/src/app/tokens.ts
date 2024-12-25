@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { MatDateFormats } from '@angular/material/core';
-import { DATE_QUERY_PARAMS_SERIALIZERS, Serializer } from '@vality/ng-core';
+import { DATE_QUERY_PARAMS_SERIALIZERS, Serializer } from '@vality/matez';
 
 export const DEFAULT_QUERY_PARAMS_SERIALIZERS: Serializer[] = DATE_QUERY_PARAMS_SERIALIZERS;
 

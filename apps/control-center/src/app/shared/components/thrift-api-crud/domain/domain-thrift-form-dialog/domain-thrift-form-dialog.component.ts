@@ -2,7 +2,7 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
+import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 import { DeepPartial } from 'utility-types';

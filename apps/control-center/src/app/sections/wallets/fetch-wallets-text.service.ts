@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SearchWalletHit } from '@vality/deanonimus-proto/deanonimus';
-import { FetchSuperclass } from '@vality/ng-core';
+import { FetchSuperclass } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../api/deanonimus';

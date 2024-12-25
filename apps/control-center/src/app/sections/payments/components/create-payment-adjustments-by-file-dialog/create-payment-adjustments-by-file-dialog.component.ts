@@ -9,7 +9,7 @@ import {
     DEFAULT_DIALOG_CONFIG,
     forkJoinToResult,
     DialogModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';

@@ -3,7 +3,7 @@ import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/matez';
 import { first } from 'rxjs';
 
 import { FetchChargebacksService } from '@cc/app/sections/chargebacks/fetch-chargebacks.service';

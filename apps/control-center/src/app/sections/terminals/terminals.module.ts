@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { TableModule, InputFieldModule } from '@vality/ng-core';
+import { TableModule, InputFieldModule } from '@vality/matez';
 
 import { PageLayoutModule } from '../../shared';
 import { DomainThriftViewerComponent } from '../../shared/components/thrift-api-crud';

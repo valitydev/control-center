@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PipesModule } from '@vality/ng-core';
+import { PipesModule } from '@vality/matez';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';

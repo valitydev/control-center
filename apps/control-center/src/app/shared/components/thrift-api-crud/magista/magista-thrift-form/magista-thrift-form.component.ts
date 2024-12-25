@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { createControlProviders, getImportValue } from '@vality/ng-core';
+import { createControlProviders, getImportValue } from '@vality/matez';
 
 import { ThriftFormModule } from '../../../metadata-form';
 import { ThriftEditorModule } from '../../../thrift-editor';

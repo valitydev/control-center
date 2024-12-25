@@ -12,7 +12,7 @@ import {
     correctPriorities,
     Column,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { toJson, getUnionKey } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';

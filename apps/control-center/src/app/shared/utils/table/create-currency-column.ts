@@ -1,6 +1,6 @@
 import { getCurrencySymbol } from '@angular/common';
 import { inject, LOCALE_ID } from '@angular/core';
-import { createColumn, formatCurrency } from '@vality/ng-core';
+import { createColumn, formatCurrency } from '@vality/matez';
 import { groupBy, uniq } from 'lodash-es';
 import { of, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';

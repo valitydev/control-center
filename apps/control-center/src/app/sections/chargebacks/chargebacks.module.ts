@@ -17,7 +17,7 @@ import {
     SelectFieldModule,
     DialogModule,
     FileUploadModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { ChargebacksTableComponent } from '@cc/app/shared/components/chargebacks-table';

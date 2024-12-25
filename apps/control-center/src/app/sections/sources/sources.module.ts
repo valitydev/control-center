@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
-import { ActionsModule, DialogModule, TableModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule, TableModule } from '@vality/matez';
 
 import { PageLayoutModule } from '../../shared';
 import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';

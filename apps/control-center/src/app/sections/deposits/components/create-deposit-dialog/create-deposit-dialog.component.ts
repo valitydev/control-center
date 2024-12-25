@@ -2,7 +2,7 @@ import { Component, DestroyRef, ViewChild, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
-import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';

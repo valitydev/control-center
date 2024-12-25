@@ -21,7 +21,7 @@ import {
     DialogResponseStatus,
     Column,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { isNil } from 'lodash-es';
 import startCase from 'lodash-es/startCase';

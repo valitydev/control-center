@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActionsModule } from '@vality/ng-core';
+import { ActionsModule } from '@vality/matez';
 
 @Component({
     selector: 'cc-card-actions',

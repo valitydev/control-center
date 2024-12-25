@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
-import { FetchSuperclass, FetchOptions, clean } from '@vality/ng-core';
+import { FetchSuperclass, FetchOptions, clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';

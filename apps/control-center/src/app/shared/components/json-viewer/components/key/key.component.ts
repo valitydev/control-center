@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ComponentChanges } from '@vality/ng-core';
+import { ComponentChanges } from '@vality/matez';
 import { of, switchMap, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 

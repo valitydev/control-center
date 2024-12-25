@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TerminalObject } from '@vality/domain-proto/domain';
-import { DialogService, Column } from '@vality/ng-core';
+import { DialogService, Column } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import {

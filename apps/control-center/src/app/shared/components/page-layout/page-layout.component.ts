@@ -10,7 +10,7 @@ import {
     EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { UrlService, Color } from '@vality/ng-core';
+import { UrlService, Color } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 @Component({

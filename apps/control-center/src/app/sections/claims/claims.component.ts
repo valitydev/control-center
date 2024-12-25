@@ -10,7 +10,7 @@ import {
     getValueChanges,
     countChanged,
     debounceTimeWithFirst,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { take, map, shareReplay } from 'rxjs/operators';
 
 import { CLAIM_STATUSES } from '../../api/claim-management';

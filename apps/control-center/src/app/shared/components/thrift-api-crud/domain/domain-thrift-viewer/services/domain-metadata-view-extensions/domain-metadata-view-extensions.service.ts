@@ -5,7 +5,7 @@ import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
-import { getImportValue } from '@vality/ng-core';
+import { getImportValue } from '@vality/matez';
 import { getUnionValue, isTypeWithAliases, ThriftData } from '@vality/ng-thrift';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';

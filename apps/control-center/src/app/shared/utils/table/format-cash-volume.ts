@@ -1,5 +1,5 @@
 import { CashVolume } from '@vality/domain-proto/internal/domain';
-import { formatCurrency } from '@vality/ng-core';
+import { formatCurrency } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 
 import { formatRational } from './format-rational';

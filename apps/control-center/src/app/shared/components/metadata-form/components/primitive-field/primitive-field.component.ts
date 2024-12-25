@@ -6,7 +6,7 @@ import {
     FormControlSuperclass,
     createControlProviders,
     getValueChanges,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getValueTypeTitle, ThriftData, getAliases } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';

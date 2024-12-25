@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
-import {
-    FetchOptions,
-    FetchSuperclass,
-    handleError,
-    NotifyLogService,
-    clean,
-} from '@vality/ng-core';
+import { FetchOptions, FetchSuperclass, handleError, NotifyLogService, clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { DominatorService } from '@cc/app/api/dominator';

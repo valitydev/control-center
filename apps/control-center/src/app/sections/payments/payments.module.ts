@@ -9,7 +9,7 @@ import {
     TableModule,
     DialogModule,
     InputFieldModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 
 import { PageLayoutModule, ShopFieldModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';

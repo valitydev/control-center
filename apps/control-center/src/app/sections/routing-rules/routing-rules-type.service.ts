@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { getEnumValues } from '@vality/ng-core';
+import { getEnumValues } from '@vality/matez';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 

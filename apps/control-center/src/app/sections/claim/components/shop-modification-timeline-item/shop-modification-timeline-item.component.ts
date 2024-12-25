@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
-import { ComponentChanges } from '@vality/ng-core';
+import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject } from 'rxjs';
 
 @Component({

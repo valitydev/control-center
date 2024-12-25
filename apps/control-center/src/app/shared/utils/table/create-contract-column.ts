@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { createColumn } from '@vality/ng-core';
+import { createColumn } from '@vality/matez';
 
 import { ContractCardComponent } from '../../components/contract-card/contract-card.component';
 import { SidenavInfoService } from '../../components/sidenav-info';

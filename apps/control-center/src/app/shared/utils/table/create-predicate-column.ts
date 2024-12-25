@@ -1,5 +1,5 @@
 import { Predicate } from '@vality/domain-proto/domain';
-import { createColumn } from '@vality/ng-core';
+import { createColumn } from '@vality/matez';
 
 import { formatPredicate } from '.';
 

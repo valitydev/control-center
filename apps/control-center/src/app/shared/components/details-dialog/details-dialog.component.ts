@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/ng-core';
+import { DialogSuperclass, DialogModule, DEFAULT_DIALOG_CONFIG } from '@vality/matez';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';
 

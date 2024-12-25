@@ -13,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
-import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/ng-core';
+import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { KeycloakTokenInfoModule } from '@cc/app/shared/services';

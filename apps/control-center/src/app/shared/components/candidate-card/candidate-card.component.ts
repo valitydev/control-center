@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { TerminalRef, RoutingRulesetRef } from '@vality/domain-proto/domain';
-import { ComponentChanges } from '@vality/ng-core';
+import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, switchMap, defer } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 

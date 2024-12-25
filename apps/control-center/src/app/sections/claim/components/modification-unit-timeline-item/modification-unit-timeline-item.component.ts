@@ -16,7 +16,7 @@ import {
     inProgressFrom,
     progressTo,
     getImportValue,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionValue, ThriftAstMetadata } from '@vality/ng-thrift';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap } from 'rxjs';

@@ -6,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TableModule, ListFieldModule, FiltersModule, SwitchButtonModule } from '@vality/ng-core';
+import { TableModule, ListFieldModule, FiltersModule, SwitchButtonModule } from '@vality/matez';
 
 import { PageLayoutModule } from '@cc/app/shared';
 import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';

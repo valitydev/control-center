@@ -19,7 +19,7 @@ import {
     DialogService,
     createMenuColumn,
     DialogResponseStatus,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs';

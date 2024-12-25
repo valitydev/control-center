@@ -6,7 +6,7 @@ import {
     ConfirmDialogComponent,
     DialogResponseStatus,
     NotifyLogService,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { Observable, filter } from 'rxjs';
 import { map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 

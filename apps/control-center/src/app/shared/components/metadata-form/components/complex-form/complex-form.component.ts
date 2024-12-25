@@ -7,7 +7,7 @@ import {
     FormControl,
     AbstractControl,
 } from '@angular/forms';
-import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/ng-core';
+import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';

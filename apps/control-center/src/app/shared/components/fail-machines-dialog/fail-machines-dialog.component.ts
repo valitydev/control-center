@@ -14,7 +14,7 @@ import {
     SelectFieldModule,
     Option,
     getEnumKey,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';

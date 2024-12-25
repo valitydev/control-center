@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SelectFieldModule } from '@vality/ng-core';
+import { SelectFieldModule } from '@vality/matez';
 
 import { WalletFieldComponent } from './wallet-field.component';
 

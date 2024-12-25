@@ -10,7 +10,7 @@ import {
     NotifyLogService,
     inProgressFrom,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 

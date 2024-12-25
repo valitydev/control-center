@@ -1,6 +1,6 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DialogService } from '@vality/ng-core';
+import { DialogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 

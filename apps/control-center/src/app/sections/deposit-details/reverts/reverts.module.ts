@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TableModule } from '@vality/ng-core';
+import { TableModule } from '@vality/matez';
 
 import { CreateRevertDialogModule } from './create-revert-dialog/create-revert-dialog.module';
 import { RevertsComponent } from './reverts.component';

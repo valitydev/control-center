@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { TableModule, Column } from '@vality/ng-core';
+import { TableModule, Column } from '@vality/matez';
 import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
 import { combineLatest } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';

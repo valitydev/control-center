@@ -16,7 +16,7 @@ import {
     createControls,
     debounceTimeWithFirst,
     countChanged,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { createUnion } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { filter } from 'rxjs';

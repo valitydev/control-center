@@ -3,7 +3,7 @@ import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
-import { ComponentChanges, DialogService } from '@vality/ng-core';
+import { ComponentChanges, DialogService } from '@vality/matez';
 import { isEqualThrift } from '@vality/ng-thrift';
 import { combineLatest, ReplaySubject, switchMap } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';

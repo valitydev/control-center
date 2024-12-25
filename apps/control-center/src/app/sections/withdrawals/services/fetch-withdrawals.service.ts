@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatWithdrawal, StatResponse } from '@vality/fistful-proto/fistful_stat';
-import { FetchSuperclass, NotifyLogService, FetchResult, FetchOptions } from '@vality/ng-core';
+import { FetchSuperclass, NotifyLogService, FetchResult, FetchOptions } from '@vality/matez';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 

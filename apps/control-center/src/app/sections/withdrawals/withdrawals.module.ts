@@ -19,7 +19,7 @@ import {
     DateRangeFieldModule,
     InputFieldModule,
     AutocompleteFieldModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule, WalletFieldModule } from '../../shared';

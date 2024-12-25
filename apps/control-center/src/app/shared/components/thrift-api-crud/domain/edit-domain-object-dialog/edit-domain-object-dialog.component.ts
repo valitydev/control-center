@@ -14,7 +14,7 @@ import {
     getValueChanges,
     progressTo,
     inProgressFrom,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { isEqualThrift, getUnionKey, getUnionValue, ThriftPipesModule } from '@vality/ng-thrift';
 import { BehaviorSubject, switchMap, EMPTY, combineLatest, Observable } from 'rxjs';
 import { first, map, shareReplay, catchError, distinctUntilChanged } from 'rxjs/operators';

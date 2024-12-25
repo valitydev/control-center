@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { ActionsModule, DialogModule, PipesModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule, PipesModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';

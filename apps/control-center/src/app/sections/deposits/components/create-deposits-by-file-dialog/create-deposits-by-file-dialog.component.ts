@@ -9,7 +9,7 @@ import {
     DEFAULT_DIALOG_CONFIG,
     DialogModule,
     forkJoinToResult,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject, switchMap } from 'rxjs';
 
 import { UploadCsvComponent } from '../../../../../components/upload-csv';

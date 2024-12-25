@@ -8,7 +8,7 @@ import {
     DialogModule,
     NotifyLogService,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 import { ThriftViewerModule } from '../../thrift-viewer';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getImportValue } from '@vality/ng-core';
+import { getImportValue } from '@vality/matez';
 import {
     account_balance_AccountServiceCodegenClient,
     ThriftAstMetadata,

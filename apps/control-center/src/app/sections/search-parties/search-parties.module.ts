@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TableModule } from '@vality/ng-core';
+import { TableModule } from '@vality/matez';
 
 import { PageLayoutModule } from '../../shared';
 

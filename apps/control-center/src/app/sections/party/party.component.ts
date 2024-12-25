@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Link } from '@vality/ng-core';
+import { Link } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';

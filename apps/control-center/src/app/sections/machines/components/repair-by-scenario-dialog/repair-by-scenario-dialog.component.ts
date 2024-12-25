@@ -8,7 +8,7 @@ import {
     getValue,
     NotifyLogService,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import {
     RepairInvoicesRequest,

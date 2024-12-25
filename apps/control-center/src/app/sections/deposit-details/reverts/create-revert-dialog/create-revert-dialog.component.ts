@@ -9,7 +9,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
-import { DialogSuperclass, NotifyLogService, clean } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService, clean } from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { Overwrite } from 'utility-types';

@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CodegenClient } from '@vality/fistful-proto/internal/deposit-Management';
-import { clean } from '@vality/ng-core';
+import { clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import {

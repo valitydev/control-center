@@ -7,7 +7,7 @@ import {
     ConfirmDialogComponent,
     createControlProviders,
     FormControlSuperclass,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { merge, defer, of, Subject } from 'rxjs';

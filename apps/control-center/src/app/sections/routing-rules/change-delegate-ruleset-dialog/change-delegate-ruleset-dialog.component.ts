@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
-import { DialogSuperclass } from '@vality/ng-core';
+import { DialogSuperclass } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../services/routing-rules';

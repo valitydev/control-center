@@ -18,7 +18,7 @@ import {
     FetchOptions,
     getEnumKey,
     Column,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';

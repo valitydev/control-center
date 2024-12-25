@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Link } from '@vality/ng-core';
+import { Link } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
 import { from, Observable } from 'rxjs';

@@ -1,7 +1,7 @@
 import { Input, Directive, OnChanges, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { FormControlSuperclass } from '@vality/ng-core';
+import { FormControlSuperclass } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
 import { of, Observable, combineLatest, defer } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';

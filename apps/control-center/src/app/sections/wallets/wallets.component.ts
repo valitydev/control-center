@@ -15,7 +15,7 @@ import {
     debounceTimeWithFirst,
     Column,
     DebounceTime,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { combineLatest, of } from 'rxjs';
 import { map, shareReplay, catchError, take } from 'rxjs/operators';

@@ -12,7 +12,7 @@ import {
     DialogConfig,
     progressTo,
     NotifyLogService,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, switchMap, EMPTY } from 'rxjs';
 import { first, map, catchError } from 'rxjs/operators';

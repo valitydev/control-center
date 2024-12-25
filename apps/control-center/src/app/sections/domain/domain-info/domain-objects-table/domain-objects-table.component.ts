@@ -13,7 +13,7 @@ import {
     getValueChanges,
     Column,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, Observable, forkJoin, of } from 'rxjs';

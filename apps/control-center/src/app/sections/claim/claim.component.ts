@@ -8,7 +8,7 @@ import {
     handleError,
     inProgressFrom,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';

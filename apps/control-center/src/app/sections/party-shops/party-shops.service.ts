@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
-import { progressTo, debounceTimeWithFirst } from '@vality/ng-core';
+import { progressTo, debounceTimeWithFirst } from '@vality/matez';
 import { defer, merge, Observable, Subject, BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap, startWith } from 'rxjs/operators';
 

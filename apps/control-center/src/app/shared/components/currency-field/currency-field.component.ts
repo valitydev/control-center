@@ -6,7 +6,7 @@ import {
     Option,
     createControlProviders,
     AutocompleteFieldModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { FetchSourcesService } from '../../../sections/sources';

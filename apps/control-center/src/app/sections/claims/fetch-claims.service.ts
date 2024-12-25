@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Claim, ClaimSearchQuery } from '@vality/domain-proto/claim_management';
-import { FetchSuperclass, FetchResult, FetchOptions, NotifyLogService } from '@vality/ng-core';
+import { FetchSuperclass, FetchResult, FetchOptions, NotifyLogService } from '@vality/matez';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 

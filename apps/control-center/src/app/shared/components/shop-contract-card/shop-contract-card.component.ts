@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { ComponentChanges, progressTo } from '@vality/ng-core';
+import { ComponentChanges, progressTo } from '@vality/matez';
 import { ReplaySubject, defer, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, shareReplay } from 'rxjs/operators';
 

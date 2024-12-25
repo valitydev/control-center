@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StatChargeback, ChargebackSearchQuery } from '@vality/magista-proto/magista';
-import { FetchSuperclass, FetchOptions, NotifyLogService } from '@vality/ng-core';
+import { FetchSuperclass, FetchOptions, NotifyLogService } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 

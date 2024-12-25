@@ -19,7 +19,7 @@ import {
     PipesModule,
     AutocompleteFieldModule,
     TagModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftPipesModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
 
 import { JsonViewerModule } from '@cc/app/shared/components/json-viewer';

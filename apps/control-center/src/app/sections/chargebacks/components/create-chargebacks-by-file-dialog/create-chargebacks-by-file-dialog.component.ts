@@ -6,7 +6,7 @@ import {
     NotifyLogService,
     DEFAULT_DIALOG_CONFIG,
     forkJoinToResult,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
 import { InvoicingService } from '@cc/app/api/payment-processing';

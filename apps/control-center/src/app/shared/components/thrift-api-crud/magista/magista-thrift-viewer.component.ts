@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { getImportValue } from '@vality/ng-core';
+import { getImportValue } from '@vality/matez';
 import { Observable } from 'rxjs';
 
 import { MetadataViewExtension } from '../../json-viewer';

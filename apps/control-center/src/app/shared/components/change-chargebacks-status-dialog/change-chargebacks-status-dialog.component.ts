@@ -14,7 +14,7 @@ import {
     EnumKeysPipe,
     EnumKeyPipe,
     getImportValue,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 

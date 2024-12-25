@@ -8,7 +8,7 @@ import {
     NotifyLogService,
     inProgressFrom,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, Observable } from 'rxjs';
 

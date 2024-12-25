@@ -21,7 +21,7 @@ import {
     DEFAULT_DIALOG_CONFIG,
     NotifyLogService,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { of, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';

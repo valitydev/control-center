@@ -19,7 +19,7 @@ import {
     Column,
     getEnumKey,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';

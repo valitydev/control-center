@@ -15,7 +15,7 @@ import {
     debounceTimeWithFirst,
     getValueChanges,
     countChanged,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';

@@ -25,7 +25,7 @@ import {
     VSelectPipe,
     Column,
     cachedHeadMap,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 

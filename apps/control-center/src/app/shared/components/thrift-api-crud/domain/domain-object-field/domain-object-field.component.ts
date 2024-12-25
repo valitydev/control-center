@@ -8,7 +8,7 @@ import {
     createControlProviders,
     SelectFieldModule,
     Option,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { defer, switchMap, ReplaySubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 
