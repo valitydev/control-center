@@ -1,11 +1,13 @@
 {
   "name": "@vality/matez",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
+    "@angular/forms": "^18.2.0",
     "@angular/material": "^18.2.0",
+    "@angular/router": "^18.2.0",
     "@types/lodash-es": "^4.0.0",
     "date-fns": "^3.0.0",
     "lodash-es": "^4.0.0",
@@ -14,13 +16,12 @@
   },
   "dependencies": {
     "@angular/material-date-fns-adapter": "^18.2.2",
+    "@dinero.js/currencies": "^2.0.0-alpha.14",
     "@ng-matero/extensions": "^18.2.0",
     "@s-libs/js-core": "^18.0.0",
     "@s-libs/micro-dash": "^18.0.0",
     "@s-libs/ng-core": "^18.0.0",
     "@s-libs/rxjs-core": "^18.0.0",
-    "dinero.js": "^2.0.0-alpha.14",
-    "fuse.js": "^7.0.0",
     "papaparse": "^5.4.1"
   },
   "sideEffects": false
