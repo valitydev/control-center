@@ -15,8 +15,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule } from '@cc/app/shared/components';
-
+import { PageLayoutModule } from '../../shared/components';
 import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
 
 import { ClaimsComponentRouting } from './claims-routing.module';

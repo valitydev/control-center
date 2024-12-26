@@ -4,6 +4,7 @@ import { FetchSuperclass, FetchResult, FetchOptions, NotifyLogService } from '@v
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
+import { createDsl, QueryDsl } from '../../../../api/fistful-stat';
 import { FistfulStatisticsService } from '../../../../api/fistful-stat/fistful-statistics.service';
 
 @Injectable()

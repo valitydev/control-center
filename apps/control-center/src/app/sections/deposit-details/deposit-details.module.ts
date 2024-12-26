@@ -5,10 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { StatusModule, PageLayoutModule } from '@cc/app/shared/components';
-
 import { DetailsItemModule } from '../../../components/details-item/details-item.module';
 import { HeadlineModule } from '../../../components/headline/headline.module';
+import { StatusModule, PageLayoutModule } from '../../shared/components';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
 
 import { DepositDetailsRoutingModule } from './deposit-details-routing.module';

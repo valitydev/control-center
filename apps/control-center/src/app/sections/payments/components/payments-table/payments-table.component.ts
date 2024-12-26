@@ -11,7 +11,7 @@ import {
     createDomainObjectColumn,
     createCurrencyColumn,
     createFailureColumn,
-} from '@cc/app/shared';
+} from '../../../../shared';
 
 @Component({
     selector: 'cc-payments-table',

@@ -30,8 +30,7 @@ import { Overwrite } from 'utility-types';
 
 import type { ProviderRef, TerminalRef } from '@vality/dominator-proto/internal/proto/domain';
 
-import { PageLayoutModule, createDomainObjectColumn } from '@cc/app/shared';
-
+import { PageLayoutModule, createDomainObjectColumn } from '../../../../shared';
 import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';

@@ -7,7 +7,7 @@ import type {
     Predicate,
 } from '@vality/dominator-proto/internal/proto/domain';
 
-import { formatPredicate, compareCashVolumes } from '@cc/app/shared';
+import { formatPredicate, compareCashVolumes } from '../../../shared';
 
 // TODO: use enums
 function formatCashFlowAccount(acc: CashFlowAccount) {

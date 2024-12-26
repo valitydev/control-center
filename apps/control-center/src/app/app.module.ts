@@ -16,8 +16,6 @@ import { InputMaskModule } from '@ngneat/input-mask';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
-import { KeycloakTokenInfoModule } from '@cc/app/shared/services';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
@@ -32,6 +30,7 @@ import { ShopContractCardComponent } from './shared/components/shop-contract-car
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud';
+import { KeycloakTokenInfoModule } from './shared/services';
 import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,

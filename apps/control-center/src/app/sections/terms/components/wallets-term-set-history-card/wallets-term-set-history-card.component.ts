@@ -5,8 +5,7 @@ import { TableModule, VSelectPipe, Column } from '@vality/matez';
 
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/internal/dominator';
 
-import { createDomainObjectColumn } from '@cc/app/shared';
-
+import { createDomainObjectColumn } from '../../../../shared';
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {

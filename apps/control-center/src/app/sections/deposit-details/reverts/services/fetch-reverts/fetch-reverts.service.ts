@@ -3,6 +3,7 @@ import { StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
 import { FetchSuperclass, FetchOptions, clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
+import { createDsl } from '../../../../../api/fistful-stat';
 import { FistfulStatisticsService } from '../../../../../api/fistful-stat/fistful-statistics.service';
 import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 

@@ -29,8 +29,6 @@ import { map, switchMap, combineLatest, of } from 'rxjs';
 import { filter, shareReplay, startWith, take, first } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { createPartyColumn } from '@cc/app/shared';
-
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartyManagementService } from '../../../api/payment-processing';
 import {
@@ -38,6 +36,7 @@ import {
     DelegateWithPaymentInstitution,
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
+import { createPartyColumn } from '../../utils';
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';

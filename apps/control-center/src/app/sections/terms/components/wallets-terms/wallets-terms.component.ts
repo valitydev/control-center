@@ -38,8 +38,7 @@ import {
     createDomainObjectColumn,
     createPartyColumn,
     createWalletColumn,
-} from '@cc/app/shared';
-
+} from '../../../../shared';
 import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info/sidenav-info.service';

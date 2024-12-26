@@ -11,8 +11,7 @@ import {
     InputFieldModule,
 } from '@vality/matez';
 
-import { PageLayoutModule, ShopFieldModule } from '@cc/app/shared';
-
+import { PageLayoutModule, ShopFieldModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
 import { ThriftFormModule } from '../../shared/components/metadata-form/thrift-form.module';
 import { MagistaThriftFormComponent } from '../../shared/components/thrift-api-crud';

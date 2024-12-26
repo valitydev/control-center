@@ -3,7 +3,7 @@ import { createColumn } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { PartiesStoreService } from '@cc/app/api/payment-processing';
+import { PartiesStoreService } from '../../../api/payment-processing';
 
 export const createWalletColumn = createColumn(
     ({ id, partyId, ...params }: { id: string; partyId: string; name?: string }) => {

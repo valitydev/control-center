@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '@cc/app/shared/services';
+import { AppAuthGuardService } from '../../shared/services';
 
 import { ROUTING_CONFIG } from './routing-config';
 import { SearchPartiesComponent } from './search-parties.component';

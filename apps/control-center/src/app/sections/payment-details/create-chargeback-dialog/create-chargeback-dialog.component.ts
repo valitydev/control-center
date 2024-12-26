@@ -7,9 +7,8 @@ import { DialogSuperclass, getImportValue, NotifyLogService } from '@vality/mate
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import short from 'short-uuid';
 
-import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-
 import { InvoicingService } from '../../../api/payment-processing/invoicing.service';
+import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 
 @Component({
     selector: 'cc-create-chargeback-dialog',

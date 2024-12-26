@@ -34,8 +34,7 @@ import {
     createPartyColumn,
     createContractColumn,
     createDomainObjectColumn,
-} from '@cc/app/shared';
-
+} from '../../../../shared';
 import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
 import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
