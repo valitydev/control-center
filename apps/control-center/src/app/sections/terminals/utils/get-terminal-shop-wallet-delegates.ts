@@ -17,8 +17,8 @@ export function getTerminalShopWalletDelegates(
     rules: RoutingRulesObject[],
     terminalObj: TerminalObject,
 ): TerminalShopWalletDelegate[] {
-    const terminalRules = rules.filter(
-        (r) => r.data?.decisions?.candidates?.some?.((c) => c.terminal.id === terminalObj.ref.id),
+    const terminalRules = rules.filter((r) =>
+        r.data?.decisions?.candidates?.some?.((c) => c.terminal.id === terminalObj.ref.id),
     );
     return terminalRules
         .map((terminalRule) =>

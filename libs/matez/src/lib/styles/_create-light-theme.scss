@@ -9,8 +9,7 @@
     $base-theme: mat.m2-define-light-theme(
         map-merge(
             (
-                color:
-                    map-merge(
+                color: map-merge(
                         (
                             // Define the palettes for your theme using the Material Design palettes available in palette.scss
                             // (imported above). For each palette, you can optionally specify a default, lighter, and darker

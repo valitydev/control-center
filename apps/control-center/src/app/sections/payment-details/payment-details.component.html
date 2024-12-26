@@ -3,7 +3,7 @@
         { label: 'Payment', url: 'details' },
         { label: 'Events', url: 'events' },
         { label: 'Refunds', url: 'refunds' },
-        { label: 'Chargebacks', url: 'chargebacks' }
+        { label: 'Chargebacks', url: 'chargebacks' },
     ]"
     id="{{
         (payment$ | async) ? (payment$ | async)?.invoice_id + '.' + (payment$ | async)?.id : ''

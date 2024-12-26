@@ -45,11 +45,10 @@ export class MetadataService {
         return this.getDomainFields().pipe(
             map((fields) => fields.find((f) => f.name === fieldName)),
             withLatestFrom(this.metadata$),
-            map(
-                ([field, metadata]) =>
-                    metadata
-                        .find(({ name }) => name === 'domain')
-                        .ast.struct[String(field.type)]?.find((f) => f.name === 'data'),
+            map(([field, metadata]) =>
+                metadata
+                    .find(({ name }) => name === 'domain')
+                    .ast.struct[String(field.type)]?.find((f) => f.name === 'data'),
             ),
         );
     }
