@@ -4,7 +4,7 @@ import { FetchSuperclass, FetchResult, FetchOptions, NotifyLogService } from '@v
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { FistfulStatisticsService, createDsl, QueryDsl } from '@cc/app/api/fistful-stat';
+import { FistfulStatisticsService } from '../../../../api/fistful-stat/fistful-statistics.service';
 
 @Injectable()
 export class FetchDepositsService extends FetchSuperclass<

@@ -4,7 +4,7 @@ import { NotifyLogService, handleError, FetchOptions, SingleFetchSuperclass } fr
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DeanonimusService } from '@cc/app/api/deanonimus';
+import { DeanonimusService } from '../../api/deanonimus/deanonimus.service';
 
 @Injectable()
 export class FetchPartiesService extends SingleFetchSuperclass<Party, string> {

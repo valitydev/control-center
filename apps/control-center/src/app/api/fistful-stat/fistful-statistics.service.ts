@@ -8,8 +8,8 @@ import { StatRequest, StatResponse } from '@vality/fistful-proto/fistful_stat';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
 import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
-import { environment } from '@cc/environments/environment';
 
+import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';
 
 @Injectable({ providedIn: 'root' })

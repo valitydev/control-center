@@ -12,7 +12,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
-import { FetchPartiesService } from '@cc/app/shared/services/fetch-parties.service';
+import { FetchPartiesService } from '../../shared/services/fetch-parties.service';
 
 @Component({
     templateUrl: 'search-parties.component.html',

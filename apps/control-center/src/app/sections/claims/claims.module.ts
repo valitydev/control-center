@@ -16,7 +16,8 @@ import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '@cc/app/shared/components';
-import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
+
+import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
 
 import { ClaimsComponentRouting } from './claims-routing.module';
 import { ClaimsTableComponent } from './claims-table/claims-table.component';

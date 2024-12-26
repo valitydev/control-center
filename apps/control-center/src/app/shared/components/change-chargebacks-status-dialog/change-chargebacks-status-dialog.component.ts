@@ -18,9 +18,9 @@ import {
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 
-import { InvoicingService } from '@cc/app/api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
 
+import { InvoicingService } from '../../../api/payment-processing/invoicing.service';
 import { ThriftFormModule } from '../metadata-form';
 
 enum Action {

@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { DetailsItemModule } from '@cc/components/details-item';
+import { DetailsItemModule } from '../../../../components/details-item/details-item.module';
 
 import { KeyComponent } from './components/key/key.component';
 import { JsonViewerComponent } from './json-viewer.component';

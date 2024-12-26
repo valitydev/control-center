@@ -18,8 +18,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 import { createDomainObjectColumn, createPredicateColumn } from '@cc/app/shared';
 import {
     DomainThriftFormDialogComponent,
@@ -27,9 +25,11 @@ import {
     UpdateThriftDialogComponent,
 } from '@cc/app/shared/components/thrift-api-crud';
 
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { RoutingRulesService } from '../services/routing-rules';
+import { RoutingRulesType } from '../types/routing-rules-type';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 

@@ -6,9 +6,9 @@ import { BehaviorSubject, combineLatest } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { PartyManagementService } from '@cc/app/api/payment-processing';
-
 import { createDsl, FistfulStatisticsService } from '../../fistful-stat';
+import { PartyManagementService } from '../party-management.service';
+
 
 @Injectable({
     providedIn: 'root',

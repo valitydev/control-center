@@ -9,10 +9,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TableModule, ListFieldModule, FiltersModule, SwitchButtonModule } from '@vality/matez';
 
 import { PageLayoutModule } from '@cc/app/shared';
-import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
 
 import { CurrencyFieldComponent } from '../../shared/components/currency-field';
+import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
+import { ThriftFormModule } from '../../shared/components/metadata-form/thrift-form.module';
+
 
 import { WalletsRoutingModule } from './wallets-routing.module';
 import { WalletsComponent } from './wallets.component';

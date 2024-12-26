@@ -8,8 +8,7 @@ import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import short from 'short-uuid';
 
-import { ManagementService } from '@cc/app/api/withdrawal';
-
+import { ManagementService } from '../../../../api/withdrawal/management.service';
 import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
 
 @Component({

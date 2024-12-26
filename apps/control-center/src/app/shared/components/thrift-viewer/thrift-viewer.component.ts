@@ -6,7 +6,7 @@ import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
 
-import { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
+import { MetadataViewExtension } from '../json-viewer/utils/metadata-view-extension';
 
 export enum ViewerKind {
     Editor = 'editor',

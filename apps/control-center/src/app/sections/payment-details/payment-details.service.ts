@@ -4,7 +4,7 @@ import { cleanPrimitiveProps, NotifyLogService, progressTo, inProgressFrom } fro
 import { BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import { MerchantStatisticsService } from '@cc/app/api/magista';
+import { MerchantStatisticsService } from '../../api/magista/merchant-statistics.service';
 
 @Injectable()
 export class PaymentDetailsService {

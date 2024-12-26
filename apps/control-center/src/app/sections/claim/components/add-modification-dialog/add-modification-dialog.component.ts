@@ -14,7 +14,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
+import { ClaimManagementService } from '../../../../api/claim-management/claim-management.service';
 
 @Component({
     selector: 'cc-add-modification-dialog',

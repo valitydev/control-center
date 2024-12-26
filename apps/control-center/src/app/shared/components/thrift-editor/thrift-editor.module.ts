@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@vality/matez';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
-import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
+import { ThriftFormModule } from '../metadata-form/thrift-form.module';
 
 import { ThriftEditorComponent } from './thrift-editor.component';
 

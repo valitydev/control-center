@@ -6,9 +6,9 @@ import { DialogService, DialogResponseStatus, compareDifferentTypes, Column } fr
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
 import { createShopColumn, createWalletColumn } from '@cc/app/shared';
 
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';

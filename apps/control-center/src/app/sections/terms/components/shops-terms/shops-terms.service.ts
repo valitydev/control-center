@@ -3,7 +3,7 @@ import { ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/internal/d
 import { FetchOptions, FetchSuperclass, handleError, NotifyLogService, clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { DominatorService } from '@cc/app/api/dominator';
+import { DominatorService } from '../../../../api/dominator/dominator.service';
 
 @Injectable({
     providedIn: 'root',

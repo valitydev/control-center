@@ -4,7 +4,7 @@ import { upperFirst } from 'lodash-es';
 import isEmpty from 'lodash-es/isEmpty';
 import startCase from 'lodash-es/startCase';
 
-import { StatusColor } from '@cc/app/styles';
+import { StatusColor } from '../../../../../styles/consts';
 
 function getKeyTitle(v: unknown) {
     return String(v).replaceAll('_', ' ');

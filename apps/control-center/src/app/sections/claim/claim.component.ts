@@ -13,9 +13,8 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { PartyManagementService } from '@cc/app/api/payment-processing';
-
+import { ClaimManagementService } from '../../api/claim-management/claim-management.service';
+import { PartyManagementService } from '../../api/payment-processing/party-management.service';
 import { DomainMetadataFormExtensionsService } from '../../shared/services';
 
 import { AddModificationDialogComponent } from './components/add-modification-dialog/add-modification-dialog.component';

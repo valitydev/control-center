@@ -4,7 +4,7 @@ import { FetchSuperclass, FetchResult, FetchOptions, NotifyLogService } from '@v
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
+import { ClaimManagementService } from '../../api/claim-management/claim-management.service';
 
 @Injectable({ providedIn: 'root' })
 export class FetchClaimsService extends FetchSuperclass<

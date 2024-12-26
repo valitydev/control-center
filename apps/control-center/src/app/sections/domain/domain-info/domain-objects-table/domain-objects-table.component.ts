@@ -19,8 +19,7 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, Observable, forkJoin, of } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../../api/domain-config/stores/domain-store.service';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
     getDomainObjectDetails,

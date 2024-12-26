@@ -8,8 +8,7 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
 import { MetadataFormExtension } from '../../components/metadata-form';
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { toMajorByExponent, toMinorByExponent } from '@vality/matez';
 import { map, first, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
+import { DomainStoreService } from '../../api/domain-config/stores/domain-store.service';
 
 @Injectable({
     providedIn: 'root',

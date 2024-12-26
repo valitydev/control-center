@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Color, StatusColor } from '@cc/app/styles';
+import { Color, StatusColor } from '../../../../app/styles/consts';
 
 @Component({
     selector: 'cc-timeline-item-badge',

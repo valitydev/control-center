@@ -12,8 +12,7 @@ import {
 import { defer, switchMap, ReplaySubject } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../../../api/domain-config/stores/domain-store.service';
 import { getDomainObjectValueDetailsFn } from '../utils';
 
 type DomainObjectID = unknown;

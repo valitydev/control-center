@@ -39,11 +39,11 @@ import {
     createPartyColumn,
     createWalletColumn,
 } from '@cc/app/shared';
-import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
-import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
 
+import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
+import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
+import { SidenavInfoService } from '../../../../shared/components/sidenav-info/sidenav-info.service';
+import { DEBOUNCE_TIME_MS } from '../../../../tokens';
 import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
 import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
 

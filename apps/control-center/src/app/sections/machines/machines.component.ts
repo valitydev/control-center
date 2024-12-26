@@ -28,9 +28,9 @@ import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
 import { createDomainObjectColumn } from '@cc/app/shared';
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
 
 import { RepairManagementService } from '../../api/repairer';
+import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav-info.service';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { MachineStatusHistoryCardComponent } from './components/machine-status-history-card.component';

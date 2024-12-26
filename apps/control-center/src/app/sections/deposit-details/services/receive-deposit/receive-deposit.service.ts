@@ -3,7 +3,7 @@ import { NotifyLogService, inProgressFrom, progressTo } from '@vality/matez';
 import { ReplaySubject, Subject, EMPTY, defer, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, shareReplay, map } from 'rxjs/operators';
 
-import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
+import { FistfulStatisticsService } from '../../../../api/fistful-stat/fistful-statistics.service';
 
 @Injectable()
 export class ReceiveDepositService {

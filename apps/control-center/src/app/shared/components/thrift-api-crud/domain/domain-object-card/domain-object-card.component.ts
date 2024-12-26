@@ -8,8 +8,7 @@ import { isEqualThrift } from '@vality/ng-thrift';
 import { combineLatest, ReplaySubject, switchMap } from 'rxjs';
 import { map, shareReplay, first } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../../../api/domain-config/stores/domain-store.service';
 import { SidenavInfoModule } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';

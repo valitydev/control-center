@@ -27,10 +27,10 @@ import { of, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import short from 'short-uuid';
 
-import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
 
 import { ClaimManagementService } from '../../../../api/claim-management';
 import { DomainStoreService } from '../../../../api/domain-config';
+import { MetadataFormExtension } from '../../../../shared/components/metadata-form/types/metadata-form-extension';
 import { DomainThriftFormComponent } from '../../../../shared/components/thrift-api-crud';
 
 const DEFAULT_RUSSIAN_BANK_ACCOUNT: RussianBankAccount = {

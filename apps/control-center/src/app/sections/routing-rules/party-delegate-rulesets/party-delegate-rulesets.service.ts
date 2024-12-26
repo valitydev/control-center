@@ -10,8 +10,7 @@ import isNil from 'lodash-es/isNil';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';

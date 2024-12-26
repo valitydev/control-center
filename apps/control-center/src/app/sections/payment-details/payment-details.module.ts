@@ -9,9 +9,9 @@ import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/matez';
 
 import { StatusModule, PageLayoutModule, SubPageLayoutComponent } from '@cc/app/shared/components';
-import { DetailsItemModule } from '@cc/components/details-item';
-import { HeadlineModule } from '@cc/components/headline';
 
+import { DetailsItemModule } from '../../../components/details-item/details-item.module';
+import { HeadlineModule } from '../../../components/headline/headline.module';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';

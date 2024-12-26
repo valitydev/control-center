@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, switchMap, shareReplay, tap } from 'rxjs/operators';
 
-import { ManagementService } from '@cc/app/api/wallet';
+import { ManagementService } from '../../../../../api/wallet/management.service';
 
 @Injectable()
 export class ReceiveWalletService {

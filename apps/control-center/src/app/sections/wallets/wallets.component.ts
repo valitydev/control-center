@@ -21,11 +21,11 @@ import { combineLatest, of } from 'rxjs';
 import { map, shareReplay, catchError, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
-import { ManagementService } from '@cc/app/api/wallet';
 import { createCurrencyColumn, createPartyColumn } from '@cc/app/shared';
 
+import { WalletParams } from '../../api/fistful-stat/query-dsl/types/wallet';
 import { IdentityManagementService } from '../../api/identity';
+import { ManagementService } from '../../api/wallet/management.service';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 import { PartyStoreService } from '../party';
 

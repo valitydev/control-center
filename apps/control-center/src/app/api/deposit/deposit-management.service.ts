@@ -10,10 +10,9 @@ import { RevertParams, RevertState } from '@vality/fistful-proto/deposit_revert'
 import { ContextSet } from '@vality/fistful-proto/internal/context';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
-import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
-import { environment } from '@cc/environments/environment';
-
+import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';
+import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })
 export class DepositManagementService {

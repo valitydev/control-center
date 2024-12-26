@@ -12,7 +12,7 @@ import { ThriftData } from '@vality/ng-thrift';
 import { MapType, SetType, ListType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 
-import { MetadataFormExtension } from '@cc/app/shared/components/metadata-form';
+import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
     formArray.clear({ emitEvent: false });

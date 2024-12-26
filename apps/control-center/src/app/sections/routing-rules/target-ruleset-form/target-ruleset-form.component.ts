@@ -14,8 +14,7 @@ import { ComponentChanges } from '@vality/matez';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';

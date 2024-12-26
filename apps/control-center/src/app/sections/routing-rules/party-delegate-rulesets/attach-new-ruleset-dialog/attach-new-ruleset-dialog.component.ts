@@ -4,10 +4,10 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
 
 import { RoutingRulesService } from '../../services/routing-rules';
 import { TargetRuleset } from '../../target-ruleset-form';
+import { RoutingRulesType } from '../../types/routing-rules-type';
 
 @Component({
     templateUrl: 'attach-new-ruleset-dialog.component.html',

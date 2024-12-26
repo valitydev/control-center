@@ -3,9 +3,9 @@ import { StatWallet } from '@vality/fistful-proto/fistful_stat';
 import { FetchSuperclass, FetchOptions } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { WalletParams } from '@cc/app/api/fistful-stat/query-dsl/types/wallet';
-
 import { FistfulStatisticsService, createDsl } from '../../api/fistful-stat';
+import { WalletParams } from '../../api/fistful-stat/query-dsl/types/wallet';
+
 
 @Injectable()
 export class FetchWalletsService extends FetchSuperclass<StatWallet, WalletParams> {

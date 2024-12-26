@@ -4,7 +4,7 @@ import { compareDifferentTypes, NotifyLogService, progressTo } from '@vality/mat
 import { Observable, switchMap, of, BehaviorSubject } from 'rxjs';
 import { shareReplay, map, catchError } from 'rxjs/operators';
 
-import { FistfulStatisticsService, createDsl } from '@cc/app/api/fistful-stat';
+import { FistfulStatisticsService } from '../../api/fistful-stat/fistful-statistics.service';
 
 @Injectable({
     providedIn: 'root',

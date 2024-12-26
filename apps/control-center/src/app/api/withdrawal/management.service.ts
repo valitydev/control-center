@@ -8,10 +8,9 @@ import { WithdrawalID, EventRange, WithdrawalState } from '@vality/fistful-proto
 import { AdjustmentState, AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
 
-import { KeycloakTokenInfoService, toWachterHeaders } from '@cc/app/shared/services';
-import { environment } from '@cc/environments/environment';
-
+import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';
+import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })
 export class ManagementService {

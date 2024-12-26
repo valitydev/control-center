@@ -27,8 +27,7 @@ import {
     CHARGEBACK_STATUSES,
     CHARGEBACK_STAGES,
     CHARGEBACK_CATEGORIES,
-} from '@cc/app/api/fistful-stat';
-
+} from '../../api/fistful-stat';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';

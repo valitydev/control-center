@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
+import { ClaimManagementService } from '../../../../api/claim-management/claim-management.service';
 
 @Component({
     selector: 'cc-create-claim-dialog',

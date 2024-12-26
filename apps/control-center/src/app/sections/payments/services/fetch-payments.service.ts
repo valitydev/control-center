@@ -5,7 +5,7 @@ import isNil from 'lodash-es/isNil';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { MerchantStatisticsService } from '@cc/app/api/magista';
+import { MerchantStatisticsService } from '../../../api/magista/merchant-statistics.service';
 
 function splitInvoicePaymentId(invoicePaymentId: string) {
     const [invoiceId, paymentId] = invoicePaymentId.split('.');

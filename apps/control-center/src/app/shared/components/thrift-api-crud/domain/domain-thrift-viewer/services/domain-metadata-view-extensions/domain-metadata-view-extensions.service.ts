@@ -12,11 +12,10 @@ import round from 'lodash-es/round';
 import { of, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-import type { MetadataViewExtension } from '@cc/app/shared/components/json-viewer';
-import { ShopCardComponent } from '@cc/app/shared/components/shop-card/shop-card.component';
-
+import { DomainStoreService } from '../../../../../../../api/domain-config/stores/domain-store.service';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
+import { MetadataViewExtension } from '../../../../../json-viewer/utils/metadata-view-extension';
+import { ShopCardComponent } from '../../../../../shop-card/shop-card.component';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { getDomainObjectDetails } from '../../../utils';
 
