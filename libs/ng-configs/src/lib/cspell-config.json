@@ -49,6 +49,7 @@
         "IBAN",
         "chargeback",
         "chargebacks",
-        "subdir"
+        "subdir",
+        "matez"
     ]
 }
