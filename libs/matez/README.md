@@ -1,7 +1,3 @@
-# matez
+# MatEz
 
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test matez` to execute the unit tests.
+Core is a custom library designed to enhance and streamline Angular application development. It provides a set of reusable components, directives, and services that can be easily integrated into your Angular projects.
