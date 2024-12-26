@@ -3,5 +3,14 @@
     "dest": "../../dist/libs/matez",
     "lib": {
         "entryFile": "src/index.ts"
-    }
+    },
+    "allowedNonPeerDependencies": [
+        "@dinero.js/currencies",
+        "@ng-matero/extensions",
+        "@s-libs/js-core",
+        "@s-libs/micro-dash",
+        "@s-libs/ng-core",
+        "@s-libs/rxjs-core",
+        "papaparse"
+    ]
 }
