@@ -71,7 +71,6 @@ class OnePageTableDataSourcePaginator implements Partial<MatPaginator> {
     get length() {
         return this.pageSize;
     }
-    set length(v: number) {}
 
     get displayedPages() {
         return this.pageSize / this.partSize;

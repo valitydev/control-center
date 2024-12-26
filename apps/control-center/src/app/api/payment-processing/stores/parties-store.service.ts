@@ -9,7 +9,6 @@ import { MemoizeExpiring } from 'typescript-memoize';
 import { createDsl, FistfulStatisticsService } from '../../fistful-stat';
 import { PartyManagementService } from '../party-management.service';
 
-
 @Injectable({
     providedIn: 'root',
 })

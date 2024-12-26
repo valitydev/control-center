@@ -3,7 +3,7 @@
         [ngClass]="[
             'v-filters-dialog-cols-' +
                 (isShowMainFilters ? (dialogData.filters.repeat$ | async) : 1),
-            'filters',
+            'filters'
         ]"
     >
         @if (isShowMainFilters) {

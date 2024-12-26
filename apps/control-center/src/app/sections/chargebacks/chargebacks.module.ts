@@ -20,7 +20,6 @@ import {
 } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-
 import { UploadCsvComponent } from '../../../components/upload-csv';
 import { PageLayoutModule, ShopFieldModule } from '../../shared';
 import { ChargebacksTableComponent } from '../../shared/components/chargebacks-table/chargebacks-table.component';

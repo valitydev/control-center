@@ -10,7 +10,6 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { JsonViewerModule } from '../json-viewer';
 import { ThriftFormModule } from '../metadata-form/thrift-form.module';
 
-
 import { ThriftViewerComponent } from './thrift-viewer.component';
 
 @NgModule({

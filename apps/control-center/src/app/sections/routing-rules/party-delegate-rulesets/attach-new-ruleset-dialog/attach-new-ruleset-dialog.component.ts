@@ -4,7 +4,6 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-
 import { RoutingRulesService } from '../../services/routing-rules';
 import { TargetRuleset } from '../../target-ruleset-form';
 import { RoutingRulesType } from '../../types/routing-rules-type';

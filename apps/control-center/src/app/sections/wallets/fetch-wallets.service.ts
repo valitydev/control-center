@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { FistfulStatisticsService, createDsl } from '../../api/fistful-stat';
 import { WalletParams } from '../../api/fistful-stat/query-dsl/types/wallet';
 
-
 @Injectable()
 export class FetchWalletsService extends FetchSuperclass<StatWallet, WalletParams> {
     constructor(private fistfulStatisticsService: FistfulStatisticsService) {

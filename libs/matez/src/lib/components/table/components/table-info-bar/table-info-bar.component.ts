@@ -42,6 +42,7 @@ export class TableInfoBarComponent<T extends object, C extends object> implement
     filterControl = new FormControl('', { nonNullable: true });
 
     downloadCsv = output();
+    // eslint-disable-next-line @angular-eslint/no-output-native
     load = output();
     preload = output();
 

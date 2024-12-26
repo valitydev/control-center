@@ -12,7 +12,10 @@ import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { MetadataFormExtensionResult, MetadataFormExtension } from '../../types/metadata-form-extension';
+import {
+    MetadataFormExtensionResult,
+    MetadataFormExtension,
+} from '../../types/metadata-form-extension';
 import { getExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({

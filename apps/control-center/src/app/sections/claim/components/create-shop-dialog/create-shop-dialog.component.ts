@@ -27,7 +27,6 @@ import { of, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import short from 'short-uuid';
 
-
 import { ClaimManagementService } from '../../../../api/claim-management';
 import { DomainStoreService } from '../../../../api/domain-config';
 import { MetadataFormExtension } from '../../../../shared/components/metadata-form/types/metadata-form-extension';
