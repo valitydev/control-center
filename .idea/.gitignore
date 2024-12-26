@@ -1,8 +1,0 @@
-**/*
-
-#!*.iml
-!jsLinters
-!inspectionProfiles
-#!modules.xml
-!prettier.xml
-#!vcs.xml
