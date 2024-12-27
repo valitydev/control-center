@@ -1,4 +1,4 @@
-# ng-configs
+# Ng Configs
 
 This library was generated with [Nx](https://nx.dev).
 

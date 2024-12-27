@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 
 import { FistfulAdminService } from '../../../api/fistful-admin';
 

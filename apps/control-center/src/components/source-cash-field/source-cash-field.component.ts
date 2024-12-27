@@ -22,7 +22,7 @@ import {
     SelectFieldModule,
     toMinorByExponent,
     toMajorByExponent,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { combineLatest, switchMap, of } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, startWith, take } from 'rxjs/operators';

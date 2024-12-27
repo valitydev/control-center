@@ -1,16 +1,15 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Column, DialogService, NotifyLogService } from '@vality/ng-core';
+import { Column, DialogService, NotifyLogService } from '@vality/matez';
 import { first, map, catchError } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { createDomainObjectColumn } from '@cc/app/shared';
-
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { createDomainObjectColumn } from '../../../shared';
 import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
+import { RoutingRulesType } from '../types/routing-rules-type';
 
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import {

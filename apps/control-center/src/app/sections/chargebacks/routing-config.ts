@@ -1,4 +1,4 @@
-import { RoutingConfig } from '@cc/app/shared/services';
+import { RoutingConfig } from '../../shared/services';
 
 export const ROUTING_CONFIG: RoutingConfig = {
     services: [],

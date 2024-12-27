@@ -1,4 +1,4 @@
-import { isEmpty } from '@vality/ng-core';
+import { isEmpty } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
 import { SetType, ListType, MapType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';

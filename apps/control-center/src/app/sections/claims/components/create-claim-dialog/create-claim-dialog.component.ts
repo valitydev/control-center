@@ -2,10 +2,10 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
+import { ClaimManagementService } from '../../../../api/claim-management/claim-management.service';
 
 @Component({
     selector: 'cc-create-claim-dialog',

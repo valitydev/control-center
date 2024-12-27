@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { DetailsItemModule } from '@cc/components/details-item';
+import { DetailsItemModule } from '../../../../components/details-item/details-item.module';
 
 import { ShopDetailsComponent } from './shop-details.component';
 

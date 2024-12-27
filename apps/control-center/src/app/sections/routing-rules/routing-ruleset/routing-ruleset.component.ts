@@ -12,24 +12,23 @@ import {
     correctPriorities,
     Column,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { toJson, getUnionKey } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-import { RoutingRulesType } from '@cc/app/sections/routing-rules/types/routing-rules-type';
-import { createDomainObjectColumn, createPredicateColumn } from '@cc/app/shared';
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { createDomainObjectColumn, createPredicateColumn } from '../../../shared';
+import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
+import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import {
     DomainThriftFormDialogComponent,
     DomainObjectCardComponent,
     UpdateThriftDialogComponent,
-} from '@cc/app/shared/components/thrift-api-crud';
-
-import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
-import { SidenavInfoService } from '../../../shared/components/sidenav-info';
+} from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
+import { RoutingRulesType } from '../types/routing-rules-type';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 

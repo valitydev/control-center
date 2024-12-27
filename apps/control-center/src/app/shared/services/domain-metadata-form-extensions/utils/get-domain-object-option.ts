@@ -15,7 +15,7 @@ export function getDomainObjectValueOptionFn(
             value: details.id,
             label:
                 String(details.id) === details.label
-                    ? details.description ?? details.label
+                    ? (details.description ?? details.label)
                     : details.label,
             details: o,
         };

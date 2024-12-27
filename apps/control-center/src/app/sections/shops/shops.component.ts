@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
-import { progressTo, NotifyLogService } from '@vality/ng-core';
+import { progressTo, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
 import {
     switchMap,

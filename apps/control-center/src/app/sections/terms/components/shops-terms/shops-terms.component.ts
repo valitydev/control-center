@@ -25,7 +25,7 @@ import {
     VSelectPipe,
     Column,
     cachedHeadMap,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
@@ -34,13 +34,12 @@ import {
     createPartyColumn,
     createContractColumn,
     createDomainObjectColumn,
-} from '@cc/app/shared';
-import { CurrencyFieldComponent } from '@cc/app/shared/components/currency-field';
-import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-import { DEBOUNCE_TIME_MS } from '@cc/app/tokens';
-
+} from '../../../../shared';
 import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
+import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
+import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
+import { SidenavInfoService } from '../../../../shared/components/sidenav-info/sidenav-info.service';
+import { DEBOUNCE_TIME_MS } from '../../../../tokens';
 import { getFlatDecisions, FlatDecision } from '../../utils/get-flat-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 

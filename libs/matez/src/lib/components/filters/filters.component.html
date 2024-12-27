@@ -1,0 +1,5 @@
+<mat-card>
+    <mat-card-content #content [ngClass]="['v-filters-cols-' + (repeat$ | async), 'filters']">
+        <ng-container *ngTemplateOutlet="mainFiltersTemplate"></ng-container>
+    </mat-card-content>
+</mat-card>

@@ -6,7 +6,7 @@ import {
     createControlProviders,
     getErrorsTree,
     ComponentChanges,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getFieldLabel, ThriftData } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 import { merge, ReplaySubject, defer } from 'rxjs';

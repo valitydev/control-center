@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ClaimStatus } from '@vality/domain-proto/claim_management';
 
-import { CLAIM_STATUSES } from '@cc/app/api/claim-management';
-import { AppAuthGuardService, ClaimManagementRole } from '@cc/app/shared/services';
+import { CLAIM_STATUSES } from '../../../api/claim-management';
+import { AppAuthGuardService, ClaimManagementRole } from '../../../shared/services';
 
 const CLAIM_STATUS_ROLES: { [N in keyof ClaimStatus]: ClaimManagementRole[] } = {
     accepted: [ClaimManagementRole.AcceptClaim],

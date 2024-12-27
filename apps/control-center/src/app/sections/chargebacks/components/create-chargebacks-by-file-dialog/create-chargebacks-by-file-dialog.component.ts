@@ -6,10 +6,10 @@ import {
     NotifyLogService,
     DEFAULT_DIALOG_CONFIG,
     forkJoinToResult,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { InvoicingService } from '@cc/app/api/payment-processing';
+import { InvoicingService } from '../../../../api/payment-processing/invoicing.service';
 
 import { CSV_CHARGEBACK_PROPS, CsvChargeback } from './types/csv-chargeback';
 import { getCreateChargebackArgs } from './utils/get-create-chargeback-args';

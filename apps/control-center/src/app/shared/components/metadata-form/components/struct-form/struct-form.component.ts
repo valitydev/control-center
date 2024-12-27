@@ -13,7 +13,7 @@ import {
     FormComponentSuperclass,
     getValueChanges,
     getErrorsTree,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftData, isRequiredField } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';

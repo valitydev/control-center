@@ -5,7 +5,7 @@ import {
     FetchSuperclass,
     FetchOptions,
     NotifyLogService,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';

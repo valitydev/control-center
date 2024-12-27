@@ -1,11 +1,10 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DialogService } from '@vality/ng-core';
+import { DialogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-
+import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { CreateDomainObjectDialogComponent } from '../../../shared/components/thrift-api-crud';
 
 @Component({

@@ -14,15 +14,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { ActionsModule, DialogModule, PipesModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule, PipesModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { JsonViewerModule } from '@cc/app/shared/components/json-viewer/json-viewer.module';
-import { StatusModule } from '@cc/app/shared/components/status';
-import { TimelineModule } from '@cc/components/timeline';
-
+import { TimelineModule } from '../../../components/timeline/timeline.module';
 import { PageLayoutModule } from '../../shared';
+import { JsonViewerModule } from '../../shared/components/json-viewer/json-viewer.module';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
+import { StatusModule } from '../../shared/components/status/status.module';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
 import { ClaimRoutingModule } from './claim-routing.module';

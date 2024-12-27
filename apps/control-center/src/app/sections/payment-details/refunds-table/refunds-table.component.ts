@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { InvoicePaymentID, InvoiceID, PartyID } from '@vality/domain-proto/domain';
-import { Column, UpdateOptions } from '@vality/ng-core';
+import { Column, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
-import { createCurrencyColumn } from '@cc/app/shared';
-
 import { Refund } from '../../../api/fistful-stat';
+import { createCurrencyColumn } from '../../../shared';
 
 import { FetchRefundsService } from './services/fetch-refunds.service';
 

@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DialogModule } from '@vality/ng-core';
+import { DialogModule } from '@vality/matez';
 
 import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-dialog.component';
 

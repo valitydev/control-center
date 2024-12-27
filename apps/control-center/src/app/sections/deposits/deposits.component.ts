@@ -19,15 +19,14 @@ import {
     Column,
     getEnumKey,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { filter, map, shareReplay } from 'rxjs/operators';
 
-import { createCurrencyColumn } from '@cc/app/shared';
-
 import { QueryDsl } from '../../api/fistful-stat';
+import { createCurrencyColumn } from '../../shared';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateDepositDialogComponent } from './components/create-deposit-dialog/create-deposit-dialog.component';

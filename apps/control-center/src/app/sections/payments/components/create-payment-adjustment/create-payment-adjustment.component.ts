@@ -10,13 +10,12 @@ import {
     splitResultsErrors,
     ForkJoinErrorResult,
     getImportValue,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 
-import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-
 import { InvoicingService } from '../../../../api/payment-processing';
+import { DomainMetadataFormExtensionsService } from '../../../../shared/services';
 
 @Component({
     selector: 'cc-create-payment-adjustment',

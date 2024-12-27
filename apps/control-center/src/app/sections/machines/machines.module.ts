@@ -20,12 +20,12 @@ import {
     EnumKeyPipe,
     EnumKeysPipe,
     FiltersModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule } from '@cc/app/shared';
-import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
-import { DomainObjectFieldComponent } from '@cc/app/shared/components/thrift-api-crud';
+import { PageLayoutModule } from '../../shared';
+import { ThriftFormModule } from '../../shared/components/metadata-form/thrift-form.module';
+import { DomainObjectFieldComponent } from '../../shared/components/thrift-api-crud';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesRoutingModule } from './machines-routing.module';

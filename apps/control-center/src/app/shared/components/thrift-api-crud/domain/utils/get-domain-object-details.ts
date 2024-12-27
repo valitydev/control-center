@@ -1,5 +1,5 @@
 import { DomainObject } from '@vality/domain-proto/domain';
-import { inlineJson } from '@vality/ng-core';
+import { inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';

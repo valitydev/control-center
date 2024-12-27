@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Color } from '@vality/ng-core';
+import { Color } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
 import { Observable, combineLatest, switchMap, of } from 'rxjs';
 import { map } from 'rxjs/operators';

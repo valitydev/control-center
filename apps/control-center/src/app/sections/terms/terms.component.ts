@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
-import { Link, NavComponent } from '@vality/ng-core';
+import { Link, NavComponent } from '@vality/matez';
 
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
+import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav-info.service';
 
 @Component({
     selector: 'cc-terms',

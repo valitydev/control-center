@@ -1,5 +1,5 @@
 import { Predicate } from '@vality/domain-proto/domain';
-import { formatCurrency, inlineJson } from '@vality/ng-core';
+import { formatCurrency, inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue, toJson } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 

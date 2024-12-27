@@ -16,7 +16,7 @@ import {
     createControls,
     debounceTimeWithFirst,
     countChanged,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { createUnion } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { filter } from 'rxjs';
@@ -27,8 +27,7 @@ import {
     CHARGEBACK_STATUSES,
     CHARGEBACK_STAGES,
     CHARGEBACK_CATEGORIES,
-} from '@cc/app/api/fistful-stat';
-
+} from '../../api/fistful-stat';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';

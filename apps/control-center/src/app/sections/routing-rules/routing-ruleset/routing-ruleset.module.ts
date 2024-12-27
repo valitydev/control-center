@@ -15,11 +15,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { TableModule, DialogModule } from '@vality/ng-core';
-
-import { DomainThriftViewerComponent } from '@cc/app/shared/components/thrift-api-crud';
+import { TableModule, DialogModule } from '@vality/matez';
 
 import { PageLayoutModule } from '../../../shared';
+import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';

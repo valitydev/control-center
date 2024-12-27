@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { HumanizedDurationPipe } from '@vality/ng-core';
+import { HumanizedDurationPipe } from '@vality/matez';
 
 @Component({
     selector: 'cc-timeline-item-header',

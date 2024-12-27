@@ -14,7 +14,10 @@
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
+        "resolveJsonModule": true,
+        "useDefineForClassFields": false,
         "paths": {
+            "@vality/matez": ["libs/matez/src/index.ts"],
             "@vality/ng-configs": ["libs/ng-configs/src/index.ts"]
         }
     },

@@ -18,16 +18,15 @@ import {
     countChanged,
     debounceTimeWithFirst,
     Column,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { WithdrawalParams } from '@cc/app/api/fistful-stat';
-import { createDomainObjectColumn, createCurrencyColumn } from '@cc/app/shared';
-
+import { WithdrawalParams } from '../../api/fistful-stat';
 import { createFailureColumn } from '../../shared';
+import { createDomainObjectColumn, createCurrencyColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 

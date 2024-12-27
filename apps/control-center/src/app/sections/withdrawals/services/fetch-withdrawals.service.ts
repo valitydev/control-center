@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StatWithdrawal, StatResponse } from '@vality/fistful-proto/fistful_stat';
-import { FetchSuperclass, NotifyLogService, FetchResult, FetchOptions } from '@vality/ng-core';
+import { FetchSuperclass, NotifyLogService, FetchResult, FetchOptions } from '@vality/matez';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { createDsl, WithdrawalParams, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
+import { createDsl, WithdrawalParams } from '../../../api/fistful-stat';
+import { FistfulStatisticsService } from '../../../api/fistful-stat/fistful-statistics.service';
 
 @Injectable()
 export class FetchWithdrawalsService extends FetchSuperclass<StatWithdrawal, WithdrawalParams> {

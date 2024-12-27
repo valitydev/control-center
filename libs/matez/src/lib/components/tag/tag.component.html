@@ -1,0 +1,10 @@
+<mat-chip-option
+    [color]="color"
+    [highlighted]="!!color"
+    [ngClass]="{ loading: progress() }"
+    [selectable]="false"
+    class="tag {{ 'color-' + color }}"
+    disableRipple
+>
+    <ng-content></ng-content>
+</mat-chip-option>

@@ -18,7 +18,7 @@ import {
     FetchOptions,
     getEnumKey,
     Column,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { repairer } from '@vality/repairer-proto';
 import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';
@@ -27,10 +27,9 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
 
-import { createDomainObjectColumn } from '@cc/app/shared';
-import { SidenavInfoService } from '@cc/app/shared/components/sidenav-info';
-
 import { RepairManagementService } from '../../api/repairer';
+import { createDomainObjectColumn } from '../../shared';
+import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav-info.service';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { MachineStatusHistoryCardComponent } from './components/machine-status-history-card.component';

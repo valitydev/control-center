@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { DialogModule, SelectFieldModule } from '@vality/ng-core';
+import { DialogModule, SelectFieldModule } from '@vality/matez';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog.component';
 

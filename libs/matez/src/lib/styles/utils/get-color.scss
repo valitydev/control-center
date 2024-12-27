@@ -1,0 +1,5 @@
+@use '@angular/material' as mat;
+
+@function get-color($theme, $color, $hue: default, $opacity: null) {
+    @return mat.m2-get-color-from-palette(map-get($theme, $color), $hue, $opacity);
+}

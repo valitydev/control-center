@@ -1,5 +1,5 @@
 import { CashFlowPosting } from '@vality/domain-proto/internal/domain';
-import { Column } from '@vality/ng-core';
+import { Column } from '@vality/matez';
 
 import { getCashVolumeParts, formatCashVolumes } from '../../../shared';
 

@@ -6,7 +6,7 @@ import {
     FormControlSuperclass,
     createControlProviders,
     getValueChanges,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getValueTypeTitle, ThriftData, getAliases } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
@@ -15,8 +15,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import {
     MetadataFormExtensionResult,
     MetadataFormExtension,
-} from '@cc/app/shared/components/metadata-form';
-
+} from '../../types/metadata-form-extension';
 import { getExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({

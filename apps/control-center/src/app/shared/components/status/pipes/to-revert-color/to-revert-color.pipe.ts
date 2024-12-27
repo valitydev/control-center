@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { StatusColor } from '@cc/app/styles';
+import { StatusColor } from '../../../../../styles/consts';
 
 @Pipe({
     name: 'toRevertColor',

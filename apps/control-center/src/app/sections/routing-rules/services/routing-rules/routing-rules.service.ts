@@ -6,8 +6,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { combineLatest, concat, Observable } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '@cc/app/api/domain-config';
-import { createNextId } from '@cc/utils/create-next-id';
+import { createNextId } from '../../../../../utils/create-next-id';
+import { DomainStoreService } from '../../../../api/domain-config/stores/domain-store.service';
 
 import { getDelegate } from './utils/get-delegate';
 

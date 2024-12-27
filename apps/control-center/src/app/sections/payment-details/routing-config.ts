@@ -1,4 +1,4 @@
-import { Services, RoutingConfig } from '@cc/app/shared/services';
+import { Services, RoutingConfig } from '../../shared/services';
 
 export const ROUTING_CONFIG: RoutingConfig = {
     services: [Services.MerchantStatistics],

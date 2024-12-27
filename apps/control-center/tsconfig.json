@@ -7,12 +7,7 @@
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "useDefineForClassFields": false,
-        "resolveJsonModule": true,
-        "paths": {
-            "@cc/*": ["apps/control-center/src/*"]
-        }
+        "noFallthroughCasesInSwitch": true
     },
     "files": [],
     "include": [],

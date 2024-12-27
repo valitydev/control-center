@@ -1,0 +1,12 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: min-content auto;
+    align-items: center;
+    grid-gap: 16px;
+
+    & > * {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

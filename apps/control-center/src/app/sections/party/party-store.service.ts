@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
-import { NotifyLogService } from '@vality/ng-core';
+import { NotifyLogService } from '@vality/matez';
 import { EMPTY, Observable, of } from 'rxjs';
 import {
     startWith,

@@ -6,7 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { ActionsModule, TagModule } from '@vality/ng-core';
+import { ActionsModule, TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutActionsComponent } from './components/page-layout-actions/page-layout-actions.component';

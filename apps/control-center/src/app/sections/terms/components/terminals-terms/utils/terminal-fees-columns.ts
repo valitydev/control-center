@@ -1,5 +1,5 @@
 import { ProvisionTermSet, CashFlowPosting } from '@vality/domain-proto/internal/domain';
-import { Column, TreeDataItem } from '@vality/ng-core';
+import { Column, TreeDataItem } from '@vality/matez';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision, getFlatDecisions } from '../../../utils/get-flat-decisions';

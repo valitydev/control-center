@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbar } from '@angular/material/toolbar';
-import { NavComponent, TagModule } from '@vality/ng-core';
+import { NavComponent, TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '../../shared';

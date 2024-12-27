@@ -1,6 +1,6 @@
 import { ClaimStatus } from '@vality/domain-proto/claim_management';
 
-import { StatusColor } from '@cc/app/styles';
+import { StatusColor } from '../../../styles/consts';
 
 export const CLAIM_STATUS_COLOR: Record<keyof ClaimStatus, StatusColor> = {
     pending_acceptance: null,

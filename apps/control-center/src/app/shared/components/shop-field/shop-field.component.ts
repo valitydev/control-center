@@ -19,7 +19,7 @@ import {
     NotifyLogService,
     progressTo,
     SelectFieldComponent,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import {
     BehaviorSubject,
     of,

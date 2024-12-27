@@ -6,12 +6,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
-import { ActionsModule, DialogModule } from '@vality/ng-core';
+import { ActionsModule, DialogModule } from '@vality/matez';
 
-import { StatusModule, PageLayoutModule, SubPageLayoutComponent } from '@cc/app/shared/components';
-import { DetailsItemModule } from '@cc/components/details-item';
-import { HeadlineModule } from '@cc/components/headline';
-
+import { DetailsItemModule } from '../../../components/details-item/details-item.module';
+import { HeadlineModule } from '../../../components/headline/headline.module';
+import { StatusModule, PageLayoutModule, SubPageLayoutComponent } from '../../shared/components';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';

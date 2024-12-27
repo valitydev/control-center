@@ -9,12 +9,11 @@ import {
     DEFAULT_DIALOG_CONFIG,
     forkJoinToResult,
     DialogModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { InvoicingService } from '@cc/app/api/payment-processing';
-
 import { UploadCsvComponent } from '../../../../../components/upload-csv';
+import { InvoicingService } from '../../../../api/payment-processing/invoicing.service';
 
 import { CSV_PAYMENT_ADJUSTMENT_PROPS, CsvPaymentAdjustment } from './types/csv-payment-adjustment';
 import { getCreatePaymentAdjustmentsArgs } from './utils/get-create-payment-adjustments-args';

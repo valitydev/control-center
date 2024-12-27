@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { MatSidenav, MatSidenavContent, MatSidenavContainer } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
-import { NavComponent, TagModule, Color, Link, ActionsModule } from '@vality/ng-core';
+import { NavComponent, TagModule, Color, Link, ActionsModule } from '@vality/matez';
 
 import { SidenavInfoService } from '../../../sidenav-info';
 

@@ -20,7 +20,7 @@ import {
     NotifyLogService,
     Column,
     createMenuColumn,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { filter, switchMap, catchError } from 'rxjs/operators';
 
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';

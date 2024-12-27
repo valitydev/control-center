@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@import '../../styles/utils/get-color';
+
+@mixin theme($theme) {
+    .v-tag {
+        .tag {
+            &.color-pending,
+            &.color-success {
+                * {
+                    color: #fff !important;
+                }
+            }
+
+            &.color-pending {
+                background-color: get-color($theme, pending, darker);
+            }
+
+            &.color-success {
+                background-color: get-color($theme, success, darker);
+            }
+        }
+    }
+}

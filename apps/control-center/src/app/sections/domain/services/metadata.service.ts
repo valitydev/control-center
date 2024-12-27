@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Reference } from '@vality/domain-proto/domain';
-import { getImportValue } from '@vality/ng-core';
+import { getImportValue } from '@vality/matez';
 import { Field } from '@vality/thrift-ts';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay, withLatestFrom } from 'rxjs/operators';
@@ -45,11 +45,10 @@ export class MetadataService {
         return this.getDomainFields().pipe(
             map((fields) => fields.find((f) => f.name === fieldName)),
             withLatestFrom(this.metadata$),
-            map(
-                ([field, metadata]) =>
-                    metadata
-                        .find(({ name }) => name === 'domain')
-                        .ast.struct[String(field.type)]?.find((f) => f.name === 'data'),
+            map(([field, metadata]) =>
+                metadata
+                    .find(({ name }) => name === 'domain')
+                    .ast.struct[String(field.type)]?.find((f) => f.name === 'data'),
             ),
         );
     }

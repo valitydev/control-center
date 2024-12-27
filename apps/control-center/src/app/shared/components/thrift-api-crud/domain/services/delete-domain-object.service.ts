@@ -5,7 +5,7 @@ import {
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { filter, switchMap, first } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../api/domain-config';

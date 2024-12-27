@@ -1,0 +1,28 @@
+:host {
+    ::ng-deep button {
+        pointer-events: none;
+        cursor: default;
+    }
+}
+
+@keyframes content-loading-animation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.tag {
+    transition: all 300ms ease-in-out;
+}
+
+.loading {
+    animation: content-loading-animation 1.5s ease-in-out infinite;
+}

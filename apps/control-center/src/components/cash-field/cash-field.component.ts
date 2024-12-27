@@ -23,7 +23,7 @@ import {
     toMinorByExponent,
     toMajorByExponent,
     compareDifferentTypes,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, startWith, take } from 'rxjs/operators';

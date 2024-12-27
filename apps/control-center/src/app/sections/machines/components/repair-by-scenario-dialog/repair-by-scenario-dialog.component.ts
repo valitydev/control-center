@@ -8,7 +8,7 @@ import {
     getValue,
     NotifyLogService,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import {
     RepairInvoicesRequest,
@@ -19,9 +19,8 @@ import isNil from 'lodash-es/isNil';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DomainMetadataFormExtensionsService } from '@cc/app/shared/services';
-
 import { RepairManagementService } from '../../../../api/repairer';
+import { DomainMetadataFormExtensionsService } from '../../../../shared/services';
 
 enum Types {
     Same,

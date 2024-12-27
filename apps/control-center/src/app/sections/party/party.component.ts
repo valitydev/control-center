@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { Link } from '@vality/ng-core';
+import { Link } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
-import { AppAuthGuardService, Services } from '@cc/app/shared/services';
-
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
+import { AppAuthGuardService, Services } from '../../shared/services';
 import { ROUTING_CONFIG as CLAIMS_CONFIG } from '../claims/routing-config';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
 import { SHOPS_ROUTING_CONFIG } from '../shops';

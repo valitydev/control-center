@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputFieldModule } from '@vality/ng-core';
+import { InputFieldModule } from '@vality/matez';
 
 import { PageLayoutModule } from '../../shared';
 import { ShopsTableComponent } from '../../shared/components/shops-table';

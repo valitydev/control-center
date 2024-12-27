@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
     "version": "0.2",
-    "import": "./node_modules/@vality/cspell-config/cspell.config.js",
-    "words": ["papaparse", "msgpack", "rreserve", "wght", "opsz", "dpan", "buildable"]
+    "import": "./dist/libs/ng-configs/src/lib/cspell-config.json",
+    "words": ["msgpack", "rreserve", "wght", "opsz", "dpan", "buildable"]
 }

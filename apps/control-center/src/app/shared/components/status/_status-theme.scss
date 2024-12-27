@@ -1,4 +1,4 @@
-@use '@vality/ng-core' as v;
+@use '../../../../../../../libs/matez/index' as v;
 
 @mixin cc-status-theme($theme) {
     .cc-status {

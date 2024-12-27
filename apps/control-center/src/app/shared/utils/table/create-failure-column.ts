@@ -1,5 +1,5 @@
 import { Failure } from '@vality/domain-proto/domain';
-import { createColumn } from '@vality/ng-core';
+import { createColumn } from '@vality/matez';
 
 function getFailureMessageTree(failure: Failure, withReason = true, level = Infinity) {
     if (!failure) {

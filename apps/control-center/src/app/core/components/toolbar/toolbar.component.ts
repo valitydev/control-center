@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { UrlService } from '@vality/ng-core';
+import { UrlService } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import { from } from 'rxjs';
 import { map, shareReplay, distinctUntilChanged } from 'rxjs/operators';

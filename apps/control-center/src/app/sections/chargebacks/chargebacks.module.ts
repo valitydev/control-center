@@ -17,13 +17,12 @@ import {
     SelectFieldModule,
     DialogModule,
     FileUploadModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
-
-import { ChargebacksTableComponent } from '@cc/app/shared/components/chargebacks-table';
 
 import { UploadCsvComponent } from '../../../components/upload-csv';
 import { PageLayoutModule, ShopFieldModule } from '../../shared';
+import { ChargebacksTableComponent } from '../../shared/components/chargebacks-table/chargebacks-table.component';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import {

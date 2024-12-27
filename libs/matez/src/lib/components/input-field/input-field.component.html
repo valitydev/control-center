@@ -1,0 +1,34 @@
+<mat-form-field
+    [appearance]="appearance"
+    [ngClass]="{
+        'v-input-field__small': size === 'small',
+        'v-input-field__outline': appearance === 'outline',
+    }"
+    class="v-input-field"
+>
+    @if (icon()) {
+        <div class="prefix" matPrefix>
+            <mat-icon>{{ icon() }}</mat-icon>
+        </div>
+    }
+    <mat-label>{{ label }}</mat-label>
+    <input
+        [formControl]="control"
+        [placeholder]="placeholder"
+        [type]="type"
+        autocomplete="false"
+        matInput
+    />
+    <div class="postfix" matSuffix>
+        @if (cleanButton()) {
+            <button
+                [disabled]="!control.value"
+                [style.visibility]="control.value ? '' : 'hidden'"
+                mat-icon-button
+                (click)="control.reset()"
+            >
+                <mat-icon>clear</mat-icon>
+            </button>
+        }
+    </div>
+</mat-form-field>

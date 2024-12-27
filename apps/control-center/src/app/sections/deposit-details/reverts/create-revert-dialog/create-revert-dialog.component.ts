@@ -9,14 +9,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
-import { DialogSuperclass, NotifyLogService, clean } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService, clean } from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { Overwrite } from 'utility-types';
 
-import { DepositManagementService } from '@cc/app/api/deposit';
-
 import { Cash } from '../../../../../components/cash-field';
+import { DepositManagementService } from '../../../../api/deposit/deposit-management.service';
 import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 

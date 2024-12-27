@@ -3,13 +3,12 @@ import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
-import { DialogResponseStatus, DialogService } from '@vality/ng-core';
+import { DialogResponseStatus, DialogService } from '@vality/matez';
 import { first } from 'rxjs';
 
-import { FetchChargebacksService } from '@cc/app/sections/chargebacks/fetch-chargebacks.service';
-import { ChargebacksTableComponent } from '@cc/app/shared/components/chargebacks-table';
-
 import { PageLayoutModule } from '../../../../shared';
+import { ChargebacksTableComponent } from '../../../../shared/components/chargebacks-table/chargebacks-table.component';
+import { FetchChargebacksService } from '../../../chargebacks/fetch-chargebacks.service';
 import { CreateChargebackDialogComponent } from '../../create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsService } from '../../payment-details.service';
 

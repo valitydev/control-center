@@ -1,5 +1,5 @@
 import { CodegenClient } from '@vality/domain-proto/internal/payment_processing-Invoicing';
-import { clean } from '@vality/ng-core';
+import { clean } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import short from 'short-uuid';
 

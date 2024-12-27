@@ -9,12 +9,11 @@ import {
     TableModule,
     DialogModule,
     InputFieldModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 
-import { PageLayoutModule, ShopFieldModule } from '@cc/app/shared';
-import { MerchantFieldModule } from '@cc/app/shared/components/merchant-field';
-import { ThriftFormModule } from '@cc/app/shared/components/metadata-form';
-
+import { PageLayoutModule, ShopFieldModule } from '../../shared';
+import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
+import { ThriftFormModule } from '../../shared/components/metadata-form/thrift-form.module';
 import { MagistaThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';

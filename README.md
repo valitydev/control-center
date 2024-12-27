@@ -1,29 +1,35 @@
-# Control Center
+# Control Center Monorepo
 
-Admin Dashboard
+-   Applications
+    -   Admin Dashboard
+-   Angular Libraries
+    -   MatEz (eazy-to-use library that extends Angular Material)
+    -   Configs (for Prettier, ESLint, CSpell)
 
-## ⚙️ Installation
+## Control Center App
+
+### ⚙️ Installation
 
 1. Add configurations:
 
-    - [`src/assets/appConfig.json`](./src/assets/_appConfig.json)
-    - [`src/assets/authConfig.json`](./src/assets/_authConfig.json)
+    - [`apps/control-center/src/assets/appConfig.json`](./apps/control-center/src/assets/_appConfig.json)
+    - [`apps/control-center/src/assets/authConfig.json`](./apps/control-center/src/assets/_authConfig.json)
 
-You can copy from examples like this one: [`_appConfig.json`](./src/assets/_appConfig.json)
+You can copy from examples like this one: [`_appConfig.json`](./apps/control-center/src/assets/_appConfig.json)
 
 2. Install packages
     ```sh
     npm ci
     ```
 
-### Stage
+#### Stage
 
 Running in stage mode needs files:
 
--   `src/assets/appConfig.stage.json`
--   `src/assets/authConfig.stage.json`
+-   `apps/control-center/src/assets/appConfig.stage.json`
+-   `apps/control-center/src/assets/authConfig.stage.json`
 
-## 🚀 Launch
+### 🚀 Launch
 
 1. Start
     ```sh
@@ -38,9 +44,9 @@ npm run dev
 npm run dev-libs
 ```
 
-## 👩‍💻 Development
+### 👩‍💻 Development
 
-### Console Utilities
+#### Console Utilities
 
 -   `ccSwitchLogging()` - Enable/disable logging requests to the console
 -   `ccGetMyRoles()` - Display your roles from the token

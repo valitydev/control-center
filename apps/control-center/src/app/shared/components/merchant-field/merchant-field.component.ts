@@ -16,12 +16,11 @@ import {
     getValueChanges,
     debounceTimeWithFirst,
     SelectFieldComponent,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
 import { catchError, map, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
 
-import { DeanonimusService } from '@cc/app/api/deanonimus';
-
+import { DeanonimusService } from '../../../api/deanonimus/deanonimus.service';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';
 
 @Component({

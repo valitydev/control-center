@@ -2,8 +2,7 @@ import { isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { createNextId } from '@cc/utils/create-next-id';
-
+import { createNextId } from '../../../../../utils/create-next-id';
 import {
     MetadataFormExtension,
     MetadataFormExtensionOption,

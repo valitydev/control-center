@@ -8,12 +8,12 @@ import {
     NotifyLogService,
     inProgressFrom,
     progressTo,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { AllowedClaimStatusesService } from '@cc/app/sections/claim/services/allowed-claim-statuses.service';
+import { ClaimManagementService } from '../../../../api/claim-management/claim-management.service';
+import { AllowedClaimStatusesService } from '../../services/allowed-claim-statuses.service';
 
 @Component({
     selector: 'cc-change-status-dialog',

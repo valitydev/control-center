@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DialogSuperclass, NotifyLogService } from '@vality/ng-core';
+import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
 import { RoutingRulesService } from '../services/routing-rules';

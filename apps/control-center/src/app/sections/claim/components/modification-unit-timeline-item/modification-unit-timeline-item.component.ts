@@ -16,18 +16,17 @@ import {
     inProgressFrom,
     progressTo,
     getImportValue,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import { getUnionValue, ThriftAstMetadata } from '@vality/ng-thrift';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 
-import { ClaimManagementService } from '@cc/app/api/claim-management';
-import { PartyManagementService } from '@cc/app/api/payment-processing';
-import { getModificationName } from '@cc/app/sections/claim/utils/get-modification-name';
-import { DomainMetadataViewExtensionsService } from '@cc/app/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
-import { Color, StatusColor } from '@cc/app/styles';
-
+import { ClaimManagementService } from '../../../../api/claim-management/claim-management.service';
+import { PartyManagementService } from '../../../../api/payment-processing/party-management.service';
+import { DomainMetadataViewExtensionsService } from '../../../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions/domain-metadata-view-extensions.service';
+import { Color, StatusColor } from '../../../../styles/consts';
+import { getModificationName } from '../../utils/get-modification-name';
 import { AddModificationDialogComponent } from '../add-modification-dialog/add-modification-dialog.component';
 
 @Component({

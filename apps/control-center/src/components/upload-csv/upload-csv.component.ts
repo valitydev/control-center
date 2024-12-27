@@ -21,7 +21,7 @@ import {
     getValueChanges,
     NotifyLogService,
     Column,
-} from '@vality/ng-core';
+} from '@vality/matez';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { switchMap, map, tap, shareReplay } from 'rxjs/operators';

@@ -1,0 +1,20 @@
+<v-dialog noActions title="Filters">
+    <div
+        [ngClass]="[
+            'v-filters-dialog-cols-' +
+                (isShowMainFilters ? (dialogData.filters.repeat$ | async) : 1),
+            'filters',
+        ]"
+    >
+        @if (isShowMainFilters) {
+            <ng-container *ngTemplateOutlet="dialogData.filters.mainFiltersTemplate"></ng-container>
+        }
+        @if (dialogData.filters.otherFiltersTemplate) {
+            <div class="other-filters">
+                <ng-container
+                    *ngTemplateOutlet="dialogData.filters.otherFiltersTemplate"
+                ></ng-container>
+            </div>
+        }
+    </div>
+</v-dialog>

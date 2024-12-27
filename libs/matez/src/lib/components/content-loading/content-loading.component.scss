@@ -1,0 +1,26 @@
+@keyframes content-loading-animation {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.content-loading {
+    color: transparent;
+    display: inline-block;
+    line-height: 100%;
+    background-color: rgba(0, 0, 0, 0.08);
+    animation: content-loading-animation 1.5s ease-in-out infinite;
+
+    &__text {
+        color: inherit;
+        background-color: transparent;
+    }
+}

@@ -17,7 +17,7 @@ import {
     InputFieldModule,
     AutocompleteFieldModule,
     SelectFieldModule,
-} from '@vality/ng-core';
+} from '@vality/matez';
 
 import { PageLayoutModule, WalletFieldModule } from '../../shared';
 import { CurrencyFieldComponent } from '../../shared/components/currency-field';

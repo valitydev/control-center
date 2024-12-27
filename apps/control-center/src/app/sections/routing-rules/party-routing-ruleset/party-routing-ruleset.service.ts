@@ -1,14 +1,14 @@
 import { Injectable, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { NotifyLogService } from '@vality/ng-core';
+import { NotifyLogService } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { combineLatest, defer, Observable, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
-import { createDsl, FistfulStatisticsService } from '@cc/app/api/fistful-stat';
-import { PartyManagementService } from '@cc/app/api/payment-processing';
-
+import { createDsl } from '../../../api/fistful-stat';
+import { FistfulStatisticsService } from '../../../api/fistful-stat/fistful-statistics.service';
+import { PartyManagementService } from '../../../api/payment-processing/party-management.service';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesService } from '../services/routing-rules';
 
