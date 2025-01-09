@@ -72,7 +72,7 @@ class OnePageTableDataSourcePaginator implements Partial<MatPaginator> {
         return this.pageSize;
     }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    set length(_length) {} 
+    set length(_length) {}
 
     get displayedPages() {
         return this.pageSize / this.partSize;

@@ -1,10 +1,10 @@
 # Control Center Monorepo
 
--   Applications
-    -   Admin Dashboard
--   Angular Libraries
-    -   MatEz (eazy-to-use library that extends Angular Material)
-    -   Configs (for Prettier, ESLint, CSpell)
+- Applications
+    - Admin Dashboard
+- Angular Libraries
+    - MatEz (eazy-to-use library that extends Angular Material)
+    - Configs (for Prettier, ESLint, CSpell)
 
 ## Control Center App
 
@@ -26,8 +26,8 @@ You can copy from examples like this one: [`_appConfig.json`](./apps/control-cen
 
 Running in stage mode needs files:
 
--   `apps/control-center/src/assets/appConfig.stage.json`
--   `apps/control-center/src/assets/authConfig.stage.json`
+- `apps/control-center/src/assets/appConfig.stage.json`
+- `apps/control-center/src/assets/authConfig.stage.json`
 
 ### 🚀 Launch
 
@@ -48,5 +48,5 @@ npm run dev-libs
 
 #### Console Utilities
 
--   `ccSwitchLogging()` - Enable/disable logging requests to the console
--   `ccGetMyRoles()` - Display your roles from the token
+- `ccSwitchLogging()` - Enable/disable logging requests to the console
+- `ccGetMyRoles()` - Display your roles from the token
