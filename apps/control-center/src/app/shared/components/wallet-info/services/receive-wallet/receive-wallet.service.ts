@@ -1,7 +1,7 @@
-import { Injectable, DestroyRef } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
-import { catchError, switchMap, shareReplay, tap } from 'rxjs/operators';
+import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 import { ManagementService } from '../../../../../api/wallet/management.service';
 

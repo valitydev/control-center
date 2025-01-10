@@ -2,12 +2,12 @@ import { CashFlow } from '@vality/domain-proto/internal/domain';
 import { getUnionKey } from '@vality/ng-thrift';
 
 import type {
-    CashFlowSelector,
     CashFlowAccount,
+    CashFlowSelector,
     Predicate,
 } from '@vality/dominator-proto/internal/proto/domain';
 
-import { formatPredicate, compareCashVolumes } from '../../../shared';
+import { compareCashVolumes, formatPredicate } from '../../../shared';
 
 // TODO: use enums
 function formatCashFlowAccount(acc: CashFlowAccount) {

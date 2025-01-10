@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {
-    deposit_ManagementCodegenClient,
     ThriftAstMetadata,
     deposit_Management,
+    deposit_ManagementCodegenClient,
 } from '@vality/fistful-proto';
 import { DepositID, DepositParams } from '@vality/fistful-proto/deposit';
 import { AdjustmentParams, AdjustmentState } from '@vality/fistful-proto/deposit_adjustment';
 import { RevertParams, RevertState } from '@vality/fistful-proto/deposit_revert';
 import { ContextSet } from '@vality/fistful-proto/internal/context';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

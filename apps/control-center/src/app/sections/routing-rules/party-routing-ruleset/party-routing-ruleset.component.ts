@@ -2,7 +2,7 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingDelegate } from '@vality/domain-proto/domain';
-import { DialogService, DialogResponseStatus, compareDifferentTypes, Column } from '@vality/matez';
+import { Column, DialogResponseStatus, DialogService, compareDifferentTypes } from '@vality/matez';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 

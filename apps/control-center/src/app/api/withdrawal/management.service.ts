@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-    withdrawal_ManagementCodegenClient,
     ThriftAstMetadata,
     withdrawal_Management,
+    withdrawal_ManagementCodegenClient,
 } from '@vality/fistful-proto';
-import { WithdrawalID, EventRange, WithdrawalState } from '@vality/fistful-proto/withdrawal';
-import { AdjustmentState, AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { EventRange, WithdrawalID, WithdrawalState } from '@vality/fistful-proto/withdrawal';
+import { AdjustmentParams, AdjustmentState } from '@vality/fistful-proto/withdrawal_adjustment';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

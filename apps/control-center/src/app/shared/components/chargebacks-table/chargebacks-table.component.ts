@@ -1,24 +1,24 @@
 import { CommonModule } from '@angular/common';
 import {
     Component,
+    DestroyRef,
+    EventEmitter,
     Input,
     Output,
-    EventEmitter,
     booleanAttribute,
     input,
-    DestroyRef,
     model,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { StatChargeback } from '@vality/magista-proto/magista';
 import {
-    LoadOptions,
     Column,
-    TableModule,
-    DialogService,
-    createMenuColumn,
     DialogResponseStatus,
+    DialogService,
+    LoadOptions,
+    TableModule,
+    createMenuColumn,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';

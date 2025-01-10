@@ -9,14 +9,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import {
-    TableModule,
     DateRangeFieldModule,
-    FiltersModule,
-    ListFieldModule,
-    InputFieldModule,
-    SelectFieldModule,
     DialogModule,
     FileUploadModule,
+    FiltersModule,
+    InputFieldModule,
+    ListFieldModule,
+    SelectFieldModule,
+    TableModule,
 } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
@@ -26,8 +26,8 @@ import { ChargebacksTableComponent } from '../../shared/components/chargebacks-t
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import {
-    MagistaThriftFormComponent,
     DomainThriftFormComponent,
+    MagistaThriftFormComponent,
 } from '../../shared/components/thrift-api-crud';
 
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';

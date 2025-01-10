@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Column, DialogService, NotifyLogService } from '@vality/matez';
-import { first, map, catchError } from 'rxjs/operators';
+import { catchError, first, map } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { createDomainObjectColumn } from '../../../shared';

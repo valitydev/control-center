@@ -2,9 +2,9 @@ import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import {
+    DEFAULT_DIALOG_CONFIG,
     DialogSuperclass,
     NotifyLogService,
-    DEFAULT_DIALOG_CONFIG,
     forkJoinToResult,
 } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import {
-    repairer_RepairManagementCodegenClient,
     ThriftAstMetadata,
     repairer_RepairManagement,
+    repairer_RepairManagementCodegenClient,
 } from '@vality/repairer-proto';
 import {
+    RepairInvoicesRequest,
+    RepairWithdrawalsRequest,
     SearchRequest,
     SearchResponse,
     SimpleRepairRequest,
-    RepairWithdrawalsRequest,
-    RepairInvoicesRequest,
 } from '@vality/repairer-proto/repairer';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

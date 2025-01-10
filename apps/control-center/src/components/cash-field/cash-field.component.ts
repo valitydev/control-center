@@ -1,32 +1,32 @@
-import { getCurrencySymbol, CommonModule } from '@angular/common';
+import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
     Component,
-    Input,
+    DestroyRef,
     Inject,
+    Input,
     LOCALE_ID,
     OnInit,
     booleanAttribute,
-    DestroyRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validator, ValidationErrors, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { createMask, InputMaskModule } from '@ngneat/input-mask';
+import { InputMaskModule, createMask } from '@ngneat/input-mask';
 import { CurrencyObject } from '@vality/domain-proto/domain';
 import {
     FormComponentSuperclass,
-    createControlProviders,
-    getValueChanges,
     Option,
     SelectFieldModule,
-    toMinorByExponent,
-    toMajorByExponent,
     compareDifferentTypes,
+    createControlProviders,
+    getValueChanges,
+    toMajorByExponent,
+    toMinorByExponent,
 } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { combineLatest } from 'rxjs';
-import { map, distinctUntilChanged, shareReplay, startWith, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../app/api/domain-config';
 

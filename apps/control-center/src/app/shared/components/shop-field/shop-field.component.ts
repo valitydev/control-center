@@ -1,37 +1,37 @@
 import {
+    AfterViewInit,
     Component,
+    DestroyRef,
+    Injector,
     Input,
     booleanAttribute,
-    DestroyRef,
     inject,
-    AfterViewInit,
     input,
-    Injector,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { PartyID, Shop, Party } from '@vality/domain-proto/internal/domain';
+import { Party, PartyID, Shop } from '@vality/domain-proto/internal/domain';
 import { ShopID } from '@vality/domain-proto/payment_processing';
 import {
-    createControlProviders,
     FormControlSuperclass,
-    debounceTimeWithFirst,
-    Option,
     NotifyLogService,
-    progressTo,
+    Option,
     SelectFieldComponent,
+    createControlProviders,
+    debounceTimeWithFirst,
+    progressTo,
 } from '@vality/matez';
 import {
     BehaviorSubject,
-    of,
-    Subject,
-    combineLatest,
     Observable,
-    concat,
-    scheduled,
+    Subject,
     asyncScheduler,
+    combineLatest,
+    concat,
     concatMap,
+    of,
+    scheduled,
 } from 'rxjs';
-import { map, switchMap, distinctUntilChanged, catchError } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../../api/deanonimus';
 import { PartyManagementService } from '../../../api/payment-processing';

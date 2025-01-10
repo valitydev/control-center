@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { withLatestFrom, Observable } from 'rxjs';
+import { Observable, withLatestFrom } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { ShopParty } from '../../shared/components/shops-table';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { startWith, filter, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, shareReplay, startWith } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',

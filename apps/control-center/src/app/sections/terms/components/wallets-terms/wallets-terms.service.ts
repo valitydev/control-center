@@ -3,7 +3,7 @@ import {
     type WalletSearchQuery,
     type WalletTermSet,
 } from '@vality/dominator-proto/internal/dominator';
-import { FetchOptions, FetchSuperclass, handleError, NotifyLogService, clean } from '@vality/matez';
+import { FetchOptions, FetchSuperclass, NotifyLogService, clean, handleError } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { DominatorService } from '../../../../api/dominator/dominator.service';

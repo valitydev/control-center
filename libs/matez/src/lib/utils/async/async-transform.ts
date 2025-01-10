@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Injectable, OnDestroy, inject } from '@angular/core';
-import { ReplaySubject, defer, switchMap, Observable, combineLatest, of } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { getPossiblyAsyncObservable } from './get-possibly-async-observable';

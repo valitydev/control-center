@@ -1,29 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Claim } from '@vality/domain-proto/claim_management';
 import {
+    CategoryRef,
+    ContractTemplateRef,
+    Contractor,
     CurrencyRef,
     Party,
-    ContractTemplateRef,
-    ShopDetails,
-    CategoryRef,
-    RussianBankAccount,
     PaymentInstitutionRef,
-    Contractor,
+    RussianBankAccount,
+    ShopDetails,
     ShopLocation,
 } from '@vality/domain-proto/domain';
 import {
+    DEFAULT_DIALOG_CONFIG,
     DialogModule,
     DialogSuperclass,
-    DEFAULT_DIALOG_CONFIG,
     NotifyLogService,
     progressTo,
 } from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
-import { of, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { first } from 'rxjs/operators';
 import short from 'short-uuid';
 

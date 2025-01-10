@@ -1,10 +1,10 @@
-import { Injectable, DestroyRef } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService, handleError, inProgressFrom, progressTo } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { BehaviorSubject, defer, Observable, of, ReplaySubject, filter, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, combineLatest, defer, filter, of } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { DomainSecretService } from '../../../shared/services';

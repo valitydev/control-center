@@ -1,18 +1,18 @@
 import { formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat';
 import { Timestamp } from '@vality/fistful-proto/internal/base';
 import { formatCurrency, getImportValue } from '@vality/matez';
 import {
+    ThriftAstMetadata,
     getUnionKey,
     getUnionValue,
     isTypeWithAliases,
-    ThriftAstMetadata,
 } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
-import { of, Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import { ManagementService } from '../../api/wallet';
 import {

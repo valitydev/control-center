@@ -5,12 +5,12 @@ import { DomainObject } from '@vality/domain-proto/internal/domain';
 import {
     ComponentChanges,
     FormControlSuperclass,
-    createControlProviders,
-    SelectFieldModule,
     Option,
+    SelectFieldModule,
+    createControlProviders,
 } from '@vality/matez';
-import { defer, switchMap, ReplaySubject } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { ReplaySubject, defer, switchMap } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../api/domain-config/stores/domain-store.service';
 import { getDomainObjectValueDetailsFn } from '../utils';

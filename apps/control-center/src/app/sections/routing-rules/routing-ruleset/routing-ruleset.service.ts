@@ -1,10 +1,10 @@
-import { Injectable, DestroyRef } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import {
-    DialogService,
     ConfirmDialogComponent,
     DialogResponseStatus,
+    DialogService,
     NotifyLogService,
 } from '@vality/matez';
 import { Observable, filter } from 'rxjs';

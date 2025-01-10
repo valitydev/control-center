@@ -1,27 +1,27 @@
-import { Component, OnInit, Inject, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
-    DialogService,
-    DialogResponseStatus,
-    LoadOptions,
-    getNoTimeZoneIsoString,
-    clean,
     DateRange,
+    DialogResponseStatus,
+    DialogService,
+    LoadOptions,
     QueryParamsService,
-    createDateRangeToToday,
-    isEqualDateRange,
-    debounceTimeWithFirst,
-    getValueChanges,
+    clean,
     countChanged,
+    createDateRangeToToday,
+    debounceTimeWithFirst,
+    getNoTimeZoneIsoString,
+    getValueChanges,
+    isEqualDateRange,
 } from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, of, merge } from 'rxjs';
-import { startWith, map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, merge, of } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { MetadataFormExtension } from '../../shared/components/metadata-form';

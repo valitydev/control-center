@@ -1,4 +1,4 @@
-import { Provider, forwardRef, Type } from '@angular/core';
+import { Provider, Type, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export const provideValueAccessor = (component: () => Type<unknown>): Provider => ({

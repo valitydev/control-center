@@ -1,8 +1,8 @@
 import {
-    TerminalObject,
-    RoutingRulesObject,
-    RoutingDelegate,
     RoutingCandidate,
+    RoutingDelegate,
+    RoutingRulesObject,
+    TerminalObject,
 } from '@vality/domain-proto/domain';
 import { getUnionKey } from '@vality/ng-thrift';
 

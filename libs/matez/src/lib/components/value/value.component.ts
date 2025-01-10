@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import {
-    Component,
-    booleanAttribute,
-    runInInjectionContext,
-    Injector,
     ChangeDetectionStrategy,
+    Component,
+    Injector,
     Input,
+    booleanAttribute,
     input,
     model,
+    runInInjectionContext,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { combineLatest, switchMap, of, isObservable, Observable } from 'rxjs';
-import { map, shareReplay, first, filter } from 'rxjs/operators';
+import { Observable, combineLatest, isObservable, of, switchMap } from 'rxjs';
+import { filter, first, map, shareReplay } from 'rxjs/operators';
 
 import { HighlightDirective } from '../../directives';
 import { Nil } from '../../utils';

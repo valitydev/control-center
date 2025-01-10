@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Column, getEnumKey, TableModule } from '@vality/matez';
+import { Column, TableModule, getEnumKey } from '@vality/matez';
 import { repairer } from '@vality/repairer-proto';
 import { StatusHistory } from '@vality/repairer-proto/repairer';
 import { startCase } from 'lodash-es';

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    domain_config_RepositoryCodegenClient,
     ThriftAstMetadata,
     domain_config_Repository,
+    domain_config_RepositoryCodegenClient,
 } from '@vality/domain-proto';
-import { Version, Commit, Reference, Snapshot } from '@vality/domain-proto/domain_config';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Commit, Reference, Snapshot, Version } from '@vality/domain-proto/domain_config';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

@@ -1,4 +1,4 @@
-import { catchError, merge, Observable, of, scan, Subject, takeLast } from 'rxjs';
+import { Observable, Subject, catchError, merge, of, scan, takeLast } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 

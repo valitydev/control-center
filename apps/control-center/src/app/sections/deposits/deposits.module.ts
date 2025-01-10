@@ -11,12 +11,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import {
-    TableModule,
-    FiltersModule,
-    DateRangeFieldModule,
-    InputFieldModule,
     AutocompleteFieldModule,
+    DateRangeFieldModule,
+    FiltersModule,
+    InputFieldModule,
     SelectFieldModule,
+    TableModule,
 } from '@vality/matez';
 
 import { PageLayoutModule, WalletFieldModule } from '../../shared';

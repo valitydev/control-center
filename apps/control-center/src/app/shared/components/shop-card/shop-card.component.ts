@@ -3,10 +3,10 @@ import { Component, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { combineLatest } from 'rxjs';
-import { switchMap, shareReplay } from 'rxjs/operators';
+import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { CardComponent } from '../sidenav-info/components/card/card.component';

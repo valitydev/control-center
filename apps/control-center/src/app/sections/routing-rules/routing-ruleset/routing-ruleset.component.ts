@@ -5,26 +5,26 @@ import { ActivatedRoute } from '@angular/router';
 import { RoutingCandidate } from '@vality/domain-proto/domain';
 import { Predicate } from '@vality/domain-proto/internal/domain';
 import {
+    Column,
     DialogResponseStatus,
     DialogService,
-    NotifyLogService,
     DragDrop,
+    NotifyLogService,
     correctPriorities,
-    Column,
     createMenuColumn,
 } from '@vality/matez';
-import { toJson, getUnionKey } from '@vality/ng-thrift';
+import { getUnionKey, toJson } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
-import { first, map, switchMap, withLatestFrom, take } from 'rxjs/operators';
+import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { createDomainObjectColumn, createPredicateColumn } from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import {
-    DomainThriftFormDialogComponent,
     DomainObjectCardComponent,
+    DomainThriftFormDialogComponent,
     UpdateThriftDialogComponent,
 } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';

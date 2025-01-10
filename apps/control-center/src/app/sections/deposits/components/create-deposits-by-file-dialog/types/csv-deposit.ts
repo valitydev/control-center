@@ -1,6 +1,6 @@
 import { DeepReadonly } from 'utility-types';
 
-import { CsvProps, CsvObject } from '../../../../../../components/upload-csv';
+import { CsvObject, CsvProps } from '../../../../../../components/upload-csv';
 
 export const CSV_DEPOSIT_PROPS = {
     required: ['wallet_id', 'source_id', 'body.amount', 'body.currency'],

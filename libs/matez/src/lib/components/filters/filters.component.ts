@@ -4,11 +4,11 @@ import {
     ContentChild,
     ElementRef,
     EventEmitter,
+    Input,
     Output,
     TemplateRef,
     ViewChild,
     booleanAttribute,
-    Input,
     signal,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';

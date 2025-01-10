@@ -5,9 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { getImportValue, createControlProviders } from '@vality/matez';
+import { createControlProviders, getImportValue } from '@vality/matez';
 import { combineLatest, filter } from 'rxjs';
-import { shareReplay, startWith, map } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '../../../../services';
 import { ThriftFormModule } from '../../../metadata-form';

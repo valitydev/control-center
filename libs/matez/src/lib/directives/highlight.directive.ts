@@ -1,15 +1,15 @@
 import {
+    DestroyRef,
     Directive,
     ElementRef,
-    OnInit,
-    input,
     Injector,
-    DestroyRef,
+    OnInit,
     Renderer2,
+    input,
 } from '@angular/core';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { combineLatest } from 'rxjs';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { SPACES } from '../components/table/utils/normalize-string';
 

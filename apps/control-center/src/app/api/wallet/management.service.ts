@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
-    wallet_ManagementCodegenClient,
     ThriftAstMetadata,
     wallet_Management,
+    wallet_ManagementCodegenClient,
 } from '@vality/fistful-proto';
 import { ContextSet } from '@vality/fistful-proto/internal/context';
 import { AccountBalance, WalletParams } from '@vality/fistful-proto/internal/wallet';
-import { WalletID, EventRange, WalletState } from '@vality/fistful-proto/wallet';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { EventRange, WalletID, WalletState } from '@vality/fistful-proto/wallet';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

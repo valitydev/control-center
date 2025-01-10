@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { inject, LOCALE_ID } from '@angular/core';
+import { LOCALE_ID, inject } from '@angular/core';
 
 import { TypedValue } from '../types/base-type';
 

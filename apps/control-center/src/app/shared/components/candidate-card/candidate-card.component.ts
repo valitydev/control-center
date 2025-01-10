@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { TerminalRef, RoutingRulesetRef } from '@vality/domain-proto/domain';
+import { RoutingRulesetRef, TerminalRef } from '@vality/domain-proto/domain';
 import { ComponentChanges } from '@vality/matez';
-import { ReplaySubject, switchMap, defer } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { ReplaySubject, defer, switchMap } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { CardComponent } from '../sidenav-info/components/card/card.component';

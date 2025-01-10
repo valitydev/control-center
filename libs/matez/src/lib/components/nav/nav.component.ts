@@ -1,8 +1,8 @@
-import { NgStyle, NgClass, AsyncPipe } from '@angular/common';
-import { Component, input, booleanAttribute, ViewEncapsulation } from '@angular/core';
+import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
+import { Component, ViewEncapsulation, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDivider } from '@angular/material/divider';
-import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatListItem, MatNavList } from '@angular/material/list';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { isArray } from 'lodash-es';
 import { combineLatest } from 'rxjs';

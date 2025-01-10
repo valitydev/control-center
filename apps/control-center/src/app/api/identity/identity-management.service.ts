@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    identity_ManagementCodegenClient,
     ThriftAstMetadata,
     identity_Management,
+    identity_ManagementCodegenClient,
 } from '@vality/fistful-proto';
 import * as identity from '@vality/fistful-proto/internal/identity';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

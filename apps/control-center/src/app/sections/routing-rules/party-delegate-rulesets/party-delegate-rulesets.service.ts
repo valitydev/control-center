@@ -7,7 +7,7 @@ import {
     RoutingRulesObject,
 } from '@vality/domain-proto/domain';
 import isNil from 'lodash-es/isNil';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';

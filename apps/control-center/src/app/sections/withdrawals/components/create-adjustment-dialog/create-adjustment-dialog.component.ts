@@ -1,9 +1,9 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validators, FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
-import { DialogSuperclass, forkJoinToResult, NotifyLogService } from '@vality/matez';
+import { DialogSuperclass, NotifyLogService, forkJoinToResult } from '@vality/matez';
 import { isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import short from 'short-uuid';

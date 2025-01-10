@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, computed } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TableModule, VSelectPipe, Column } from '@vality/matez';
+import { Column, TableModule, VSelectPipe } from '@vality/matez';
 
-import type { TermSetHistory, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
+import type { ShopTermSet, TermSetHistory } from '@vality/dominator-proto/internal/dominator';
 
 import { createDomainObjectColumn } from '../../../../shared';
 import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
+    SHOP_FEES_COLUMNS,
     getShopCashFlowSelectors,
     isShopTermSetDecision,
-    SHOP_FEES_COLUMNS,
 } from '../shops-terms/utils/shop-fees-columns';
 
 @Component({

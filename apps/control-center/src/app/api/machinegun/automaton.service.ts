@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
+    ThriftAstMetadata,
     state_processing_Automaton,
     state_processing_AutomatonCodegenClient,
-    ThriftAstMetadata,
 } from '@vality/machinegun-proto';
-import { MachineDescriptor, Args } from '@vality/machinegun-proto/state_processing';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Args, MachineDescriptor } from '@vality/machinegun-proto/state_processing';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

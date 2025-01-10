@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ComponentChanges, progressTo } from '@vality/matez';
-import { ReplaySubject, defer, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, ReplaySubject, combineLatest, defer } from 'rxjs';
+import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '../../../api/payment-processing';
 import { CardComponent } from '../sidenav-info/components/card/card.component';

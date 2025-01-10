@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
-    fistful_admin_FistfulAdminCodegenClient,
     ThriftAstMetadata,
     fistful_admin_FistfulAdmin,
+    fistful_admin_FistfulAdminCodegenClient,
 } from '@vality/fistful-proto';
 import { Deposit } from '@vality/fistful-proto/deposit';
 import { DepositParams } from '@vality/fistful-proto/fistful_admin';
 import { SourceParams } from '@vality/fistful-proto/internal/fistful_admin';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

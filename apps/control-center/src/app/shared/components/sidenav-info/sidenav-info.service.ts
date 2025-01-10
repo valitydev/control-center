@@ -1,10 +1,10 @@
-import { Injectable, Type, Inject, Optional, InputSignal } from '@angular/core';
+import { Inject, Injectable, InputSignal, Optional, Type } from '@angular/core';
 import {
-    QueryParamsService,
-    QueryParamsNamespace,
-    getPossiblyAsyncObservable,
     PossiblyAsync,
+    QueryParamsNamespace,
+    QueryParamsService,
     UrlService,
+    getPossiblyAsyncObservable,
 } from '@vality/matez';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject } from 'rxjs';

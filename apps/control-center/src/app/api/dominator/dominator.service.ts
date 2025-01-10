@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    dominator_DominatorServiceCodegenClient,
     ThriftAstMetadata,
-    dominator_DominatorService,
     dominator,
+    dominator_DominatorService,
+    dominator_DominatorServiceCodegenClient,
 } from '@vality/dominator-proto';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

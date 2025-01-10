@@ -1,19 +1,19 @@
-import { Component, OnInit, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validators, FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import {
     DialogResponseStatus,
     DialogSuperclass,
+    NotifyLogService,
     getImportValue,
     getValue,
-    NotifyLogService,
     progressTo,
 } from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import {
+    Machine,
     RepairInvoicesRequest,
     RepairWithdrawalsRequest,
-    Machine,
 } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
 import { BehaviorSubject } from 'rxjs';

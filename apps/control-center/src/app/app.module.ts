@@ -32,12 +32,12 @@ import { TerminalDelegatesCardComponent } from './shared/components/terminal-del
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud';
 import { KeycloakTokenInfoModule } from './shared/services';
 import {
+    DATE_RANGE_DAYS,
+    DEBOUNCE_TIME_MS,
+    DEFAULT_DATE_RANGE_DAYS,
+    DEFAULT_DEBOUNCE_TIME_MS,
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
-    DATE_RANGE_DAYS,
-    DEFAULT_DATE_RANGE_DAYS,
-    DEBOUNCE_TIME_MS,
-    DEFAULT_DEBOUNCE_TIME_MS,
 } from './tokens';
 
 registerLocaleData(localeRu);

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FetchSuperclass, NotifyLogService, FetchOptions } from '@vality/matez';
+import { FetchOptions, FetchSuperclass, NotifyLogService } from '@vality/matez';
 import { Machine, SearchRequest } from '@vality/repairer-proto/repairer';
 import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../../api/repairer';
 

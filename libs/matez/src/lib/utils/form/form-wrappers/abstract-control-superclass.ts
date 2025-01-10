@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, DestroyRef, Directive, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, DestroyRef, Directive, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, ValidationErrors, Validator } from '@angular/forms';
 import { WrappedControlSuperclass } from '@s-libs/ng-core';
-import { concat, EMPTY, Observable, take, timer } from 'rxjs';
+import { EMPTY, Observable, concat, take, timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { getErrorsTree } from './utils/get-errors-tree';

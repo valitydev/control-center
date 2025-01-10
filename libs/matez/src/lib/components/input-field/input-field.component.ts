@@ -1,7 +1,7 @@
-import { Component, Input, input, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute, input } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 
-import { createControlProviders, FormControlSuperclass } from '../../utils';
+import { FormControlSuperclass, createControlProviders } from '../../utils';
 
 @Component({
     selector: 'v-input-field',

@@ -1,7 +1,7 @@
 import { Value } from '../../value';
 import { unknownToString } from '../../value/utils/unknown-to-string';
 import { valueToString } from '../../value/utils/value-to-string';
-import { DisplayedDataItem, ColumnData } from '../utils/to-columns-data';
+import { ColumnData, DisplayedDataItem } from '../utils/to-columns-data';
 
 export function tableToCsvObject<T extends object, C extends object>(
     cols: Value[],

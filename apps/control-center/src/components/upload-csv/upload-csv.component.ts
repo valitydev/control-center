@@ -1,30 +1,30 @@
 import { CommonModule } from '@angular/common';
 import {
     Component,
-    Output,
-    EventEmitter,
-    type OnInit,
-    input,
-    computed,
     DestroyRef,
-    model,
+    EventEmitter,
     Injector,
+    type OnInit,
+    Output,
+    computed,
+    input,
+    model,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import {
-    FileUploadModule,
-    TableModule,
-    loadFileContent,
-    getValueChanges,
-    NotifyLogService,
     Column,
+    FileUploadModule,
+    NotifyLogService,
+    TableModule,
+    getValueChanges,
+    loadFileContent,
 } from '@vality/matez';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
-import { switchMap, map, tap, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 import { parseCsv, unifyCsvItems } from '../../utils';
 

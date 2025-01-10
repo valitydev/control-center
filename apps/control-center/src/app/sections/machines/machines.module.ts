@@ -13,13 +13,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
     ActionsModule,
-    DialogModule,
-    TableModule,
     DateRangeFieldModule,
-    ListFieldModule,
+    DialogModule,
     EnumKeyPipe,
     EnumKeysPipe,
     FiltersModule,
+    ListFieldModule,
+    TableModule,
 } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 

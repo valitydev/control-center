@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { createControlProviders, FormControlSuperclass } from '@vality/matez';
+import { FormControlSuperclass, createControlProviders } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
 
 @Component({

@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, booleanAttribute, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Claim } from '@vality/domain-proto/claim_management';
-import { Column, createMenuColumn, LoadOptions } from '@vality/matez';
+import { Column, LoadOptions, createMenuColumn } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { startCase } from 'lodash-es';
 

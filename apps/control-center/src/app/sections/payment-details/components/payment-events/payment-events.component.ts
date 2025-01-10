@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { HumanizedDurationPipe } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 import { switchMap } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 import { TimelineModule } from '../../../../../components/timeline';
 import { InvoicingService } from '../../../../api/payment-processing';

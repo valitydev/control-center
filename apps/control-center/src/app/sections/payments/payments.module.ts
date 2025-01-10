@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-    FiltersModule,
     DateRangeFieldModule,
+    DialogModule,
+    FiltersModule,
+    InputFieldModule,
     ListFieldModule,
     TableModule,
-    DialogModule,
-    InputFieldModule,
 } from '@vality/matez';
 
 import { PageLayoutModule, ShopFieldModule } from '../../shared';

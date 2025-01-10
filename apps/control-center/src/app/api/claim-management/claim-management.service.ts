@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import {
-    claim_management_ClaimManagementCodegenClient,
     ThriftAstMetadata,
     claim_management_ClaimManagement,
+    claim_management_ClaimManagementCodegenClient,
 } from '@vality/domain-proto';
 import {
     Claim,
-    ModificationChangeset,
     ClaimID,
+    ClaimRevision,
     ClaimSearchQuery,
     ClaimSearchResponse,
-    ClaimRevision,
-    ModificationID,
     ModificationChange,
+    ModificationChangeset,
+    ModificationID,
 } from '@vality/domain-proto/claim_management';
 import { PartyID } from '@vality/domain-proto/domain';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

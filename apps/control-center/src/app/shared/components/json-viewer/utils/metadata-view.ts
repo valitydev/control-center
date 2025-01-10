@@ -1,17 +1,17 @@
 import { isEmpty } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
-import { SetType, ListType, MapType, ValueType } from '@vality/thrift-ts';
+import { ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
-import { Observable, of, switchMap, combineLatest, defer } from 'rxjs';
-import { map, shareReplay, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';
 import {
     MetadataViewExtension,
-    getFirstDeterminedExtensionsResult,
     MetadataViewExtensionResult,
+    getFirstDeterminedExtensionsResult,
 } from './metadata-view-extension';
 
 export class MetadataViewItem {

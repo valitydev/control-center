@@ -1,6 +1,6 @@
-import { booleanAttribute, Component, Input } from '@angular/core';
+import { Component, Input, booleanAttribute } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DateFnsAdapter, MAT_DATE_FNS_FORMATS } from '@angular/material-date-fns-adapter';
 import { enGB } from 'date-fns/locale';
 

@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
+    AutocompleteFieldModule,
     FormControlSuperclass,
     Option,
     createControlProviders,
-    AutocompleteFieldModule,
 } from '@vality/matez';
 import { map } from 'rxjs/operators';
 

@@ -1,4 +1,4 @@
-import { Observable, of, from } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 
 import { PossiblyAsync, isAsync } from './is-async';
 

@@ -1,9 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
-import { progressTo, debounceTimeWithFirst } from '@vality/matez';
-import { defer, merge, Observable, Subject, BehaviorSubject } from 'rxjs';
-import { map, shareReplay, switchMap, startWith } from 'rxjs/operators';
+import { debounceTimeWithFirst, progressTo } from '@vality/matez';
+import { BehaviorSubject, Observable, Subject, defer, merge } from 'rxjs';
+import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { PartyManagementService } from '../../api/payment-processing/party-management.service';
 import { DEBOUNCE_TIME_MS } from '../../tokens';

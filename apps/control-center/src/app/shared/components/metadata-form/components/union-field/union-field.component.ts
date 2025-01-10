@@ -1,15 +1,15 @@
-import { Component, Input, OnInit, DestroyRef, OnChanges } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ValidationErrors, Validator, FormControl } from '@angular/forms';
+import { FormControl, ValidationErrors, Validator } from '@angular/forms';
 import {
+    ComponentChanges,
     FormComponentSuperclass,
     createControlProviders,
     getErrorsTree,
-    ComponentChanges,
 } from '@vality/matez';
-import { getFieldLabel, ThriftData } from '@vality/ng-thrift';
+import { ThriftData, getFieldLabel } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
-import { merge, ReplaySubject, defer } from 'rxjs';
+import { ReplaySubject, defer, merge } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormExtension } from '../../types/metadata-form-extension';

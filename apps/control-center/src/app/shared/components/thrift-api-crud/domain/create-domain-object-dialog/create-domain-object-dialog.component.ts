@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { DomainObject } from '@vality/domain-proto/domain';
 import {
-    DialogSuperclass,
     DEFAULT_DIALOG_CONFIG,
-    DialogModule,
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     DialogConfig,
-    progressTo,
+    DialogModule,
+    DialogSuperclass,
     NotifyLogService,
+    progressTo,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { BehaviorSubject, switchMap, EMPTY } from 'rxjs';
-import { first, map, catchError } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, switchMap } from 'rxjs';
+import { catchError, first, map } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { DomainStoreService } from '../../../../../api/domain-config';

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { StatChargeback, ChargebackSearchQuery } from '@vality/magista-proto/magista';
-import { FetchSuperclass, FetchOptions, NotifyLogService } from '@vality/matez';
+import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
+import { FetchOptions, FetchSuperclass, NotifyLogService } from '@vality/matez';
 import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { MerchantStatisticsService } from '../../api/magista';
 

@@ -1,15 +1,15 @@
 import { formatDate } from '@angular/common';
-import { Injectable, DestroyRef } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/matez';
-import { getUnionValue, isTypeWithAliases, ThriftData } from '@vality/ng-thrift';
+import { ThriftData, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../../../api/domain-config/stores/domain-store.service';

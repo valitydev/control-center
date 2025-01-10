@@ -3,8 +3,8 @@ import {
     Component,
     HostBinding,
     Input,
-    input,
     booleanAttribute,
+    input,
 } from '@angular/core';
 
 import { Color } from '../../styles';

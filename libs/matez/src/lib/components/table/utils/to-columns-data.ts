@@ -1,10 +1,10 @@
 import { isEqual } from 'lodash-es';
-import { Observable, scan, of, switchMap, combineLatest, timer } from 'rxjs';
-import { shareReplay, map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Observable, combineLatest, of, scan, switchMap, timer } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { Value } from '../../value';
-import { TreeInlineDataItem, TreeInlineData } from '../tree-data';
+import { TreeInlineData, TreeInlineDataItem } from '../tree-data';
 import { CellFnArgs, Fn, NormColumn } from '../types';
 
 export type DisplayedDataItem<T extends object, C extends object> = TreeInlineDataItem<T, C> | T;

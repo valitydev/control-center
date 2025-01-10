@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import isEqual from 'lodash-es/isEqual';
 import negate from 'lodash-es/negate';
-import { Observable, defer, skipWhile, concat, take } from 'rxjs';
+import { Observable, concat, defer, skipWhile, take } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { isEmpty } from '../../utils';

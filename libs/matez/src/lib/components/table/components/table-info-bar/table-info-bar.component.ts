@@ -1,12 +1,12 @@
 import {
     Component,
-    input,
-    booleanAttribute,
-    output,
-    numberAttribute,
-    OnInit,
     DestroyRef,
+    OnInit,
+    booleanAttribute,
     computed,
+    input,
+    numberAttribute,
+    output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';

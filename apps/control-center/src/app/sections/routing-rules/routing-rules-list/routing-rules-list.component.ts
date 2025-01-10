@@ -1,27 +1,27 @@
 import {
     ChangeDetectionStrategy,
     Component,
+    DestroyRef,
     EventEmitter,
+    Injector,
     Input,
     Output,
     booleanAttribute,
-    DestroyRef,
-    input,
     computed,
+    input,
     runInInjectionContext,
-    Injector,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import {
+    Column,
+    ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
-    ConfirmDialogComponent,
     NotifyLogService,
-    Column,
     createMenuColumn,
 } from '@vality/matez';
-import { filter, switchMap, catchError } from 'rxjs/operators';
+import { catchError, filter, switchMap } from 'rxjs/operators';
 
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';

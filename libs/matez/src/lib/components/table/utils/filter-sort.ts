@@ -1,4 +1,4 @@
-import { runInInjectionContext, Injector, inject } from '@angular/core';
+import { Injector, inject, runInInjectionContext } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { compareDifferentTypes } from '../../../utils';
 import { valueToString } from '../../value/utils/value-to-string';
 import { NormColumn } from '../types';
-import { DisplayedData, DisplayedDataItem, ColumnData } from '../utils/to-columns-data';
+import { ColumnData, DisplayedData, DisplayedDataItem } from '../utils/to-columns-data';
 
 import { normalizeString } from './normalize-string';
 

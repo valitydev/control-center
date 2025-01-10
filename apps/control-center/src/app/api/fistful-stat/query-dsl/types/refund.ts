@@ -3,9 +3,9 @@ import {
     InvoiceID,
     InvoicePaymentID,
     InvoicePaymentRefundID,
+    InvoicePaymentRefundStatus,
     PartyID,
     ShopID,
-    InvoicePaymentRefundStatus,
 } from '@vality/domain-proto/domain';
 
 export interface Refund {

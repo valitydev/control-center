@@ -54,6 +54,7 @@ export const baseEslintConfig = [
                     argsIgnorePattern: '^_',
                 },
             ],
+            'sort-imports': ['error', { ignoreMemberSort: false }],
         },
     },
     getImportOrderConfig(),

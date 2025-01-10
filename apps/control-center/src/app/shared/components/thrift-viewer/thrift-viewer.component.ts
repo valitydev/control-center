@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, Output, EventEmitter, booleanAttribute } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges, UnionEnum } from '@vality/matez';
 import { toJson } from '@vality/ng-thrift';

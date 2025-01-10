@@ -1,23 +1,23 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
 import {
-    Component,
-    input,
-    booleanAttribute,
-    DestroyRef,
-    OnInit,
-    OnDestroy,
-    OnChanges,
     ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    booleanAttribute,
+    input,
     model,
 } from '@angular/core';
-import { toObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { combineLatest } from 'rxjs';
-import { startWith, map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
-import { arrayAttribute, ArrayAttributeTransform, ComponentChanges } from '../../../utils';
+import { ArrayAttributeTransform, ComponentChanges, arrayAttribute } from '../../../utils';
 
 import { BaseColumnComponent } from './base-column.component';
 

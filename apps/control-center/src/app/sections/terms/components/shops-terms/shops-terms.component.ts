@@ -10,12 +10,8 @@ import {
     ShopTermSet,
 } from '@vality/dominator-proto/internal/dominator';
 import {
-    clean,
-    countChanged,
-    createControls,
-    debounceTimeWithFirst,
+    Column,
     FiltersModule,
-    getValueChanges,
     InputFieldModule,
     ListFieldModule,
     LoadOptions,
@@ -23,31 +19,35 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
-    Column,
     cachedHeadMap,
+    clean,
+    countChanged,
+    createControls,
+    debounceTimeWithFirst,
+    getValueChanges,
 } from '@vality/matez';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import {
-    createShopColumn,
-    createPartyColumn,
     createContractColumn,
     createDomainObjectColumn,
+    createPartyColumn,
+    createShopColumn,
 } from '../../../../shared';
 import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
 import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info/sidenav-info.service';
 import { DEBOUNCE_TIME_MS } from '../../../../tokens';
-import { getFlatDecisions, FlatDecision } from '../../utils/get-flat-decisions';
+import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
 import { ShopsTermsService } from './shops-terms.service';
 import {
-    isShopTermSetDecision,
     SHOP_FEES_COLUMNS,
     getShopCashFlowSelectors,
+    isShopTermSetDecision,
 } from './utils/shop-fees-columns';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &

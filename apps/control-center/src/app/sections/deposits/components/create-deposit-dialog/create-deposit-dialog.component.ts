@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ViewChild, TemplateRef } from '@angular/core';
+import { Component, DestroyRef, TemplateRef, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';

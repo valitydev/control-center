@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ActionsModule, DialogModule, TableModule, FiltersModule } from '@vality/matez';
+import { ActionsModule, DialogModule, FiltersModule, TableModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '../../shared/components';

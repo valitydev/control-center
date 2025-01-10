@@ -1,7 +1,7 @@
-import { booleanAttribute, Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 
-import { createControlProviders, FormControlSuperclass } from '../../../utils';
+import { FormControlSuperclass, createControlProviders } from '../../../utils';
 import { Option } from '../types';
 import { isSearchOption } from '../utils';
 import { getHintText } from '../utils/get-hint-text';
