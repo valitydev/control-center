@@ -8,6 +8,12 @@ function getImportOrderConfig(internalPatterns: string[] = []) {
             import: importPlugin,
         },
         rules: {
+            'sort-imports': [
+                'error',
+                {
+                    ignoreDeclarationSort: true,
+                },
+            ],
             'import/order': [
                 'error',
                 {
@@ -54,7 +60,6 @@ export const baseEslintConfig = [
                     argsIgnorePattern: '^_',
                 },
             ],
-            'sort-imports': ['error', { ignoreMemberSort: false }],
         },
     },
     getImportOrderConfig(),
