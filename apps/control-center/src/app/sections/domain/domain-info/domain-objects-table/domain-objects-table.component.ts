@@ -1,32 +1,32 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, DestroyRef, Output, EventEmitter } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, OnInit, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { Reference, DomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import {
+    ActionsModule,
+    Column,
+    DialogService,
     QueryParamsService,
     SelectFieldModule,
     TableModule,
-    ActionsModule,
-    DialogService,
-    getValueChanges,
-    Column,
     createMenuColumn,
+    getValueChanges,
 } from '@vality/matez';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
-import { combineLatest, Observable, forkJoin, of } from 'rxjs';
+import { Observable, combineLatest, forkJoin, of } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../api/domain-config/stores/domain-store.service';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
-    getDomainObjectDetails,
-    DomainThriftViewerComponent,
-    DomainObjectCardComponent,
     DeleteDomainObjectService,
+    DomainObjectCardComponent,
+    DomainThriftViewerComponent,
     EditDomainObjectDialogComponent,
+    getDomainObjectDetails,
 } from '../../../../shared/components/thrift-api-crud';
 import { MetadataService } from '../../services/metadata.service';
 

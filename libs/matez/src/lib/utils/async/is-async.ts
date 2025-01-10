@@ -1,4 +1,4 @@
-import { isObservable, Observable } from 'rxjs';
+import { Observable, isObservable } from 'rxjs';
 import { isPromise } from 'rxjs/internal/util/isPromise';
 
 export type Async<T> = Observable<T> | Promise<T>;

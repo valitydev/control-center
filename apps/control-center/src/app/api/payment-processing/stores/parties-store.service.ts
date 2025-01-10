@@ -3,10 +3,10 @@ import { PartyID } from '@vality/domain-proto/domain';
 import { ShopID, WalletID } from '@vality/domain-proto/internal/domain';
 import { progressTo } from '@vality/matez';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { createDsl, FistfulStatisticsService } from '../../fistful-stat';
+import { FistfulStatisticsService, createDsl } from '../../fistful-stat';
 import { PartyManagementService } from '../party-management.service';
 
 @Injectable({

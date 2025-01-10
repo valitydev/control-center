@@ -1,6 +1,6 @@
 import { DeepReadonly } from 'utility-types';
 
-import { CsvProps, CsvObject } from '../../../../../../components/upload-csv';
+import { CsvObject, CsvProps } from '../../../../../../components/upload-csv';
 
 export const CSV_PAYMENT_ADJUSTMENT_PROPS = {
     required: ['invoice_id', 'payment_id', 'reason'],

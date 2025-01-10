@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-    payment_processing_PartyManagementCodegenClient,
     ThriftAstMetadata,
     payment_processing_PartyManagement,
+    payment_processing_PartyManagementCodegenClient,
 } from '@vality/domain-proto';
-import { Party, Shop, Contract } from '@vality/domain-proto/domain';
-import { PartyID, ShopID, ContractID, ShopContract } from '@vality/domain-proto/payment_processing';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Contract, Party, Shop } from '@vality/domain-proto/domain';
+import { ContractID, PartyID, ShopContract, ShopID } from '@vality/domain-proto/payment_processing';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

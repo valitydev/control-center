@@ -1,12 +1,12 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validators, FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
-import { ModificationChange, Modification } from '@vality/domain-proto/internal/claim_management';
+import { Modification, ModificationChange } from '@vality/domain-proto/internal/claim_management';
 import {
-    DialogSuperclass,
     DEFAULT_DIALOG_CONFIG,
+    DialogSuperclass,
     NotifyLogService,
     inProgressFrom,
     progressTo,

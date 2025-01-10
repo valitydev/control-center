@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { map, shareReplay } from 'rxjs/operators';
 
 import {
-    createControlProviders,
     FormControlSuperclass,
-    splitBySeparators,
+    createControlProviders,
     getValueChanges,
+    splitBySeparators,
 } from '../../utils';
 
 @Component({

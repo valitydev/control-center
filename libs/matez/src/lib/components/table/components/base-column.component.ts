@@ -1,10 +1,10 @@
-import { input, viewChild, OnDestroy, Directive, inject, OnInit } from '@angular/core';
+import { Directive, OnDestroy, OnInit, inject, input, viewChild } from '@angular/core';
 import {
-    MatTable,
-    MatColumnDef,
     MatCellDef,
-    MatHeaderCellDef,
+    MatColumnDef,
     MatFooterCellDef,
+    MatHeaderCellDef,
+    MatTable,
 } from '@angular/material/table';
 
 @Directive()

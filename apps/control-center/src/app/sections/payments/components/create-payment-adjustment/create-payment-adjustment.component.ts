@@ -5,11 +5,11 @@ import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_pro
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogSuperclass,
+    ForkJoinErrorResult,
     NotifyLogService,
     forkJoinToResult,
-    splitResultsErrors,
-    ForkJoinErrorResult,
     getImportValue,
+    splitResultsErrors,
 } from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';

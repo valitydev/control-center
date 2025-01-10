@@ -10,7 +10,7 @@ import { ActionsModule, DialogModule } from '@vality/matez';
 
 import { DetailsItemModule } from '../../../components/details-item/details-item.module';
 import { HeadlineModule } from '../../../components/headline/headline.module';
-import { StatusModule, PageLayoutModule, SubPageLayoutComponent } from '../../shared/components';
+import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';

@@ -1,4 +1,4 @@
-import { InvoiceChange, Event } from '@vality/domain-proto/internal/payment_processing';
+import { Event, InvoiceChange } from '@vality/domain-proto/internal/payment_processing';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { upperFirst } from 'lodash-es';
 import isEmpty from 'lodash-es/isEmpty';

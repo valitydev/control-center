@@ -1,9 +1,9 @@
-import { Input, Directive, OnChanges, booleanAttribute, input } from '@angular/core';
+import { Directive, Input, OnChanges, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { FormControlSuperclass } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
-import { of, Observable, combineLatest, defer } from 'rxjs';
+import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { MetadataFormExtension } from '../../../metadata-form';

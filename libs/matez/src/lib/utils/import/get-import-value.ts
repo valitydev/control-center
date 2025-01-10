@@ -1,5 +1,5 @@
 import { get } from 'lodash-es';
-import { from, Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export function getImportValue<T>(imp: Promise<unknown>, prop: string = 'default'): Observable<T> {

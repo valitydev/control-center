@@ -1,10 +1,10 @@
-import { inject, Injector, runInInjectionContext } from '@angular/core';
-import { switchMap, combineLatest } from 'rxjs';
+import { Injector, inject, runInInjectionContext } from '@angular/core';
+import { combineLatest, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from '../../../utils';
 import { Value } from '../../value';
-import { Column, CellFnArgs, normalizeCell } from '../types';
+import { CellFnArgs, Column, normalizeCell } from '../types';
 
 import { createUniqueColumnDef } from './create-unique-column-def';
 

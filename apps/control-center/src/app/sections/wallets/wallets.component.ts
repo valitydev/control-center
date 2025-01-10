@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
@@ -6,19 +6,19 @@ import { IdentityState } from '@vality/fistful-proto/identity';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';
 import {
-    clean,
-    QueryParamsService,
-    FiltersComponent,
-    UpdateOptions,
-    getValueChanges,
-    countChanged,
-    debounceTimeWithFirst,
     Column,
     DebounceTime,
+    FiltersComponent,
+    QueryParamsService,
+    UpdateOptions,
+    clean,
+    countChanged,
+    debounceTimeWithFirst,
+    getValueChanges,
 } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { combineLatest, of } from 'rxjs';
-import { map, shareReplay, catchError, take } from 'rxjs/operators';
+import { catchError, map, shareReplay, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { WalletParams } from '../../api/fistful-stat/query-dsl/types/wallet';

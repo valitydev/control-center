@@ -1,16 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatPayment } from '@vality/magista-proto/magista';
-import { LoadOptions, Column, createMenuColumn } from '@vality/matez';
+import { Column, LoadOptions, createMenuColumn } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
 import {
+    createCurrencyColumn,
+    createDomainObjectColumn,
+    createFailureColumn,
     createPartyColumn,
     createShopColumn,
-    createDomainObjectColumn,
-    createCurrencyColumn,
-    createFailureColumn,
 } from '../../../../shared';
 
 @Component({

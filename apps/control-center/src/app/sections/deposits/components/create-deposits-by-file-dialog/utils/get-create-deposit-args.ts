@@ -4,8 +4,8 @@ import { clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import {
-    UserInfoBasedIdGeneratorService,
     AmountCurrencyService,
+    UserInfoBasedIdGeneratorService,
 } from '../../../../../shared/services';
 import { CsvDeposit } from '../types/csv-deposit';
 

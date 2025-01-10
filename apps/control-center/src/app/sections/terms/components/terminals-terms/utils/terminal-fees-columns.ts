@@ -1,4 +1,4 @@
-import { ProvisionTermSet, CashFlowPosting } from '@vality/domain-proto/internal/domain';
+import { CashFlowPosting, ProvisionTermSet } from '@vality/domain-proto/internal/domain';
 import { Column, TreeDataItem } from '@vality/matez';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';

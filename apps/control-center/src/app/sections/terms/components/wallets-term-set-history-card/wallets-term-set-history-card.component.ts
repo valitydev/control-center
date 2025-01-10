@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, computed } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TableModule, VSelectPipe, Column } from '@vality/matez';
+import { Column, TableModule, VSelectPipe } from '@vality/matez';
 
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/internal/dominator';
 
@@ -10,8 +10,8 @@ import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     WALLET_FEES_COLUMNS,
-    isWalletTermSetDecision,
     getWalletCashFlowSelectors,
+    isWalletTermSetDecision,
 } from '../wallets-terms/utils/wallet-fees-columns';
 
 @Component({

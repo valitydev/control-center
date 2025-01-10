@@ -4,21 +4,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
-    TermSetHierarchyRef,
     type IdentityProviderRef,
+    TermSetHierarchyRef,
 } from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
-    type WalletTermSet,
     type WalletSearchQuery,
+    type WalletTermSet,
 } from '@vality/dominator-proto/internal/dominator';
 import {
-    clean,
-    countChanged,
-    createControls,
-    debounceTimeWithFirst,
+    Column,
     FiltersModule,
-    getValueChanges,
     InputFieldModule,
     ListFieldModule,
     LoadOptions,
@@ -26,8 +22,12 @@ import {
     TableModule,
     UpdateOptions,
     VSelectPipe,
-    Column,
     cachedHeadMap,
+    clean,
+    countChanged,
+    createControls,
+    debounceTimeWithFirst,
+    getValueChanges,
 } from '@vality/matez';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';

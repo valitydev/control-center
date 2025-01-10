@@ -1,4 +1,4 @@
-import { merge, Observable, MonoTypeOperatorFunction, EMPTY, mergeMap } from 'rxjs';
+import { EMPTY, MonoTypeOperatorFunction, Observable, merge, mergeMap } from 'rxjs';
 
 import { ObservableOrFn, getObservable } from './get-observable';
 

@@ -1,8 +1,8 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
-import { isObservable, Observable } from 'rxjs';
+import { Observable, isObservable } from 'rxjs';
 
-import { select, SelectFn } from '../utils';
+import { SelectFn, select } from '../utils';
 
 @Pipe({
     standalone: true,

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { InvoicePaymentStatus, InvoicePaymentFlow } from '@vality/domain-proto/internal/domain';
+import { InvoicePaymentFlow, InvoicePaymentStatus } from '@vality/domain-proto/internal/domain';
 import { Color } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';

@@ -2,15 +2,15 @@ import { Location } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
-    Input,
-    booleanAttribute,
-    input,
-    computed,
-    Output,
     EventEmitter,
+    Input,
+    Output,
+    booleanAttribute,
+    computed,
+    input,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { UrlService, Color } from '@vality/matez';
+import { Color, UrlService } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 @Component({

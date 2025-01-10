@@ -1,7 +1,7 @@
 import { TemplateRef } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ThriftData } from '@vality/ng-thrift';
-import { Observable, combineLatest, switchMap, of } from 'rxjs';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export type MetadataFormExtension = {

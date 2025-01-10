@@ -4,11 +4,11 @@ import { Party } from '@vality/domain-proto/domain';
 import { NotifyLogService } from '@vality/matez';
 import { EMPTY, Observable, of } from 'rxjs';
 import {
+    catchError,
+    distinctUntilChanged,
+    shareReplay,
     startWith,
     switchMap,
-    catchError,
-    shareReplay,
-    distinctUntilChanged,
 } from 'rxjs/operators';
 
 import { PartyManagementService } from '../../api/payment-processing';

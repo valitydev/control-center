@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { toMajorByExponent, toMinorByExponent } from '@vality/matez';
-import { map, first, shareReplay } from 'rxjs/operators';
+import { first, map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config/stores/domain-store.service';
 

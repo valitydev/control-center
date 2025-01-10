@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Link } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
-import { from, Observable } from 'rxjs';
-import { shareReplay, map, startWith } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 

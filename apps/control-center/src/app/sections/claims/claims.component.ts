@@ -1,4 +1,4 @@
-import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
@@ -7,11 +7,11 @@ import {
     LoadOptions,
     QueryParamsService,
     clean,
-    getValueChanges,
     countChanged,
     debounceTimeWithFirst,
+    getValueChanges,
 } from '@vality/matez';
-import { take, map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, take } from 'rxjs/operators';
 
 import { CLAIM_STATUSES } from '../../api/claim-management';
 import { DEBOUNCE_TIME_MS } from '../../tokens';

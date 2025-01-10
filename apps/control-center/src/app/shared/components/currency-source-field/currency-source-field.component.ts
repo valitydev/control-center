@@ -3,9 +3,9 @@ import { Component, Input, booleanAttribute } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import {
-    SelectFieldModule,
     FormControlSuperclass,
     Option,
+    SelectFieldModule,
     compareDifferentTypes,
     createControlProviders,
 } from '@vality/matez';

@@ -1,12 +1,12 @@
-import { Component, Input, OnChanges, HostBinding, OnInit, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, HostBinding, Input, OnChanges, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { createControlProviders, FormControlSuperclass } from '@vality/matez';
+import { FormControlSuperclass, createControlProviders } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
 import { Field, ValueType } from '@vality/thrift-ts';
-import { Observable, BehaviorSubject, defer, switchMap } from 'rxjs';
-import { map, distinctUntilChanged, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, Observable, defer, switchMap } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import {
     MetadataFormExtension,

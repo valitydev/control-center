@@ -2,7 +2,7 @@ import { CashVolume } from '@vality/domain-proto/domain';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 
-import { formatCashVolumes, formatCashVolume } from './format-cash-volume';
+import { formatCashVolume, formatCashVolumes } from './format-cash-volume';
 
 export interface CashVolumeParts {
     fixed?: string;

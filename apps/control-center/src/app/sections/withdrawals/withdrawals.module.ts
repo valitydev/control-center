@@ -11,14 +11,14 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import {
-    DialogModule,
-    ListFieldModule,
-    TableModule,
-    FiltersModule,
-    NumberRangeFieldModule,
-    DateRangeFieldModule,
-    InputFieldModule,
     AutocompleteFieldModule,
+    DateRangeFieldModule,
+    DialogModule,
+    FiltersModule,
+    InputFieldModule,
+    ListFieldModule,
+    NumberRangeFieldModule,
+    TableModule,
 } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 

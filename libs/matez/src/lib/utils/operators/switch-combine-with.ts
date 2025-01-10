@@ -1,4 +1,4 @@
-import { switchMap, combineLatest, of, Observable } from 'rxjs';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from '../async';
 

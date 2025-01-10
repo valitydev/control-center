@@ -1,4 +1,4 @@
-import { subDays, startOfDay, endOfDay } from 'date-fns';
+import { endOfDay, startOfDay, subDays } from 'date-fns';
 
 import { DateRange } from '../types/date-range';
 

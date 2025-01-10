@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { getImportValue, UnionEnum } from '@vality/matez';
+import { UnionEnum, getImportValue } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
 
 import { ThriftViewerModule, ViewerKind } from '../../../thrift-viewer';

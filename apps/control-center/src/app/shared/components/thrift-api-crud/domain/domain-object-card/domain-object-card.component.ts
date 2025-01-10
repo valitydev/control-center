@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
 import { ComponentChanges, DialogService } from '@vality/matez';
 import { isEqualThrift } from '@vality/ng-thrift';
-import { combineLatest, ReplaySubject, switchMap } from 'rxjs';
-import { map, shareReplay, first } from 'rxjs/operators';
+import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
+import { first, map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../api/domain-config/stores/domain-store.service';
 import { SidenavInfoModule } from '../../../sidenav-info';

@@ -1,69 +1,69 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
-    input,
-    computed,
+    ContentChild,
     DestroyRef,
-    booleanAttribute,
-    numberAttribute,
-    signal,
-    output,
-    Injector,
     ElementRef,
-    runInInjectionContext,
+    Injector,
     OnInit,
     ViewChild,
-    ContentChild,
+    booleanAttribute,
+    computed,
+    input,
     model,
-    ChangeDetectorRef,
+    numberAttribute,
+    output,
+    runInInjectionContext,
+    signal,
 } from '@angular/core';
-import { toObservable, takeUntilDestroyed, outputFromObservable } from '@angular/core/rxjs-interop';
+import { outputFromObservable, takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTable, MatRow } from '@angular/material/table';
+import { MatRow, MatTable } from '@angular/material/table';
 import {
-    combineLatest,
+    BehaviorSubject,
     Observable,
+    Subject,
+    combineLatest,
+    debounceTime,
+    defer,
+    first,
+    forkJoin,
+    merge,
     switchMap,
     take,
-    forkJoin,
-    BehaviorSubject,
-    debounceTime,
-    first,
-    merge,
     tap,
-    defer,
-    Subject,
 } from 'rxjs';
 import {
-    shareReplay,
-    map,
-    distinctUntilChanged,
     delay,
+    distinctUntilChanged,
     filter,
-    startWith,
+    map,
     share,
+    shareReplay,
+    startWith,
 } from 'rxjs/operators';
 
-import { downloadFile, createCsv, arrayAttribute, ArrayAttributeTransform } from '../../utils';
+import { ArrayAttributeTransform, arrayAttribute, createCsv, downloadFile } from '../../utils';
 
 import { TableInputsComponent } from './components/table-inputs.component';
 import {
+    COLUMN_DEFS,
     DEBOUNCE_TIME_MS,
     DEFAULT_LOADED_LAZY_ROWS_COUNT,
     DEFAULT_SORT,
-    COLUMN_DEFS,
 } from './consts';
 import { TreeData } from './tree-data';
-import { Column, UpdateOptions, NormColumn, DragDrop } from './types';
+import { Column, DragDrop, NormColumn, UpdateOptions } from './types';
 import { columnsDataToFilterSearchData, filterData, sortData } from './utils/filter-sort';
 import { TableDataSource } from './utils/table-data-source';
 import { tableToCsvObject } from './utils/table-to-csv-object';
 import {
-    toObservableColumnsData,
-    toColumnsData,
-    DisplayedDataItem,
     DisplayedData,
+    DisplayedDataItem,
+    toColumnsData,
+    toObservableColumnsData,
 } from './utils/to-columns-data';
 
 @Component({

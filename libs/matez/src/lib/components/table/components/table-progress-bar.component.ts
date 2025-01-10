@@ -1,4 +1,4 @@
-import { Component, input, booleanAttribute } from '@angular/core';
+import { Component, booleanAttribute, input } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({

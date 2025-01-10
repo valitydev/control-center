@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
-import { DialogSuperclass, getImportValue, NotifyLogService } from '@vality/matez';
+import { DialogSuperclass, NotifyLogService, getImportValue } from '@vality/matez';
 import { ThriftAstMetadata } from '@vality/ng-thrift';
 import short from 'short-uuid';
 

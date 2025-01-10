@@ -1,4 +1,4 @@
-import { BehaviorSubject, defer, MonoTypeOperatorFunction, isObservable } from 'rxjs';
+import { BehaviorSubject, MonoTypeOperatorFunction, defer, isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 export function progressTo<T>(

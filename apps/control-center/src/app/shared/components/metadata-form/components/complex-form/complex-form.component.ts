@@ -1,15 +1,15 @@
-import { Component, Input, OnInit, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-    ValidationErrors,
-    Validator,
+    AbstractControl,
     FormArray,
     FormControl,
-    AbstractControl,
+    ValidationErrors,
+    Validator,
 } from '@angular/forms';
 import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/matez';
 import { ThriftData } from '@vality/ng-thrift';
-import { MapType, SetType, ListType } from '@vality/thrift-ts';
+import { ListType, MapType, SetType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 
 import { MetadataFormExtension } from '../../types/metadata-form-extension';

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { getImportValue } from '@vality/matez';
 import {
-    account_balance_AccountServiceCodegenClient,
     ThriftAstMetadata,
     account_balance_AccountService,
+    account_balance_AccountServiceCodegenClient,
 } from '@vality/scrooge-proto';
-import { combineLatest, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

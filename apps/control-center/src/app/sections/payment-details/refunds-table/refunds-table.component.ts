@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { InvoicePaymentID, InvoiceID, PartyID } from '@vality/domain-proto/domain';
+import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domain';
 import { Column, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';

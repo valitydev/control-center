@@ -1,31 +1,31 @@
-import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import {
+    Column,
+    ConfirmDialogComponent,
+    DateRange,
     DialogResponseStatus,
     DialogService,
-    clean,
-    ConfirmDialogComponent,
-    QueryParamsService,
-    NotifyLogService,
-    DateRange,
-    getNoTimeZoneIsoString,
-    createDateRangeToToday,
-    isEqualDateRange,
-    getValueChanges,
-    countChanged,
-    debounceTimeWithFirst,
     FetchOptions,
+    NotifyLogService,
+    QueryParamsService,
+    clean,
+    countChanged,
+    createDateRangeToToday,
+    debounceTimeWithFirst,
     getEnumKey,
-    Column,
+    getNoTimeZoneIsoString,
+    getValueChanges,
+    isEqualDateRange,
 } from '@vality/matez';
 import { repairer } from '@vality/repairer-proto';
-import { Namespace, ProviderID, RepairStatus, Machine } from '@vality/repairer-proto/repairer';
+import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';
 import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
-import { filter, switchMap, map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { RepairManagementService } from '../../api/repairer';
 import { createDomainObjectColumn } from '../../shared';

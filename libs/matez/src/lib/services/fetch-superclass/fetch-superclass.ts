@@ -1,19 +1,19 @@
 import {
-    Observable,
-    defer,
-    mergeScan,
-    map,
     BehaviorSubject,
-    skipWhile,
+    Observable,
     Subject,
-    takeUntil,
-    tap,
+    concat,
+    defer,
+    map,
+    mergeScan,
     race,
     skip,
+    skipWhile,
     take,
-    concat,
+    takeUntil,
+    tap,
 } from 'rxjs';
-import { shareReplay, startWith, delay } from 'rxjs/operators';
+import { delay, shareReplay, startWith } from 'rxjs/operators';
 
 import { inProgressFrom, progressTo } from '../../utils';
 

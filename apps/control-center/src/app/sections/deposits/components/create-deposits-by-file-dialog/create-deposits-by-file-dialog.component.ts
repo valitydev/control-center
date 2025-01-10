@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, runInInjectionContext, Injector } from '@angular/core';
+import { Component, DestroyRef, Injector, runInInjectionContext } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { DepositState } from '@vality/fistful-proto/internal/deposit';
 import {
-    DialogSuperclass,
-    NotifyLogService,
     DEFAULT_DIALOG_CONFIG,
     DialogModule,
+    DialogSuperclass,
+    NotifyLogService,
     forkJoinToResult,
 } from '@vality/matez';
 import { BehaviorSubject, switchMap } from 'rxjs';

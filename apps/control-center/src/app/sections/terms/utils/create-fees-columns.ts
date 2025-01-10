@@ -1,12 +1,12 @@
 import { CashFlowPosting } from '@vality/domain-proto/internal/domain';
 import { Column } from '@vality/matez';
 
-import { getCashVolumeParts, formatCashVolumes } from '../../../shared';
+import { formatCashVolumes, getCashVolumeParts } from '../../../shared';
 
 import {
-    formatLevelPredicate,
-    formatCashFlowSourceDestination,
     FlatDecision,
+    formatCashFlowSourceDestination,
+    formatLevelPredicate,
 } from './get-flat-decisions';
 import { isOneHundredPercentCashFlowPosting } from './is-one-hundred-percent-cash-flow-posting';
 

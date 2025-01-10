@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { TerminalObject } from '@vality/domain-proto/domain';
-import { DialogService, Column } from '@vality/matez';
+import { Column, DialogService } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../api/domain-config';
 import { AccountBalancesStoreService } from '../../api/terminal-balance';
 import {
     createCurrencyColumn,
-    createPredicateColumn,
     createDomainObjectColumn,
+    createPredicateColumn,
 } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalBalancesCardComponent } from '../../shared/components/terminal-balances-card/terminal-balances-card.component';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import {
-    DomainObjectCardComponent,
     CreateDomainObjectDialogComponent,
+    DomainObjectCardComponent,
     getDomainObjectDetails,
 } from '../../shared/components/thrift-api-crud';
 

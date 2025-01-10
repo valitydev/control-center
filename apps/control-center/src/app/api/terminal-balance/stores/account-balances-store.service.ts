@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
 import isNil from 'lodash-es/isNil';
-import { of, Observable } from 'rxjs';
-import { shareReplay, map, catchError, startWith } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { AccountBalanceService } from '../account-balance.service';
 

@@ -1,11 +1,11 @@
 import {
+    DestroyRef,
     Directive,
     ElementRef,
     OnInit,
-    output,
     booleanAttribute,
     input,
-    DestroyRef,
+    output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs/operators';

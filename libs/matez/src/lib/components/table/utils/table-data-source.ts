@@ -1,4 +1,4 @@
-import { EventEmitter, inject, DestroyRef } from '@angular/core';
+import { DestroyRef, EventEmitter, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,8 +6,8 @@ import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import {
-    TreeInlineData,
     TreeData,
+    TreeInlineData,
     TreeInlineDataItem,
     treeDataItemToInlineDataItem,
 } from '../tree-data';

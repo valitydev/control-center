@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ID } from '@vality/machinegun-proto/internal/base';
 import {
-    DialogSuperclass,
-    NotifyLogService,
-    forkJoinToResult,
-    splitResultsErrors,
-    ForkJoinErrorResult,
     DialogModule,
-    SelectFieldModule,
+    DialogSuperclass,
+    ForkJoinErrorResult,
+    NotifyLogService,
     Option,
+    SelectFieldModule,
+    forkJoinToResult,
     getEnumKey,
+    splitResultsErrors,
 } from '@vality/matez';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, of } from 'rxjs';

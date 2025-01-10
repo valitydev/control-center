@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
-import { progressTo, NotifyLogService } from '@vality/matez';
-import { BehaviorSubject, defer, of, combineLatest, Subject, Observable } from 'rxjs';
+import { NotifyLogService, progressTo } from '@vality/matez';
+import { BehaviorSubject, Observable, Subject, combineLatest, defer, of } from 'rxjs';
 import {
-    switchMap,
-    shareReplay,
     catchError,
-    map,
     debounceTime,
     distinctUntilChanged,
+    map,
+    shareReplay,
+    switchMap,
 } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../api/deanonimus';

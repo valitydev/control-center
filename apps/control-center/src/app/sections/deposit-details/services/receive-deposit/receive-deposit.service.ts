@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NotifyLogService, inProgressFrom, progressTo } from '@vality/matez';
-import { ReplaySubject, Subject, EMPTY, defer, BehaviorSubject } from 'rxjs';
-import { catchError, switchMap, shareReplay, map } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, ReplaySubject, Subject, defer } from 'rxjs';
+import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { createDsl } from '../../../../api/fistful-stat';
 import { FistfulStatisticsService } from '../../../../api/fistful-stat/fistful-statistics.service';

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-    accounter_AccounterCodegenClient,
     ThriftAstMetadata,
     accounter_Accounter,
+    accounter_AccounterCodegenClient,
 } from '@vality/domain-proto';
 import { Account } from '@vality/domain-proto/internal/accounter';
 import { AccountID } from '@vality/domain-proto/internal/domain';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

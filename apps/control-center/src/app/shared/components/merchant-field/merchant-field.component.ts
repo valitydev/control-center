@@ -1,24 +1,24 @@
 import {
-    Component,
-    Input,
     AfterViewInit,
-    booleanAttribute,
+    Component,
     DestroyRef,
+    Input,
+    booleanAttribute,
     inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
-    Option,
-    NotifyLogService,
     FormControlSuperclass,
-    createControlProviders,
-    getValueChanges,
-    debounceTimeWithFirst,
+    NotifyLogService,
+    Option,
     SelectFieldComponent,
+    createControlProviders,
+    debounceTimeWithFirst,
+    getValueChanges,
 } from '@vality/matez';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject, merge } from 'rxjs';
-import { catchError, map, switchMap, tap, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, Observable, ReplaySubject, Subject, merge, of } from 'rxjs';
+import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 
 import { DeanonimusService } from '../../../api/deanonimus/deanonimus.service';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';

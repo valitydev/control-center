@@ -1,4 +1,4 @@
-import { formatCurrency as ngFormatCurrency, getCurrencySymbol } from '@angular/common';
+import { getCurrencySymbol, formatCurrency as ngFormatCurrency } from '@angular/common';
 
 import { getCurrencyExponent } from './get-currency-exponent';
 import { toMajorByExponent } from './to-major';

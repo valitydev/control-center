@@ -8,6 +8,12 @@ function getImportOrderConfig(internalPatterns: string[] = []) {
             import: importPlugin,
         },
         rules: {
+            'sort-imports': [
+                'error',
+                {
+                    ignoreDeclarationSort: true,
+                },
+            ],
             'import/order': [
                 'error',
                 {

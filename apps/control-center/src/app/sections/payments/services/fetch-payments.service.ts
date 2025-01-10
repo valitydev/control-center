@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { StatPayment, PaymentSearchQuery } from '@vality/magista-proto/magista';
-import { FetchSuperclass, FetchOptions, FetchResult, NotifyLogService, clean } from '@vality/matez';
+import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
+import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { MerchantStatisticsService } from '../../../api/magista/merchant-statistics.service';
 

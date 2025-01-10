@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Source } from '@vality/fistful-proto/internal/source';
-import { DialogService, Column } from '@vality/matez';
+import { Column, DialogService } from '@vality/matez';
 
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { FetchSourcesService } from './fetch-sources.service';

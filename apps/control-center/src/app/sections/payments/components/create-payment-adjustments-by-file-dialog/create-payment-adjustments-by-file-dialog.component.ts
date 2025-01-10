@@ -4,11 +4,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { InvoicePaymentAdjustment } from '@vality/domain-proto/internal/domain';
 import {
+    DEFAULT_DIALOG_CONFIG,
+    DialogModule,
     DialogSuperclass,
     NotifyLogService,
-    DEFAULT_DIALOG_CONFIG,
     forkJoinToResult,
-    DialogModule,
 } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 

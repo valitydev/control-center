@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import {
-    payment_processing_InvoicingCodegenClient,
     ThriftAstMetadata,
     payment_processing_Invoicing,
+    payment_processing_InvoicingCodegenClient,
 } from '@vality/domain-proto';
 import {
     InvoiceID,
-    InvoicePaymentID,
     InvoicePaymentChargeback,
     InvoicePaymentChargebackID,
+    InvoicePaymentID,
 } from '@vality/domain-proto/domain';
 import {
     InvoicePayment,
-    InvoicePaymentChargebackParams,
+    InvoicePaymentAdjustment,
+    InvoicePaymentAdjustmentParams,
     InvoicePaymentChargebackAcceptParams,
+    InvoicePaymentChargebackCancelParams,
+    InvoicePaymentChargebackParams,
     InvoicePaymentChargebackRejectParams,
     InvoicePaymentChargebackReopenParams,
-    InvoicePaymentAdjustmentParams,
-    InvoicePaymentAdjustment,
-    InvoicePaymentChargebackCancelParams,
 } from '@vality/domain-proto/payment_processing';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

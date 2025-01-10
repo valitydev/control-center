@@ -3,7 +3,7 @@ import { RoutingCandidate, RoutingDelegate, RoutingRulesObject } from '@vality/d
 import { Version } from '@vality/domain-proto/domain_config';
 import { PartyConditionDefinition } from '@vality/domain-proto/internal/domain';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { combineLatest, concat, Observable } from 'rxjs';
+import { Observable, combineLatest, concat } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { createNextId } from '../../../../../utils/create-next-id';

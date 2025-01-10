@@ -2,8 +2,8 @@ import {
     ChangeDetectionStrategy,
     Component,
     DestroyRef,
-    viewChild,
     TemplateRef,
+    viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';

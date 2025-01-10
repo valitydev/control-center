@@ -1,4 +1,4 @@
-import { inject, LOCALE_ID } from '@angular/core';
+import { LOCALE_ID, inject } from '@angular/core';
 
 import { formatCurrency } from '../../../utils';
 import { TypedParamsValue } from '../types/base-type';

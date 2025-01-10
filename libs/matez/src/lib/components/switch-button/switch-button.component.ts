@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { lowerFirst } from 'lodash-es';
 import isNil from 'lodash-es/isNil';
 
-import { FormControlSuperclass, ComponentChanges, createControlProviders } from '../../utils';
+import { ComponentChanges, FormControlSuperclass, createControlProviders } from '../../utils';
 
 export interface State<T = unknown> {
     icon?: string;

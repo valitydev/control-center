@@ -2,8 +2,8 @@ import { AsyncPipe } from '@angular/common';
 import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { getImportValue, formatCurrency } from '@vality/matez';
-import { isTypeWithAliases, getUnionValue } from '@vality/ng-thrift';
+import { formatCurrency, getImportValue } from '@vality/matez';
+import { getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 

@@ -1,23 +1,23 @@
 import {
     Component,
+    DestroyRef,
     EventEmitter,
     Input,
     Output,
     booleanAttribute,
-    DestroyRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
 import {
+    ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
-    ConfirmDialogComponent,
     NotifyLogService,
+    getImportValue,
     inProgressFrom,
     progressTo,
-    getImportValue,
 } from '@vality/matez';
-import { getUnionValue, ThriftAstMetadata } from '@vality/ng-thrift';
+import { ThriftAstMetadata, getUnionValue } from '@vality/ng-thrift';
 import isEmpty from 'lodash-es/isEmpty';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { filter, first } from 'rxjs/operators';

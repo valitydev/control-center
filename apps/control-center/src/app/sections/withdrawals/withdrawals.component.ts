@@ -1,23 +1,23 @@
-import { Component, OnInit, DestroyRef, Inject } from '@angular/core';
+import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
+    Column,
+    DateRange,
+    DialogResponseStatus,
+    DialogService,
+    NumberRange,
     QueryParamsService,
     UpdateOptions,
     clean,
-    DialogService,
-    DateRange,
-    getNoTimeZoneIsoString,
-    DialogResponseStatus,
-    NumberRange,
-    createDateRangeToToday,
-    isEqualDateRange,
-    getValueChanges,
     countChanged,
+    createDateRangeToToday,
     debounceTimeWithFirst,
-    Column,
+    getNoTimeZoneIsoString,
+    getValueChanges,
+    isEqualDateRange,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
@@ -26,7 +26,7 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { WithdrawalParams } from '../../api/fistful-stat';
 import { createFailureColumn } from '../../shared';
-import { createDomainObjectColumn, createCurrencyColumn } from '../../shared';
+import { createCurrencyColumn, createDomainObjectColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    fistful_stat_FistfulStatisticsCodegenClient,
     ThriftAstMetadata,
     fistful_stat_FistfulStatistics,
+    fistful_stat_FistfulStatisticsCodegenClient,
 } from '@vality/fistful-proto';
 import { StatRequest, StatResponse } from '@vality/fistful-proto/fistful_stat';
-import { combineLatest, from, map, Observable, switchMap } from 'rxjs';
+import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../core/config.service';

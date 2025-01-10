@@ -1,4 +1,4 @@
-import { catchError, EMPTY, MonoTypeOperatorFunction, of } from 'rxjs';
+import { EMPTY, MonoTypeOperatorFunction, catchError, of } from 'rxjs';
 
 export function passError<T>(
     handler: (err: unknown) => void,

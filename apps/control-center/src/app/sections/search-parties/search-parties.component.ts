@@ -3,10 +3,10 @@ import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
 import {
     Column,
-    createMenuColumn,
     DebounceTime,
     QueryParamsService,
     UpdateOptions,
+    createMenuColumn,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';

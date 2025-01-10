@@ -15,9 +15,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
+    AutocompleteFieldModule,
     DatetimeFieldModule,
     PipesModule,
-    AutocompleteFieldModule,
     TagModule,
 } from '@vality/matez';
 import { ThriftPipesModule, ValueTypeTitlePipe } from '@vality/ng-thrift';

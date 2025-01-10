@@ -1,20 +1,20 @@
-import { Component, Input, OnChanges, DestroyRef, model, OnInit } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnInit, model } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     ComponentChanges,
-    Option,
     FormControlSuperclass,
+    Option,
     createControlProviders,
     getValueChanges,
 } from '@vality/matez';
-import { getValueTypeTitle, ThriftData, getAliases } from '@vality/ng-thrift';
+import { ThriftData, getAliases, getValueTypeTitle } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
-import { combineLatest, defer, ReplaySubject, switchMap, Observable } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import {
-    MetadataFormExtensionResult,
     MetadataFormExtension,
+    MetadataFormExtensionResult,
 } from '../../types/metadata-form-extension';
 import { getExtensionsResult } from '../../types/metadata-form-extension';
 

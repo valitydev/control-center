@@ -2,7 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ThriftData } from '@vality/ng-thrift';
-import { ValueType, Field } from '@vality/thrift-ts';
+import { Field, ValueType } from '@vality/thrift-ts';
 import { map } from 'rxjs';
 import yaml from 'yaml';
 

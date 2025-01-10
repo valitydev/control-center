@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { StatRefund, RefundSearchQuery } from '@vality/magista-proto/magista';
+import { RefundSearchQuery, StatRefund } from '@vality/magista-proto/magista';
 import {
-    cleanPrimitiveProps,
-    FetchSuperclass,
     FetchOptions,
+    FetchSuperclass,
     NotifyLogService,
+    cleanPrimitiveProps,
 } from '@vality/matez';
 import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';
 
 import { MerchantStatisticsService } from '../../../../api/magista';

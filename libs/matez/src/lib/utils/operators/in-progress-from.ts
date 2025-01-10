@@ -1,7 +1,7 @@
-import { combineLatest, mergeMap, EMPTY, merge } from 'rxjs';
-import { map, delay, shareReplay, distinctUntilChanged, startWith } from 'rxjs/operators';
+import { EMPTY, combineLatest, merge, mergeMap } from 'rxjs';
+import { delay, distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
-import { getObservable, ObservableOrFn } from './get-observable';
+import { ObservableOrFn, getObservable } from './get-observable';
 
 export function inProgressFrom(
     progress: ObservableOrFn<number | boolean> | ObservableOrFn<number | boolean>[],

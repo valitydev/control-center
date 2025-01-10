@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Reference } from '@vality/domain-proto/internal/domain';
 import { createColumn } from '@vality/matez';
-import { getUnionValue, getUnionKey } from '@vality/ng-thrift';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { map, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';

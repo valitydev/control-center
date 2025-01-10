@@ -6,7 +6,7 @@ import {
     DialogService,
     NotifyLogService,
 } from '@vality/matez';
-import { filter, switchMap, first } from 'rxjs/operators';
+import { filter, first, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../api/domain-config';
 

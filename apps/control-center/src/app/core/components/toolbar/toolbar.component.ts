@@ -2,7 +2,7 @@ import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { UrlService } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import { from } from 'rxjs';
-import { map, shareReplay, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { MerchantFieldModule } from '../../../shared/components/merchant-field';
 

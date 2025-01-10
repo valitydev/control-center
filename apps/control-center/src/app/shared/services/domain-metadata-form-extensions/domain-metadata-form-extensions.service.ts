@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
-import { getNoTimeZoneIsoString, getImportValue } from '@vality/matez';
+import { getImportValue, getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';

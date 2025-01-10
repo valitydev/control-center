@@ -10,7 +10,7 @@ import {
     progressTo,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { BehaviorSubject, combineLatest, defer, merge, Observable, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, defer, merge, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ClaimManagementService } from '../../api/claim-management/claim-management.service';

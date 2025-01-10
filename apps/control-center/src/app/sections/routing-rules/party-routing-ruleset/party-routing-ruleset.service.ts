@@ -1,9 +1,9 @@
-import { Injectable, DestroyRef } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { NotifyLogService } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
-import { combineLatest, defer, Observable, of } from 'rxjs';
+import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
 import { createDsl } from '../../../api/fistful-stat';

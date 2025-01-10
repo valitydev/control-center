@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import {
-    DialogSuperclass,
     DEFAULT_DIALOG_CONFIG,
     DialogModule,
+    DialogSuperclass,
     NotifyLogService,
     progressTo,
 } from '@vality/matez';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ThriftViewerModule } from '../../thrift-viewer';
 

@@ -1,12 +1,12 @@
 import {
+    ChangeDetectionStrategy,
     Component,
     Directive,
     Input,
+    OnChanges,
     booleanAttribute,
     input,
     signal,
-    OnChanges,
-    ChangeDetectionStrategy,
 } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ValueType } from '@vality/thrift-ts';

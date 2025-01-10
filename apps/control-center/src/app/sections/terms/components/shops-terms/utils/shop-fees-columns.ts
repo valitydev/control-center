@@ -1,7 +1,7 @@
 import {
     CashFlowPosting,
-    Predicate,
     PartyID,
+    Predicate,
     ShopID,
     TermSetHierarchyObject,
 } from '@vality/domain-proto/internal/domain';

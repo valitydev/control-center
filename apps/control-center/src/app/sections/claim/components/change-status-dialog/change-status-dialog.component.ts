@@ -1,6 +1,6 @@
 import { Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Validators, FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
 import {
     DialogResponseStatus,

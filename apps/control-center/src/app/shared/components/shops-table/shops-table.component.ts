@@ -1,39 +1,39 @@
 import { CommonModule } from '@angular/common';
 import {
     Component,
-    Output,
     EventEmitter,
+    Injector,
     Input,
+    Output,
     booleanAttribute,
     input,
-    Injector,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
-import { Shop, Party, PartyID, RoutingRulesetRef } from '@vality/domain-proto/domain';
+import { Party, PartyID, RoutingRulesetRef, Shop } from '@vality/domain-proto/domain';
 import {
-    InputFieldModule,
-    TableModule,
-    DialogService,
-    NotifyLogService,
+    Column,
     ConfirmDialogComponent,
     DialogResponseStatus,
-    Column,
+    DialogService,
+    InputFieldModule,
+    NotifyLogService,
+    TableModule,
     createMenuColumn,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { isNil } from 'lodash-es';
 import startCase from 'lodash-es/startCase';
-import { map, switchMap, combineLatest, of } from 'rxjs';
-import { filter, shareReplay, startWith, take, first } from 'rxjs/operators';
+import { combineLatest, map, of, switchMap } from 'rxjs';
+import { filter, first, shareReplay, startWith, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartyManagementService } from '../../../api/payment-processing';
 import {
-    PartyDelegateRulesetsService,
     DelegateWithPaymentInstitution,
+    PartyDelegateRulesetsService,
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
 import { createPartyColumn } from '../../utils';
@@ -41,8 +41,8 @@ import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
 import {
-    DomainThriftViewerComponent,
     DomainObjectCardComponent,
+    DomainThriftViewerComponent,
     getDomainObjectDetails,
 } from '../thrift-api-crud';
 
