@@ -65,7 +65,7 @@ rm migrations.json
 
 ---
 
-## Create library
+## [Create library](https://nx.dev/nx-api/angular/generators/library)
 
 ```sh
 nx g @nx/angular:library libs/my-ui-lib --tags=ui
