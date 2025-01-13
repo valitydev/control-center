@@ -1,4 +1,4 @@
-import { Field, ValueType, JsonAST } from '@vality/thrift-ts';
+import { Field, JsonAST, ValueType } from '@vality/thrift-ts';
 import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
 import { ValuesType } from 'utility-types';
 
@@ -6,9 +6,9 @@ import { StructureType, ThriftAstMetadata } from '../../types';
 import {
     isComplexType,
     isPrimitiveType,
+    isRequiredField,
     parseNamespaceObjectType,
     parseNamespaceType,
-    isRequiredField,
 } from '../../utils';
 
 import { TypeGroup } from './types/type-group';

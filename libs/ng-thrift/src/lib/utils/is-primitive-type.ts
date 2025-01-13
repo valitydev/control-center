@@ -1,4 +1,4 @@
-import type { ValueType, ThriftType } from '@vality/thrift-ts';
+import type { ThriftType, ValueType } from '@vality/thrift-ts';
 
 import { PRIMITIVE_TYPES } from '../types';
 
