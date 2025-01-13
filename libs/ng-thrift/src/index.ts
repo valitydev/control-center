@@ -1,1 +1,1 @@
-export * from './lib/ng-thrift/ng-thrift.component';
+export * from './lib';
