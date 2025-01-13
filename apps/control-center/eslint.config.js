@@ -32,5 +32,5 @@ module.exports = [
         // Override or add rules here
         rules: {},
     },
-    ...(getEslintConfigs()?.appEslintConfig?.({ internalPatterns: ['@cc/**'] }) ?? []),
+    ...(getEslintConfigs()?.appEslintConfig?.() ?? []),
 ];
