@@ -62,3 +62,17 @@ nx migrate latest
 nx migrate --run-migrations
 rm migrations.json
 ```
+
+---
+
+## Create library
+
+```sh
+nx g @nx/angular:library libs/my-ui-lib --tags=ui
+```
+
+Publishable
+
+```sh
+nx g @nx/angular:library libs/my-ui-lib --tags=ui --publishable --import-path=@vality/my-lib
+```
