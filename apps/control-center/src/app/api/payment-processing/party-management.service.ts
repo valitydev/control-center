@@ -40,42 +40,34 @@ export class PartyManagementService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Get(partyId: PartyID): Observable<Party> {
         return this.client$.pipe(switchMap((c) => c.Get(partyId)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetContract(partyId: PartyID, contractId: ContractID): Observable<Contract> {
         return this.client$.pipe(switchMap((c) => c.GetContract(partyId, contractId)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetShop(partyId: PartyID, id: ShopID): Observable<Shop> {
         return this.client$.pipe(switchMap((c) => c.GetShop(partyId, id)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetShopContract(partyId: PartyID, id: ShopID): Observable<ShopContract> {
         return this.client$.pipe(switchMap((c) => c.GetShopContract(partyId, id)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SuspendShop(partyId: PartyID, id: ShopID): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.SuspendShop(partyId, id)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     ActivateShop(partyId: PartyID, id: ShopID): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.ActivateShop(partyId, id)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     BlockShop(partyId: PartyID, id: ShopID, reason: string): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.BlockShop(partyId, id, reason)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     UnblockShop(partyId: PartyID, id: ShopID, reason: string): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.UnblockShop(partyId, id, reason)));
     }

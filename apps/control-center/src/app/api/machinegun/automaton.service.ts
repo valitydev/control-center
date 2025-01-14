@@ -39,7 +39,6 @@ export class AutomatonService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Call(desc: MachineDescriptor, a: Args) {
         return this.client$.pipe(switchMap((c) => c.Call(desc, a)));
     }

@@ -17,6 +17,7 @@ module.exports = [
                         'prettier-plugin-organize-attributes',
                         'cspell',
                         '@cspell/dict-ru_ru',
+                        'eslint',
                     ],
                     checkMissingDependencies: false,
                 },

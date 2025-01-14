@@ -45,17 +45,14 @@ export class MerchantStatisticsService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchPayments(paymentSearchQuery: PaymentSearchQuery): Observable<StatPaymentResponse> {
         return this.client$.pipe(switchMap((c) => c.SearchPayments(paymentSearchQuery)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchRefunds(refundSearchQuery: RefundSearchQuery): Observable<StatRefundResponse> {
         return this.client$.pipe(switchMap((c) => c.SearchRefunds(refundSearchQuery)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchChargebacks(chargebackSearchQuery: ChargebackSearchQuery) {
         return this.client$.pipe(switchMap((c) => c.SearchChargebacks(chargebackSearchQuery)));
     }

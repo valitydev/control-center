@@ -37,12 +37,10 @@ export class RepositoryService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Commit(version: Version, commit: Commit): Observable<Version> {
         return this.client$.pipe(switchMap((c) => c.Commit(version, commit)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Checkout(reference: Reference): Observable<Snapshot> {
         return this.client$.pipe(switchMap((c) => c.Checkout(reference)));
     }

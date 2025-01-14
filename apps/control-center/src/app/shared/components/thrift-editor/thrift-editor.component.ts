@@ -67,7 +67,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     contentChange(str: string) {
         try {
             this.editorError = null;
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
             const parsed = JSON.parse(str);
             this.control.setValue(parsed as T);
         } catch (err) {

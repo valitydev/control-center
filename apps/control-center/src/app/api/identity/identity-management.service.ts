@@ -39,7 +39,6 @@ export class IdentityManagementService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Get(id: identity.IdentityID, range: identity.EventRange): Observable<identity.IdentityState> {
         return this.client$.pipe(switchMap((c) => c.Get(id, range)));
     }

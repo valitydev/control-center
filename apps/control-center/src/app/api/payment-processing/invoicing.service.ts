@@ -54,12 +54,10 @@ export class InvoicingService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetPayment(id: InvoiceID, paymentId: InvoicePaymentID): Observable<InvoicePayment> {
         return this.client$.pipe(switchMap((c) => c.GetPayment(id, paymentId)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     CreatePaymentAdjustment(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
@@ -70,7 +68,6 @@ export class InvoicingService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     CreateChargeback(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
@@ -79,7 +76,6 @@ export class InvoicingService {
         return this.client$.pipe(switchMap((c) => c.CreateChargeback(id, paymentId, params)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     AcceptChargeback(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
@@ -91,7 +87,6 @@ export class InvoicingService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     RejectChargeback(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
@@ -103,7 +98,6 @@ export class InvoicingService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     ReopenChargeback(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
@@ -115,7 +109,6 @@ export class InvoicingService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     CancelChargeback(
         id: InvoiceID,
         paymentId: InvoicePaymentID,
@@ -127,7 +120,6 @@ export class InvoicingService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetEvents(...args: Parameters<payment_processing_InvoicingCodegenClient['GetEvents']>) {
         return this.client$.pipe(switchMap((c) => c.GetEvents(...args)));
     }

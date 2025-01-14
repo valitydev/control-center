@@ -39,27 +39,22 @@ export class FistfulStatisticsService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetWallets(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetWallets(req)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetWithdrawals(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetWithdrawals(req)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetDeposits(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetDeposits(req)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetDepositReverts(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetDepositReverts(req)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetSources(req: StatRequest): Observable<StatResponse> {
         return this.client$.pipe(switchMap((c) => c.GetSources(req)));
     }

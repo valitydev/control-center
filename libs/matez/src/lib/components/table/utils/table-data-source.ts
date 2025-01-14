@@ -14,7 +14,6 @@ import {
 
 import { cachedHeadMap } from './cached-head-map';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class TableDataSource<T extends object, C extends object = never> extends MatTableDataSource<
     T | TreeInlineDataItem<T, C>,
     OnePageTableDataSourcePaginator & MatPaginator
@@ -37,7 +36,6 @@ export class TableDataSource<T extends object, C extends object = never> extends
         return this.__paginator as OnePageTableDataSourcePaginator & MatPaginator;
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     private __paginator = new OnePageTableDataSourcePaginator();
 
     constructor() {

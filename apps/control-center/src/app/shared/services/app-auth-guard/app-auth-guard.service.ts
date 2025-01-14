@@ -13,7 +13,6 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
         super(router, keycloakAngular);
     }
 
-    // eslint-disable-next-line @typescript-eslint/require-await
     async isAccessAllowed(
         route: ActivatedRouteSnapshot,
         _state: RouterStateSnapshot,

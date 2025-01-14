@@ -68,7 +68,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
                     );
                 } else {
                     this.log.successOperation('create', 'adjustments');
-                    // eslint-disable-next-line no-console
+
                     console.log(`Adjustments: ${res.map((e) => !e.result.id).join(', ')}`);
                     this.closeWithSuccess();
                 }

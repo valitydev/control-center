@@ -40,7 +40,6 @@ export class AccounterService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetAccountByID(id: AccountID): Observable<Account> {
         return this.client$.pipe(switchMap((c) => c.GetAccountByID(id)));
     }
