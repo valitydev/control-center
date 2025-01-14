@@ -1,0 +1,11 @@
+{
+    "name": "@vality/ng-thrift",
+    "version": "0.1.0",
+    "peerDependencies": {
+        "@angular/core": "^18.2.0",
+        "@vality/thrift-ts": "*",
+        "lodash-es": "^4.0.0",
+        "utility-types": "^3.0.0"
+    },
+    "sideEffects": false
+}

@@ -1,10 +1,12 @@
 # Control Center Monorepo
 
-- Applications
+- **Applications**
     - Admin Dashboard
-- Angular Libraries
+- **Angular Libraries**
     - MatEz (eazy-to-use library that extends Angular Material)
     - Configs (for Prettier, ESLint, CSpell)
+
+---
 
 ## Control Center App
 
@@ -50,3 +52,27 @@ npm run dev-libs
 
 - `ccSwitchLogging()` - Enable/disable logging requests to the console
 - `ccGetMyRoles()` - Display your roles from the token
+
+---
+
+## [Update](https://nx.dev/features/automate-updating-dependencies#automate-updating-dependencies)
+
+```sh
+nx migrate latest
+nx migrate --run-migrations
+rm migrations.json
+```
+
+---
+
+## [Create library](https://nx.dev/nx-api/angular/generators/library)
+
+```sh
+nx g @nx/angular:library libs/my-ui-lib --tags=ui
+```
+
+Publishable
+
+```sh
+nx g @nx/angular:library libs/my-ui-lib --tags=ui --publishable --import-path=@vality/my-lib
+```
