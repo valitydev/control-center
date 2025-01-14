@@ -23,6 +23,7 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     templateUrl: 'party-routing-ruleset.component.html',
     styleUrls: ['party-routing-ruleset.component.scss'],
     providers: [PartyRoutingRulesetService, RoutingRulesTypeService, PartyDelegateRulesetsService],
+    standalone: false
 })
 export class PartyRoutingRulesetComponent {
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;

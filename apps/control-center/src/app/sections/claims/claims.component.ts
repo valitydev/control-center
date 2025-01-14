@@ -23,6 +23,7 @@ import { FetchClaimsService } from './fetch-claims.service';
 @Component({
     templateUrl: './claims.component.html',
     providers: [PartyStoreService],
+    standalone: false
 })
 export class ClaimsComponent implements OnInit {
     isLoading$ = this.fetchClaimsService.isLoading$;

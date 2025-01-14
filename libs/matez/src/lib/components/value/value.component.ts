@@ -28,7 +28,6 @@ import { valueToString } from './utils/value-to-string';
 
 @Component({
     selector: 'v-value',
-    standalone: true,
     imports: [
         CommonModule,
         MatIcon,
@@ -44,7 +43,7 @@ import { valueToString } from './utils/value-to-string';
     host: {
         '[class.inline]': 'inline',
     },
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ValueComponent {
     value = input<Value | Nil>();

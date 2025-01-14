@@ -5,7 +5,6 @@ import { ValueComponent } from '../value.component';
 
 @Component({
     selector: 'v-value-list',
-    standalone: true,
     imports: [ValueComponent],
     template: `
         @if (list(); as items) {
@@ -33,7 +32,7 @@ import { ValueComponent } from '../value.component';
                 min-height: 20px;
             }
         }
-    `,
+    `
 })
 export class ValueListComponent {
     list = input<Value[] | undefined | null>();

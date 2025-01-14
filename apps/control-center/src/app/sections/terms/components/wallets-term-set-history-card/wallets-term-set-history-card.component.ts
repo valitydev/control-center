@@ -16,10 +16,9 @@ import {
 
 @Component({
     selector: 'cc-wallets-term-set-history-card',
-    standalone: true,
     imports: [CommonModule, SidenavInfoModule, TableModule, VSelectPipe, MatTooltip],
     templateUrl: './wallets-term-set-history-card.component.html',
-    styles: ``,
+    styles: ``
 })
 export class WalletsTermSetHistoryCardComponent {
     data = input<WalletTermSet>();

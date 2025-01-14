@@ -19,10 +19,9 @@ import { CSV_PAYMENT_ADJUSTMENT_PROPS, CsvPaymentAdjustment } from './types/csv-
 import { getCreatePaymentAdjustmentsArgs } from './utils/get-create-payment-adjustments-args';
 
 @Component({
-    standalone: true,
     selector: 'cc-create-payment-adjustments-by-file-dialog',
     templateUrl: './create-payment-adjustments-by-file-dialog.component.html',
-    imports: [CommonModule, DialogModule, UploadCsvComponent, MatButton],
+    imports: [CommonModule, DialogModule, UploadCsvComponent, MatButton]
 })
 export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSuperclass<
     CreatePaymentAdjustmentsByFileDialogComponent,

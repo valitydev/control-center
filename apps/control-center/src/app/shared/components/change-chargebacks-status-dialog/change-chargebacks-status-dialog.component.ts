@@ -37,7 +37,6 @@ const CHANGE_STATUS_METHODS = {
 } as const;
 
 @Component({
-    standalone: true,
     templateUrl: './change-chargebacks-status-dialog.component.html',
     imports: [
         CommonModule,
@@ -49,7 +48,7 @@ const CHANGE_STATUS_METHODS = {
         MatSelectModule,
         EnumKeysPipe,
         EnumKeyPipe,
-    ],
+    ]
 })
 export class ChangeChargebacksStatusDialogComponent
     extends DialogSuperclass<

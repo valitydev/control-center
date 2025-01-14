@@ -43,4 +43,10 @@ module.exports = [
         rules: {},
     },
     ...(getEslintConfigs()?.appEslintConfig?.() ?? []),
+    {
+        files: ['**/*.ts'],
+        rules: {
+            '@angular-eslint/prefer-standalone': 'off',
+        },
+    },
 ];

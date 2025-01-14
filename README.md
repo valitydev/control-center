@@ -57,11 +57,15 @@ npm run dev-libs
 
 ## [Update](https://nx.dev/features/automate-updating-dependencies#automate-updating-dependencies)
 
-```sh
-nx migrate latest
-nx migrate --run-migrations
-rm migrations.json
-```
+1. Update via Nx CLI
+    ```sh
+    nx migrate latest
+    nx migrate --run-migrations
+    rm migrations.json
+    ```
+1. Update dependencies that Nx did not update
+1. Update `peerDeps` in libraries (specify manually)
+1. `npm install`
 
 ---
 

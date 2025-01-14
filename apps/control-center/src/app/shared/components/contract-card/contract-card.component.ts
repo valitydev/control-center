@@ -10,9 +10,8 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-contract-card',
-    standalone: true,
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent],
-    templateUrl: './contract-card.component.html',
+    templateUrl: './contract-card.component.html'
 })
 export class ContractCardComponent implements OnChanges {
     @Input() partyId: string;

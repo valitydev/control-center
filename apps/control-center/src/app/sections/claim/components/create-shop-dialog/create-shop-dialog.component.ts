@@ -61,7 +61,6 @@ const DEFAULT_SHOP_LOCATION: ShopLocation = {
 
 @Component({
     selector: 'cc-create-shop-dialog',
-    standalone: true,
     imports: [
         DialogModule,
         MatButton,
@@ -70,7 +69,7 @@ const DEFAULT_SHOP_LOCATION: ShopLocation = {
         CommonModule,
     ],
     templateUrl: './create-shop-dialog.component.html',
-    styles: ``,
+    styles: ``
 })
 export class CreateShopDialogComponent
     extends DialogSuperclass<CreateShopDialogComponent, { party: Party; claim: Claim }>

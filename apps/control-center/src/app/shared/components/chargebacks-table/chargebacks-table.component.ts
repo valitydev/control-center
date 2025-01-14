@@ -28,10 +28,9 @@ import { createCurrencyColumn, createPartyColumn, createShopColumn } from '../..
 import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
 @Component({
-    standalone: true,
     selector: 'cc-chargebacks-table',
     templateUrl: './chargebacks-table.component.html',
-    imports: [CommonModule, TableModule, MatButtonModule],
+    imports: [CommonModule, TableModule, MatButtonModule]
 })
 export class ChargebacksTableComponent {
     @Input() data!: StatChargeback[];

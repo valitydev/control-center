@@ -41,6 +41,7 @@ import { DEBOUNCE_TIME_MS } from '../../../tokens';
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
     providers: createControlProviders(() => ShopFieldComponent),
+    standalone: false
 })
 export class ShopFieldComponent
     extends FormControlSuperclass<ShopID | ShopID[]>

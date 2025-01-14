@@ -12,11 +12,10 @@ import { BaseThriftFormSuperclass } from '../thrift-api-crud/thrift-forms/utils/
 import { ThriftEditorModule } from '../thrift-editor';
 
 @Component({
-    standalone: true,
     selector: 'cc-fistful-thrift-form',
     templateUrl: './fistful-thrift-form.component.html',
     providers: createControlProviders(() => FistfulThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, ThriftEditorModule],
+    imports: [CommonModule, ReactiveFormsModule, ThriftEditorModule]
 })
 export class FistfulThriftFormComponent extends BaseThriftFormSuperclass {
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));

@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
     selector: 'cc-headline',
     templateUrl: 'headline.component.html',
     styleUrls: ['headline.component.scss'],
+    standalone: false
 })
 export class HeadlineComponent {
     // 1 and 2 is default history length

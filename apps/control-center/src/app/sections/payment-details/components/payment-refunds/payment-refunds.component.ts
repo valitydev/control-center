@@ -7,10 +7,9 @@ import { RefundsTableModule } from '../../refunds-table';
 
 @Component({
     selector: 'cc-payment-refunds',
-    standalone: true,
     imports: [CommonModule, PageLayoutModule, RefundsTableModule],
     templateUrl: './payment-refunds.component.html',
-    styles: ``,
+    styles: ``
 })
 export class PaymentRefundsComponent {
     payment$ = this.paymentDetailsService.payment$;

@@ -49,6 +49,7 @@ interface WithdrawalsForm {
     selector: 'cc-withdrawals',
     templateUrl: './withdrawals.component.html',
     providers: [FetchWithdrawalsService],
+    standalone: false
 })
 export class WithdrawalsComponent implements OnInit {
     filtersForm = this.fb.group<WithdrawalsForm>({

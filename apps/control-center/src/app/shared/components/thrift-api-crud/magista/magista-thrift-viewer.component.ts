@@ -8,10 +8,9 @@ import { DomainMetadataViewExtensionsService } from '../domain/domain-thrift-vie
 import { ThriftViewerBaseModule, ThriftViewerSuperclass } from '../utils';
 
 @Component({
-    standalone: true,
     selector: 'cc-magista-thrift-viewer',
     template: `<cc-thrift-viewer-base [data]="data()" />`,
-    imports: [ThriftViewerBaseModule],
+    imports: [ThriftViewerBaseModule]
 })
 export class MagistaThriftViewerComponent<T> extends ThriftViewerSuperclass<T> {
     domainMetadataViewExtensionsService = inject(DomainMetadataViewExtensionsService);

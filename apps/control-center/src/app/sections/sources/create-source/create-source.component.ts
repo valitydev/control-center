@@ -7,6 +7,7 @@ import { FistfulAdminService } from '../../../api/fistful-admin';
 @Component({
     selector: 'cc-create-source',
     templateUrl: './create-source.component.html',
+    standalone: false
 })
 export class CreateSourceComponent extends DialogSuperclass<void> {
     control = new FormControl();

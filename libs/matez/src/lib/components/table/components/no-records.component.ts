@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@angular/core';
 
 @Component({
-    standalone: true,
     selector: 'v-no-records',
     template: `
         @if (noRecords()) {
@@ -20,7 +19,7 @@ import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@an
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
         }
-    `,
+    `
 })
 export class NoRecordsComponent {
     noRecords = input(false, { transform: booleanAttribute });

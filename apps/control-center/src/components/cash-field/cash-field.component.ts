@@ -40,7 +40,6 @@ const DEFAULT_EXPONENT = 2;
 const RADIX_POINT = '.';
 
 @Component({
-    standalone: true,
     selector: 'cc-cash-field',
     templateUrl: './cash-field.component.html',
     providers: createControlProviders(() => CashFieldComponent),
@@ -51,7 +50,7 @@ const RADIX_POINT = '.';
         SelectFieldModule,
         CommonModule,
         MatInputModule,
-    ],
+    ]
 })
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;

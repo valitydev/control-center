@@ -4,6 +4,7 @@ import { inlineJson } from '../utils';
 
 @Pipe({
     name: 'inlineJson',
+    standalone: false
 })
 export class InlineJsonPipe implements PipeTransform {
     transform(value: unknown, maxReadableLever: number | false = 1): string {

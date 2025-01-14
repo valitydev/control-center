@@ -16,6 +16,7 @@ import { FetchSourcesService } from '../../../sources';
 
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',
+    standalone: false
 })
 export class CreateDepositDialogComponent extends DialogSuperclass<CreateDepositDialogComponent> {
     @ViewChild('sourceCashTemplate') sourceCashTemplate: TemplateRef<unknown>;

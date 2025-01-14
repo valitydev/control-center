@@ -7,11 +7,10 @@ import { startCase } from 'lodash-es';
 import { SidenavInfoModule } from '../../../shared/components/sidenav-info/sidenav-info.module';
 
 @Component({
-    standalone: true,
     template: `<cc-card title="Machine #{{ id() }} Status History"
         ><v-table [columns]="columns" [data]="history()"></v-table
     ></cc-card>`,
-    imports: [TableModule, SidenavInfoModule],
+    imports: [TableModule, SidenavInfoModule]
 })
 export class MachineStatusHistoryCardComponent {
     history = input<StatusHistory[]>([]);

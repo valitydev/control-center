@@ -13,6 +13,7 @@ import { MetadataFormExtension } from '../../../../shared/components/metadata-fo
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',
+    standalone: false
 })
 export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     CreateAdjustmentDialogComponent,

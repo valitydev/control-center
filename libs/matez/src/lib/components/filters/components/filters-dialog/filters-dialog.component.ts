@@ -7,6 +7,7 @@ import { FiltersComponent } from '../../filters.component';
     selector: 'v-filters-dialog',
     templateUrl: './filters-dialog.component.html',
     styleUrls: ['./filters-dialog.component.scss'],
+    standalone: false
 })
 export class FiltersDialogComponent extends DialogSuperclass<
     FiltersDialogComponent,

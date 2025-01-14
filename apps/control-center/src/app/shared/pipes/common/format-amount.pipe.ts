@@ -3,6 +3,7 @@ import round from 'lodash-es/round';
 
 @Pipe({
     name: 'ccFormatAmount',
+    standalone: false
 })
 /**
  * @deprecated

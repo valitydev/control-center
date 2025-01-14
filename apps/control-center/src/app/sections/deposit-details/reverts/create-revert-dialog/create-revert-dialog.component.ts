@@ -25,6 +25,7 @@ import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
     templateUrl: 'create-revert-dialog.component.html',
     styleUrls: ['create-revert-dialog.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CreateRevertDialogComponent extends DialogSuperclass<
     CreateRevertDialogComponent,

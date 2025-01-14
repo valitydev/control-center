@@ -10,9 +10,8 @@ import { DeepPartial } from 'utility-types';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 
 @Component({
-    standalone: true,
     templateUrl: 'domain-thrift-form-dialog.component.html',
-    imports: [DialogModule, DomainThriftFormComponent, MatButtonModule, ReactiveFormsModule],
+    imports: [DialogModule, DomainThriftFormComponent, MatButtonModule, ReactiveFormsModule]
 })
 export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends DialogSuperclass<
     DomainThriftFormDialogComponent<T, R>,

@@ -8,10 +8,9 @@ import { CardActionsComponent } from '../card-actions/card-actions.component';
 
 @Component({
     selector: 'cc-card',
-    standalone: true,
     imports: [CommonModule, MatDividerModule, MatIconModule],
     templateUrl: './card.component.html',
-    styleUrls: ['./card.component.scss'],
+    styleUrls: ['./card.component.scss']
 })
 export class CardComponent {
     @Input() title: string;

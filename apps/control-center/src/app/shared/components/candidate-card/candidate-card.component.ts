@@ -11,9 +11,8 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-candidate-card',
-    standalone: true,
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent],
-    templateUrl: './candidate-card.component.html',
+    templateUrl: './candidate-card.component.html'
 })
 export class CandidateCardComponent implements OnChanges {
     @Input() idx: number;

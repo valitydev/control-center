@@ -3,12 +3,11 @@ import { ChangeDetectionStrategy, Component, input, numberAttribute } from '@ang
 import { random } from 'lodash-es';
 
 @Component({
-    standalone: true,
     selector: 'v-content-loading',
     templateUrl: './content-loading.component.html',
     styleUrls: ['./content-loading.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule],
+    imports: [CommonModule]
 })
 export class ContentLoadingComponent {
     width = input(random(35, 80) + '%');

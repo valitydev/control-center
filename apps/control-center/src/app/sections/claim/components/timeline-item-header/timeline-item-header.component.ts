@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
     selector: 'cc-timeline-item-header',
     templateUrl: 'timeline-item-header.component.html',
     styleUrls: ['./timeline-item-header.component.scss'],
+    standalone: false
 })
 export class TimelineItemHeaderComponent {
     @Input()

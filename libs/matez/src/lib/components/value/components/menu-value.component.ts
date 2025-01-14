@@ -15,7 +15,6 @@ export type MenuValue = TypedParamsValue<'menu', { items: MenuItem[] }>;
 
 @Component({
     selector: 'v-menu-value',
-    standalone: true,
     imports: [MatIcon, MatIconButton, MatMenu, MatMenuItem, MatMenuTrigger],
     template: ` @if (value(); as v) {
         <button [matMenuTriggerFor]="menu" class="button" mat-icon-button>
@@ -29,7 +28,7 @@ export type MenuValue = TypedParamsValue<'menu', { items: MenuItem[] }>;
             }
         </mat-menu>
     }`,
-    styles: ``,
+    styles: ``
 })
 export class MenuValueComponent {
     value = input.required<MenuValue>();

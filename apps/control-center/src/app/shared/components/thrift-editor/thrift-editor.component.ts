@@ -25,6 +25,7 @@ export enum EditorKind {
     templateUrl: './thrift-editor.component.html',
     styleUrls: ['./thrift-editor.component.scss'],
     providers: createControlProviders(() => ThriftEditorComponent),
+    standalone: false
 })
 export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input() kind: EditorKind = EditorKind.Form;

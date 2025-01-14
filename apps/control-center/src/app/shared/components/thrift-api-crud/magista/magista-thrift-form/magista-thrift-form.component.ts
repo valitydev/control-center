@@ -9,11 +9,10 @@ import { ThriftEditorModule } from '../../../thrift-editor';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
 @Component({
-    standalone: true,
     selector: 'cc-magista-thrift-form',
     templateUrl: './magista-thrift-form.component.html',
     providers: createControlProviders(() => MagistaThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule],
+    imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule]
 })
 export class MagistaThriftFormComponent extends BaseThriftFormSuperclass {
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));

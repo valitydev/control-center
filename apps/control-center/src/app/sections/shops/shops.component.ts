@@ -17,6 +17,7 @@ import { ShopParty } from '../../shared/components/shops-table';
 @Component({
     selector: 'cc-shops',
     templateUrl: './shops.component.html',
+    standalone: false
 })
 export class ShopsComponent {
     filterChange$ = new Subject<string>();

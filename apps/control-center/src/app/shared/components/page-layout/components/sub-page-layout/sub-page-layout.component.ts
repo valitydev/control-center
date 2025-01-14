@@ -8,7 +8,6 @@ import { SidenavInfoService } from '../../../sidenav-info';
 
 @Component({
     selector: 'cc-sub-page-layout',
-    standalone: true,
     imports: [
         CommonModule,
         NavComponent,
@@ -20,7 +19,7 @@ import { SidenavInfoService } from '../../../sidenav-info';
         ActionsModule,
     ],
     templateUrl: './sub-page-layout.component.html',
-    styles: ``,
+    styles: ``
 })
 export class SubPageLayoutComponent {
     title = input<string>();

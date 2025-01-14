@@ -15,7 +15,6 @@ import { ThriftViewerModule } from '../thrift-viewer';
 
 @Component({
     selector: 'cc-shop-card',
-    standalone: true,
     imports: [
         CommonModule,
         CardComponent,
@@ -28,7 +27,7 @@ import { ThriftViewerModule } from '../thrift-viewer';
         MatTabGroup,
         MatTab,
     ],
-    templateUrl: './shop-card.component.html',
+    templateUrl: './shop-card.component.html'
 })
 export class ShopCardComponent {
     partyId = input.required<PartyID>();

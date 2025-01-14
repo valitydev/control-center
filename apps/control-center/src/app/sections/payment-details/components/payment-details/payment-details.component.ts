@@ -16,10 +16,9 @@ import { PaymentDetailsService } from '../../payment-details.service';
 
 @Component({
     selector: 'cc-payment-details',
-    standalone: true,
     imports: [AsyncPipe, MagistaThriftViewerComponent, MatCard, MatCardContent, PageLayoutModule],
     templateUrl: './payment-details.component.html',
-    styles: ``,
+    styles: ``
 })
 export class PaymentDetailsComponent {
     payment$ = this.paymentDetailsService.payment$;

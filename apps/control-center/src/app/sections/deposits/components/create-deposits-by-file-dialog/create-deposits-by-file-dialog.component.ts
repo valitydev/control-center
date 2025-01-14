@@ -19,10 +19,9 @@ import { CSV_DEPOSIT_PROPS, CsvDeposit } from './types/csv-deposit';
 import { getCreateDepositArgs } from './utils/get-create-deposit-args';
 
 @Component({
-    standalone: true,
     selector: 'cc-create-deposits-by-file-dialog',
     templateUrl: './create-deposits-by-file-dialog.component.html',
-    imports: [DialogModule, UploadCsvComponent, CommonModule, MatButton],
+    imports: [DialogModule, UploadCsvComponent, CommonModule, MatButton]
 })
 export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     CreateDepositsByFileDialogComponent,

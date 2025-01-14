@@ -19,7 +19,6 @@ export interface Link {
     selector: 'v-nav',
     styleUrls: ['./nav.component.scss'],
     templateUrl: './nav.component.html',
-    standalone: true,
     imports: [
         MatNavList,
         MatListItem,
@@ -30,7 +29,7 @@ export interface Link {
         AsyncPipe,
         MatDivider,
     ],
-    encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.None
 })
 export class NavComponent {
     type = input<'secondary' | undefined>();

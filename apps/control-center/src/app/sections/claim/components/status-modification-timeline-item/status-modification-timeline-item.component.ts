@@ -7,6 +7,7 @@ import { CLAIM_STATUS_COLOR } from '../../types/claim-status-color';
 @Component({
     selector: 'cc-status-modification-timeline-item',
     templateUrl: './status-modification-timeline-item.component.html',
+    standalone: false
 })
 export class StatusModificationTimelineItemComponent {
     @Input() modificationUnit: ModificationUnit;

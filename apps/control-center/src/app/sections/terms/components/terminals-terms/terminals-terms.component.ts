@@ -48,7 +48,6 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
 
 @Component({
     selector: 'cc-terminals-terms',
-    standalone: true,
     imports: [
         CommonModule,
         PageLayoutModule,
@@ -62,7 +61,7 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         MatTooltip,
         VSelectPipe,
     ],
-    templateUrl: './terminals-terms.component.html',
+    templateUrl: './terminals-terms.component.html'
 })
 export class TerminalsTermsComponent implements OnInit {
     filtersForm = this.fb.group(

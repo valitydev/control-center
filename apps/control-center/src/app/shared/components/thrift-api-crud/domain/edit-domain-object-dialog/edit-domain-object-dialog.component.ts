@@ -35,7 +35,6 @@ enum Step {
 
 @Component({
     selector: 'cc-edit-domain-object-dialog',
-    standalone: true,
     imports: [
         CommonModule,
         DialogModule,
@@ -45,7 +44,7 @@ enum Step {
         DomainThriftViewerComponent,
         ThriftPipesModule,
     ],
-    templateUrl: './edit-domain-object-dialog.component.html',
+    templateUrl: './edit-domain-object-dialog.component.html'
 })
 export class EditDomainObjectDialogComponent extends DialogSuperclass<
     EditDomainObjectDialogComponent,

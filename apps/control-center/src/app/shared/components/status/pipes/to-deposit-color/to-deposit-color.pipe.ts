@@ -4,6 +4,7 @@ import { StatusColor } from '../../../../../styles/consts';
 
 @Pipe({
     name: 'toDepositColor',
+    standalone: false
 })
 export class ToDepositColorPipe implements PipeTransform {
     transform(status: string): StatusColor {

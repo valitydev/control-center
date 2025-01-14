@@ -11,6 +11,7 @@ import { PaymentDetailsService } from './payment-details.service';
     templateUrl: 'payment-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [PaymentDetailsService],
+    standalone: false
 })
 export class PaymentDetailsComponent {
     payment$ = this.paymentDetailsService.payment$;

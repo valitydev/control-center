@@ -4,6 +4,7 @@ import startCase from 'lodash-es/startCase';
 
 @Pipe({
     name: 'toStatus',
+    standalone: false
 })
 export class ToStatusPipe implements PipeTransform {
     transform(status: { [N in string]: unknown }): string {

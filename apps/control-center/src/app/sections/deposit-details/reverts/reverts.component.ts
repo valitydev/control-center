@@ -16,6 +16,7 @@ import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.serv
     styleUrls: ['reverts.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [FetchRevertsService],
+    standalone: false
 })
 export class RevertsComponent implements OnInit {
     @Input() deposit: StatDeposit;
