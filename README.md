@@ -66,6 +66,7 @@ npm run dev-libs
 1. Update dependencies that Nx did not update
 1. Update `peerDeps` in libraries (specify manually)
 1. `npm install`
+1. `npm audit fix`
 
 ---
 
