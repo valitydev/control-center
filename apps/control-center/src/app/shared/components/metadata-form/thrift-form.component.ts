@@ -19,7 +19,7 @@ import {
     templateUrl: './thrift-form.component.html',
     styleUrl: `./thrift-form.component.scss`,
     providers: createControlProviders(() => ThriftFormComponent),
-    standalone: false
+    standalone: false,
 })
 export class ThriftFormComponent<T>
     extends FormControlSuperclass<T>

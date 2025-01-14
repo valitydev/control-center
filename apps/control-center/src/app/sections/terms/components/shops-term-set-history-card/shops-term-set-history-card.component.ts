@@ -18,7 +18,7 @@ import {
     selector: 'cc-shops-term-set-history-card',
     imports: [CommonModule, SidenavInfoModule, TableModule, VSelectPipe, MatTooltip],
     templateUrl: './shops-term-set-history-card.component.html',
-    styles: ``
+    styles: ``,
 })
 export class ShopsTermSetHistoryCardComponent {
     data = input<ShopTermSet>();

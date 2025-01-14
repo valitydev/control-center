@@ -10,7 +10,7 @@ import { RoutingRulesService } from '../services/routing-rules';
     selector: 'cc-change-delegate-ruleset-dialog',
     templateUrl: 'change-delegate-ruleset-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class ChangeDelegateRulesetDialogComponent
     extends DialogSuperclass<

@@ -37,7 +37,7 @@ import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.s
     templateUrl: 'deposits.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [FetchDepositsService],
-    standalone: false
+    standalone: false,
 })
 export class DepositsComponent implements OnInit {
     filtersForm = this.fb.group({

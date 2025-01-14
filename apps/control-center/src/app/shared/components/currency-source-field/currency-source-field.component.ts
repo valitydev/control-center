@@ -17,7 +17,7 @@ import { FetchSourcesService } from '../../../sections/sources';
     selector: 'cc-currency-source-field',
     imports: [CommonModule, SelectFieldModule, ReactiveFormsModule],
     templateUrl: './currency-source-field.component.html',
-    providers: createControlProviders(() => CurrencySourceFieldComponent)
+    providers: createControlProviders(() => CurrencySourceFieldComponent),
 })
 export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSource> {
     @Input({ transform: booleanAttribute }) required = false;

@@ -16,7 +16,7 @@ import {
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
-    standalone: false
+    standalone: false,
 })
 export class PaymentsTableComponent {
     @Input() data!: StatPayment[];

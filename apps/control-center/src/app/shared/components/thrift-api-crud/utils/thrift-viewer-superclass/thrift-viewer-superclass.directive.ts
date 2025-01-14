@@ -31,7 +31,7 @@ interface Data<T> {
     selector: 'cc-thrift-viewer-base',
     templateUrl: './thrift-viewer-base.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class ThriftViewerBaseComponent<T> {
     data = input.required<Data<T>>();

@@ -7,7 +7,7 @@ import { random } from 'lodash-es';
     templateUrl: './content-loading.component.html',
     styleUrls: ['./content-loading.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule]
+    imports: [CommonModule],
 })
 export class ContentLoadingComponent {
     width = input(random(35, 80) + '%');

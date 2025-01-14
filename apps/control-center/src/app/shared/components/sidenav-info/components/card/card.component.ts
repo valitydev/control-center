@@ -10,7 +10,7 @@ import { CardActionsComponent } from '../card-actions/card-actions.component';
     selector: 'cc-card',
     imports: [CommonModule, MatDividerModule, MatIconModule],
     templateUrl: './card.component.html',
-    styleUrls: ['./card.component.scss']
+    styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {
     @Input() title: string;

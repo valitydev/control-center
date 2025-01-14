@@ -30,7 +30,7 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
         TimelineItemHeaderComponent,
     ],
     templateUrl: './payment-events.component.html',
-    styles: ``
+    styles: ``,
 })
 export class PaymentEventsComponent {
     payment$ = this.paymentDetailsService.payment$;

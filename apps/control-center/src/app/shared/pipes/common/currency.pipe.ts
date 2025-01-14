@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  */
 @Pipe({
     name: 'ccCurrency',
-    standalone: false
+    standalone: false,
 })
 export class CurrencyPipe implements PipeTransform {
     public transform(input: string): string {

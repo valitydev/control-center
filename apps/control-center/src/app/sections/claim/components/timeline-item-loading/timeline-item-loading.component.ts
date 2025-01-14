@@ -4,6 +4,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     selector: 'cc-timeline-item-loading',
     templateUrl: 'timeline-item-loading.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class TimelineItemLoadingComponent {}

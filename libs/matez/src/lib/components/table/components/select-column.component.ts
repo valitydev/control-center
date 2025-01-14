@@ -61,7 +61,7 @@ import { BaseColumnComponent } from './base-column.component';
             border-right: 1px solid;
             text-overflow: clip;
         }
-    `
+    `,
 })
 export class SelectColumnComponent<T>
     extends BaseColumnComponent

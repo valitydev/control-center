@@ -18,7 +18,7 @@ import { FetchPartiesService } from '../../shared/services/fetch-parties.service
     templateUrl: 'search-parties.component.html',
     styleUrls: ['search-parties.component.scss'],
     providers: [FetchPartiesService],
-    standalone: false
+    standalone: false,
 })
 export class SearchPartiesComponent {
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));

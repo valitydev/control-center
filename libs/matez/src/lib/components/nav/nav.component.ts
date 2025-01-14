@@ -29,7 +29,7 @@ export interface Link {
         AsyncPipe,
         MatDivider,
     ],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent {
     type = input<'secondary' | undefined>();

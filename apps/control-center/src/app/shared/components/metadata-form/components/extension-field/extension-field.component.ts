@@ -18,7 +18,7 @@ import {
     selector: 'cc-extension-field',
     templateUrl: './extension-field.component.html',
     providers: createControlProviders(() => ExtensionFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>

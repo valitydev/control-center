@@ -75,7 +75,7 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         MatTooltip,
         VSelectPipe,
     ],
-    templateUrl: './wallets-terms.component.html'
+    templateUrl: './wallets-terms.component.html',
 })
 export class WalletsTermsComponent implements OnInit {
     filtersForm = this.fb.group(

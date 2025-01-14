@@ -9,7 +9,7 @@ import { RefundsTableModule } from '../../refunds-table';
     selector: 'cc-payment-refunds',
     imports: [CommonModule, PageLayoutModule, RefundsTableModule],
     templateUrl: './payment-refunds.component.html',
-    styles: ``
+    styles: ``,
 })
 export class PaymentRefundsComponent {
     payment$ = this.paymentDetailsService.payment$;

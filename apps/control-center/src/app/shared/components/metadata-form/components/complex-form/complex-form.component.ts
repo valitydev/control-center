@@ -29,7 +29,7 @@ type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
     providers: createControlProviders(() => ComplexFormComponent),
-    standalone: false
+    standalone: false,
 })
 export class ComplexFormComponent<V, K = never>
     extends FormComponentSuperclass<ComplexType<V, K>>

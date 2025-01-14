@@ -8,6 +8,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         </v-actions>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class TableActionsComponent {}

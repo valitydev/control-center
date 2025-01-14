@@ -15,7 +15,7 @@ import { FetchSourcesService } from '../../../sections/sources';
     selector: 'cc-currency-field',
     imports: [CommonModule, ReactiveFormsModule, AutocompleteFieldModule],
     templateUrl: './currency-field.component.html',
-    providers: createControlProviders(() => CurrencyFieldComponent)
+    providers: createControlProviders(() => CurrencyFieldComponent),
 })
 export class CurrencyFieldComponent extends FormControlSuperclass<string> {
     options$ = this.fetchSourcesService.sources$.pipe(

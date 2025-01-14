@@ -19,7 +19,7 @@ import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@an
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
         }
-    `
+    `,
 })
 export class NoRecordsComponent {
     noRecords = input(false, { transform: booleanAttribute });

@@ -11,7 +11,7 @@ import { DomainMetadataViewExtensionsService } from './services/domain-metadata-
 @Component({
     selector: 'cc-domain-thrift-viewer',
     templateUrl: './domain-thrift-viewer.component.html',
-    imports: [CommonModule, ThriftViewerModule]
+    imports: [CommonModule, ThriftViewerModule],
 })
 export class DomainThriftViewerComponent<T> {
     @Input() kind: UnionEnum<ViewerKind> = ViewerKind.Component;

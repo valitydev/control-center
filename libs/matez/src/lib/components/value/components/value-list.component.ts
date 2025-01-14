@@ -32,7 +32,7 @@ import { ValueComponent } from '../value.component';
                 min-height: 20px;
             }
         }
-    `
+    `,
 })
 export class ValueListComponent {
     list = input<Value[] | undefined | null>();

@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
     selector: 'cc-timeline',
     templateUrl: 'timeline.component.html',
     styleUrls: ['timeline.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class TimelineComponent {}

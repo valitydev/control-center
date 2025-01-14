@@ -43,7 +43,7 @@ import { valueToString } from './utils/value-to-string';
     host: {
         '[class.inline]': 'inline',
     },
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValueComponent {
     value = input<Value | Nil>();

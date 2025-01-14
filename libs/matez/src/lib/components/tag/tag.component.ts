@@ -14,7 +14,7 @@ import { Color } from '../../styles';
     templateUrl: './tag.component.html',
     styleUrls: ['./tag.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class TagComponent {
     @HostBinding('class.v-tag') hostClass: boolean = true;

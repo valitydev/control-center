@@ -34,7 +34,7 @@ enum Namespace {
 
 @Component({
     templateUrl: './repair-by-scenario-dialog.component.html',
-    standalone: false
+    standalone: false,
 })
 export class RepairByScenarioDialogComponent
     extends DialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>

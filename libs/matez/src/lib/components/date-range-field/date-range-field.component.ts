@@ -18,7 +18,7 @@ import { DateRange } from './types/date-range';
         { provide: DateAdapter, useClass: DateFnsAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_FNS_FORMATS },
     ],
-    standalone: false
+    standalone: false,
 })
 export class DateRangeFieldComponent extends FormGroupSuperclass<Partial<DateRange>> {
     @Input({ transform: booleanAttribute }) required: boolean = false;

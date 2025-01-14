@@ -18,7 +18,7 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     selector: 'cc-domain-thrift-form',
     templateUrl: './domain-thrift-form.component.html',
     providers: createControlProviders(() => DomainThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule]
+    imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule],
 })
 export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     party = input<Party>();

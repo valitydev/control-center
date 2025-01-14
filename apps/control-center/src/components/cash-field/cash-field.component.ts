@@ -50,7 +50,7 @@ const RADIX_POINT = '.';
         SelectFieldModule,
         CommonModule,
         MatInputModule,
-    ]
+    ],
 })
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     @Input() label?: string;

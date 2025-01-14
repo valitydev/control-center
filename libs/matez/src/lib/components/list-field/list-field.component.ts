@@ -12,7 +12,7 @@ import {
     selector: 'v-list-field',
     templateUrl: './list-field.component.html',
     providers: createControlProviders(() => ListFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class ListFieldComponent extends FormControlSuperclass<string[], string> {
     @Input() label?: string;

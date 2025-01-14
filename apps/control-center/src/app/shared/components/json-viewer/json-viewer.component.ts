@@ -16,7 +16,7 @@ import {
     selector: 'cc-json-viewer',
     templateUrl: './json-viewer.component.html',
     styleUrls: ['./json-viewer.scss'],
-    standalone: false
+    standalone: false,
 })
 export class JsonViewerComponent implements OnChanges {
     @Input() value: unknown;

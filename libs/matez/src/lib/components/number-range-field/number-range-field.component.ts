@@ -13,7 +13,7 @@ export type NumberRange = {
     templateUrl: './number-range-field.component.html',
     styleUrls: ['./number-range-field.component.scss'],
     providers: createControlProviders(() => NumberRangeFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class NumberRangeFieldComponent extends FormGroupSuperclass<NumberRange> {
     @Input() label!: string;

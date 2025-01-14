@@ -10,7 +10,7 @@ import { RoutingRulesType } from '../types/routing-rules-type';
 @Component({
     templateUrl: 'change-target-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class ChangeTargetDialogComponent extends DialogSuperclass<
     ChangeTargetDialogComponent,

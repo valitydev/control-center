@@ -15,7 +15,7 @@ export interface State<T = unknown> {
     templateUrl: './switch-button.component.html',
     styles: [],
     providers: createControlProviders(() => SwitchButtonComponent),
-    standalone: false
+    standalone: false,
 })
 export class SwitchButtonComponent<T = number>
     extends FormControlSuperclass<T>

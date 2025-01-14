@@ -30,7 +30,7 @@ import { MerchantFieldModule } from '../../../shared/components/merchant-field';
         CdkCopyToClipboard,
     ],
     templateUrl: './toolbar.component.html',
-    styleUrl: './toolbar.component.scss'
+    styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent implements OnInit {
     username$ = from(this.keycloakService.loadUserProfile()).pipe(

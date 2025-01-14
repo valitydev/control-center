@@ -34,7 +34,7 @@ import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
         ReactiveFormsModule,
         DomainThriftViewerComponent,
     ],
-    templateUrl: './create-domain-object-dialog.component.html'
+    templateUrl: './create-domain-object-dialog.component.html',
 })
 export class CreateDomainObjectDialogComponent
     extends DialogSuperclass<CreateDomainObjectDialogComponent, { objectType?: string } | void>

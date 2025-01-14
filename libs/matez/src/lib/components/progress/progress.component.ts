@@ -5,7 +5,7 @@ import { Progressable } from '../../types/progressable';
 @Component({
     selector: 'v-progress',
     templateUrl: './progress.component.html',
-    standalone: false
+    standalone: false,
 })
 export class ProgressComponent implements Progressable {
     @Input() progress: Progressable['progress'];

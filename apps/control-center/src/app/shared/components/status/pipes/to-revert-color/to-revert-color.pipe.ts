@@ -4,7 +4,7 @@ import { StatusColor } from '../../../../../styles/consts';
 
 @Pipe({
     name: 'toRevertColor',
-    standalone: false
+    standalone: false,
 })
 export class ToRevertColorPipe implements PipeTransform {
     transform(status: string): StatusColor {

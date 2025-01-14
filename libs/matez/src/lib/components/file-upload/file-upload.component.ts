@@ -13,7 +13,7 @@ function hasExtension(fileName: string, extensions: string[]) {
     selector: 'v-file-upload',
     templateUrl: './file-upload.component.html',
     styleUrls: ['./file-upload.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class FileUploadComponent {
     @Input() label?: string;

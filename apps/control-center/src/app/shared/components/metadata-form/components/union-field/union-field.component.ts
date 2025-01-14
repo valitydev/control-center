@@ -19,7 +19,7 @@ import { getDefaultValue } from '../../utils';
     selector: 'cc-union-field',
     templateUrl: './union-field.component.html',
     providers: createControlProviders(() => UnionFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>

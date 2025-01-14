@@ -45,7 +45,7 @@ type FormValue = {
     selector: 'cc-chargebacks',
     templateUrl: './chargebacks.component.html',
     providers: [FetchChargebacksService],
-    standalone: false
+    standalone: false,
 })
 export class ChargebacksComponent implements OnInit {
     filtersForm = new FormGroup(

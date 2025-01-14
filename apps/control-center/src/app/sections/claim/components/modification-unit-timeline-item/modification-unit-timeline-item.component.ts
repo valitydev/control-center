@@ -32,7 +32,7 @@ import { AddModificationDialogComponent } from '../add-modification-dialog/add-m
 @Component({
     selector: 'cc-modification-unit-timeline-item',
     templateUrl: './modification-unit-timeline-item.component.html',
-    standalone: false
+    standalone: false,
 })
 export class ModificationUnitTimelineItemComponent {
     @Input() claim: Claim;

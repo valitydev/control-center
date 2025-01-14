@@ -10,7 +10,7 @@ import { ClaimManagementService } from '../../../../api/claim-management/claim-m
 @Component({
     selector: 'cc-create-claim-dialog',
     templateUrl: './create-claim-dialog.component.html',
-    standalone: false
+    standalone: false,
 })
 export class CreateClaimDialogComponent extends DialogSuperclass<
     CreateClaimDialogComponent,

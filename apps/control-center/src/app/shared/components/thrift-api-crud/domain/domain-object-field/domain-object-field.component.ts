@@ -21,7 +21,7 @@ type DomainObjectID = unknown;
     selector: 'cc-domain-object-field',
     templateUrl: './domain-object-field.component.html',
     providers: createControlProviders(() => DomainObjectFieldComponent),
-    imports: [CommonModule, ReactiveFormsModule, SelectFieldModule]
+    imports: [CommonModule, ReactiveFormsModule, SelectFieldModule],
 })
 export class DomainObjectFieldComponent<T extends keyof DomainObject>
     extends FormControlSuperclass<DomainObjectID>

@@ -65,7 +65,7 @@ function getCsvObjectErrors<R extends string, O extends string>(
         CommonModule,
     ],
     templateUrl: './upload-csv.component.html',
-    styles: ``
+    styles: ``,
 })
 export class UploadCsvComponent<R extends string = string, O extends string = string>
     implements OnInit

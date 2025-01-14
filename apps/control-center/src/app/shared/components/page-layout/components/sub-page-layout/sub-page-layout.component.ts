@@ -19,7 +19,7 @@ import { SidenavInfoService } from '../../../sidenav-info';
         ActionsModule,
     ],
     templateUrl: './sub-page-layout.component.html',
-    styles: ``
+    styles: ``,
 })
 export class SubPageLayoutComponent {
     title = input<string>();

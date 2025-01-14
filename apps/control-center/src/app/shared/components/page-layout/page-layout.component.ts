@@ -18,7 +18,7 @@ import { map } from 'rxjs/operators';
     templateUrl: './page-layout.component.html',
     styleUrls: ['./page-layout.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class PageLayoutComponent {
     @Input() title!: string;

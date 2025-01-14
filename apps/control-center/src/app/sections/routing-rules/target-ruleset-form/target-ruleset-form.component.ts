@@ -26,7 +26,7 @@ import { TargetRuleset } from './types/target-ruleset';
     selector: 'cc-target-ruleset-form',
     templateUrl: 'target-ruleset-form.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class TargetRulesetFormComponent implements OnChanges {
     @Output() valid = new EventEmitter<boolean>();

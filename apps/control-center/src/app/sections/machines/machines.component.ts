@@ -49,7 +49,7 @@ interface Filters {
     selector: 'cc-machines',
     templateUrl: './machines.component.html',
     providers: [MachinesService],
-    standalone: false
+    standalone: false,
 })
 export class MachinesComponent implements OnInit {
     machines$ = this.machinesService.result$;

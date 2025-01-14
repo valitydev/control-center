@@ -5,7 +5,7 @@ import { StatusColor } from '../../../styles/consts';
 @Component({
     selector: 'cc-status',
     templateUrl: 'status.component.html',
-    standalone: false
+    standalone: false,
 })
 export class StatusComponent {
     @Input()

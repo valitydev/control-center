@@ -18,7 +18,7 @@ import { AllowedClaimStatusesService } from '../../services/allowed-claim-status
 @Component({
     selector: 'cc-change-status-dialog',
     templateUrl: './change-status-dialog.component.html',
-    standalone: false
+    standalone: false,
 })
 export class ChangeStatusDialogComponent extends DialogSuperclass<
     ChangeStatusDialogComponent,

@@ -35,7 +35,7 @@ import { FetchWalletsService } from './fetch-wallets.service';
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
     providers: [FetchWalletsService, FetchWalletsTextService, PartyStoreService],
-    standalone: false
+    standalone: false,
 })
 export class WalletsComponent implements OnInit {
     isFilterControl = new FormControl(0);

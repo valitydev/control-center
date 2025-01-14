@@ -15,7 +15,7 @@ import { ThriftViewerModule } from '../../thrift-viewer';
 
 @Component({
     templateUrl: './update-thrift-dialog.component.html',
-    imports: [CommonModule, DialogModule, ThriftViewerModule, MatButton]
+    imports: [CommonModule, DialogModule, ThriftViewerModule, MatButton],
 })
 export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
     UpdateThriftDialogComponent<T>,

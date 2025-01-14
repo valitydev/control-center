@@ -47,7 +47,7 @@ interface DomainObjectData {
         ReactiveFormsModule,
         ActionsModule,
         MatButtonModule,
-    ]
+    ],
 })
 export class DomainObjectsTableComponent implements OnInit {
     @Output() selectedChange = new EventEmitter<string[]>();

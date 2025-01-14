@@ -11,7 +11,7 @@ import { getHintText } from '../utils/get-hint-text';
     templateUrl: './select-field.component.html',
     styleUrls: ['./select-field.component.scss'],
     providers: createControlProviders(() => SelectFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class SelectFieldComponent<T = unknown> extends FormControlSuperclass<T[]> {
     @Input() options: Option<T>[] = [];

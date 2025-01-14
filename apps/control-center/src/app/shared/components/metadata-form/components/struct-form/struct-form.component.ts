@@ -26,7 +26,7 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
     selector: 'cc-struct-form',
     templateUrl: './struct-form.component.html',
     providers: createControlProviders(() => StructFormComponent),
-    standalone: false
+    standalone: false,
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>

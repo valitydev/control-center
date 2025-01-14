@@ -28,7 +28,7 @@ export type MenuValue = TypedParamsValue<'menu', { items: MenuItem[] }>;
             }
         </mat-menu>
     }`,
-    styles: ``
+    styles: ``,
 })
 export class MenuValueComponent {
     value = input.required<MenuValue>();

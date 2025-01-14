@@ -64,7 +64,7 @@ export interface ShopParty {
         TableModule,
     ],
     templateUrl: './shops-table.component.html',
-    providers: [PartyDelegateRulesetsService]
+    providers: [PartyDelegateRulesetsService],
 })
 export class ShopsTableComponent {
     shops = input<ShopParty[]>([]);

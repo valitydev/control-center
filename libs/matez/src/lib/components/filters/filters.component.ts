@@ -25,7 +25,7 @@ import { OtherFiltersDirective } from './components/other-filters/other-filters.
     selector: 'v-filters',
     templateUrl: './filters.component.html',
     styleUrls: ['./filters.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class FiltersComponent {
     @Input() active = 0;

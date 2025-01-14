@@ -6,7 +6,7 @@ import { Color, StatusColor } from '../../../../app/styles/consts';
     selector: 'cc-timeline-item-badge',
     templateUrl: 'timeline-item-badge.component.html',
     styleUrls: ['timeline-item-badge.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class TimelineItemBadgeComponent {
     @Input() color!: StatusColor | Color;

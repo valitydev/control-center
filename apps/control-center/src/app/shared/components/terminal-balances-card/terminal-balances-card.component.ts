@@ -14,7 +14,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 @Component({
     selector: 'cc-terminal-balances-card',
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent, TableModule],
-    templateUrl: './terminal-balances-card.component.html'
+    templateUrl: './terminal-balances-card.component.html',
 })
 export class TerminalBalancesCardComponent {
     terminalId = input<number>();

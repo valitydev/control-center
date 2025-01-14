@@ -27,7 +27,7 @@ import { DEBOUNCE_TIME_MS } from '../../../tokens';
     selector: 'cc-wallet-field',
     templateUrl: 'wallet-field.component.html',
     providers: createControlProviders(() => WalletFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class WalletFieldComponent
     extends FormControlSuperclass<WalletID | WalletID[]>

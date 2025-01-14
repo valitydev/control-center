@@ -17,7 +17,7 @@ import { getCreateChargebackArgs } from './utils/get-create-chargeback-args';
 @Component({
     selector: 'cc-create-chargebacks-by-file-dialog',
     templateUrl: './create-chargebacks-by-file-dialog.component.html',
-    standalone: false
+    standalone: false,
 })
 export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
     CreateChargebacksByFileDialogComponent,

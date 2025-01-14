@@ -12,7 +12,7 @@ import { getHintText } from '../utils/get-hint-text';
     templateUrl: './autocomplete-field.component.html',
     styleUrls: ['./autocomplete-field.component.scss'],
     providers: createControlProviders(() => AutocompleteFieldComponent),
-    standalone: false
+    standalone: false,
 })
 export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> implements OnChanges {
     @Input() options: Option<T>[] = [];

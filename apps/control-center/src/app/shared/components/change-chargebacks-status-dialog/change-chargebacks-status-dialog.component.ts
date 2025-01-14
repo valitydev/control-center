@@ -48,7 +48,7 @@ const CHANGE_STATUS_METHODS = {
         MatSelectModule,
         EnumKeysPipe,
         EnumKeyPipe,
-    ]
+    ],
 })
 export class ChangeChargebacksStatusDialogComponent
     extends DialogSuperclass<

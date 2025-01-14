@@ -27,7 +27,7 @@ import { ThriftViewerModule } from '../thrift-viewer';
         MatTabGroup,
         MatTab,
     ],
-    templateUrl: './shop-card.component.html'
+    templateUrl: './shop-card.component.html',
 })
 export class ShopCardComponent {
     partyId = input.required<PartyID>();

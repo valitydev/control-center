@@ -4,6 +4,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     selector: 'cc-page-layout-actions',
     template: `<v-actions><ng-content></ng-content></v-actions>`,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class PageLayoutActionsComponent {}

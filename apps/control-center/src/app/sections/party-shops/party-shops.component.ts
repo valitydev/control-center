@@ -10,7 +10,7 @@ import { PartyShopsService } from './party-shops.service';
     templateUrl: 'party-shops.component.html',
     providers: [PartyShopsService],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class PartyShopsComponent {
     shopsParty$: Observable<ShopParty[]> = this.partyShopsService.shops$.pipe(

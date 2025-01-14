@@ -19,7 +19,7 @@ import { ClaimManagementService } from '../../../../api/claim-management/claim-m
 @Component({
     selector: 'cc-add-modification-dialog',
     templateUrl: './add-modification-dialog.component.html',
-    standalone: false
+    standalone: false,
 })
 export class AddModificationDialogComponent extends DialogSuperclass<
     AddModificationDialogComponent,

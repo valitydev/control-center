@@ -4,7 +4,7 @@ import { getUnionKey } from '../utils';
 
 @Pipe({
     name: 'ngtUnionKey',
-    standalone: false
+    standalone: false,
 })
 export class UnionKeyPipe<T> implements PipeTransform {
     public transform(union: T) {

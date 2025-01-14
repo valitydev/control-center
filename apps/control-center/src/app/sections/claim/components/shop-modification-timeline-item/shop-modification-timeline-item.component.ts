@@ -6,7 +6,7 @@ import { ReplaySubject } from 'rxjs';
 @Component({
     selector: 'cc-shop-modification-timeline-item',
     templateUrl: './shop-modification-timeline-item.component.html',
-    standalone: false
+    standalone: false,
 })
 export class ShopModificationTimelineItemComponent implements OnChanges {
     @Input() modificationUnit: ModificationUnit;

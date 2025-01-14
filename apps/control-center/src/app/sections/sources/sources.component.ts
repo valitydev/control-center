@@ -7,7 +7,7 @@ import { FetchSourcesService } from './fetch-sources.service';
 
 @Component({
     templateUrl: './sources.component.html',
-    standalone: false
+    standalone: false,
 })
 export class SourcesComponent {
     sources$ = this.fetchSourcesService.sources$;

@@ -14,7 +14,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
             position: absolute;
             z-index: 999;
         }
-    `
+    `,
 })
 export class TableProgressBarComponent {
     progress = input(false, { transform: booleanAttribute });

@@ -28,7 +28,7 @@ import { ReceiveDepositService } from './services/receive-deposit/receive-deposi
     templateUrl: 'deposit-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ReceiveDepositService],
-    standalone: false
+    standalone: false,
 })
 export class DepositDetailsComponent implements OnInit {
     deposit$ = this.fetchDepositService.deposit$;

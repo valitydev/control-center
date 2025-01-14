@@ -24,7 +24,7 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
 @Component({
     selector: 'cc-terminals',
     templateUrl: './terminals.component.html',
-    standalone: false
+    standalone: false,
 })
 export class TerminalsComponent {
     columns: Column<TerminalObject>[] = [

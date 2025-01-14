@@ -71,7 +71,7 @@ import {
     templateUrl: './table.component.html',
     styleUrls: ['./table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+    standalone: false,
 })
 export class TableComponent<T extends object, C extends object> implements OnInit {
     data = input<T[], ArrayAttributeTransform<T>>([], { transform: arrayAttribute });

@@ -27,7 +27,7 @@ import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
     selector: 'cc-claim',
     templateUrl: './claim.component.html',
     styleUrls: ['claim.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ClaimComponent {
     party$ = (this.route.params as Observable<Record<string, string>>).pipe(

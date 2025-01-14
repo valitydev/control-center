@@ -32,9 +32,9 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
     providers: [
         ConfigService,
         provideAppInitializer(() => {
-        const initializerFn = (initializer)(inject(KeycloakService), inject(ConfigService));
-        return initializerFn();
-      }),
+            const initializerFn = initializer(inject(KeycloakService), inject(ConfigService));
+            return initializerFn();
+        }),
         provideHttpClient(withInterceptorsFromDi()),
     ],
 })

@@ -61,7 +61,7 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         MatTooltip,
         VSelectPipe,
     ],
-    templateUrl: './terminals-terms.component.html'
+    templateUrl: './terminals-terms.component.html',
 })
 export class TerminalsTermsComponent implements OnInit {
     filtersForm = this.fb.group(

@@ -33,7 +33,7 @@ const TYPE_NS_MAP: Record<Type, Namespace[]> = {
 
 @Component({
     templateUrl: './fail-machines-dialog.component.html',
-    imports: [CommonModule, DialogModule, MatButtonModule, ReactiveFormsModule, SelectFieldModule]
+    imports: [CommonModule, DialogModule, MatButtonModule, ReactiveFormsModule, SelectFieldModule],
 })
 export class FailMachinesDialogComponent extends DialogSuperclass<
     FailMachinesDialogComponent,

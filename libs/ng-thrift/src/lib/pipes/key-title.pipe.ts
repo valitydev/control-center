@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
     name: 'ngtKeyTitle',
-    standalone: false
+    standalone: false,
 })
 export class KeyTitlePipe implements PipeTransform {
     transform(value: unknown): string {

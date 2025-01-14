@@ -15,7 +15,7 @@ import { DialogResponseStatus } from './types/dialog-response-status';
     selector: 'v-dialog',
     templateUrl: 'dialog.component.html',
     styleUrls: ['dialog.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class DialogComponent implements Progressable {
     @HostBinding('class.v-dialog') hostClass: boolean = true;

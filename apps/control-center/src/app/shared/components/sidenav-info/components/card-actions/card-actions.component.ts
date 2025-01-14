@@ -6,6 +6,6 @@ import { ActionsModule } from '@vality/matez';
     selector: 'cc-card-actions',
     imports: [CommonModule, ActionsModule],
     templateUrl: './card-actions.component.html',
-    styles: []
+    styles: [],
 })
 export class CardActionsComponent {}

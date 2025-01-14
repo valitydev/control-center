@@ -50,7 +50,7 @@ const RADIX_POINT = '.';
         SelectFieldModule,
         CommonModule,
         MatInputModule,
-    ]
+    ],
 })
 export class SourceCashFieldComponent
     extends FormComponentSuperclass<SourceCash>

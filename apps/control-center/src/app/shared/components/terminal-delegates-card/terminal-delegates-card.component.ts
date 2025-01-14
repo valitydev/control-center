@@ -21,7 +21,7 @@ import { DomainObjectCardComponent, DomainThriftViewerComponent } from '../thrif
 @Component({
     selector: 'cc-terminal-delegates-card',
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent, TableModule],
-    templateUrl: './terminal-delegates-card.component.html'
+    templateUrl: './terminal-delegates-card.component.html',
 })
 export class TerminalDelegatesCardComponent implements OnChanges {
     @Input() ref: TerminalRef;

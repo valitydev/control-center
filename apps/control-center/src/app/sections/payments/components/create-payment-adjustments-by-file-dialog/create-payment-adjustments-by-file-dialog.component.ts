@@ -21,7 +21,7 @@ import { getCreatePaymentAdjustmentsArgs } from './utils/get-create-payment-adju
 @Component({
     selector: 'cc-create-payment-adjustments-by-file-dialog',
     templateUrl: './create-payment-adjustments-by-file-dialog.component.html',
-    imports: [CommonModule, DialogModule, UploadCsvComponent, MatButton]
+    imports: [CommonModule, DialogModule, UploadCsvComponent, MatButton],
 })
 export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSuperclass<
     CreatePaymentAdjustmentsByFileDialogComponent,

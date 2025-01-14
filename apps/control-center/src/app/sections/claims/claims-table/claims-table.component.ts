@@ -11,7 +11,7 @@ import { createPartyColumn } from '../../../shared';
     selector: 'cc-claims-table',
     templateUrl: './claims-table.component.html',
     styleUrls: ['./claims-table.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ClaimsTableComponent {
     @Input() data!: Claim[];

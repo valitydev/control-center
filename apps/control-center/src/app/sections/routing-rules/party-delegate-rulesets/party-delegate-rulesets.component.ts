@@ -22,7 +22,7 @@ import {
     templateUrl: 'party-delegate-rulesets.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [PartyDelegateRulesetsService, RoutingRulesTypeService],
-    standalone: false
+    standalone: false,
 })
 export class PartyDelegateRulesetsComponent {
     columns: Column<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
