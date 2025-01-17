@@ -19,7 +19,6 @@ export interface Link {
     selector: 'v-nav',
     styleUrls: ['./nav.component.scss'],
     templateUrl: './nav.component.html',
-    standalone: true,
     imports: [
         MatNavList,
         MatListItem,

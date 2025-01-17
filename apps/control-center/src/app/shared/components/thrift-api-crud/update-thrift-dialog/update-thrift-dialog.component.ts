@@ -14,7 +14,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ThriftViewerModule } from '../../thrift-viewer';
 
 @Component({
-    standalone: true,
     templateUrl: './update-thrift-dialog.component.html',
     imports: [CommonModule, DialogModule, ThriftViewerModule, MatButton],
 })

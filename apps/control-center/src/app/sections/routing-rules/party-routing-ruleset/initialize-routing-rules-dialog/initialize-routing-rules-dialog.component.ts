@@ -8,6 +8,7 @@ import { RoutingRulesService } from '../../services/routing-rules';
 @Component({
     selector: 'cc-initialize-routing-rules-dialog',
     templateUrl: 'initialize-routing-rules-dialog.component.html',
+    standalone: false,
 })
 export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
     InitializeRoutingRulesDialogComponent,

@@ -10,7 +10,6 @@ import { DeepPartial } from 'utility-types';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 
 @Component({
-    standalone: true,
     templateUrl: 'domain-thrift-form-dialog.component.html',
     imports: [DialogModule, DomainThriftFormComponent, MatButtonModule, ReactiveFormsModule],
 })

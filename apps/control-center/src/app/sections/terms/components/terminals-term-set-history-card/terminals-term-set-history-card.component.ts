@@ -16,7 +16,6 @@ import {
 
 @Component({
     selector: 'cc-shops-term-set-history-card',
-    standalone: true,
     imports: [CommonModule, SidenavInfoModule, TableModule, VSelectPipe, MatTooltip],
     templateUrl: './terminals-term-set-history-card.component.html',
     styles: ``,

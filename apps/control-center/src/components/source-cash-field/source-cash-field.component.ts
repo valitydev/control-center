@@ -40,7 +40,6 @@ const DEFAULT_EXPONENT = 2;
 const RADIX_POINT = '.';
 
 @Component({
-    standalone: true,
     selector: 'cc-source-cash-field',
     templateUrl: './source-cash-field.component.html',
     providers: createControlProviders(() => SourceCashFieldComponent),

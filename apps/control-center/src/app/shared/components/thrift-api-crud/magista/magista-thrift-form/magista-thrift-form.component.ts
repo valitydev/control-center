@@ -9,7 +9,6 @@ import { ThriftEditorModule } from '../../../thrift-editor';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
 @Component({
-    standalone: true,
     selector: 'cc-magista-thrift-form',
     templateUrl: './magista-thrift-form.component.html',
     providers: createControlProviders(() => MagistaThriftFormComponent),

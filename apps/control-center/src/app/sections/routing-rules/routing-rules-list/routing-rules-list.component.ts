@@ -38,6 +38,7 @@ export type RoutingRulesListItem<T> = DelegateId & { item: T };
     selector: 'cc-routing-rules-list',
     templateUrl: 'routing-rules-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false,
 })
 export class RoutingRulesListComponent<T> {
     @Input() data: RoutingRulesListItem<T>[];

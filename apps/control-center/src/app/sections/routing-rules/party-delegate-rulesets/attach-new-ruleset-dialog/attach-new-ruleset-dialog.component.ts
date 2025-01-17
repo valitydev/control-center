@@ -11,6 +11,7 @@ import { RoutingRulesType } from '../../types/routing-rules-type';
 @Component({
     templateUrl: 'attach-new-ruleset-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false,
 })
 export class AttachNewRulesetDialogComponent extends DialogSuperclass<
     AttachNewRulesetDialogComponent,

@@ -41,17 +41,14 @@ export class ManagementService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Get(id: WalletID, range: EventRange): Observable<WalletState> {
         return this.client$.pipe(switchMap((c) => c.Get(id, range)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Create(params: WalletParams, context: ContextSet): Observable<WalletState> {
         return this.client$.pipe(switchMap((c) => c.Create(params, context)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetAccountBalance(id: WalletID): Observable<AccountBalance> {
         return this.client$.pipe(switchMap((c) => c.GetAccountBalance(id)));
     }

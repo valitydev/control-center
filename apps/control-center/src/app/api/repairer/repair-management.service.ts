@@ -45,22 +45,18 @@ export class RepairManagementService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Search(request: SearchRequest): Observable<SearchResponse> {
         return this.client$.pipe(switchMap((c) => c.Search(request)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SimpleRepairAll(request: SimpleRepairRequest): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.SimpleRepairAll(request)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     RepairWithdrawals(request: RepairWithdrawalsRequest): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.RepairWithdrawals(request)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     RepairInvoices(request: RepairInvoicesRequest): Observable<void> {
         return this.client$.pipe(switchMap((c) => c.RepairInvoices(request)));
     }

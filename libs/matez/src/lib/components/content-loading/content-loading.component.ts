@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, input, numberAttribute } from '@ang
 import { random } from 'lodash-es';
 
 @Component({
-    standalone: true,
     selector: 'v-content-loading',
     templateUrl: './content-loading.component.html',
     styleUrls: ['./content-loading.component.scss'],

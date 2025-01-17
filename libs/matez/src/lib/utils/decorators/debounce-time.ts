@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export function DebounceTime(ms: number = 500) {
     return function (target: object, propertyKey: PropertyKey, descriptor: PropertyDescriptor) {
         let timer: number | null = null;

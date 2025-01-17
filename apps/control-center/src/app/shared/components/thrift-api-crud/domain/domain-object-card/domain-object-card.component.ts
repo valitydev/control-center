@@ -18,7 +18,6 @@ import { getDomainObjectDetails } from '../utils';
 
 @Component({
     selector: 'cc-domain-object-card',
-    standalone: true,
     imports: [
         CommonModule,
         DomainThriftViewerComponent,

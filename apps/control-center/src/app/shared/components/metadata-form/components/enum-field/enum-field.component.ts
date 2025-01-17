@@ -6,6 +6,7 @@ import { ThriftData } from '@vality/ng-thrift';
     selector: 'cc-enum-field',
     templateUrl: './enum-field.component.html',
     providers: createControlProviders(() => EnumFieldComponent),
+    standalone: false,
 })
 export class EnumFieldComponent<T> extends FormControlSuperclass<T> {
     @Input() data: ThriftData<string, 'enum'>;

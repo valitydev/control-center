@@ -22,7 +22,6 @@ import { ArrayAttributeTransform, ComponentChanges, arrayAttribute } from '../..
 import { BaseColumnComponent } from './base-column.component';
 
 @Component({
-    standalone: true,
     selector: 'v-select-column',
     template: `
         <ng-container [matColumnDef]="name()" [sticky]="true">

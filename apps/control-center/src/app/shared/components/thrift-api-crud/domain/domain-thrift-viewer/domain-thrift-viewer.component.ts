@@ -9,7 +9,6 @@ import { ThriftViewerModule, ViewerKind } from '../../../thrift-viewer';
 import { DomainMetadataViewExtensionsService } from './services/domain-metadata-view-extensions';
 
 @Component({
-    standalone: true,
     selector: 'cc-domain-thrift-viewer',
     templateUrl: './domain-thrift-viewer.component.html',
     imports: [CommonModule, ThriftViewerModule],

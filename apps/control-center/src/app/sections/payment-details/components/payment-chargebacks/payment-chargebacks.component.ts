@@ -14,7 +14,6 @@ import { PaymentDetailsService } from '../../payment-details.service';
 
 @Component({
     selector: 'cc-payment-chargebacks',
-    standalone: true,
     imports: [CommonModule, PageLayoutModule, MatButton, ChargebacksTableComponent],
     templateUrl: './payment-chargebacks.component.html',
     providers: [FetchChargebacksService],

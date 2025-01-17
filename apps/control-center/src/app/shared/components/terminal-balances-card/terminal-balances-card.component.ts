@@ -13,7 +13,6 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-balances-card',
-    standalone: true,
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent, TableModule],
     templateUrl: './terminal-balances-card.component.html',
 })

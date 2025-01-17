@@ -17,6 +17,7 @@ export enum ViewerKind {
     selector: 'cc-thrift-viewer',
     templateUrl: './thrift-viewer.component.html',
     styleUrls: ['./thrift-viewer.component.scss'],
+    standalone: false,
 })
 export class ThriftViewerComponent<T> implements OnChanges {
     @Input() kind: UnionEnum<ViewerKind> = ViewerKind.Component;

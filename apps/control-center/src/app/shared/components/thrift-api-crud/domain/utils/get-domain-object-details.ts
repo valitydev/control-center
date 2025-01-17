@@ -39,7 +39,6 @@ type DomainNoRefDataObjects = Omit<DomainObject, keyof DomainRefDataObjects>;
 const GET_DOMAIN_OBJECTS_DETAILS: {
     [N in keyof DomainNoRefDataObjects]-?: GetDomainObjectDetails<DomainNoRefDataObjects[N]>;
 } = {
-    /* eslint-disable @typescript-eslint/naming-convention */
     currency: (o) => ({
         id: o.ref.symbolic_code,
         label: o.ref.symbolic_code,
@@ -104,7 +103,6 @@ const GET_DOMAIN_OBJECTS_DETAILS: {
         id: o.ref.id,
         label: o.data.description,
     }),
-    /* eslint-enable @typescript-eslint/naming-convention */
 };
 
 export function getDomainObjectValueDetailsFn(key: keyof DomainObject): GetDomainObjectDetails {

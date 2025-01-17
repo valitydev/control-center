@@ -10,7 +10,6 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-shop-contract-card',
-    standalone: true,
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent],
     templateUrl: './shop-contract-card.component.html',
 })

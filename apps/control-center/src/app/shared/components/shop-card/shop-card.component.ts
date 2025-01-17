@@ -15,7 +15,6 @@ import { ThriftViewerModule } from '../thrift-viewer';
 
 @Component({
     selector: 'cc-shop-card',
-    standalone: true,
     imports: [
         CommonModule,
         CardComponent,

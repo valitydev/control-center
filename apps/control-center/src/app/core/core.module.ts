@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../../environments/environment';
@@ -31,12 +31,10 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
     imports: [CommonModule, KeycloakAngularModule],
     providers: [
         ConfigService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initializer,
-            multi: true,
-            deps: [KeycloakService, ConfigService],
-        },
+        provideAppInitializer(() => {
+            const initializerFn = initializer(inject(KeycloakService), inject(ConfigService));
+            return initializerFn();
+        }),
         provideHttpClient(withInterceptorsFromDi()),
     ],
 })

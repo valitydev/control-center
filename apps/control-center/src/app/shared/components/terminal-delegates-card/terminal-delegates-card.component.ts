@@ -20,7 +20,6 @@ import { DomainObjectCardComponent, DomainThriftViewerComponent } from '../thrif
 
 @Component({
     selector: 'cc-terminal-delegates-card',
-    standalone: true,
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent, TableModule],
     templateUrl: './terminal-delegates-card.component.html',
 })

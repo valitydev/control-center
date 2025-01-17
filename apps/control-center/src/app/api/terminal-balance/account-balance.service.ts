@@ -35,7 +35,6 @@ export class AccountBalanceService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     GetTerminalBalances() {
         return this.client$.pipe(switchMap((c) => c.GetAccountBalances()));
     }

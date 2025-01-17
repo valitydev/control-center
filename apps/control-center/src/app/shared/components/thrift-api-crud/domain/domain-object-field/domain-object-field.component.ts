@@ -18,7 +18,6 @@ import { getDomainObjectValueDetailsFn } from '../utils';
 type DomainObjectID = unknown;
 
 @Component({
-    standalone: true,
     selector: 'cc-domain-object-field',
     templateUrl: './domain-object-field.component.html',
     providers: createControlProviders(() => DomainObjectFieldComponent),

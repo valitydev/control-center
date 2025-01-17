@@ -5,7 +5,6 @@ import { ValueComponent } from '../value.component';
 
 @Component({
     selector: 'v-value-list',
-    standalone: true,
     imports: [ValueComponent],
     template: `
         @if (list(); as items) {

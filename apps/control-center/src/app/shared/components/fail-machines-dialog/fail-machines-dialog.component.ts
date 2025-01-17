@@ -32,7 +32,6 @@ const TYPE_NS_MAP: Record<Type, Namespace[]> = {
 };
 
 @Component({
-    standalone: true,
     templateUrl: './fail-machines-dialog.component.html',
     imports: [CommonModule, DialogModule, MatButtonModule, ReactiveFormsModule, SelectFieldModule],
 })

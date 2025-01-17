@@ -7,7 +7,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { SidenavInfoService } from './sidenav-info.service';
 
 @Component({
-    standalone: true,
     selector: 'cc-sidenav-info',
     templateUrl: './sidenav-info.component.html',
     styleUrls: ['./sidenav-info.component.scss'],

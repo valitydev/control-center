@@ -7,6 +7,7 @@ import { DialogSuperclass } from '../dialog';
     selector: 'v-action-dialog',
     templateUrl: 'confirm-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false,
 })
 export class ConfirmDialogComponent extends DialogSuperclass<
     ConfirmDialogComponent,

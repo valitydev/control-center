@@ -13,6 +13,7 @@ import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 @Component({
     selector: 'cc-create-chargeback-dialog',
     templateUrl: './create-chargeback-dialog.component.html',
+    standalone: false,
 })
 export class CreateChargebackDialogComponent extends DialogSuperclass<
     CreateChargebackDialogComponent,

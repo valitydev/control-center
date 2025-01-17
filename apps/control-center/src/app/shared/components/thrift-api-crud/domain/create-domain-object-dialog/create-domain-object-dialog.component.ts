@@ -26,7 +26,6 @@ import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
 
 @Component({
     selector: 'cc-create-domain-object-dialog',
-    standalone: true,
     imports: [
         CommonModule,
         DialogModule,

@@ -37,7 +37,6 @@ const CHANGE_STATUS_METHODS = {
 } as const;
 
 @Component({
-    standalone: true,
     templateUrl: './change-chargebacks-status-dialog.component.html',
     imports: [
         CommonModule,

@@ -4,6 +4,7 @@ import { getUnionValue } from '../utils';
 
 @Pipe({
     name: 'ngtUnionValue',
+    standalone: false,
 })
 export class UnionValuePipe<T extends object> implements PipeTransform {
     public transform(union: T) {

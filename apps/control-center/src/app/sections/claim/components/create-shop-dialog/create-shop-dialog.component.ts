@@ -61,7 +61,6 @@ const DEFAULT_SHOP_LOCATION: ShopLocation = {
 
 @Component({
     selector: 'cc-create-shop-dialog',
-    standalone: true,
     imports: [
         DialogModule,
         MatButton,

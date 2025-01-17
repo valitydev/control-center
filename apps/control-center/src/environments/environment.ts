@@ -5,7 +5,6 @@ import { Environment } from './types/environment';
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const environment: Environment = devEnvironment;
 
 /*

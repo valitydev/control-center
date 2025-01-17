@@ -56,7 +56,6 @@ export interface ShopParty {
 
 @Component({
     selector: 'cc-shops-table',
-    standalone: true,
     imports: [
         CommonModule,
         DomainThriftViewerComponent,

@@ -27,6 +27,7 @@ import { DEBOUNCE_TIME_MS } from '../../../tokens';
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
     providers: createControlProviders(() => MerchantFieldComponent),
+    standalone: false,
 })
 export class MerchantFieldComponent
     extends FormControlSuperclass<PartyID>

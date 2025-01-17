@@ -13,7 +13,6 @@ import { FetchSourcesService } from '../../../sections/sources';
 
 @Component({
     selector: 'cc-currency-field',
-    standalone: true,
     imports: [CommonModule, ReactiveFormsModule, AutocompleteFieldModule],
     templateUrl: './currency-field.component.html',
     providers: createControlProviders(() => CurrencyFieldComponent),

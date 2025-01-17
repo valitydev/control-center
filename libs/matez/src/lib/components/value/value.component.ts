@@ -28,7 +28,6 @@ import { valueToString } from './utils/value-to-string';
 
 @Component({
     selector: 'v-value',
-    standalone: true,
     imports: [
         CommonModule,
         MatIcon,

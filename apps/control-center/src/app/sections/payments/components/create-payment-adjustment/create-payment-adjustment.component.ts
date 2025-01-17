@@ -20,6 +20,7 @@ import { DomainMetadataFormExtensionsService } from '../../../../shared/services
 @Component({
     selector: 'cc-create-payment-adjustment',
     templateUrl: './create-payment-adjustment.component.html',
+    standalone: false,
 })
 export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     CreatePaymentAdjustmentComponent,

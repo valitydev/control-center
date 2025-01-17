@@ -18,7 +18,6 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
 
 @Component({
     selector: 'cc-payment-events',
-    standalone: true,
     imports: [
         CommonModule,
         PageLayoutModule,

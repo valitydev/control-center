@@ -37,7 +37,6 @@ interface DomainObjectData {
 }
 
 @Component({
-    standalone: true,
     selector: 'cc-domain-objects-table',
     templateUrl: './domain-objects-table.component.html',
     imports: [

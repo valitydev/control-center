@@ -26,6 +26,7 @@ import { AppAuthGuardService, Services } from './shared/services';
     selector: 'cc-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    standalone: false,
 })
 export class AppComponent {
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
@@ -46,11 +47,10 @@ export class AppComponent {
         Object.assign(window as never as object, {
             ccSwitchLogging: () => {
                 environment.logging = { requests: !environment.logging.requests };
-                // eslint-disable-next-line no-console
+
                 console.log(`Logging ${environment.logging.requests ? 'enabled' : 'disabled'}`);
             },
             ccGetMyRoles: () => {
-                // eslint-disable-next-line no-console
                 console.log(this.keycloakService.getUserRoles(true).sort().join('\n'));
             },
         });

@@ -4,7 +4,6 @@ import { HumanizedDurationPipe } from '@vality/matez';
 
 @Component({
     selector: 'cc-timeline-item-header',
-    standalone: true,
     templateUrl: 'timeline-item-header.component.html',
     imports: [HumanizedDurationPipe, DatePipe],
 })

@@ -61,7 +61,6 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
 
 @Component({
     selector: 'cc-wallets-terms',
-    standalone: true,
     imports: [
         CommonModule,
         PageLayoutModule,

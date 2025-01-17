@@ -35,7 +35,6 @@ enum Step {
 
 @Component({
     selector: 'cc-edit-domain-object-dialog',
-    standalone: true,
     imports: [
         CommonModule,
         DialogModule,

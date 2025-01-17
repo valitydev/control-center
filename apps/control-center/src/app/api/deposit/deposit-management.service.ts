@@ -42,17 +42,14 @@ export class DepositManagementService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     CreateAdjustment(id: DepositID, params: AdjustmentParams): Observable<AdjustmentState> {
         return this.client$.pipe(switchMap((c) => c.CreateAdjustment(id, params)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     CreateRevert(id: DepositID, params: RevertParams): Observable<RevertState> {
         return this.client$.pipe(switchMap((c) => c.CreateRevert(id, params)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Create(params: DepositParams, context: ContextSet) {
         return this.client$.pipe(switchMap((c) => c.Create(params, context)));
     }

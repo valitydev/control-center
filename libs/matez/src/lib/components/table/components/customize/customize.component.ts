@@ -13,6 +13,7 @@ interface CustomizedColumn {
     selector: 'v-customize',
     templateUrl: './customize.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false,
 })
 export class CustomizeComponent extends DialogSuperclass<
     CustomizeComponent,

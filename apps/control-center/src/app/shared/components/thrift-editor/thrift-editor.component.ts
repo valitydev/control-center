@@ -25,6 +25,7 @@ export enum EditorKind {
     templateUrl: './thrift-editor.component.html',
     styleUrls: ['./thrift-editor.component.scss'],
     providers: createControlProviders(() => ThriftEditorComponent),
+    standalone: false,
 })
 export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input() kind: EditorKind = EditorKind.Form;
@@ -66,7 +67,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     contentChange(str: string) {
         try {
             this.editorError = null;
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
             const parsed = JSON.parse(str);
             this.control.setValue(parsed as T);
         } catch (err) {

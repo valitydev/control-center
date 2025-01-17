@@ -40,12 +40,10 @@ export class ManagementService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     CreateAdjustment(id: WithdrawalID, params: AdjustmentParams): Observable<AdjustmentState> {
         return this.client$.pipe(switchMap((c) => c.CreateAdjustment(id, params)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     Get(id: WithdrawalID, range: EventRange): Observable<WithdrawalState> {
         return this.client$.pipe(switchMap((c) => c.Get(id, range)));
     }

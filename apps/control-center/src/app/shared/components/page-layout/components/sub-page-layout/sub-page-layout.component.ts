@@ -8,7 +8,6 @@ import { SidenavInfoService } from '../../../sidenav-info';
 
 @Component({
     selector: 'cc-sub-page-layout',
-    standalone: true,
     imports: [
         CommonModule,
         NavComponent,

@@ -50,6 +50,7 @@ function togglePredicate(predicate: Predicate): { toggled: Predicate; prevAllowe
 @Component({
     templateUrl: 'routing-ruleset.component.html',
     providers: [RoutingRulesetService],
+    standalone: false,
 })
 export class RoutingRulesetComponent {
     ruleset$ = this.routingRulesetService.ruleset$;

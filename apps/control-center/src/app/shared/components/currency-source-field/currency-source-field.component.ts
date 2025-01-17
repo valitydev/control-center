@@ -15,7 +15,6 @@ import { FetchSourcesService } from '../../../sections/sources';
 
 @Component({
     selector: 'cc-currency-source-field',
-    standalone: true,
     imports: [CommonModule, SelectFieldModule, ReactiveFormsModule],
     templateUrl: './currency-source-field.component.html',
     providers: createControlProviders(() => CurrencySourceFieldComponent),

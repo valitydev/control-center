@@ -15,6 +15,7 @@ import { FetchRefundsService } from './services/fetch-refunds.service';
     styleUrls: ['refunds-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [FetchRefundsService],
+    standalone: false,
 })
 export class RefundsTableComponent implements OnInit {
     @Input() paymentID: InvoicePaymentID;

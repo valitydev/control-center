@@ -39,6 +39,7 @@ interface Filters {
 
 @Component({
     templateUrl: 'payments.component.html',
+    standalone: false,
 })
 export class PaymentsComponent implements OnInit {
     isLoading$ = this.fetchPaymentsService.isLoading$;

@@ -8,6 +8,7 @@ import { FormControlSuperclass, createControlProviders } from '../../utils';
     templateUrl: './input-field.component.html',
     providers: createControlProviders(() => InputFieldComponent),
     styleUrl: 'input-field.component.scss',
+    standalone: false,
 })
 export class InputFieldComponent<T> extends FormControlSuperclass<T> {
     @Input() label?: string;

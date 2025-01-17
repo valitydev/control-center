@@ -20,6 +20,7 @@ interface PartyLink extends Link {
 @Component({
     templateUrl: 'party.component.html',
     providers: [PartyStoreService],
+    standalone: false,
 })
 export class PartyComponent {
     links: PartyLink[] = [

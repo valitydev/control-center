@@ -39,17 +39,14 @@ export class DominatorService {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchShopTermSets(shopSearchQuery: dominator.ShopSearchQuery) {
         return this.client$.pipe(switchMap((c) => c.SearchShopTermSets(shopSearchQuery)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchWalletTermSets(walletSearchQuery: dominator.WalletSearchQuery) {
         return this.client$.pipe(switchMap((c) => c.SearchWalletTermSets(walletSearchQuery)));
     }
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     SearchTerminalTermSets(terminalSearchQuery: dominator.TerminalSearchQuery) {
         return this.client$.pipe(switchMap((c) => c.SearchTerminalTermSets(terminalSearchQuery)));
     }

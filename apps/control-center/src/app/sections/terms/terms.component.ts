@@ -8,7 +8,6 @@ import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav
 
 @Component({
     selector: 'cc-terms',
-    standalone: true,
     imports: [CommonModule, RouterOutlet, MatSidenavModule, NavComponent],
     templateUrl: './terms.component.html',
 })

@@ -23,6 +23,7 @@ import { getExtensionsResult } from '../../types/metadata-form-extension';
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(() => PrimitiveFieldComponent),
     styleUrl: './primitive-field.component.scss',
+    standalone: false,
 })
 export class PrimitiveFieldComponent<T>
     extends FormControlSuperclass<T>

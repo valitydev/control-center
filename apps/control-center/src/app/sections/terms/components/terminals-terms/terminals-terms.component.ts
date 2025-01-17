@@ -48,7 +48,6 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
 
 @Component({
     selector: 'cc-terminals-terms',
-    standalone: true,
     imports: [
         CommonModule,
         PageLayoutModule,

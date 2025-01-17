@@ -11,6 +11,7 @@ import { RoutingRulesType } from '../../types/routing-rules-type';
 
 @Component({
     templateUrl: 'add-party-routing-rule-dialog.component.html',
+    standalone: false,
 })
 export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     AddPartyRoutingRuleDialogComponent,

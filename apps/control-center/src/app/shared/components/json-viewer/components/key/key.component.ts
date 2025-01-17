@@ -9,6 +9,7 @@ import { MetadataViewItem } from '../../utils/metadata-view';
     selector: 'cc-key',
     templateUrl: './key.component.html',
     styleUrls: ['./key.component.scss'],
+    standalone: false,
 })
 export class KeyComponent implements OnChanges {
     @Input() keys?: MetadataViewItem[];

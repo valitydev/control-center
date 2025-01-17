@@ -18,7 +18,6 @@ import { MerchantFieldModule } from '../../../shared/components/merchant-field';
 
 @Component({
     selector: 'cc-toolbar',
-    standalone: true,
     imports: [
         MatButtonModule,
         MatIconModule,

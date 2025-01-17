@@ -55,7 +55,6 @@ function getCsvObjectErrors<R extends string, O extends string>(
 
 @Component({
     selector: 'cc-upload-csv',
-    standalone: true,
     imports: [
         MatCheckbox,
         ReactiveFormsModule,
