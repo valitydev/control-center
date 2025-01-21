@@ -19,6 +19,7 @@ import { TagModule } from '../tag';
 import { ValueComponent, ValueListComponent } from '../value';
 
 import { CustomizeComponent } from './components/customize/customize.component';
+import { DndColumnComponent } from './components/dnd-column.component';
 import { InfinityScrollDirective } from './components/infinity-scroll.directive';
 import { NoRecordsComponent } from './components/no-records.component';
 import { SelectColumnComponent } from './components/select-column.component';
@@ -55,6 +56,7 @@ import { TableComponent } from './table.component';
         MatBadgeModule,
         ReactiveFormsModule,
         TagModule,
+        DndColumnComponent,
     ],
     declarations: [
         CustomizeComponent,

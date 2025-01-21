@@ -43,18 +43,15 @@
             (cdkDropListDropped)="drop($event)"
             (matSortChange)="sort.set($event)"
         >
-            <ng-container [matColumnDef]="columnDefs.drag" [sticky]="true">
-                <th *matHeaderCellDef mat-header-cell></th>
-                <td *matCellDef="let row; let index = index" mat-cell>
-                    <div class="position">
-                        <mat-icon class="dragCursor" (mousedown)="dragDisabled = false"
-                            >reorder</mat-icon
-                        >
-                        <!-- <span>{{ index + 1 }}</span>-->
-                    </div>
-                </td>
-            </ng-container>
-            @if (rowSelectable()) {
+            @let displayedColumns = (displayedColumns$ | async) || [];
+
+            @if (displayedColumns.includes(columnDefs.drag)) {
+                <v-dnd-column
+                    [name]="columnDefs.drag"
+                    (dragged)="dragDisabled = false"
+                ></v-dnd-column>
+            }
+            @if (displayedColumns.includes(columnDefs.select)) {
                 <v-select-column
                     [(selected)]="rowSelected"
                     [data]="displayedData$ | async"

@@ -33,16 +33,6 @@ table,
         background: #eee;
     }
 
-    .position {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-        .dragCursor {
-            cursor: move;
-        }
-    }
-
     .column {
         max-width: max(20px, 30vw);
 
