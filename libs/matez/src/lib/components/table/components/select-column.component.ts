@@ -7,7 +7,6 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
-    booleanAttribute,
     input,
     model,
 } from '@angular/core';
@@ -29,9 +28,7 @@ import { BaseColumnComponent } from './base-column.component';
             <th *matHeaderCellDef [class]="columnClasses" mat-header-cell>
                 <mat-checkbox
                     [checked]="selection.hasValue() && (isAllSelected$ | async)"
-                    [disabled]="
-                        !!progress() || !data()?.length || (filtered() && !(isAllSelected$ | async))
-                    "
+                    [disabled]="!!progress() || !data()?.length"
                     [indeterminate]="selection.hasValue() && !(isAllSelected$ | async)"
                     (change)="$event ? toggleAllRows() : null"
                 >
@@ -72,10 +69,6 @@ export class SelectColumnComponent<T>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data = input<T[], ArrayAttributeTransform<any>>([], { transform: arrayAttribute });
     progress = input<boolean | number | null | undefined>(false);
-    /**
-     * @deprecated
-     */
-    filtered = input<boolean, unknown>(false, { transform: booleanAttribute });
 
     selection = new SelectionModel<T>(true, []);
     isAllSelected$ = combineLatest([

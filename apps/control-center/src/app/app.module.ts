@@ -62,7 +62,14 @@ registerLocaleData(localeRu);
         SidenavInfoComponent,
         ToolbarComponent,
         NavComponent,
-        MonacoEditorModule.forRoot(),
+        MonacoEditorModule.forRoot({
+            requireConfig: {
+                paths: {
+                    // TODO: https://github.com/microsoft/monaco-editor/issues/4778
+                    vs: window.location.origin + '/assets/monaco/min/vs',
+                },
+            },
+        }),
         // TODO: hack for metadata datetime 😡
         MatDatepickerModule,
         // TODO: hack for cash field 😡
