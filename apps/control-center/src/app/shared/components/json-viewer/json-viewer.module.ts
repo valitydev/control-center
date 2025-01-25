@@ -10,8 +10,6 @@ import { RouterModule } from '@angular/router';
 import { TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { DetailsItemModule } from '../../../../components/details-item/details-item.module';
-
 import { KeyComponent } from './components/key/key.component';
 import { JsonViewerComponent } from './json-viewer.component';
 
@@ -21,7 +19,6 @@ import { JsonViewerComponent } from './json-viewer.component';
     imports: [
         CommonModule,
         MatDividerModule,
-        DetailsItemModule,
         MatCardModule,
         ThriftPipesModule,
         MatIconModule,

@@ -8,8 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { DetailsItemModule } from '../../../../components/details-item';
-
 import { TargetRulesetFormComponent } from './target-ruleset-form.component';
 
 @NgModule({
@@ -19,7 +17,6 @@ import { TargetRulesetFormComponent } from './target-ruleset-form.component';
         MatRadioModule,
         MatFormFieldModule,
         MatSelectModule,
-        DetailsItemModule,
         MatDividerModule,
         MatInputModule,
         MatButtonModule,

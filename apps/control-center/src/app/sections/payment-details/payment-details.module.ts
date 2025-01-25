@@ -8,7 +8,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/matez';
 
-import { DetailsItemModule } from '../../../components/details-item/details-item.module';
 import { HeadlineModule } from '../../../components/headline/headline.module';
 import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
 import { JsonViewerModule } from '../../shared/components/json-viewer';
@@ -27,7 +26,6 @@ import { RefundsTableModule } from './refunds-table';
         HeadlineModule,
         PaymentDetailsRoutingModule,
         MatCardModule,
-        DetailsItemModule,
         StatusModule,
         MatProgressSpinnerModule,
         MatButtonModule,

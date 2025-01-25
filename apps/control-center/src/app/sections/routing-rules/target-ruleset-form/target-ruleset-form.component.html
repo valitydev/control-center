@@ -24,13 +24,14 @@
                 </mat-select>
             </mat-form-field>
             <ng-container *ngIf="form.value.paymentInstitution as paymentInstitution">
-                <cc-details-item title="Routing Ruleset (policies)">
-                    <ng-container *ngIf="policiesId; else notFound">
-                        #{{ policiesId }}
-                        {{ (getRulesetById(policiesId) | async)?.data?.name }}
-                    </ng-container>
-                    <ng-template #notFound>Not found</ng-template>
-                </cc-details-item>
+                <div class="mat-caption mat-secondary-text">Routing Ruleset (policies)</div>
+                <div>
+                    @if (policiesId) {
+                        #{{ policiesId }} {{ (getRulesetById(policiesId) | async)?.data?.name }}
+                    } @else {
+                        Not found
+                    }
+                </div>
                 <mat-divider></mat-divider>
             </ng-container>
         </div>
