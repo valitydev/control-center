@@ -40,11 +40,7 @@ import { createPartyColumn } from '../../utils';
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
-import {
-    DomainObjectCardComponent,
-    DomainThriftViewerComponent,
-    getDomainObjectDetails,
-} from '../thrift-api-crud';
+import { DomainObjectCardComponent, getDomainObjectDetails } from '../thrift-api-crud';
 
 export interface ShopParty {
     shop: Shop;
@@ -56,13 +52,7 @@ export interface ShopParty {
 
 @Component({
     selector: 'cc-shops-table',
-    imports: [
-        CommonModule,
-        DomainThriftViewerComponent,
-        InputFieldModule,
-        MatCardModule,
-        TableModule,
-    ],
+    imports: [CommonModule, InputFieldModule, MatCardModule, TableModule],
     templateUrl: './shops-table.component.html',
     providers: [PartyDelegateRulesetsService],
 })

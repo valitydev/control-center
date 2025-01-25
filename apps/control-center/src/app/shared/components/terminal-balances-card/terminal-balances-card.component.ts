@@ -9,11 +9,10 @@ import { shareReplay, switchMap } from 'rxjs/operators';
 import { AccountBalancesStoreService } from '../../../api/terminal-balance';
 import { createCurrencyColumn } from '../../utils';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-balances-card',
-    imports: [CommonModule, CardComponent, DomainThriftViewerComponent, TableModule],
+    imports: [CommonModule, CardComponent, TableModule],
     templateUrl: './terminal-balances-card.component.html',
 })
 export class TerminalBalancesCardComponent {

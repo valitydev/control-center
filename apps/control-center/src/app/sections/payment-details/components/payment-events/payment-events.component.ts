@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
-import { HumanizedDurationPipe } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 import { switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -23,7 +22,6 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
         PageLayoutModule,
         TimelineModule,
         MatIcon,
-        HumanizedDurationPipe,
         ThriftPipesModule,
         DomainThriftViewerComponent,
         MatExpansionModule,

@@ -24,7 +24,6 @@ import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
     DeleteDomainObjectService,
     DomainObjectCardComponent,
-    DomainThriftViewerComponent,
     EditDomainObjectDialogComponent,
     getDomainObjectDetails,
 } from '../../../../shared/components/thrift-api-crud';
@@ -42,7 +41,6 @@ interface DomainObjectData {
     imports: [
         CommonModule,
         SelectFieldModule,
-        DomainThriftViewerComponent,
         TableModule,
         ReactiveFormsModule,
         ActionsModule,

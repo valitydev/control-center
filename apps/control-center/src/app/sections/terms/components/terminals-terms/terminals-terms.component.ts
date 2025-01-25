@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatTooltip } from '@angular/material/tooltip';
 import {
     CommonSearchQueryParams,
     type TerminalSearchQuery,
@@ -17,7 +16,6 @@ import {
     QueryParamsService,
     TableModule,
     UpdateOptions,
-    VSelectPipe,
     cachedHeadMap,
     clean,
     countChanged,
@@ -31,7 +29,6 @@ import { Overwrite } from 'utility-types';
 import type { ProviderRef, TerminalRef } from '@vality/dominator-proto/internal/proto/domain';
 
 import { PageLayoutModule, createDomainObjectColumn } from '../../../../shared';
-import { CurrencyFieldComponent } from '../../../../shared/components/currency-field/currency-field.component';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '../../../../tokens';
@@ -57,9 +54,6 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         ReactiveFormsModule,
         MerchantFieldModule,
         ListFieldModule,
-        CurrencyFieldComponent,
-        MatTooltip,
-        VSelectPipe,
     ],
     templateUrl: './terminals-terms.component.html',
 })

@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatDivider } from '@angular/material/divider';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { combineLatest } from 'rxjs';
@@ -10,7 +8,7 @@ import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainThriftViewerComponent, MagistaThriftViewerComponent } from '../thrift-api-crud';
+import { DomainThriftViewerComponent } from '../thrift-api-crud';
 import { ThriftViewerModule } from '../thrift-viewer';
 
 @Component({
@@ -19,11 +17,7 @@ import { ThriftViewerModule } from '../thrift-viewer';
         CommonModule,
         CardComponent,
         DomainThriftViewerComponent,
-        MatCard,
-        MatCardContent,
         ThriftViewerModule,
-        MatDivider,
-        MagistaThriftViewerComponent,
         MatTabGroup,
         MatTab,
     ],
