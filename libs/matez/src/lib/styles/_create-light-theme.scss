@@ -1,5 +1,17 @@
 @use '@angular/material' as mat;
-@import './utils/get-value';
+
+@function get-value($obj, $prop, $default) {
+    @if map-has-key($obj, $prop) {
+        $value: map-get($obj, $prop);
+        @if $value == null {
+            @return $default;
+        } @else {
+            @return $value;
+        }
+    } @else {
+        @return $default;
+    }
+}
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming

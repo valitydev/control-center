@@ -1,5 +1,5 @@
 @use '../../../../../libs/matez/index' as v;
-@import './all-component-themes';
+@use './all-component-themes';
 
 .material-symbols-outlined {
     font-variation-settings:
@@ -13,7 +13,7 @@ $app-theme: v.create-light-theme();
 
 @include v.core();
 @include v.all-component-themes($app-theme);
-@include all-component-themes($app-theme);
+@include all-component-themes.all-component-themes($app-theme);
 @include v.typography-hierarchy($app-theme);
 @include v.app($app-theme);
 
