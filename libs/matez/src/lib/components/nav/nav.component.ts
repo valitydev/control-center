@@ -1,9 +1,8 @@
-import { AsyncPipe, NgClass, NgStyle } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, ViewEncapsulation, booleanAttribute, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDivider } from '@angular/material/divider';
-import { MatListItem, MatNavList } from '@angular/material/list';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { isArray } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -19,16 +18,7 @@ export interface Link {
     selector: 'v-nav',
     styleUrls: ['./nav.component.scss'],
     templateUrl: './nav.component.html',
-    imports: [
-        MatNavList,
-        MatListItem,
-        RouterLink,
-        RouterLinkActive,
-        NgStyle,
-        NgClass,
-        AsyncPipe,
-        MatDivider,
-    ],
+    imports: [RouterLink, NgClass, AsyncPipe, MatDivider],
     encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent {
