@@ -1,7 +1,7 @@
-@import '../timeline-item.scss';
+@use '../timeline-item.scss';
 
 .cc-timeline-item-title {
-    min-height: $size;
+    min-height: timeline-item.$size;
     flex-direction: row;
     box-sizing: border-box;
     display: flex;
