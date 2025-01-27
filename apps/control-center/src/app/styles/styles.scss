@@ -1,6 +1,7 @@
 @use '../../../../../libs/matez/index' as v;
 @use './all-component-themes';
 
+// Google Fonts Settings
 .material-symbols-outlined {
     font-variation-settings:
         'FILL' 0,
@@ -16,7 +17,3 @@ $app-theme: v.create-light-theme();
 @include all-component-themes.all-component-themes($app-theme);
 @include v.typography-hierarchy($app-theme);
 @include v.app($app-theme);
-
-.cc-code {
-    font-family: 'Roboto Mono', monospace;
-}
