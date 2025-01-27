@@ -1,7 +1,14 @@
 <cc-toolbar />
 
 <mat-sidenav-container autosize class="container">
-    <mat-sidenav fixedInViewport="true" fixedTopGap="64" mode="side" opened role="navigation">
+    <mat-sidenav
+        fixedInViewport="true"
+        fixedTopGap="64"
+        mode="side"
+        opened
+        role="navigation"
+        style="width: auto"
+    >
         <v-nav [links]="links$ | async" exact style="display: block"></v-nav>
     </mat-sidenav>
     <mat-sidenav-content class="content" role="main">

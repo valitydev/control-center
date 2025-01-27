@@ -1,5 +1,7 @@
+@use '@angular/material' as mat;
 @use '../../../../../libs/matez/index' as v;
 @use './all-component-themes';
+@use './theme-colors' as palette;
 
 // Google Fonts Settings
 .material-symbols-outlined {
@@ -17,3 +19,17 @@ $app-theme: v.create-light-theme();
 @include all-component-themes.all-component-themes($app-theme);
 @include v.typography-hierarchy($app-theme);
 @include v.app($app-theme);
+
+$light-theme: mat.define-theme(
+    (
+        color: (
+            theme-type: light,
+            primary: palette.$primary-palette,
+        ),
+    )
+);
+
+html {
+    @include mat.all-component-themes($light-theme);
+    @include mat.typography-hierarchy($light-theme);
+}
