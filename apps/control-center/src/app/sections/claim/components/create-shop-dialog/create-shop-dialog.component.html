@@ -45,8 +45,7 @@
     <v-dialog-actions>
         <button
             [disabled]="form.invalid || !!(progress$ | async)"
-            color="primary"
-            mat-raised-button
+            mat-flat-button
             (click)="create()"
         >
             Create

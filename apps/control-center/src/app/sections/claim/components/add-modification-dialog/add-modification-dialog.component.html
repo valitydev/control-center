@@ -13,8 +13,7 @@
     <v-dialog-actions>
         <button
             [disabled]="control.invalid || (isLoading$ | async)"
-            color="primary"
-            mat-raised-button
+            mat-flat-button
             (click)="isUpdate ? update() : add()"
         >
             {{ isUpdate ? 'Update' : 'Add' }}

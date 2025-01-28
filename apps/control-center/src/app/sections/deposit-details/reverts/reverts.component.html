@@ -11,8 +11,7 @@
         <v-table-actions>
             <button
                 [disabled]="isCreateRevertAvailable(deposit?.status)"
-                color="primary"
-                mat-raised-button
+                mat-flat-button
                 (click)="createRevert()"
             >
                 Create revert

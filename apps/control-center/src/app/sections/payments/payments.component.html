@@ -46,20 +46,13 @@
         (selectedChange)="selected$.next($event)"
         (update)="reload($event ?? {})"
     >
-        <button
-            [disabled]="!(selected$ | async)?.length"
-            mat-raised-button
-            (click)="failMachines()"
-        >
+        <button [disabled]="!(selected$ | async)?.length" mat-button (click)="failMachines()">
             Fail machines
         </button>
-        <button mat-raised-button (click)="createPaymentAdjustments()">
-            Create adjustments by file
-        </button>
+        <button mat-button (click)="createPaymentAdjustments()">Create adjustments by file</button>
         <button
             [disabled]="!(selected$ | async)?.length"
-            color="primary"
-            mat-raised-button
+            mat-flat-button
             (click)="createPaymentAdjustment()"
         >
             Create adjustments
