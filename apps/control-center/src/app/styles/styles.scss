@@ -35,4 +35,15 @@ $light-theme: mat.define-theme(
 html {
     @include mat.all-component-themes($light-theme);
     @include mat.typography-hierarchy($light-theme);
+
+    @include mat.divider-overrides(
+        (
+            color: #ddd,
+        )
+    );
+    @include mat.table-overrides(
+        (
+            row-item-outline-color: #ddd,
+        )
+    );
 }
