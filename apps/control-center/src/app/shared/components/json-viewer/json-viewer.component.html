@@ -15,7 +15,7 @@
                             class="mat-caption mat-secondary-text"
                         ></cc-key>
 
-                        <div *ngIf="item.current$ | async as current" class="mat-body-1">
+                        <div *ngIf="item.current$ | async as current" class="mat-body-large">
                             <cc-json-viewer
                                 *ngIf="!(current.isEmpty$ | async); else empty"
                                 [data]="current.data$ | async"
@@ -92,7 +92,7 @@
                 [ngClass]="{
                     link: !!extension?.click || !!extension?.link?.[0],
                     'tooltip-link': !!extension?.tooltip,
-                    'mat-body-1': !extension?.tag,
+                    'mat-body-large': !extension?.tag,
                 }"
             >
                 {{ view.renderValue$ | async }}

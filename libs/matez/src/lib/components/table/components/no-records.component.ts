@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@an
     selector: 'v-no-records',
     template: `
         @if (noRecords()) {
-            <div class="no-records mat-body-1">
+            <div class="no-records mat-body-large">
                 {{ progress() ? 'Loading...' : 'No records' }}
             </div>
         }
