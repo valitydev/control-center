@@ -1,9 +1,0 @@
-@use '@angular/material' as mat;
-
-@mixin cc-routing-rules-theme($theme) {
-    $foreground: map-get($theme, foreground);
-
-    .cc-routing-rules-caption {
-        color: mat.m2-get-color-from-palette($foreground, secondary-text);
-    }
-}
