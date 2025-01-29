@@ -8,10 +8,10 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>Default format</mat-panel-title>
             </mat-expansion-panel-header>
-            <div class="mat-body-1">
+            <p class="mat-body-large">
                 Header for CSV file (or if without it, then the order should be like this):
-            </div>
-            <div class="mat-body-1">
+            </p>
+            <p class="mat-body-large">
                 <code
                     *ngIf="props().required"
                     style="word-wrap: break-word; word-break: break-word; font-weight: bold"
@@ -25,14 +25,12 @@
                     style="word-wrap: break-word; word-break: break-word; font-style: italic"
                     >{{ props().optional?.join(delimiter) }}</code
                 >
-            </div>
-            <div class="mat-body-1">
-                <ul>
-                    <li>Required columns are indicated in bold.</li>
-                    <li>Separator: "{{ delimiter }}"</li>
-                    <li *ngFor="let desc of formatDescription() || []">{{ desc }}</li>
-                </ul>
-            </div>
+            </p>
+            <ul class="mat-body-large">
+                <li>Required columns are indicated in bold.</li>
+                <li>Separator: "{{ delimiter }}"</li>
+                <li *ngFor="let desc of formatDescription() || []">{{ desc }}</li>
+            </ul>
         </mat-expansion-panel>
     </mat-accordion>
 
