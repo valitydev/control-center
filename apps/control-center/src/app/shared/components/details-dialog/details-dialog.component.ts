@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { DEFAULT_DIALOG_CONFIG, DialogModule, DialogSuperclass } from '@vality/matez';
-
-import { JsonViewerModule } from '../json-viewer/json-viewer.module';
+import { JsonViewerModule } from '@vality/ng-thrift';
 
 @Component({
     standalone: true,

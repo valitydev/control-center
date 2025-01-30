@@ -2,11 +2,10 @@ import { Component, EventEmitter, Input, OnChanges, Output, booleanAttribute } f
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges, UnionEnum } from '@vality/matez';
 import { toJson } from '@vality/ng-thrift';
+import { MetadataViewExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
-
-import { MetadataViewExtension } from '../json-viewer/utils/metadata-view-extension';
 
 export enum ViewerKind {
     Editor = 'editor',

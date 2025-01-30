@@ -10,15 +10,12 @@ import {
     getUnionValue,
     isTypeWithAliases,
 } from '@vality/ng-thrift';
+import { MetadataViewExtension, MetadataViewExtensionResult } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { ManagementService } from '../../api/wallet';
-import {
-    MetadataViewExtension,
-    MetadataViewExtensionResult,
-} from '../../shared/components/json-viewer';
 import { AmountCurrencyService } from '../../shared/services';
 import { FetchSourcesService } from '../sources';
 

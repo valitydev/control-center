@@ -15,10 +15,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, DialogModule, PipesModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
+import { JsonViewerModule } from '@vality/ng-thrift';
 
 import { TimelineModule } from '../../../components/timeline/timeline.module';
 import { PageLayoutModule } from '../../shared';
-import { JsonViewerModule } from '../../shared/components/json-viewer/json-viewer.module';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { StatusModule } from '../../shared/components/status/status.module';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud';

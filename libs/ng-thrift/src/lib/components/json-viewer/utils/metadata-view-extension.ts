@@ -1,8 +1,9 @@
 import { Router } from '@angular/router';
 import { Color } from '@vality/matez';
-import { ThriftData } from '@vality/ng-thrift';
 import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { ThriftData } from '../../../models';
 
 export interface MetadataViewExtensionResult {
     key?: string;

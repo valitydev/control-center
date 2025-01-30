@@ -9,11 +9,11 @@ import {
     signal,
 } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
+import { MetadataViewExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { MetadataViewExtension } from '../../../json-viewer';
 import { ViewerKind } from '../../../thrift-viewer';
 
 interface Data<T> {

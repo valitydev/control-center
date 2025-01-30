@@ -7,6 +7,7 @@ import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/matez';
 import { ThriftData, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
+import { MetadataViewExtension } from '@vality/ng-thrift';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';
@@ -14,7 +15,6 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../../../api/domain-config/stores/domain-store.service';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
-import { MetadataViewExtension } from '../../../../../json-viewer/utils/metadata-view-extension';
 import { ShopCardComponent } from '../../../../../shop-card/shop-card.component';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { getDomainObjectDetails } from '../../../utils';

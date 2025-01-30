@@ -1,5 +1,6 @@
-import { ThriftData, TypeGroup } from '@vality/ng-thrift';
 import { Field, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+
+import { ThriftData, TypeGroup } from '../../../models';
 
 export function getChildrenTypes(sourceData: ThriftData): {
     keyType?: ValueType;

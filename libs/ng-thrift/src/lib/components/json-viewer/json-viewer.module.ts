@@ -8,7 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TagModule } from '@vality/matez';
-import { ThriftPipesModule } from '@vality/ng-thrift';
+
+import { ThriftPipesModule } from '../../pipes';
 
 import { KeyComponent } from './components/key/key.component';
 import { JsonViewerComponent } from './json-viewer.component';

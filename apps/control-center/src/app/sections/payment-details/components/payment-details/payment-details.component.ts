@@ -4,11 +4,11 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { formatCurrency, getImportValue } from '@vality/matez';
 import { getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
+import { MetadataViewExtension } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { PageLayoutModule } from '../../../../shared';
-import { MetadataViewExtension } from '../../../../shared/components/json-viewer';
 import { MagistaThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { DomainMetadataViewExtensionsService } from '../../../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { AmountCurrencyService } from '../../../../shared/services';

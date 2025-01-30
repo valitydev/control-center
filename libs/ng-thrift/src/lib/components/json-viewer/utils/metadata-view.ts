@@ -1,10 +1,11 @@
 import { isEmpty } from '@vality/matez';
-import { ThriftData } from '@vality/ng-thrift';
 import { ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
+
+import { ThriftData } from '../../../models';
 
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';

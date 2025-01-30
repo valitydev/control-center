@@ -21,8 +21,7 @@ import {
     TagModule,
 } from '@vality/matez';
 import { ThriftPipesModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
-
-import { JsonViewerModule } from '../json-viewer/json-viewer.module';
+import { JsonViewerModule } from '@vality/ng-thrift';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';
