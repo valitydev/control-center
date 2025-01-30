@@ -27,7 +27,6 @@ $theme: mat.define-theme(
 );
 
 @include v.all-component-themes($app-theme);
-@include v.typography-hierarchy($app-theme);
 
 :root {
     html,
@@ -42,6 +41,7 @@ $theme: mat.define-theme(
     @include mat.core();
     @include mat.all-component-themes($theme);
     @include mat.typography-hierarchy($theme);
+    @include v.typography-hierarchy($theme);
     @include v.v-tokens($theme);
     @include all-component-themes.all-component-themes($theme);
     @include v.mat-component-variants($theme);
