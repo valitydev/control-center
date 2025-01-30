@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'sass:math';
 @use 'sass:map';
 
@@ -9,20 +10,32 @@ $values: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, A100, A200, A400, A70
     $baseDark: multiply($color, $color);
 
     $palette: (
-        50: mix($color, $white, 12%),
-        100: mix($color, $white, 30%),
-        200: mix($color, $white, 50%),
-        300: mix($color, $white, 70%),
-        400: mix($color, $white, 85%),
-        500: mix($color, $white, 100%),
-        600: mix($color, $baseDark, 87%),
-        700: mix($color, $baseDark, 70%),
-        800: mix($color, $baseDark, 54%),
-        900: mix($color, $baseDark, 25%),
-        A100: lighten(saturate(mix($black, $baseDark, 15%), 80%), 65%),
-        A200: lighten(saturate(mix($black, $baseDark, 15%), 80%), 55%),
-        A400: lighten(saturate(mix($black, $baseDark, 15%), 100%), 45%),
-        A700: lighten(saturate(mix($black, $baseDark, 15%), 100%), 40%),
+        50: color.mix($color, $white, 12%),
+        100: color.mix($color, $white, 30%),
+        200: color.mix($color, $white, 50%),
+        300: color.mix($color, $white, 70%),
+        400: color.mix($color, $white, 85%),
+        500: color.mix($color, $white, 100%),
+        600: color.mix($color, $baseDark, 87%),
+        700: color.mix($color, $baseDark, 70%),
+        800: color.mix($color, $baseDark, 54%),
+        900: color.mix($color, $baseDark, 25%),
+        A100: color.adjust(
+                color.adjust(color.mix($black, $baseDark, 15%), $saturation: 80%),
+                $lightness: 65%
+            ),
+        A200: color.adjust(
+                color.adjust(color.mix($black, $baseDark, 15%), $saturation: 80%),
+                $lightness: 55%
+            ),
+        A400: color.adjust(
+                color.adjust(color.mix($black, $baseDark, 15%), $saturation: 100%),
+                $lightness: 45%
+            ),
+        A700: color.adjust(
+                color.adjust(color.mix($black, $baseDark, 15%), $saturation: 100%),
+                $lightness: 40%
+            ),
     );
 
     $contrast: ();
@@ -30,7 +43,7 @@ $values: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, A100, A200, A400, A70
         $contrast: map.merge(
             $contrast,
             (
-                $v: getContrast(map_get($palette, $v)),
+                $v: getContrast(map.get($palette, $v)),
             )
         );
     }
@@ -46,14 +59,16 @@ $values: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, A100, A200, A400, A70
 }
 
 @function multiply($rgb1, $rgb2) {
-    $r: math.floor(calc(red($rgb1) * red($rgb2) / 255));
-    $g: math.floor(calc(green($rgb1) * green($rgb2) / 255));
-    $b: math.floor(calc(blue($rgb1) * blue($rgb2) / 255));
+    $r: math.floor(calc(color.red($rgb1) * color.red($rgb2) / 255));
+    $g: math.floor(calc(color.green($rgb1) * color.green($rgb2) / 255));
+    $b: math.floor(calc(color.blue($rgb1) * color.blue($rgb2) / 255));
     @return rgb($r, $g, $b);
 }
 
 @function getBrightness($color) {
-    @return calc((red($color) * 299 + green($color) * 587 + blue($color) * 114) / 1000);
+    @return calc(
+        (color.red($color) * 299 + color.green($color) * 587 + color.blue($color) * 114) / 1000
+    );
 }
 
 @function isLight($color) {

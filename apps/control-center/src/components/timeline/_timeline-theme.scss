@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@import './timeline-item/timeline-item-badge/timeline-item-badge-theme';
+@use 'timeline-item/timeline-item-badge/timeline-item-badge-theme';
 
 @mixin cc-timeline-theme($theme) {
     $line-color: mat.get-theme-color($theme, neutral, 90);
@@ -12,5 +12,5 @@
         }
     }
 
-    @include cc-timeline-item-badge-theme($theme);
+    @include timeline-item-badge-theme.cc-timeline-item-badge-theme($theme);
 }
