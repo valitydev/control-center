@@ -14,14 +14,14 @@
                 class="monaco-editor"
             ></ngx-monaco-diff-editor>
         } @else {
-            <cc-json-viewer
+            <v-thrift-tree-viewer
                 *ngIf="kind === 'component'"
                 [extensions]="extensions"
                 [metadata]="metadata"
                 [namespace]="namespace"
                 [type]="type"
                 [value]="value"
-            ></cc-json-viewer>
+            ></v-thrift-tree-viewer>
             <ngx-monaco-editor
                 *ngIf="kind === 'editor'"
                 [ngModel]="valueFile.code"

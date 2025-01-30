@@ -1,1 +1,1 @@
-export * from './json-viewer';
+export * from './thrift-tree-viewer';

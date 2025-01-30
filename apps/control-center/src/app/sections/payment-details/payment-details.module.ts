@@ -7,7 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/matez';
-import { JsonViewerModule } from '@vality/ng-thrift';
+import { ThriftTreeViewerModule } from '@vality/ng-thrift';
 
 import { HeadlineModule } from '../../../components/headline/headline.module';
 import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
@@ -36,7 +36,7 @@ import { RefundsTableModule } from './refunds-table';
         ReactiveFormsModule,
         PageLayoutModule,
         ThriftViewerModule,
-        JsonViewerModule,
+        ThriftTreeViewerModule,
         RefundsTableModule,
         MagistaThriftViewerComponent,
         SubPageLayoutComponent,

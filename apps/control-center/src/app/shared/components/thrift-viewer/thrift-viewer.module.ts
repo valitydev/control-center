@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { JsonViewerModule } from '@vality/ng-thrift';
+import { ThriftTreeViewerModule } from '@vality/ng-thrift';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { ThriftFormModule } from '../metadata-form/thrift-form.module';
@@ -23,7 +23,7 @@ import { ThriftViewerComponent } from './thrift-viewer.component';
         MatButtonToggleModule,
         MatButtonModule,
         MatIconModule,
-        JsonViewerModule,
+        ThriftTreeViewerModule,
         MatProgressSpinnerModule,
         FormsModule,
     ],

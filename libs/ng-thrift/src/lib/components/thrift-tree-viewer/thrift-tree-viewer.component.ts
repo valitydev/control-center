@@ -14,12 +14,12 @@ import {
 } from './utils/metadata-view-extension';
 
 @Component({
-    selector: 'cc-json-viewer',
-    templateUrl: './json-viewer.component.html',
-    styleUrls: ['./json-viewer.scss'],
+    selector: 'v-thrift-tree-viewer',
+    templateUrl: './thrift-tree-viewer.component.html',
+    styleUrls: ['./thrift-tree-viewer.scss'],
     standalone: false,
 })
-export class JsonViewerComponent implements OnChanges {
+export class ThriftTreeViewerComponent implements OnChanges {
     @Input() value: unknown;
     @Input() level = 0;
     @Input() extension?: MetadataViewExtensionResult;

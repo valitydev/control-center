@@ -1,2 +1,2 @@
-export * from './json-viewer.module';
+export * from './thrift-tree-viewer.module';
 export * from './utils/metadata-view-extension';

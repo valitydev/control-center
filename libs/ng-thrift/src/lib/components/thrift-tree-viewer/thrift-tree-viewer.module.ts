@@ -12,11 +12,11 @@ import { TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '../../pipes';
 
 import { KeyComponent } from './components/key/key.component';
-import { JsonViewerComponent } from './json-viewer.component';
+import { ThriftTreeViewerComponent } from './thrift-tree-viewer.component';
 
 @NgModule({
-    declarations: [JsonViewerComponent, KeyComponent],
-    exports: [JsonViewerComponent],
+    declarations: [ThriftTreeViewerComponent, KeyComponent],
+    exports: [ThriftTreeViewerComponent],
     imports: [
         CommonModule,
         MatDividerModule,
@@ -30,4 +30,4 @@ import { JsonViewerComponent } from './json-viewer.component';
         TagModule,
     ],
 })
-export class JsonViewerModule {}
+export class ThriftTreeViewerModule {}

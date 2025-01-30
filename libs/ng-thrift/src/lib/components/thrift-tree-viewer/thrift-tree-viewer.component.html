@@ -16,13 +16,13 @@
                         ></cc-key>
 
                         <div *ngIf="item.current$ | async as current" class="mat-body-large">
-                            <cc-json-viewer
+                            <v-thrift-tree-viewer
                                 *ngIf="!(current.isEmpty$ | async); else empty"
                                 [data]="current.data$ | async"
                                 [extension]="current.extension$ | async"
                                 [extensions]="extensions"
                                 [value]="current.value$ | async"
-                            ></cc-json-viewer>
+                            ></v-thrift-tree-viewer>
                             <ng-template #empty>
                                 <mat-icon class="mat-secondary-text" inline>hide_source</mat-icon>
                             </ng-template>
@@ -48,22 +48,22 @@
                     [keys]="item.path$ | async"
                 ></cc-key>
                 <ng-template #mapKey>
-                    <cc-json-viewer
+                    <v-thrift-tree-viewer
                         *ngIf="(item.current$ | async)?.key as key"
                         [data]="key.data$ | async"
                         [extensions]="extensions"
                         [level]="level + 1"
                         [value]="key.value$ | async"
-                    ></cc-json-viewer
+                    ></v-thrift-tree-viewer
                 ></ng-template>
 
-                <cc-json-viewer
+                <v-thrift-tree-viewer
                     *ngIf="item.current$ | async as current"
                     [data]="current.data$ | async"
                     [extensions]="extensions"
                     [level]="level + 1"
                     [value]="current.value$ | async"
-                ></cc-json-viewer>
+                ></v-thrift-tree-viewer>
             </div>
         </ng-container>
     </div>
