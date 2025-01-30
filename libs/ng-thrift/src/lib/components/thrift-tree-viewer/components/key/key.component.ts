@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { ThriftViewData } from '../../utils/thrift-view-data';
 
 @Component({
-    selector: 'cc-key',
+    selector: 'v-key',
     templateUrl: './key.component.html',
     styleUrls: ['./key.component.scss'],
     standalone: false,

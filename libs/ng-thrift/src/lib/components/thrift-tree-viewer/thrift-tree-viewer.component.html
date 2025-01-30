@@ -10,10 +10,10 @@
                         *ngIf="!((item.current$ | async)?.extension$ | async)?.hidden"
                         style="display: grid; grid-template-rows: auto 1fr; gap: 8px"
                     >
-                        <cc-key
+                        <v-key
                             [keys]="item.path$ | async"
                             class="mat-label-medium mat-secondary-text"
-                        ></cc-key>
+                        ></v-key>
 
                         <div *ngIf="item.current$ | async as current" class="mat-body-large">
                             <v-thrift-tree-viewer
@@ -42,11 +42,11 @@
                     gap: '32px',
                 }"
             >
-                <cc-key
+                <v-key
                     *ngIf="!((item.current$ | async)?.key.data$ | async); else mapKey"
                     [class]="className"
                     [keys]="item.path$ | async"
-                ></cc-key>
+                ></v-key>
                 <ng-template #mapKey>
                     <v-thrift-tree-viewer
                         *ngIf="(item.current$ | async)?.key as key"
