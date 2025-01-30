@@ -7,7 +7,7 @@
 </mat-toolbar>
 <div [ngClass]="{ 'wrapper__full-height': fullHeight() }" class="wrapper">
     <div *ngIf="title" style="display: flex; flex-direction: column; gap: 8px">
-        <div *ngIf="(path$ | async)?.length > 1" class="mat-caption mat-secondary-text">
+        <div *ngIf="(path$ | async)?.length > 1" class="mat-label-medium mat-secondary-text">
             <ng-container *ngFor="let p of path$ | async; let index = index">
                 <span
                     [ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }"
@@ -20,7 +20,7 @@
         </div>
         <div class="header">
             <h1
-                class="mat-headline-4 mat-no-margin"
+                class="mat-display-small mat-no-margin"
                 style="
                     display: flex;
                     place-content: center flex-start;
@@ -48,7 +48,7 @@
                     </span>
                 </div>
             </h1>
-            <div class="mat-headline-4 mat-no-margin">
+            <div class="mat-display-small mat-no-margin">
                 <ng-content select="cc-page-layout-actions"></ng-content>
             </div>
         </div>

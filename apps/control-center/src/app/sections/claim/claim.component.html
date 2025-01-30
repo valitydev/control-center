@@ -1,4 +1,4 @@
-<cc-page-layout description="#{{ (claim$ | async)?.id }}" title="Claim">
+<cc-page-layout [id]="(claim$ | async)?.id" title="Claim">
     <cc-page-layout-actions *ngIf="claim$ | async as claim">
         <cc-status [color]="statusColor[claim.status | ngtUnionKey]">{{
             claim.status | ngtUnionKey | ngtKeyTitle | titlecase
@@ -6,7 +6,6 @@
     </cc-page-layout-actions>
 
     <div *ngIf="claim$ | async as claim" style="display: flex; flex-direction: column; gap: 24px">
-        <h2 class="mat-headline-5">Changeset</h2>
         <div
             *ngIf="isLoading$ | async; else timeline"
             style="display: flex; justify-content: center"

@@ -12,7 +12,7 @@
                     >
                         <cc-key
                             [keys]="item.path$ | async"
-                            class="mat-caption mat-secondary-text"
+                            class="mat-label-medium mat-secondary-text"
                         ></cc-key>
 
                         <div *ngIf="item.current$ | async as current" class="mat-body-large">
@@ -39,7 +39,7 @@
                     display: 'grid',
                     'grid-template-columns':
                         ((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr',
-                    gap: '16px',
+                    gap: '32px',
                 }"
             >
                 <cc-key

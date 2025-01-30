@@ -44,7 +44,10 @@
             </mat-checkbox>
             <ng-template #text>
                 <div class="label">{{ item.label }}</div>
-                <div *ngIf="item.description" class="description mat-caption mat-secondary-text">
+                <div
+                    *ngIf="item.description"
+                    class="description mat-label-medium mat-secondary-text"
+                >
                     {{ item.description }}
                 </div>
             </ng-template>
