@@ -3,7 +3,7 @@ import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { MetadataViewItem } from '../../utils/metadata-view';
+import { ThriftViewData } from '../../utils/thrift-view';
 
 @Component({
     selector: 'cc-key',
@@ -12,8 +12,8 @@ import { MetadataViewItem } from '../../utils/metadata-view';
     standalone: false,
 })
 export class KeyComponent implements OnChanges {
-    @Input() keys?: MetadataViewItem[];
-    keys$ = new ReplaySubject<MetadataViewItem[]>(1);
+    @Input() keys?: ThriftViewData[];
+    keys$ = new ReplaySubject<ThriftViewData[]>(1);
     numberKey$ = this.keys$.pipe(
         switchMap((keys) => {
             if (keys.length !== 1) {
@@ -37,14 +37,14 @@ export class KeyComponent implements OnChanges {
         }
     }
 
-    parentIsUnion(pathItem: MetadataViewItem) {
+    parentIsUnion(pathItem: ThriftViewData) {
         if (!pathItem?.data$) {
             return of(false);
         }
         return pathItem.data$.pipe(map((data) => data?.trueParent?.objectType === 'union'));
     }
 
-    isUnion(pathItem: MetadataViewItem) {
+    isUnion(pathItem: ThriftViewData) {
         if (!pathItem?.data$) {
             return of(false);
         }

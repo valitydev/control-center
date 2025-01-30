@@ -15,7 +15,7 @@ import {
     getFirstDeterminedExtensionsResult,
 } from './metadata-view-extension';
 
-export class MetadataViewItem {
+export class ThriftViewData {
     extension$: Observable<MetadataViewExtensionResult> = defer(() => this.renderValue$).pipe(
         switchMap((viewValue) =>
             getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value, viewValue),
@@ -28,7 +28,7 @@ export class MetadataViewItem {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     key$ = this.extension$.pipe(
-        map((ext) => (isNil(ext?.key) ? this.key : new MetadataViewItem(ext.key))),
+        map((ext) => (isNil(ext?.key) ? this.key : new ThriftViewData(ext.key))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     value$ = this.extension$.pipe(
@@ -43,10 +43,10 @@ export class MetadataViewItem {
     );
     isEmpty$ = this.renderValue$.pipe(map((value) => isEmpty(value)));
 
-    items$: Observable<MetadataViewItem[]> = this.createItems().pipe(
+    items$: Observable<ThriftViewData[]> = this.createItems().pipe(
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    inline$: Observable<MetadataViewItem[]> = combineLatest([
+    inline$: Observable<ThriftViewData[]> = combineLatest([
         this.items$,
         this.key$,
         this.data$,
@@ -87,7 +87,7 @@ export class MetadataViewItem {
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    path$: Observable<MetadataViewItem[]> = this.inline$.pipe(
+    path$: Observable<ThriftViewData[]> = this.inline$.pipe(
         map((inline) => {
             return [this, ...inline];
         }),
@@ -146,12 +146,12 @@ export class MetadataViewItem {
 
     constructor(
         private value: unknown,
-        public key?: MetadataViewItem,
+        public key?: ThriftViewData,
         private data?: ThriftData,
         private extensions?: MetadataViewExtension[],
     ) {}
 
-    private createItems(): Observable<MetadataViewItem[]> {
+    private createItems(): Observable<ThriftViewData[]> {
         return combineLatest([this.data$, this.value$]).pipe(
             map(([data, value]) => {
                 if (data) {
@@ -163,16 +163,16 @@ export class MetadataViewItem {
                     ) {
                         const types = getChildrenTypes(trueData);
                         return getEntries(value).map(([itemKey, itemValue]) => {
-                            return new MetadataViewItem(
+                            return new ThriftViewData(
                                 itemValue,
                                 types.keyType
-                                    ? new MetadataViewItem(
+                                    ? new ThriftViewData(
                                           itemKey,
                                           undefined,
                                           trueData.create({ type: types.keyType }),
                                           this.extensions,
                                       )
-                                    : new MetadataViewItem(itemKey),
+                                    : new ThriftViewData(itemKey),
                                 trueData.create({
                                     field: types.fields?.find((f) => f.name === itemKey),
                                     type: types.valueType,
@@ -184,7 +184,7 @@ export class MetadataViewItem {
                 }
                 return isObject(value)
                     ? getEntries(value).map(
-                          ([k, v]) => new MetadataViewItem(v, new MetadataViewItem(k)),
+                          ([k, v]) => new ThriftViewData(v, new ThriftViewData(k)),
                       )
                     : [];
             }),

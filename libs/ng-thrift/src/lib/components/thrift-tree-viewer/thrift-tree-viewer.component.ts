@@ -7,11 +7,11 @@ import yaml from 'yaml';
 import { ThriftData } from '../../models';
 import { ThriftAstMetadata } from '../../types';
 
-import { MetadataViewItem } from './utils/metadata-view';
 import {
     MetadataViewExtension,
     MetadataViewExtensionResult,
 } from './utils/metadata-view-extension';
+import { ThriftViewData } from './utils/thrift-view';
 
 @Component({
     selector: 'v-thrift-tree-viewer',
@@ -33,7 +33,7 @@ export class ThriftTreeViewerComponent implements OnChanges {
     @Input() data: ThriftData;
     @Input() extensions: MetadataViewExtension[];
 
-    view: MetadataViewItem;
+    view: ThriftViewData;
     className = this.getClassName();
     extensionQueryParams$ = this.route.queryParams.pipe(
         map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams)),
@@ -56,7 +56,7 @@ export class ThriftTreeViewerComponent implements OnChanges {
                 console.warn(err);
             }
         }
-        this.view = new MetadataViewItem(this.value, undefined, this.data, this.extensions);
+        this.view = new ThriftViewData(this.value, undefined, this.data, this.extensions);
         this.className = this.getClassName();
     }
 
