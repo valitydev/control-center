@@ -30,21 +30,8 @@
     }
 }
 
-.badge {
-    & > * {
-        display: inline-block;
-    }
-
-    ::ng-deep .mat-badge-content {
-        width: auto;
-        border-radius: 1000px;
-        padding: 0 4px;
-    }
-}
-
 .count {
-    align-self: end;
-    min-width: 56px;
+    align-self: anchor-center;
 }
 
 .filter {

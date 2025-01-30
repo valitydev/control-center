@@ -14,23 +14,20 @@
     }
     <v-actions>
         <v-actions>
-            <div class="badge count">
-                <v-tag
-                    [matBadge]="selectedCount() || ''"
-                    [matBadgeDisabled]="progress() || dataProgress()"
-                    [matTooltip]="
-                        dataProgress()
-                            ? 'Preparing data for sorting, filtering and downloading...'
-                            : ''
-                    "
-                    [progress]="progress() || dataProgress()"
-                    matBadgePosition="above after"
-                    matBadgeSize="small"
-                >
-                    {{ countText() }}
-                </v-tag>
-            </div>
             @if (!noToolbar()) {
+                @if (!standaloneFilter()) {
+                    <div>
+                        <v-input-field
+                            [formControl]="filterControl"
+                            appearance="outline"
+                            class="filter filter__extended"
+                            cleanButton
+                            icon="manage_search"
+                            label="Search"
+                            size="small"
+                        ></v-input-field>
+                    </div>
+                }
                 <div class="details">
                     @if (hasLoad()) {
                         <button
@@ -76,20 +73,19 @@
                         <mat-icon>tune</mat-icon>
                     </button> -->
                 </div>
-                @if (!standaloneFilter()) {
-                    <div>
-                        <v-input-field
-                            [formControl]="filterControl"
-                            appearance="outline"
-                            class="filter filter__extended"
-                            cleanButton
-                            icon="manage_search"
-                            label="Search"
-                            size="small"
-                        ></v-input-field>
-                    </div>
-                }
             }
+            <div
+                [matBadge]="selectedCount() || ''"
+                [matBadgeDisabled]="progress() || dataProgress()"
+                [matTooltip]="
+                    dataProgress() ? 'Preparing data for sorting, filtering and downloading...' : ''
+                "
+                class="count"
+            >
+                <v-tag [progress]="progress() || dataProgress()">
+                    {{ countText() }}
+                </v-tag>
+            </div>
         </v-actions>
         <v-actions>
             <ng-content></ng-content>

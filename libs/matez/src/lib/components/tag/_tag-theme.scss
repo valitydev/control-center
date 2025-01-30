@@ -4,6 +4,8 @@
 @mixin theme($theme) {
     .v-tag {
         .tag {
+            background-color: mat.get-theme-color($theme, primary, 90);
+
             &.color-pending,
             &.color-success,
             &.color-warn {

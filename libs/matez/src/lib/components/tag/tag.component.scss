@@ -3,6 +3,10 @@
         pointer-events: none;
         cursor: default;
     }
+
+    ::ng-deep *::before {
+        border: none !important;
+    }
 }
 
 @keyframes content-loading-animation {
