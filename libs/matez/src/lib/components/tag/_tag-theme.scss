@@ -1,22 +1,27 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
-@import '../../styles/utils/get-color';
 
 @mixin theme($theme) {
     .v-tag {
         .tag {
             &.color-pending,
-            &.color-success {
+            &.color-success,
+            &.color-warn {
                 * {
                     color: #fff !important;
                 }
             }
 
             &.color-pending {
-                background-color: get-color($theme, pending, darker);
+                background-color: map.get(mat.$orange-palette, 70);
             }
 
             &.color-success {
-                background-color: get-color($theme, success, darker);
+                background-color: map.get(mat.$green-palette, 50);
+            }
+
+            &.color-warn {
+                background-color: mat.get-theme-color($theme, error, 50);
             }
         }
     }

@@ -1,31 +1,30 @@
 @use '@angular/material' as mat;
-@import '../../styles/utils/get-color';
 
 @mixin theme($theme) {
     .v-nav {
         .item {
             &:hover {
-                background-color: get-color($theme, neutral, 200);
+                background-color: mat.get-theme-color($theme, neutral, 90);
             }
 
             &__active {
-                background-color: get-color($theme, neutral, 100);
+                background-color: mat.get-theme-color($theme, neutral, 95);
             }
         }
 
         &__secondary {
             .item {
-                border-color: get-color($theme, neutral, 200) !important;
+                border-color: mat.get-theme-color($theme, neutral, 80) !important;
 
                 &:hover {
-                    color: get-color($theme, primary);
-                    background-color: get-color($theme, primary, 50);
-                    border-color: get-color($theme, primary) !important;
+                    color: mat.get-theme-color($theme, primary);
+                    background-color: mat.get-theme-color($theme, primary, 95);
+                    border-color: mat.get-theme-color($theme, primary) !important;
                 }
 
                 &__active {
-                    color: get-color($theme, primary);
-                    border-color: get-color($theme, primary) !important;
+                    color: mat.get-theme-color($theme, primary);
+                    border-color: mat.get-theme-color($theme, primary) !important;
                 }
             }
         }

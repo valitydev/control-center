@@ -1,5 +1,6 @@
 @use 'sass:meta';
 @use '@angular/material' as mat;
+
 $variants: ('primary', 'secondary', 'tertiary', 'error');
 $components: (
     // 'badge',
@@ -21,6 +22,7 @@ $components: (
     // 'stepper',
      // 'tabs'
 );
+
 @mixin mat-component-variants($theme) {
     @each $variant in $variants {
         .matv-#{$variant} {
@@ -45,6 +47,14 @@ $components: (
         //         }
         //     }
         // }
+    }
+
+    .matv-primary {
+        @include mat.toolbar-overrides(
+            (
+                container-background-color: mat.get-theme-color($theme, primary, 40),
+            )
+        );
     }
 }
 @function is-variant-supported($variant, $component) {
