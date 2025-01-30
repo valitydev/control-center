@@ -28,12 +28,13 @@ import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import {
+    PageLayoutModule,
+    ShopFieldModule,
     createContractColumn,
     createDomainObjectColumn,
     createPartyColumn,
     createShopColumn,
 } from '../../../../shared';
-import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info/sidenav-info.service';
 import { DEBOUNCE_TIME_MS } from '../../../../tokens';

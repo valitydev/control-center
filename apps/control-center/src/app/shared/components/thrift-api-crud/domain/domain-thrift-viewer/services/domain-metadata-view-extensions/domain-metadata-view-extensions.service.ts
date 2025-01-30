@@ -6,8 +6,12 @@ import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/matez';
-import { ThriftData, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
-import { MetadataViewExtension } from '@vality/ng-thrift';
+import {
+    MetadataViewExtension,
+    ThriftData,
+    getUnionValue,
+    isTypeWithAliases,
+} from '@vality/ng-thrift';
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';

@@ -60,6 +60,7 @@ export const baseEslintConfig = [
                     argsIgnorePattern: '^_',
                 },
             ],
+            'no-duplicate-imports': 'error',
         },
     },
     getImportOrderConfig(),
