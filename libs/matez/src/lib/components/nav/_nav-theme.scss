@@ -4,11 +4,15 @@
     .v-nav {
         .item {
             &:hover {
-                background-color: mat.get-theme-color($theme, neutral, 90);
+                background-color: mat.get-theme-color($theme, primary, 95);
             }
 
             &__active {
-                background-color: mat.get-theme-color($theme, neutral, 95);
+                background-color: mat.get-theme-color($theme, primary, 90);
+
+                &:hover {
+                    background-color: mat.get-theme-color($theme, primary, 90);
+                }
             }
         }
 
@@ -17,13 +21,10 @@
                 border-color: mat.get-theme-color($theme, neutral, 80) !important;
 
                 &:hover {
-                    color: mat.get-theme-color($theme, primary);
-                    background-color: mat.get-theme-color($theme, primary, 95);
                     border-color: mat.get-theme-color($theme, primary) !important;
                 }
 
                 &__active {
-                    color: mat.get-theme-color($theme, primary);
                     border-color: mat.get-theme-color($theme, primary) !important;
                 }
             }
