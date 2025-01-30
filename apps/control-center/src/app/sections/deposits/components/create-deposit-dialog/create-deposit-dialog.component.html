@@ -8,12 +8,7 @@
         type="DepositParams"
     ></cc-fistful-thrift-form>
     <v-dialog-actions>
-        <button
-            [disabled]="(progress$ | async) || control.invalid"
-            color="primary"
-            mat-button
-            (click)="create()"
-        >
+        <button [disabled]="(progress$ | async) || control.invalid" mat-button (click)="create()">
             Create
         </button>
     </v-dialog-actions>

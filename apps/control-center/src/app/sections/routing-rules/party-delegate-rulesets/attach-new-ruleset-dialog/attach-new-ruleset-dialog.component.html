@@ -27,7 +27,6 @@
     <v-dialog-actions>
         <button
             [disabled]="form.invalid || !(targetRulesetValid$ | async)"
-            color="primary"
             mat-button
             (click)="attach()"
         >

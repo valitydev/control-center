@@ -16,7 +16,6 @@
         </button>
         <button
             [disabled]="!selected?.length || !!(progress$ | async)"
-            color="primary"
             mat-button
             (click)="create()"
         >
