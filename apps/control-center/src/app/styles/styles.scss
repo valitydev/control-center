@@ -49,6 +49,7 @@ $theme: mat.define-theme(
     --app-primary-bg: #{mat.get-theme-color($theme, primary, 40)};
 
     @include all-component-themes.all-component-themes($theme);
+    @include v.mat-component-variants($theme);
 
     @include mat.divider-overrides(
         (

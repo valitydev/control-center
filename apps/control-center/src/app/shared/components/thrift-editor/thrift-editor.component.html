@@ -4,26 +4,19 @@
             <button
                 *ngIf="control.invalid"
                 [matTooltip]="control.errors | inlineJson: false"
-                color="warn"
                 mat-icon-button
                 (click)="control.updateValueAndValidity()"
             >
                 <mat-icon>priority_high</mat-icon>
             </button>
-            <button
-                *ngIf="control.dirty"
-                color="warn"
-                mat-icon-button
-                matTooltip="Reset"
-                (click)="reset()"
-            >
+            <button *ngIf="control.dirty" mat-icon-button matTooltip="Reset" (click)="reset()">
                 <mat-icon>restart_alt</mat-icon>
             </button>
             <button
                 *ngIf="!noChangeKind"
-                color="primary"
-                mat-icon-button
+                mat-mini-fab
                 matTooltip="Show {{ kind === 'form' ? 'form' : 'JSON' }} editor"
+                style="margin-left: 8px"
                 (click)="toggleKind()"
             >
                 <mat-icon *ngIf="kind === 'form'">code</mat-icon>
