@@ -1,7 +1,15 @@
 :host {
-    ::ng-deep button {
+    ::ng-deep {
         pointer-events: none;
-        cursor: default;
+    }
+
+    .action ::ng-deep {
+        pointer-events: auto;
+        cursor: pointer;
+
+        button {
+            pointer-events: none;
+        }
     }
 
     ::ng-deep *::before {

@@ -29,16 +29,6 @@
                     </div>
                 }
                 <div class="details">
-                    @if (hasLoad()) {
-                        <button
-                            [disabled]="progress()"
-                            mat-icon-button
-                            matTooltip="Reload {{ size() }} elements"
-                            (click)="load.emit()"
-                        >
-                            <mat-icon>refresh</mat-icon>
-                        </button>
-                    }
                     @if (hasLoad() || hasMore()) {
                         <button
                             [disabled]="progress() || !hasMore()"
@@ -78,11 +68,19 @@
                 [matBadge]="selectedCount() || ''"
                 [matBadgeDisabled]="progress() || dataProgress()"
                 [matTooltip]="
-                    dataProgress() ? 'Preparing data for sorting, filtering and downloading...' : ''
+                    dataProgress()
+                        ? 'Preparing data for sorting, filtering and downloading...'
+                        : progress()
+                          ? 'Loading...'
+                          : 'Reload ' + size() + ' elements'
                 "
                 class="count"
+                (click)="hasLoad() ? load.emit() : undefined"
             >
-                <v-tag [progress]="progress() || dataProgress()">
+                <v-tag
+                    [icon]="hasLoad() ? 'refresh' : undefined"
+                    [progress]="progress() || dataProgress()"
+                >
                     {{ countText() }}
                 </v-tag>
             </div>

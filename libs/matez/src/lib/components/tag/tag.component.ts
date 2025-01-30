@@ -20,6 +20,7 @@ export class TagComponent {
     @HostBinding('class.v-tag') hostClass: boolean = true;
 
     @Input() color?: Color;
+    icon = input<string>();
 
     progress = input(false, { transform: booleanAttribute });
 }

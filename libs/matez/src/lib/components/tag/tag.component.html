@@ -1,9 +1,13 @@
-<mat-chip-option
-    [highlighted]="!!color"
-    [ngClass]="{ loading: progress() }"
-    [selectable]="false"
+<mat-chip-row
+    [disabled]="progress()"
+    [ngClass]="{ loading: progress(), action: !!icon() }"
     class="tag {{ 'color-' + color }}"
     disableRipple
 >
+    @if (icon()) {
+        <button matChipRemove>
+            <mat-icon>{{ progress() ? 'autorenew' : icon() }}</mat-icon>
+        </button>
+    }
     <ng-content></ng-content>
-</mat-chip-option>
+</mat-chip-row>
