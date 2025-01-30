@@ -20,6 +20,7 @@
 
 .search {
     gap: 12px;
+    --mtx-select-enabled-arrow-color: #fff;
 
     & > * {
         min-width: 96px;
@@ -51,8 +52,6 @@
         border-color: rgba(255, 255, 255, 0.2);
         border-left-color: #fff;
     }
-
-    --mtx-select-enabled-arrow-color: #fff;
 }
 
 .user {
