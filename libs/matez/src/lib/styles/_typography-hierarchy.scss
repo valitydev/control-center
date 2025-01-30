@@ -2,30 +2,28 @@
 @import './utils/get-color';
 
 @mixin typography-hierarchy($theme, $selector: '.mat-typography') {
-    @include mat.typography-hierarchy($theme, $selector);
-
-    .mat-secondary-text,
+    .mat-secondary-text.mat-secondary-text,
     #{$selector} .mat-secondary-text {
         &#{&} {
             color: get-color($theme, foreground, secondary-text);
         }
     }
 
-    .mat-no-margin,
+    .mat-no-margin.mat-no-margin,
     #{$selector} .mat-no-margin {
         &#{&} {
             margin: 0;
         }
     }
 
-    .mat-mono,
+    .mat-mono.mat-mono,
     #{$selector} .mat-mono {
         &#{&} {
             font-family: 'Roboto Mono', monospace;
         }
     }
 
-    .mat-action,
+    .mat-action.mat-action,
     #{$selector} .mat-action {
         &#{&} {
             cursor: pointer;
@@ -39,7 +37,7 @@
         }
     }
 
-    .mat-link,
+    .mat-link.mat-link,
     #{$selector} .mat-link {
         &#{&} {
             cursor: pointer;
