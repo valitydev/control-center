@@ -3,7 +3,7 @@ import { Component, Inject, LOCALE_ID } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { formatCurrency, getImportValue } from '@vality/matez';
-import { MetadataViewExtension, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftViewExtension, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -23,8 +23,8 @@ export class PaymentDetailsComponent {
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
-    extensions$: Observable<MetadataViewExtension[]> = this.payment$.pipe(
-        map((payment): MetadataViewExtension[] => [
+    extensions$: Observable<ThriftViewExtension[]> = this.payment$.pipe(
+        map((payment): ThriftViewExtension[] => [
             this.domainMetadataViewExtensionsService.createShopExtension(payment.owner_id),
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'Amount', 'domain')),

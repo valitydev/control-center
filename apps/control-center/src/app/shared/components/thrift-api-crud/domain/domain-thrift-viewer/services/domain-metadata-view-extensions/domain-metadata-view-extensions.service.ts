@@ -7,7 +7,7 @@ import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/matez';
 import {
-    MetadataViewExtension,
+    ThriftViewExtension,
     ThriftData,
     getUnionValue,
     isTypeWithAliases,
@@ -27,10 +27,10 @@ import { getDomainObjectDetails } from '../../../utils';
     providedIn: 'root',
 })
 export class DomainMetadataViewExtensionsService {
-    extensions$: Observable<MetadataViewExtension[]> = getImportValue<ThriftAstMetadata[]>(
+    extensions$: Observable<ThriftViewExtension[]> = getImportValue<ThriftAstMetadata[]>(
         import('@vality/domain-proto/metadata.json'),
     ).pipe(
-        map((metadata): MetadataViewExtension[] => [
+        map((metadata): ThriftViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'PartyID', 'domain')),
@@ -72,7 +72,7 @@ export class DomainMetadataViewExtensionsService {
         private partiesStoreService: PartiesStoreService,
     ) {}
 
-    createShopExtension(partyId: PartyID): MetadataViewExtension {
+    createShopExtension(partyId: PartyID): ThriftViewExtension {
         return {
             determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
             extension: (_, shopId: ShopID) =>
@@ -91,7 +91,7 @@ export class DomainMetadataViewExtensionsService {
         };
     }
 
-    createDomainObjectExtensions(metadata: ThriftAstMetadata[]): MetadataViewExtension[] {
+    createDomainObjectExtensions(metadata: ThriftAstMetadata[]): ThriftViewExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
         return domainFields.map((f) => {

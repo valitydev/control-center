@@ -9,7 +9,7 @@ import {
     signal,
 } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { MetadataViewExtension } from '@vality/ng-thrift';
+import { ThriftViewExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -24,7 +24,7 @@ interface Data<T> {
     progress: boolean;
     namespace: string;
     metadata$: Observable<ThriftAstMetadata[]>;
-    extensions$: Observable<MetadataViewExtension[]>;
+    extensions$: Observable<ThriftViewExtension[]>;
 }
 
 @Component({
@@ -44,12 +44,12 @@ export abstract class ThriftViewerSuperclass<T> implements OnChanges {
     @Input() compared?: T;
     @Input() type: ValueType;
     @Input({ transform: booleanAttribute }) progress = false;
-    @Input() extensions: MetadataViewExtension[] = [];
+    @Input() extensions: ThriftViewExtension[] = [];
     @Input() namespace?: string;
 
     abstract defaultNamespace: string;
     abstract metadata$: Observable<ThriftAstMetadata[]>;
-    extensions$: Observable<MetadataViewExtension[]> = of([]);
+    extensions$: Observable<ThriftViewExtension[]> = of([]);
 
     data = signal<Data<T>>(this.createData());
 

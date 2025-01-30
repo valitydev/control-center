@@ -10,15 +10,20 @@ import { ThriftData } from '../../../models';
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';
 import {
-    MetadataViewExtension,
-    MetadataViewExtensionResult,
-    getFirstDeterminedExtensionsResult,
-} from './metadata-view-extension';
+    ThriftViewExtension,
+    ThriftViewExtensionResult,
+    getFirstDeterminedThriftViewExtensionResult,
+} from './thrift-view-extension';
 
 export class ThriftViewData {
-    extension$: Observable<MetadataViewExtensionResult> = defer(() => this.renderValue$).pipe(
+    extension$: Observable<ThriftViewExtensionResult> = defer(() => this.renderValue$).pipe(
         switchMap((viewValue) =>
-            getFirstDeterminedExtensionsResult(this.extensions, this.data, this.value, viewValue),
+            getFirstDeterminedThriftViewExtensionResult(
+                this.extensions,
+                this.data,
+                this.value,
+                viewValue,
+            ),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -148,7 +153,7 @@ export class ThriftViewData {
         private value: unknown,
         public key?: ThriftViewData,
         private data?: ThriftData,
-        private extensions?: MetadataViewExtension[],
+        private extensions?: ThriftViewExtension[],
     ) {}
 
     private createItems(): Observable<ThriftViewData[]> {
@@ -191,7 +196,7 @@ export class ThriftViewData {
         );
     }
 
-    private getValue(ext: MetadataViewExtensionResult) {
+    private getValue(ext: ThriftViewExtensionResult) {
         const value = ext?.value ?? this.value;
         return isEmpty(value) || ext?.hidden ? null : value;
     }

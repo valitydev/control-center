@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { ThriftData } from '../../../models';
 
-export interface MetadataViewExtensionResult {
+export interface ThriftViewExtensionResult {
     key?: string;
     value?: unknown;
     hidden?: boolean;
@@ -16,21 +16,21 @@ export interface MetadataViewExtensionResult {
     tag?: boolean;
 }
 
-export type MetadataViewExtension = {
+export type ThriftViewExtension = {
     determinant: (data: ThriftData, value: unknown) => Observable<boolean>;
     extension: (
         data: ThriftData,
         value: unknown,
         viewValue: unknown,
-    ) => Observable<MetadataViewExtensionResult>;
+    ) => Observable<ThriftViewExtensionResult>;
 };
 
-export function getFirstDeterminedExtensionsResult(
-    sourceExtensions: MetadataViewExtension[],
+export function getFirstDeterminedThriftViewExtensionResult(
+    sourceExtensions: ThriftViewExtension[],
     data: ThriftData,
     value: unknown,
     viewValue: unknown,
-): Observable<MetadataViewExtensionResult> {
+): Observable<ThriftViewExtensionResult> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data, value))).pipe(
               map((determined) => sourceExtensions.find((_, idx) => determined[idx])),

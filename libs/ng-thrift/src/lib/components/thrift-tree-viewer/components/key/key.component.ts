@@ -3,7 +3,7 @@ import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ThriftViewData } from '../../utils/thrift-view';
+import { ThriftViewData } from '../../utils/thrift-view-data';
 
 @Component({
     selector: 'cc-key',
