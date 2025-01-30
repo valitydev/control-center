@@ -6,7 +6,7 @@
         background-color: mat.get-theme-color($theme, neutral, 90);
 
         &.primary {
-            background-color: var(--app-primary-bg);
+            background-color: var(--v-primary-bg);
 
             mat-icon {
                 color: white;
@@ -14,7 +14,7 @@
         }
 
         &.warn {
-            background-color: var(--app-pending-bg);
+            background-color: var(--v-pending-bg);
 
             mat-icon {
                 color: white;
@@ -22,7 +22,7 @@
         }
 
         &.error {
-            background-color: var(--app-error-bg);
+            background-color: var(--v-error-bg);
 
             mat-icon {
                 color: white;
@@ -30,7 +30,7 @@
         }
 
         &.success {
-            background-color: var(--app-success-bg);
+            background-color: var(--v-success-bg);
 
             mat-icon {
                 color: white;

@@ -3,15 +3,15 @@
 @mixin cc-status-theme($theme) {
     .cc-status {
         &-success {
-            color: var(--app-success-bg);
+            color: var(--v-success-bg);
         }
 
         &-pending {
-            color: var(--app-pending-bg);
+            color: var(--v-pending-bg);
         }
 
         &-warn {
-            color: var(--app-error-bg);
+            color: var(--v-error-bg);
         }
     }
 }

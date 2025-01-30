@@ -42,12 +42,7 @@ $theme: mat.define-theme(
     @include mat.core();
     @include mat.all-component-themes($theme);
     @include mat.typography-hierarchy($theme);
-
-    --app-success-bg: #{map.get(mat.$green-palette, 50)};
-    --app-pending-bg: #{map.get(mat.$orange-palette, 70)};
-    --app-error-bg: #{mat.get-theme-color($theme, error, 50)};
-    --app-primary-bg: #{mat.get-theme-color($theme, primary, 40)};
-
+    @include v.v-tokens($theme);
     @include all-component-themes.all-component-themes($theme);
     @include v.mat-component-variants($theme);
 
