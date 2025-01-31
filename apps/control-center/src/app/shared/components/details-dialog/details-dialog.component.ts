@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { DEFAULT_DIALOG_CONFIG, DialogModule, DialogSuperclass } from '@vality/matez';
-
-import { JsonViewerModule } from '../json-viewer/json-viewer.module';
+import { ThriftTreeViewerModule } from '@vality/ng-thrift';
 
 @Component({
     standalone: true,
     selector: 'cc-details-dialog',
     templateUrl: './details-dialog.component.html',
-    imports: [DialogModule, JsonViewerModule],
+    imports: [DialogModule, ThriftTreeViewerModule],
 })
 export class DetailsDialogComponent extends DialogSuperclass<
     DetailsDialogComponent,

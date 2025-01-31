@@ -6,7 +6,7 @@
     ></cc-domain-thrift-form>
 
     <v-dialog-actions>
-        <button [disabled]="control.invalid" color="primary" mat-button (click)="upsert()">
+        <button [disabled]="control.invalid" mat-button (click)="upsert()">
             {{ actionType === 'update' ? 'Update' : 'Add' }}
         </button>
     </v-dialog-actions>

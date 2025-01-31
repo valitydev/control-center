@@ -7,12 +7,7 @@
     ></cc-target-ruleset-form>
 
     <v-dialog-actions>
-        <button
-            [disabled]="!(targetRulesetValid$ | async)"
-            color="primary"
-            mat-button
-            (click)="changeTarget()"
-        >
+        <button [disabled]="!(targetRulesetValid$ | async)" mat-button (click)="changeTarget()">
             Change target
         </button>
     </v-dialog-actions>

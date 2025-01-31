@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, Output, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges, UnionEnum } from '@vality/matez';
-import { toJson } from '@vality/ng-thrift';
+import { ThriftViewExtension, toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
-
-import { MetadataViewExtension } from '../json-viewer/utils/metadata-view-extension';
 
 export enum ViewerKind {
     Editor = 'editor',
@@ -28,7 +26,7 @@ export class ThriftViewerComponent<T> implements OnChanges {
     @Input() metadata: ThriftAstMetadata[];
     @Input() namespace: string;
     @Input() type: ValueType;
-    @Input() extensions?: MetadataViewExtension[];
+    @Input() extensions?: ThriftViewExtension[];
 
     @Output() changeKind = new EventEmitter<ViewerKind>();
 

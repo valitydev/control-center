@@ -20,6 +20,7 @@ import {
     FiltersModule,
     ListFieldModule,
     TableModule,
+    TagModule,
 } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
@@ -58,6 +59,7 @@ import { MachinesComponent } from './machines.component';
         ListFieldModule,
         ThriftPipesModule,
         FiltersModule,
+        TagModule,
     ],
     declarations: [MachinesComponent, RepairByScenarioDialogComponent],
 })

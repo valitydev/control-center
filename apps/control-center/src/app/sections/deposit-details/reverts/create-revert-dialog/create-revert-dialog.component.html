@@ -10,7 +10,6 @@
     <v-dialog-actions>
         <button
             [disabled]="!!(progress$ | async) || control.invalid"
-            color="primary"
             mat-button
             (click)="createRevert()"
         >

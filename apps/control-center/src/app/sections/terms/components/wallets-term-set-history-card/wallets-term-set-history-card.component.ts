@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { MatTooltip } from '@angular/material/tooltip';
-import { Column, TableModule, VSelectPipe } from '@vality/matez';
+import { Column, TableModule } from '@vality/matez';
 
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/internal/dominator';
 
@@ -16,7 +15,7 @@ import {
 
 @Component({
     selector: 'cc-wallets-term-set-history-card',
-    imports: [CommonModule, SidenavInfoModule, TableModule, VSelectPipe, MatTooltip],
+    imports: [CommonModule, SidenavInfoModule, TableModule],
     templateUrl: './wallets-term-set-history-card.component.html',
     styles: ``,
 })

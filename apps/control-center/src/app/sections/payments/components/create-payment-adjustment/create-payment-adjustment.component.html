@@ -13,15 +13,14 @@
         <button
             *ngIf="this.errors.length"
             [disabled]="control.invalid || !!(progress$ | async)"
-            mat-raised-button
+            mat-button
             (click)="closeAndSelectWithAnError()"
         >
             Close and select with an error
         </button>
         <button
             [disabled]="control.invalid || !!(progress$ | async)"
-            color="primary"
-            mat-raised-button
+            mat-flat-button
             (click)="create()"
         >
             {{ this.errors.length ? 'Repeat for ' + this.errors.length : 'Create' }}

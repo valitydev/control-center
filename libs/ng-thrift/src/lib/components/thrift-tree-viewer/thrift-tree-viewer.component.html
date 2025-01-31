@@ -10,19 +10,19 @@
                         *ngIf="!((item.current$ | async)?.extension$ | async)?.hidden"
                         style="display: grid; grid-template-rows: auto 1fr; gap: 8px"
                     >
-                        <cc-key
+                        <v-key
                             [keys]="item.path$ | async"
-                            class="mat-caption mat-secondary-text"
-                        ></cc-key>
+                            class="mat-label-medium mat-secondary-text"
+                        ></v-key>
 
-                        <div *ngIf="item.current$ | async as current" class="mat-body-1">
-                            <cc-json-viewer
+                        <div *ngIf="item.current$ | async as current" class="mat-body-large">
+                            <v-thrift-tree-viewer
                                 *ngIf="!(current.isEmpty$ | async); else empty"
                                 [data]="current.data$ | async"
                                 [extension]="current.extension$ | async"
                                 [extensions]="extensions"
                                 [value]="current.value$ | async"
-                            ></cc-json-viewer>
+                            ></v-thrift-tree-viewer>
                             <ng-template #empty>
                                 <mat-icon class="mat-secondary-text" inline>hide_source</mat-icon>
                             </ng-template>
@@ -39,31 +39,31 @@
                     display: 'grid',
                     'grid-template-columns':
                         ((item.current$ | async)?.isNumberKey$ | async) ? 'auto 1fr' : '1fr',
-                    gap: '16px',
+                    gap: '32px',
                 }"
             >
-                <cc-key
-                    *ngIf="!((item.current$ | async)?.key.data$ | async); else mapKey"
+                <v-key
+                    *ngIf="!((item.current$ | async)?.key?.data$ | async); else mapKey"
                     [class]="className"
                     [keys]="item.path$ | async"
-                ></cc-key>
+                ></v-key>
                 <ng-template #mapKey>
-                    <cc-json-viewer
+                    <v-thrift-tree-viewer
                         *ngIf="(item.current$ | async)?.key as key"
                         [data]="key.data$ | async"
                         [extensions]="extensions"
                         [level]="level + 1"
                         [value]="key.value$ | async"
-                    ></cc-json-viewer
+                    ></v-thrift-tree-viewer
                 ></ng-template>
 
-                <cc-json-viewer
+                <v-thrift-tree-viewer
                     *ngIf="item.current$ | async as current"
                     [data]="current.data$ | async"
                     [extensions]="extensions"
                     [level]="level + 1"
                     [value]="current.value$ | async"
-                ></cc-json-viewer>
+                ></v-thrift-tree-viewer>
             </div>
         </ng-container>
     </div>
@@ -77,7 +77,7 @@
     >
         <span
             *ngIf="extension?.tooltip; else tagValue"
-            [matTooltip]="getTooltip(extension.tooltip)"
+            [matTooltip]="getTooltip(extension?.tooltip)"
             matTooltipClass="tooltip"
         >
             <ng-container *ngTemplateOutlet="tagValue"></ng-container>
@@ -92,7 +92,7 @@
                 [ngClass]="{
                     link: !!extension?.click || !!extension?.link?.[0],
                     'tooltip-link': !!extension?.tooltip,
-                    'mat-body-1': !extension?.tag,
+                    'mat-body-large': !extension?.tag,
                 }"
             >
                 {{ view.renderValue$ | async }}

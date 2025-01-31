@@ -1,6 +1,6 @@
-@import '../timeline-item.scss';
+@use '../timeline-item.scss';
 
 .cc-timeline-item-content {
     display: block;
-    padding-top: $content-padding;
+    padding-top: timeline-item.$content-padding;
 }

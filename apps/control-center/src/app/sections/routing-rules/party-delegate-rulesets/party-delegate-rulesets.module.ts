@@ -15,7 +15,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { DialogModule } from '@vality/matez';
 
-import { DetailsItemModule } from '../../../../components/details-item/details-item.module';
 import { PageLayoutModule } from '../../../shared';
 import { ChangeTargetDialogModule } from '../change-target-dialog';
 import { RoutingRulesListModule } from '../routing-rules-list';
@@ -42,7 +41,6 @@ const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetD
         MatDividerModule,
         MatSelectModule,
         MatRadioModule,
-        DetailsItemModule,
         MatInputModule,
         MatProgressBarModule,
         ChangeTargetDialogModule,

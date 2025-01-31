@@ -67,7 +67,6 @@
     <button
         *ngIf="step !== stepEnum.Review"
         [disabled]="control.invalid || (isLoading$ | async) || !(hasChanges$ | async)"
-        color="primary"
         mat-flat-button
         (click)="step = stepEnum.Review"
     >
@@ -76,7 +75,6 @@
     <button
         *ngIf="step === stepEnum.Review"
         [disabled]="isLoading$ | async"
-        color="primary"
         mat-flat-button
         (click)="update()"
     >

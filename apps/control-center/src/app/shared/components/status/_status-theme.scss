@@ -1,17 +1,17 @@
-@use '../../../../../../../libs/matez/index' as v;
+@use '@angular/material' as mat;
 
 @mixin cc-status-theme($theme) {
     .cc-status {
         &-success {
-            color: v.get-color($theme, success, darker);
+            color: var(--v-success-bg);
         }
 
         &-pending {
-            color: v.get-color($theme, pending, darker);
+            color: var(--v-pending-bg);
         }
 
         &-warn {
-            color: v.get-color($theme, warn, darker);
+            color: var(--v-error-bg);
         }
     }
 }

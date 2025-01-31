@@ -10,6 +10,8 @@ export const BASE_CONFIG: ValuesType<DialogConfig> = {
     maxHeight: '100vh',
     disableClose: true,
     autoFocus: false,
+    minWidth: '0',
+    maxWidth: 'calc(100vw - 16px)',
     width: '552px',
 };
 

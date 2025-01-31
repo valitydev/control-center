@@ -1,5 +1,5 @@
-@import './status/status-theme';
+@use 'status/status-theme';
 
 @mixin cc-shared-components-themes($theme) {
-    @include cc-status-theme($theme);
+    @include status-theme.cc-status-theme($theme);
 }

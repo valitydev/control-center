@@ -35,15 +35,10 @@
         (update)="reload($event)"
     >
         <v-table-actions>
-            <button [disabled]="!selected?.length" mat-raised-button (click)="failMachines()">
+            <button [disabled]="!selected?.length" mat-button (click)="failMachines()">
                 Fail machines
             </button>
-            <button
-                [disabled]="!selected?.length"
-                color="primary"
-                mat-raised-button
-                (click)="adjustment()"
-            >
+            <button [disabled]="!selected?.length" mat-flat-button (click)="adjustment()">
                 Create adjustments
             </button>
         </v-table-actions>

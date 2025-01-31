@@ -1,15 +1,12 @@
-@import '../timeline-item.scss';
-
-$size: 48px;
-$line-size: 2px;
+@use '../timeline-item.scss';
 
 .cc-timeline-item-badge {
     position: absolute;
     left: 0;
     top: 0;
     display: flex;
-    height: $size;
-    width: $size;
+    height: timeline-item.$size;
+    width: timeline-item.$size;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
@@ -17,8 +14,8 @@ $line-size: 2px;
 
     ::ng-deep > *,
     ::ng-deep > * mat-icon {
-        height: $icons-size;
-        width: $icons-size;
-        font-size: $icons-size;
+        height: timeline-item.$icons-size;
+        width: timeline-item.$icons-size;
+        font-size: timeline-item.$icons-size;
     }
 }

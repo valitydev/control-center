@@ -12,7 +12,7 @@
     (idLinkClick)="openRefId()"
 >
     <cc-page-layout-actions>
-        <button [disabled]="isLoading$ | async" color="primary" mat-raised-button (click)="add()">
+        <button [disabled]="isLoading$ | async" mat-flat-button (click)="add()">
             {{ (partyRuleset$ | async) ? 'Add' : 'Init' }}
         </button>
     </cc-page-layout-actions>

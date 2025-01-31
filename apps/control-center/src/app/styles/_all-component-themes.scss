@@ -1,12 +1,7 @@
-@import '../../components/components-themes';
-@import '../shared/components/shared-components-themes';
-
-@import '../sections/routing-rules/routing-rules-theme';
-@import '../sections/not-found/not-found-theme';
+@use '../../components/components-themes';
+@use '../shared/components/shared-components-themes';
 
 @mixin all-component-themes($theme) {
-    @include cc-components-themes($theme);
-    @include cc-shared-components-themes($theme);
-    @include cc-routing-rules-theme($theme);
-    @include cc-not-found-theme($theme);
+    @include components-themes.cc-components-themes($theme);
+    @include shared-components-themes.cc-shared-components-themes($theme);
 }

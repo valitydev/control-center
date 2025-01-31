@@ -17,21 +17,11 @@
             <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="isReview = false">
                 Edit
             </button>
-            <button
-                [disabled]="!!(progress$ | async)"
-                color="primary"
-                mat-flat-button
-                (click)="create()"
-            >
+            <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="create()">
                 Create
             </button>
         } @else {
-            <button
-                [disabled]="control.invalid"
-                color="primary"
-                mat-flat-button
-                (click)="isReview = true"
-            >
+            <button [disabled]="control.invalid" mat-flat-button (click)="isReview = true">
                 Review
             </button>
         }

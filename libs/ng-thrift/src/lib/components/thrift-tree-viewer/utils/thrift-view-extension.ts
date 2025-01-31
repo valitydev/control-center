@@ -1,10 +1,11 @@
 import { Router } from '@angular/router';
 import { Color } from '@vality/matez';
-import { ThriftData } from '@vality/ng-thrift';
 import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export interface MetadataViewExtensionResult {
+import { ThriftData } from '../../../models';
+
+export interface ThriftViewExtensionResult {
     key?: string;
     value?: unknown;
     hidden?: boolean;
@@ -15,21 +16,21 @@ export interface MetadataViewExtensionResult {
     tag?: boolean;
 }
 
-export type MetadataViewExtension = {
+export type ThriftViewExtension = {
     determinant: (data: ThriftData, value: unknown) => Observable<boolean>;
     extension: (
         data: ThriftData,
         value: unknown,
         viewValue: unknown,
-    ) => Observable<MetadataViewExtensionResult>;
+    ) => Observable<ThriftViewExtensionResult>;
 };
 
-export function getFirstDeterminedExtensionsResult(
-    sourceExtensions: MetadataViewExtension[],
+export function getFirstDeterminedThriftViewExtensionResult(
+    sourceExtensions: ThriftViewExtension[] | undefined,
     data: ThriftData,
     value: unknown,
     viewValue: unknown,
-): Observable<MetadataViewExtensionResult> {
+): Observable<ThriftViewExtensionResult | null> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data, value))).pipe(
               map((determined) => sourceExtensions.find((_, idx) => determined[idx])),

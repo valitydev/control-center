@@ -3,8 +3,7 @@
     <v-dialog-actions>
         <button
             [disabled]="control.invalid || !!(progress$ | async)"
-            color="primary"
-            mat-raised-button
+            mat-flat-button
             (click)="create()"
         >
             Create

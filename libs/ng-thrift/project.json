@@ -2,7 +2,7 @@
     "name": "ng-thrift",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
     "sourceRoot": "libs/ng-thrift/src",
-    "prefix": "lib",
+    "prefix": "v",
     "projectType": "library",
     "tags": ["ui"],
     "targets": {

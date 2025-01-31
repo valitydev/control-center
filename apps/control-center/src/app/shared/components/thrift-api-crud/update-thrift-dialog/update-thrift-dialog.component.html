@@ -5,12 +5,7 @@
     ></cc-thrift-viewer>
 
     <v-dialog-actions>
-        <button
-            [disabled]="!!(progress$ | async)"
-            color="primary"
-            mat-raised-button
-            (click)="closeWithSuccess()"
-        >
+        <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="closeWithSuccess()">
             Update
         </button>
     </v-dialog-actions>

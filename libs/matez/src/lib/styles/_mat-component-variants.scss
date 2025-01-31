@@ -1,0 +1,65 @@
+@use 'sass:meta';
+@use '@angular/material' as mat;
+
+$variants: ('primary', 'secondary', 'tertiary', 'error');
+$components: (
+    // 'badge',
+    'button',
+    // 'checkbox',
+    // 'chips',
+    // 'datepicker',
+    // 'form-field',
+    // 'fab',
+    // 'icon',
+    // 'option',
+    // 'progress-bar',
+    // 'progress-spinner',
+    // 'pseudo-checkbox',
+    // 'radio',
+    // 'select',
+    // 'slide-toggle',
+    // 'slider',
+    // 'stepper',
+     // 'tabs'
+);
+
+@mixin mat-component-variants($theme) {
+    @each $variant in $variants {
+        .matv-#{$variant} {
+            @each $component in $components {
+                @if (is-variant-supported($variant, $component)) {
+                    @include meta.apply(
+                        meta.get-mixin('#{$component}-color', mat),
+                        $theme,
+                        $color-variant: $variant
+                    );
+                }
+            }
+        }
+        // @each $component in $components {
+        //     @if (is-variant-supported($variant, $component)) {
+        //         .#{$variant}-#{$component} {
+        //             @include meta.apply(
+        //                 meta.get-mixin('#{$component}-color', mat),
+        //                 $theme,
+        //                 $color-variant: $variant
+        //             );
+        //         }
+        //     }
+        // }
+    }
+
+    .matv-primary {
+        @include mat.toolbar-overrides(
+            (
+                container-background-color: mat.get-theme-color($theme, primary, 40),
+            )
+        );
+    }
+}
+@function is-variant-supported($variant, $component) {
+    @if ($variant == 'error' and $component == 'fab') {
+        @return false;
+    }
+    @return true;
+}

@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UrlService } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import { from } from 'rxjs';
@@ -28,6 +28,7 @@ import { MerchantFieldModule } from '../../../shared/components/merchant-field';
         FormsModule,
         ReactiveFormsModule,
         CdkCopyToClipboard,
+        RouterModule,
     ],
     templateUrl: './toolbar.component.html',
     styleUrl: './toolbar.component.scss',

@@ -7,11 +7,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/matez';
+import { ThriftTreeViewerModule } from '@vality/ng-thrift';
 
-import { DetailsItemModule } from '../../../components/details-item/details-item.module';
 import { HeadlineModule } from '../../../components/headline/headline.module';
 import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
-import { JsonViewerModule } from '../../shared/components/json-viewer';
 import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
@@ -27,7 +26,6 @@ import { RefundsTableModule } from './refunds-table';
         HeadlineModule,
         PaymentDetailsRoutingModule,
         MatCardModule,
-        DetailsItemModule,
         StatusModule,
         MatProgressSpinnerModule,
         MatButtonModule,
@@ -38,7 +36,7 @@ import { RefundsTableModule } from './refunds-table';
         ReactiveFormsModule,
         PageLayoutModule,
         ThriftViewerModule,
-        JsonViewerModule,
+        ThriftTreeViewerModule,
         RefundsTableModule,
         MagistaThriftViewerComponent,
         SubPageLayoutComponent,

@@ -1,11 +1,12 @@
-@use '../../../../../../../libs/matez/index' as v;
+@use 'sass:map';
+@use '@angular/material' as mat;
 
 @mixin cc-timeline-item-badge-theme($theme) {
     .cc-timeline-item-badge {
-        background-color: v.get-color($theme, neutral, 200);
+        background-color: mat.get-theme-color($theme, neutral, 90);
 
         &.primary {
-            background-color: v.get-color($theme, primary, darker);
+            background-color: var(--v-primary-bg);
 
             mat-icon {
                 color: white;
@@ -13,7 +14,7 @@
         }
 
         &.warn {
-            background-color: v.get-color($theme, pending, darker);
+            background-color: var(--v-pending-bg);
 
             mat-icon {
                 color: white;
@@ -21,7 +22,7 @@
         }
 
         &.error {
-            background-color: v.get-color($theme, warn, darker);
+            background-color: var(--v-error-bg);
 
             mat-icon {
                 color: white;
@@ -29,7 +30,7 @@
         }
 
         &.success {
-            background-color: v.get-color($theme, success, darker);
+            background-color: var(--v-success-bg);
 
             mat-icon {
                 color: white;

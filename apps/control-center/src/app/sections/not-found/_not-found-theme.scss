@@ -1,9 +1,0 @@
-@use '@angular/material' as mat;
-
-@mixin cc-not-found-theme($theme) {
-    $foreground: map-get($theme, foreground);
-
-    .not-found {
-        color: mat.m2-get-color-from-palette($foreground, secondary-text);
-    }
-}

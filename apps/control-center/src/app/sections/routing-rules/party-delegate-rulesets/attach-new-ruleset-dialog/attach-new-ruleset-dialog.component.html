@@ -8,7 +8,7 @@
 
         <ng-container formGroupName="ruleset">
             <mat-divider></mat-divider>
-            <div class="mat-headline-4 mat-no-margin">Routing ruleset</div>
+            <div class="mat-display-small mat-no-margin">Routing ruleset</div>
             <div style="display: flex; flex-direction: column; gap: 16px">
                 <mat-form-field>
                     <input formControlName="name" matInput placeholder="Name" required />
@@ -27,7 +27,6 @@
     <v-dialog-actions>
         <button
             [disabled]="form.invalid || !(targetRulesetValid$ | async)"
-            color="primary"
             mat-button
             (click)="attach()"
         >

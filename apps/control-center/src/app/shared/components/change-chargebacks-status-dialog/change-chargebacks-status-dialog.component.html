@@ -27,8 +27,7 @@
     <v-dialog-actions>
         <button
             [disabled]="control.invalid || actionControl.invalid || !!(progress$ | async)"
-            color="primary"
-            mat-raised-button
+            mat-flat-button
             (click)="confirm()"
         >
             {{ (actionControl.value | enumKey: typeEnum) || 'Change' }}

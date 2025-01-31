@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
-import { MatTooltip } from '@angular/material/tooltip';
-import { Column, TableModule, VSelectPipe } from '@vality/matez';
+import { Column, TableModule } from '@vality/matez';
 
 import type {
     ProvisionTermSetHistory,
@@ -16,7 +15,7 @@ import {
 
 @Component({
     selector: 'cc-shops-term-set-history-card',
-    imports: [CommonModule, SidenavInfoModule, TableModule, VSelectPipe, MatTooltip],
+    imports: [CommonModule, SidenavInfoModule, TableModule],
     templateUrl: './terminals-term-set-history-card.component.html',
     styles: ``,
 })

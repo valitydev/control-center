@@ -1,5 +1,5 @@
 <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-    <span *ngIf="hasLabel" class="mat-body-1">
+    <span *ngIf="hasLabel" class="mat-body-large">
         {{ data.type | fieldLabel: data.field }}
         <span class="mat-secondary-text">
             ({{ data.type.name | titlecase }}:
@@ -45,7 +45,7 @@
             <ng-template matExpansionPanelContent>
                 <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
                     <ng-container *ngIf="isKeyValue">
-                        <span class="mat-body-2">Key</span>
+                        <span class="mat-body-medium">Key</span>
                         <cc-metadata-form
                             [extensions]="extensions"
                             [formControl]="$any(keyControls.controls[i])"
@@ -54,7 +54,7 @@
                             [parent]="data"
                             [type]="keyType"
                         ></cc-metadata-form>
-                        <span class="mat-body-2">Value</span>
+                        <span class="mat-body-medium">Value</span>
                     </ng-container>
                     <cc-metadata-form
                         [extensions]="extensions"

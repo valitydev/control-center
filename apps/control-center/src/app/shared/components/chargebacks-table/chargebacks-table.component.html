@@ -9,7 +9,7 @@
     (update)="update.emit($event)"
 >
     <v-table-actions>
-        <button [disabled]="!selected().length" mat-raised-button (click)="changeStatuses()">
+        <button [disabled]="!selected().length" mat-button (click)="changeStatuses()">
             Change statuses
         </button>
         <ng-content></ng-content>

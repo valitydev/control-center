@@ -1,6 +1,6 @@
 <ng-container *ngIf="data.type === 'bool'; else input">
     <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-        <span class="mat-body-1">{{ data.type | fieldLabel: data.field }}</span>
+        <span class="mat-body-large">{{ data.type | fieldLabel: data.field }}</span>
         <div style="display: flex; place-content: center flex-start; align-items: center; gap: 4px">
             <mat-radio-group
                 [formControl]="control"
@@ -55,7 +55,9 @@
 >
     <mat-card class="details-card">
         <mat-card-content>
-            <cc-json-viewer [value]="(selectedExtensionOption$ | async).details"></cc-json-viewer>
+            <v-thrift-tree-viewer
+                [value]="(selectedExtensionOption$ | async).details"
+            ></v-thrift-tree-viewer>
         </mat-card-content>
     </mat-card>
 </div>

@@ -1,6 +1,11 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
 @use '../../../../../libs/matez/index' as v;
-@import './all-component-themes';
+@use './all-component-themes';
+@use './theme-colors' as palette;
+@use '@ng-matero/extensions' as mtx;
 
+// Google Fonts Settings
 .material-symbols-outlined {
     font-variation-settings:
         'FILL' 0,
@@ -9,14 +14,45 @@
         'opsz' 24;
 }
 
-$app-theme: v.create-light-theme();
+$config: (
+    color: (
+        theme-type: light,
+        primary: palette.$primary-palette,
+    ),
+    density: (
+        scale: 0,
+    ),
+);
 
-@include v.core();
-@include v.all-component-themes($app-theme);
-@include all-component-themes($app-theme);
-@include v.typography-hierarchy($app-theme);
-@include v.app($app-theme);
+$theme: mat.private-deep-merge-all(mat.define-theme($config), mtx.define-theme($config));
 
-.cc-code {
-    font-family: 'Roboto Mono', monospace;
+:root {
+    html,
+    body {
+        height: 100%;
+    }
+    body {
+        margin: 0;
+        font-family: Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    @include mat.core();
+    @include mat.all-component-themes($theme);
+    @include mat.typography-hierarchy($theme);
+    @include v.typography-hierarchy($theme);
+    @include v.v-tokens($theme);
+    @include all-component-themes.all-component-themes($theme);
+    @include v.all-component-themes($theme);
+    @include v.mat-component-variants($theme);
+
+    @include mat.divider-overrides(
+        (
+            color: #ddd,
+        )
+    );
+    @include mat.table-overrides(
+        (
+            row-item-outline-color: #ddd,
+        )
+    );
 }

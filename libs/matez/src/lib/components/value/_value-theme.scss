@@ -1,11 +1,10 @@
 @use '@angular/material' as mat;
-@import '../../styles/utils/get-color';
 
 @mixin theme($theme) {
     .value {
         &__click,
         &__link {
-            color: get-color($theme, primary);
+            color: mat.get-theme-color($theme, primary, 20);
         }
     }
 }

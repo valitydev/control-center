@@ -1,11 +1,9 @@
 @use '@angular/material' as mat;
 
 @mixin theme($theme) {
-    $typography: map-get($theme, typography);
-
     .v-dialog {
         .title {
-            @include mat.m2-typography-level($typography, headline-5);
+            font: mat.get-theme-typography($theme, headline-medium);
         }
     }
 }

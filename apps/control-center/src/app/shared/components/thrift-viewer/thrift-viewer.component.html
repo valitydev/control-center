@@ -14,14 +14,14 @@
                 class="monaco-editor"
             ></ngx-monaco-diff-editor>
         } @else {
-            <cc-json-viewer
+            <v-thrift-tree-viewer
                 *ngIf="kind === 'component'"
                 [extensions]="extensions"
                 [metadata]="metadata"
                 [namespace]="namespace"
                 [type]="type"
                 [value]="value"
-            ></cc-json-viewer>
+            ></v-thrift-tree-viewer>
             <ngx-monaco-editor
                 *ngIf="kind === 'editor'"
                 [ngModel]="valueFile.code"
@@ -30,7 +30,7 @@
             >
             </ngx-monaco-editor>
             <div class="actions">
-                <button color="primary" mat-icon-button (click)="toggleKind()">
+                <button mat-mini-fab (click)="toggleKind()">
                     @switch (kind) {
                         @case ('component') {
                             <mat-icon>code_blocks</mat-icon>

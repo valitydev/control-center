@@ -1,8 +1,8 @@
-@use '../../../../../libs/matez/index' as v;
-@import './timeline-item/timeline-item-badge/timeline-item-badge-theme';
+@use '@angular/material' as mat;
+@use 'timeline-item/timeline-item-badge/timeline-item-badge-theme';
 
 @mixin cc-timeline-theme($theme) {
-    $line-color: v.get-color($theme, neutral, 200);
+    $line-color: mat.get-theme-color($theme, neutral, 90);
 
     .cc-timeline {
         border-bottom-color: $line-color !important;
@@ -12,5 +12,5 @@
         }
     }
 
-    @include cc-timeline-item-badge-theme($theme);
+    @include timeline-item-badge-theme.cc-timeline-item-badge-theme($theme);
 }

@@ -1,12 +1,11 @@
 @use '@angular/material' as mat;
-@import '../../styles/utils/get-color';
 
 @mixin theme($theme) {
     .column {
         &,
         &__sticky-start,
         &__sticky-end {
-            border-color: get-color($theme, neutral, 300) !important;
+            border-color: mat.get-theme-color($theme, neutral, 90) !important;
         }
     }
 }

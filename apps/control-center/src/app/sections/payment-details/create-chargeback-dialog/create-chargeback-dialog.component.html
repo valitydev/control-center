@@ -8,8 +8,6 @@
     ></cc-metadata-form>
 
     <v-dialog-actions>
-        <button [disabled]="form.invalid" color="primary" mat-raised-button (click)="create()">
-            Create
-        </button>
+        <button [disabled]="form.invalid" mat-flat-button (click)="create()">Create</button>
     </v-dialog-actions>
 </v-dialog>

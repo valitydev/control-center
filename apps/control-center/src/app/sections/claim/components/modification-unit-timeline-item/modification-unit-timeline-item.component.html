@@ -20,7 +20,7 @@
                     mat-menu-item
                     (click)="update()"
                 >
-                    Update
+                    Change
                 </button>
                 <button [disabled]="isLoading$ | async" mat-menu-item (click)="remove()">
                     Remove
@@ -36,13 +36,13 @@
                 <mat-expansion-panel-header>
                     {{ name | ngtKeyTitle | titlecase }}
                 </mat-expansion-panel-header>
-                <cc-json-viewer
+                <v-thrift-tree-viewer
                     [extensions]="extensions$ | async"
                     [metadata]="metadata$ | async"
                     [value]="modificationUnit?.modification"
                     namespace="claim_management"
                     type="Modification"
-                ></cc-json-viewer>
+                ></v-thrift-tree-viewer>
             </mat-expansion-panel>
         </ng-template>
     </cc-timeline-item-content>

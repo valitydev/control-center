@@ -12,7 +12,6 @@
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @mixin all-component-themes($theme) {
-    @include mat.all-component-themes($theme);
     @include mtx.select-theme($theme);
 
     @include table-theme.theme($theme);
@@ -21,11 +20,4 @@
     @include tag-theme.theme($theme);
     @include input-field-theme.theme($theme);
     @include nav-theme.theme($theme);
-
-    // TODO: Temporary fix mtx select typography
-    $typography: map-get($theme, typography);
-    .ng-option,
-    .ng-select-container {
-        @include mat.m2-typography-level($typography, subtitle-1);
-    }
 }

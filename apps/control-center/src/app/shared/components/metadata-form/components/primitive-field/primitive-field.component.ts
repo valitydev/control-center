@@ -15,8 +15,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
+    getExtensionsResult,
 } from '../../types/metadata-form-extension';
-import { getExtensionsResult } from '../../types/metadata-form-extension';
 
 @Component({
     selector: 'cc-primitive-field',

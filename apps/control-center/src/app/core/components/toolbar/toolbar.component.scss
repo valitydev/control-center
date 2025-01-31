@@ -3,6 +3,7 @@
     z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    color: #fff;
 
     & > * {
         display: flex;
@@ -10,8 +11,16 @@
     }
 }
 
+.logo {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr 1fr;
+    cursor: pointer;
+}
+
 .search {
     gap: 12px;
+    --mtx-select-enabled-arrow-color: #fff;
 
     & > * {
         min-width: 96px;
@@ -43,10 +52,12 @@
         border-color: rgba(255, 255, 255, 0.2);
         border-left-color: #fff;
     }
-
-    --mtx-select-enabled-arrow-color: #fff;
 }
 
 .user {
     justify-self: end;
+
+    * {
+        color: #fff;
+    }
 }

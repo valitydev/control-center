@@ -1,5 +1,5 @@
 <div style="display: flex; flex-direction: column; gap: 24px">
-    <h1 class="mat-headline-5">Reverts</h1>
+    <h1 class="mat-headline-small">Reverts</h1>
     <v-table
         [columns]="columns"
         [data]="reverts$ | async"
@@ -11,8 +11,7 @@
         <v-table-actions>
             <button
                 [disabled]="isCreateRevertAvailable(deposit?.status)"
-                color="primary"
-                mat-raised-button
+                mat-flat-button
                 (click)="createRevert()"
             >
                 Create revert

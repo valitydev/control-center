@@ -16,11 +16,11 @@ import {
 import { createPartyColumn, createPredicateColumn } from '../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainObjectCardComponent, DomainThriftViewerComponent } from '../thrift-api-crud';
+import { DomainObjectCardComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
-    imports: [CommonModule, CardComponent, DomainThriftViewerComponent, TableModule],
+    imports: [CommonModule, CardComponent, TableModule],
     templateUrl: './terminal-delegates-card.component.html',
 })
 export class TerminalDelegatesCardComponent implements OnChanges {

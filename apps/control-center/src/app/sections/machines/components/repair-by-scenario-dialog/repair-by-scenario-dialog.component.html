@@ -19,11 +19,9 @@
         <ng-container *ngIf="hasNs">
             <ng-container *ngIf="typeControl.value === typesEnum.Same">
                 <mat-chip-listbox>
-                    <mat-chip-option
-                        *ngFor="let machine of dialogData.machines"
-                        class="mat-body-1"
-                        >{{ machine.id }}</mat-chip-option
-                    >
+                    @for (machine of dialogData.machines; track machine.id) {
+                        <v-tag>{{ machine.id }}</v-tag>
+                    }
                 </mat-chip-listbox>
                 <cc-metadata-form
                     [extensions]="extensions$ | async"
@@ -65,7 +63,6 @@
                 nsControl.invalid ||
                 (typeControl.value === typesEnum.Same ? sameForm.invalid : form.invalid)
             "
-            color="primary"
             mat-button
             (click)="repair()"
         >

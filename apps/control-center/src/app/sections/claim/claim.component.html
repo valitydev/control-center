@@ -1,24 +1,24 @@
-<cc-page-layout description="#{{ (claim$ | async)?.id }}" title="Claim">
+<cc-page-layout [id]="(claim$ | async)?.id" title="Claim">
     <cc-page-layout-actions *ngIf="claim$ | async as claim">
         <cc-status [color]="statusColor[claim.status | ngtUnionKey]">{{
             claim.status | ngtUnionKey | ngtKeyTitle | titlecase
         }}</cc-status>
     </cc-page-layout-actions>
 
-    <div *ngIf="claim$ | async as claim" style="display: flex; flex-direction: column; gap: 24px">
-        <h2 class="mat-headline-5">Changeset</h2>
-        <div
-            *ngIf="isLoading$ | async; else timeline"
-            style="display: flex; justify-content: center"
-        >
-            <mat-progress-spinner
-                color="primary"
-                diameter="128"
-                mode="indeterminate"
-            ></mat-progress-spinner>
-        </div>
-        <ng-template #timeline>
-            <cc-timeline>
+    <div style="display: flex; flex-direction: column; gap: 24px">
+        <cc-timeline>
+            @if (isLoading$ | async) {
+                <cc-timeline-item>
+                    <cc-timeline-item-badge color="pending">
+                        <mat-icon>hourglass_empty</mat-icon>
+                    </cc-timeline-item-badge>
+                    <cc-timeline-item-title>
+                        <cc-timeline-item-header text="Loading..."></cc-timeline-item-header>
+                    </cc-timeline-item-title>
+                </cc-timeline-item>
+            } @else {
+                @let claim = claim$ | async;
+
                 <cc-timeline-item>
                     <cc-timeline-item-badge>
                         <mat-icon>create</mat-icon>
@@ -79,23 +79,20 @@
                         (claimChanged)="reloadClaim()"
                     ></cc-modification-unit-timeline-item>
                 </ng-container>
-            </cc-timeline>
-        </ng-template>
+            }
+        </cc-timeline>
 
         <v-actions>
             <button
                 [disabled]="(isAllowedChangeStatus$ | async) === false"
-                color="accent"
-                mat-raised-button
+                mat-button
                 (click)="changeStatus()"
             >
                 Change status
             </button>
-            <button mat-raised-button (click)="createWallet()">Add wallet modification</button>
-            <button mat-raised-button (click)="createShop()">Add shop modifications</button>
-            <button color="primary" mat-raised-button (click)="addModification()">
-                Add modification
-            </button>
+            <button mat-button (click)="createWallet()">Add wallet modification</button>
+            <button mat-button (click)="createShop()">Add shop modifications</button>
+            <button mat-flat-button (click)="addModification()">Add modification</button>
         </v-actions>
     </div>
 </cc-page-layout>

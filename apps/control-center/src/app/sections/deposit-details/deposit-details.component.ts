@@ -6,6 +6,8 @@ import { Timestamp } from '@vality/fistful-proto/internal/base';
 import { formatCurrency, getImportValue } from '@vality/matez';
 import {
     ThriftAstMetadata,
+    ThriftViewExtension,
+    ThriftViewExtensionResult,
     getUnionKey,
     getUnionValue,
     isTypeWithAliases,
@@ -15,10 +17,6 @@ import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { ManagementService } from '../../api/wallet';
-import {
-    MetadataViewExtension,
-    MetadataViewExtensionResult,
-} from '../../shared/components/json-viewer';
 import { AmountCurrencyService } from '../../shared/services';
 import { FetchSourcesService } from '../sources';
 
@@ -34,7 +32,7 @@ export class DepositDetailsComponent implements OnInit {
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
-    extensions$: Observable<MetadataViewExtension[]> = this.fetchDepositService.deposit$.pipe(
+    extensions$: Observable<ThriftViewExtension[]> = this.fetchDepositService.deposit$.pipe(
         map((deposit) => [
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'Timestamp', 'base')),
@@ -98,7 +96,7 @@ export class DepositDetailsComponent implements OnInit {
                 extension: (_, id: string) =>
                     this.walletManagementService.Get(id, {}).pipe(
                         map(
-                            (wallet): MetadataViewExtensionResult => ({
+                            (wallet): ThriftViewExtensionResult => ({
                                 value: wallet.name,
                                 tooltip: wallet.id,
                                 link: [
@@ -115,7 +113,7 @@ export class DepositDetailsComponent implements OnInit {
                     this.fetchSourcesService.sources$.pipe(
                         map((sources) => sources.find((s) => s.id === id)),
                         map(
-                            (source): MetadataViewExtensionResult => ({
+                            (source): ThriftViewExtensionResult => ({
                                 value: source.name,
                                 tooltip: source.id,
                             }),

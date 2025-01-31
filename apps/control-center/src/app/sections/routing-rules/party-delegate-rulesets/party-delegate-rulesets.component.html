@@ -4,7 +4,7 @@
     fullHeight
 >
     <cc-page-layout-actions>
-        <button color="primary" mat-raised-button (click)="attachNewRuleset()">Add</button>
+        <button mat-flat-button (click)="attachNewRuleset()">Add</button>
     </cc-page-layout-actions>
     <cc-routing-rules-list
         [data]="data$ | async"

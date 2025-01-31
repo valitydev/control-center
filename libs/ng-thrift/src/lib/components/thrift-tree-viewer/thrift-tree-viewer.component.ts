@@ -1,38 +1,36 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ThriftAstMetadata } from '@vality/domain-proto';
-import { ThriftData } from '@vality/ng-thrift';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { map } from 'rxjs';
 import yaml from 'yaml';
 
-import { MetadataViewItem } from './utils/metadata-view';
-import {
-    MetadataViewExtension,
-    MetadataViewExtensionResult,
-} from './utils/metadata-view-extension';
+import { ThriftData } from '../../models';
+import { ThriftAstMetadata } from '../../types';
+
+import { ThriftViewData } from './utils/thrift-view-data';
+import { ThriftViewExtension, ThriftViewExtensionResult } from './utils/thrift-view-extension';
 
 @Component({
-    selector: 'cc-json-viewer',
-    templateUrl: './json-viewer.component.html',
-    styleUrls: ['./json-viewer.scss'],
+    selector: 'v-thrift-tree-viewer',
+    templateUrl: './thrift-tree-viewer.component.html',
+    styleUrls: ['./thrift-tree-viewer.scss'],
     standalone: false,
 })
-export class JsonViewerComponent implements OnChanges {
+export class ThriftTreeViewerComponent implements OnChanges {
     @Input() value: unknown;
     @Input() level = 0;
-    @Input() extension?: MetadataViewExtensionResult;
+    @Input() extension?: ThriftViewExtensionResult | null;
 
-    @Input() metadata: ThriftAstMetadata[];
-    @Input() namespace: string;
-    @Input() type: ValueType;
+    @Input() metadata!: ThriftAstMetadata[];
+    @Input() namespace!: string;
+    @Input() type!: ValueType;
     @Input() field?: Field;
     @Input() parent?: ThriftData;
 
-    @Input() data: ThriftData;
-    @Input() extensions: MetadataViewExtension[];
+    @Input() data?: ThriftData | null;
+    @Input() extensions!: ThriftViewExtension[];
 
-    view: MetadataViewItem;
+    view!: ThriftViewData;
     className = this.getClassName();
     extensionQueryParams$ = this.route.queryParams.pipe(
         map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams)),
@@ -55,20 +53,20 @@ export class JsonViewerComponent implements OnChanges {
                 console.warn(err);
             }
         }
-        this.view = new MetadataViewItem(this.value, undefined, this.data, this.extensions);
+        this.view = new ThriftViewData(this.value, undefined, this.data, this.extensions);
         this.className = this.getClassName();
     }
 
     getClassName() {
         switch (this.level) {
             case 0:
-                return 'mat-h2';
+                return 'mat-title-large';
             case 1:
-                return 'mat-h3';
+                return 'mat-title-medium';
             case 2:
-                return 'mat-h4';
+                return 'mat-body-large';
             default:
-                return 'mat-body-2';
+                return 'mat-body-large';
         }
     }
 

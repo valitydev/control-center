@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { DetailsItemModule } from '../../../components/details-item/details-item.module';
 import { HeadlineModule } from '../../../components/headline/headline.module';
 import { PageLayoutModule, StatusModule } from '../../shared/components';
 import { ThriftViewerModule } from '../../shared/components/thrift-viewer';
@@ -20,7 +19,6 @@ import { RevertsModule } from './reverts/reverts.module';
         HeadlineModule,
         DepositDetailsRoutingModule,
         MatCardModule,
-        DetailsItemModule,
         StatusModule,
         MatProgressSpinnerModule,
         MatButtonModule,
