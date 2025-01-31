@@ -100,7 +100,7 @@ export class ThriftViewData {
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    current$ = this.path$.pipe(map((keys) => keys.at(-1)));
+    current$ = this.path$.pipe(map((keys) => keys.at(-1) as ThriftViewData));
 
     isLeaf$ = combineLatest([
         this.current$.pipe(switchMap((c) => c.items$)),
@@ -154,7 +154,7 @@ export class ThriftViewData {
     constructor(
         private value: unknown,
         public key?: ThriftViewData,
-        private data?: ThriftData,
+        private data?: ThriftData | null,
         private extensions?: ThriftViewExtension[],
     ) {}
 

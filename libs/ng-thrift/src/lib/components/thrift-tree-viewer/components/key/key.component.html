@@ -7,7 +7,11 @@
             <span [class]="(parentIsUnion(pathItem) | async) ? 'bold' : 'mat-secondary-text'"
                 >{{ (pathItem.key$ | async)?.renderValue$ | async | ngtKeyTitle | titlecase
                 }}{{
-                    idx !== keys.length - 1 ? ((isUnion(pathItem) | async) ? ': ' : ' / ') : ''
+                    idx !== (keys?.length || 0) - 1
+                        ? (isUnion(pathItem) | async)
+                            ? ': '
+                            : ' / '
+                        : ''
                 }}</span
             >
         </ng-container>

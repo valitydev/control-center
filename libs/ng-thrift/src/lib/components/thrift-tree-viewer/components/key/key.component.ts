@@ -12,14 +12,14 @@ import { ThriftViewData } from '../../utils/thrift-view-data';
     standalone: false,
 })
 export class KeyComponent implements OnChanges {
-    @Input() keys?: ThriftViewData[];
+    @Input() keys?: ThriftViewData[] | null;
     keys$ = new ReplaySubject<ThriftViewData[]>(1);
     numberKey$ = this.keys$.pipe(
         switchMap((keys) => {
             if (keys.length !== 1) {
                 return of(null);
             }
-            return this.keys[0].key$.pipe(
+            return (this.keys as ThriftViewData[])[0].key$.pipe(
                 switchMap((key) => key.renderValue$),
                 map((value) => {
                     if (typeof value === 'number') {
@@ -33,7 +33,7 @@ export class KeyComponent implements OnChanges {
 
     ngOnChanges(changes: ComponentChanges<KeyComponent>) {
         if (changes.keys) {
-            this.keys$.next(this.keys);
+            this.keys$.next(this.keys as ThriftViewData[]);
         }
     }
 

@@ -43,7 +43,7 @@
                 }"
             >
                 <v-key
-                    *ngIf="!((item.current$ | async)?.key.data$ | async); else mapKey"
+                    *ngIf="!((item.current$ | async)?.key?.data$ | async); else mapKey"
                     [class]="className"
                     [keys]="item.path$ | async"
                 ></v-key>

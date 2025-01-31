@@ -3,5 +3,6 @@
     "dest": "../../dist/libs/ng-thrift",
     "lib": {
         "entryFile": "src/index.ts"
-    }
+    },
+    "allowedNonPeerDependencies": ["yaml"]
 }

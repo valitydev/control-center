@@ -19,7 +19,7 @@ import { ThriftViewExtension, ThriftViewExtensionResult } from './utils/thrift-v
 export class ThriftTreeViewerComponent implements OnChanges {
     @Input() value: unknown;
     @Input() level = 0;
-    @Input() extension?: ThriftViewExtensionResult;
+    @Input() extension?: ThriftViewExtensionResult | null;
 
     @Input() metadata!: ThriftAstMetadata[];
     @Input() namespace!: string;
@@ -27,7 +27,7 @@ export class ThriftTreeViewerComponent implements OnChanges {
     @Input() field?: Field;
     @Input() parent?: ThriftData;
 
-    @Input() data?: ThriftData;
+    @Input() data?: ThriftData | null;
     @Input() extensions!: ThriftViewExtension[];
 
     view!: ThriftViewData;
