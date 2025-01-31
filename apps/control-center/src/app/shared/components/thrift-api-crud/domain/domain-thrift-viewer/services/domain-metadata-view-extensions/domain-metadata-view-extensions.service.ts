@@ -7,8 +7,8 @@ import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
 import { getImportValue } from '@vality/matez';
 import {
-    ThriftViewExtension,
     ThriftData,
+    ThriftViewExtension,
     getUnionValue,
     isTypeWithAliases,
 } from '@vality/ng-thrift';

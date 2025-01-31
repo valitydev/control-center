@@ -20,7 +20,7 @@ import {
     PipesModule,
     TagModule,
 } from '@vality/matez';
-import { ThriftTreeViewerModule, ThriftPipesModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
+import { ThriftPipesModule, ThriftTreeViewerModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
 
 import { ComplexFormComponent } from './components/complex-form/complex-form.component';
 import { EnumFieldComponent } from './components/enum-field/enum-field.component';

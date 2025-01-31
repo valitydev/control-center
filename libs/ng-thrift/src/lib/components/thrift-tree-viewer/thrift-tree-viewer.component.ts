@@ -7,8 +7,8 @@ import yaml from 'yaml';
 import { ThriftData } from '../../models';
 import { ThriftAstMetadata } from '../../types';
 
-import { ThriftViewExtension, ThriftViewExtensionResult } from './utils/thrift-view-extension';
 import { ThriftViewData } from './utils/thrift-view-data';
+import { ThriftViewExtension, ThriftViewExtensionResult } from './utils/thrift-view-extension';
 
 @Component({
     selector: 'v-thrift-tree-viewer',

@@ -5,9 +5,9 @@ import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat'
 import { Timestamp } from '@vality/fistful-proto/internal/base';
 import { formatCurrency, getImportValue } from '@vality/matez';
 import {
+    ThriftAstMetadata,
     ThriftViewExtension,
     ThriftViewExtensionResult,
-    ThriftAstMetadata,
     getUnionKey,
     getUnionValue,
     isTypeWithAliases,
