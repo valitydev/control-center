@@ -26,11 +26,11 @@ export type ThriftViewExtension = {
 };
 
 export function getFirstDeterminedThriftViewExtensionResult(
-    sourceExtensions: ThriftViewExtension[],
+    sourceExtensions: ThriftViewExtension[] | undefined,
     data: ThriftData,
     value: unknown,
     viewValue: unknown,
-): Observable<ThriftViewExtensionResult> {
+): Observable<ThriftViewExtensionResult | null> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data, value))).pipe(
               map((determined) => sourceExtensions.find((_, idx) => determined[idx])),

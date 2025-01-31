@@ -21,16 +21,16 @@ export class ThriftTreeViewerComponent implements OnChanges {
     @Input() level = 0;
     @Input() extension?: ThriftViewExtensionResult;
 
-    @Input() metadata: ThriftAstMetadata[];
-    @Input() namespace: string;
-    @Input() type: ValueType;
+    @Input() metadata!: ThriftAstMetadata[];
+    @Input() namespace!: string;
+    @Input() type!: ValueType;
     @Input() field?: Field;
     @Input() parent?: ThriftData;
 
-    @Input() data: ThriftData;
-    @Input() extensions: ThriftViewExtension[];
+    @Input() data?: ThriftData;
+    @Input() extensions!: ThriftViewExtension[];
 
-    view: ThriftViewData;
+    view!: ThriftViewData;
     className = this.getClassName();
     extensionQueryParams$ = this.route.queryParams.pipe(
         map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams)),

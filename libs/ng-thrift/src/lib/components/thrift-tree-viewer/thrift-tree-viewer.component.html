@@ -77,7 +77,7 @@
     >
         <span
             *ngIf="extension?.tooltip; else tagValue"
-            [matTooltip]="getTooltip(extension.tooltip)"
+            [matTooltip]="getTooltip(extension?.tooltip)"
             matTooltipClass="tooltip"
         >
             <ng-container *ngTemplateOutlet="tagValue"></ng-container>

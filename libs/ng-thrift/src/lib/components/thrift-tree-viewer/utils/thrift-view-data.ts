@@ -1,5 +1,5 @@
 import { isEmpty } from '@vality/matez';
-import { ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+import { Enum, JsonAST, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
@@ -16,24 +16,26 @@ import {
 } from './thrift-view-extension';
 
 export class ThriftViewData {
-    extension$: Observable<ThriftViewExtensionResult> = defer(() => this.renderValue$).pipe(
+    extension$: Observable<ThriftViewExtensionResult | null> = defer(() => this.renderValue$).pipe(
         switchMap((viewValue) =>
             getFirstDeterminedThriftViewExtensionResult(
                 this.extensions,
-                this.data,
+                this.data as ThriftData,
                 this.value,
                 viewValue,
             ),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    data$ = this.extension$.pipe(
+    data$: Observable<ThriftData | null | undefined> = this.extension$.pipe(
         startWith(null),
         map((ext) => (ext ? null : this.data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    key$ = this.extension$.pipe(
-        map((ext) => (isNil(ext?.key) ? this.key : new ThriftViewData(ext.key))),
+    key$: Observable<ThriftViewData> = this.extension$.pipe(
+        map((ext) =>
+            isNil(ext?.key) ? (this.key as ThriftViewData) : new ThriftViewData(ext.key),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     value$ = this.extension$.pipe(
@@ -128,22 +130,22 @@ export class ThriftViewData {
         }),
     );
 
-    leaves$ = this.items$.pipe(
+    leaves$: Observable<ThriftViewData[]> = this.items$.pipe(
         switchMap((items) =>
             combineLatest(
                 items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? item : null)))),
             ),
         ),
-        map((items) => items.filter(Boolean)),
+        map((items) => items.filter(Boolean) as ThriftViewData[]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    nodes$ = this.items$.pipe(
+    nodes$: Observable<ThriftViewData[]> = this.items$.pipe(
         switchMap((items) =>
             combineLatest(
                 items.map((item) => item.isLeaf$.pipe(map((isLeaf) => (isLeaf ? null : item)))),
             ),
         ),
-        map((items) => items.filter(Boolean)),
+        map((items) => items.filter(Boolean) as ThriftViewData[]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
@@ -160,7 +162,10 @@ export class ThriftViewData {
         return combineLatest([this.data$, this.value$]).pipe(
             map(([data, value]) => {
                 if (data) {
-                    const trueData = this.data.trueTypeNode.data;
+                    const trueData = this.data?.trueTypeNode.data as ThriftData<
+                        ValueType,
+                        keyof JsonAST
+                    >;
                     if (
                         trueData.objectType === 'struct' ||
                         trueData.objectType === 'union' ||
@@ -170,7 +175,7 @@ export class ThriftViewData {
                         return getEntries(value).map(([itemKey, itemValue]) => {
                             return new ThriftViewData(
                                 itemValue,
-                                types.keyType
+                                types?.keyType
                                     ? new ThriftViewData(
                                           itemKey,
                                           undefined,
@@ -179,8 +184,8 @@ export class ThriftViewData {
                                       )
                                     : new ThriftViewData(itemKey),
                                 trueData.create({
-                                    field: types.fields?.find((f) => f.name === itemKey),
-                                    type: types.valueType,
+                                    field: types?.fields?.find((f) => f.name === itemKey),
+                                    type: types?.valueType,
                                 }),
                                 this.extensions,
                             );
@@ -196,22 +201,24 @@ export class ThriftViewData {
         );
     }
 
-    private getValue(ext: ThriftViewExtensionResult) {
+    private getValue(ext: ThriftViewExtensionResult | null) {
         const value = ext?.value ?? this.value;
         return isEmpty(value) || ext?.hidden ? null : value;
     }
 
-    private getRenderValue(value: unknown, data: ThriftData) {
+    private getRenderValue(value: unknown, data?: ThriftData | null) {
         if (data?.trueTypeNode?.data?.objectType === 'enum') {
             return (
-                (data.trueTypeNode.data as ThriftData<ValueType, 'enum'>).ast.items.find(
-                    (i, idx) => {
-                        if ('value' in i) {
-                            return i.value === value;
-                        }
-                        return idx === value;
-                    },
-                ).name ?? value
+                (
+                    ((data.trueTypeNode.data as ThriftData<ValueType, 'enum'>).ast?.['items'] as
+                        | Enum[]
+                        | undefined) ?? []
+                ).find((i, idx) => {
+                    if ('value' in i) {
+                        return i.value === value;
+                    }
+                    return idx === value;
+                })?.name ?? value
             );
         }
         if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1])) {

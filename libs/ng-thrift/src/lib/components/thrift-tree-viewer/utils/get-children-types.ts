@@ -2,11 +2,13 @@ import { Field, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts'
 
 import { ThriftData, TypeGroup } from '../../../models';
 
-export function getChildrenTypes(sourceData: ThriftData): {
-    keyType?: ValueType;
-    valueType?: ValueType;
-    fields?: Field[];
-} {
+export function getChildrenTypes(sourceData: ThriftData):
+    | {
+          keyType?: ValueType;
+          valueType?: ValueType;
+          fields?: Field[];
+      }
+    | undefined {
     const data = sourceData.trueTypeNode.data;
     switch (data.typeGroup) {
         case TypeGroup.Object: {
