@@ -68,5 +68,7 @@
             </ng-template>
         </mat-expansion-panel>
     </mat-accordion>
-    <button mat-button (click)="add()">Add {{ data.type.valueType | ngtValueTypeTitle }}</button>
+    <button [ngStyle]="{ 'margin-left': hasLabel && '16px' }" mat-button (click)="add()">
+        Add {{ data.type.valueType | ngtValueTypeTitle }}
+    </button>
 </div>

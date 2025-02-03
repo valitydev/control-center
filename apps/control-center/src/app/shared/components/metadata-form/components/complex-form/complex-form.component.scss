@@ -17,7 +17,10 @@
     }
 }
 
-mat-expansion-panel-header {
-    padding: 0 2px 0 0;
-    background: #fff !important;
+mat-expansion-panel {
+    border-radius: 0;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #ddd;
+    }
 }
