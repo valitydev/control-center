@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, DialogModule, PipesModule } from '@vality/matez';
-import { ThriftPipesModule, ThriftTreeViewerModule } from '@vality/ng-thrift';
+import { ThriftPipesModule, ThriftViewerModule } from '@vality/ng-thrift';
 
 import { TimelineModule } from '../../../components/timeline/timeline.module';
 import { PageLayoutModule } from '../../shared';
@@ -51,7 +51,7 @@ import { TimelineItemLoadingComponent } from './components/timeline-item-loading
         MatIconModule,
         ThriftPipesModule,
         MatExpansionModule,
-        ThriftTreeViewerModule,
+        ThriftViewerModule,
         MatCardModule,
         StatusModule,
         MatDividerModule,

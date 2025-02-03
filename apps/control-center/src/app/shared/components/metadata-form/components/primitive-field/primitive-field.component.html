@@ -55,9 +55,7 @@
 >
     <mat-card class="details-card">
         <mat-card-content>
-            <v-thrift-tree-viewer
-                [value]="(selectedExtensionOption$ | async).details"
-            ></v-thrift-tree-viewer>
+            <v-thrift-viewer [value]="(selectedExtensionOption$ | async).details"></v-thrift-viewer>
         </mat-card-content>
     </mat-card>
 </div>
