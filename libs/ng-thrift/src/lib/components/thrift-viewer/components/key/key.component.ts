@@ -1,15 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ThriftPipesModule } from '../../../../pipes';
 import { ThriftViewData } from '../../utils/thrift-view-data';
 
 @Component({
     selector: 'v-key',
     templateUrl: './key.component.html',
     styleUrls: ['./key.component.scss'],
-    standalone: false,
+    imports: [CommonModule, ThriftPipesModule],
 })
 export class KeyComponent implements OnChanges {
     @Input() keys?: ThriftViewData[] | null;

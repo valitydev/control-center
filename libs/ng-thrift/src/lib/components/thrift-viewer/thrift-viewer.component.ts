@@ -6,7 +6,8 @@ import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
 
 import { toJson } from '../../utils';
-import { ThriftViewExtension } from '../thrift-tree-viewer';
+
+import { ThriftViewExtension } from './utils/thrift-view-extension';
 
 export enum ViewerKind {
     Editor = 'editor',

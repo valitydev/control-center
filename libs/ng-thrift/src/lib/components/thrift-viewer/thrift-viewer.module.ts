@@ -7,8 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
-import { ThriftTreeViewerModule } from '../thrift-tree-viewer';
-
+import { ThriftTreeViewerComponent } from './components/thrift-tree-viewer';
 import { ThriftViewerComponent } from './thrift-viewer.component';
 
 @NgModule({
@@ -21,7 +20,7 @@ import { ThriftViewerComponent } from './thrift-viewer.component';
         MatButtonToggleModule,
         MatButtonModule,
         MatIconModule,
-        ThriftTreeViewerModule,
+        ThriftTreeViewerComponent,
         MatProgressSpinnerModule,
         FormsModule,
     ],

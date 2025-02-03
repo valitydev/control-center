@@ -1,20 +1,41 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { TagModule } from '@vality/matez';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { map } from 'rxjs';
 import yaml from 'yaml';
 
-import { ThriftData } from '../../models';
-import { ThriftAstMetadata } from '../../types';
-
-import { ThriftViewData } from './utils/thrift-view-data';
-import { ThriftViewExtension, ThriftViewExtensionResult } from './utils/thrift-view-extension';
+import { ThriftData } from '../../../../models';
+import { ThriftPipesModule } from '../../../../pipes';
+import { ThriftAstMetadata } from '../../../../types';
+import { ThriftViewData } from '../../utils/thrift-view-data';
+import { ThriftViewExtension, ThriftViewExtensionResult } from '../../utils/thrift-view-extension';
+import { KeyComponent } from '../key/key.component';
 
 @Component({
     selector: 'v-thrift-tree-viewer',
     templateUrl: './thrift-tree-viewer.component.html',
     styleUrls: ['./thrift-tree-viewer.scss'],
-    standalone: false,
+    imports: [
+        CommonModule,
+        MatDividerModule,
+        MatCardModule,
+        ThriftPipesModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatBadgeModule,
+        RouterModule,
+        TagModule,
+        KeyComponent,
+    ],
 })
 export class ThriftTreeViewerComponent implements OnChanges {
     @Input() value: unknown;
