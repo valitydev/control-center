@@ -9,7 +9,10 @@ module.exports = [
         rules: {
             '@nx/dependency-checks': [
                 'error',
-                { ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'] },
+                {
+                    ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
+                    ignoredDependencies: ['monaco-editor'],
+                },
             ],
         },
         languageOptions: { parser: require('jsonc-eslint-parser') },

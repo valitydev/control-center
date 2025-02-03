@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, Output, booleanAttribute } from '@angular/core';
-import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges, UnionEnum } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
 
+import { ThriftAstMetadata } from '../../types';
 import { toJson } from '../../utils';
 
 import { ThriftViewExtension } from './utils/thrift-view-extension';
