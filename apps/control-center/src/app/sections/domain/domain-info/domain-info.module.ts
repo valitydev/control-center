@@ -9,11 +9,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, PipesModule } from '@vality/matez';
-import { ThriftPipesModule } from '@vality/ng-thrift';
+import { ThriftPipesModule, ThriftViewerModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '../../../shared';
 import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
-import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 
 import { DomainInfoComponent } from './domain-info.component';
 import { DomainObjectsTableComponent } from './domain-objects-table';

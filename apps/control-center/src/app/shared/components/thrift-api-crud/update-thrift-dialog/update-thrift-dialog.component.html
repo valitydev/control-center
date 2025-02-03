@@ -1,8 +1,8 @@
 <v-dialog [progress]="!!(progress$ | async)" [title]="dialogData?.title || 'View changes'">
-    <cc-thrift-viewer
+    <v-thrift-viewer
         [compared]="dialogData.object"
         [value]="dialogData.prevObject"
-    ></cc-thrift-viewer>
+    ></v-thrift-viewer>
 
     <v-dialog-actions>
         <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="closeWithSuccess()">

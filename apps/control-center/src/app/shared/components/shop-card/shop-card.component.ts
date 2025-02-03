@@ -3,13 +3,13 @@ import { Component, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
+import { ThriftViewerModule } from '@vality/ng-thrift';
 import { combineLatest } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
-import { ThriftViewerModule } from '../thrift-viewer';
 
 @Component({
     selector: 'cc-shop-card',

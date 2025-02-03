@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, Output, booleanAttribute } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ComponentChanges, UnionEnum } from '@vality/matez';
-import { ThriftViewExtension, toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
+
+import { toJson } from '../../utils';
+import { ThriftViewExtension } from '../thrift-tree-viewer';
 
 export enum ViewerKind {
     Editor = 'editor',
@@ -12,20 +14,20 @@ export enum ViewerKind {
 }
 
 @Component({
-    selector: 'cc-thrift-viewer',
+    selector: 'v-thrift-viewer',
     templateUrl: './thrift-viewer.component.html',
     styleUrls: ['./thrift-viewer.component.scss'],
     standalone: false,
 })
 export class ThriftViewerComponent<T> implements OnChanges {
     @Input() kind: UnionEnum<ViewerKind> = ViewerKind.Component;
-    @Input() value: T;
+    @Input() value!: T;
     @Input() compared?: T;
     @Input({ transform: booleanAttribute }) progress: boolean = false;
 
-    @Input() metadata: ThriftAstMetadata[];
-    @Input() namespace: string;
-    @Input() type: ValueType;
+    @Input() metadata!: ThriftAstMetadata[];
+    @Input() namespace!: string;
+    @Input() type!: ValueType;
     @Input() extensions?: ThriftViewExtension[];
 
     @Output() changeKind = new EventEmitter<ViewerKind>();
