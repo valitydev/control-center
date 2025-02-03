@@ -49,7 +49,7 @@ export class ThriftTreeViewerComponent implements OnChanges {
     @Input() parent?: ThriftData;
 
     @Input() data?: ThriftData | null;
-    @Input() extensions!: ThriftViewExtension[];
+    @Input() extensions?: ThriftViewExtension[];
 
     view!: ThriftViewData;
     className = this.getClassName();

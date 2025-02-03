@@ -5,42 +5,46 @@
 } @else {
     <div class="wrapper">
         @let valueFile = valueFile$ | async;
-
-        @if (isDiff) {
-            <ngx-monaco-diff-editor
-                [modifiedModel]="comparedFile$ | async"
-                [options]="{ renderSideBySide: true, readOnly: true }"
-                [originalModel]="valueFile"
-                class="monaco-editor"
-            ></ngx-monaco-diff-editor>
-        } @else {
-            <v-thrift-tree-viewer
-                *ngIf="kind === 'component'"
-                [extensions]="extensions"
-                [metadata]="metadata"
-                [namespace]="namespace"
-                [type]="type"
-                [value]="value"
-            ></v-thrift-tree-viewer>
-            <ngx-monaco-editor
-                *ngIf="kind === 'editor'"
-                [ngModel]="valueFile.code"
-                [options]="{ readOnly: true, language: valueFile.language }"
-                class="monaco-editor"
-            >
-            </ngx-monaco-editor>
-            <div class="actions">
-                <button mat-mini-fab (click)="toggleKind()">
-                    @switch (kind) {
-                        @case ('component') {
-                            <mat-icon>code_blocks</mat-icon>
+        @if (valueFile) {
+            @if (isDiff) {
+                @let comparedFile = comparedFile$ | async;
+                @if (comparedFile) {
+                    <ngx-monaco-diff-editor
+                        [modifiedModel]="comparedFile"
+                        [options]="{ renderSideBySide: true, readOnly: true }"
+                        [originalModel]="valueFile"
+                        class="monaco-editor"
+                    ></ngx-monaco-diff-editor>
+                }
+            } @else {
+                <v-thrift-tree-viewer
+                    *ngIf="kind === 'component'"
+                    [extensions]="extensions"
+                    [metadata]="metadata"
+                    [namespace]="namespace"
+                    [type]="type"
+                    [value]="value"
+                ></v-thrift-tree-viewer>
+                <ngx-monaco-editor
+                    *ngIf="kind === 'editor'"
+                    [ngModel]="valueFile.code"
+                    [options]="{ readOnly: true, language: valueFile.language }"
+                    class="monaco-editor"
+                >
+                </ngx-monaco-editor>
+                <div class="actions">
+                    <button mat-mini-fab (click)="toggleKind()">
+                        @switch (kind) {
+                            @case ('component') {
+                                <mat-icon>code_blocks</mat-icon>
+                            }
+                            @case ('editor') {
+                                <mat-icon>view_comfy_alt</mat-icon>
+                            }
                         }
-                        @case ('editor') {
-                            <mat-icon>view_comfy_alt</mat-icon>
-                        }
-                    }
-                </button>
-            </div>
+                    </button>
+                </div>
+            }
         }
     </div>
 }
