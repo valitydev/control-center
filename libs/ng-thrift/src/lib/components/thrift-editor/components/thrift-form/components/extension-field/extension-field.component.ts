@@ -26,7 +26,7 @@ export class ExtensionFieldComponent<T>
     implements Validator, OnChanges, OnInit
 {
     @Input() data!: ThriftData<ThriftType>;
-    @Input() extensions!: MetadataFormExtension[];
+    @Input() extensions?: MetadataFormExtension[];
 
     control = new FormControl<T>(null);
 

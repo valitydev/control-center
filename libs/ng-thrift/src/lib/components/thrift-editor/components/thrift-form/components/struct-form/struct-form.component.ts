@@ -34,7 +34,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     implements OnChanges, OnInit
 {
     @Input() data!: ThriftData<string, 'struct'>;
-    @Input() extensions!: MetadataFormExtension[];
+    @Input() extensions?: MetadataFormExtension[];
 
     control: FormGroup = this.fb.group<T>({} as T);
     labelControl = this.fb.control(false);

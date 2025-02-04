@@ -16,7 +16,7 @@ import {
     getValueChanges,
     isEqualDateRange,
 } from '@vality/matez';
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import { MetadataFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
@@ -24,7 +24,6 @@ import { BehaviorSubject, merge, of } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
-import { MetadataFormExtension } from '../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';

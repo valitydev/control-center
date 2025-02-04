@@ -31,7 +31,7 @@ export class PrimitiveFieldComponent<T>
     implements OnChanges, OnInit
 {
     @Input() data!: ThriftData<ThriftType>;
-    @Input() extensions!: MetadataFormExtension[];
+    @Input() extensions?: MetadataFormExtension[];
 
     extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
         defer(() => this.data$),

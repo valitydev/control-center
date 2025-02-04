@@ -8,12 +8,10 @@ import {
     FormControlSuperclass,
     createControlProviders,
 } from '@vality/matez';
-import { toJson } from '@vality/ng-thrift';
+import { MetadataFormExtension, toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Subject, defer, merge, of } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
-
-import { MetadataFormExtension } from '../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 
 export enum EditorKind {
     Form = 'form',

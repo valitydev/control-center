@@ -1,14 +1,13 @@
 import { Claim, PayoutToolModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
-import { isTypeWithAliases } from '@vality/ng-thrift';
-import uniqBy from 'lodash-es/uniqBy';
-import { of } from 'rxjs';
-import short from 'short-uuid';
-
 import {
     MetadataFormExtension,
     MetadataFormExtensionOption,
-} from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
+    isTypeWithAliases,
+} from '@vality/ng-thrift';
+import uniqBy from 'lodash-es/uniqBy';
+import { of } from 'rxjs';
+import short from 'short-uuid';
 
 function createPartyOptions(
     values: IterableIterator<{ id: string }>,

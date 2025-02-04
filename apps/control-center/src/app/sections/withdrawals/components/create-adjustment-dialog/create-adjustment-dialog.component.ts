@@ -4,12 +4,11 @@ import { FormControl, Validators } from '@angular/forms';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { DialogSuperclass, NotifyLogService, forkJoinToResult } from '@vality/matez';
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import { MetadataFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import short from 'short-uuid';
 
 import { ManagementService } from '../../../../api/withdrawal/management.service';
-import { MetadataFormExtension } from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',

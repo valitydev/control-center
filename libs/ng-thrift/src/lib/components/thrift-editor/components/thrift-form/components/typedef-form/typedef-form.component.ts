@@ -11,5 +11,5 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
 })
 export class TypedefFormComponent<T> extends FormControlSuperclass<T> {
     @Input() data!: ThriftData<string, 'typedef'>;
-    @Input() extensions!: MetadataFormExtension[];
+    @Input() extensions?: MetadataFormExtension[];
 }

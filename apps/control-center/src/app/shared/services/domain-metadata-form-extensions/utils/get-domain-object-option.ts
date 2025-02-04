@@ -1,8 +1,7 @@
 import { DomainObject } from '@vality/domain-proto/domain';
-import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
+import { MetadataFormExtensionOption, getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { ValuesType } from 'utility-types';
 
-import { MetadataFormExtensionOption } from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 import { getDomainObjectValueDetailsFn } from '../../../components/thrift-api-crud';
 
 export function getDomainObjectValueOptionFn(

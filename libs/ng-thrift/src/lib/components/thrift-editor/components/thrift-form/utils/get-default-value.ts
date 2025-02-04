@@ -1,8 +1,8 @@
-import { ThriftAstMetadata } from '@vality/domain-proto';
 import { ValueType } from '@vality/thrift-ts';
 import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
 
 import { ThriftData, TypeGroup } from '../../../../../models';
+import { ThriftAstMetadata } from '../../../../../types';
 
 export function getDefaultValue(metadata: ThriftAstMetadata[], namespace: string, type: ValueType) {
     if (!type) {

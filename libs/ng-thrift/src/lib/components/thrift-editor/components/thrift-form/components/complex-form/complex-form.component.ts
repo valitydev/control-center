@@ -36,7 +36,7 @@ export class ComplexFormComponent<V, K = never>
     implements OnInit, Validator
 {
     @Input() data!: ThriftData<SetType | MapType | ListType>;
-    @Input() extensions!: MetadataFormExtension[];
+    @Input() extensions?: MetadataFormExtension[];
 
     valueControls = new FormArray<AbstractControl<V>>([]);
     keyControls = new FormArray<AbstractControl<K>>([]);

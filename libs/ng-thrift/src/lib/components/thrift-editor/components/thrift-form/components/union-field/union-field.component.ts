@@ -27,7 +27,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     implements OnInit, Validator, OnChanges
 {
     @Input() data!: ThriftData<string, 'union'>;
-    @Input() extensions!: MetadataFormExtension[];
+    @Input() extensions?: MetadataFormExtension[];
 
     fieldControl = new FormControl() as FormControl<Field>;
     internalControl = new FormControl() as FormControl<T[keyof T]>;
