@@ -76,11 +76,11 @@ export class ThriftTreeViewerComponent implements OnChanges {
             }
         }
         this.view = new ThriftViewData(this.value, undefined, this.data, this.extensions);
-        this.className = this.getClassName();
+        this.className = this.getClassName(this.level);
     }
 
-    getClassName() {
-        switch (this.level) {
+    private getClassName(level: number) {
+        switch (level) {
             case 0:
                 return 'mat-title-large';
             case 1:
