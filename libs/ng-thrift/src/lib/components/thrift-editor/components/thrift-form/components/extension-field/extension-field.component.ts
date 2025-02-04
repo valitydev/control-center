@@ -1,13 +1,27 @@
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ValidationErrors, Validator, Validators } from '@angular/forms';
-import { ComponentChanges, FormComponentSuperclass, createControlProviders } from '@vality/matez';
+import {
+    FormControl,
+    ReactiveFormsModule,
+    ValidationErrors,
+    Validator,
+    Validators,
+} from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import {
+    ComponentChanges,
+    DatetimeFieldModule,
+    FormComponentSuperclass,
+    createControlProviders,
+} from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData, getAliases } from '../../../../../../models';
 import { getValueTypeTitle } from '../../../../../../utils';
+import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import {
     Converter,
     MetadataFormExtension,
@@ -19,7 +33,13 @@ import {
     selector: 'v-extension-field',
     templateUrl: './extension-field.component.html',
     providers: createControlProviders(() => ExtensionFieldComponent),
-    standalone: false,
+    imports: [
+        CommonModule,
+        DatetimeFieldModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        FieldLabelPipe,
+    ],
 })
 export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>

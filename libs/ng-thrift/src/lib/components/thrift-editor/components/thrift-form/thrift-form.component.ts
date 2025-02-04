@@ -10,7 +10,13 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';
 
-import { ThriftFormDeclarationsModule } from './thrift-form-declarations.module';
+import { ComplexFormComponent } from './components/complex-form/complex-form.component';
+import { EnumFieldComponent } from './components/enum-field/enum-field.component';
+import { ExtensionFieldComponent } from './components/extension-field/extension-field.component';
+import { PrimitiveFieldComponent } from './components/primitive-field/primitive-field.component';
+import { StructFormComponent } from './components/struct-form/struct-form.component';
+import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
+import { UnionFieldComponent } from './components/union-field/union-field.component';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
@@ -22,7 +28,17 @@ import {
     templateUrl: './thrift-form.component.html',
     styleUrl: `./thrift-form.component.scss`,
     providers: createControlProviders(() => ThriftFormComponent),
-    imports: [CommonModule, ReactiveFormsModule, ThriftFormDeclarationsModule],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        ComplexFormComponent,
+        StructFormComponent,
+        UnionFieldComponent,
+        TypedefFormComponent,
+        EnumFieldComponent,
+        ExtensionFieldComponent,
+        PrimitiveFieldComponent,
+    ],
 })
 export class ThriftFormComponent<T>
     extends FormControlSuperclass<T>

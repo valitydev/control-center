@@ -1,12 +1,15 @@
-import { Component, DestroyRef, Input, OnChanges, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
     FormBuilder,
     FormGroup,
+    ReactiveFormsModule,
     ValidationErrors,
     Validators,
 } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
     ComponentChanges,
     FormComponentSuperclass,
@@ -22,13 +25,21 @@ import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { ThriftData } from '../../../../../../models';
 import { isRequiredField } from '../../../../../../utils';
+import { FieldLabelPipe } from '../../pipes/field-label.pipe';
+import { ThriftFormComponent } from '../../thrift-form.component';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 @Component({
     selector: 'v-struct-form',
     templateUrl: './struct-form.component.html',
     providers: createControlProviders(() => StructFormComponent),
-    standalone: false,
+    imports: [
+        CommonModule,
+        MatCheckboxModule,
+        forwardRef(() => ThriftFormComponent),
+        ReactiveFormsModule,
+        FieldLabelPipe,
+    ],
 })
 export class StructFormComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>

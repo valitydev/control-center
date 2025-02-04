@@ -1,17 +1,30 @@
-import { Component, DestroyRef, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, Input, OnInit, forwardRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
     FormArray,
     FormControl,
+    ReactiveFormsModule,
     ValidationErrors,
     Validator,
 } from '@angular/forms';
-import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/matez';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import {
+    FormComponentSuperclass,
+    PipesModule,
+    createControlProviders,
+    getErrorsTree,
+} from '@vality/matez';
 import { ListType, MapType, SetType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 
 import { ThriftData } from '../../../../../../models';
+import { ThriftPipesModule } from '../../../../../../pipes';
+import { FieldLabelPipe } from '../../pipes/field-label.pipe';
+import { ThriftFormComponent } from '../../thrift-form.component';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
@@ -29,7 +42,17 @@ type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
     providers: createControlProviders(() => ComplexFormComponent),
-    standalone: false,
+    imports: [
+        CommonModule,
+        ThriftPipesModule,
+        MatExpansionModule,
+        FieldLabelPipe,
+        forwardRef(() => ThriftFormComponent),
+        MatIconModule,
+        PipesModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+    ],
 })
 export class ComplexFormComponent<V, K = never>
     extends FormComponentSuperclass<ComplexType<V, K>>

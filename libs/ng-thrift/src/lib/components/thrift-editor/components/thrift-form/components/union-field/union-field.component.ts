@@ -1,6 +1,11 @@
-import { Component, DestroyRef, Input, OnChanges, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ValidationErrors, Validator } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import {
     ComponentChanges,
     FormComponentSuperclass,
@@ -14,6 +19,8 @@ import { ValuesType } from 'utility-types';
 
 import { ThriftData } from '../../../../../../models';
 import { getFieldLabel } from '../../../../../../utils';
+import { FieldLabelPipe } from '../../pipes/field-label.pipe';
+import { ThriftFormComponent } from '../../thrift-form.component';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 import { getDefaultValue } from '../../utils';
 
@@ -21,7 +28,16 @@ import { getDefaultValue } from '../../utils';
     selector: 'v-union-field',
     templateUrl: './union-field.component.html',
     providers: createControlProviders(() => UnionFieldComponent),
-    standalone: false,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatIconModule,
+        FieldLabelPipe,
+        MatSelectModule,
+        MatButtonModule,
+        forwardRef(() => ThriftFormComponent),
+    ],
 })
 export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
