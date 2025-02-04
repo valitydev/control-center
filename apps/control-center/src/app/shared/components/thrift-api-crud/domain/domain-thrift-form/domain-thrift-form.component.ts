@@ -6,11 +6,11 @@ import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { createControlProviders, getImportValue } from '@vality/matez';
+import { ThriftFormModule } from '@vality/ng-thrift';
 import { combineLatest, filter } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '../../../../services';
-import { ThriftFormModule } from '../../../metadata-form';
 import { ThriftEditorModule } from '../../../thrift-editor';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 

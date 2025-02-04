@@ -7,11 +7,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/matez';
-import { ThriftViewerModule } from '@vality/ng-thrift';
+import { ThriftFormModule, ThriftViewerModule } from '@vality/ng-thrift';
 
 import { HeadlineModule } from '../../../components/headline/headline.module';
 import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
-import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';

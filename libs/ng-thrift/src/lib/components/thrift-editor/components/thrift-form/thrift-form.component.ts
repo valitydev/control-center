@@ -3,10 +3,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Validator } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
-import { ThriftData } from '@vality/ng-thrift';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { BehaviorSubject, Observable, defer, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+
+import { ThriftData } from '../../../../models';
 
 import {
     MetadataFormExtension,
@@ -15,7 +16,7 @@ import {
 } from './types/metadata-form-extension';
 
 @Component({
-    selector: 'cc-metadata-form',
+    selector: 'v-thrift-form',
     templateUrl: './thrift-form.component.html',
     styleUrl: `./thrift-form.component.scss`,
     providers: createControlProviders(() => ThriftFormComponent),
@@ -25,16 +26,16 @@ export class ThriftFormComponent<T>
     extends FormControlSuperclass<T>
     implements OnInit, OnChanges, Validator
 {
-    @Input() metadata: ThriftAstMetadata[];
-    @Input() namespace: string;
-    @Input() type: ValueType;
+    @Input() metadata!: ThriftAstMetadata[];
+    @Input() namespace!: string;
+    @Input() type!: ValueType;
     @Input() field?: Field;
     @Input() parent?: ThriftData;
     @Input() extensions?: MetadataFormExtension[];
 
-    @HostBinding('class.cc-metadata-form-hidden') hidden = false;
+    @HostBinding('class.v-thrift-form-hidden') hidden = false;
 
-    data: ThriftData;
+    data!: ThriftData;
     extensionResult$: Observable<MetadataFormExtensionResult> = defer(() => this.updated$).pipe(
         switchMap(() => getExtensionsResult(this.extensions, this.data)),
         shareReplay({ refCount: true, bufferSize: 1 }),

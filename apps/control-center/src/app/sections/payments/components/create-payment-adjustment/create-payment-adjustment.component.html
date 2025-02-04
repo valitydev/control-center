@@ -2,13 +2,13 @@
     [progress]="progress$ | async"
     title="Create payment adjustment ({{ dialogData.payments.length }})"
 >
-    <cc-metadata-form
+    <v-thrift-form
         [extensions]="extensions$ | async"
         [formControl]="control"
         [metadata]="metadata$ | async"
         namespace="payment_processing"
         type="InvoicePaymentAdjustmentParams"
-    ></cc-metadata-form>
+    ></v-thrift-form>
     <v-dialog-actions>
         <button
             *ngIf="this.errors.length"

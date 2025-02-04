@@ -7,7 +7,7 @@ import { isTypeWithAliases } from '@vality/ng-thrift';
 import { of } from 'rxjs';
 import short from 'short-uuid';
 
-import { MetadataFormExtension } from '../metadata-form';
+import { MetadataFormExtension } from '../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 import { BaseThriftFormSuperclass } from '../thrift-api-crud/thrift-forms/utils/thrift-form-superclass';
 import { ThriftEditorModule } from '../thrift-editor';
 

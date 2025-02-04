@@ -14,16 +14,17 @@ import {
     getErrorsTree,
     getValueChanges,
 } from '@vality/matez';
-import { ThriftData, isRequiredField } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
+import { ThriftData } from '../../../../../../models';
+import { isRequiredField } from '../../../../../../utils';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 @Component({
-    selector: 'cc-struct-form',
+    selector: 'v-struct-form',
     templateUrl: './struct-form.component.html',
     providers: createControlProviders(() => StructFormComponent),
     standalone: false,
@@ -32,8 +33,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnChanges, OnInit
 {
-    @Input() data: ThriftData<string, 'struct'>;
-    @Input() extensions: MetadataFormExtension[];
+    @Input() data!: ThriftData<string, 'struct'>;
+    @Input() extensions!: MetadataFormExtension[];
 
     control: FormGroup = this.fb.group<T>({} as T);
     labelControl = this.fb.control(false);

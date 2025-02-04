@@ -7,11 +7,12 @@ import {
     createControlProviders,
     getValueChanges,
 } from '@vality/matez';
-import { ThriftData, getAliases, getValueTypeTitle } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { ThriftData, getAliases } from '../../../../../../models';
+import { getValueTypeTitle } from '../../../../../../utils';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
@@ -19,7 +20,7 @@ import {
 } from '../../types/metadata-form-extension';
 
 @Component({
-    selector: 'cc-primitive-field',
+    selector: 'v-primitive-field',
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(() => PrimitiveFieldComponent),
     styleUrl: './primitive-field.component.scss',
@@ -29,8 +30,8 @@ export class PrimitiveFieldComponent<T>
     extends FormControlSuperclass<T>
     implements OnChanges, OnInit
 {
-    @Input() data: ThriftData<ThriftType>;
-    @Input() extensions: MetadataFormExtension[];
+    @Input() data!: ThriftData<ThriftType>;
+    @Input() extensions!: MetadataFormExtension[];
 
     extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
         defer(() => this.data$),

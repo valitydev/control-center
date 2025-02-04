@@ -10,7 +10,7 @@ import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../../components/source-cash-field';
 import { DepositManagementService } from '../../../../api/deposit';
-import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
+import { MetadataFormExtension } from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 import { FetchSourcesService } from '../../../sources';
 

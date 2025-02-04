@@ -22,14 +22,13 @@ import {
     NotifyLogService,
     progressTo,
 } from '@vality/matez';
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import { MetadataFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { first } from 'rxjs/operators';
 import short from 'short-uuid';
 
 import { ClaimManagementService } from '../../../../api/claim-management';
 import { DomainStoreService } from '../../../../api/domain-config';
-import { MetadataFormExtension } from '../../../../shared/components/metadata-form/types/metadata-form-extension';
 import { DomainThriftFormComponent } from '../../../../shared/components/thrift-api-crud';
 
 const DEFAULT_RUSSIAN_BANK_ACCOUNT: RussianBankAccount = {

@@ -14,11 +14,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { ActionsModule, DialogModule, PipesModule } from '@vality/matez';
-import { ThriftPipesModule, ThriftViewerModule } from '@vality/ng-thrift';
+import { ThriftFormModule, ThriftPipesModule, ThriftViewerModule } from '@vality/ng-thrift';
 
 import { TimelineModule } from '../../../components/timeline/timeline.module';
 import { PageLayoutModule } from '../../shared';
-import { ThriftFormModule } from '../../shared/components/metadata-form';
 import { StatusModule } from '../../shared/components/status/status.module';
 import { DomainThriftFormComponent } from '../../shared/components/thrift-api-crud';
 

@@ -7,16 +7,17 @@ import {
     createControlProviders,
     getErrorsTree,
 } from '@vality/matez';
-import { ThriftData, getFieldLabel } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 import { ReplaySubject, defer, merge } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
+import { ThriftData } from '../../../../../../models';
+import { getFieldLabel } from '../../../../../../utils';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 import { getDefaultValue } from '../../utils';
 
 @Component({
-    selector: 'cc-union-field',
+    selector: 'v-union-field',
     templateUrl: './union-field.component.html',
     providers: createControlProviders(() => UnionFieldComponent),
     standalone: false,
@@ -25,8 +26,8 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnInit, Validator, OnChanges
 {
-    @Input() data: ThriftData<string, 'union'>;
-    @Input() extensions: MetadataFormExtension[];
+    @Input() data!: ThriftData<string, 'union'>;
+    @Input() extensions!: MetadataFormExtension[];
 
     fieldControl = new FormControl() as FormControl<Field>;
     internalControl = new FormControl() as FormControl<T[keyof T]>;

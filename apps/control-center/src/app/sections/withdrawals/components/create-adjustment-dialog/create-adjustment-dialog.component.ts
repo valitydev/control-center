@@ -9,7 +9,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import short from 'short-uuid';
 
 import { ManagementService } from '../../../../api/withdrawal/management.service';
-import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
+import { MetadataFormExtension } from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',

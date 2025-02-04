@@ -20,7 +20,7 @@
             <mat-icon>clear</mat-icon>
         </button>
     </mat-form-field>
-    <cc-metadata-form
+    <v-thrift-form
         *ngIf="fieldControl.value"
         [extensions]="extensions"
         [field]="fieldControl.value"
@@ -29,5 +29,5 @@
         [namespace]="data.namespace"
         [parent]="$any(data)"
         [type]="fieldControl.value.type"
-    ></cc-metadata-form>
+    ></v-thrift-form>
 </div>

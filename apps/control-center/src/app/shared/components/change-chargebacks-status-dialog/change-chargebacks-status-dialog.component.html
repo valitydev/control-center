@@ -16,13 +16,13 @@
             </mat-select>
         </mat-form-field>
 
-        <cc-metadata-form
+        <v-thrift-form
             [extensions]="extensions$ | async"
             [formControl]="control"
             [metadata]="metadata$ | async"
             [type]="types[actionControl.value]"
             namespace="payment_processing"
-        ></cc-metadata-form>
+        ></v-thrift-form>
     </div>
     <v-dialog-actions>
         <button

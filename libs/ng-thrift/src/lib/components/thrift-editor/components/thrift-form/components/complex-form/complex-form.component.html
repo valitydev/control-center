@@ -46,24 +46,24 @@
                 <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
                     <ng-container *ngIf="isKeyValue">
                         <span class="mat-body-medium">Key</span>
-                        <cc-metadata-form
+                        <v-thrift-form
                             [extensions]="extensions"
                             [formControl]="$any(keyControls.controls[i])"
                             [metadata]="data.metadata"
                             [namespace]="data.namespace"
                             [parent]="data"
                             [type]="keyType"
-                        ></cc-metadata-form>
+                        ></v-thrift-form>
                         <span class="mat-body-medium">Value</span>
                     </ng-container>
-                    <cc-metadata-form
+                    <v-thrift-form
                         [extensions]="extensions"
                         [formControl]="$any(valueControl)"
                         [metadata]="data.metadata"
                         [namespace]="data.namespace"
                         [parent]="data"
                         [type]="data.type.valueType"
-                    ></cc-metadata-form>
+                    ></v-thrift-form>
                 </div>
             </ng-template>
         </mat-expansion-panel>

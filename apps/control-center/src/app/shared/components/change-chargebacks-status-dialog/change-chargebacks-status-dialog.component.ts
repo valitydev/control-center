@@ -15,12 +15,11 @@ import {
     forkJoinToResult,
     getImportValue,
 } from '@vality/matez';
-import { ThriftAstMetadata } from '@vality/ng-thrift';
+import { ThriftAstMetadata, ThriftFormModule } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 
 import { InvoicingService } from '../../../api/payment-processing/invoicing.service';
 import { DomainMetadataFormExtensionsService } from '../../services';
-import { ThriftFormModule } from '../metadata-form';
 
 enum Action {
     Accept,

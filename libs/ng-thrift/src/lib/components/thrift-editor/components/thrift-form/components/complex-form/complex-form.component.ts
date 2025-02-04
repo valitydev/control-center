@@ -8,10 +8,10 @@ import {
     Validator,
 } from '@angular/forms';
 import { FormComponentSuperclass, createControlProviders, getErrorsTree } from '@vality/matez';
-import { ThriftData } from '@vality/ng-thrift';
 import { ListType, MapType, SetType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 
+import { ThriftData } from '../../../../../../models';
 import { MetadataFormExtension } from '../../types/metadata-form-extension';
 
 function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
@@ -25,7 +25,7 @@ function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[
 type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
 
 @Component({
-    selector: 'cc-complex-form',
+    selector: 'v-complex-form',
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
     providers: createControlProviders(() => ComplexFormComponent),
@@ -35,8 +35,8 @@ export class ComplexFormComponent<V, K = never>
     extends FormComponentSuperclass<ComplexType<V, K>>
     implements OnInit, Validator
 {
-    @Input() data: ThriftData<SetType | MapType | ListType>;
-    @Input() extensions: MetadataFormExtension[];
+    @Input() data!: ThriftData<SetType | MapType | ListType>;
+    @Input() extensions!: MetadataFormExtension[];
 
     valueControls = new FormArray<AbstractControl<V>>([]);
     keyControls = new FormArray<AbstractControl<K>>([]);

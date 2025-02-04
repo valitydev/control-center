@@ -6,7 +6,7 @@ import { createNextId } from '../../../../../utils/create-next-id';
 import {
     MetadataFormExtension,
     MetadataFormExtensionOption,
-} from '../../../components/metadata-form';
+} from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 
 export function createDomainObjectExtension(
     refType: string,

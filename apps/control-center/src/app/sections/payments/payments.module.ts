@@ -10,10 +10,10 @@ import {
     ListFieldModule,
     TableModule,
 } from '@vality/matez';
+import { ThriftFormModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule, ShopFieldModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
-import { ThriftFormModule } from '../../shared/components/metadata-form/thrift-form.module';
 import { MagistaThriftFormComponent } from '../../shared/components/thrift-api-crud';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';

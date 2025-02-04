@@ -1,8 +1,9 @@
 import { TemplateRef } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
-import { ThriftData } from '@vality/ng-thrift';
 import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { ThriftData } from '../../../../../models';
 
 export type MetadataFormExtension = {
     determinant: (data: ThriftData) => Observable<boolean>;

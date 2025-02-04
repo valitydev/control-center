@@ -1,5 +1,5 @@
 <div *ngIf="!(extensionResult$ | async)?.hidden" [ngSwitch]="data?.typeGroup">
-    <cc-extension-field
+    <v-extension-field
         *ngIf="
             (extensionResult$ | async)?.type || (extensionResult$ | async)?.template;
             else defaultFields
@@ -7,44 +7,44 @@
         [data]="$any(data)"
         [extensions]="extensions"
         [formControl]="control"
-    ></cc-extension-field>
+    ></v-extension-field>
     <ng-template #defaultFields>
-        <cc-primitive-field
+        <v-primitive-field
             *ngSwitchCase="'primitive'"
             [data]="$any(data)"
             [extensions]="extensions"
             [formControl]="control"
-        ></cc-primitive-field>
-        <cc-complex-form
+        ></v-primitive-field>
+        <v-complex-form
             *ngSwitchCase="'complex'"
             [data]="$any(data)"
             [extensions]="extensions"
             [formControl]="control"
-        ></cc-complex-form>
+        ></v-complex-form>
         <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
-            <cc-struct-form
+            <v-struct-form
                 *ngSwitchCase="'struct'"
                 [data]="$any(data)"
                 [extensions]="extensions"
                 [formControl]="control"
-            ></cc-struct-form>
-            <cc-union-field
+            ></v-struct-form>
+            <v-union-field
                 *ngSwitchCase="'union'"
                 [data]="$any(data)"
                 [extensions]="extensions"
                 [formControl]="control"
-            ></cc-union-field>
-            <cc-enum-field
+            ></v-union-field>
+            <v-enum-field
                 *ngSwitchCase="'enum'"
                 [data]="$any(data)"
                 [formControl]="control"
-            ></cc-enum-field>
-            <cc-typedef-form
+            ></v-enum-field>
+            <v-typedef-form
                 *ngSwitchCase="'typedef'"
                 [data]="$any(data)"
                 [extensions]="extensions"
                 [formControl]="control"
-            ></cc-typedef-form>
+            ></v-typedef-form>
         </ng-container>
     </ng-template>
 </div>

@@ -8,7 +8,7 @@
         </ng-template>
     </ng-container>
     <ng-container *ngIf="labelControl.value">
-        <cc-metadata-form
+        <v-thrift-form
             *ngFor="let field of data.ast"
             [extensions]="extensions"
             [field]="field"
@@ -18,6 +18,6 @@
             [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
             [parent]="$any(data)"
             [type]="field.type"
-        ></cc-metadata-form>
+        ></v-thrift-form>
     </ng-container>
 </div>

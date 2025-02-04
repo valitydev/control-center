@@ -2,11 +2,12 @@ import { Component, DestroyRef, Input, OnChanges, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ValidationErrors, Validator, Validators } from '@angular/forms';
 import { ComponentChanges, FormComponentSuperclass, createControlProviders } from '@vality/matez';
-import { ThriftData, getAliases, getValueTypeTitle } from '@vality/ng-thrift';
 import { ThriftType } from '@vality/thrift-ts';
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
 import { first, map, pluck, shareReplay } from 'rxjs/operators';
 
+import { ThriftData, getAliases } from '../../../../../../models';
+import { getValueTypeTitle } from '../../../../../../utils';
 import {
     Converter,
     MetadataFormExtension,
@@ -15,7 +16,7 @@ import {
 } from '../../types/metadata-form-extension';
 
 @Component({
-    selector: 'cc-extension-field',
+    selector: 'v-extension-field',
     templateUrl: './extension-field.component.html',
     providers: createControlProviders(() => ExtensionFieldComponent),
     standalone: false,
@@ -24,8 +25,8 @@ export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>
     implements Validator, OnChanges, OnInit
 {
-    @Input() data: ThriftData<ThriftType>;
-    @Input() extensions: MetadataFormExtension[];
+    @Input() data!: ThriftData<ThriftType>;
+    @Input() extensions!: MetadataFormExtension[];
 
     control = new FormControl<T>(null);
 

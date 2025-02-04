@@ -6,9 +6,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@vality/matez';
+import { ThriftFormModule } from '@vality/ng-thrift';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
-
-import { ThriftFormModule } from '../metadata-form/thrift-form.module';
 
 import { ThriftEditorComponent } from './thrift-editor.component';
 

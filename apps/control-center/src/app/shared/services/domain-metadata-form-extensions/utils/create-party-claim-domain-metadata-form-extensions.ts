@@ -8,7 +8,7 @@ import short from 'short-uuid';
 import {
     MetadataFormExtension,
     MetadataFormExtensionOption,
-} from '../../../components/metadata-form';
+} from '../../../../../../../../libs/ng-thrift/src/lib/components/thrift-editor/components/thrift-form';
 
 function createPartyOptions(
     values: IterableIterator<{ id: string }>,
