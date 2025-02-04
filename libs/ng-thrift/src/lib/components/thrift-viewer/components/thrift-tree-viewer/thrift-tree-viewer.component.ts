@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { TagModule } from '@vality/matez';
+import { ContentLoadingComponent, TagModule } from '@vality/matez';
 import { Field, ValueType } from '@vality/thrift-ts';
 import { map } from 'rxjs';
 import yaml from 'yaml';
@@ -36,6 +36,8 @@ import { KeyComponent } from '../key/key.component';
         RouterModule,
         TagModule,
         KeyComponent,
+        ContentLoadingComponent,
+        ContentLoadingComponent,
     ],
 })
 export class ThriftTreeViewerComponent {

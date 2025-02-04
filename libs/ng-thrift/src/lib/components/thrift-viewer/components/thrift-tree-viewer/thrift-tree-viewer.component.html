@@ -37,7 +37,7 @@
             @if (count) {
                 <div class="grid-container">
                     <div [ngClass]="['grid', 'grid-columns-' + count]">
-                        @for (item of view().leaves$ | async; track item; let i = $index) {
+                        @for (item of leaves; track item; let i = $index) {
                             @let current = item.current$ | async;
 
                             @if (!(current?.extension$ | async)?.hidden) {
@@ -70,7 +70,11 @@
                 </div>
             }
 
-            @for (item of view().nodes$ | async; track item; let idx = $index) {
+            @let nodes = view().nodes$ | async;
+            @if (!leaves || !nodes) {
+                <v-content-loading></v-content-loading>
+            }
+            @for (item of nodes; track item; let idx = $index) {
                 @let current = item.current$ | async;
 
                 @if (idx > 0 || count) {
