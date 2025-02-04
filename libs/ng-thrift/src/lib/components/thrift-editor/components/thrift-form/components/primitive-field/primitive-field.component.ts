@@ -23,10 +23,10 @@ import { getValueTypeTitle } from '../../../../../../utils';
 import { ThriftViewerModule } from '../../../../../thrift-viewer';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import {
-    MetadataFormExtension,
-    MetadataFormExtensionResult,
+    ThriftFormExtension,
+    ThriftFormExtensionResult,
     getExtensionsResult,
-} from '../../types/metadata-form-extension';
+} from '../../types/thrift-form-extension';
 
 @Component({
     selector: 'v-primitive-field',
@@ -50,9 +50,9 @@ export class PrimitiveFieldComponent<T>
     implements OnChanges, OnInit
 {
     @Input() data!: ThriftData<ThriftType>;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 
-    extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
+    extensionResult$: Observable<ThriftFormExtensionResult> = combineLatest([
         defer(() => this.data$),
         defer(() => this.extensions$),
     ]).pipe(
@@ -60,7 +60,7 @@ export class PrimitiveFieldComponent<T>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(
-        map((r) => r?.generate as NonNullable<MetadataFormExtensionResult['generate']>),
+        map((r) => r?.generate as NonNullable<ThriftFormExtensionResult['generate']>),
     );
     options$ = this.extensionResult$.pipe(
         map((extensionResult): Option<T>[] =>
@@ -116,7 +116,7 @@ export class PrimitiveFieldComponent<T>
     }
 
     private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
-    private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
+    private extensions$ = new ReplaySubject<ThriftFormExtension[]>(1);
 
     constructor(private destroyRef: DestroyRef) {
         super();
@@ -137,7 +137,7 @@ export class PrimitiveFieldComponent<T>
             this.data$.next(this.data);
         }
         if (changes.extensions) {
-            this.extensions$.next(this.extensions as MetadataFormExtension[]);
+            this.extensions$.next(this.extensions as ThriftFormExtension[]);
         }
     }
 

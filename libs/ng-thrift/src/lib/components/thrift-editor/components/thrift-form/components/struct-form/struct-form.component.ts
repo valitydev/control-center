@@ -27,7 +27,7 @@ import { ThriftData } from '../../../../../../models';
 import { isRequiredField } from '../../../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import { ThriftFormComponent } from '../../thrift-form.component';
-import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { ThriftFormExtension } from '../../types/thrift-form-extension';
 
 @Component({
     selector: 'v-struct-form',
@@ -46,7 +46,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     implements OnChanges, OnInit
 {
     @Input() data!: ThriftData<string, 'struct'>;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 
     control: FormGroup = this.fb.group<T>({} as T);
     labelControl = this.fb.control(false);

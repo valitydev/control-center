@@ -21,7 +21,7 @@ import { ThriftData } from '../../../../../../models';
 import { getFieldLabel } from '../../../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import { ThriftFormComponent } from '../../thrift-form.component';
-import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { ThriftFormExtension } from '../../types/thrift-form-extension';
 import { getDefaultValue } from '../../utils';
 
 @Component({
@@ -44,7 +44,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     implements OnInit, Validator, OnChanges
 {
     @Input() data!: ThriftData<string, 'union'>;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 
     fieldControl = new FormControl() as FormControl<Field>;
     internalControl = new FormControl() as FormControl<T[keyof T]>;

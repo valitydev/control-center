@@ -25,7 +25,7 @@ import { ThriftData } from '../../../../../../models';
 import { ThriftPipesModule } from '../../../../../../pipes';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import { ThriftFormComponent } from '../../thrift-form.component';
-import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { ThriftFormExtension } from '../../types/thrift-form-extension';
 
 function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
     formArray.clear({ emitEvent: false });
@@ -59,7 +59,7 @@ export class ComplexFormComponent<V, K = never>
     implements OnInit, Validator
 {
     @Input() data!: ThriftData<SetType | MapType | ListType>;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 
     valueControls = new FormArray<AbstractControl<V>>([]);
     keyControls = new FormArray<AbstractControl<K>>([]);

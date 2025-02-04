@@ -18,10 +18,10 @@ import { StructFormComponent } from './components/struct-form/struct-form.compon
 import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
 import { UnionFieldComponent } from './components/union-field/union-field.component';
 import {
-    MetadataFormExtension,
-    MetadataFormExtensionResult,
+    ThriftFormExtension,
+    ThriftFormExtensionResult,
     getExtensionsResult,
-} from './types/metadata-form-extension';
+} from './types/thrift-form-extension';
 
 @Component({
     selector: 'v-thrift-form',
@@ -49,12 +49,12 @@ export class ThriftFormComponent<T>
     @Input() type?: ValueType;
     @Input() field?: Field;
     @Input() parent?: ThriftData;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 
     @HostBinding('class.v-thrift-form-hidden') hidden = false;
 
     data!: ThriftData;
-    extensionResult$: Observable<MetadataFormExtensionResult> = defer(() => this.updated$).pipe(
+    extensionResult$: Observable<ThriftFormExtensionResult> = defer(() => this.updated$).pipe(
         switchMap(() => getExtensionsResult(this.extensions, this.data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

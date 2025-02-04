@@ -24,10 +24,10 @@ import { getValueTypeTitle } from '../../../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import {
     Converter,
-    MetadataFormExtension,
-    MetadataFormExtensionResult,
+    ThriftFormExtension,
+    ThriftFormExtensionResult,
     getExtensionsResult,
-} from '../../types/metadata-form-extension';
+} from '../../types/thrift-form-extension';
 
 @Component({
     selector: 'v-extension-field',
@@ -46,11 +46,11 @@ export class ExtensionFieldComponent<T>
     implements Validator, OnChanges, OnInit
 {
     @Input() data!: ThriftData<ThriftType>;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 
     control = new FormControl<T>(null as T);
 
-    extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
+    extensionResult$: Observable<ThriftFormExtensionResult> = combineLatest([
         defer(() => this.data$),
         defer(() => this.extensions$),
     ]).pipe(
@@ -58,7 +58,7 @@ export class ExtensionFieldComponent<T>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     generate$ = this.extensionResult$.pipe(
-        map((v) => v?.generate as NonNullable<MetadataFormExtensionResult['generate']>),
+        map((v) => v?.generate as NonNullable<ThriftFormExtensionResult['generate']>),
     );
 
     get aliases() {
@@ -70,7 +70,7 @@ export class ExtensionFieldComponent<T>
     }
 
     private data$ = new ReplaySubject<ThriftData>(1);
-    private extensions$ = new ReplaySubject<MetadataFormExtension[]>(1);
+    private extensions$ = new ReplaySubject<ThriftFormExtension[]>(1);
     private converter$: Observable<Converter> = this.extensionResult$.pipe(
         map(
             ({ converter }) =>
@@ -115,7 +115,7 @@ export class ExtensionFieldComponent<T>
             this.control.setValidators(this.data.isRequired ? Validators.required : []);
         }
         if (changes.extensions) {
-            this.extensions$.next(this.extensions as MetadataFormExtension[]);
+            this.extensions$.next(this.extensions as ThriftFormExtension[]);
         }
     }
 

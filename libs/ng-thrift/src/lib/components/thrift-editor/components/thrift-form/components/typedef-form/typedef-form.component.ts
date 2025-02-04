@@ -4,7 +4,7 @@ import { FormControlSuperclass, createControlProviders } from '@vality/matez';
 
 import { ThriftData } from '../../../../../../models';
 import { ThriftFormComponent } from '../../thrift-form.component';
-import { MetadataFormExtension } from '../../types/metadata-form-extension';
+import { ThriftFormExtension } from '../../types/thrift-form-extension';
 @Component({
     selector: 'v-typedef-form',
     templateUrl: './typedef-form.component.html',
@@ -13,5 +13,5 @@ import { MetadataFormExtension } from '../../types/metadata-form-extension';
 })
 export class TypedefFormComponent<T> extends FormControlSuperclass<T> {
     @Input() data!: ThriftData<string, 'typedef'>;
-    @Input() extensions?: MetadataFormExtension[];
+    @Input() extensions?: ThriftFormExtension[];
 }

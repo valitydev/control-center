@@ -5,9 +5,9 @@ import { map } from 'rxjs/operators';
 
 import { ThriftData } from '../../../../../models';
 
-export type MetadataFormExtension = {
+export type ThriftFormExtension = {
     determinant: (data: ThriftData) => Observable<boolean>;
-    extension: (data: ThriftData) => Observable<MetadataFormExtensionResult>;
+    extension: (data: ThriftData) => Observable<ThriftFormExtensionResult>;
 };
 
 export interface Converter<O = unknown, I = O> {
@@ -15,8 +15,8 @@ export interface Converter<O = unknown, I = O> {
     internalToOutput: (inputValue: I) => O;
 }
 
-export interface MetadataFormExtensionResult {
-    options?: MetadataFormExtensionOption[];
+export interface ThriftFormExtensionResult {
+    options?: ThriftFormExtensionOption[];
     generate?: () => Observable<unknown>;
     isIdentifier?: boolean;
     label?: string;
@@ -26,7 +26,7 @@ export interface MetadataFormExtensionResult {
     template?: TemplateRef<unknown>;
 }
 
-export interface MetadataFormExtensionOption {
+export interface ThriftFormExtensionOption {
     value: unknown;
     label?: string;
     details?: string | object;
@@ -34,9 +34,9 @@ export interface MetadataFormExtensionOption {
 }
 
 export function getExtensionsResult(
-    sourceExtensions: MetadataFormExtension[] = [],
+    sourceExtensions: ThriftFormExtension[] = [],
     data: ThriftData,
-): Observable<MetadataFormExtensionResult> {
+): Observable<ThriftFormExtensionResult> {
     return sourceExtensions?.length
         ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data))).pipe(
               map((determined) => sourceExtensions.filter((_, idx) => determined[idx])),
