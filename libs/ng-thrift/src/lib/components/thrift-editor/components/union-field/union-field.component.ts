@@ -17,12 +17,12 @@ import { ReplaySubject, defer, merge } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { ThriftData } from '../../../../../../models';
-import { getFieldLabel } from '../../../../../../utils';
+import { ThriftData } from '../../../../models';
+import { getFieldLabel } from '../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
-import { ThriftFormComponent } from '../../thrift-form.component';
 import { ThriftFormExtension } from '../../types/thrift-form-extension';
 import { getDefaultValue } from '../../utils';
+import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
 
 @Component({
     selector: 'v-union-field',

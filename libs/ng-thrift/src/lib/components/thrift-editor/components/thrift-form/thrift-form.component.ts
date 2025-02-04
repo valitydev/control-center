@@ -9,19 +9,18 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';
-
-import { ComplexFormComponent } from './components/complex-form/complex-form.component';
-import { EnumFieldComponent } from './components/enum-field/enum-field.component';
-import { ExtensionFieldComponent } from './components/extension-field/extension-field.component';
-import { PrimitiveFieldComponent } from './components/primitive-field/primitive-field.component';
-import { StructFormComponent } from './components/struct-form/struct-form.component';
-import { TypedefFormComponent } from './components/typedef-form/typedef-form.component';
-import { UnionFieldComponent } from './components/union-field/union-field.component';
 import {
     ThriftFormExtension,
     ThriftFormExtensionResult,
     getExtensionsResult,
-} from './types/thrift-form-extension';
+} from '../../types/thrift-form-extension';
+import { ComplexFormComponent } from '../complex-form/complex-form.component';
+import { EnumFieldComponent } from '../enum-field/enum-field.component';
+import { ExtensionFieldComponent } from '../extension-field/extension-field.component';
+import { PrimitiveFieldComponent } from '../primitive-field/primitive-field.component';
+import { StructFormComponent } from '../struct-form/struct-form.component';
+import { TypedefFormComponent } from '../typedef-form/typedef-form.component';
+import { UnionFieldComponent } from '../union-field/union-field.component';
 
 @Component({
     selector: 'v-thrift-form',

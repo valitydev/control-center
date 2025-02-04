@@ -23,11 +23,11 @@ import omitBy from 'lodash-es/omitBy';
 import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { ThriftData } from '../../../../../../models';
-import { isRequiredField } from '../../../../../../utils';
+import { ThriftData } from '../../../../models';
+import { isRequiredField } from '../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
-import { ThriftFormComponent } from '../../thrift-form.component';
 import { ThriftFormExtension } from '../../types/thrift-form-extension';
+import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
 
 @Component({
     selector: 'v-struct-form',

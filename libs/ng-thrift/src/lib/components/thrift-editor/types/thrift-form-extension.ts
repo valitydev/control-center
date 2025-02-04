@@ -3,7 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ThriftData } from '../../../../../models';
+import { ThriftData } from '../../../models';
 
 export type ThriftFormExtension = {
     determinant: (data: ThriftData) => Observable<boolean>;

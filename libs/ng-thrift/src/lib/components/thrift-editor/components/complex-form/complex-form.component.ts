@@ -21,11 +21,11 @@ import {
 import { ListType, MapType, SetType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
 
-import { ThriftData } from '../../../../../../models';
-import { ThriftPipesModule } from '../../../../../../pipes';
+import { ThriftData } from '../../../../models';
+import { ThriftPipesModule } from '../../../../pipes';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
-import { ThriftFormComponent } from '../../thrift-form.component';
 import { ThriftFormExtension } from '../../types/thrift-form-extension';
+import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
 
 function updateFormArray<V>(formArray: FormArray<AbstractControl<V>>, values: V[]) {
     formArray.clear({ emitEvent: false });

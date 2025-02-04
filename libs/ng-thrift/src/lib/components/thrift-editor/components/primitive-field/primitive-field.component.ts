@@ -18,9 +18,9 @@ import { ThriftType } from '@vality/thrift-ts';
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { ThriftData, getAliases } from '../../../../../../models';
-import { getValueTypeTitle } from '../../../../../../utils';
-import { ThriftViewerModule } from '../../../../../thrift-viewer';
+import { ThriftData, getAliases } from '../../../../models';
+import { getValueTypeTitle } from '../../../../utils';
+import { ThriftViewerModule } from '../../../thrift-viewer';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import {
     ThriftFormExtension,

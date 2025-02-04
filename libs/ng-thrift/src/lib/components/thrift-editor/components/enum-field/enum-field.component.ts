@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
 
-import { ThriftData } from '../../../../../../models';
+import { ThriftData } from '../../../../models';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 
 @Component({

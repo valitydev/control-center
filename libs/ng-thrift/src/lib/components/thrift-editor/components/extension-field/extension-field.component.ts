@@ -19,8 +19,8 @@ import { ThriftType } from '@vality/thrift-ts';
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
-import { ThriftData, getAliases } from '../../../../../../models';
-import { getValueTypeTitle } from '../../../../../../utils';
+import { ThriftData, getAliases } from '../../../../models';
+import { getValueTypeTitle } from '../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import {
     Converter,
