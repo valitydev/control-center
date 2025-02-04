@@ -2,7 +2,7 @@ import { Directive, Input, OnChanges, booleanAttribute, input } from '@angular/c
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { FormControlSuperclass } from '@vality/matez';
-import { MetadataFormExtension } from '@vality/ng-thrift';
+import { ThriftFormExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -14,7 +14,7 @@ export abstract class BaseThriftFormSuperclass<T = unknown>
 {
     @Input() type: ValueType;
     @Input() namespace?: string;
-    extensions = input<MetadataFormExtension[]>([]);
+    extensions = input<ThriftFormExtension[]>([]);
     @Input() defaultValue?: T;
     @Input({ transform: booleanAttribute }) noChangeKind = false;
     @Input({ transform: booleanAttribute }) noToolbar = false;
@@ -22,7 +22,7 @@ export abstract class BaseThriftFormSuperclass<T = unknown>
     protected abstract defaultNamespace: string;
     protected abstract metadata$: Observable<ThriftAstMetadata[]>;
 
-    protected internalExtensions$: Observable<MetadataFormExtension[]> = of([]);
+    protected internalExtensions$: Observable<ThriftFormExtension[]> = of([]);
     protected extensions$ = combineLatest([
         defer(() => this.internalExtensions$),
         toObservable(this.extensions),

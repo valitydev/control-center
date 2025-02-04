@@ -22,7 +22,7 @@ import {
     NotifyLogService,
     progressTo,
 } from '@vality/matez';
-import { MetadataFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { first } from 'rxjs/operators';
 import short from 'short-uuid';
@@ -75,7 +75,7 @@ export class CreateShopDialogComponent
     implements OnInit
 {
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
-    extensions: MetadataFormExtension[] = [
+    extensions: ThriftFormExtension[] = [
         {
             determinant: (d) =>
                 of(isTypeWithAliases(d?.trueParent, 'ContractTemplateRef', 'domain')),

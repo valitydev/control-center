@@ -16,7 +16,7 @@ import {
     getValueChanges,
     isEqualDateRange,
 } from '@vality/matez';
-import { MetadataFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
@@ -61,7 +61,7 @@ export class PaymentsComponent implements OnInit {
         common_search_query_params: {},
         payment_params: {},
     });
-    extensions: MetadataFormExtension[] = [
+    extensions: ThriftFormExtension[] = [
         {
             determinant: (data) =>
                 of(
