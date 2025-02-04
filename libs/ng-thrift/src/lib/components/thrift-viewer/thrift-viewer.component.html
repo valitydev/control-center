@@ -1,6 +1,13 @@
 @if (progress) {
-    <div style="display: flex; justify-content: center; flex-direction: row">
-        <mat-spinner></mat-spinner>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+        <v-content-loading class="mat-title-large"></v-content-loading>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
+            <v-content-loading class="mat-body-large"></v-content-loading>
+            <v-content-loading class="mat-body-large"></v-content-loading>
+            <v-content-loading class="mat-body-large"></v-content-loading>
+            <v-content-loading class="mat-body-large"></v-content-loading>
+            <v-content-loading class="mat-body-large"></v-content-loading>
+        </div>
     </div>
 } @else {
     <div class="wrapper">
