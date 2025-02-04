@@ -1,6 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges, OnInit, model } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
 import {
+    AutocompleteFieldModule,
     ComponentChanges,
     FormControlSuperclass,
     Option,
@@ -13,6 +20,8 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData, getAliases } from '../../../../../../models';
 import { getValueTypeTitle } from '../../../../../../utils';
+import { ThriftViewerModule } from '../../../../../thrift-viewer';
+import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import {
     MetadataFormExtension,
     MetadataFormExtensionResult,
@@ -24,7 +33,17 @@ import {
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(() => PrimitiveFieldComponent),
     styleUrl: './primitive-field.component.scss',
-    standalone: false,
+    imports: [
+        CommonModule,
+        MatRadioModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatButtonModule,
+        AutocompleteFieldModule,
+        MatIconModule,
+        FieldLabelPipe,
+        ThriftViewerModule,
+    ],
 })
 export class PrimitiveFieldComponent<T>
     extends FormControlSuperclass<T>

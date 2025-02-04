@@ -5,7 +5,6 @@ import { getFieldLabel } from '../../../../../utils';
 
 @Pipe({
     name: 'fieldLabel',
-    standalone: false,
 })
 export class FieldLabelPipe implements PipeTransform {
     transform(type: ValueType, field?: Field): string {
