@@ -53,7 +53,6 @@ export class ThriftTreeViewerComponent implements OnChanges {
     @Input() extensions?: ThriftViewExtension[];
 
     view!: ThriftViewData;
-    className = this.getClassName();
     extensionQueryParams$ = this.route.queryParams.pipe(
         map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams)),
     );
@@ -76,20 +75,6 @@ export class ThriftTreeViewerComponent implements OnChanges {
             }
         }
         this.view = new ThriftViewData(this.value, undefined, this.data, this.extensions);
-        this.className = this.getClassName(this.level);
-    }
-
-    private getClassName(level: number) {
-        switch (level) {
-            case 0:
-                return 'mat-title-large';
-            case 1:
-                return 'mat-title-medium';
-            case 2:
-                return 'mat-body-large';
-            default:
-                return 'mat-body-large';
-        }
     }
 
     getTooltip(tooltip: unknown) {

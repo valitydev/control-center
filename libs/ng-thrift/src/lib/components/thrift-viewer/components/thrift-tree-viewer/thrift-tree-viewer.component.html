@@ -94,7 +94,14 @@
                             [value]="current?.key?.value$ | async"
                         ></v-thrift-tree-viewer>
                     } @else {
-                        <v-key [class]="className" [keys]="item.path$ | async"></v-key>
+                        <v-key
+                            [keys]="item.path$ | async"
+                            [ngClass]="{
+                                'mat-title-large': level === 0,
+                                'mat-title-medium': level === 1,
+                                'mat-body-large': level >= 2,
+                            }"
+                        ></v-key>
                     }
 
                     @if (current) {
