@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -38,44 +38,40 @@ import { KeyComponent } from '../key/key.component';
         KeyComponent,
     ],
 })
-export class ThriftTreeViewerComponent implements OnChanges {
-    @Input() value: unknown;
-    @Input() level = 0;
-    @Input() extension?: ThriftViewExtensionResult | null;
+export class ThriftTreeViewerComponent {
+    readonly value = input<unknown>();
+    readonly level = input(0);
+    readonly extension = input<ThriftViewExtensionResult | null>();
 
-    @Input() metadata!: ThriftAstMetadata[];
-    @Input() namespace!: string;
-    @Input() type!: ValueType;
-    @Input() field?: Field;
-    @Input() parent?: ThriftData;
+    readonly metadata = input<ThriftAstMetadata[]>();
+    readonly namespace = input<string>();
+    readonly type = input<ValueType>();
+    readonly field = input<Field>();
+    readonly parent = input<ThriftData>();
 
-    @Input() data?: ThriftData | null;
-    @Input() extensions?: ThriftViewExtension[];
+    readonly data = input<ThriftData | null>();
+    readonly extensions = input<ThriftViewExtension[]>();
 
-    view!: ThriftViewData;
+    viewData = computed(() => {
+        if (this.data()) {
+            return this.data();
+        }
+        const metadata = this.metadata();
+        const namespace = this.namespace();
+        const type = this.type();
+        if (metadata && namespace && type) {
+            return new ThriftData(metadata, namespace, type, this.field(), this.parent());
+        }
+        return undefined;
+    });
+    view = computed(
+        () => new ThriftViewData(this.value(), undefined, this.viewData(), this.extensions()),
+    );
     extensionQueryParams$ = this.route.queryParams.pipe(
-        map((params) => Object.assign({}, params, this.extension?.link?.[1]?.queryParams)),
+        map((params) => Object.assign({}, params, this.extension()?.link?.[1]?.queryParams)),
     );
 
     constructor(private route: ActivatedRoute) {}
-
-    ngOnChanges() {
-        if (this.metadata && this.namespace && this.type) {
-            try {
-                this.data = new ThriftData(
-                    this.metadata,
-                    this.namespace,
-                    this.type,
-                    this.field,
-                    this.parent,
-                );
-            } catch (err) {
-                this.data = undefined;
-                console.warn(err);
-            }
-        }
-        this.view = new ThriftViewData(this.value, undefined, this.data, this.extensions);
-    }
 
     getTooltip(tooltip: unknown) {
         return typeof tooltip === 'object' ? yaml.stringify(tooltip) : String(tooltip);

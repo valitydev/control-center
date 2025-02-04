@@ -1,43 +1,43 @@
-@if (!extension?.hidden) {
-    @if (view.isValue$ | async) {
+@if (!extension()?.hidden) {
+    @if (view().isValue$ | async) {
         <span
             [queryParams]="extensionQueryParams$ | async"
-            [routerLink]="extension?.link?.[0]"
-            (click)="extension?.click?.()"
+            [routerLink]="extension()?.link?.[0]"
+            (click)="extension()?.click?.()"
         >
             <span
-                *ngIf="extension?.tooltip; else tagValue"
-                [matTooltip]="getTooltip(extension?.tooltip)"
+                *ngIf="extension()?.tooltip; else tagValue"
+                [matTooltip]="getTooltip(extension()?.tooltip)"
                 matTooltipClass="tooltip"
             >
                 <ng-container *ngTemplateOutlet="tagValue"></ng-container>
             </span>
             <ng-template #tagValue>
-                <v-tag *ngIf="extension?.tag; else simpleValue" [color]="extension?.color">
+                <v-tag *ngIf="extension()?.tag; else simpleValue" [color]="extension()?.color">
                     <ng-container *ngTemplateOutlet="simpleValue"></ng-container>
                 </v-tag>
             </ng-template>
             <ng-template #simpleValue>
                 <span
                     [ngClass]="{
-                        link: !!extension?.click || !!extension?.link?.[0],
-                        'tooltip-link': !!extension?.tooltip,
-                        'mat-body-large': !extension?.tag,
+                        link: !!extension()?.click || !!extension()?.link?.[0],
+                        'tooltip-link': !!extension()?.tooltip,
+                        'mat-body-large': !extension()?.tag,
                     }"
                 >
-                    {{ view.renderValue$ | async }}
+                    {{ view().renderValue$ | async }}
                 </span>
             </ng-template>
         </span>
     } @else {
         <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-            @let leaves = view.leaves$ | async;
+            @let leaves = view().leaves$ | async;
             @let count = leaves?.length;
 
             @if (count) {
                 <div class="grid-container">
                     <div [ngClass]="['grid', 'grid-columns-' + count]">
-                        @for (item of view.leaves$ | async; track item; let i = $index) {
+                        @for (item of view().leaves$ | async; track item; let i = $index) {
                             @let current = item.current$ | async;
 
                             @if (!(current?.extension$ | async)?.hidden) {
@@ -57,7 +57,7 @@
                                                 <v-thrift-tree-viewer
                                                     [data]="current.data$ | async"
                                                     [extension]="current.extension$ | async"
-                                                    [extensions]="extensions"
+                                                    [extensions]="extensions()"
                                                     [value]="current.value$ | async"
                                                 ></v-thrift-tree-viewer>
                                             }
@@ -70,7 +70,7 @@
                 </div>
             }
 
-            @for (item of view?.nodes$ | async; track item; let idx = $index) {
+            @for (item of view().nodes$ | async; track item; let idx = $index) {
                 @let current = item.current$ | async;
 
                 @if (idx > 0 || count) {
@@ -89,17 +89,17 @@
                     @if (keyData) {
                         <v-thrift-tree-viewer
                             [data]="keyData"
-                            [extensions]="extensions"
-                            [level]="level + 1"
+                            [extensions]="extensions()"
+                            [level]="level() + 1"
                             [value]="current?.key?.value$ | async"
                         ></v-thrift-tree-viewer>
                     } @else {
                         <v-key
                             [keys]="item.path$ | async"
                             [ngClass]="{
-                                'mat-title-large': level === 0,
-                                'mat-title-medium': level === 1,
-                                'mat-body-large': level >= 2,
+                                'mat-title-large': level() === 0,
+                                'mat-title-medium': level() === 1,
+                                'mat-body-large': level() >= 2,
                             }"
                         ></v-key>
                     }
@@ -107,8 +107,8 @@
                     @if (current) {
                         <v-thrift-tree-viewer
                             [data]="current.data$ | async"
-                            [extensions]="extensions"
-                            [level]="level + 1"
+                            [extensions]="extensions()"
+                            [level]="level() + 1"
                             [value]="current.value$ | async"
                         ></v-thrift-tree-viewer>
                     }
