@@ -1,4 +1,4 @@
-export function getEntries(obj: unknown): [number | string, unknown][] {
+export function getThriftEntries(obj: unknown): [number | string, unknown][] {
     if (!obj) {
         return [];
     }

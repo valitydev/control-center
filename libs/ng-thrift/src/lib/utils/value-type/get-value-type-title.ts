@@ -1,6 +1,6 @@
 import { ValueType } from '@vality/thrift-ts';
 
-import { isComplexType } from './is-complex-type';
+import { isComplexType } from '../thrift-type/is-complex-type';
 
 export function typeCase(str: string): string {
     return str.replace(/([a-z])([A-Z])/g, '$1 $2');

@@ -1,4 +1,4 @@
-import { toJson } from './to-json';
+import { toJson } from '../to-json';
 
 describe('toJson', () => {
     it('Map and Set inside object, inside array', () => {

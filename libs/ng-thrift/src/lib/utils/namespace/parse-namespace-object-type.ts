@@ -1,6 +1,6 @@
 import { JsonAST } from '@vality/thrift-ts';
 
-import { STRUCTURE_TYPES, StructureType, ThriftAstMetadata } from '../types';
+import { STRUCTURE_TYPES, StructureType, ThriftAstMetadata } from '../../types';
 
 export interface NamespaceObjectType {
     namespaceMetadata: ThriftAstMetadata;

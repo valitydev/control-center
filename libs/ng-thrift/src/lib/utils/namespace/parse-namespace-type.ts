@@ -1,7 +1,7 @@
 import type { ValueType } from '@vality/thrift-ts';
 
-import { isComplexType } from './is-complex-type';
-import { isPrimitiveType } from './is-primitive-type';
+import { isComplexType } from '../thrift-type/is-complex-type';
+import { isPrimitiveType } from '../thrift-type/is-primitive-type';
 
 export interface NamespaceType<T extends ValueType = ValueType> {
     namespace: string;

@@ -6,9 +6,9 @@ import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { ThriftData } from '../../../models';
+import { getThriftEntries } from '../../../utils';
 
 import { getChildrenTypes } from './get-children-types';
-import { getEntries } from './get-entries';
 import { getFirstDeterminedThriftViewExtensionResult } from './get-first-determined-thrift-view-extension-result';
 import { ThriftViewExtension } from './thrift-view-extension';
 import { ThriftViewExtensionResult } from './thrift-view-extension-result';
@@ -108,7 +108,7 @@ export class ThriftViewData {
         map(([items, data, value]) => {
             return (
                 !items.length ||
-                (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
+                (data?.objectType === 'union' && isEmpty(getThriftEntries(value)?.[0]?.[1]))
             );
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -123,7 +123,7 @@ export class ThriftViewData {
         map(([items, data, value, key]) => {
             return (
                 (!items.length && !key) ||
-                (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1]))
+                (data?.objectType === 'union' && isEmpty(getThriftEntries(value)?.[0]?.[1]))
             );
         }),
     );
@@ -170,7 +170,7 @@ export class ThriftViewData {
                         (trueData as ThriftData<SetType | ListType | MapType>).type?.name
                     ) {
                         const types = getChildrenTypes(trueData);
-                        return getEntries(value).map(([itemKey, itemValue]) => {
+                        return getThriftEntries(value).map(([itemKey, itemValue]) => {
                             return new ThriftViewData(
                                 itemValue,
                                 types?.keyType
@@ -191,7 +191,7 @@ export class ThriftViewData {
                     }
                 }
                 return isObject(value)
-                    ? getEntries(value).map(
+                    ? getThriftEntries(value).map(
                           ([k, v]) => new ThriftViewData(v, new ThriftViewData(k)),
                       )
                     : [];
@@ -219,8 +219,8 @@ export class ThriftViewData {
                 })?.name ?? value
             );
         }
-        if (data?.objectType === 'union' && isEmpty(getEntries(value)?.[0]?.[1])) {
-            return getEntries(value)?.[0]?.[0];
+        if (data?.objectType === 'union' && isEmpty(getThriftEntries(value)?.[0]?.[1])) {
+            return getThriftEntries(value)?.[0]?.[0];
         }
         return value;
     }
