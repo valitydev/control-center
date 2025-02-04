@@ -51,7 +51,7 @@ export class ThriftFormComponent<T>
         super.ngOnInit();
         this.extensionResult$
             .pipe(
-                map((res) => res?.hidden),
+                map((res) => !!res?.hidden),
                 distinctUntilChanged(),
                 takeUntilDestroyed(this.destroyRef),
             )
@@ -72,7 +72,7 @@ export class ThriftFormComponent<T>
                 );
                 this.updated$.next(undefined);
             } catch (err) {
-                this.data = undefined;
+                this.data = undefined as never;
                 console.warn(err);
             }
         }

@@ -34,7 +34,7 @@ export interface MetadataFormExtensionOption {
 }
 
 export function getExtensionsResult(
-    sourceExtensions: MetadataFormExtension[],
+    sourceExtensions: MetadataFormExtension[] = [],
     data: ThriftData,
 ): Observable<MetadataFormExtensionResult> {
     return sourceExtensions?.length

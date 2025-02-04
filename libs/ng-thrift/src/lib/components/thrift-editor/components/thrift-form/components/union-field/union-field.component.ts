@@ -7,9 +7,10 @@ import {
     createControlProviders,
     getErrorsTree,
 } from '@vality/matez';
-import { Field } from '@vality/thrift-ts';
+import { Field, Unions } from '@vality/thrift-ts';
 import { ReplaySubject, defer, merge } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { ValuesType } from 'utility-types';
 
 import { ThriftData } from '../../../../../../models';
 import { getFieldLabel } from '../../../../../../utils';
@@ -35,8 +36,10 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     protected options$ = defer(() => this.data$).pipe(
         map((data) =>
             data.ast
-                .map((field) => ({ label: getFieldLabel(field.type, field), value: field }))
-                .sort((a, b) => a.label.localeCompare(b.label)),
+                ? (data.ast as ValuesType<Unions>)
+                      .map((field) => ({ label: getFieldLabel(field.type, field), value: field }))
+                      .sort((a, b) => a.label.localeCompare(b.label))
+                : [],
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -59,7 +62,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => {
-                this.emitOutgoingValue(value);
+                this.emitOutgoingValue(value as T);
             });
         this.fieldControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
             this.cleanInternal(true);
@@ -84,12 +87,14 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
         if (value) {
             const name: keyof T = Object.keys(value)[0];
             this.fieldControl.setValue(
-                this.data.ast.find((f) => f.name === name),
+                this.data.ast
+                    ? ((this.data.ast as ValuesType<Unions>).find((f) => f.name === name) as Field)
+                    : (undefined as never),
                 { emitEvent: false },
             );
             this.internalControl.setValue(value[name], { emitEvent: false });
         } else {
-            this.fieldControl.reset(null, { emitEvent: false });
+            this.fieldControl.reset(null as never, { emitEvent: false });
             this.cleanInternal();
         }
     }
