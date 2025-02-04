@@ -8,10 +8,13 @@ import {
     FormControlSuperclass,
     createControlProviders,
 } from '@vality/matez';
-import { MetadataFormExtension, toJson } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Subject, defer, merge, of } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
+
+import { toJson } from '../../utils';
+
+import { ThriftFormExtension } from './types/thrift-form-extension';
 
 export enum EditorKind {
     Form = 'form',
@@ -19,7 +22,7 @@ export enum EditorKind {
 }
 
 @Component({
-    selector: 'cc-thrift-editor',
+    selector: 'v-thrift-editor',
     templateUrl: './thrift-editor.component.html',
     styleUrls: ['./thrift-editor.component.scss'],
     providers: createControlProviders(() => ThriftEditorComponent),
@@ -30,10 +33,10 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
 
     @Input() defaultValue?: T;
 
-    @Input() metadata: ThriftAstMetadata[];
-    @Input() namespace: string;
-    @Input() type: ValueType;
-    @Input() extensions: MetadataFormExtension[];
+    @Input() metadata!: ThriftAstMetadata[];
+    @Input() namespace!: string;
+    @Input() type!: ValueType;
+    @Input() extensions?: ThriftFormExtension[];
     @Input({ transform: booleanAttribute }) noChangeKind = false;
     @Input({ transform: booleanAttribute }) noToolbar = false;
 
@@ -92,7 +95,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
         this.dialogService
             .open(ConfirmDialogComponent, { title: 'Reset changes' })
             .afterClosed()
-            .pipe(filter(({ status }) => status === DialogResponseStatus.Success))
+            .pipe(filter((res) => res?.status === DialogResponseStatus.Success))
             .subscribe(() => {
                 this.control.reset(this.defaultValue);
                 this.editorError = null;

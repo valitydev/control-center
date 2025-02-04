@@ -3,12 +3,11 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { createControlProviders, getImportValue } from '@vality/matez';
-import { MetadataFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import { MetadataFormExtension, ThriftEditorModule, isTypeWithAliases } from '@vality/ng-thrift';
 import { of } from 'rxjs';
 import short from 'short-uuid';
 
 import { BaseThriftFormSuperclass } from '../thrift-api-crud/thrift-forms/utils/thrift-form-superclass';
-import { ThriftEditorModule } from '../thrift-editor';
 
 @Component({
     selector: 'cc-fistful-thrift-form',

@@ -3,9 +3,8 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { createControlProviders, getImportValue } from '@vality/matez';
-import { ThriftFormModule } from '@vality/ng-thrift';
+import { ThriftEditorModule, ThriftFormModule } from '@vality/ng-thrift';
 
-import { ThriftEditorModule } from '../../../thrift-editor';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 
 @Component({
