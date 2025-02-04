@@ -1,20 +1,8 @@
-import { Router } from '@angular/router';
-import { Color } from '@vality/matez';
-import { Observable, combineLatest, of, switchMap } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { ThriftData } from '../../../models';
 
-export interface ThriftViewExtensionResult {
-    key?: string;
-    value?: unknown;
-    hidden?: boolean;
-    tooltip?: unknown;
-    link?: Parameters<Router['navigate']>;
-    click?: () => void;
-    color?: Color;
-    tag?: boolean;
-}
+import { ThriftViewExtensionResult } from './thrift-view-extension-result';
 
 export type ThriftViewExtension = {
     determinant: (data: ThriftData, value: unknown) => Observable<boolean>;
@@ -24,17 +12,3 @@ export type ThriftViewExtension = {
         viewValue: unknown,
     ) => Observable<ThriftViewExtensionResult>;
 };
-
-export function getFirstDeterminedThriftViewExtensionResult(
-    sourceExtensions: ThriftViewExtension[] | undefined,
-    data: ThriftData,
-    value: unknown,
-    viewValue: unknown,
-): Observable<ThriftViewExtensionResult | null> {
-    return sourceExtensions?.length
-        ? combineLatest(sourceExtensions.map(({ determinant }) => determinant(data, value))).pipe(
-              map((determined) => sourceExtensions.find((_, idx) => determined[idx])),
-              switchMap((extension) => extension?.extension(data, value, viewValue) ?? of(null)),
-          )
-        : of(null);
-}

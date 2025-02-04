@@ -9,11 +9,9 @@ import { ThriftData } from '../../../models';
 
 import { getChildrenTypes } from './get-children-types';
 import { getEntries } from './get-entries';
-import {
-    ThriftViewExtension,
-    ThriftViewExtensionResult,
-    getFirstDeterminedThriftViewExtensionResult,
-} from './thrift-view-extension';
+import { getFirstDeterminedThriftViewExtensionResult } from './get-first-determined-thrift-view-extension-result';
+import { ThriftViewExtension } from './thrift-view-extension';
+import { ThriftViewExtensionResult } from './thrift-view-extension-result';
 
 export class ThriftViewData {
     extension$: Observable<ThriftViewExtensionResult | null> = defer(() => this.renderValue$).pipe(
