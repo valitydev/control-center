@@ -40,7 +40,9 @@ export class PrimitiveFieldComponent<T>
         switchMap(([data, extensions]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    generate$ = this.extensionResult$.pipe(map((r) => r?.generate));
+    generate$ = this.extensionResult$.pipe(
+        map((r) => r?.generate as NonNullable<MetadataFormExtensionResult['generate']>),
+    );
     options$ = this.extensionResult$.pipe(
         map((extensionResult): Option<T>[] =>
             extensionResult?.options?.length
@@ -116,7 +118,7 @@ export class PrimitiveFieldComponent<T>
             this.data$.next(this.data);
         }
         if (changes.extensions) {
-            this.extensions$.next(this.extensions);
+            this.extensions$.next(this.extensions as MetadataFormExtension[]);
         }
     }
 
@@ -131,7 +133,7 @@ export class PrimitiveFieldComponent<T>
     }
 
     clear(event: MouseEvent) {
-        this.control.reset(null);
+        this.control.reset(null as T);
         event.stopPropagation();
     }
 

@@ -66,7 +66,7 @@ export class ComplexFormComponent<V, K = never>
             .subscribe(() => {
                 const values = this.valueControls.value;
                 if (!this.data.isRequired && !values.length) {
-                    this.emitOutgoingValue(null);
+                    this.emitOutgoingValue(null as never);
                     return;
                 }
                 switch (this.data.type.name) {

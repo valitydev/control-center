@@ -4,7 +4,7 @@ import { FormControl, ValidationErrors, Validator, Validators } from '@angular/f
 import { ComponentChanges, FormComponentSuperclass, createControlProviders } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
-import { first, map, pluck, shareReplay } from 'rxjs/operators';
+import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData, getAliases } from '../../../../../../models';
 import { getValueTypeTitle } from '../../../../../../utils';
@@ -28,7 +28,7 @@ export class ExtensionFieldComponent<T>
     @Input() data!: ThriftData<ThriftType>;
     @Input() extensions?: MetadataFormExtension[];
 
-    control = new FormControl<T>(null);
+    control = new FormControl<T>(null as T);
 
     extensionResult$: Observable<MetadataFormExtensionResult> = combineLatest([
         defer(() => this.data$),
@@ -37,7 +37,9 @@ export class ExtensionFieldComponent<T>
         switchMap(([data, extensions]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    generate$ = this.extensionResult$.pipe(pluck('generate'));
+    generate$ = this.extensionResult$.pipe(
+        map((v) => v?.generate as NonNullable<MetadataFormExtensionResult['generate']>),
+    );
 
     get aliases() {
         return [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
@@ -93,7 +95,7 @@ export class ExtensionFieldComponent<T>
             this.control.setValidators(this.data.isRequired ? Validators.required : []);
         }
         if (changes.extensions) {
-            this.extensions$.next(this.extensions);
+            this.extensions$.next(this.extensions as MetadataFormExtension[]);
         }
     }
 
@@ -108,7 +110,7 @@ export class ExtensionFieldComponent<T>
     }
 
     clear(event: MouseEvent) {
-        this.control.reset(null);
+        this.control.reset(null as T);
         event.stopPropagation();
     }
 }

@@ -28,7 +28,7 @@ export class ThriftFormComponent<T>
 {
     @Input() metadata!: ThriftAstMetadata[];
     @Input() namespace!: string;
-    @Input() type!: ValueType;
+    @Input() type?: ValueType;
     @Input() field?: Field;
     @Input() parent?: ThriftData;
     @Input() extensions?: MetadataFormExtension[];

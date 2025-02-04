@@ -5,5 +5,5 @@
     [metadata]="data.metadata"
     [namespace]="data.namespace"
     [parent]="$any(data)"
-    [type]="data.ast.type"
+    [type]="$any(data.ast).type"
 ></v-thrift-form>

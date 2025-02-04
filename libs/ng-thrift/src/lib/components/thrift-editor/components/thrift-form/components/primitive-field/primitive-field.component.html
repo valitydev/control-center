@@ -28,9 +28,9 @@
     <div style="display: flex; gap: 4px">
         <v-autocomplete-field
             [formControl]="control"
-            [hint]="selectedHint$ | async"
+            [hint]="$any(selectedHint$ | async)"
             [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
-            [options]="options$ | async"
+            [options]="$any(options$ | async)"
             [required]="data.isRequired"
             [type]="inputType"
             style="flex: 1"
@@ -55,7 +55,9 @@
 >
     <mat-card class="details-card">
         <mat-card-content>
-            <v-thrift-viewer [value]="(selectedExtensionOption$ | async).details"></v-thrift-viewer>
+            <v-thrift-viewer
+                [value]="(selectedExtensionOption$ | async)?.details"
+            ></v-thrift-viewer>
         </mat-card-content>
     </mat-card>
 </div>

@@ -14,6 +14,7 @@ import {
     getErrorsTree,
     getValueChanges,
 } from '@vality/matez';
+import { Field } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import omitBy from 'lodash-es/omitBy';
 import { combineLatest } from 'rxjs';
@@ -64,14 +65,14 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => {
-                this.emitOutgoingValue(value);
+                this.emitOutgoingValue(value as T);
             });
         return super.ngOnInit();
     }
 
     override ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
         if (changes.data) {
-            const newControlsNames = new Set(this.data.ast.map(({ name }) => name));
+            const newControlsNames = new Set((this.data.ast || []).map(({ name }: Field) => name));
             Object.keys(this.control.controls).forEach((name) => {
                 this.control.removeControl(name as never);
             });
@@ -79,7 +80,9 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
                 this.control.addControl(
                     name as never,
                     this.fb.control(null, {
-                        validators: isRequiredField(this.data.ast.find((f) => f.name === name))
+                        validators: isRequiredField(
+                            (this.data.ast || []).find((f: Field) => f.name === name),
+                        )
                             ? [Validators.required]
                             : [],
                     }) as never,
