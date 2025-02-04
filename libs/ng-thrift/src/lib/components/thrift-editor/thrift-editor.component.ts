@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { ThriftAstMetadata } from '@vality/domain-proto';
 import {
     ConfirmDialogComponent,
     DialogResponseStatus,
@@ -12,6 +11,7 @@ import { ValueType } from '@vality/thrift-ts';
 import { Subject, defer, merge, of } from 'rxjs';
 import { filter, map, shareReplay } from 'rxjs/operators';
 
+import { ThriftAstMetadata } from '../../types';
 import { toJson } from '../../utils';
 
 import { ThriftFormExtension } from './types/thrift-form-extension';

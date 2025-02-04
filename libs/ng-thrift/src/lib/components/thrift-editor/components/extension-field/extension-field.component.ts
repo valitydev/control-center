@@ -8,6 +8,7 @@ import {
     Validator,
     Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
     ComponentChanges,
@@ -39,6 +40,7 @@ import {
         MatIconModule,
         ReactiveFormsModule,
         FieldLabelPipe,
+        MatButtonModule,
     ],
 })
 export class ExtensionFieldComponent<T>
