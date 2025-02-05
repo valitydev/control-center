@@ -84,7 +84,7 @@
                     [ngStyle]="{
                         display: 'grid',
                         'grid-template-columns':
-                            (current?.isNumberKey$ | async) ? 'auto 1fr' : '1fr',
+                            typeof (current?.value$ | async) === 'number' ? 'auto 1fr' : '1fr',
                         gap: '32px',
                     }"
                 >

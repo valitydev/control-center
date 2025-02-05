@@ -3,7 +3,7 @@ import { Enum, JsonAST, ListType, MapType, SetType, ValueType } from '@vality/th
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
-import { delay, distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { ThriftData } from '../../../models';
 import { getThriftEntries } from '../../../utils';
@@ -90,7 +90,6 @@ export class ThriftViewData {
                 }),
             );
         }),
-        delay(0), // TODO: do async
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     path$: Observable<ThriftViewData[]> = this.inline$.pipe(
@@ -147,8 +146,6 @@ export class ThriftViewData {
         map((items) => items.filter(Boolean) as ThriftViewData[]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    isNumberKey$ = this.key$.pipe(map(({ value }) => typeof value === 'number'));
 
     constructor(
         private value: unknown,
