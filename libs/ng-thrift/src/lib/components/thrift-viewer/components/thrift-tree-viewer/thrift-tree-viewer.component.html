@@ -1,34 +1,9 @@
 @if (!extension()?.hidden) {
     @if (view().isValue$ | async) {
-        <span
-            [queryParams]="extensionQueryParams$ | async"
-            [routerLink]="extension()?.link?.[0]"
-            (click)="extension()?.click?.()"
-        >
-            <span
-                *ngIf="extension()?.tooltip; else tagValue"
-                [matTooltip]="getTooltip(extension()?.tooltip)"
-                matTooltipClass="tooltip"
-            >
-                <ng-container *ngTemplateOutlet="tagValue"></ng-container>
-            </span>
-            <ng-template #tagValue>
-                <v-tag *ngIf="extension()?.tag; else simpleValue" [color]="extension()?.color">
-                    <ng-container *ngTemplateOutlet="simpleValue"></ng-container>
-                </v-tag>
-            </ng-template>
-            <ng-template #simpleValue>
-                <span
-                    [ngClass]="{
-                        link: !!extension()?.click || !!extension()?.link?.[0],
-                        'tooltip-link': !!extension()?.tooltip,
-                        'mat-body-large': !extension()?.tag,
-                    }"
-                >
-                    {{ view().renderValue$ | async }}
-                </span>
-            </ng-template>
-        </span>
+        <v-thrift-tree-value
+            [extension]="extension()"
+            [renderValue]="view().renderValue$ | async"
+        ></v-thrift-tree-value>
     } @else {
         <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
             @let leaves = view().leaves$ | async;

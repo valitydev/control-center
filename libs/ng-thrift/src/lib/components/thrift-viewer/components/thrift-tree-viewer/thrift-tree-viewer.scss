@@ -2,27 +2,6 @@
     word-break: break-all;
 }
 
-::ng-deep .tooltip {
-    display: block;
-    unicode-bidi: embed;
-    white-space: pre;
-}
-
-.link,
-.tooltip-link {
-    text-decoration: underline;
-}
-
-.tooltip-link {
-    text-decoration-style: dotted;
-    cursor: default;
-}
-
-.link {
-    text-decoration-style: solid;
-    cursor: pointer;
-}
-
 .grid-container {
     container-type: inline-size;
 

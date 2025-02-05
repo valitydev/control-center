@@ -6,11 +6,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ContentLoadingComponent, TagModule } from '@vality/matez';
 import { Field, ValueType } from '@vality/thrift-ts';
-import { map } from 'rxjs';
-import yaml from 'yaml';
 
 import { ThriftData } from '../../../../models';
 import { ThriftPipesModule } from '../../../../pipes';
@@ -19,6 +17,7 @@ import { ThriftViewData } from '../../models/thrift-view-data';
 import { ThriftViewExtension } from '../../utils/thrift-view-extension';
 import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-result';
 import { ThriftTreeKeyComponent } from '../thrift-tree-key/thrift-tree-key.component';
+import { ThriftTreeValueComponent } from '../thrift-tree-value/thrift-tree-value.component';
 
 @Component({
     selector: 'v-thrift-tree-viewer',
@@ -37,6 +36,7 @@ import { ThriftTreeKeyComponent } from '../thrift-tree-key/thrift-tree-key.compo
         TagModule,
         ThriftTreeKeyComponent,
         ContentLoadingComponent,
+        ThriftTreeValueComponent,
     ],
 })
 export class ThriftTreeViewerComponent {
@@ -68,13 +68,4 @@ export class ThriftTreeViewerComponent {
     view = computed(
         () => new ThriftViewData(this.value(), undefined, this.viewData(), this.extensions()),
     );
-    extensionQueryParams$ = this.route.queryParams.pipe(
-        map((params) => Object.assign({}, params, this.extension()?.link?.[1]?.queryParams)),
-    );
-
-    constructor(private route: ActivatedRoute) {}
-
-    getTooltip(tooltip: unknown) {
-        return typeof tooltip === 'object' ? yaml.stringify(tooltip) : String(tooltip);
-    }
 }

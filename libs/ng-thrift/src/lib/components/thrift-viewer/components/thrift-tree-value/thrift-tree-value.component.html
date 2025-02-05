@@ -1,0 +1,29 @@
+<span
+    [queryParams]="extensionQueryParams$ | async"
+    [routerLink]="extension()?.link?.[0]"
+    (click)="extension()?.click?.()"
+>
+    <span
+        *ngIf="extension()?.tooltip; else tagValue"
+        [matTooltip]="tooltip()"
+        matTooltipClass="tooltip"
+    >
+        <ng-container *ngTemplateOutlet="tagValue"></ng-container>
+    </span>
+    <ng-template #tagValue>
+        <v-tag *ngIf="extension()?.tag; else simpleValue" [color]="extension()?.color">
+            <ng-container *ngTemplateOutlet="simpleValue"></ng-container>
+        </v-tag>
+    </ng-template>
+    <ng-template #simpleValue>
+        <span
+            [ngClass]="{
+                link: !!extension()?.click || !!extension()?.link?.[0],
+                'tooltip-link': !!extension()?.tooltip,
+                'mat-body-large': !extension()?.tag,
+            }"
+        >
+            {{ renderValue() }}
+        </span>
+    </ng-template>
+</span>
