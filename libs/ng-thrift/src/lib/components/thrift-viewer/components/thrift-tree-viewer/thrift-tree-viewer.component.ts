@@ -18,7 +18,7 @@ import { ThriftAstMetadata } from '../../../../types';
 import { ThriftViewData } from '../../models/thrift-view-data';
 import { ThriftViewExtension } from '../../utils/thrift-view-extension';
 import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-result';
-import { KeyComponent } from '../key/key.component';
+import { ThriftTreeKeyComponent } from '../thrift-tree-key/thrift-tree-key.component';
 
 @Component({
     selector: 'v-thrift-tree-viewer',
@@ -35,8 +35,7 @@ import { KeyComponent } from '../key/key.component';
         MatBadgeModule,
         RouterModule,
         TagModule,
-        KeyComponent,
-        ContentLoadingComponent,
+        ThriftTreeKeyComponent,
         ContentLoadingComponent,
     ],
 })

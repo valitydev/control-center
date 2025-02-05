@@ -8,12 +8,12 @@ import { ThriftPipesModule } from '../../../../pipes';
 import { ThriftViewData } from '../../models/thrift-view-data';
 
 @Component({
-    selector: 'v-key',
-    templateUrl: './key.component.html',
-    styleUrls: ['./key.component.scss'],
+    selector: 'v-thrift-tree-key',
+    templateUrl: './thrift-tree-key.component.html',
+    styleUrls: ['./thrift-tree-key.component.scss'],
     imports: [CommonModule, ThriftPipesModule],
 })
-export class KeyComponent implements OnChanges {
+export class ThriftTreeKeyComponent implements OnChanges {
     @Input() keys?: ThriftViewData[] | null;
     keys$ = new ReplaySubject<ThriftViewData[]>(1);
     numberKey$ = this.keys$.pipe(
@@ -33,7 +33,7 @@ export class KeyComponent implements OnChanges {
         }),
     );
 
-    ngOnChanges(changes: ComponentChanges<KeyComponent>) {
+    ngOnChanges(changes: ComponentChanges<ThriftTreeKeyComponent>) {
         if (changes.keys) {
             this.keys$.next(this.keys as ThriftViewData[]);
         }

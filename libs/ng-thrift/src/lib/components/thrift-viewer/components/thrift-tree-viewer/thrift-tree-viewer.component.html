@@ -42,10 +42,10 @@
 
                             @if (!(current?.extension$ | async)?.hidden) {
                                 <div style="display: grid; grid-template-rows: auto 1fr; gap: 8px">
-                                    <v-key
+                                    <v-thrift-tree-key
                                         [keys]="item.path$ | async"
                                         class="mat-label-medium mat-secondary-text"
-                                    ></v-key>
+                                    ></v-thrift-tree-key>
 
                                     @if (current) {
                                         <div class="mat-body-large">
@@ -98,14 +98,14 @@
                             [value]="current?.key?.value$ | async"
                         ></v-thrift-tree-viewer>
                     } @else {
-                        <v-key
+                        <v-thrift-tree-key
                             [keys]="item.path$ | async"
                             [ngClass]="{
                                 'mat-title-large': level() === 0,
                                 'mat-title-medium': level() === 1,
                                 'mat-body-large': level() >= 2,
                             }"
-                        ></v-key>
+                        ></v-thrift-tree-key>
                     }
 
                     @if (current) {
