@@ -1,5 +1,5 @@
 import { isEmpty } from '@vality/matez';
-import { Enum, JsonAST, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+import { Enum, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
@@ -11,7 +11,7 @@ import { getFirstDeterminedThriftViewExtensionResult } from '../utils/get-first-
 import { ThriftViewExtension } from '../utils/thrift-view-extension';
 import { ThriftViewExtensionResult } from '../utils/thrift-view-extension-result';
 
-import { getChildrenTypes } from './utils/get-children-types';
+import { getThriftViewDataItems } from './utils/get-thrift-view-data-items';
 
 export class ThriftViewData {
     extension$: Observable<ThriftViewExtensionResult | null> = defer(() => this.renderValue$).pipe(
@@ -48,7 +48,8 @@ export class ThriftViewData {
     );
     isEmpty$ = this.renderValue$.pipe(map((value) => isEmpty(value)));
 
-    items$: Observable<ThriftViewData[]> = this.createItems().pipe(
+    items$: Observable<ThriftViewData[]> = combineLatest([this.data$, this.value$]).pipe(
+        map(([data, value]) => getThriftViewDataItems(data, value, this.extensions)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     inline$: Observable<ThriftViewData[]> = combineLatest([
@@ -153,49 +154,6 @@ export class ThriftViewData {
         private data?: ThriftData | null,
         private extensions?: ThriftViewExtension[],
     ) {}
-
-    private createItems(): Observable<ThriftViewData[]> {
-        return combineLatest([this.data$, this.value$]).pipe(
-            map(([data, value]) => {
-                if (data) {
-                    const trueData = this.data?.trueTypeNode.data as ThriftData<
-                        ValueType,
-                        keyof JsonAST
-                    >;
-                    if (
-                        trueData.objectType === 'struct' ||
-                        trueData.objectType === 'union' ||
-                        (trueData as ThriftData<SetType | ListType | MapType>).type?.name
-                    ) {
-                        const types = getChildrenTypes(trueData);
-                        return getThriftEntries(value).map(([itemKey, itemValue]) => {
-                            return new ThriftViewData(
-                                itemValue,
-                                types?.keyType
-                                    ? new ThriftViewData(
-                                          itemKey,
-                                          undefined,
-                                          trueData.create({ type: types.keyType }),
-                                          this.extensions,
-                                      )
-                                    : new ThriftViewData(itemKey),
-                                trueData.create({
-                                    field: types?.fields?.find((f) => f.name === itemKey),
-                                    type: types?.valueType,
-                                }),
-                                this.extensions,
-                            );
-                        });
-                    }
-                }
-                return isObject(value)
-                    ? getThriftEntries(value).map(
-                          ([k, v]) => new ThriftViewData(v, new ThriftViewData(k)),
-                      )
-                    : [];
-            }),
-        );
-    }
 
     private getValue(ext: ThriftViewExtensionResult | null) {
         const value = ext?.value ?? this.value;
