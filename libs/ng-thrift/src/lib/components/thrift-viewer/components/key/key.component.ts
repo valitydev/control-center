@@ -5,7 +5,7 @@ import { ReplaySubject, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ThriftPipesModule } from '../../../../pipes';
-import { ThriftViewData } from '../../utils/thrift-view-data';
+import { ThriftViewData } from '../../models/thrift-view-data';
 
 @Component({
     selector: 'v-key',

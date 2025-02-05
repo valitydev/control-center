@@ -1,6 +1,6 @@
 import { Field, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 
-import { ThriftData, TypeGroup } from '../../../models';
+import { ThriftData, TypeGroup } from '../../../../models';
 
 interface ChildrenTypes {
     keyType?: ValueType;

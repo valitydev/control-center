@@ -7,11 +7,11 @@ import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operator
 
 import { ThriftData } from '../../../models';
 import { getThriftEntries } from '../../../utils';
+import { getFirstDeterminedThriftViewExtensionResult } from '../utils/get-first-determined-thrift-view-extension-result';
+import { ThriftViewExtension } from '../utils/thrift-view-extension';
+import { ThriftViewExtensionResult } from '../utils/thrift-view-extension-result';
 
-import { getChildrenTypes } from './get-children-types';
-import { getFirstDeterminedThriftViewExtensionResult } from './get-first-determined-thrift-view-extension-result';
-import { ThriftViewExtension } from './thrift-view-extension';
-import { ThriftViewExtensionResult } from './thrift-view-extension-result';
+import { getChildrenTypes } from './utils/get-children-types';
 
 export class ThriftViewData {
     extension$: Observable<ThriftViewExtensionResult | null> = defer(() => this.renderValue$).pipe(

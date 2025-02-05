@@ -15,7 +15,7 @@ import yaml from 'yaml';
 import { ThriftData } from '../../../../models';
 import { ThriftPipesModule } from '../../../../pipes';
 import { ThriftAstMetadata } from '../../../../types';
-import { ThriftViewData } from '../../utils/thrift-view-data';
+import { ThriftViewData } from '../../models/thrift-view-data';
 import { ThriftViewExtension } from '../../utils/thrift-view-extension';
 import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-result';
 import { KeyComponent } from '../key/key.component';
