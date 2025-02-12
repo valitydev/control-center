@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { DestroyRef, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
@@ -15,7 +16,7 @@ import {
 import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../../../api/domain-config/stores/domain-store.service';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
@@ -38,9 +39,13 @@ export class DomainMetadataViewExtensionsService {
                     this.partiesStoreService.get(partyId).pipe(
                         map((p) => ({
                             value: p.contact_info.registration_email,
-                            link: [[`/party/${p.id}`]],
+                            link: [[`/party/${p.id}`]] as Parameters<Router['navigate']>,
                             tooltip: p.id,
                         })),
+                        startWith({
+                            value: String(partyId),
+                            link: [[`/party/${partyId}`]] as Parameters<Router['navigate']>,
+                        }),
                     ),
             },
             {
@@ -87,6 +92,15 @@ export class DomainMetadataViewExtensionsService {
                             });
                         },
                     })),
+                    startWith({
+                        value: String(shopId),
+                        click: () => {
+                            this.sidenavInfoService.toggle(ShopCardComponent, {
+                                partyId,
+                                id: shopId,
+                            });
+                        },
+                    }),
                 ),
         };
     }

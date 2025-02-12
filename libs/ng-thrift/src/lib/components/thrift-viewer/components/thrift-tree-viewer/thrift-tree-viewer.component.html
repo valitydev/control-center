@@ -55,15 +55,15 @@
                 @if (idx > 0 || count) {
                     <mat-divider></mat-divider>
                 }
+                @let key = current?.key;
                 <div
                     [ngStyle]="{
                         display: 'grid',
                         'grid-template-columns':
-                            typeof (current?.value$ | async) === 'number' ? 'auto 1fr' : '1fr',
+                            key && typeof (key?.value$ | async) === 'number' ? 'auto 1fr' : '1fr',
                         gap: '32px',
                     }"
                 >
-                    @let key = current?.key;
                     @let keyData = key?.data$ | async;
 
                     @if (key && keyData) {
