@@ -1,12 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, Output, booleanAttribute } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    booleanAttribute,
+    computed,
+    input,
+} from '@angular/core';
 import { ComponentChanges, UnionEnum } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
 import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 import { ReplaySubject } from 'rxjs';
 
+import { ThriftData } from '../../models';
 import { ThriftAstMetadata } from '../../types';
 import { toJson } from '../../utils';
 
+import { ThriftViewData } from './models/thrift-view-data';
 import { ThriftViewExtension } from './utils/thrift-view-extension';
 
 export enum ViewerKind {
@@ -22,19 +33,29 @@ export enum ViewerKind {
 })
 export class ThriftViewerComponent<T> implements OnChanges {
     @Input() kind: UnionEnum<ViewerKind> = ViewerKind.Component;
-    @Input() value!: T;
+    readonly value = input.required<T>();
     @Input() compared?: T;
     @Input({ transform: booleanAttribute }) progress: boolean = false;
 
-    @Input() metadata!: ThriftAstMetadata[];
-    @Input() namespace!: string;
-    @Input() type!: ValueType;
-    @Input() extensions?: ThriftViewExtension[];
+    readonly metadata = input<ThriftAstMetadata[]>();
+    readonly namespace = input<string>();
+    readonly type = input<ValueType>();
+    readonly extensions = input<ThriftViewExtension[]>();
 
     @Output() changeKind = new EventEmitter<ViewerKind>();
 
     valueFile$ = new ReplaySubject<DiffEditorModel>(1);
     comparedFile$ = new ReplaySubject<DiffEditorModel>(1);
+    view = computed(() => {
+        const metadata = this.metadata();
+        const namespace = this.namespace();
+        const type = this.type();
+        if (metadata && namespace && type) {
+            const data = new ThriftData(metadata, namespace, type);
+            return new ThriftViewData(this.value(), undefined, data, this.extensions());
+        }
+        return new ThriftViewData(this.value(), undefined, undefined, this.extensions());
+    });
 
     get isDiff() {
         return !!this.compared;
@@ -43,7 +64,7 @@ export class ThriftViewerComponent<T> implements OnChanges {
     ngOnChanges(changes: ComponentChanges<ThriftViewerComponent<T>>) {
         if (changes.value) {
             this.valueFile$.next({
-                code: JSON.stringify(toJson(this.value), null, 2),
+                code: JSON.stringify(toJson(this.value()), null, 2),
                 language: 'json',
             });
         }

@@ -119,11 +119,10 @@ export class ThriftViewData {
         this.current$.pipe(switchMap((c) => c.items$)),
         this.data$,
         this.value$,
-        this.current$.pipe(map((c) => c.key)),
     ]).pipe(
-        map(([items, data, value, key]) => {
+        map(([items, data, value]) => {
             return (
-                (!items.length && !key) ||
+                !items.length ||
                 (data?.objectType === 'union' && isEmpty(getThriftEntries(value)?.[0]?.[1]))
             );
         }),

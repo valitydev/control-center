@@ -1,7 +1,9 @@
-@if (!extension()?.hidden) {
+@let extension = view().extension$ | async;
+
+@if (!extension?.hidden) {
     @if (view().isValue$ | async) {
         <v-thrift-tree-value
-            [extension]="extension()"
+            [extension]="extension"
             [renderValue]="view().renderValue$ | async"
         ></v-thrift-tree-value>
     } @else {
@@ -30,10 +32,8 @@
                                                 >
                                             } @else {
                                                 <v-thrift-tree-viewer
-                                                    [data]="current.data$ | async"
-                                                    [extension]="current.extension$ | async"
-                                                    [extensions]="extensions()"
-                                                    [value]="current.value$ | async"
+                                                    [level]="level() + 1"
+                                                    [view]="current"
                                                 ></v-thrift-tree-viewer>
                                             }
                                         </div>
@@ -63,14 +63,13 @@
                         gap: '32px',
                     }"
                 >
-                    @let keyData = current?.key?.data$ | async;
+                    @let key = current?.key;
+                    @let keyData = key?.data$ | async;
 
-                    @if (keyData) {
+                    @if (key && keyData) {
                         <v-thrift-tree-viewer
-                            [data]="keyData"
-                            [extensions]="extensions()"
                             [level]="level() + 1"
-                            [value]="current?.key?.value$ | async"
+                            [view]="key"
                         ></v-thrift-tree-viewer>
                     } @else {
                         <v-thrift-tree-key
@@ -85,10 +84,8 @@
 
                     @if (current) {
                         <v-thrift-tree-viewer
-                            [data]="current.data$ | async"
-                            [extensions]="extensions()"
                             [level]="level() + 1"
-                            [value]="current.value$ | async"
+                            [view]="current"
                         ></v-thrift-tree-viewer>
                     }
                 </div>

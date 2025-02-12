@@ -25,12 +25,8 @@
                 }
             } @else {
                 <v-thrift-tree-viewer
-                    *ngIf="kind === 'component'"
-                    [extensions]="extensions"
-                    [metadata]="metadata"
-                    [namespace]="namespace"
-                    [type]="type"
-                    [value]="value"
+                    *ngIf="kind === 'component' && view()"
+                    [view]="view()"
                 ></v-thrift-tree-viewer>
                 <ngx-monaco-editor
                     *ngIf="kind === 'editor'"

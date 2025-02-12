@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -8,14 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { ContentLoadingComponent, TagModule } from '@vality/matez';
-import { Field, ValueType } from '@vality/thrift-ts';
 
-import { ThriftData } from '../../../../models';
 import { ThriftPipesModule } from '../../../../pipes';
-import { ThriftAstMetadata } from '../../../../types';
 import { ThriftViewData } from '../../models/thrift-view-data';
-import { ThriftViewExtension } from '../../utils/thrift-view-extension';
-import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-result';
 import { ThriftTreeKeyComponent } from '../thrift-tree-key/thrift-tree-key.component';
 import { ThriftTreeValueComponent } from '../thrift-tree-value/thrift-tree-value.component';
 
@@ -40,32 +35,6 @@ import { ThriftTreeValueComponent } from '../thrift-tree-value/thrift-tree-value
     ],
 })
 export class ThriftTreeViewerComponent {
-    readonly value = input<unknown>();
+    readonly view = input.required<ThriftViewData>();
     readonly level = input(0);
-    readonly extension = input<ThriftViewExtensionResult | null>();
-
-    readonly metadata = input<ThriftAstMetadata[]>();
-    readonly namespace = input<string>();
-    readonly type = input<ValueType>();
-    readonly field = input<Field>();
-    readonly parent = input<ThriftData>();
-
-    readonly data = input<ThriftData | null>();
-    readonly extensions = input<ThriftViewExtension[]>();
-
-    viewData = computed(() => {
-        if (this.data()) {
-            return this.data();
-        }
-        const metadata = this.metadata();
-        const namespace = this.namespace();
-        const type = this.type();
-        if (metadata && namespace && type) {
-            return new ThriftData(metadata, namespace, type, this.field(), this.parent());
-        }
-        return undefined;
-    });
-    view = computed(
-        () => new ThriftViewData(this.value(), undefined, this.viewData(), this.extensions()),
-    );
 }
