@@ -82,11 +82,11 @@ export class DepositDetailsComponent implements OnInit {
                 extension: (_, status: RevertStatus, viewValue: string) =>
                     of({
                         value: startCase(viewValue),
-                        tag: true,
                         color: (
                             {
                                 [1]: 'pending',
                                 [2]: 'success',
+                                [0]: 'neutral',
                             } as const
                         )[status],
                     }),

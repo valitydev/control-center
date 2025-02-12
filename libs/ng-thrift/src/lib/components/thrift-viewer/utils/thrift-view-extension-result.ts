@@ -9,5 +9,4 @@ export interface ThriftViewExtensionResult {
     link?: Parameters<Router['navigate']>;
     click?: () => void;
     color?: Color;
-    tag?: boolean;
 }
