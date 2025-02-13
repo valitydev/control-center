@@ -3,7 +3,7 @@ import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
 import { getImportValue, getNoTimeZoneIsoString } from '@vality/matez';
-import { ThriftFormExtension, ThriftData, isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
