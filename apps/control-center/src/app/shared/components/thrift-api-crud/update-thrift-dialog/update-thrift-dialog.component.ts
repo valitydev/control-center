@@ -9,9 +9,8 @@ import {
     NotifyLogService,
     progressTo,
 } from '@vality/matez';
+import { ThriftViewerModule } from '@vality/ng-thrift';
 import { BehaviorSubject, Observable } from 'rxjs';
-
-import { ThriftViewerModule } from '../../thrift-viewer';
 
 @Component({
     templateUrl: './update-thrift-dialog.component.html',

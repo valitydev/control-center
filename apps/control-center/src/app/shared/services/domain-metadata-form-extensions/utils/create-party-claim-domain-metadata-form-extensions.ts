@@ -1,18 +1,15 @@
 import { Claim, PayoutToolModificationUnit } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import {
+    ThriftFormExtension,
+    ThriftFormExtensionOption,
+    isTypeWithAliases,
+} from '@vality/ng-thrift';
 import uniqBy from 'lodash-es/uniqBy';
 import { of } from 'rxjs';
 import short from 'short-uuid';
 
-import {
-    MetadataFormExtension,
-    MetadataFormExtensionOption,
-} from '../../../components/metadata-form';
-
-function createPartyOptions(
-    values: IterableIterator<{ id: string }>,
-): MetadataFormExtensionOption[] {
+function createPartyOptions(values: IterableIterator<{ id: string }>): ThriftFormExtensionOption[] {
     return Array.from(values).map((value) => ({
         label: 'From party',
         details: value,
@@ -22,7 +19,7 @@ function createPartyOptions(
 
 function createClaimOptions(
     modificationUnits: { id: string; modification: unknown }[],
-): MetadataFormExtensionOption[] {
+): ThriftFormExtensionOption[] {
     return uniqBy(
         modificationUnits.filter(Boolean).map((unit) => ({
             label: 'From claim',
@@ -36,7 +33,7 @@ function createClaimOptions(
 
 function createClaimPayoutToolOptions(
     modificationUnits: PayoutToolModificationUnit[],
-): MetadataFormExtensionOption[] {
+): ThriftFormExtensionOption[] {
     return uniqBy(
         modificationUnits.map((unit) => ({
             label: 'From claim',
@@ -49,8 +46,8 @@ function createClaimPayoutToolOptions(
 }
 
 function mergeClaimAndPartyOptions(
-    claimOptions: MetadataFormExtensionOption[],
-    partyOptions: MetadataFormExtensionOption[],
+    claimOptions: ThriftFormExtensionOption[],
+    partyOptions: ThriftFormExtensionOption[],
 ) {
     return partyOptions.reduce((acc, partyOpt) => {
         const claimPartyOpt = acc.find((o) => o.value === partyOpt.value);
@@ -71,7 +68,7 @@ function generate() {
 export function createPartyClaimDomainMetadataFormExtensions(
     party: Party,
     claim: Claim,
-): MetadataFormExtension[] {
+): ThriftFormExtension[] {
     return [
         {
             determinant: (data) => of(isTypeWithAliases(data, 'ContractorID', 'domain')),

@@ -3,14 +3,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../../components/source-cash-field';
 import { DepositManagementService } from '../../../../api/deposit';
-import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 import { FetchSourcesService } from '../../../sources';
 
@@ -23,7 +22,7 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
 
     control = new FormControl(this.getDefaultValue(), [Validators.required]);
     progress$ = new BehaviorSubject(0);
-    extensions: MetadataFormExtension[] = [
+    extensions: ThriftFormExtension[] = [
         {
             determinant: (data) =>
                 of(

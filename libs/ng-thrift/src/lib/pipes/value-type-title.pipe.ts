@@ -8,7 +8,7 @@ import { getValueTypeTitle } from '../utils';
     name: 'ngtValueTypeTitle',
 })
 export class ValueTypeTitlePipe implements PipeTransform {
-    transform(valueType: ValueType): string {
+    transform(valueType?: ValueType): string {
         return getValueTypeTitle(valueType);
     }
 }

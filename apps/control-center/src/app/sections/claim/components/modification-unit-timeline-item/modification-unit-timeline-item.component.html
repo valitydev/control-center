@@ -36,13 +36,13 @@
                 <mat-expansion-panel-header>
                     {{ name | ngtKeyTitle | titlecase }}
                 </mat-expansion-panel-header>
-                <v-thrift-tree-viewer
+                <v-thrift-viewer
                     [extensions]="extensions$ | async"
                     [metadata]="metadata$ | async"
                     [value]="modificationUnit?.modification"
                     namespace="claim_management"
                     type="Modification"
-                ></v-thrift-tree-viewer>
+                ></v-thrift-viewer>
             </mat-expansion-panel>
         </ng-template>
     </cc-timeline-item-content>

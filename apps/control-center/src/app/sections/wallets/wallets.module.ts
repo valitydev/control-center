@@ -7,11 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FiltersModule, ListFieldModule, SwitchButtonModule, TableModule } from '@vality/matez';
+import { ThriftFormModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '../../shared';
 import { CurrencyFieldComponent } from '../../shared/components/currency-field';
 import { MerchantFieldModule } from '../../shared/components/merchant-field/merchant-field.module';
-import { ThriftFormModule } from '../../shared/components/metadata-form/thrift-form.module';
 
 import { WalletsRoutingModule } from './wallets-routing.module';
 import { WalletsComponent } from './wallets.component';

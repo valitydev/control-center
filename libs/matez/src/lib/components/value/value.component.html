@@ -17,7 +17,7 @@
 
             <ng-template #tooltipTemplate>
                 @if (v.tooltip) {
-                    <span [matTooltip]="v.tooltip ?? ''" class="tooltip">
+                    <span [matTooltip]="v.tooltip" class="tooltip">
                         <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
                     </span>
                 } @else {

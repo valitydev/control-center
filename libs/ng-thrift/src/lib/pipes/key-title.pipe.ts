@@ -6,6 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class KeyTitlePipe implements PipeTransform {
     transform(value: unknown): string {
-        return String(value).replaceAll('_', ' ');
+        return String(value).replaceAll('_', ' ')?.trim();
     }
 }

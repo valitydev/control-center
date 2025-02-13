@@ -9,12 +9,10 @@ import {
     signal,
 } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
-import { ThriftViewExtension } from '@vality/ng-thrift';
+import { ThriftViewExtension, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-
-import { ViewerKind } from '../../../thrift-viewer';
 
 interface Data<T> {
     kind: ViewerKind;

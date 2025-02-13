@@ -51,7 +51,7 @@
     <button
         *ngIf="step !== stepEnum.Edit"
         [disabled]="isLoading$ | async"
-        mat-flat-button
+        mat-button
         (click)="step = stepEnum.Edit"
     >
         Edit

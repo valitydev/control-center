@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
-import { ThriftViewerModule } from '../../../thrift-viewer';
+import { ThriftViewerModule } from '@vality/ng-thrift';
 
 import { ThriftViewerBaseComponent } from './thrift-viewer-superclass.directive';
 

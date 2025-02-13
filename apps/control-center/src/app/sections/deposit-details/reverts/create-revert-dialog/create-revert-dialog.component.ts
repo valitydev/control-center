@@ -10,13 +10,12 @@ import { FormControl } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
 import { DialogSuperclass, NotifyLogService, clean } from '@vality/matez';
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { Overwrite } from 'utility-types';
 
 import { Cash } from '../../../../../components/cash-field';
 import { DepositManagementService } from '../../../../api/deposit/deposit-management.service';
-import { MetadataFormExtension } from '../../../../shared/components/metadata-form';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 
 import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
@@ -38,7 +37,7 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
     } as Overwrite<DepositParams, { body: Cash }>);
     progress$ = new BehaviorSubject(0);
     cashTemplate = viewChild<TemplateRef<unknown>>('cashTemplate');
-    extensions: MetadataFormExtension[] = [
+    extensions: ThriftFormExtension[] = [
         {
             determinant: (data) => of(isTypeWithAliases(data, 'RevertID', 'deposit_revert')),
             extension: () => of({ hidden: true }),

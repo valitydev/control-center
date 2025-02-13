@@ -16,10 +16,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { DialogModule, TableModule } from '@vality/matez';
+import { ThriftViewerModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule } from '../../../shared';
 import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
-import { ThriftViewerModule } from '../../../shared/components/thrift-viewer';
 
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
 import { RoutingRulesetComponent } from './routing-ruleset.component';

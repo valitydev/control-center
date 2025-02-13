@@ -3,14 +3,13 @@ import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
 import { getImportValue, getNoTimeZoneIsoString } from '@vality/matez';
-import { ThriftData, isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
-import { MetadataFormExtension } from '../../components/metadata-form';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
@@ -20,10 +19,10 @@ import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
     providedIn: 'root',
 })
 export class DomainMetadataFormExtensionsService {
-    extensions$: Observable<MetadataFormExtension[]> = getImportValue<ThriftAstMetadata[]>(
+    extensions$: Observable<ThriftFormExtension[]> = getImportValue<ThriftAstMetadata[]>(
         import('@vality/domain-proto/metadata.json'),
     ).pipe(
-        map((metadata): MetadataFormExtension[] => [
+        map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
@@ -114,7 +113,7 @@ export class DomainMetadataFormExtensionsService {
             );
     }
 
-    private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): MetadataFormExtension[] {
+    private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
         return domainFields.map((f) =>
@@ -126,7 +125,7 @@ export class DomainMetadataFormExtensionsService {
         metadata: ThriftAstMetadata[],
         objectType: string,
         objectKey: keyof DomainObject,
-    ): MetadataFormExtension {
+    ): ThriftFormExtension {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>

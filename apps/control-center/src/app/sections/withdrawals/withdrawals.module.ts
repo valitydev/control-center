@@ -20,12 +20,11 @@ import {
     NumberRangeFieldModule,
     TableModule,
 } from '@vality/matez';
-import { ThriftPipesModule } from '@vality/ng-thrift';
+import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 
 import { PageLayoutModule, WalletFieldModule } from '../../shared';
 import { FistfulThriftFormComponent } from '../../shared/components/fistful-thrift-form';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
-import { ThriftFormModule } from '../../shared/components/metadata-form';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { WithdrawalsRoutingModule } from './withdrawals-routing.module';

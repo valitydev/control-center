@@ -4,11 +4,11 @@ import { KeyTitlePipe } from './key-title.pipe';
 import { MapUnionPipe } from './map-union.pipe';
 import { UnionKeyPipe } from './union-key.pipe';
 import { UnionValuePipe } from './union-value.pipe';
-
-const PIPES = [MapUnionPipe, UnionKeyPipe, KeyTitlePipe, UnionValuePipe];
+import { ValueTypeTitlePipe } from './value-type-title.pipe';
 
 @NgModule({
-    declarations: PIPES,
-    exports: PIPES,
+    imports: [ValueTypeTitlePipe],
+    declarations: [MapUnionPipe, UnionKeyPipe, KeyTitlePipe, UnionValuePipe],
+    exports: [MapUnionPipe, UnionKeyPipe, KeyTitlePipe, UnionValuePipe, ValueTypeTitlePipe],
 })
 export class ThriftPipesModule {}

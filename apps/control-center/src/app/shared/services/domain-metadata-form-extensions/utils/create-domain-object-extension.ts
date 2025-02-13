@@ -1,17 +1,17 @@
-import { isTypeWithAliases } from '@vality/ng-thrift';
+import {
+    ThriftFormExtension,
+    ThriftFormExtensionOption,
+    isTypeWithAliases,
+} from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { createNextId } from '../../../../../utils/create-next-id';
-import {
-    MetadataFormExtension,
-    MetadataFormExtensionOption,
-} from '../../../components/metadata-form';
 
 export function createDomainObjectExtension(
     refType: string,
-    options: () => Observable<MetadataFormExtensionOption[]>,
-): MetadataFormExtension {
+    options: () => Observable<ThriftFormExtensionOption[]>,
+): ThriftFormExtension {
     return {
         determinant: (data) =>
             of(

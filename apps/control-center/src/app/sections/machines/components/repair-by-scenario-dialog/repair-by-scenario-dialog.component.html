@@ -23,7 +23,7 @@
                         <v-tag>{{ machine.id }}</v-tag>
                     }
                 </mat-chip-listbox>
-                <cc-metadata-form
+                <v-thrift-form
                     [extensions]="extensions$ | async"
                     [formControl]="sameForm"
                     [metadata]="metadata$ | async"
@@ -37,10 +37,10 @@
                             ? 'InvoiceRepairScenario'
                             : 'RepairScenario'
                     "
-                ></cc-metadata-form>
+                ></v-thrift-form>
             </ng-container>
 
-            <cc-metadata-form
+            <v-thrift-form
                 *ngIf="typeControl.value === typesEnum.Different"
                 [extensions]="extensions$ | async"
                 [formControl]="form"
@@ -51,7 +51,7 @@
                         : 'RepairWithdrawalsRequest'
                 "
                 namespace="repairer"
-            ></cc-metadata-form>
+            ></v-thrift-form>
         </ng-container>
 
         <mat-progress-bar *ngIf="progress$ | async"></mat-progress-bar>

@@ -1,11 +1,11 @@
 <v-dialog title="Create chargeback">
-    <cc-metadata-form
+    <v-thrift-form
         [extensions]="extensions$ | async"
         [formControl]="form"
         [metadata]="metadata$ | async"
         namespace="payment_processing"
         type="InvoicePaymentChargebackParams"
-    ></cc-metadata-form>
+    ></v-thrift-form>
 
     <v-dialog-actions>
         <button [disabled]="form.invalid" mat-flat-button (click)="create()">Create</button>

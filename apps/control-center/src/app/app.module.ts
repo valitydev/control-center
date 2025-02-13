@@ -14,7 +14,7 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { MonacoEditorModule } from '@vality/ng-thrift';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

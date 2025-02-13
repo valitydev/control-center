@@ -1,6 +1,10 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src/**/*.ts"],
+    "include": [
+        "src/**/*.ts",
+        "../../libs/ng-thrift/src/lib/components/thrift-editor/thrift-editor.component.ts",
+        "../../libs/ng-thrift/src/lib/components/thrift-editor/thrift-editor.module.ts"
+    ],
     "compilerOptions": {},
     "exclude": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }

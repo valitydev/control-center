@@ -1,0 +1,52 @@
+@if (!noToolbar) {
+    <div class="wrapper">
+        <div class="actions">
+            <button
+                *ngIf="control.invalid"
+                [matTooltip]="control.errors | inlineJson: false"
+                mat-icon-button
+                (click)="control.updateValueAndValidity()"
+            >
+                <mat-icon>priority_high</mat-icon>
+            </button>
+            <button *ngIf="control.dirty" mat-icon-button matTooltip="Reset" (click)="reset()">
+                <mat-icon>restart_alt</mat-icon>
+            </button>
+            <button
+                *ngIf="!noChangeKind"
+                mat-mini-fab
+                matTooltip="Show {{ kind === 'form' ? 'JSON' : 'form' }} editor"
+                style="margin-left: 8px"
+                (click)="toggleKind()"
+            >
+                <mat-icon *ngIf="kind === 'form'">code</mat-icon>
+                <mat-icon *ngIf="kind === 'editor'">edit_note</mat-icon>
+            </button>
+        </div>
+        <ng-container *ngTemplateOutlet="editorForm"></ng-container>
+    </div>
+} @else {
+    <ng-container *ngTemplateOutlet="editorForm"></ng-container>
+}
+
+<ng-template #editorForm>
+    @switch (kind) {
+        @case ('editor') {
+            <ngx-monaco-editor
+                [ngModel]="content$ | async"
+                [options]="{ language: 'json' }"
+                class="monaco-editor"
+                (ngModelChange)="contentChange($event)"
+            ></ngx-monaco-editor>
+        }
+        @case ('form') {
+            <v-thrift-form
+                [extensions]="extensions"
+                [formControl]="control"
+                [metadata]="metadata"
+                [namespace]="namespace"
+                [type]="type"
+            ></v-thrift-form>
+        }
+    }
+</ng-template>
