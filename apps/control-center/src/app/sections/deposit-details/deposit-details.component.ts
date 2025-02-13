@@ -67,7 +67,6 @@ export class DepositDetailsComponent implements OnInit {
                         tooltip: Object.keys(getUnionValue(status)).length
                             ? getUnionValue(status)
                             : undefined,
-                        tag: true,
                         color: (
                             {
                                 failed: 'warn',
