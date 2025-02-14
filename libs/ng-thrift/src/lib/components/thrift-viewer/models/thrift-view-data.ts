@@ -46,7 +46,6 @@ export class ThriftViewData {
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    isEmpty$ = this.renderValue$.pipe(map((value) => isEmpty(value)));
 
     items$: Observable<ThriftViewData[]> = combineLatest([this.data$, this.value$]).pipe(
         map(([data, value]) => getThriftViewDataItems(data, value, this.extensions)),
@@ -101,19 +100,9 @@ export class ThriftViewData {
     );
     current$ = this.path$.pipe(map((keys) => keys.at(-1) as ThriftViewData));
 
-    isLeaf$ = combineLatest([
-        this.current$.pipe(switchMap((c) => c.items$)),
-        this.data$,
-        this.value$,
-    ]).pipe(
-        map(([items, data, value]) => {
-            return (
-                !items.length ||
-                (data?.objectType === 'union' && isEmpty(getThriftEntries(value)?.[0]?.[1]))
-            );
-        }),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    isLeaf$ = this.current$
+        .pipe(switchMap((c) => c.isValue$))
+        .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
     isValue$ = combineLatest([this.items$, this.data$, this.value$]).pipe(
         map(([items, data, value]) => {
