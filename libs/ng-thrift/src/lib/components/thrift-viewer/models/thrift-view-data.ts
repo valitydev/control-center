@@ -115,11 +115,7 @@ export class ThriftViewData {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    isValue$ = combineLatest([
-        this.current$.pipe(switchMap((c) => c.items$)),
-        this.data$,
-        this.value$,
-    ]).pipe(
+    isValue$ = combineLatest([this.items$, this.data$, this.value$]).pipe(
         map(([items, data, value]) => {
             return (
                 !items.length ||
