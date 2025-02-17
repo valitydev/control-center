@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, ContentChild, Input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { ContentLoadingComponent } from '@vality/matez';
 
 import { SidenavInfoService } from '../../sidenav-info.service';
 import { CardActionsComponent } from '../card-actions/card-actions.component';
 
 @Component({
     selector: 'cc-card',
-    imports: [CommonModule, MatDividerModule, MatIconModule],
+    imports: [CommonModule, MatDividerModule, MatIconModule, ContentLoadingComponent],
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss'],
 })

@@ -25,18 +25,10 @@
                                     ></v-thrift-tree-key>
 
                                     @if (current) {
-                                        <div class="mat-body-large">
-                                            @if (current.isEmpty$ | async) {
-                                                <mat-icon class="mat-secondary-text" inline
-                                                    >hide_source</mat-icon
-                                                >
-                                            } @else {
-                                                <v-thrift-tree-viewer
-                                                    [level]="level() + 1"
-                                                    [view]="current"
-                                                ></v-thrift-tree-viewer>
-                                            }
-                                        </div>
+                                        <v-thrift-tree-viewer
+                                            [level]="level() + 1"
+                                            [view]="current"
+                                        ></v-thrift-tree-viewer>
                                     }
                                 </div>
                             }

@@ -1,7 +1,13 @@
 <div class="sidenav-info">
     <div class="sidenav-info-title-bar">
         <div>
-            <h2 class="sidenav-info-title">{{ title }}</h2>
+            <h2 class="sidenav-info-title">
+                @if (title) {
+                    {{ title }}
+                } @else {
+                    <v-content-loading width="200px"></v-content-loading>
+                }
+            </h2>
         </div>
         <mat-icon class="sidenav-info-close" inline (click)="sidenavInfoService.close()"
             >clear</mat-icon
