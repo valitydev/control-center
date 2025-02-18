@@ -43,3 +43,18 @@ jobs:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: 'control-center-improvements'
           username: 'Frontend'
+      - name: Publish MatEz Library
+        uses: valitydev/action-frontend/publish@v1.0
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          directory: ./dist/libs/matez
+      - name: Publish NgConfigs Library
+        uses: valitydev/action-frontend/publish@v1.0
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          directory: ./dist/libs/ng-configs
+      - name: Publish NgThrift Library
+        uses: valitydev/action-frontend/publish@v1.0
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          directory: ./dist/libs/ng-thrift

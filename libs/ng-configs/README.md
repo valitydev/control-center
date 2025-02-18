@@ -1,7 +1,5 @@
 # Ng Configs
 
-This library was generated with [Nx](https://nx.dev).
-
-## Building
-
-Run `nx build ng-configs` to build the library.
+- ESLint config
+- Prettier config
+- CSpell config

@@ -1,7 +1,4 @@
-# ng-thrift
+# Angular Thrift Components
 
-This library was generated with [Nx](https://nx.dev).
-
-## Running unit tests
-
-Run `nx test ng-thrift` to execute the unit tests.
+- Thrift Editor (Form & Monaco)
+- Thrift Viewer (Tree, Monaco, Monaco Diff)

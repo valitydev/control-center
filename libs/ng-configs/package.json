@@ -1,6 +1,9 @@
 {
     "name": "@vality/ng-configs",
     "version": "0.1.0",
+    "publishConfig": {
+        "access": "public"
+    },
     "dependencies": {
         "@cspell/dict-ru_ru": "^2.2.4",
         "eslint-plugin-import": "^2.31.0",
