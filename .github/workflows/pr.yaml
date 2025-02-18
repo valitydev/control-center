@@ -24,7 +24,7 @@ jobs:
           contains(github.event.pull_request.labels.*.name, 'publish')
           || contains(github.event.pull_request.labels.*.name, 'publish matez')
         working-directory: ./dist/libs/matez
-        run: |
+        run: >
           npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
           && npm publish --tag pr
         env:
@@ -34,7 +34,7 @@ jobs:
           contains(github.event.pull_request.labels.*.name, 'publish')
           || contains(github.event.pull_request.labels.*.name, 'publish ng-configs')
         working-directory: ./dist/libs/ng-configs
-        run: |
+        run: >
           npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
           && npm publish --tag pr
         env:
@@ -44,7 +44,7 @@ jobs:
           contains(github.event.pull_request.labels.*.name, 'publish')
           || contains(github.event.pull_request.labels.*.name, 'publish ng-thrift')
         working-directory: ./dist/libs/ng-thrift
-        run: |
+        run: >
           npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
           && npm publish --tag pr
         env:
