@@ -1,5 +1,5 @@
 const nx = require('@nx/eslint-plugin');
-const getEslintConfigs = require('./tools/utils/get-eslint-configs');
+const configs = require('./tools/utils/configs');
 
 module.exports = [
     ...nx.configs['flat/base'],
@@ -43,7 +43,7 @@ module.exports = [
         },
         languageOptions: { parser: require('jsonc-eslint-parser') },
     },
-    ...(getEslintConfigs()?.baseEslintConfig ?? []),
+    ...(configs?.baseEslintConfig ?? []),
     {
         files: ['**/*.ts'],
         rules: {

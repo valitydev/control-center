@@ -1,6 +1,6 @@
 const nx = require('@nx/eslint-plugin');
 const baseConfig = require('../../eslint.config.js');
-const getEslintConfigs = require('../../tools/utils/get-eslint-configs');
+const configs = require('../../tools/utils/configs');
 
 module.exports = [
     ...baseConfig,
@@ -42,7 +42,7 @@ module.exports = [
         // Override or add rules here
         rules: {},
     },
-    ...(getEslintConfigs()?.appEslintConfig?.() ?? []),
+    ...(configs?.appEslintConfig?.() ?? []),
     {
         files: ['**/*.ts'],
         rules: {
