@@ -8,7 +8,7 @@ import {
     DialogService,
     UnionEnum,
     createStorageValue,
-    getEnumValues,
+    enumHasValue,
 } from '@vality/matez';
 import { ViewerKind, isEqualThrift } from '@vality/ng-thrift';
 import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
@@ -49,10 +49,7 @@ export class DomainObjectCardComponent implements OnChanges {
     );
 
     kind = createStorageValue<UnionEnum<ViewerKind>>('domain-object-card-view', {
-        deserialize: (v) =>
-            getEnumValues(ViewerKind).includes(v as ViewerKind)
-                ? (v as ViewerKind)
-                : ViewerKind.Component,
+        deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
         injector: this.injector,
     });
 

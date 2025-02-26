@@ -15,12 +15,12 @@
             <button
                 *ngIf="!noChangeKind"
                 mat-mini-fab
-                matTooltip="Show {{ kind === 'form' ? 'JSON' : 'form' }} editor"
+                matTooltip="Show {{ kind() === 'form' ? 'JSON' : 'form' }} editor"
                 style="margin-left: 8px"
                 (click)="toggleKind()"
             >
-                <mat-icon *ngIf="kind === 'form'">code</mat-icon>
-                <mat-icon *ngIf="kind === 'editor'">edit_note</mat-icon>
+                <mat-icon *ngIf="kind() === 'form'">code</mat-icon>
+                <mat-icon *ngIf="kind() === 'editor'">edit_note</mat-icon>
             </button>
         </div>
         <ng-container *ngTemplateOutlet="editorForm"></ng-container>
@@ -30,7 +30,7 @@
 }
 
 <ng-template #editorForm>
-    @switch (kind) {
+    @switch (kind()) {
         @case ('editor') {
             <ngx-monaco-editor
                 [ngModel]="content$ | async"

@@ -7,7 +7,9 @@
         <cc-domain-thrift-form
             [defaultValue]="(currentObject$ | async | ngtUnionValue)?.data"
             [formControl]="control"
+            [kind]="kind.value()"
             [type]="dataType$ | async"
+            (kindChange)="kind.set($event)"
         ></cc-domain-thrift-form>
         <v-dialog-actions
             ><ng-container *ngTemplateOutlet="actions"></ng-container

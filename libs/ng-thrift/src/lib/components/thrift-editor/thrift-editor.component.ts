@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute, model } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import {
     ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
     FormControlSuperclass,
+    UnionEnum,
     createControlProviders,
 } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
@@ -29,7 +30,7 @@ export enum EditorKind {
     standalone: false,
 })
 export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
-    @Input() kind: EditorKind = EditorKind.Form;
+    readonly kind = model<UnionEnum<EditorKind>>(EditorKind.Form);
 
     @Input() defaultValue?: T;
 
@@ -40,10 +41,8 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input({ transform: booleanAttribute }) noChangeKind = false;
     @Input({ transform: booleanAttribute }) noToolbar = false;
 
-    @Output() changeKind = new EventEmitter<EditorKind>();
-
     content$ = merge(
-        this.control.valueChanges.pipe(filter(() => this.kind !== EditorKind.Editor)),
+        this.control.valueChanges.pipe(filter(() => this.kind() !== EditorKind.Editor)),
         defer(() => of(this.control.value)),
         defer(() => this.updateFile$),
     ).pipe(
@@ -59,7 +58,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     }
 
     override validate(control: AbstractControl): ValidationErrors | null {
-        if (this.kind === EditorKind.Editor) {
+        if (this.kind() === EditorKind.Editor) {
             return this.editorError ? { jsonParse: this.editorError } : null;
         }
         return super.validate(control);
@@ -68,7 +67,6 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     contentChange(str: string) {
         try {
             this.editorError = null;
-
             const parsed = JSON.parse(str);
             this.control.setValue(parsed as T);
         } catch (err) {
@@ -80,15 +78,15 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
 
     toggleKind() {
         this.editorError = null;
-        switch (this.kind) {
+        const kind = this.kind();
+        switch (kind) {
             case EditorKind.Editor:
-                this.kind = EditorKind.Form;
+                this.kind.set(EditorKind.Form);
                 break;
             case EditorKind.Form:
-                this.kind = EditorKind.Editor;
+                this.kind.set(EditorKind.Editor);
                 break;
         }
-        this.changeKind.emit(this.kind);
     }
 
     reset() {
