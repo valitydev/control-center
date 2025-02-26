@@ -1,4 +1,4 @@
-@if (progress) {
+@if (progress()) {
     <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
         <v-content-loading class="mat-title-large"></v-content-loading>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
@@ -11,33 +11,31 @@
     </div>
 } @else {
     <div class="wrapper">
-        @let valueFile = valueFile$ | async;
-        @if (valueFile) {
-            @if (isDiff) {
-                @let comparedFile = comparedFile$ | async;
-                @if (comparedFile) {
+        @if (valueFile()) {
+            @if (isDiff()) {
+                @if (comparedFile()) {
                     <ngx-monaco-diff-editor
-                        [modifiedModel]="comparedFile"
+                        [modifiedModel]="comparedFile()"
                         [options]="{ renderSideBySide: true, readOnly: true }"
-                        [originalModel]="valueFile"
+                        [originalModel]="valueFile()"
                         class="monaco-editor"
                     ></ngx-monaco-diff-editor>
                 }
             } @else {
                 <v-thrift-tree-viewer
-                    *ngIf="kind === 'component' && view()"
+                    *ngIf="kind() === 'component' && view()"
                     [view]="view()"
                 ></v-thrift-tree-viewer>
                 <ngx-monaco-editor
-                    *ngIf="kind === 'editor'"
-                    [ngModel]="valueFile.code"
-                    [options]="{ readOnly: true, language: valueFile.language }"
+                    *ngIf="kind() === 'editor'"
+                    [ngModel]="valueFile().code"
+                    [options]="{ readOnly: true, language: valueFile().language }"
                     class="monaco-editor"
                 >
                 </ngx-monaco-editor>
                 <div class="actions">
                     <button mat-mini-fab (click)="toggleKind()">
-                        @switch (kind) {
+                        @switch (kind()) {
                             @case ('component') {
                                 <mat-icon>code_blocks</mat-icon>
                             }
