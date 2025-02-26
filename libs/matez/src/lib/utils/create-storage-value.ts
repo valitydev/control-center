@@ -1,6 +1,6 @@
 import { Injector } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { distinctUntilChanged, filter, fromEvent, map, shareReplay, startWith, tap } from 'rxjs';
+import { distinctUntilChanged, filter, fromEvent, map, shareReplay, startWith } from 'rxjs';
 
 export function createStorageValue<T>(
     key: string,
@@ -15,17 +15,13 @@ export function createStorageValue<T>(
     },
 ) {
     const value$ = fromEvent<StorageEvent>(document, 'storage').pipe(
-        tap(console.log),
         filter((v) => v.key === key),
         map((v) => v.newValue),
-        tap(console.log),
         startWith(localStorage.getItem(key)),
         map((v) => deserialize(v)),
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    value$.subscribe(console.log);
 
     return {
         get(): T {
@@ -36,7 +32,6 @@ export function createStorageValue<T>(
             if (serialized === null) {
                 return localStorage.removeItem(key);
             }
-            console.log('set', serialized);
             return localStorage.setItem(key, serialized);
         },
         value$,
