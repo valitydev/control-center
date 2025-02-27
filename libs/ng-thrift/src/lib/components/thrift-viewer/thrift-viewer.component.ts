@@ -1,11 +1,9 @@
 import { Component, booleanAttribute, computed, input, model } from '@angular/core';
 import { UnionEnum } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
-import { DiffEditorModel } from 'ngx-monaco-editor-v2';
 
 import { ThriftData } from '../../models';
 import { ThriftAstMetadata } from '../../types';
-import { toJson } from '../../utils';
 
 import { ThriftViewData } from './models/thrift-view-data';
 import { ThriftViewExtension } from './utils/thrift-view-extension';
@@ -21,10 +19,10 @@ export enum ViewerKind {
     styleUrls: ['./thrift-viewer.component.scss'],
     standalone: false,
 })
-export class ThriftViewerComponent<T> {
+export class ThriftViewerComponent {
     readonly kind = model<UnionEnum<ViewerKind>>(ViewerKind.Component);
-    readonly value = input.required<T>();
-    readonly compared = input<T>();
+    readonly value = input.required();
+    readonly compared = input();
     readonly progress = input<boolean, unknown>(false, { transform: booleanAttribute });
     readonly metadata = input<ThriftAstMetadata[]>();
     readonly namespace = input<string>();
@@ -32,14 +30,6 @@ export class ThriftViewerComponent<T> {
     readonly extensions = input<ThriftViewExtension[]>();
 
     isDiff = computed(() => !!this.compared());
-    valueFile = computed<DiffEditorModel>(() => ({
-        code: JSON.stringify(toJson(this.value()), null, 2),
-        language: 'json',
-    }));
-    comparedFile = computed<DiffEditorModel>(() => ({
-        code: JSON.stringify(toJson(this.compared()), null, 2),
-        language: 'json',
-    }));
     view = computed(() => {
         const metadata = this.metadata();
         const namespace = this.namespace();

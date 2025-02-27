@@ -14,24 +14,18 @@
     } @else {
         @if (value()) {
             @if (isDiff()) {
-                <ngx-monaco-diff-editor
-                    [modifiedModel]="comparedFile()"
-                    [options]="{ renderSideBySide: true, readOnly: true }"
-                    [originalModel]="valueFile()"
-                    class="monaco-editor"
-                ></ngx-monaco-diff-editor>
+                <v-thrift-monaco
+                    [original]="value()"
+                    [value]="compared()"
+                    readOnly
+                ></v-thrift-monaco>
             } @else {
                 @switch (kind()) {
                     @case ('component') {
                         <v-thrift-tree-viewer [view]="view()"></v-thrift-tree-viewer>
                     }
                     @case ('editor') {
-                        <ngx-monaco-editor
-                            [ngModel]="valueFile().code"
-                            [options]="{ readOnly: true, language: valueFile().language }"
-                            class="monaco-editor"
-                        >
-                        </ngx-monaco-editor>
+                        <v-thrift-monaco [value]="value()" readOnly></v-thrift-monaco>
                     }
                 }
             }
