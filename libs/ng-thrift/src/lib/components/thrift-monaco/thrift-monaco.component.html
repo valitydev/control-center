@@ -10,7 +10,7 @@
         [ngModel]="innerValue()"
         [options]="editorOptions()"
         class="monaco-editor"
-        (ngModelChange)="value.set(innerToOuterValue($event))"
+        (ngModelChange)="modelChange($event)"
     >
     </ngx-monaco-editor>
 }

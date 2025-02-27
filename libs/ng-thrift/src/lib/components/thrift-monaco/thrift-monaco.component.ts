@@ -1,4 +1,4 @@
-import { Component, booleanAttribute, computed, input, model } from '@angular/core';
+import { Component, booleanAttribute, computed, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
@@ -10,10 +10,11 @@ import { toJson } from '../../utils';
     templateUrl: 'thrift-monaco.component.html',
     styleUrl: './thrift-monaco.component.scss',
 })
-export class ThriftMonacoComponent {
-    value = model();
-    original = input();
+export class ThriftMonacoComponent<T> {
+    value = model.required<T>();
+    original = input<T>();
     readOnly = input(false, { transform: booleanAttribute });
+    parseError = output<unknown | null>();
 
     private modelOptions = { language: 'json' };
     private baseOptions = computed(() => ({
@@ -29,21 +30,28 @@ export class ThriftMonacoComponent {
         renderSideBySide: true,
     }));
 
-    innerValue = computed(() => this.outerToInnerValue(this.value()));
+    innerValue = computed(() => this.stringifyThrift(this.value()));
     modifiedModel = computed(() => ({
         code: this.innerValue(),
         ...this.modelOptions,
     }));
     originalModel = computed(() => ({
-        code: this.outerToInnerValue(this.original()),
+        code: this.stringifyThrift(this.original()),
         ...this.modelOptions,
     }));
 
-    protected innerToOuterValue(inner: string): unknown {
-        return typeof inner === 'string' ? JSON.parse(inner) : '';
+    stringifyThrift(outer: unknown): string {
+        return outer ? JSON.stringify(toJson(outer), null, 2) : '';
     }
 
-    protected outerToInnerValue(outer: unknown): string {
-        return outer ? JSON.stringify(toJson(outer), null, 2) : '';
+    modelChange(inner: string) {
+        try {
+            const value = typeof inner === 'string' ? JSON.parse(inner) : '';
+            this.value.set(value);
+            this.parseError.emit(null);
+        } catch (err) {
+            console.warn(err);
+            this.parseError.emit(err);
+        }
     }
 }

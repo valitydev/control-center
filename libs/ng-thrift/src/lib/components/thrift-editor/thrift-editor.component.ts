@@ -7,13 +7,12 @@ import {
     FormControlSuperclass,
     UnionEnum,
     createControlProviders,
+    getValueChanges,
 } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
-import { Subject, defer, merge, of } from 'rxjs';
-import { filter, map, shareReplay } from 'rxjs/operators';
+import { filter, shareReplay } from 'rxjs/operators';
 
 import { ThriftAstMetadata } from '../../types';
-import { toJson } from '../../utils';
 
 import { ThriftFormExtension } from './types/thrift-form-extension';
 
@@ -41,16 +40,8 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     @Input({ transform: booleanAttribute }) noChangeKind = false;
     @Input({ transform: booleanAttribute }) noToolbar = false;
 
-    content$ = merge(
-        this.control.valueChanges.pipe(filter(() => this.kind() !== EditorKind.Editor)),
-        defer(() => of(this.control.value)),
-        defer(() => this.updateFile$),
-    ).pipe(
-        map((value) => this.createMonacoContent(value)),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    content$ = getValueChanges(this.control).pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
-    private updateFile$ = new Subject<void>();
     private editorError: unknown = null;
 
     constructor(private dialogService: DialogService) {
@@ -64,16 +55,13 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
         return super.validate(control);
     }
 
-    contentChange(str: string) {
-        try {
+    setError(error: unknown | null) {
+        if (error) {
+            this.editorError = error;
+        } else {
             this.editorError = null;
-            const parsed = JSON.parse(str);
-            this.control.setValue(parsed as T);
-        } catch (err) {
-            console.warn(err);
-            this.editorError = err;
-            this.control.updateValueAndValidity();
         }
+        this.control.updateValueAndValidity();
     }
 
     toggleKind() {
@@ -95,13 +83,8 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
             .afterClosed()
             .pipe(filter((res) => res?.status === DialogResponseStatus.Success))
             .subscribe(() => {
-                this.control.reset(this.defaultValue);
-                this.editorError = null;
-                this.updateFile$.next();
+                this.control.reset(this.defaultValue, { emitEvent: true });
+                this.setError(null);
             });
-    }
-
-    private createMonacoContent(value: unknown): string {
-        return JSON.stringify(toJson(value), null, 2);
     }
 }
