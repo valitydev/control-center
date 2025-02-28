@@ -1,8 +1,8 @@
 import { ValuesType } from 'utility-types';
 
-export function getEnumEntries<E extends Record<PropertyKey, unknown>>(
-    srcEnum: E,
-): [key: keyof E, value: ValuesType<E>][] {
+export type Enum = Record<PropertyKey, unknown>;
+
+export function getEnumEntries<E extends Enum>(srcEnum: E): [key: keyof E, value: ValuesType<E>][] {
     if (!srcEnum) {
         return [];
     }
@@ -17,28 +17,25 @@ export function getEnumEntries<E extends Record<PropertyKey, unknown>>(
     return entries as never;
 }
 
-export function getEnumKeyValues<E extends Record<PropertyKey, unknown>>(
+export function getEnumKeyValues<E extends Enum>(
     srcEnum: E,
 ): { key: keyof E; value: ValuesType<E> }[] {
     return getEnumEntries(srcEnum).map(([key, value]) => ({ key, value }));
 }
 
-export function getEnumKeys<E extends Record<PropertyKey, unknown>>(srcEnum: E): (keyof E)[] {
+export function getEnumKeys<E extends Enum>(srcEnum: E): (keyof E)[] {
     return getEnumEntries(srcEnum).map(([k]) => k);
 }
 
-export function getEnumValues<E extends Record<PropertyKey, unknown>>(srcEnum: E): ValuesType<E>[] {
+export function getEnumValues<E extends Enum>(srcEnum: E): ValuesType<E>[] {
     return getEnumEntries(srcEnum).map(([, v]) => v);
 }
 
-export function getEnumKey<E extends Record<PropertyKey, unknown>>(
-    srcEnum: E,
-    value: ValuesType<E>,
-): keyof E {
+export function getEnumKey<E extends Enum>(srcEnum: E, value: ValuesType<E>): keyof E {
     return getEnumKeyValues(srcEnum).find((e) => String(e.value) === String(value))?.key as keyof E;
 }
 
-export function enumHasValue<E extends Record<PropertyKey, unknown>>(
+export function enumHasValue<E extends Enum>(
     srcEnum: E,
     value: ValuesType<E> | string,
 ): value is ValuesType<E> {

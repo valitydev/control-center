@@ -1,8 +1,8 @@
-import { Directive, Input, OnChanges, booleanAttribute, input } from '@angular/core';
+import { Directive, Input, OnChanges, booleanAttribute, input, model } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ThriftAstMetadata } from '@vality/fistful-proto';
-import { FormControlSuperclass } from '@vality/matez';
-import { ThriftFormExtension } from '@vality/ng-thrift';
+import { FormControlSuperclass, UnionEnum } from '@vality/matez';
+import { EditorKind, ThriftFormExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -18,6 +18,7 @@ export abstract class BaseThriftFormSuperclass<T = unknown>
     @Input() defaultValue?: T;
     @Input({ transform: booleanAttribute }) noChangeKind = false;
     @Input({ transform: booleanAttribute }) noToolbar = false;
+    kind = model<UnionEnum<EditorKind>>(EditorKind.Form);
 
     protected abstract defaultNamespace: string;
     protected abstract metadata$: Observable<ThriftAstMetadata[]>;

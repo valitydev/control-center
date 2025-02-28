@@ -1,53 +1,50 @@
-@if (progress) {
-    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-        <v-content-loading class="mat-title-large"></v-content-loading>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px">
-            <v-content-loading class="mat-body-large"></v-content-loading>
-            <v-content-loading class="mat-body-large"></v-content-loading>
-            <v-content-loading class="mat-body-large"></v-content-loading>
-            <v-content-loading class="mat-body-large"></v-content-loading>
-            <v-content-loading class="mat-body-large"></v-content-loading>
-        </div>
-    </div>
-} @else {
-    <div class="wrapper">
-        @let valueFile = valueFile$ | async;
-        @if (valueFile) {
-            @if (isDiff) {
-                @let comparedFile = comparedFile$ | async;
-                @if (comparedFile) {
-                    <ngx-monaco-diff-editor
-                        [modifiedModel]="comparedFile"
-                        [options]="{ renderSideBySide: true, readOnly: true }"
-                        [originalModel]="valueFile"
-                        class="monaco-editor"
-                    ></ngx-monaco-diff-editor>
-                }
-            } @else {
-                <v-thrift-tree-viewer
-                    *ngIf="kind === 'component' && view()"
-                    [view]="view()"
-                ></v-thrift-tree-viewer>
-                <ngx-monaco-editor
-                    *ngIf="kind === 'editor'"
-                    [ngModel]="valueFile.code"
-                    [options]="{ readOnly: true, language: valueFile.language }"
-                    class="monaco-editor"
-                >
-                </ngx-monaco-editor>
-                <div class="actions">
-                    <button mat-mini-fab (click)="toggleKind()">
-                        @switch (kind) {
-                            @case ('component') {
-                                <mat-icon>code_blocks</mat-icon>
-                            }
-                            @case ('editor') {
-                                <mat-icon>view_comfy_alt</mat-icon>
-                            }
-                        }
-                    </button>
+<div class="wrapper">
+    @if (progress()) {
+        <div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 32px">
+                <v-content-loading class="mat-title-large"></v-content-loading>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+                    <v-content-loading class="mat-body-large"></v-content-loading>
+                    <v-content-loading class="mat-body-large"></v-content-loading>
+                    <v-content-loading class="mat-body-large"></v-content-loading>
+                    <v-content-loading class="mat-body-large"></v-content-loading>
                 </div>
+            </div>
+        </div>
+    } @else {
+        @if (value()) {
+            @if (isDiff()) {
+                <v-thrift-monaco
+                    [original]="value()"
+                    [value]="compared()"
+                    readOnly
+                ></v-thrift-monaco>
+            } @else {
+                @switch (kind()) {
+                    @case ('component') {
+                        <v-thrift-tree-viewer [view]="view()"></v-thrift-tree-viewer>
+                    }
+                    @case ('editor') {
+                        <v-thrift-monaco [value]="value()" readOnly></v-thrift-monaco>
+                    }
+                }
             }
         }
-    </div>
-}
+    }
+    @if (!isDiff()) {
+        <div class="actions">
+            <button [disabled]="progress()" mat-mini-fab (click)="toggleKind()">
+                <mat-icon>
+                    @switch (kind()) {
+                        @case ('component') {
+                            code_blocks
+                        }
+                        @case ('editor') {
+                            view_comfy_alt
+                        }
+                    }
+                </mat-icon>
+            </button>
+        </div>
+    }
+</div>

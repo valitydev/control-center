@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ContentLoadingComponent } from '@vality/matez';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
+import { ThriftMonacoComponent } from '../thrift-monaco';
+
 import { ThriftTreeViewerComponent } from './components/thrift-tree-viewer';
 import { ThriftViewerComponent } from './thrift-viewer.component';
 
@@ -23,6 +25,7 @@ import { ThriftViewerComponent } from './thrift-viewer.component';
         ThriftTreeViewerComponent,
         FormsModule,
         ContentLoadingComponent,
+        ThriftMonacoComponent,
     ],
 })
 export class ThriftViewerModule {}

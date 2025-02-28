@@ -1,10 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
+import { Component, DestroyRef, Injector, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
-import { ComponentChanges, DialogService } from '@vality/matez';
-import { isEqualThrift } from '@vality/ng-thrift';
+import {
+    ComponentChanges,
+    DialogService,
+    UnionEnum,
+    createStorageValue,
+    enumHasValue,
+} from '@vality/matez';
+import { ViewerKind, isEqualThrift } from '@vality/ng-thrift';
 import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
@@ -42,11 +48,17 @@ export class DomainObjectCardComponent implements OnChanges {
         map((domainObject) => getDomainObjectDetails(domainObject)?.label),
     );
 
+    kind = createStorageValue<UnionEnum<ViewerKind>>('domain-object-card-view', {
+        deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
+        injector: this.injector,
+    });
+
     constructor(
         private deleteDomainObjectService: DeleteDomainObjectService,
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
+        private injector: Injector,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<DomainObjectCardComponent>) {

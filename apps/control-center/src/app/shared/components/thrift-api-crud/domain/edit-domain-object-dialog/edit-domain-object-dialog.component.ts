@@ -11,11 +11,20 @@ import {
     DialogModule,
     DialogSuperclass,
     NotifyLogService,
+    UnionEnum,
+    createStorageValue,
+    enumHasValue,
     getValueChanges,
     inProgressFrom,
     progressTo,
 } from '@vality/matez';
-import { ThriftPipesModule, getUnionKey, getUnionValue, isEqualThrift } from '@vality/ng-thrift';
+import {
+    EditorKind,
+    ThriftPipesModule,
+    getUnionKey,
+    getUnionValue,
+    isEqualThrift,
+} from '@vality/ng-thrift';
 import { BehaviorSubject, EMPTY, Observable, combineLatest, switchMap } from 'rxjs';
 import { catchError, distinctUntilChanged, first, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
@@ -91,6 +100,9 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     isLoading$ = inProgressFrom([this.domainStoreService.isLoading$, () => this.progress$]);
 
     private progress$ = new BehaviorSubject(0);
+    kind = createStorageValue<UnionEnum<EditorKind>>('edit-domain-object-dialog-kind', {
+        deserialize: (v) => (enumHasValue(EditorKind, v) ? v : EditorKind.Form),
+    });
 
     constructor(
         private domainStoreService: DomainStoreService,

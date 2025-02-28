@@ -1,0 +1,16 @@
+@if (original()) {
+    <ngx-monaco-diff-editor
+        [modifiedModel]="modifiedModel()"
+        [options]="diffOptions()"
+        [originalModel]="originalModel()"
+        class="monaco-editor"
+    ></ngx-monaco-diff-editor>
+} @else {
+    <ngx-monaco-editor
+        [ngModel]="innerValue()"
+        [options]="editorOptions()"
+        class="monaco-editor"
+        (ngModelChange)="modelChange($event)"
+    >
+    </ngx-monaco-editor>
+}

@@ -16,3 +16,4 @@ export * from './file';
 export * from './csv';
 export * from './transform-attribute';
 export * from './decorators';
+export * from './create-storage-value';
