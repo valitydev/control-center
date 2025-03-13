@@ -29,6 +29,7 @@ import {
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { invertPredicate } from '../utils/invert-predicate';
+import { toggleCandidateAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 
@@ -262,32 +263,9 @@ export class RoutingRulesetComponent {
 
     toggleAllow(idx: number) {
         this.routingRulesetService.refID$
-            .pipe(
-                first(),
-                switchMap((refId) => this.routingRulesService.getCandidate(refId, idx)),
-                withLatestFrom(this.routingRulesetService.refID$),
-                switchMap(([candidate, refId]) => {
-                    const newAllowed = invertPredicate(candidate.allowed).toggled;
-                    return this.dialog
-                        .open(UpdateThriftDialogComponent, {
-                            title: 'Toggle allowed',
-                            prevObject: candidate.allowed,
-                            object: newAllowed,
-                            action: () =>
-                                this.routingRulesService.updateRule(refId, idx, {
-                                    ...candidate,
-                                    allowed: newAllowed,
-                                }),
-                        })
-                        .afterClosed();
-                }),
-            )
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((res) => {
-                if (res.status === DialogResponseStatus.Success) {
-                    this.domainStoreService.forceReload();
-                    this.log.successOperation('update', 'Allowed');
-                }
+            .pipe(first(), takeUntilDestroyed(this.destroyRef))
+            .subscribe((refId) => {
+                toggleCandidateAllowed(refId, idx);
             });
     }
 
