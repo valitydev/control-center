@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { Column, ComponentChanges, TableModule } from '@vality/matez';
+import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
@@ -9,6 +9,7 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
+import { toggleCandidateAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,
@@ -52,9 +53,23 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                 },
             }),
         },
-        createPredicateColumn((d) => ({ predicate: d.candidates[0].allowed }), {
-            header: 'Allowed',
-        }),
+        createPredicateColumn(
+            (d) => ({
+                predicate: d.candidates[0].candidate.allowed,
+            }),
+            {
+                header: 'Allowed',
+                cell: (d) => ({
+                    click: () => {
+                        if (d.candidates.length > 1) {
+                            this.log.error('Cannot toggle allowed for multiple candidates');
+                        } else {
+                            toggleCandidateAllowed(d.terminalRule.ref.id, d.candidates[0].idx);
+                        }
+                    },
+                }),
+            },
+        ),
         createPartyColumn((d) => ({ id: d.delegate.allowed.condition?.party?.id })),
         {
             field: 'type',
@@ -115,6 +130,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         private partiesStoreService: PartiesStoreService,
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
+        private log: NotifyLogService,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<TerminalDelegatesCardComponent>) {
