@@ -1,7 +1,7 @@
 import { Predicate } from '@vality/domain-proto/domain';
 import { createColumn } from '@vality/matez';
 
-import { formatPredicate } from '.';
+import { formatPredicate } from './format-predicate';
 
 export const createPredicateColumn = createColumn(
     ({ predicate }: { predicate: Predicate }) => {
