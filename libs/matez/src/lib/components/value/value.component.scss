@@ -15,10 +15,14 @@
     text-decoration-style: dotted;
 }
 
+.wrapper {
+    &__action {
+        cursor: pointer;
+    }
+}
+
 .value {
     &__click {
-        cursor: pointer;
-
         &:hover {
             text-decoration: underline;
             text-decoration-style: dashed;
@@ -26,8 +30,6 @@
     }
 
     &__link {
-        cursor: pointer;
-
         &:hover {
             text-decoration: underline;
         }
