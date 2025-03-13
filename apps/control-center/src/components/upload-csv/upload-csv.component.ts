@@ -21,12 +21,12 @@ import {
     TableModule,
     getValueChanges,
     loadFileContent,
+    parseCsv,
+    unifyCsvItems,
 } from '@vality/matez';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
-
-import { parseCsv, unifyCsvItems } from '../../utils';
 
 const DEFAULT_DELIMITER = ';';
 

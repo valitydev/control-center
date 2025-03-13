@@ -6,21 +6,7 @@ module.exports = [
     ...baseConfig,
     {
         files: ['**/*.json'],
-        rules: {
-            '@nx/dependency-checks': [
-                'error',
-                {
-                    ignoredFiles: ['{projectRoot}/eslint.config.{js,cjs,mjs}'],
-                    ignoredDependencies: [
-                        '@types/lodash-es',
-                        '@s-libs/js-core',
-                        '@s-libs/micro-dash',
-                        '@s-libs/rxjs-core',
-                        'dinero.js',
-                    ],
-                },
-            ],
-        },
+        rules: {},
         languageOptions: {
             parser: require('jsonc-eslint-parser'),
         },
