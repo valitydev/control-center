@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
 import { RoutingCandidate } from '@vality/domain-proto/domain';
-import { Predicate } from '@vality/domain-proto/internal/domain';
 import {
     Column,
     DialogResponseStatus,
@@ -13,7 +12,7 @@ import {
     correctPriorities,
     createMenuColumn,
 } from '@vality/matez';
-import { getUnionKey, toJson } from '@vality/ng-thrift';
+import { toJson } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -29,23 +28,9 @@ import {
 } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
+import { invertPredicate } from '../utils/invert-predicate';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
-
-function togglePredicate(predicate: Predicate): { toggled: Predicate; prevAllowed: boolean } {
-    const predicates: Predicate[] =
-        getUnionKey(predicate) === 'all_of' ? Array.from(predicate.all_of) : [predicate];
-    const idx = predicates.findIndex((a) => getUnionKey(a) === 'constant');
-    const prevAllowed = idx !== -1 ? predicates[idx].constant : true;
-    if (idx !== -1) {
-        predicates.splice(idx, 1);
-    }
-    predicates.unshift({ constant: !prevAllowed });
-    return {
-        toggled: { all_of: new Set(predicates) },
-        prevAllowed,
-    };
-}
 
 @Component({
     templateUrl: 'routing-ruleset.component.html',
@@ -147,7 +132,7 @@ export class RoutingRulesetComponent {
                     },
                 },
                 {
-                    label: togglePredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow',
+                    label: invertPredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow',
                     click: () => {
                         this.getCandidateIdx(d)
                             .pipe(takeUntilDestroyed(this.destroyRef))
@@ -282,7 +267,7 @@ export class RoutingRulesetComponent {
                 switchMap((refId) => this.routingRulesService.getCandidate(refId, idx)),
                 withLatestFrom(this.routingRulesetService.refID$),
                 switchMap(([candidate, refId]) => {
-                    const newAllowed = togglePredicate(candidate.allowed).toggled;
+                    const newAllowed = invertPredicate(candidate.allowed).toggled;
                     return this.dialog
                         .open(UpdateThriftDialogComponent, {
                             title: 'Toggle allowed',
