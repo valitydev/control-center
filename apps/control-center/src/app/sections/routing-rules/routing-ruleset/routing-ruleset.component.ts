@@ -28,7 +28,7 @@ import {
 } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
-import { invertPredicate } from '../utils/invert-predicate';
+import { getChangedPredicate } from '../utils/get-changed-predicate';
 import { toggleCandidateAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
@@ -133,7 +133,7 @@ export class RoutingRulesetComponent {
                     },
                 },
                 {
-                    label: invertPredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow',
+                    label: getChangedPredicate(d.allowed).prevAllowed ? 'Deny' : 'Allow',
                     click: () => {
                         this.getCandidateIdx(d)
                             .pipe(takeUntilDestroyed(this.destroyRef))
