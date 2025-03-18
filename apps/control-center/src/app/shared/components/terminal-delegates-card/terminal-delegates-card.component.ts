@@ -1,15 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, Injector, Input, OnChanges, model, runInInjectionContext } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { TerminalRef } from '@vality/domain-proto/domain';
 import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
-import { ReplaySubject, defer, switchMap } from 'rxjs';
+import { ReplaySubject, defer, of, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
+import { getPredicateBoolean } from '../../../sections/routing-rules/utils/get-changed-predicate';
 import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
@@ -127,6 +129,16 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedRules = model<TerminalShopWalletDelegate[]>();
+    isPredicatesAllowed$ = toObservable(this.selectedRules).pipe(
+        switchMap((rules) => (rules?.length ? of(rules) : this.rules$)),
+        map((rules) => {
+            const allowedBoolean = rules.map((r) =>
+                getPredicateBoolean(r.candidates[0].candidate.allowed),
+            );
+            return allowedBoolean.every((a) => a === allowedBoolean[0]) ? allowedBoolean[0] : null;
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     private ref$ = new ReplaySubject<TerminalRef>(1);
 
@@ -144,10 +156,10 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         }
     }
 
-    changeRulesAllowed(isAllowed: boolean) {
+    changeRulesAllowed(rules: TerminalShopWalletDelegate[], isAllowed: boolean) {
         runInInjectionContext(this.injector, () => {
             changeCandidatesAllowed(
-                this.selectedRules().flatMap((rule) =>
+                rules.flatMap((rule) =>
                     rule.candidates.map((candidate) => ({
                         refId: rule.terminalRule.ref.id,
                         candidateIdx: candidate.idx,
