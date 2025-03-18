@@ -39,12 +39,10 @@ export function changeCandidatesAllowed(candidateIds: CandidateId[], allowedOrTo
                                       const { refId, candidateIdx } = candidateIds[idx];
                                       return [
                                           `#${refId}/${candidateIdx}`,
-                                          getChangedPredicate(candidate.allowed, allowedOrToggle)
-                                              .toggled,
+                                          getChangedPredicate(candidate.allowed, allowedOrToggle),
                                       ];
                                   })
-                                : getChangedPredicate(candidates[0].allowed, allowedOrToggle)
-                                      .toggled,
+                                : getChangedPredicate(candidates[0].allowed, allowedOrToggle),
                         action: () =>
                             routingRulesService.updateRules(
                                 candidates.map((candidate, idx) => ({
@@ -55,7 +53,7 @@ export function changeCandidatesAllowed(candidateIds: CandidateId[], allowedOrTo
                                         allowed: getChangedPredicate(
                                             candidate.allowed,
                                             allowedOrToggle,
-                                        ).toggled,
+                                        ),
                                     },
                                 })),
                             ),
