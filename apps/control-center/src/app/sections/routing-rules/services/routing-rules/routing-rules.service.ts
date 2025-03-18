@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RoutingCandidate, RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { Version } from '@vality/domain-proto/domain_config';
 import { PartyConditionDefinition } from '@vality/domain-proto/internal/domain';
+import { uniq } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, concat } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
@@ -9,6 +10,7 @@ import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { createNextId } from '../../../../../utils/create-next-id';
 import { DomainStoreService } from '../../../../api/domain-config/stores/domain-store.service';
 
+import { CandidateId } from './types/candidate-id';
 import { getDelegate } from './utils/get-delegate';
 
 @Injectable({
@@ -31,6 +33,13 @@ export class RoutingRulesService {
 
     getRuleset(refID: number): Observable<RoutingRulesObject> {
         return this.rulesets$.pipe(map((rulesets) => rulesets.find((r) => r?.ref?.id === refID)));
+    }
+
+    getCandidate(refID: number, candidateIdx: number): Observable<RoutingCandidate> {
+        return this.getRuleset(refID).pipe(
+            take(1),
+            map((ruleset) => cloneDeep(ruleset.data.decisions.candidates.at(candidateIdx))),
+        );
     }
 
     addPartyRuleset({
@@ -164,6 +173,7 @@ export class RoutingRulesService {
         );
     }
 
+    // @deprecated use updateRules
     updateRule(
         refID: number,
         candidateIdx: number,
@@ -183,6 +193,39 @@ export class RoutingRulesService {
                             },
                         },
                     ],
+                });
+            }),
+        );
+    }
+
+    updateRules(
+        candidates: (CandidateId & { newCandidate: RoutingCandidate })[],
+    ): Observable<Version> {
+        return combineLatest(
+            uniq(candidates.map((c) => c.refId)).map((refId) =>
+                this.getRuleset(refId).pipe(take(1)),
+            ),
+        ).pipe(
+            switchMap((rulesets) => {
+                const newRulesets = rulesets.map(cloneDeep);
+                for (const ruleset of newRulesets) {
+                    for (const candidate of candidates) {
+                        if (candidate.refId === ruleset.ref.id) {
+                            ruleset.data.decisions.candidates.splice(
+                                candidate.candidateIdx,
+                                1,
+                                candidate.newCandidate,
+                            );
+                        }
+                    }
+                }
+                return this.domainStoreService.commit({
+                    ops: rulesets.map((ruleset, idx) => ({
+                        update: {
+                            old_object: { routing_rules: ruleset },
+                            new_object: { routing_rules: newRulesets[idx] },
+                        },
+                    })),
                 });
             }),
         );
@@ -233,13 +276,6 @@ export class RoutingRulesService {
                     ],
                 });
             }),
-        );
-    }
-
-    getCandidate(refID: number, candidateIdx: number) {
-        return this.getRuleset(refID).pipe(
-            take(1),
-            map((ruleset) => cloneDeep(ruleset.data.decisions.candidates.at(candidateIdx))),
         );
     }
 

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges, model, runInInjectionContext } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { TerminalRef } from '@vality/domain-proto/domain';
 import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
@@ -9,7 +10,7 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
-import { toggleCandidateAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
+import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,
@@ -21,7 +22,7 @@ import { DomainObjectCardComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
-    imports: [CommonModule, CardComponent, TableModule],
+    imports: [CommonModule, CardComponent, TableModule, MatButtonModule],
     templateUrl: './terminal-delegates-card.component.html',
 })
 export class TerminalDelegatesCardComponent implements OnChanges {
@@ -64,7 +65,9 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                         if (d.candidates.length > 1) {
                             this.log.error('Cannot toggle allowed for multiple candidates');
                         } else {
-                            toggleCandidateAllowed(d.terminalRule.ref.id, d.candidates[0].idx);
+                            changeCandidatesAllowed([
+                                { refId: d.terminalRule.ref.id, candidateIdx: d.candidates[0].idx },
+                            ]);
                         }
                     },
                 }),
@@ -123,6 +126,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    selectedRules = model<TerminalShopWalletDelegate[]>();
 
     private ref$ = new ReplaySubject<TerminalRef>(1);
 
@@ -131,11 +135,26 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
         private log: NotifyLogService,
+        private injector: Injector,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<TerminalDelegatesCardComponent>) {
         if (changes.ref) {
             this.ref$.next(this.ref);
         }
+    }
+
+    changeRulesAllowed(isAllowed: boolean) {
+        runInInjectionContext(this.injector, () => {
+            changeCandidatesAllowed(
+                this.selectedRules().flatMap((rule) =>
+                    rule.candidates.map((candidate) => ({
+                        refId: rule.terminalRule.ref.id,
+                        candidateIdx: candidate.idx,
+                    })),
+                ),
+                isAllowed,
+            );
+        });
     }
 }

@@ -1,8 +1,27 @@
 <cc-card title="Terminal #{{ ref.id }} delegates">
     <v-table
+        [(rowSelected)]="selectedRules"
         [columns]="columns"
         [data]="rules$ | async"
         [progress]="progress$ | async"
         noActions
-    ></v-table>
+        rowSelectable
+    >
+        <v-table-actions>
+            <button
+                [disabled]="!selectedRules()?.length"
+                mat-button
+                (click)="changeRulesAllowed(false)"
+            >
+                Disable
+            </button>
+            <button
+                [disabled]="!selectedRules()?.length"
+                mat-button
+                (click)="changeRulesAllowed(true)"
+            >
+                Enable
+            </button>
+        </v-table-actions>
+    </v-table>
 </cc-card>

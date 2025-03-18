@@ -29,7 +29,7 @@ import {
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getChangedPredicate } from '../utils/get-changed-predicate';
-import { toggleCandidateAllowed } from '../utils/toggle-candidate-allowed';
+import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 
@@ -261,11 +261,11 @@ export class RoutingRulesetComponent {
             });
     }
 
-    toggleAllow(idx: number) {
+    toggleAllow(candidateIdx: number) {
         this.routingRulesetService.refID$
             .pipe(first(), takeUntilDestroyed(this.destroyRef))
             .subscribe((refId) => {
-                toggleCandidateAllowed(refId, idx);
+                changeCandidatesAllowed([{ refId, candidateIdx }]);
             });
     }
 
