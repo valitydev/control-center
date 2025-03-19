@@ -12,7 +12,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { getPredicateBoolean } from '../../../sections/routing-rules/utils/get-changed-predicate';
-import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
+import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/change-candidates-allowed';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,

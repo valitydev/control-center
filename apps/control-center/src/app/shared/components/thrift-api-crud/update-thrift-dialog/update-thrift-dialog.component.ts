@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import {
@@ -23,6 +23,8 @@ export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
         title?: string;
         prevObject: T;
         object: T;
+        prevReviewObject?: T;
+        reviewObject?: T;
         action?: () => Observable<unknown>;
     },
     { object: T }
@@ -33,6 +35,7 @@ export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
     };
 
     progress$ = new BehaviorSubject(0);
+    isReview = signal(!!this.dialogData.reviewObject);
 
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);

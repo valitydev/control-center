@@ -12,6 +12,7 @@ import { DomainStoreService } from '../../../../api/domain-config/stores/domain-
 
 import { CandidateId } from './types/candidate-id';
 import { getDelegate } from './utils/get-delegate';
+import { getUpdateRulesCandidates } from './utils/get-update-rules-candidates';
 
 @Injectable({
     providedIn: 'root',
@@ -206,28 +207,13 @@ export class RoutingRulesService {
                 this.getRuleset(refId).pipe(take(1)),
             ),
         ).pipe(
-            switchMap((rulesets) => {
-                const newRulesets = rulesets.map(cloneDeep);
-                for (const ruleset of newRulesets) {
-                    for (const candidate of candidates) {
-                        if (candidate.refId === ruleset.ref.id) {
-                            ruleset.data.decisions.candidates.splice(
-                                candidate.candidateIdx,
-                                1,
-                                candidate.newCandidate,
-                            );
-                        }
-                    }
-                }
-                return this.domainStoreService.commit({
-                    ops: rulesets.map((ruleset, idx) => ({
-                        update: {
-                            old_object: { routing_rules: ruleset },
-                            new_object: { routing_rules: newRulesets[idx] },
-                        },
+            switchMap((rulesets) =>
+                this.domainStoreService.commit({
+                    ops: getUpdateRulesCandidates(rulesets, candidates).map((update) => ({
+                        update,
                     })),
-                });
-            }),
+                }),
+            ),
         );
     }
 

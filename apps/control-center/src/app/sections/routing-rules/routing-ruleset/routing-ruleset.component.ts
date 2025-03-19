@@ -29,7 +29,7 @@ import {
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPredicateBoolean } from '../utils/get-changed-predicate';
-import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
+import { changeCandidatesAllowed } from '../utils/change-candidates-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 

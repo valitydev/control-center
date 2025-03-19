@@ -1,12 +1,34 @@
 <v-dialog [progress]="!!(progress$ | async)" [title]="dialogData?.title || 'View changes'">
-    <v-thrift-viewer
-        [compared]="dialogData.object"
-        [value]="dialogData.prevObject"
-    ></v-thrift-viewer>
+    @if (isReview()) {
+        <v-thrift-viewer
+            [compared]="dialogData.object"
+            [value]="dialogData.prevObject"
+        ></v-thrift-viewer>
+    } @else {
+        <v-thrift-viewer
+            [compared]="dialogData.reviewObject"
+            [value]="dialogData.prevReviewObject"
+        ></v-thrift-viewer>
+    }
 
     <v-dialog-actions>
-        <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="closeWithSuccess()">
-            Update
-        </button>
+        @if (!isReview() && dialogData.reviewObject) {
+            <button [disabled]="!!(progress$ | async)" mat-button (click)="isReview.set(true)">
+                Review objects
+            </button>
+        }
+        @if (isReview()) {
+            <button
+                [disabled]="!!(progress$ | async)"
+                mat-flat-button
+                (click)="isReview.set(false)"
+            >
+                Review updates
+            </button>
+        } @else {
+            <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="closeWithSuccess()">
+                Update
+            </button>
+        }
     </v-dialog-actions>
 </v-dialog>
