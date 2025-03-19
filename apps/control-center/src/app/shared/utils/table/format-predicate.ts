@@ -6,12 +6,17 @@ import startCase from 'lodash-es/startCase';
 const TRUE_PREDICATE_VALUE = formatPredicate({ constant: true });
 const FALSE_PREDICATE_VALUE = formatPredicate({ constant: false });
 
-export function toBooleanPredicate(predicateOrStrPredicate: Predicate | string): boolean {
-    const formattedPredicate =
-        typeof predicateOrStrPredicate === 'string'
-            ? predicateOrStrPredicate
-            : formatPredicate(predicateOrStrPredicate);
-    return formattedPredicate !== FALSE_PREDICATE_VALUE;
+export function getPredicateBoolean(predicate: Predicate): boolean {
+    let constant: boolean;
+    switch (getUnionKey(predicate)) {
+        case 'all_of':
+            constant = Array.from(predicate.all_of).find((p) => p.constant)?.constant;
+            break;
+        case 'constant':
+            constant = predicate.constant;
+            break;
+    }
+    return constant ?? true;
 }
 
 export function isPrimitiveBooleanPredicate(predicateOrStrPredicate: Predicate | string): boolean {

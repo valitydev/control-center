@@ -1,16 +1,7 @@
 import { Predicate } from '@vality/domain-proto/domain';
 import { getUnionKey } from '@vality/ng-thrift';
 
-export function getPredicateBoolean(predicate: Predicate) {
-    switch (getUnionKey(predicate)) {
-        case 'all_of':
-            return Array.from(predicate.all_of).find((p) => p.constant)?.constant ?? true;
-        case 'constant':
-            return predicate.constant;
-        default:
-            return true;
-    }
-}
+import { getPredicateBoolean } from '../../../shared';
 
 /**
  * @param allowedOrToggle - If provided, sets the constant to this value. If not provided, toggles the current constant value (acts as a toggle)

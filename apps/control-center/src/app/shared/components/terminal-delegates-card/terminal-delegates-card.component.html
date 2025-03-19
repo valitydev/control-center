@@ -12,19 +12,22 @@
         <v-table-actions>
             @let isPredicatesAllowed = isPredicatesAllowed$ | async;
 
-            <button
-                [disabled]="isPredicatesAllowed === null"
-                mat-button
-                (click)="
-                    changeRulesAllowed(
-                        selectedRules()?.length ? selectedRules() : rules,
-                        !isPredicatesAllowed
-                    )
-                "
-            >
-                {{ isPredicatesAllowed ? 'Disable' : 'Enable'
-                }}{{ selectedRules()?.length ? ' ' + selectedRules().length : ' all' }}
-            </button>
+            <div matTooltip="All selections must be either allowed or denied">
+                <button
+                    [disabled]="!(rules$ | async)?.length || isPredicatesAllowed === null"
+                    [matBadge]="isPredicatesAllowed === null ? '!' : ''"
+                    mat-button
+                    (click)="changeRulesAllowed()"
+                >
+                    {{
+                        isPredicatesAllowed === null
+                            ? 'Toggle'
+                            : isPredicatesAllowed
+                              ? 'Disable'
+                              : 'Enable'
+                    }}{{ selectedRules()?.length ? ' ' + selectedRules().length : ' all' }}
+                </button>
+            </div>
         </v-table-actions>
     </v-table>
 </cc-card>

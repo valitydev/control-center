@@ -18,7 +18,11 @@ import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
-import { createDomainObjectColumn, createPredicateColumn } from '../../../shared';
+import {
+    createDomainObjectColumn,
+    createPredicateColumn,
+    getPredicateBoolean,
+} from '../../../shared';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import {
@@ -28,8 +32,7 @@ import {
 } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
-import { changeCandidatesAllowed } from '../utils/change-candidates-allowed';
-import { getPredicateBoolean } from '../utils/get-changed-predicate';
+import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 

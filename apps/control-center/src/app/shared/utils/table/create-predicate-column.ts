@@ -3,8 +3,8 @@ import { BaseValue, Color, Value, createColumn } from '@vality/matez';
 
 import {
     formatPredicate,
+    getPredicateBoolean,
     isPrimitiveBooleanPredicate,
-    toBooleanPredicate,
 } from './format-predicate';
 
 export const createPredicateColumn = createColumn(
@@ -13,7 +13,7 @@ export const createPredicateColumn = createColumn(
         if (toggle) {
             return {
                 type: 'toggle',
-                value: toBooleanPredicate(predicate),
+                value: getPredicateBoolean(predicate),
                 description: isPrimitiveBooleanPredicate(predicate) ? '' : value,
                 click: toggle,
             };
