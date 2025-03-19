@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import {
     DEFAULT_DIALOG_CONFIG,
+    DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     DialogModule,
     DialogSuperclass,
     NotifyLogService,
@@ -26,7 +27,10 @@ export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
     },
     { object: T }
 > {
-    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = {
+        ...DEFAULT_DIALOG_CONFIG.large,
+        minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
+    };
 
     progress$ = new BehaviorSubject(0);
 
