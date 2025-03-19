@@ -1,5 +1,5 @@
 <v-dialog [progress]="!!(progress$ | async)" [title]="dialogData?.title || 'View changes'">
-    @if (isReview()) {
+    @if (isReview() || !hasReview) {
         <v-thrift-viewer
             [compared]="dialogData.object"
             [value]="dialogData.prevObject"
@@ -12,7 +12,7 @@
     }
 
     <v-dialog-actions>
-        @if (!isReview() && dialogData.reviewObject) {
+        @if (!isReview() && hasReview) {
             <button [disabled]="!!(progress$ | async)" mat-button (click)="isReview.set(true)">
                 Review objects
             </button>

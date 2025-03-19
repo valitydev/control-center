@@ -19,4 +19,8 @@ export type BaseValue<V = unknown> = {
 };
 
 export type TypedValue<T, V = unknown> = BaseValue<V> & { type: T };
-export type TypedParamsValue<T, P extends object, V = unknown> = TypedValue<T, V> & { params: P };
+export type TypedParamsValue<T, P extends object = Record<never, never>, V = unknown> = TypedValue<
+    T,
+    V
+> &
+    (keyof P extends never ? { params?: P } : { params: P });

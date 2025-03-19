@@ -11,8 +11,8 @@ import { map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
-import { getPredicateBoolean } from '../../../sections/routing-rules/utils/get-changed-predicate';
 import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/change-candidates-allowed';
+import { getPredicateBoolean } from '../../../sections/routing-rules/utils/get-changed-predicate';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,
@@ -59,20 +59,17 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         createPredicateColumn(
             (d) => ({
                 predicate: d.candidates[0].candidate.allowed,
+                toggle: () => {
+                    changeCandidatesAllowed(
+                        d.candidates.map((c) => ({
+                            refId: d.terminalRule.ref.id,
+                            candidateIdx: c.idx,
+                        })),
+                    );
+                },
             }),
             {
                 header: 'Allowed',
-                cell: (d) => ({
-                    click: () => {
-                        if (d.candidates.length > 1) {
-                            this.log.error('Cannot toggle allowed for multiple candidates');
-                        } else {
-                            changeCandidatesAllowed([
-                                { refId: d.terminalRule.ref.id, candidateIdx: d.candidates[0].idx },
-                            ]);
-                        }
-                    },
-                }),
             },
         ),
         createPartyColumn((d) => ({ id: d.delegate.allowed.condition?.party?.id })),

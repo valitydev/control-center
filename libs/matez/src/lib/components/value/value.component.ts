@@ -23,6 +23,7 @@ import { ContentLoadingComponent } from '../content-loading';
 import { TagModule } from '../tag';
 
 import { MenuValueComponent } from './components/menu-value.component';
+import { ToggleValueComponent } from './components/toggle-value.component';
 import { Value } from './types/value';
 import { valueToString } from './utils/value-to-string';
 
@@ -37,6 +38,7 @@ import { valueToString } from './utils/value-to-string';
         MenuValueComponent,
         ContentLoadingComponent,
         HighlightDirective,
+        ToggleValueComponent,
     ],
     templateUrl: './value.component.html',
     styleUrl: './value.component.scss',

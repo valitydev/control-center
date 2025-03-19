@@ -28,8 +28,8 @@ import {
 } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
-import { getPredicateBoolean } from '../utils/get-changed-predicate';
 import { changeCandidatesAllowed } from '../utils/change-candidates-allowed';
+import { getPredicateBoolean } from '../utils/get-changed-predicate';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 
@@ -90,10 +90,10 @@ export class RoutingRulesetComponent {
                 ),
             { header: 'Global Allow' },
         ),
-        createPredicateColumn((d) => ({ predicate: d.allowed }), {
-            header: 'Allowed',
-            cell: (d) => ({
-                click: () => {
+        createPredicateColumn(
+            (d) => ({
+                predicate: d.allowed,
+                toggle: () => {
                     this.getCandidateIdx(d)
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe((idx) => {
@@ -101,7 +101,10 @@ export class RoutingRulesetComponent {
                         });
                 },
             }),
-        }),
+            {
+                header: 'Allowed',
+            },
+        ),
         { field: 'weight' },
         {
             field: 'pin',

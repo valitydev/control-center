@@ -37,6 +37,9 @@
                         @case ('menu') {
                             <v-menu-value [value]="v"></v-menu-value>
                         }
+                        @case ('toggle') {
+                            <v-toggle-value [value]="v"></v-toggle-value>
+                        }
                         @default {
                             @let valueText = valueText$ | async;
                             @if (inProgress$ | async) {

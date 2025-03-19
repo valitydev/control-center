@@ -35,7 +35,8 @@ export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
     };
 
     progress$ = new BehaviorSubject(0);
-    isReview = signal(!!this.dialogData.reviewObject);
+    hasReview = !!this.dialogData.reviewObject;
+    isReview = signal(this.hasReview);
 
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);
