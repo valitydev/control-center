@@ -1,8 +1,33 @@
 <cc-card title="Terminal #{{ ref.id }} delegates">
+    @let rules = rules$ | async;
+
     <v-table
+        [(rowSelected)]="selectedRules"
         [columns]="columns"
-        [data]="rules$ | async"
+        [data]="rules"
         [progress]="progress$ | async"
         noActions
-    ></v-table>
+        rowSelectable
+    >
+        <v-table-actions>
+            @let isPredicatesAllowed = isPredicatesAllowed$ | async;
+
+            <div matTooltip="All selections must be either allowed or denied">
+                <button
+                    [disabled]="!(rules$ | async)?.length || isPredicatesAllowed === null"
+                    [matBadge]="isPredicatesAllowed === null ? '!' : ''"
+                    mat-button
+                    (click)="changeRulesAllowed()"
+                >
+                    {{
+                        isPredicatesAllowed === null
+                            ? 'Toggle'
+                            : isPredicatesAllowed
+                              ? 'Deny'
+                              : 'Allow'
+                    }}{{ selectedRules()?.length ? ' ' + selectedRules().length : ' all' }}
+                </button>
+            </div>
+        </v-table-actions>
+    </v-table>
 </cc-card>

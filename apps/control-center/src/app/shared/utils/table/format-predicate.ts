@@ -3,7 +3,33 @@ import { formatCurrency, inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue, toJson } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
-export function formatPredicate(predicate: Predicate, level = 0, not = false) {
+const TRUE_PREDICATE_VALUE = formatPredicate({ constant: true });
+const FALSE_PREDICATE_VALUE = formatPredicate({ constant: false });
+
+export function getPredicateBoolean(predicate: Predicate): boolean {
+    let constant: boolean;
+    switch (getUnionKey(predicate)) {
+        case 'all_of':
+            constant = Array.from(predicate.all_of).find((p) => p.constant)?.constant;
+            break;
+        case 'constant':
+            constant = predicate.constant;
+            break;
+    }
+    return constant ?? true;
+}
+
+export function isPrimitiveBooleanPredicate(predicateOrStrPredicate: Predicate | string): boolean {
+    const formattedPredicate =
+        typeof predicateOrStrPredicate === 'string'
+            ? predicateOrStrPredicate
+            : formatPredicate(predicateOrStrPredicate);
+    return (
+        formattedPredicate === FALSE_PREDICATE_VALUE || formattedPredicate === TRUE_PREDICATE_VALUE
+    );
+}
+
+export function formatPredicate(predicate: Predicate, level = 0, not = false): string {
     if (!predicate) {
         return '';
     }
@@ -27,14 +53,10 @@ export function formatPredicate(predicate: Predicate, level = 0, not = false) {
         }
         case 'condition': {
             const condition = predicate.condition;
-            switch (getUnionKey(condition)) {
+            const conditionType = getUnionKey(condition);
+            switch (conditionType) {
                 case 'currency_is':
                     return `currency ${equalSymbol} ${condition.currency_is.symbolic_code}`;
-                case 'bin_data':
-                    return `bin_data ${equalSymbol} ${inlineJson(
-                        toJson(condition.bin_data),
-                        Infinity,
-                    )}`;
                 case 'category_is':
                     return `category ${equalSymbol} #${condition.category_is.id}`;
                 case 'cost_in':
@@ -54,28 +76,25 @@ export function formatPredicate(predicate: Predicate, level = 0, not = false) {
                     )}`;
                 case 'identification_level_is':
                     return `identification_level ${equalSymbol} ${condition.identification_level_is}`; // TODO: fix enum value
-                case 'p2p_tool':
-                    return `p2p_tool ${equalSymbol} ${inlineJson(
-                        toJson(condition.p2p_tool),
-                        Infinity,
-                    )}`;
                 case 'party':
                     return `party ${equalSymbol} (#${condition.party.id}${
                         condition.party?.definition
                             ? ' & ' + inlineJson(toJson(condition.party?.definition), Infinity)
                             : ''
                     })`;
-                case 'payment_tool':
-                    return `payment_tool ${equalSymbol} ${inlineJson(
-                        toJson(condition.payment_tool),
-                        Infinity,
-                    )}`;
                 case 'payout_method_is':
                     return `payout_method ${equalSymbol} ${condition.payout_method_is.id}`; // TODO: fix enum value
                 case 'shop_location_is':
                     return `shop_url ${equalSymbol} ${condition.shop_location_is.url}`;
+                case 'bin_data':
+                case 'p2p_tool':
+                case 'payment_tool':
+                default:
+                    return `${conditionType} ${equalSymbol} ${inlineJson(
+                        toJson(condition[conditionType]),
+                        Infinity,
+                    )}`;
             }
-            return '';
         }
         case 'criterion':
             return `${startCase(getUnionKey(predicate))}${not ? ` ${equalSymbol}` : ''} #${

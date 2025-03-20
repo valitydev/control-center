@@ -1,26 +1,46 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+    Component,
+    DestroyRef,
+    Injector,
+    Input,
+    OnChanges,
+    model,
+    runInInjectionContext,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { Column, ComponentChanges, TableModule } from '@vality/matez';
+import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
-import { ReplaySubject, defer, switchMap } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
+import { map, shareReplay, take } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
+import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,
 } from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
-import { createPartyColumn, createPredicateColumn } from '../../utils';
+import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainObjectCardComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
-    imports: [CommonModule, CardComponent, TableModule],
+    imports: [
+        CommonModule,
+        CardComponent,
+        TableModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatBadgeModule,
+    ],
     templateUrl: './terminal-delegates-card.component.html',
 })
 export class TerminalDelegatesCardComponent implements OnChanges {
@@ -52,9 +72,22 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                 },
             }),
         },
-        createPredicateColumn((d) => ({ predicate: d.candidates[0].allowed }), {
-            header: 'Allowed',
-        }),
+        createPredicateColumn(
+            (d) => ({
+                predicate: d.candidates[0].candidate.allowed,
+                toggle: () => {
+                    changeCandidatesAllowed(
+                        d.candidates.map((c) => ({
+                            refId: d.terminalRule.ref.id,
+                            candidateIdx: c.idx,
+                        })),
+                    );
+                },
+            }),
+            {
+                header: 'Allowed',
+            },
+        ),
         createPartyColumn((d) => ({ id: d.delegate.allowed.condition?.party?.id })),
         {
             field: 'type',
@@ -108,6 +141,20 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    selectedRules = model<TerminalShopWalletDelegate[]>();
+    toggledRules$ = toObservable(this.selectedRules).pipe(
+        switchMap((rules) => (rules?.length ? of(rules) : this.rules$)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    isPredicatesAllowed$ = this.toggledRules$.pipe(
+        map((rules) => {
+            const allowedBoolean = rules
+                .map((r) => r.candidates.map((c) => getPredicateBoolean(c.candidate.allowed)))
+                .flat();
+            return allowedBoolean.every((a) => a === allowedBoolean[0]) ? allowedBoolean[0] : null;
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     private ref$ = new ReplaySubject<TerminalRef>(1);
 
@@ -115,11 +162,32 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         private partiesStoreService: PartiesStoreService,
         private domainStoreService: DomainStoreService,
         private sidenavInfoService: SidenavInfoService,
+        private injector: Injector,
+        private log: NotifyLogService,
+        private dr: DestroyRef,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<TerminalDelegatesCardComponent>) {
         if (changes.ref) {
             this.ref$.next(this.ref);
         }
+    }
+
+    changeRulesAllowed() {
+        combineLatest([this.isPredicatesAllowed$, this.toggledRules$])
+            .pipe(take(1), takeUntilDestroyed(this.dr))
+            .subscribe(([isPredicatesAllowed, rules]) => {
+                runInInjectionContext(this.injector, () => {
+                    changeCandidatesAllowed(
+                        rules.flatMap((rule) =>
+                            rule.candidates.map((candidate) => ({
+                                refId: rule.terminalRule.ref.id,
+                                candidateIdx: candidate.idx,
+                            })),
+                        ),
+                        !isPredicatesAllowed,
+                    );
+                });
+            });
     }
 }

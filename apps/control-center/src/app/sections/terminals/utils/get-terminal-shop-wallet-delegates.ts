@@ -10,7 +10,7 @@ export interface TerminalShopWalletDelegate {
     delegate: RoutingDelegate;
     rule: RoutingRulesObject;
     terminalRule: RoutingRulesObject;
-    candidates: RoutingCandidate[];
+    candidates: { candidate: RoutingCandidate; idx: number }[];
 }
 
 export function getTerminalShopWalletDelegates(
@@ -36,9 +36,9 @@ export function getTerminalShopWalletDelegates(
                     delegate,
                     rule,
                     terminalRule,
-                    candidates: terminalRule.data?.decisions?.candidates?.filter?.(
-                        (c) => c.terminal.id === terminalObj.ref.id,
-                    ),
+                    candidates: terminalRule.data?.decisions?.candidates
+                        ?.map((candidate, idx) => ({ candidate, idx }))
+                        ?.filter?.((c) => c.candidate.terminal.id === terminalObj.ref.id),
                 })),
             ),
         )

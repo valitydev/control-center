@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import {
     DEFAULT_DIALOG_CONFIG,
+    DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     DialogModule,
     DialogSuperclass,
     NotifyLogService,
@@ -22,13 +23,20 @@ export class UpdateThriftDialogComponent<T> extends DialogSuperclass<
         title?: string;
         prevObject: T;
         object: T;
+        prevReviewObject?: T;
+        reviewObject?: T;
         action?: () => Observable<unknown>;
     },
     { object: T }
 > {
-    static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
+    static override defaultDialogConfig = {
+        ...DEFAULT_DIALOG_CONFIG.large,
+        minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
+    };
 
     progress$ = new BehaviorSubject(0);
+    hasReview = !!this.dialogData.reviewObject;
+    isReview = signal(this.hasReview);
 
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);
