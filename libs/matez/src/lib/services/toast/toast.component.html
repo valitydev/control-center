@@ -1,0 +1,9 @@
+<span>
+    {{ message$ | async }}
+</span>
+
+@if (data.progress$ | async) {
+    <mat-spinner [diameter]="24" color="white"></mat-spinner>
+} @else {
+    <button class="button" mat-button (click)="dismissWithAction()">OK</button>
+}

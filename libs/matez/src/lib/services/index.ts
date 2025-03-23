@@ -3,3 +3,4 @@ export * from './log';
 export * from './fetch-superclass';
 export * from './query-params';
 export * from './url.service';
+export * from './toast';
