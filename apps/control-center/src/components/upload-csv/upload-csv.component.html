@@ -38,8 +38,10 @@
                 <li>Required columns are indicated in bold.</li>
                 <li>
                     Separator:
-                    {{optionsForm.value.delimiter ? `"${optionsForm.value.delimiter}"` : "automatically detected"
-
+                    {{
+                        optionsForm.value.delimiter
+                            ? '"' + delimiter + '"'
+                            : 'automatically detected'
                     }}.
                 </li>
                 <li *ngFor="let desc of formatDescription() || []">{{ desc }}</li>
