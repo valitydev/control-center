@@ -137,7 +137,13 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         switchMap((terminalObj) =>
             this.domainStoreService
                 .getObjects('routing_rules')
-                .pipe(map((rules) => getTerminalShopWalletDelegates(rules, terminalObj.terminal))),
+                .pipe(
+                    map((rules) =>
+                        terminalObj
+                            ? getTerminalShopWalletDelegates(rules, terminalObj.terminal)
+                            : [],
+                    ),
+                ),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

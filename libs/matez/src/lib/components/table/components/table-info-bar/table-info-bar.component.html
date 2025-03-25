@@ -72,7 +72,9 @@
                         ? 'Preparing data for sorting, filtering and downloading...'
                         : progress()
                           ? 'Loading...'
-                          : 'Reload ' + size() + ' elements'
+                          : hasLoad()
+                            ? 'Reload ' + size() + ' elements'
+                            : ''
                 "
                 class="count"
                 (click)="hasLoad() ? load.emit() : undefined"
