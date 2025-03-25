@@ -39,6 +39,7 @@
                 <li>
                     Separator:
                     {{optionsForm.value.delimiter ? `"${optionsForm.value.delimiter}"` : "automatically detected"
+
                     }}.
                 </li>
                 <li *ngFor="let desc of formatDescription() || []">{{ desc }}</li>

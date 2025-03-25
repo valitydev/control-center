@@ -20,6 +20,7 @@ import {
     InputFieldModule,
     NotifyLogService,
     TableModule,
+    createStorageValue,
     getValueChanges,
     loadFileContent,
     parseCsv,
@@ -86,12 +87,16 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
     ]);
     selectedCsv = model<CsvObject<R, O>[]>([]);
 
+    hasHeader = createStorageValue<boolean>('csv-has-header', {
+        serialize: (v) => (v ? '1' : ''),
+        deserialize: (v) => Boolean(v),
+    });
     optionsForm = this.fb.group({
-        hasHeader: false,
-        delimiter: undefined as string,
+        hasHeader: this.hasHeader.value(),
+        delimiter: '',
     });
     delimiter$ = getValueChanges(this.optionsForm.controls.delimiter).pipe(
-        map((delimiter) => delimiter || DEFAULT_DELIMITER),
+        map((delimiter) => (delimiter as string) || DEFAULT_DELIMITER),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     upload$ = new BehaviorSubject<File | null>(null);
@@ -162,6 +167,9 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
             .subscribe((v) => {
                 this.selectedChange.emit(v);
             });
+        this.optionsForm.controls.hasHeader.valueChanges.subscribe((v) => {
+            this.hasHeader.set(v);
+        });
     }
 
     async loadFile(file?: File | null) {

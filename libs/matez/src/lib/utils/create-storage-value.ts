@@ -1,19 +1,35 @@
-import { Injector } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { distinctUntilChanged, filter, fromEvent, map, shareReplay, startWith } from 'rxjs';
+import { DestroyRef, Injector, Signal, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import {
+    Observable,
+    distinctUntilChanged,
+    filter,
+    fromEvent,
+    map,
+    shareReplay,
+    startWith,
+} from 'rxjs';
+
+interface StorageValueOptions<T> {
+    serialize?: (v: T) => string | null;
+    deserialize: (v: string | null) => T;
+    changed$?: Observable<T>;
+}
+
+interface StorageValue<T> {
+    get: () => T;
+    set: (value: T) => void;
+    value$: Observable<T>;
+    value: Signal<T | undefined>;
+}
+
+const DEFAULT_SERIALIZE = (v: unknown) => (v === null ? null : String(v));
 
 export function createStorageValue<T>(
     key: string,
-    {
-        serialize = (v) => (v === null ? null : String(v)),
-        deserialize,
-        injector,
-    }: {
-        serialize?: (v: T) => string | null;
-        deserialize: (v: string | null) => T;
-        injector?: Injector;
-    },
-) {
+    { serialize = DEFAULT_SERIALIZE, deserialize, changed$ }: StorageValueOptions<T>,
+): StorageValue<T> {
+    const injector = inject(Injector);
     const value$ = fromEvent<StorageEvent>(document, 'storage').pipe(
         filter((v) => v.key === key),
         map((v) => v.newValue),
@@ -23,7 +39,7 @@ export function createStorageValue<T>(
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    return {
+    const value: StorageValue<T> = {
         get(): T {
             return deserialize(localStorage.getItem(key));
         },
@@ -37,4 +53,12 @@ export function createStorageValue<T>(
         value$,
         value: toSignal(value$, { injector }),
     };
+
+    if (changed$) {
+        changed$.pipe(takeUntilDestroyed(inject(DestroyRef))).subscribe((v) => {
+            value.set(v);
+        });
+    }
+
+    return value;
 }

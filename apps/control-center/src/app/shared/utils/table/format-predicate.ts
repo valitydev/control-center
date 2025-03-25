@@ -10,7 +10,9 @@ export function getPredicateBoolean(predicate: Predicate): boolean {
     let constant: boolean;
     switch (getUnionKey(predicate)) {
         case 'all_of':
-            constant = Array.from(predicate.all_of).find((p) => getUnionKey(p) === 'constant')?.constant;
+            constant = Array.from(predicate.all_of).find(
+                (p) => getUnionKey(p) === 'constant',
+            )?.constant;
             break;
         case 'constant':
             constant = predicate.constant;
