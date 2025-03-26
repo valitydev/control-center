@@ -11,14 +11,16 @@ import {
     model,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import {
     Column,
     FileUploadModule,
+    InputFieldModule,
     NotifyLogService,
     TableModule,
+    createStorageValue,
     getValueChanges,
     loadFileContent,
     parseCsv,
@@ -63,9 +65,9 @@ function getCsvObjectErrors<R extends string, O extends string>(
         MatExpansionModule,
         TableModule,
         CommonModule,
+        InputFieldModule,
     ],
     templateUrl: './upload-csv.component.html',
-    styles: ``,
 })
 export class UploadCsvComponent<R extends string = string, O extends string = string>
     implements OnInit
@@ -79,21 +81,31 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
     });
     @Output() selectedChange = new EventEmitter<CsvObject<R, O>[]>();
 
-    delimiter = DEFAULT_DELIMITER;
     propsList = computed<string[]>(() => [
         ...(this.props().required ?? []),
         ...(this.props().optional ?? []),
     ]);
     selectedCsv = model<CsvObject<R, O>[]>([]);
 
-    hasHeaderControl = new FormControl(null, { nonNullable: true });
+    hasHeader = createStorageValue<boolean>('csv-has-header', {
+        serialize: (v) => (v ? '1' : ''),
+        deserialize: (v) => Boolean(v),
+    });
+    optionsForm = this.fb.group({
+        hasHeader: this.hasHeader.value(),
+        delimiter: '',
+    });
+    delimiter$ = getValueChanges(this.optionsForm.controls.delimiter).pipe(
+        map((delimiter) => (delimiter as string) || DEFAULT_DELIMITER),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     upload$ = new BehaviorSubject<File | null>(null);
-    data$ = combineLatest([this.upload$, getValueChanges(this.hasHeaderControl)]).pipe(
+    data$ = combineLatest([this.upload$, getValueChanges(this.optionsForm)]).pipe(
         switchMap(([file]) => loadFileContent(file)),
         map((content) =>
             parseCsv(content, {
-                header: this.hasHeaderControl.value || false,
-                delimiter: this.delimiter,
+                header: this.optionsForm.value.hasHeader || false,
+                delimiter: this.optionsForm.value.delimiter || undefined,
             }),
         ),
         tap((d) => {
@@ -141,6 +153,7 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
         private log: NotifyLogService,
         private dr: DestroyRef,
         private injector: Injector,
+        private fb: NonNullableFormBuilder,
     ) {}
 
     ngOnInit() {
@@ -154,6 +167,9 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
             .subscribe((v) => {
                 this.selectedChange.emit(v);
             });
+        this.optionsForm.controls.hasHeader.valueChanges.subscribe((v) => {
+            this.hasHeader.set(v);
+        });
     }
 
     async loadFile(file?: File | null) {

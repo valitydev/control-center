@@ -31,4 +31,7 @@
             </button>
         }
     </div>
+    @if (hintText()) {
+        <mat-hint>{{ hintText() }}</mat-hint>
+    }
 </mat-form-field>

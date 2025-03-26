@@ -50,7 +50,6 @@ export class DomainObjectCardComponent implements OnChanges {
 
     kind = createStorageValue<UnionEnum<ViewerKind>>('domain-object-card-view', {
         deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
-        injector: this.injector,
     });
 
     constructor(

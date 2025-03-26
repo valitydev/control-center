@@ -18,4 +18,5 @@ export class InputFieldComponent<T> extends FormControlSuperclass<T> {
     @Input() size?: 'small' | '';
     cleanButton = input(false, { transform: booleanAttribute });
     icon = input<string>();
+    hintText = input<string>();
 }
