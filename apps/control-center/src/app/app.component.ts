@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, isDevMode } from '@angular/core';
 import { Link } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
@@ -64,6 +64,15 @@ export class AppComponent {
                     url: '/domain',
                     services: DOMAIN_ROUTING_CONFIG.services,
                 },
+                ...(isDevMode()
+                    ? [
+                          {
+                              label: 'Domain config v2',
+                              url: '/domain2',
+                              services: DOMAIN_ROUTING_CONFIG.services,
+                          },
+                      ]
+                    : []),
                 {
                     label: 'Terminals',
                     url: '/terminals',

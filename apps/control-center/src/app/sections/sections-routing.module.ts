@@ -7,6 +7,10 @@ const ROUTES: Routes = [
         loadChildren: () => import('./domain').then((m) => m.DomainModule),
     },
     {
+        path: 'domain2',
+        loadChildren: () => import('./domain2').then((m) => m.DomainModule),
+    },
+    {
         path: 'party',
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
     },
