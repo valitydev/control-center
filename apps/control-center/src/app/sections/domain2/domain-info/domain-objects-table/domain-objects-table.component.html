@@ -9,11 +9,9 @@
 >
     <v-table-inputs>
         <v-select-field
-            [formControl]="typesControl"
+            [formControl]="typeControl"
             [options]="options$ | async"
-            label="Object types"
-            multiple
-            style="overflow: auto"
+            label="Object type"
         ></v-select-field>
     </v-table-inputs>
 </v-table>

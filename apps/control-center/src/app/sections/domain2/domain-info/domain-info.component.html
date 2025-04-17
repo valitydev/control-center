@@ -1,12 +1,12 @@
 <cc-page-layout
     description="{{ (version$ | async) ? '#' + (version$ | async) : '' }}"
     fullHeight
-    title="Domain config"
+    title="Domain config v2"
 >
     <cc-page-layout-actions>
         <button mat-flat-button style="white-space: nowrap" (click)="create()">Create</button>
     </cc-page-layout-actions>
     <cc-domain-objects-table
-        (selectedChange)="selectedTypes$.next($event)"
+        (selectedTypeChange)="selectedType.set($event)"
     ></cc-domain-objects-table>
 </cc-page-layout>

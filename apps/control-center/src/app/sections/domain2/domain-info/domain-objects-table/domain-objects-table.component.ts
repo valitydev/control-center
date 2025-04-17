@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, OnInit, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DomainObject, Reference } from '@vality/domain-proto/domain';
+import { DomainObject, DomainObjectTypes } from '@vality/domain-proto/domain';
+import { VersionedObjectInfo } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
     Column,
@@ -12,28 +13,30 @@ import {
     SelectFieldModule,
     TableModule,
     createMenuColumn,
+    getImportValue,
     getValueChanges,
 } from '@vality/matez';
+import { ThriftAstMetadata, createThriftEnum } from '@vality/ng-thrift';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
-import { Observable, combineLatest, forkJoin, of } from 'rxjs';
-import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { first, map, share, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../../api/domain-config/stores/domain-store.service';
+import { DomainStoreService, FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
     DeleteDomainObjectService,
     DomainObjectCardComponent,
     EditDomainObjectDialogComponent,
-    getDomainObjectDetails,
+    getReferenceId,
 } from '../../../../shared/components/thrift-api-crud';
 import { MetadataService } from '../../services/metadata.service';
 
-interface DomainObjectData {
-    type: string;
-    ref: Reference;
-    obj: DomainObject;
-}
+const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
+    import('@vality/domain-proto/metadata.json'),
+).pipe(
+    map((metadata) => createThriftEnum<DomainObjectTypes>(metadata, 'domain', 'DomainObjectTypes')),
+    share(),
+);
 
 @Component({
     selector: 'cc-domain-objects-table',
@@ -48,52 +51,27 @@ interface DomainObjectData {
     ],
 })
 export class DomainObjectsTableComponent implements OnInit {
-    @Output() selectedChange = new EventEmitter<string[]>();
+    selectedTypeChange = output<string>();
 
-    typesControl = new FormControl<string[]>(
-        (this.qp.params.types as (keyof DomainObject)[]) || [],
-    );
-    objects$: Observable<DomainObjectData[]> = combineLatest([
-        this.domainStoreService.domain$,
-        this.typesControl.valueChanges.pipe(startWith(this.typesControl.value)),
-    ]).pipe(
-        switchMap(([objects, types]) =>
-            forkJoin([
-                combineLatest(
-                    Array.from(objects).map(([ref, obj]) =>
-                        this.metadataService
-                            .getDomainObjectType(ref)
-                            .pipe(map((type) => ({ type, ref, obj }))),
-                    ),
-                ),
-                of(types),
-            ]),
-        ),
-        map(([objects, types]) => objects.filter((o) => types.includes(o.type))),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-    columns: Column<DomainObjectData>[] = [
+    typeControl = new FormControl<string>(this.qp.params.type as keyof DomainObject);
+    objects$ = this.fetchDomainObjectsService.result$;
+    columns: Column<VersionedObjectInfo>[] = [
         {
             field: 'id',
-            cell: (d) => ({ value: getDomainObjectDetails(d.obj).id }),
+            cell: (d) => ({ value: getReferenceId(d.ref) }),
             sticky: 'start',
         },
         {
             field: 'name',
             cell: (d) => ({
-                value: getDomainObjectDetails(d.obj).label,
+                value: getReferenceId(d.ref),
                 click: () => this.details(d),
             }),
             style: { width: 0 },
         },
         {
             field: 'description',
-            cell: (d) => ({ value: getDomainObjectDetails(d.obj).description }),
-        },
-        {
-            field: 'type',
-            cell: (d) => ({ value: startCase(d.type) }),
-            hidden: getValueChanges(this.typesControl).pipe(map((t) => t.length <= 1)),
+            cell: (d) => ({ value: getReferenceId(d.ref) }),
         },
         createMenuColumn((d) => ({
             items: [
@@ -106,10 +84,19 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Edit',
                     click: () => {
-                        this.dialogService
-                            .open(EditDomainObjectDialogComponent, { domainObject: d.obj })
-                            .afterClosed()
-                            .pipe(takeUntilDestroyed(this.destroyRef))
+                        this.domainStoreService
+                            .getObject(d.ref)
+                            .pipe(
+                                first(),
+                                switchMap((domainObject) =>
+                                    this.dialogService
+                                        .open(EditDomainObjectDialogComponent, {
+                                            domainObject,
+                                        })
+                                        .afterClosed(),
+                                ),
+                                takeUntilDestroyed(this.destroyRef),
+                            )
                             .subscribe();
                     },
                 },
@@ -122,49 +109,57 @@ export class DomainObjectsTableComponent implements OnInit {
             ],
         })),
     ];
-    fields$ = this.metadataService.getDomainFields().pipe(
-        map((fields) => sortBy(fields, 'type')),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-    options$ = this.fields$.pipe(
+    options$ = this.metadataService.getDomainFields().pipe(
         map((fields) =>
-            fields.map(({ type }) => ({
+            sortBy(fields, 'type').map(({ type }) => ({
                 label: startCase(String(type)),
                 value: type,
-                type: 'Domain object',
             })),
         ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    isLoading$ = this.domainStoreService.isLoading$;
+    isLoading$ = this.fetchDomainObjectsService.isLoading$;
 
     constructor(
-        private domainStoreService: DomainStoreService,
+        private fetchDomainObjectsService: FetchDomainObjectsService,
         private metadataService: MetadataService,
-        private qp: QueryParamsService<{ types?: string[] }>,
+        private qp: QueryParamsService<{ type?: string }>,
         private sidenavInfoService: SidenavInfoService,
         private deleteDomainObjectService: DeleteDomainObjectService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
+        private domainStoreService: DomainStoreService,
     ) {}
 
     ngOnInit() {
-        this.typesControl.valueChanges
+        this.typeControl.valueChanges
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((types) => {
-                void this.qp.patch({ types });
+            .subscribe((type) => {
+                void this.qp.set({ type });
             });
-        getValueChanges(this.typesControl)
+        getValueChanges(this.typeControl)
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((types) => {
-                this.selectedChange.emit(types);
+            .subscribe((type) => {
+                this.selectedTypeChange.emit(type);
+                if (type) {
+                    DOMAIN_OBJECT_TYPES$.pipe(
+                        withLatestFrom(this.metadataService.getDomainFieldByType(type)),
+                        first(),
+                    ).subscribe(([types, field]) => {
+                        console.log(types, field);
+                        this.fetchDomainObjectsService.load({ type: types[field.name] });
+                    });
+                } else {
+                    this.fetchDomainObjectsService.load({});
+                }
             });
     }
 
     update() {
-        this.domainStoreService.forceReload();
+        this.fetchDomainObjectsService.reload();
     }
 
-    details(d: DomainObjectData) {
+    details(d: VersionedObjectInfo) {
         this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
     }
 }

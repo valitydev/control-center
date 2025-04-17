@@ -1,8 +1,5 @@
-import { Component, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, signal } from '@angular/core';
 import { DialogService } from '@vality/matez';
-import { BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { CreateDomainObjectDialogComponent } from '../../../shared/components/thrift-api-crud';
@@ -15,26 +12,17 @@ import { CreateDomainObjectDialogComponent } from '../../../shared/components/th
 export class DomainInfoComponent {
     version$ = this.domainStoreService.version$;
     progress$ = this.domainStoreService.isLoading$;
-    selectedTypes$ = new BehaviorSubject<string[]>([]);
+    selectedType = signal<string>(null);
 
     constructor(
         private domainStoreService: DomainStoreService,
         private dialogService: DialogService,
-        private destroyRef: DestroyRef,
     ) {}
 
     create() {
-        this.selectedTypes$
-            .pipe(first(), takeUntilDestroyed(this.destroyRef))
-            .subscribe((types) => {
-                this.dialogService.open(
-                    CreateDomainObjectDialogComponent,
-                    types?.length === 1
-                        ? {
-                              objectType: types[0],
-                          }
-                        : undefined,
-                );
-            });
+        this.dialogService.open(
+            CreateDomainObjectDialogComponent,
+            this.selectedType() ? { objectType: this.selectedType() } : undefined,
+        );
     }
 }
