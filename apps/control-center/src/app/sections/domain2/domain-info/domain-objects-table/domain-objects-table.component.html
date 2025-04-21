@@ -1,9 +1,10 @@
 <v-table
+    [(filter)]="filter"
     [columns]="columns"
     [data]="objects$ | async"
     [progress]="isLoading$ | async"
+    externalFilter
     noDownload
-    sortOnFront
     standaloneFilter
     (update)="update()"
 >

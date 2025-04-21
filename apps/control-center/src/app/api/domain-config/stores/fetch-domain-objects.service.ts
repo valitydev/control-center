@@ -20,7 +20,7 @@ export class FetchDomainObjectsService extends FetchSuperclass<VersionedObjectIn
             switchMap((version) =>
                 this.repositoryService.SearchObjects(
                     clean({
-                        query: params.query ?? '*',
+                        query: params.query || '*',
                         type: params.type,
                         limit: options.size,
                         continuation_token: options.continuationToken,

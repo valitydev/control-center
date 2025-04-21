@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, output } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, Injector, OnInit, model, output } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { DomainObject, DomainObjectTypes } from '@vality/domain-proto/domain';
@@ -19,7 +19,16 @@ import {
 import { ThriftAstMetadata, createThriftEnum } from '@vality/ng-thrift';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
-import { first, map, share, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import {
+    debounceTime,
+    first,
+    map,
+    share,
+    shareReplay,
+    switchMap,
+    withLatestFrom,
+} from 'rxjs/operators';
 
 import { DomainStoreService, FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
@@ -119,6 +128,7 @@ export class DomainObjectsTableComponent implements OnInit {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isLoading$ = this.fetchDomainObjectsService.isLoading$;
+    filter = model<string>('');
 
     constructor(
         private fetchDomainObjectsService: FetchDomainObjectsService,
@@ -129,6 +139,7 @@ export class DomainObjectsTableComponent implements OnInit {
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
         private domainStoreService: DomainStoreService,
+        private injector: Injector,
     ) {}
 
     ngOnInit() {
@@ -137,20 +148,22 @@ export class DomainObjectsTableComponent implements OnInit {
             .subscribe((type) => {
                 void this.qp.set({ type });
             });
-        getValueChanges(this.typeControl)
+        combineLatest([
+            getValueChanges(this.typeControl),
+            toObservable(this.filter, { injector: this.injector }).pipe(debounceTime(300)),
+        ])
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((type) => {
+            .subscribe(([type, query]) => {
                 this.selectedTypeChange.emit(type);
                 if (type) {
                     DOMAIN_OBJECT_TYPES$.pipe(
                         withLatestFrom(this.metadataService.getDomainFieldByType(type)),
                         first(),
                     ).subscribe(([types, field]) => {
-                        console.log(types, field);
-                        this.fetchDomainObjectsService.load({ type: types[field.name] });
+                        this.fetchDomainObjectsService.load({ type: types[field.name], query });
                     });
                 } else {
-                    this.fetchDomainObjectsService.load({});
+                    this.fetchDomainObjectsService.load({ query });
                 }
             });
     }
