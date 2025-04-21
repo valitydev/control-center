@@ -67,7 +67,7 @@ export class AppComponent {
                 ...(isDevMode()
                     ? [
                           {
-                              label: 'Domain config v2',
+                              label: 'Domain config 2',
                               url: '/domain2',
                               services: DOMAIN_ROUTING_CONFIG.services,
                           },
