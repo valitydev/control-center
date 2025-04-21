@@ -37,10 +37,11 @@ export class TableInfoBarComponent<T extends object, C extends object> implement
     selectedCount = input<number | undefined | null>(0);
 
     filter = input<string>('');
-    standaloneFilter = input(false, { transform: booleanAttribute });
-    hasInputs = input(false, { transform: booleanAttribute });
     filterChange = output<string>();
     filterControl = new FormControl('', { nonNullable: true });
+
+    standaloneFilter = input(false, { transform: booleanAttribute });
+    hasInputs = input(false, { transform: booleanAttribute });
 
     downloadCsv = output();
     // eslint-disable-next-line @angular-eslint/no-output-native
@@ -65,6 +66,9 @@ export class TableInfoBarComponent<T extends object, C extends object> implement
         this.filterControl.valueChanges.pipe(takeUntilDestroyed(this.dr)).subscribe((v) => {
             this.filterChange.emit(v);
         });
+        if (this.filterControl.value !== this.filter()) {
+            this.filterControl.setValue(this.filter(), { emitEvent: false });
+        }
     }
 
     // tune() {

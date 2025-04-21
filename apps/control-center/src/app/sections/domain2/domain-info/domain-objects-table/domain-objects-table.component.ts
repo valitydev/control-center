@@ -128,12 +128,12 @@ export class DomainObjectsTableComponent implements OnInit {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isLoading$ = this.fetchDomainObjectsService.isLoading$;
-    filter = model<string>('');
+    filter = model<string>(this.qp.params.filter);
 
     constructor(
         private fetchDomainObjectsService: FetchDomainObjectsService,
         private metadataService: MetadataService,
-        private qp: QueryParamsService<{ type?: string }>,
+        private qp: QueryParamsService<{ type?: string; filter?: string }>,
         private sidenavInfoService: SidenavInfoService,
         private deleteDomainObjectService: DeleteDomainObjectService,
         private destroyRef: DestroyRef,
@@ -146,7 +146,12 @@ export class DomainObjectsTableComponent implements OnInit {
         this.typeControl.valueChanges
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((type) => {
-                void this.qp.set({ type });
+                void this.qp.patch({ type });
+            });
+        toObservable(this.filter, { injector: this.injector })
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((filter) => {
+                void this.qp.patch({ filter });
             });
         combineLatest([
             getValueChanges(this.typeControl),

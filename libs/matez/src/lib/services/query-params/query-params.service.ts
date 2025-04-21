@@ -139,9 +139,15 @@ export class QueryParamsService<P extends object = NonNullable<unknown>>
                 !!serializedNamespace && { [nsKey]: serializedNamespace },
             );
         } else {
+            const replacedKeys = Object.keys(params);
             queryParams = Object.assign(
                 {},
-                options.isPatch && sourceParams.main,
+                options.isPatch &&
+                    Object.fromEntries(
+                        Object.entries(sourceParams.main).filter(
+                            ([k]) => !replacedKeys.includes(k),
+                        ),
+                    ),
                 this.serialize(params),
                 sourceParams.namespaces,
             );
