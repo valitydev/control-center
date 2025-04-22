@@ -5,3 +5,4 @@ export * from './user-info-based-id-generator';
 export * from './domain-metadata-form-extensions';
 export * from './domain-secret-service';
 export * from './amount-currency.service';
+export * from './keycloak-user.service';

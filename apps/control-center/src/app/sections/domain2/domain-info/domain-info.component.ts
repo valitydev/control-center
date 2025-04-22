@@ -10,7 +10,7 @@ import { CreateDomainObjectDialogComponent } from '../../../shared/components/th
     standalone: false,
 })
 export class DomainInfoComponent {
-    version$ = this.domainStoreService.version$;
+    version = this.domainStoreService.version.value;
     selectedType = signal<string>(null);
 
     constructor(
