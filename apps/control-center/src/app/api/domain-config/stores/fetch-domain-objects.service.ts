@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SearchRequestParams, VersionedObjectInfo } from '@vality/domain-proto/domain_config_v2';
+import { LimitedVersionedObject, SearchRequestParams } from '@vality/domain-proto/domain_config_v2';
 import { FetchOptions, FetchSuperclass, clean } from '@vality/matez';
 import { map, switchMap } from 'rxjs';
 
@@ -10,7 +10,10 @@ type FetchParams = Partial<Pick<SearchRequestParams, 'query' | 'type'>>;
 @Injectable({
     providedIn: 'root',
 })
-export class FetchDomainObjectsService extends FetchSuperclass<VersionedObjectInfo, FetchParams> {
+export class FetchDomainObjectsService extends FetchSuperclass<
+    LimitedVersionedObject,
+    FetchParams
+> {
     constructor(private repositoryService: Repository2Service) {
         super();
     }

@@ -47,4 +47,8 @@ export class AuthorManagementService {
     Get(...params: Parameters<CodegenClient['Get']>) {
         return this.client$.pipe(switchMap((c) => c.Get(...params)));
     }
+
+    GetByEmail(...params: Parameters<CodegenClient['GetByEmail']>) {
+        return this.client$.pipe(switchMap((c) => c.GetByEmail(...params)));
+    }
 }

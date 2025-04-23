@@ -4,7 +4,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { DomainObject, DomainObjectTypes } from '@vality/domain-proto/domain';
-import { VersionedObjectInfo } from '@vality/domain-proto/domain_config_v2';
+import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
     Column,
@@ -64,37 +64,40 @@ export class DomainObjectsTableComponent implements OnInit {
 
     typeControl = new FormControl<string>(this.qp.params.type as keyof DomainObject);
     objects$ = this.fetchDomainObjectsService.result$;
-    columns: Column<VersionedObjectInfo>[] = [
-        {
-            field: 'id',
-            cell: (d) => ({ value: getReferenceId(d.ref) }),
-            sticky: 'start',
-        },
+    columns: Column<LimitedVersionedObject>[] = [
+        { field: 'id', cell: (d) => ({ value: getReferenceId(d.info.ref) }), sticky: 'start' },
         {
             field: 'name',
             cell: (d) => ({
-                value: getReferenceId(d.ref),
-                click: () => this.details(d),
+                value: d.name,
+                click: () => {
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.info.ref });
+                },
             }),
             style: { width: 0 },
         },
+        { field: 'description', cell: (d) => ({ value: d.description }) },
+        { field: 'version', cell: (d) => ({ value: d.info.version }) },
+        { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at }) },
         {
-            field: 'description',
-            cell: (d) => ({ value: getReferenceId(d.ref) }),
+            field: 'changed_by',
+            cell: (d) => ({ value: d.info.changed_by.name, description: d.info.changed_by.email }),
         },
         createMenuColumn((d) => ({
             items: [
                 {
                     label: 'Details',
                     click: () => {
-                        this.details(d);
+                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                            ref: d.info.ref,
+                        });
                     },
                 },
                 {
                     label: 'Edit',
                     click: () => {
                         this.domainStoreService
-                            .getObject(d.ref)
+                            .getObject(d.info.ref)
                             .pipe(
                                 first(),
                                 switchMap((domainObject) =>
@@ -112,7 +115,7 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Delete',
                     click: () => {
-                        this.deleteDomainObjectService.delete(d.ref);
+                        this.deleteDomainObjectService.delete(d.info.ref);
                     },
                 },
             ],
@@ -175,9 +178,5 @@ export class DomainObjectsTableComponent implements OnInit {
 
     update() {
         this.fetchDomainObjectsService.reload();
-    }
-
-    details(d: VersionedObjectInfo) {
-        this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
     }
 }

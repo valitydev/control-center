@@ -12,16 +12,14 @@ export class AuthorStoreService {
     author = rxResource({
         request: () => this.keycloakUserService.user.value(),
         loader: ({ request }) =>
-            this.authorManagementService
-                .Get(request.email)
-                .pipe(
-                    catchError(() =>
-                        this.authorManagementService.Create({
-                            email: request.email,
-                            name: request.username,
-                        }),
-                    ),
+            this.authorManagementService.GetByEmail(request.email).pipe(
+                catchError(() =>
+                    this.authorManagementService.Create({
+                        email: request.email,
+                        name: request.username,
+                    }),
                 ),
+            ),
     });
 
     constructor(

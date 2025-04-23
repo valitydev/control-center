@@ -33,7 +33,7 @@
     "@angular/router": "19.2.2",
     "@ngneat/input-mask": "6.0.0",
     "@vality/deanonimus-proto": "2.0.1-6605c72.0",
-    "@vality/domain-proto": "2.0.1-pr-147-9b8887f.0",
+    "@vality/domain-proto": "2.0.1-pr-147-8c704ad.0",
     "@vality/dominator-proto": "1.0.1-41bee97.0",
     "@vality/fistful-proto": "2.0.1-88e69a5.0",
     "@vality/machinegun-proto": "1.0.1-3decc8f.0",
