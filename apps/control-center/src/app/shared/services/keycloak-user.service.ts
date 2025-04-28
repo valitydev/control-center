@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { KeycloakService } from 'keycloak-angular';
 import { map } from 'rxjs';
 
 import { KeycloakTokenInfoService } from './keycloak-token-info';
@@ -25,5 +26,12 @@ export class KeycloakUserService {
             ),
     });
 
-    constructor(private keycloakTokenInfoService: KeycloakTokenInfoService) {}
+    constructor(
+        private keycloakTokenInfoService: KeycloakTokenInfoService,
+        private keycloakService: KeycloakService,
+    ) {}
+
+    logout() {
+        return this.keycloakService.logout();
+    }
 }
