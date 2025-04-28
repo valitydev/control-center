@@ -16,7 +16,7 @@ import {
     getImportValue,
     getValueChanges,
 } from '@vality/matez';
-import { ThriftAstMetadata, createThriftEnum } from '@vality/ng-thrift';
+import { ThriftAstMetadata, createThriftEnum, getUnionKey } from '@vality/ng-thrift';
 import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
 import { combineLatest } from 'rxjs';
@@ -77,8 +77,15 @@ export class DomainObjectsTableComponent implements OnInit {
             style: { width: 0 },
         },
         { field: 'description', cell: (d) => ({ value: d.description }) },
+        {
+            field: 'type',
+            cell: (d) =>
+                this.metadataService
+                    .getDomainFieldByName(getUnionKey(d.info.ref))
+                    .pipe(map((f) => ({ value: startCase(String(f.type)) }))),
+        },
         { field: 'version', cell: (d) => ({ value: d.info.version }) },
-        { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at }) },
+        { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
         {
             field: 'changed_by',
             cell: (d) => ({ value: d.info.changed_by.name, description: d.info.changed_by.email }),
