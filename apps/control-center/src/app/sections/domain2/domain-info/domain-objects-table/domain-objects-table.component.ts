@@ -131,6 +131,7 @@ export class DomainObjectsTableComponent implements OnInit {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     isLoading$ = this.fetchDomainObjectsService.isLoading$;
+    hasMore$ = this.fetchDomainObjectsService.hasMore$;
     filter = model<string>(this.qp.params.filter);
 
     constructor(
@@ -178,5 +179,9 @@ export class DomainObjectsTableComponent implements OnInit {
 
     update() {
         this.fetchDomainObjectsService.reload();
+    }
+
+    more() {
+        this.fetchDomainObjectsService.more();
     }
 }

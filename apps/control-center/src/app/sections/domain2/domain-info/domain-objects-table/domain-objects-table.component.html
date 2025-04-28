@@ -2,10 +2,12 @@
     [(filter)]="filter"
     [columns]="columns"
     [data]="objects$ | async"
+    [hasMore]="hasMore$ | async"
     [progress]="isLoading$ | async"
     externalFilter
     noDownload
     standaloneFilter
+    (more)="more()"
     (update)="update()"
 >
     <v-table-inputs>
