@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="user">
-        <span>{{ username$ | async }}</span>
+        <span>{{ user()?.username }}</span>
         <button [matMenuTriggerFor]="userMenu" mat-icon-button>
             <mat-icon>more_vert</mat-icon>
         </button>

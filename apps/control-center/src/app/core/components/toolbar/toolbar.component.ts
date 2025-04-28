@@ -10,11 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterModule } from '@angular/router';
 import { UrlService } from '@vality/matez';
-import { KeycloakService } from 'keycloak-angular';
-import { from } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { MerchantFieldModule } from '../../../shared/components/merchant-field';
+import { KeycloakUserService } from '../../../shared/services';
 
 @Component({
     selector: 'cc-toolbar',
@@ -34,15 +33,12 @@ import { MerchantFieldModule } from '../../../shared/components/merchant-field';
     styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent implements OnInit {
-    username$ = from(this.keycloakService.loadUserProfile()).pipe(
-        map(() => this.keycloakService.getUsername()),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    user = this.keycloakUserService.user.value;
     partyIdControl = new FormControl<string>(this.getPartyId());
     hasMenu$ = this.urlService.path$.pipe(map((p) => p.length <= 3));
 
     constructor(
-        private keycloakService: KeycloakService,
+        private keycloakUserService: KeycloakUserService,
         private router: Router,
         private urlService: UrlService,
         private destroyRef: DestroyRef,
@@ -71,7 +67,7 @@ export class ToolbarComponent implements OnInit {
     }
 
     logout() {
-        void this.keycloakService.logout();
+        void this.keycloakUserService.logout();
     }
 
     copyNotify(res: boolean) {

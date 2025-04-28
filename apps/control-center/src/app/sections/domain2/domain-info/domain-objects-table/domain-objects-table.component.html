@@ -1,18 +1,20 @@
 <v-table
+    [(filter)]="filter"
     [columns]="columns"
     [data]="objects$ | async"
+    [hasMore]="hasMore$ | async"
     [progress]="isLoading$ | async"
+    externalFilter
     noDownload
     standaloneFilter
+    (more)="more()"
     (update)="update()"
 >
     <v-table-inputs>
         <v-select-field
-            [formControl]="typesControl"
+            [formControl]="typeControl"
             [options]="options$ | async"
-            label="Object types"
-            multiple
-            style="overflow: auto"
+            label="Object type"
         ></v-select-field>
     </v-table-inputs>
 </v-table>
