@@ -14,11 +14,11 @@ import { ThriftPipesModule, ThriftViewerModule } from '@vality/ng-thrift';
 import { PageLayoutModule } from '../../../shared';
 import { DomainThriftViewerComponent } from '../../../shared/components/thrift-api-crud';
 
-import { DomainInfoComponent } from './domain-info.component';
 import { DomainObjectsTableComponent } from './domain-objects-table';
+import { DomainObjectsComponent } from './domain-objects.component';
 
 @NgModule({
-    declarations: [DomainInfoComponent],
+    declarations: [DomainObjectsComponent],
     imports: [
         CommonModule,
         DomainObjectsTableComponent,

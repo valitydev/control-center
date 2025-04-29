@@ -5,11 +5,11 @@ import { Domain2StoreService } from '../../../api/domain-config';
 import { CreateDomainObjectDialogComponent } from '../../../shared/components/thrift-api-crud';
 
 @Component({
-    templateUrl: './domain-info.component.html',
-    styleUrls: ['./domain-info.component.scss'],
+    templateUrl: './domain-objects.component.html',
+    styleUrls: ['./domain-objects.component.scss'],
     standalone: false,
 })
-export class DomainInfoComponent {
+export class DomainObjectsComponent {
     version = this.domainStoreService.version.value;
     selectedType = signal<string>(null);
 
