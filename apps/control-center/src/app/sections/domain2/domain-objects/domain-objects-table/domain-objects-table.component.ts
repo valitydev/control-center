@@ -17,18 +17,9 @@ import {
     getValueChanges,
 } from '@vality/matez';
 import { ThriftAstMetadata, createThriftEnum, getUnionKey } from '@vality/ng-thrift';
-import sortBy from 'lodash-es/sortBy';
 import startCase from 'lodash-es/startCase';
 import { combineLatest } from 'rxjs';
-import {
-    debounceTime,
-    first,
-    map,
-    share,
-    shareReplay,
-    switchMap,
-    withLatestFrom,
-} from 'rxjs/operators';
+import { debounceTime, first, map, share, shareReplay, switchMap } from 'rxjs/operators';
 
 import { DomainStoreService, FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
@@ -38,7 +29,6 @@ import {
     EditDomainObjectDialogComponent,
     getReferenceId,
 } from '../../../../shared/components/thrift-api-crud';
-import { MetadataService } from '../../services/metadata.service';
 
 const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
     import('@vality/domain-proto/metadata.json'),
@@ -79,10 +69,7 @@ export class DomainObjectsTableComponent implements OnInit {
         { field: 'description', cell: (d) => ({ value: d.description }) },
         {
             field: 'type',
-            cell: (d) =>
-                this.metadataService
-                    .getDomainFieldByName(getUnionKey(d.info.ref))
-                    .pipe(map((f) => ({ value: startCase(String(f.type)) }))),
+            cell: (d) => ({ value: startCase(String(getUnionKey(d.info.ref))) }),
         },
         { field: 'version', cell: (d) => ({ value: d.info.version }) },
         { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
@@ -128,12 +115,14 @@ export class DomainObjectsTableComponent implements OnInit {
             ],
         })),
     ];
-    options$ = this.metadataService.getDomainFields().pipe(
-        map((fields) =>
-            sortBy(fields, 'type').map(({ type }) => ({
-                label: startCase(String(type)),
-                value: type,
-            })),
+    options$ = DOMAIN_OBJECT_TYPES$.pipe(
+        map((types) =>
+            Object.keys(types)
+                .sort()
+                .map((type) => ({
+                    label: startCase(String(type)),
+                    value: type,
+                })),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -143,7 +132,6 @@ export class DomainObjectsTableComponent implements OnInit {
 
     constructor(
         private fetchDomainObjectsService: FetchDomainObjectsService,
-        private metadataService: MetadataService,
         private qp: QueryParamsService<{ type?: string; filter?: string }>,
         private sidenavInfoService: SidenavInfoService,
         private deleteDomainObjectService: DeleteDomainObjectService,
@@ -172,11 +160,8 @@ export class DomainObjectsTableComponent implements OnInit {
             .subscribe(([type, query]) => {
                 this.selectedTypeChange.emit(type);
                 if (type) {
-                    DOMAIN_OBJECT_TYPES$.pipe(
-                        withLatestFrom(this.metadataService.getDomainFieldByType(type)),
-                        first(),
-                    ).subscribe(([types, field]) => {
-                        this.fetchDomainObjectsService.load({ type: types[field.name], query });
+                    DOMAIN_OBJECT_TYPES$.pipe(first()).subscribe((types) => {
+                        this.fetchDomainObjectsService.load({ type: types[type], query });
                     });
                 } else {
                     this.fetchDomainObjectsService.load({ query });
