@@ -3,7 +3,7 @@ import { Component, DestroyRef, Injector, OnInit, model, output } from '@angular
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DomainObject, DomainObjectTypes } from '@vality/domain-proto/domain';
+import { DomainObject, DomainObjectTypes, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
@@ -18,8 +18,16 @@ import {
 } from '@vality/matez';
 import { ThriftAstMetadata, createThriftEnum, getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
-import { combineLatest } from 'rxjs';
-import { debounceTime, first, map, share, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatest, merge } from 'rxjs';
+import {
+    debounceTime,
+    distinctUntilChanged,
+    first,
+    map,
+    share,
+    shareReplay,
+    switchMap,
+} from 'rxjs/operators';
 
 import { DomainStoreService, FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
@@ -50,9 +58,11 @@ const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
     ],
 })
 export class DomainObjectsTableComponent implements OnInit {
-    selectedTypeChange = output<string>();
+    selectedTypeChange = output<keyof ReflessDomainObject>();
 
-    typeControl = new FormControl<string>(this.qp.params.type as keyof DomainObject);
+    typeControl = new FormControl<keyof ReflessDomainObject>(
+        this.qp.params.type as keyof DomainObject,
+    );
     objects$ = this.fetchDomainObjectsService.result$;
     columns: Column<LimitedVersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: getReferenceId(d.info.ref) }), sticky: 'start' },
@@ -132,7 +142,7 @@ export class DomainObjectsTableComponent implements OnInit {
 
     constructor(
         private fetchDomainObjectsService: FetchDomainObjectsService,
-        private qp: QueryParamsService<{ type?: string; filter?: string }>,
+        private qp: QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>,
         private sidenavInfoService: SidenavInfoService,
         private deleteDomainObjectService: DeleteDomainObjectService,
         private destroyRef: DestroyRef,
@@ -142,9 +152,11 @@ export class DomainObjectsTableComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.typeControl.valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
+        merge(this.typeControl.valueChanges, this.qp.params$.pipe(map((params) => params.type)))
+            .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
             .subscribe((type) => {
+                this.selectedTypeChange.emit(type);
+                this.typeControl.setValue(type, { emitEvent: false });
                 void this.qp.patch({ type });
             });
         toObservable(this.filter, { injector: this.injector })
@@ -158,7 +170,6 @@ export class DomainObjectsTableComponent implements OnInit {
         ])
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(([type, query]) => {
-                this.selectedTypeChange.emit(type);
                 if (type) {
                     DOMAIN_OBJECT_TYPES$.pipe(first()).subscribe((types) => {
                         this.fetchDomainObjectsService.load({ type: types[type], query });

@@ -3,7 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { InsertOp, Operation, Version } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { EMPTY, catchError, of } from 'rxjs';
+import { EMPTY, catchError, tap } from 'rxjs';
 
 import { Repository2Service } from '../repository2.service';
 
@@ -39,7 +39,10 @@ export class Domain2StoreService {
                               : 'delete',
                         types.length > 1 ? 'domain objects' : 'domain object',
                     );
-                    return of(null);
+                    throw err;
+                }),
+                tap((res) => {
+                    this.version.set(res.version);
                 }),
             );
     }

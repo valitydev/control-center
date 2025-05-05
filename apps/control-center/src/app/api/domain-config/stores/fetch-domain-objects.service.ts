@@ -7,9 +7,7 @@ import { Repository2Service } from '../repository2.service';
 
 type FetchParams = Partial<Omit<SearchRequestParams, 'continuation_token' | 'limit'>>;
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class FetchDomainObjectsService extends FetchSuperclass<
     LimitedVersionedObject,
     FetchParams
