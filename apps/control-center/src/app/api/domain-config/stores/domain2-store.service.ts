@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Operation, Version } from '@vality/domain-proto/domain_config_v2';
+import { InsertOp, Operation, Version } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { catchError, of } from 'rxjs';
+import { EMPTY, catchError, of } from 'rxjs';
 
 import { Repository2Service } from '../repository2.service';
 
@@ -13,7 +13,9 @@ import { AuthorStoreService } from './author-store.service';
     providedIn: 'root',
 })
 export class Domain2StoreService {
-    version = rxResource({ loader: () => this.repositoryService.GetLatestVersion() });
+    version = rxResource({
+        loader: () => this.repositoryService.GetLatestVersion(),
+    });
 
     constructor(
         private repositoryService: Repository2Service,
@@ -40,5 +42,19 @@ export class Domain2StoreService {
                     return of(null);
                 }),
             );
+    }
+
+    insert(insertOps: InsertOp[], attempts = 1) {
+        return this.commit(insertOps.map((insert) => ({ insert }))).pipe(
+            catchError((err) => {
+                if (err?.name === 'ObsoleteCommitVersion' && attempts !== 0) {
+                    this.version.reload();
+                    this.insert(insertOps, attempts - 1);
+                    this.log.error(err, `Domain config is out of date, one more attempt...`);
+                    return EMPTY;
+                }
+                throw err;
+            }),
+        );
     }
 }
