@@ -18,7 +18,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { Domain2StoreService } from '../../../../../api/domain-config';
-import { APP_ROUTES, AppNavigateService } from '../../../../../app-navigate.service';
+import { APP_ROUTES } from '../../../../../app-routes';
+import { NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 
@@ -54,7 +55,7 @@ export class CreateDomainObjectDialogComponent
         private domainStoreService: Domain2StoreService,
         private destroyRef: DestroyRef,
         private log: NotifyLogService,
-        private appNavigateService: AppNavigateService,
+        private navigateService: NavigateService,
     ) {
         super();
     }
@@ -71,7 +72,7 @@ export class CreateDomainObjectDialogComponent
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
-                void this.appNavigateService.navigate(APP_ROUTES.domain2.root, {
+                void this.navigateService.navigate(APP_ROUTES.domain2.root, {
                     type: getUnionKey(this.control.value),
                 });
                 this.closeWithSuccess();
