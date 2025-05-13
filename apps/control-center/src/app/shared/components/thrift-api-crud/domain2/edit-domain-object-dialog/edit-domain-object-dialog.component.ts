@@ -30,9 +30,9 @@ import { catchError, distinctUntilChanged, first, map, shareReplay } from 'rxjs/
 import { ValuesType } from 'utility-types';
 
 import { DomainStoreService } from '../../../../../api/domain-config';
-import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
+import { APP_ROUTES } from '../../../../../app-routes';
 import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
-import { DomainSecretService } from '../../../../services';
+import { DomainSecretService, NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 
@@ -108,7 +108,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
         private log: NotifyLogService,
-        private domainNavigateService: DomainNavigateService,
+        private navigateService: NavigateService,
         private metadataService: MetadataService,
         private domainSecretService: DomainSecretService,
     ) {
@@ -165,7 +165,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             .subscribe({
                 next: (type) => {
                     this.log.successOperation('update', 'domain object');
-                    void this.domainNavigateService.toType(type);
+                    void this.navigateService.navigate(APP_ROUTES.domain2.root, { type });
                     this.closeWithSuccess();
                 },
                 error: (err) => {
