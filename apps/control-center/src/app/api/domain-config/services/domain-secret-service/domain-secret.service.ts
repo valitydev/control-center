@@ -5,8 +5,8 @@ import { KeycloakService } from 'keycloak-angular';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isNil from 'lodash-es/isNil';
 
-import { isDominantSecretRole } from './is-dominant-secret-role';
-import { reduceObject } from './reduce-object';
+import { isDominantSecretRole } from './utils/is-dominant-secret-role';
+import { reduceObject } from './utils/reduce-object';
 
 const DOMINANT_SECRETS_ROLE = 'dominant:secrets';
 const EXCLUDE_OBJECTS = ['terminal', 'provider', 'proxy'];

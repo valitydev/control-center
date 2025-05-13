@@ -6,9 +6,9 @@ import { NotifyLogService, switchCombineWith } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { EMPTY, catchError, tap } from 'rxjs';
 
-import { DomainSecretService } from '../../../shared/services';
 import { RepositoryClientService } from '../repository-client.service';
 import { Repository2Service } from '../repository2.service';
+import { DomainSecretService } from '../services';
 
 import { AuthorStoreService } from './author-store.service';
 
