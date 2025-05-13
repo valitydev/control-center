@@ -17,7 +17,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
-import { Domain2StoreService } from '../../../../../api/domain-config';
+import { DomainService } from '../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
@@ -52,7 +52,7 @@ export class CreateDomainObjectDialogComponent
     isReview = false;
 
     constructor(
-        private domainStoreService: Domain2StoreService,
+        private domainService: DomainService,
         private destroyRef: DestroyRef,
         private log: NotifyLogService,
         private navigateService: NavigateService,
@@ -67,7 +67,7 @@ export class CreateDomainObjectDialogComponent
     }
 
     create() {
-        this.domainStoreService
+        this.domainService
             .insert([this.control.value])
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
