@@ -68,7 +68,7 @@ export class CreateDomainObjectDialogComponent
 
     create() {
         this.domainStoreService
-            .insert([{ object: this.control.value }])
+            .insert([this.control.value])
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
