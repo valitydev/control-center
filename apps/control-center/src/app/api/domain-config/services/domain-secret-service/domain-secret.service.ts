@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Domain, DomainObject } from '@vality/domain-proto/domain';
-import { KeycloakService } from 'keycloak-angular';
+
+import { AppAuthGuardService } from '../../../../shared/services';
 
 import { SECRETS_ROLE } from './consts/secrets-role';
-import { isDominantSecretRole } from './utils/is-dominant-secret-role';
 import { reduceObject } from './utils/reduce-object';
 import { restoreObject } from './utils/restore-object';
 
@@ -11,12 +11,9 @@ import { restoreObject } from './utils/restore-object';
     providedIn: 'root',
 })
 export class DomainSecretService {
-    private hasDominantSecretRole = isDominantSecretRole(
-        this.keycloakService.getUserRoles(),
-        SECRETS_ROLE,
-    );
+    private hasDominantSecretRole = this.appAuthGuardService.userHasRoles([SECRETS_ROLE]);
 
-    constructor(private keycloakService: KeycloakService) {}
+    constructor(private appAuthGuardService: AppAuthGuardService) {}
 
     reduceObject(obj: DomainObject): DomainObject {
         if (this.hasDominantSecretRole) {
