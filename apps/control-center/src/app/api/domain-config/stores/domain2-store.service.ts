@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { Operation, Version } from '@vality/domain-proto/domain_config_v2';
-import { NotifyLogService } from '@vality/matez';
+import { NotifyLogService, switchCombineWith } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { EMPTY, catchError, map, tap } from 'rxjs';
+import { EMPTY, catchError, tap } from 'rxjs';
 
+import { DomainSecretService } from '../../../shared/services';
+import { RepositoryClientService } from '../repository-client.service';
 import { Repository2Service } from '../repository2.service';
 
 import { AuthorStoreService } from './author-store.service';
@@ -20,15 +22,16 @@ export class Domain2StoreService {
 
     constructor(
         private repositoryService: Repository2Service,
+        private repositoryClientService: RepositoryClientService,
         private authorStoreService: AuthorStoreService,
         private log: NotifyLogService,
+        private domainSecretService: DomainSecretService,
     ) {}
 
     getObject(ref: Reference) {
-        // TODO: replace with RepositoryClient/CheckoutObject
-        return this.repositoryService
-            .GetObjectHistory(ref, { limit: 1 })
-            .pipe(map((res) => res.result[0]));
+        this.getSecretObject(ref).pipe(
+            switchCombineWith((obj) => [this.domainSecretService.reduceObject(obj.object)]),
+        );
     }
 
     commit(ops: Operation[], version: Version = this.version.value()) {
@@ -93,5 +96,9 @@ export class Domain2StoreService {
 
     remove(refs: Reference[]) {
         return this.commit(refs.map((ref) => ({ remove: { ref } })));
+    }
+
+    private getSecretObject(ref: Reference) {
+        return this.repositoryClientService.CheckoutObject({}, ref);
     }
 }
