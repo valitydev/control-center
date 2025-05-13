@@ -41,7 +41,7 @@ import {
 const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
     import('@vality/domain-proto/metadata.json'),
 ).pipe(
-    map((metadata) => createThriftEnum<DomainObjectType>(metadata, 'domain', 'DomainObjectTypes')),
+    map((metadata) => createThriftEnum<DomainObjectType>(metadata, 'domain', 'DomainObjectType')),
     share(),
 );
 
