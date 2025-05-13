@@ -3,7 +3,7 @@ import { Component, DestroyRef, Injector, OnInit, model, output } from '@angular
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DomainObject, DomainObjectTypes, ReflessDomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
@@ -41,7 +41,7 @@ import {
 const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
     import('@vality/domain-proto/metadata.json'),
 ).pipe(
-    map((metadata) => createThriftEnum<DomainObjectTypes>(metadata, 'domain', 'DomainObjectTypes')),
+    map((metadata) => createThriftEnum<DomainObjectType>(metadata, 'domain', 'DomainObjectTypes')),
     share(),
 );
 
