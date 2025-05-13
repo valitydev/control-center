@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Domain, DomainObject } from '@vality/domain-proto/domain';
-import { getUnionKey } from '@vality/ng-thrift';
 import { KeycloakService } from 'keycloak-angular';
-import cloneDeep from 'lodash-es/cloneDeep';
-import isNil from 'lodash-es/isNil';
 
-import { SECRETS_OBJECTS } from './consts/secrets-objects';
 import { SECRETS_ROLE } from './consts/secrets-role';
 import { isDominantSecretRole } from './utils/is-dominant-secret-role';
 import { reduceObject } from './utils/reduce-object';
+import { restoreObject } from './utils/restore-object';
 
 @Injectable({
     providedIn: 'root',
@@ -22,37 +19,27 @@ export class DomainSecretService {
     constructor(private keycloakService: KeycloakService) {}
 
     reduceObject(obj: DomainObject): DomainObject {
-        if (!this.hasDominantSecretRole || SECRETS_OBJECTS.includes(getUnionKey(obj))) {
-            return reduceObject(getUnionKey(obj), obj);
+        if (this.hasDominantSecretRole) {
+            return obj;
         }
-        return obj;
+        return reduceObject(obj);
     }
 
     reduceDomain(domain: Domain): Domain {
         if (this.hasDominantSecretRole) {
             return domain;
         }
-        const result = new Map(domain);
-        for (const [key, value] of result) {
-            const found = SECRETS_OBJECTS.find((term) => value[term]);
-            if (found) {
-                result.set(key, reduceObject(found, value));
-            }
+        const resDomain: Domain = new Map();
+        for (const [name, value] of resDomain) {
+            resDomain.set(name, reduceObject(value));
         }
-        return result;
+        return resDomain;
     }
 
-    restoreDomain(oldObject: DomainObject, newObject: DomainObject): DomainObject {
+    restoreDomain(srcObj: DomainObject, newObj: DomainObject): DomainObject {
         if (this.hasDominantSecretRole) {
-            return newObject;
+            return newObj;
         }
-        let result = newObject;
-        const found = SECRETS_OBJECTS.find((term) => oldObject[term]);
-        if (found && !isNil(newObject[found]) && !isNil(oldObject[found].data.options)) {
-            result = cloneDeep(newObject);
-            const options = oldObject[found].data.options;
-            result[found].data.options = cloneDeep(options);
-        }
-        return result;
+        return restoreObject(srcObj, newObj);
     }
 }

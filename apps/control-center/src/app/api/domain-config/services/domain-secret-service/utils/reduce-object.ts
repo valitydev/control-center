@@ -1,12 +1,21 @@
 import { DomainObject } from '@vality/domain-proto/domain';
+import { getUnionKey } from '@vality/ng-thrift';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isNil from 'lodash-es/isNil';
 
-export const reduceObject = (objectName: string, o: DomainObject): DomainObject => {
-    if (isNil(o[objectName].data.options)) {
-        return o;
+export function reduceObject(obj: DomainObject): DomainObject {
+    const name = getUnionKey(obj);
+    switch (name) {
+        case 'proxy':
+        case 'terminal': {
+            if (isNil(obj[name].data.options)) {
+                return obj;
+            }
+            const result = cloneDeep(obj);
+            delete result[name].data.options;
+            return result;
+        }
+        default:
+            return obj;
     }
-    const result = cloneDeep(o);
-    delete result[objectName].data.options;
-    return result;
-};
+}
