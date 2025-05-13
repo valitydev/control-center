@@ -5,11 +5,10 @@ import { KeycloakService } from 'keycloak-angular';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isNil from 'lodash-es/isNil';
 
+import { SECRETS_OBJECTS } from './consts/secrets-objects';
+import { SECRETS_ROLE } from './consts/secrets-role';
 import { isDominantSecretRole } from './utils/is-dominant-secret-role';
 import { reduceObject } from './utils/reduce-object';
-
-const DOMINANT_SECRETS_ROLE = 'dominant:secrets';
-const EXCLUDE_OBJECTS = ['terminal', 'provider', 'proxy'];
 
 @Injectable({
     providedIn: 'root',
@@ -17,13 +16,13 @@ const EXCLUDE_OBJECTS = ['terminal', 'provider', 'proxy'];
 export class DomainSecretService {
     private hasDominantSecretRole = isDominantSecretRole(
         this.keycloakService.getUserRoles(),
-        DOMINANT_SECRETS_ROLE,
+        SECRETS_ROLE,
     );
 
     constructor(private keycloakService: KeycloakService) {}
 
     reduceObject(obj: DomainObject): DomainObject {
-        if (!this.hasDominantSecretRole || EXCLUDE_OBJECTS.includes(getUnionKey(obj))) {
+        if (!this.hasDominantSecretRole || SECRETS_OBJECTS.includes(getUnionKey(obj))) {
             return reduceObject(getUnionKey(obj), obj);
         }
         return obj;
@@ -35,7 +34,7 @@ export class DomainSecretService {
         }
         const result = new Map(domain);
         for (const [key, value] of result) {
-            const found = EXCLUDE_OBJECTS.find((term) => value[term]);
+            const found = SECRETS_OBJECTS.find((term) => value[term]);
             if (found) {
                 result.set(key, reduceObject(found, value));
             }
@@ -48,7 +47,7 @@ export class DomainSecretService {
             return newObject;
         }
         let result = newObject;
-        const found = EXCLUDE_OBJECTS.find((term) => oldObject[term]);
+        const found = SECRETS_OBJECTS.find((term) => oldObject[term]);
         if (found && !isNil(newObject[found]) && !isNil(oldObject[found].data.options)) {
             result = cloneDeep(newObject);
             const options = oldObject[found].data.options;
