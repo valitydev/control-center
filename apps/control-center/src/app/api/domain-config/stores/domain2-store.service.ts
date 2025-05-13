@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { InsertOp, Operation, Version } from '@vality/domain-proto/domain_config_v2';
+import { Reference } from '@vality/domain-proto/domain';
+import { InsertOp, Operation, UpdateOp, Version } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { EMPTY, catchError, tap } from 'rxjs';
+import { EMPTY, catchError, map, tap } from 'rxjs';
 
 import { Repository2Service } from '../repository2.service';
 
@@ -22,6 +23,13 @@ export class Domain2StoreService {
         private authorStoreService: AuthorStoreService,
         private log: NotifyLogService,
     ) {}
+
+    getObject(ref: Reference) {
+        // TODO: replace with RepositoryClient/CheckoutObject
+        return this.repositoryService
+            .GetObjectHistory(ref, { limit: 1 })
+            .pipe(map((res) => res.result[0]));
+    }
 
     commit(ops: Operation[], version: Version = this.version.value()) {
         return this.repositoryService
@@ -50,11 +58,33 @@ export class Domain2StoreService {
     insert(insertOps: InsertOp[], attempts = 1) {
         return this.commit(insertOps.map((insert) => ({ insert }))).pipe(
             catchError((err) => {
-                if (err?.name === 'ObsoleteCommitVersion' && attempts !== 0) {
-                    this.version.reload();
-                    this.insert(insertOps, attempts - 1);
-                    this.log.error(err, `Domain config is out of date, one more attempt...`);
-                    return EMPTY;
+                if (err?.name === 'ObsoleteCommitVersion') {
+                    if (attempts !== 0) {
+                        this.version.reload();
+                        this.insert(insertOps, attempts - 1);
+                        this.log.error(err, `Domain config is out of date, one more attempt...`);
+                        return EMPTY;
+                    } else {
+                        this.log.error(err, `Domain config is out of date, please try again`);
+                    }
+                }
+                throw err;
+            }),
+        );
+    }
+
+    update(updateOps: UpdateOp[], attempts = 1) {
+        return this.commit(updateOps.map((update) => ({ update }))).pipe(
+            catchError((err) => {
+                if (err?.name === 'ObsoleteCommitVersion') {
+                    if (attempts !== 0) {
+                        this.version.reload();
+                        this.update(updateOps, attempts - 1);
+                        this.log.error(err, `Domain config is out of date, one more attempt...`);
+                        return EMPTY;
+                    } else {
+                        this.log.error(err, `Domain config is out of date, please try again`);
+                    }
                 }
                 throw err;
             }),
