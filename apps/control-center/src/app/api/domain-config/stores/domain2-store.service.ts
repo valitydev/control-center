@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Reference } from '@vality/domain-proto/domain';
-import { InsertOp, Operation, UpdateOp, Version } from '@vality/domain-proto/domain_config_v2';
+import { DomainObject, Reference } from '@vality/domain-proto/domain';
+import { InsertOp, Operation, Version } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { EMPTY, catchError, map, tap } from 'rxjs';
@@ -73,13 +73,13 @@ export class Domain2StoreService {
         );
     }
 
-    update(updateOps: UpdateOp[], attempts = 1) {
-        return this.commit(updateOps.map((update) => ({ update }))).pipe(
+    update(newObjects: DomainObject[], attempts = 1) {
+        return this.commit(newObjects.map((object) => ({ update: { object } }))).pipe(
             catchError((err) => {
                 if (err?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.version.reload();
-                        this.update(updateOps, attempts - 1);
+                        this.update(newObjects, attempts - 1);
                         this.log.error(err, `Domain config is out of date, one more attempt...`);
                         return EMPTY;
                     } else {
@@ -89,5 +89,9 @@ export class Domain2StoreService {
                 throw err;
             }),
         );
+    }
+
+    remove(refs: Reference[]) {
+        return this.commit(refs.map((ref) => ({ remove: { ref } })));
     }
 }
