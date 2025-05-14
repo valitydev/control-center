@@ -65,13 +65,13 @@ export class DomainObjectsTableComponent implements OnInit {
     );
     objects$ = this.fetchDomainObjectsService.result$;
     columns: Column<LimitedVersionedObject>[] = [
-        { field: 'id', cell: (d) => ({ value: getReferenceId(d.info.ref) }), sticky: 'start' },
+        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }), sticky: 'start' },
         {
             field: 'name',
             cell: (d) => ({
                 value: d.name,
                 click: () => {
-                    this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.info.ref });
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
                 },
             }),
             style: { width: 0 },
@@ -79,7 +79,7 @@ export class DomainObjectsTableComponent implements OnInit {
         { field: 'description', cell: (d) => ({ value: d.description }) },
         {
             field: 'type',
-            cell: (d) => ({ value: startCase(String(getUnionKey(d.info.ref))) }),
+            cell: (d) => ({ value: startCase(String(getUnionKey(d.ref))) }),
         },
         { field: 'version', cell: (d) => ({ value: d.info.version }) },
         { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
@@ -92,16 +92,14 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Details',
                     click: () => {
-                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                            ref: d.info.ref,
-                        });
+                        this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
                     },
                 },
                 {
                     label: 'Edit',
                     click: () => {
                         this.domainStoreService
-                            .getObject(d.info.ref)
+                            .getObject(d.ref)
                             .pipe(
                                 first(),
                                 switchMap((domainObject) =>
@@ -119,7 +117,7 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Delete',
                     click: () => {
-                        this.deleteDomainObjectService.delete(d.info.ref);
+                        this.deleteDomainObjectService.delete(d.ref);
                     },
                 },
             ],
