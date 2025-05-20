@@ -24,6 +24,8 @@ export class FetchDomainObjectsService extends FetchSuperclass<
             .SearchObjects(
                 clean({
                     ...params,
+                    // TODO: fix
+                    version: Number.MAX_SAFE_INTEGER,
                     query: params.query || '*',
                     limit: options.size,
                     continuation_token: options.continuationToken,

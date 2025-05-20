@@ -85,7 +85,10 @@ export class DomainObjectsTableComponent implements OnInit {
         { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
         {
             field: 'changed_by',
-            cell: (d) => ({ value: d.info.changed_by.name, description: d.info.changed_by.email }),
+            cell: (d) => ({
+                value: d.info.changed_by?.name,
+                description: d.info.changed_by?.email,
+            }),
         },
         createMenuColumn((d) => ({
             items: [

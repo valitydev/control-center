@@ -38,13 +38,16 @@ export class DomainService {
         );
     }
 
-    update(objs: DomainObject[], attempts = 1) {
-        return this.commit(objs.map((obj) => ({ update: { object: obj } }))).pipe(
+    update(objs: DomainObject[], version: Version, attempts = 1) {
+        return this.commit(
+            objs.map((obj) => ({ update: { object: obj } })),
+            version,
+        ).pipe(
             catchError((err) => {
                 if (err?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.domainStoreService.version.reload();
-                        this.update(objs, attempts - 1);
+                        this.update(objs, version, attempts - 1);
                         this.log.error(err, `Domain config is out of date, one more attempt...`);
                         return EMPTY;
                     } else {
