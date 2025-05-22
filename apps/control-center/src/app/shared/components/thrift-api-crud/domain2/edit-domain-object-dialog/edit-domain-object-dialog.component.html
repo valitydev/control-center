@@ -1,0 +1,85 @@
+<ng-container [ngSwitch]="step">
+    <v-dialog
+        *ngSwitchCase="stepEnum.Edit"
+        [progress]="isLoading$ | async"
+        title="Edit domain object"
+    >
+        <cc-domain-thrift-form
+            [defaultValue]="(currentObject$ | async | ngtUnionValue)?.data"
+            [formControl]="control"
+            [kind]="kind.value()"
+            [type]="dataType$ | async"
+            (kindChange)="kind.set($event)"
+        ></cc-domain-thrift-form>
+        <v-dialog-actions
+            ><ng-container *ngTemplateOutlet="actions"></ng-container
+        ></v-dialog-actions>
+    </v-dialog>
+
+    <v-dialog
+        *ngSwitchCase="stepEnum.Review"
+        [progress]="isLoading$ | async"
+        title="Review domain object"
+    >
+        <cc-domain-thrift-viewer
+            [compared]="newObject$ | async"
+            [type]="dataType$ | async"
+            [value]="currentObject$ | async"
+            kind="editor"
+        ></cc-domain-thrift-viewer>
+        <v-dialog-actions
+            ><ng-container *ngTemplateOutlet="actions"></ng-container
+        ></v-dialog-actions>
+    </v-dialog>
+
+    <v-dialog
+        *ngSwitchCase="stepEnum.SourceReview"
+        [progress]="isLoading$ | async"
+        title="Changes from the server"
+    >
+        <cc-domain-thrift-viewer
+            [compared]="currentObject$ | async"
+            [type]="dataType$ | async"
+            [value]="dialogData.domainObject"
+            kind="editor"
+        ></cc-domain-thrift-viewer>
+        <v-dialog-actions
+            ><ng-container *ngTemplateOutlet="actions"></ng-container
+        ></v-dialog-actions>
+    </v-dialog>
+</ng-container>
+
+<ng-template #actions>
+    <button
+        *ngIf="step !== stepEnum.Edit"
+        [disabled]="isLoading$ | async"
+        mat-button
+        (click)="step = stepEnum.Edit"
+    >
+        Edit
+    </button>
+    <button
+        *ngIf="(hasConflict$ | async) && step !== stepEnum.SourceReview"
+        [disabled]="isLoading$ | async"
+        mat-flat-button
+        (click)="step = stepEnum.SourceReview"
+    >
+        Review server changes
+    </button>
+    <button
+        *ngIf="step !== stepEnum.Review"
+        [disabled]="control.invalid || (isLoading$ | async) || !(hasChanges$ | async)"
+        mat-flat-button
+        (click)="step = stepEnum.Review"
+    >
+        Review
+    </button>
+    <button
+        *ngIf="step === stepEnum.Review"
+        [disabled]="isLoading$ | async"
+        mat-flat-button
+        (click)="update()"
+    >
+        Update
+    </button>
+</ng-template>

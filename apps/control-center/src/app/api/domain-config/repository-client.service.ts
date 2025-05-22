@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-    domain_config_v2_RepositoryCodegenClient as CodegenClient,
+    domain_config_v2_RepositoryClientCodegenClient as CodegenClient,
     ThriftAstMetadata,
-    domain_config_v2_Repository,
+    domain_config_v2_RepositoryClient,
 } from '@vality/domain-proto';
 import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { ConfigService } from '../../core/config.service';
 import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })
-export class Repository2Service {
+export class RepositoryClientService {
     private client$: Observable<CodegenClient>;
 
     constructor(
@@ -26,7 +26,7 @@ export class Repository2Service {
         );
         this.client$ = combineLatest([metadata$, headers$]).pipe(
             switchMap(([metadata, headers]) =>
-                domain_config_v2_Repository({
+                domain_config_v2_RepositoryClient({
                     metadata,
                     headers,
                     logging: environment.logging.requests,
@@ -36,27 +36,7 @@ export class Repository2Service {
         );
     }
 
-    GetLatestVersion(...params: Parameters<CodegenClient['GetLatestVersion']>) {
-        return this.client$.pipe(switchMap((c) => c.GetLatestVersion(...params)));
-    }
-
-    Commit(...params: Parameters<CodegenClient['Commit']>) {
-        return this.client$.pipe(switchMap((c) => c.Commit(...params)));
-    }
-
-    GetObjectHistory(...params: Parameters<CodegenClient['GetObjectHistory']>) {
-        return this.client$.pipe(switchMap((c) => c.GetObjectHistory(...params)));
-    }
-
-    GetAllObjectsHistory(...params: Parameters<CodegenClient['GetAllObjectsHistory']>) {
-        return this.client$.pipe(switchMap((c) => c.GetAllObjectsHistory(...params)));
-    }
-
-    SearchObjects(...params: Parameters<CodegenClient['SearchObjects']>) {
-        return this.client$.pipe(switchMap((c) => c.SearchObjects(...params)));
-    }
-
-    SearchFullObjects(...params: Parameters<CodegenClient['SearchFullObjects']>) {
-        return this.client$.pipe(switchMap((c) => c.SearchFullObjects(...params)));
+    CheckoutObject(...params: Parameters<CodegenClient['CheckoutObject']>) {
+        return this.client$.pipe(switchMap((c) => c.CheckoutObject(...params)));
     }
 }

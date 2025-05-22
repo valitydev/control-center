@@ -8,12 +8,11 @@ import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operator
 import { isEmpty } from '../../utils';
 
 import { Serializer } from './types/serializer';
-import { QUERY_PARAMS_SERIALIZERS } from './utils';
+import { QUERY_PARAMS_SERIALIZERS, serializeQueryParams } from './utils';
 import { deserializeQueryParam } from './utils/deserialize-query-param';
-import { serializeQueryParam } from './utils/serialize-query-param';
 
 interface SerializeOptions {
-    filter?: (param: unknown, key: string) => boolean;
+    filter?: Parameters<typeof serializeQueryParams>[1];
 }
 
 interface SetOptions extends SerializeOptions {
@@ -171,12 +170,7 @@ export class QueryParamsService<P extends object = NonNullable<unknown>>
 
     private serialize(params: object, options: SerializeOptions = {}): Params {
         const filter = options.filter ?? negate(isEmpty);
-        return Object.entries(params).reduce((acc, [k, v]) => {
-            if (filter(v, k)) {
-                acc[k] = serializeQueryParam(v, this.serializers);
-            }
-            return acc;
-        }, {} as Params);
+        return serializeQueryParams(params, filter, this.serializers);
     }
 
     private deserialize(params: Params): P {
@@ -200,6 +194,6 @@ export class QueryParamsService<P extends object = NonNullable<unknown>>
     private deserializeNamespace<TNamespaceParams extends object>(
         strParams?: string,
     ): TNamespaceParams {
-        return strParams ? JSON.parse(strParams) : {};
+        return strParams ? JSON.parse(strParams) : ({} as TNamespaceParams);
     }
 }

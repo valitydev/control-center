@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { AppAuthGuardService } from '../../shared/services';
 
-import { DomainInfoComponent } from './domain-info';
+import { DomainObjectsComponent } from './domain-objects';
 import { ROUTING_CONFIG } from './routing-config';
 
 @NgModule({
@@ -13,7 +13,7 @@ import { ROUTING_CONFIG } from './routing-config';
                 path: '',
                 canActivate: [AppAuthGuardService],
                 data: ROUTING_CONFIG,
-                component: DomainInfoComponent,
+                component: DomainObjectsComponent,
             },
         ]),
     ],
