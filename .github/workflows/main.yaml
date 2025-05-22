@@ -1,7 +1,7 @@
 name: Main
 on:
   push:
-    branches: ['master', 'main', 'epic/**']
+    branches: ['master', 'main']
 jobs:
   deploy:
     name: Deploy
