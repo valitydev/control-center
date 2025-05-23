@@ -9,7 +9,12 @@ import {
 } from '@vality/matez';
 import { filter, first, switchMap } from 'rxjs/operators';
 
-import { Domain2StoreService, DomainService } from '../../../../../api/domain-config';
+import {
+    Domain2StoreService,
+    DomainService,
+    FetchDomainObjectsService,
+} from '../../../../../api/domain-config';
+import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 
 @Injectable({
@@ -22,6 +27,7 @@ export class DomainObjectService {
         private log: NotifyLogService,
         private domainStoreService: Domain2StoreService,
         private dr: DestroyRef,
+        private fetchDomainObjectsService: FetchDomainObjectsService,
     ) {}
 
     delete(ref: Reference) {
@@ -54,5 +60,16 @@ export class DomainObjectService {
                 takeUntilDestroyed(this.dr),
             )
             .subscribe();
+    }
+
+    create(objectType?: keyof Reference) {
+        this.dialogService
+            .open(CreateDomainObjectDialogComponent, objectType ? { objectType } : undefined)
+            .afterClosed()
+            .subscribe((result) => {
+                if (result.status === DialogResponseStatus.Success) {
+                    this.fetchDomainObjectsService.reload();
+                }
+            });
     }
 }
