@@ -6,14 +6,11 @@ import {
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
+    subscribeReturn,
 } from '@vality/matez';
 import { filter, first, switchMap } from 'rxjs/operators';
 
-import {
-    Domain2StoreService,
-    DomainService,
-    FetchDomainObjectsService,
-} from '../../../../../api/domain-config';
+import { Domain2StoreService, DomainService } from '../../../../../api/domain-config';
 import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 
@@ -27,30 +24,30 @@ export class DomainObjectService {
         private log: NotifyLogService,
         private domainStoreService: Domain2StoreService,
         private dr: DestroyRef,
-        private fetchDomainObjectsService: FetchDomainObjectsService,
     ) {}
 
     delete(ref: Reference) {
-        return this.dialogService
-            .open(ConfirmDialogComponent, { title: 'Delete object' })
-            .afterClosed()
-            .pipe(
-                filter((r) => r.status === DialogResponseStatus.Success),
-                switchMap(() => this.domainService.remove([ref])),
-                takeUntilDestroyed(this.dr),
-            )
-            .subscribe({
+        return subscribeReturn(
+            this.dialogService
+                .open(ConfirmDialogComponent, { title: 'Delete object' })
+                .afterClosed()
+                .pipe(
+                    filter((r) => r.status === DialogResponseStatus.Success),
+                    switchMap(() => this.domainService.remove([ref])),
+                    takeUntilDestroyed(this.dr),
+                ),
+            {
                 next: () => {
                     this.log.successOperation('delete', 'domain object');
                 },
                 error: this.log.error,
-            });
+            },
+        );
     }
 
     edit(ref: Reference) {
-        this.domainStoreService
-            .getObject(ref)
-            .pipe(
+        return subscribeReturn(
+            this.domainStoreService.getObject(ref).pipe(
                 first(),
                 switchMap((domainObject) =>
                     this.dialogService
@@ -58,18 +55,15 @@ export class DomainObjectService {
                         .afterClosed(),
                 ),
                 takeUntilDestroyed(this.dr),
-            )
-            .subscribe();
+            ),
+        );
     }
 
     create(objectType?: keyof Reference) {
-        this.dialogService
-            .open(CreateDomainObjectDialogComponent, objectType ? { objectType } : undefined)
-            .afterClosed()
-            .subscribe((result) => {
-                if (result.status === DialogResponseStatus.Success) {
-                    this.fetchDomainObjectsService.reload();
-                }
-            });
+        return subscribeReturn(
+            this.dialogService
+                .open(CreateDomainObjectDialogComponent, objectType ? { objectType } : undefined)
+                .afterClosed(),
+        );
     }
 }

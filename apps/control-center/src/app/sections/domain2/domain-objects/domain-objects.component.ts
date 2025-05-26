@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ReflessDomainObject } from '@vality/domain-proto/domain';
+import { DialogResponseStatus } from '@vality/matez';
 
 import { Domain2StoreService, FetchDomainObjectsService } from '../../../api/domain-config';
 import { PageLayoutModule } from '../../../shared';
@@ -21,9 +22,14 @@ export class DomainObjectsComponent {
     constructor(
         private domainStoreService: Domain2StoreService,
         private domainObjectService: DomainObjectService,
+        private fetchDomainObjectsService: FetchDomainObjectsService,
     ) {}
 
     create() {
-        this.domainObjectService.create(this.selectedType());
+        this.domainObjectService.create(this.selectedType()).next((result) => {
+            if (result.status === DialogResponseStatus.Success) {
+                this.fetchDomainObjectsService.reload();
+            }
+        });
     }
 }
