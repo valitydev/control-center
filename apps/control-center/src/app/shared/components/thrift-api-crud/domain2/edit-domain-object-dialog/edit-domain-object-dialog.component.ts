@@ -26,7 +26,7 @@ import {
     isEqualThrift,
 } from '@vality/ng-thrift';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, first, map, shareReplay } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { DomainService } from '../../../../../api/domain-config';
@@ -75,15 +75,12 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         return this.dialogData.domainObject.object;
     }
     get type() {
-        return getUnionKey(this.dialogData.domainObject);
+        return getUnionKey(this.dialogData.domainObject.object);
     }
-    dataType$ = this.metadataService
-        .getDomainObjectDataFieldByName(getUnionKey(this.dialogData.domainObject))
-        .pipe(
-            map((f) => String(f.type)),
-            first(),
-            shareReplay({ refCount: true, bufferSize: 1 }),
-        );
+    dataType$ = this.metadataService.getDomainObjectDataFieldByName(this.type).pipe(
+        map((f) => String(f.type)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     currentObject = signal(this.dialogData.domainObject);
     newObject$ = getValueChanges(this.control).pipe(
         map(() => this.getNewObject()),
