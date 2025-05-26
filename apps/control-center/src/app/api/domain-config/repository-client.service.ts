@@ -18,7 +18,9 @@ export class RepositoryClientService {
         private keycloakTokenInfoService: KeycloakTokenInfoService,
         configService: ConfigService,
     ) {
-        const headers$ = this.keycloakTokenInfoService.info$.pipe(map(toWachterHeaders('DMT')));
+        const headers$ = this.keycloakTokenInfoService.info$.pipe(
+            map(toWachterHeaders('DMTClient')),
+        );
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(
                 (m) => m.default as ThriftAstMetadata[],
