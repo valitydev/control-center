@@ -131,7 +131,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
 
     private getNewObject(): DomainObject {
         return {
-            [getUnionKey(this.dialogData.domainObject)]: {
+            [this.type]: {
                 ref: getUnionValue(this.dialogData.domainObject.object).ref,
                 data: this.control.value,
             },

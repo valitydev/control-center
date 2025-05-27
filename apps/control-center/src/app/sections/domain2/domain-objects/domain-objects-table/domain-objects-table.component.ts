@@ -8,6 +8,7 @@ import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
     Column,
+    DialogResponseStatus,
     QueryParamsService,
     SelectFieldModule,
     TableModule,
@@ -91,13 +92,19 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Edit',
                     click: () => {
-                        this.domainObjectService.edit(d.ref);
+                        this.domainObjectService.edit(d.ref).next((res) => {
+                            if (res.status === DialogResponseStatus.Success) {
+                                this.fetchDomainObjectsService.reload();
+                            }
+                        });
                     },
                 },
                 {
                     label: 'Delete',
                     click: () => {
-                        this.domainObjectService.delete(d.ref);
+                        this.domainObjectService.delete(d.ref).next(() => {
+                            this.fetchDomainObjectsService.reload();
+                        });
                     },
                 },
             ],

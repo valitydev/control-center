@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, Input, OnChanges } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
@@ -57,7 +57,6 @@ export class DomainObjectCardComponent implements OnChanges {
         private domainStoreService: DomainStoreService,
         private destroyRef: DestroyRef,
         private dialogService: DialogService,
-        private injector: Injector,
     ) {}
 
     ngOnChanges(changes: ComponentChanges<DomainObjectCardComponent>) {

@@ -18,7 +18,7 @@
         title="Review domain object"
     >
         <cc-domain-thrift-viewer
-            [compared]="newObject$ | async"
+            [compared]="(newObject$ | async | ngtUnionValue)?.data"
             [type]="dataType$ | async"
             [value]="(currentObject() | ngtUnionValue)?.data"
             kind="editor"
