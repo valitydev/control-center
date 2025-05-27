@@ -81,17 +81,17 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         map((f) => String(f.type)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    currentObject = signal(this.dialogData.domainObject);
+    currentObject = signal(this.dialogData.domainObject.object);
     newObject$ = getValueChanges(this.control).pipe(
         map(() => this.getNewObject()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     hasConflict = computed(() => {
-        return !isEqualThrift(this.currentObject().object, this.dialogData.domainObject.object);
+        return !isEqualThrift(this.currentObject(), this.dialogData.domainObject.object);
     });
     hasChanges$ = combineLatest([toObservable(this.currentObject), this.newObject$]).pipe(
-        map(([a, b]) => !isEqualThrift(a.object, b)),
+        map(([a, b]) => !isEqualThrift(a, b)),
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
