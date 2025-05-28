@@ -23,11 +23,11 @@ import { debounceTime, distinctUntilChanged, first, map, share, shareReplay } fr
 
 import { FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
+import { getReferenceId } from '../../../../shared/components/thrift-api-crud';
 import {
     DomainObjectCardComponent,
-    getReferenceId,
-} from '../../../../shared/components/thrift-api-crud';
-import { DomainObjectService } from '../../../../shared/components/thrift-api-crud/domain2';
+    DomainObjectService,
+} from '../../../../shared/components/thrift-api-crud/domain2';
 
 const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
     import('@vality/domain-proto/metadata.json'),
@@ -62,7 +62,10 @@ export class DomainObjectsTableComponent implements OnInit {
             cell: (d) => ({
                 value: d.name,
                 click: () => {
-                    this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: d.ref,
+                        version: d.info.version,
+                    });
                 },
             }),
             style: { width: 0 },
@@ -86,7 +89,10 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Details',
                     click: () => {
-                        this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
+                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                            ref: d.ref,
+                            version: d.info.version,
+                        });
                     },
                 },
                 {

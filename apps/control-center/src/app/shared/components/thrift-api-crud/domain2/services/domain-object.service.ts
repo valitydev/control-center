@@ -10,7 +10,7 @@ import {
 } from '@vality/matez';
 import { filter, first, switchMap } from 'rxjs/operators';
 
-import { Domain2StoreService, DomainService } from '../../../../../api/domain-config';
+import { DomainService } from '../../../../../api/domain-config';
 import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 
@@ -22,7 +22,6 @@ export class DomainObjectService {
         private dialogService: DialogService,
         private domainService: DomainService,
         private log: NotifyLogService,
-        private domainStoreService: Domain2StoreService,
         private dr: DestroyRef,
     ) {}
 
@@ -47,7 +46,7 @@ export class DomainObjectService {
 
     edit(ref: Reference) {
         return subscribeReturn(
-            this.domainStoreService.getObject(ref).pipe(
+            this.domainService.get(ref).pipe(
                 first(),
                 switchMap((domainObject) =>
                     this.dialogService

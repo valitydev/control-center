@@ -1,31 +1,46 @@
 import { Injectable } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { Operation, Version } from '@vality/domain-proto/domain_config_v2';
-import { NotifyLogService } from '@vality/matez';
+import { NotifyLogService, switchCombineWith } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { EMPTY, catchError, tap } from 'rxjs';
+import { EMPTY, catchError, map, tap } from 'rxjs';
 
+import { RepositoryClientService } from '../repository-client.service';
 import { Repository2Service } from '../repository2.service';
-import { Domain2StoreService } from '../stores';
 import { AuthorStoreService } from '../stores/author-store.service';
+
+import { DomainSecretService } from './domain-secret-service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainService {
+    version = rxResource({
+        loader: () => this.repositoryService.GetLatestVersion(),
+    });
+
     constructor(
         private repositoryService: Repository2Service,
-        private domainStoreService: Domain2StoreService,
         private authorStoreService: AuthorStoreService,
         private log: NotifyLogService,
+        private repositoryClientService: RepositoryClientService,
+        private domainSecretService: DomainSecretService,
     ) {}
+
+    get(ref: Reference, version?: Version) {
+        return this.repositoryClientService.CheckoutObject(version ? { version } : {}, ref).pipe(
+            switchCombineWith((obj) => [this.domainSecretService.reduceObject(obj.object)]),
+            map(([{ info }, object]) => ({ info, object })),
+        );
+    }
 
     insert(objs: ReflessDomainObject[], attempts = 1) {
         return this.commit(objs.map((obj) => ({ insert: { object: obj } }))).pipe(
             catchError((err) => {
                 if (err?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
-                        this.domainStoreService.version.reload();
+                        this.version.reload();
                         this.insert(objs, attempts - 1);
                         this.log.error(err, `Domain config is out of date, one more attempt...`);
                         return EMPTY;
@@ -46,7 +61,7 @@ export class DomainService {
             catchError((err) => {
                 if (err?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
-                        this.domainStoreService.version.reload();
+                        this.version.reload();
                         this.update(objs, version, attempts - 1);
                         this.log.error(err, `Domain config is out of date, one more attempt...`);
                         return EMPTY;
@@ -63,7 +78,7 @@ export class DomainService {
         return this.commit(refs.map((ref) => ({ remove: { ref } })));
     }
 
-    private commit(ops: Operation[], version: Version = this.domainStoreService.version.value()) {
+    private commit(ops: Operation[], version: Version = this.version.value()) {
         return this.repositoryService
             .Commit(version, ops, this.authorStoreService.author.value().id)
             .pipe(
@@ -82,7 +97,7 @@ export class DomainService {
                     throw err;
                 }),
                 tap((res) => {
-                    this.domainStoreService.version.set(res.version);
+                    this.version.set(res.version);
                 }),
             );
     }
