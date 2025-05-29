@@ -1,11 +1,7 @@
 <ng-container [ngSwitch]="step">
-    <v-dialog
-        *ngSwitchCase="stepEnum.Edit"
-        [progress]="isLoading$ | async"
-        title="Edit domain object"
-    >
+    <v-dialog *ngSwitchCase="stepEnum.Edit" [progress]="!!isLoading()" title="Edit domain object">
         <cc-domain-thrift-form
-            [defaultValue]="(currentObject$ | async | ngtUnionValue)?.data"
+            [defaultValue]="(currentObject() | ngtUnionValue)?.data"
             [formControl]="control"
             [kind]="kind.value()"
             [type]="dataType$ | async"
@@ -18,13 +14,13 @@
 
     <v-dialog
         *ngSwitchCase="stepEnum.Review"
-        [progress]="isLoading$ | async"
+        [progress]="!!isLoading()"
         title="Review domain object"
     >
         <cc-domain-thrift-viewer
-            [compared]="newObject$ | async"
+            [compared]="(newObject$ | async | ngtUnionValue)?.data"
             [type]="dataType$ | async"
-            [value]="currentObject$ | async"
+            [value]="(currentObject() | ngtUnionValue)?.data"
             kind="editor"
         ></cc-domain-thrift-viewer>
         <v-dialog-actions
@@ -34,13 +30,13 @@
 
     <v-dialog
         *ngSwitchCase="stepEnum.SourceReview"
-        [progress]="isLoading$ | async"
+        [progress]="!!isLoading()"
         title="Changes from the server"
     >
         <cc-domain-thrift-viewer
-            [compared]="currentObject$ | async"
+            [compared]="(currentObject() | ngtUnionValue)?.data"
             [type]="dataType$ | async"
-            [value]="dialogData.domainObject"
+            [value]="(dialogData.domainObject.object | ngtUnionValue)?.data"
             kind="editor"
         ></cc-domain-thrift-viewer>
         <v-dialog-actions
@@ -52,15 +48,15 @@
 <ng-template #actions>
     <button
         *ngIf="step !== stepEnum.Edit"
-        [disabled]="isLoading$ | async"
+        [disabled]="!!isLoading()"
         mat-button
         (click)="step = stepEnum.Edit"
     >
         Edit
     </button>
     <button
-        *ngIf="(hasConflict$ | async) && step !== stepEnum.SourceReview"
-        [disabled]="isLoading$ | async"
+        *ngIf="hasConflict() && step !== stepEnum.SourceReview"
+        [disabled]="!!isLoading()"
         mat-flat-button
         (click)="step = stepEnum.SourceReview"
     >
@@ -68,7 +64,7 @@
     </button>
     <button
         *ngIf="step !== stepEnum.Review"
-        [disabled]="control.invalid || (isLoading$ | async) || !(hasChanges$ | async)"
+        [disabled]="control.invalid || !!isLoading() || !(hasChanges$ | async)"
         mat-flat-button
         (click)="step = stepEnum.Review"
     >
@@ -76,7 +72,7 @@
     </button>
     <button
         *ngIf="step === stepEnum.Review"
-        [disabled]="isLoading$ | async"
+        [disabled]="!!isLoading()"
         mat-flat-button
         (click)="update()"
     >

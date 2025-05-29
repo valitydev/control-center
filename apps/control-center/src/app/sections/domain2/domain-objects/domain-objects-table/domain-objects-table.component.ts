@@ -8,7 +8,7 @@ import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
     Column,
-    DialogService,
+    DialogResponseStatus,
     QueryParamsService,
     SelectFieldModule,
     TableModule,
@@ -19,24 +19,15 @@ import {
 import { ThriftAstMetadata, createThriftEnum, getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, merge } from 'rxjs';
-import {
-    debounceTime,
-    distinctUntilChanged,
-    first,
-    map,
-    share,
-    shareReplay,
-    switchMap,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, first, map, share, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService, FetchDomainObjectsService } from '../../../../api/domain-config';
+import { FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
+import { getReferenceId } from '../../../../shared/components/thrift-api-crud';
 import {
-    DeleteDomainObjectService,
     DomainObjectCardComponent,
-    EditDomainObjectDialogComponent,
-    getReferenceId,
-} from '../../../../shared/components/thrift-api-crud';
+    DomainObjectService,
+} from '../../../../shared/components/thrift-api-crud/domain2';
 
 const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
     import('@vality/domain-proto/metadata.json'),
@@ -71,7 +62,10 @@ export class DomainObjectsTableComponent implements OnInit {
             cell: (d) => ({
                 value: d.name,
                 click: () => {
-                    this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: d.ref,
+                        version: d.info.version,
+                    });
                 },
             }),
             style: { width: 0 },
@@ -95,32 +89,28 @@ export class DomainObjectsTableComponent implements OnInit {
                 {
                     label: 'Details',
                     click: () => {
-                        this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref: d.ref });
+                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                            ref: d.ref,
+                            version: d.info.version,
+                        });
                     },
                 },
                 {
                     label: 'Edit',
                     click: () => {
-                        this.domainStoreService
-                            .getObject(d.ref)
-                            .pipe(
-                                first(),
-                                switchMap((domainObject) =>
-                                    this.dialogService
-                                        .open(EditDomainObjectDialogComponent, {
-                                            domainObject,
-                                        })
-                                        .afterClosed(),
-                                ),
-                                takeUntilDestroyed(this.destroyRef),
-                            )
-                            .subscribe();
+                        this.domainObjectService.edit(d.ref).next((res) => {
+                            if (res.status === DialogResponseStatus.Success) {
+                                this.fetchDomainObjectsService.reload();
+                            }
+                        });
                     },
                 },
                 {
                     label: 'Delete',
                     click: () => {
-                        this.deleteDomainObjectService.delete(d.ref);
+                        this.domainObjectService.delete(d.ref).next(() => {
+                            this.fetchDomainObjectsService.reload();
+                        });
                     },
                 },
             ],
@@ -145,23 +135,21 @@ export class DomainObjectsTableComponent implements OnInit {
         private fetchDomainObjectsService: FetchDomainObjectsService,
         private qp: QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>,
         private sidenavInfoService: SidenavInfoService,
-        private deleteDomainObjectService: DeleteDomainObjectService,
-        private destroyRef: DestroyRef,
-        private dialogService: DialogService,
-        private domainStoreService: DomainStoreService,
+        private domainObjectService: DomainObjectService,
+        private dr: DestroyRef,
         private injector: Injector,
     ) {}
 
     ngOnInit() {
         merge(this.typeControl.valueChanges, this.qp.params$.pipe(map((params) => params.type)))
-            .pipe(distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+            .pipe(distinctUntilChanged(), takeUntilDestroyed(this.dr))
             .subscribe((type) => {
                 this.selectedTypeChange.emit(type);
                 this.typeControl.setValue(type, { emitEvent: false });
                 void this.qp.patch({ type });
             });
         toObservable(this.filter, { injector: this.injector })
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.dr))
             .subscribe((filter) => {
                 void this.qp.patch({ filter });
             });
@@ -169,7 +157,7 @@ export class DomainObjectsTableComponent implements OnInit {
             getValueChanges(this.typeControl),
             toObservable(this.filter, { injector: this.injector }).pipe(debounceTime(300)),
         ])
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.dr))
             .subscribe(([type, query]) => {
                 if (type) {
                     DOMAIN_OBJECT_TYPES$.pipe(first()).subscribe((types) => {

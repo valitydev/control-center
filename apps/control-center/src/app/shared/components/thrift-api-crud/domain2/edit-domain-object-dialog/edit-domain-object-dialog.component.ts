@@ -16,6 +16,7 @@ import {
     createStorageValue,
     enumHasValue,
     getValueChanges,
+    progressTo,
 } from '@vality/matez';
 import {
     EditorKind,
@@ -25,7 +26,7 @@ import {
     isEqualThrift,
 } from '@vality/ng-thrift';
 import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, first, map, shareReplay } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { DomainService } from '../../../../../api/domain-config';
@@ -74,23 +75,20 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         return this.dialogData.domainObject.object;
     }
     get type() {
-        return getUnionKey(this.dialogData.domainObject);
+        return getUnionKey(this.dialogData.domainObject.object);
     }
-    dataType$ = this.metadataService
-        .getDomainObjectDataFieldByName(getUnionKey(this.dialogData.domainObject))
-        .pipe(
-            map((f) => String(f.type)),
-            first(),
-            shareReplay({ refCount: true, bufferSize: 1 }),
-        );
-    currentObject = signal<DomainObject>(this.dialogData.domainObject.object);
+    dataType$ = this.metadataService.getDomainObjectDataFieldByName(this.type).pipe(
+        map((f) => String(f.type)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    currentObject = signal(this.dialogData.domainObject.object);
     newObject$ = getValueChanges(this.control).pipe(
         map(() => this.getNewObject()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     hasConflict = computed(() => {
-        return !isEqualThrift(this.currentObject, this.dialogData.domainObject);
+        return !isEqualThrift(this.currentObject(), this.dialogData.domainObject.object);
     });
     hasChanges$ = combineLatest([toObservable(this.currentObject), this.newObject$]).pipe(
         map(([a, b]) => !isEqualThrift(a, b)),
@@ -101,6 +99,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     kind = createStorageValue<UnionEnum<EditorKind>>('edit-domain-object-dialog-kind', {
         deserialize: (v) => (enumHasValue(EditorKind, v) ? v : EditorKind.Form),
     });
+    isLoading = signal(0);
 
     constructor(
         private dr: DestroyRef,
@@ -115,7 +114,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     update() {
         this.domainService
             .update([this.getNewObject()], this.dialogData.domainObject.info.version)
-            .pipe(takeUntilDestroyed(this.dr))
+            .pipe(progressTo(this.isLoading), takeUntilDestroyed(this.dr))
             .subscribe({
                 next: () => {
                     this.log.successOperation('update', 'domain object');
@@ -132,7 +131,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
 
     private getNewObject(): DomainObject {
         return {
-            [getUnionKey(this.dialogData.domainObject)]: {
+            [this.type]: {
                 ref: getUnionValue(this.dialogData.domainObject.object).ref,
                 data: this.control.value,
             },
