@@ -29,10 +29,12 @@ export class DomainService {
     ) {}
 
     get(ref: Reference, version?: Version) {
-        return this.repositoryClientService.CheckoutObject(version ? { version } : {}, ref).pipe(
-            switchCombineWith((obj) => [this.domainSecretService.reduceObject(obj.object)]),
-            map(([{ info }, object]) => ({ info, object })),
-        );
+        return this.repositoryClientService
+            .CheckoutObject(version ? { version } : { head: {} }, ref)
+            .pipe(
+                switchCombineWith((obj) => [this.domainSecretService.reduceObject(obj.object)]),
+                map(([{ info }, object]) => ({ info, object })),
+            );
     }
 
     insert(objs: ReflessDomainObject[], attempts = 1) {
@@ -75,7 +77,11 @@ export class DomainService {
     }
 
     remove(refs: Reference[]) {
-        return this.commit(refs.map((ref) => ({ remove: { ref } })));
+        return this.commit(refs.map((ref) => ({ remove: { ref } }))).pipe(
+            tap(() => {
+                this.version.reload();
+            }),
+        );
     }
 
     private commit(ops: Operation[], version: Version = this.version.value()) {
