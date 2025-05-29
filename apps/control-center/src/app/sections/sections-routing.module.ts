@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { APP_ROUTES } from '../app-routes';
+
 const ROUTES: Routes = [
     {
         path: 'domain',
         loadChildren: () => import('./domain').then((m) => m.DomainModule),
     },
+    APP_ROUTES.domain2.root.getRoute(),
     {
         path: 'domain2',
         loadChildren: () => import('./domain2').then((m) => m.DomainModule),

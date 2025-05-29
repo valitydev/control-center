@@ -4,7 +4,7 @@ import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../../../../environments/environment';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AppAuthGuardService extends KeycloakAuthGuard {
     constructor(
         protected override router: Router,

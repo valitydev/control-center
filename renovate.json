@@ -9,6 +9,11 @@
         {
             "groupName": "Major",
             "matchUpdateTypes": ["major"]
+        },
+        {
+            "groupName": "Vality Thrift protocols",
+            "matchPackagePatterns": ["^@vality/.*-proto$"],
+            "rangeStrategy": "bump"
         }
     ]
 }

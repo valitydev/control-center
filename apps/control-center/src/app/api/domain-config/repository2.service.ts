@@ -55,4 +55,8 @@ export class Repository2Service {
     SearchObjects(...params: Parameters<CodegenClient['SearchObjects']>) {
         return this.client$.pipe(switchMap((c) => c.SearchObjects(...params)));
     }
+
+    SearchFullObjects(...params: Parameters<CodegenClient['SearchFullObjects']>) {
+        return this.client$.pipe(switchMap((c) => c.SearchFullObjects(...params)));
+    }
 }

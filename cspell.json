@@ -2,5 +2,15 @@
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
     "version": "0.2",
     "import": "./dist/libs/ng-configs/src/lib/cspell-config.json",
-    "words": ["msgpack", "rreserve", "wght", "opsz", "dpan", "buildable", "matv", "autorenew"]
+    "words": [
+        "msgpack",
+        "rreserve",
+        "wght",
+        "opsz",
+        "dpan",
+        "buildable",
+        "matv",
+        "autorenew",
+        "refless"
+    ]
 }

@@ -1,13 +1,23 @@
+import { WritableSignal, isSignal } from '@angular/core';
 import { BehaviorSubject, MonoTypeOperatorFunction, defer, isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 export function progressTo<T>(
-    subject$: BehaviorSubject<number> | (() => BehaviorSubject<number>),
+    subjectSignal:
+        | BehaviorSubject<number>
+        | WritableSignal<number>
+        | (() => BehaviorSubject<number> | WritableSignal<number>),
 ): MonoTypeOperatorFunction<T> {
-    const getSub = () => (isObservable(subject$) ? subject$ : subject$());
+    const getSubjectSignal = () =>
+        isObservable(subjectSignal) || isSignal(subjectSignal) ? subjectSignal : subjectSignal();
     return (src$) =>
         defer(() => {
-            getSub().next(getSub().getValue() + 1);
-            return src$.pipe(finalize(() => getSub().next(getSub().getValue() - 1)));
+            const subSigRes = getSubjectSignal();
+            if (isSignal(subSigRes)) {
+                subSigRes.update((prev) => prev + 1);
+                return src$.pipe(finalize(() => subSigRes.update((prev) => prev - 1)));
+            }
+            subSigRes.next(subSigRes.getValue() + 1);
+            return src$.pipe(finalize(() => subSigRes.next(subSigRes.getValue() - 1)));
         });
 }

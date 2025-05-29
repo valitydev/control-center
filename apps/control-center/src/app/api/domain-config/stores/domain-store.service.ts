@@ -7,8 +7,8 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, defer, filter, of } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
-import { DomainSecretService } from '../../../shared/services';
 import { RepositoryService } from '../repository.service';
+import { DomainSecretService } from '../services';
 import { createObjectHash } from '../utils/create-object-hash';
 
 @Injectable({
