@@ -15,6 +15,14 @@ export function reduceObject(obj: DomainObject): DomainObject {
             delete result[name].data.options;
             return result;
         }
+        case 'provider': {
+            if (isNil(obj[name].data.proxy.additional)) {
+                return obj;
+            }
+            const result = cloneDeep(obj);
+            delete result[name].data.proxy.additional;
+            return result;
+        }
         default:
             return obj;
     }
