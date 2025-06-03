@@ -27,7 +27,7 @@ export class DomainSecretService {
             return domain;
         }
         const resDomain: Domain = new Map();
-        for (const [name, value] of resDomain) {
+        for (const [name, value] of domain) {
             resDomain.set(name, reduceObject(value));
         }
         return resDomain;
