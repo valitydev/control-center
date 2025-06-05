@@ -11,6 +11,9 @@ import { RepositoryService } from '../repository.service';
 import { DomainSecretService } from '../services';
 import { createObjectHash } from '../utils/create-object-hash';
 
+/**
+ * @deprecated use DomainObjectsStoreService instead
+ */
 @Injectable({
     providedIn: 'root',
 })
