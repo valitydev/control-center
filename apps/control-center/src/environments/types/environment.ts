@@ -5,6 +5,7 @@ export interface Environment {
     logging: {
         requests?: boolean;
     };
+    domain2?: boolean;
     // not available in production
     ignoreRoles?: boolean;
 }

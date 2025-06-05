@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { toMajorByExponent, toMinorByExponent } from '@vality/matez';
 import { first, map, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../api/domain-config/stores/domain-store.service';
+import { CurrenciesStoreService } from '../../api/domain-config';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AmountCurrencyService {
-    currencies$ = this.domainStoreService.getObjects('currency').pipe(
-        map((currencies) => new Map(currencies.map((c) => [c.ref.symbolic_code, c.data]))),
+    currencies$ = toObservable(this.currenciesStoreService.currencies).pipe(
+        map((currencies) => new Map(currencies.map((c) => [c.symbolic_code, c]))),
         shareReplay(1),
     );
 
-    constructor(private domainStoreService: DomainStoreService) {}
+    constructor(private currenciesStoreService: CurrenciesStoreService) {}
 
     toMajor(amount: number, symbolicCode: string) {
         return this.getCurrency(symbolicCode).pipe(

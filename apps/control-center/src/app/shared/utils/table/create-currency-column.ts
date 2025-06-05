@@ -1,11 +1,12 @@
 import { getCurrencySymbol } from '@angular/common';
 import { LOCALE_ID, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { createColumn, formatCurrency } from '@vality/matez';
 import { groupBy, uniq } from 'lodash-es';
 import { combineLatest, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config';
+import { CurrenciesStoreService } from '../../../api/domain-config';
 import { AmountCurrencyService } from '../../services';
 
 interface CurrencyValue {
@@ -56,10 +57,10 @@ export const createCurrencyColumn = createColumn(
                 ),
             );
         }
-        const domainStoreService = inject(DomainStoreService);
+        const currenciesStoreService = inject(CurrenciesStoreService);
         return combineLatest([
             combineLatest(currencyValuesByCodeList.map((g) => formatCurrencyValues(g))),
-            domainStoreService.isLoading$,
+            toObservable(currenciesStoreService.isLoading),
         ]).pipe(
             map(([currencyValueStrings, inProgress]) => ({
                 value: currencyValueStrings[0],
