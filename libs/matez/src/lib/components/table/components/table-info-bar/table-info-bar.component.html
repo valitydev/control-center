@@ -4,12 +4,7 @@
             @if (hasInputs()) {
                 <ng-content select="v-table-inputs"></ng-content>
             }
-            <v-input-field
-                [formControl]="filterControl"
-                class="filter__standalone filter"
-                cleanButton
-                label="Search"
-            ></v-input-field>
+            <v-input-field [formControl]="filterControl" cleanButton label="Search"></v-input-field>
         </div>
     }
     <v-actions>

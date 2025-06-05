@@ -2,20 +2,21 @@ $max-columns: 5;
 $rows: 1;
 
 .filters {
-    display: grid;
-    grid-column-gap: 8px;
-    margin-bottom: -22px;
-    padding: 22px !important;
+    display: flex;
+    gap: 8px;
 
     ::ng-deep & > * {
         min-width: 0;
+        flex: 1;
+    }
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        height: 0;
     }
 }
 
 @for $i from 1 through $max-columns {
     ::ng-deep .v-filters-cols-#{$i} {
-        grid-template-columns: repeat($i, 1fr);
-
         & > *:nth-child(n + #{($i * $rows) + 1}) {
             display: none;
         }
