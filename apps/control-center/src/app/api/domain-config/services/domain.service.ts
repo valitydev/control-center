@@ -52,6 +52,9 @@ export class DomainService {
                 }
                 throw err;
             }),
+            tap((res) => {
+                this.version.set(res.version);
+            }),
         );
     }
 
@@ -73,13 +76,16 @@ export class DomainService {
                 }
                 throw err;
             }),
+            tap((res) => {
+                this.version.set(res.version);
+            }),
         );
     }
 
     remove(refs: Reference[]) {
         return this.commit(refs.map((ref) => ({ remove: { ref } }))).pipe(
-            tap(() => {
-                this.version.reload();
+            tap((res) => {
+                this.version.set(res.version);
             }),
         );
     }
