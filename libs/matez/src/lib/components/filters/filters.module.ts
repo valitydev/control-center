@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ActionsModule } from '../actions';
@@ -31,7 +30,6 @@ import { FiltersComponent } from './filters.component';
     ],
     imports: [
         CommonModule,
-        MatCardModule,
         MatButtonModule,
         MatIconModule,
         DialogModule,

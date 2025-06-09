@@ -11,18 +11,30 @@ import { RepositoryService } from '../repository.service';
 import { DomainSecretService } from '../services';
 import { createObjectHash } from '../utils/create-object-hash';
 
+/**
+ * @deprecated use DomainObjectsStoreService instead
+ */
 @Injectable({
     providedIn: 'root',
 })
 export class DomainStoreService {
+    /**
+     * @deprecated
+     */
     domain$ = defer(() => this.rawDomain$).pipe(
         map((d) => this.domainSecretService.reduceDomain(d)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    /**
+     * @deprecated
+     */
     version$ = defer(() => this.loadedSnapshot$).pipe(
         map(([s]) => s.version),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    /**
+     * @deprecated
+     */
     isLoading$ = inProgressFrom(
         () => this.progress$,
         defer(() => this.snapshot$),
@@ -71,20 +83,32 @@ export class DomainStoreService {
         private destroyRef: DestroyRef,
     ) {}
 
+    /**
+     * @deprecated
+     */
     forceReload(): void {
         this.reload$.next();
     }
 
+    /**
+     * @deprecated
+     */
     getObject(ref: Reference, raw = false): Observable<DomainObject> {
         return this.objects$.pipe(
             map((objects) => objects.get(createObjectHash(ref))?.[raw ? 'raw' : 'reduced']),
         );
     }
 
+    /**
+     * @deprecated
+     */
     getObjects<T extends keyof DomainObject>(objectType: T): Observable<DomainObject[T][]> {
         return this.getObjectsRefs(objectType).pipe(map((d) => d.map(([, o]) => o[objectType])));
     }
 
+    /**
+     * @deprecated
+     */
     getObjectsRefs<T extends keyof DomainObject>(
         objectType: T,
     ): Observable<[Reference, DomainObject][]> {
@@ -93,6 +117,9 @@ export class DomainStoreService {
         );
     }
 
+    /**
+     * @deprecated
+     */
     commit(commit: Commit, version?: Version | number, reload = true) {
         const version$ = version ? of(version) : this.version$.pipe(take(1));
         return version$.pipe(

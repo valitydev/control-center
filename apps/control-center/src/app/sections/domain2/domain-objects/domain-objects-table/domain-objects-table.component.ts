@@ -3,7 +3,7 @@ import { Component, DestroyRef, Injector, OnInit, model, output } from '@angular
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DomainObject, DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
@@ -13,28 +13,20 @@ import {
     SelectFieldModule,
     TableModule,
     createMenuColumn,
-    getImportValue,
     getValueChanges,
 } from '@vality/matez';
-import { ThriftAstMetadata, createThriftEnum, getUnionKey } from '@vality/ng-thrift';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, first, map, share, shareReplay } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, first, map, shareReplay } from 'rxjs/operators';
 
-import { FetchDomainObjectsService } from '../../../../api/domain-config';
+import { DOMAIN_OBJECT_TYPE$, FetchDomainObjectsService } from '../../../../api/domain-config';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import { getReferenceId } from '../../../../shared/components/thrift-api-crud';
 import {
     DomainObjectCardComponent,
     DomainObjectService,
 } from '../../../../shared/components/thrift-api-crud/domain2';
-
-const DOMAIN_OBJECT_TYPES$ = getImportValue<ThriftAstMetadata[]>(
-    import('@vality/domain-proto/metadata.json'),
-).pipe(
-    map((metadata) => createThriftEnum<DomainObjectType>(metadata, 'domain', 'DomainObjectType')),
-    share(),
-);
 
 @Component({
     selector: 'cc-domain-objects-table',
@@ -116,7 +108,7 @@ export class DomainObjectsTableComponent implements OnInit {
             ],
         })),
     ];
-    options$ = DOMAIN_OBJECT_TYPES$.pipe(
+    options$ = DOMAIN_OBJECT_TYPE$.pipe(
         map((types) =>
             Object.keys(types)
                 .sort()
@@ -160,7 +152,7 @@ export class DomainObjectsTableComponent implements OnInit {
             .pipe(takeUntilDestroyed(this.dr))
             .subscribe(([type, query]) => {
                 if (type) {
-                    DOMAIN_OBJECT_TYPES$.pipe(first()).subscribe((types) => {
+                    DOMAIN_OBJECT_TYPE$.pipe(first()).subscribe((types) => {
                         this.fetchDomainObjectsService.load({ type: types[type], query });
                     });
                 } else {

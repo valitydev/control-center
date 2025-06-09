@@ -24,7 +24,7 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
     }
 
     userHasSomeServiceMethods(serviceMethods: string[]): boolean {
-        if ((!environment.production && environment.ignoreRoles) || !serviceMethods?.length) {
+        if (this.ignoreRoles() || !serviceMethods?.length) {
             return true;
         }
         const allowedServiceMethods = this.keycloakAngular
@@ -39,6 +39,13 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
     }
 
     userHasRoles(roles: string[]): boolean {
-        return roles.every((role) => this.keycloakAngular.getUserRoles(true).includes(role));
+        return (
+            this.ignoreRoles() ||
+            roles.every((role) => this.keycloakAngular.getUserRoles(true).includes(role))
+        );
+    }
+
+    private ignoreRoles(): boolean {
+        return !environment.production && environment.ignoreRoles;
     }
 }

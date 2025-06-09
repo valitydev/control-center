@@ -8,4 +8,5 @@ export const environment: Environment = {
         requests: true,
     },
     ignoreRoles: true,
+    domain2: true,
 };

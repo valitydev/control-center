@@ -11,8 +11,15 @@ export function restoreObject(srcObj: DomainObject, newObj: DomainObject): Domai
                 return newObj;
             }
             const resObj = cloneDeep(newObj);
-            const options = srcObj[name].data.options;
-            resObj[name].data.options = cloneDeep(options);
+            resObj[name].data.options = cloneDeep(srcObj[name].data.options);
+            return resObj;
+        }
+        case 'provider': {
+            if (isNil(srcObj[name].data.proxy.additional)) {
+                return newObj;
+            }
+            const resObj = cloneDeep(newObj);
+            resObj[name].data.proxy.additional = cloneDeep(srcObj[name].data.proxy.additional);
             return resObj;
         }
         default:
