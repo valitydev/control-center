@@ -1,36 +1,26 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": [
-      "es2022",
-      "dom"
-    ],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "resolveJsonModule": true,
-    "useDefineForClassFields": false,
-    "esModuleInterop": true,
-    "paths": {
-      "@vality/matez": [
-        "libs/matez/src/index.ts"
-      ],
-      "@vality/ng-thrift": [
-        "libs/ng-thrift/src/index.ts"
-      ]
-    }
-  },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2022", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "resolveJsonModule": true,
+        "useDefineForClassFields": false,
+        "esModuleInterop": true,
+        "paths": {
+            "@vality/matez": ["libs/matez/src/index.ts"],
+            "@vality/ng-thrift": ["libs/ng-thrift/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

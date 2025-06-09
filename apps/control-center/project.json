@@ -1,122 +1,114 @@
 {
-  "name": "control-center",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
-  "prefix": "cc",
-  "sourceRoot": "apps/control-center/src",
-  "tags": [],
-  "targets": {
-    "build": {
-      "executor": "@angular-devkit/build-angular:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/apps/control-center",
-        "index": "apps/control-center/src/index.html",
-        "browser": "apps/control-center/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
-        "tsConfig": "apps/control-center/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          "apps/control-center/src/favicon.ico",
-          "apps/control-center/src/assets",
-          {
-            "glob": "**/*",
-            "input": "node_modules/monaco-editor",
-            "output": "/assets/monaco/"
-          },
-          {
-            "glob": "**/*",
-            "input": "apps/control-center/public"
-          }
-        ],
-        "styles": [
-          "apps/control-center/src/app/styles/styles.scss"
-        ],
-        "scripts": []
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "9mb",
-              "maximumError": "10mb"
+    "name": "control-center",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "prefix": "cc",
+    "sourceRoot": "apps/control-center/src",
+    "tags": [],
+    "targets": {
+        "build": {
+            "executor": "@angular-devkit/build-angular:application",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/apps/control-center",
+                "index": "apps/control-center/src/index.html",
+                "browser": "apps/control-center/src/main.ts",
+                "polyfills": ["zone.js"],
+                "tsConfig": "apps/control-center/tsconfig.app.json",
+                "inlineStyleLanguage": "scss",
+                "assets": [
+                    "apps/control-center/src/favicon.ico",
+                    "apps/control-center/src/assets",
+                    {
+                        "glob": "**/*",
+                        "input": "node_modules/monaco-editor",
+                        "output": "/assets/monaco/"
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "apps/control-center/public"
+                    }
+                ],
+                "styles": ["apps/control-center/src/app/styles/styles.scss"],
+                "scripts": []
             },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
-            }
-          ],
-          "fileReplacements": [
-            {
-              "replace": "apps/control-center/src/environments/environment.ts",
-              "with": "apps/control-center/src/environments/environment.prod.ts"
-            }
-          ],
-          "outputHashing": "all"
+            "configurations": {
+                "production": {
+                    "budgets": [
+                        {
+                            "type": "initial",
+                            "maximumWarning": "9mb",
+                            "maximumError": "10mb"
+                        },
+                        {
+                            "type": "anyComponentStyle",
+                            "maximumWarning": "4kb",
+                            "maximumError": "8kb"
+                        }
+                    ],
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/control-center/src/environments/environment.ts",
+                            "with": "apps/control-center/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "outputHashing": "all"
+                },
+                "development": {
+                    "optimization": false,
+                    "extractLicenses": false,
+                    "sourceMap": true
+                },
+                "stage": {
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/control-center/src/environments/environment.ts",
+                            "with": "apps/control-center/src/environments/environment.stage.ts"
+                        }
+                    ]
+                }
+            },
+            "defaultConfiguration": "production"
         },
-        "development": {
-          "optimization": false,
-          "extractLicenses": false,
-          "sourceMap": true
+        "serve": {
+            "executor": "@angular-devkit/build-angular:dev-server",
+            "configurations": {
+                "production": {
+                    "buildTarget": "control-center:build:production"
+                },
+                "development": {
+                    "buildTarget": "control-center:build:development"
+                },
+                "stage": {
+                    "buildTarget": "control-center:build:development,stage"
+                }
+            },
+            "defaultConfiguration": "development",
+            "continuous": true
         },
-        "stage": {
-          "fileReplacements": [
-            {
-              "replace": "apps/control-center/src/environments/environment.ts",
-              "with": "apps/control-center/src/environments/environment.stage.ts"
+        "extract-i18n": {
+            "executor": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+                "buildTarget": "control-center:build"
             }
-          ]
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        },
+        "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+            "options": {
+                "jestConfig": "apps/control-center/jest.config.ts"
+            }
+        },
+        "serve-static": {
+            "executor": "@nx/web:file-server",
+            "options": {
+                "buildTarget": "control-center:build",
+                "staticFilePath": "dist/apps/control-center/browser",
+                "spa": true
+            }
         }
-      },
-      "defaultConfiguration": "production"
-    },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
-      "configurations": {
-        "production": {
-          "buildTarget": "control-center:build:production"
-        },
-        "development": {
-          "buildTarget": "control-center:build:development"
-        },
-        "stage": {
-          "buildTarget": "control-center:build:development,stage"
-        }
-      },
-      "defaultConfiguration": "development",
-      "continuous": true
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "buildTarget": "control-center:build"
-      }
-    },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "options": {
-        "jestConfig": "apps/control-center/jest.config.ts"
-      }
-    },
-    "serve-static": {
-      "executor": "@nx/web:file-server",
-      "options": {
-        "buildTarget": "control-center:build",
-        "staticFilePath": "dist/apps/control-center/browser",
-        "spa": true
-      }
     }
-  }
 }
