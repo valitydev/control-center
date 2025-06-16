@@ -23,10 +23,10 @@
   "dependencies": {
     "@dinero.js/currencies": "^2.0.0-alpha.14",
     "@ng-matero/extensions": "^19.0.0",
-    "@s-libs/js-core": "^18.0.0",
-    "@s-libs/micro-dash": "^18.0.0",
-    "@s-libs/ng-core": "^18.0.0",
-    "@s-libs/rxjs-core": "^18.0.0",
+    "@s-libs/js-core": "^19.0.0-next.0",
+    "@s-libs/micro-dash": "^19.0.0-next.0",
+    "@s-libs/ng-core": "^19.0.0-next.0",
+    "@s-libs/rxjs-core": "^19.0.0-next.0",
     "papaparse": "^5.4.1"
   },
   "sideEffects": false,
