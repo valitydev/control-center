@@ -3,11 +3,19 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4200",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint:fix": "npm run lint -- --fix=true",
+    "format": "nx format",
+    "format:fix": "nx format:write",
+    "spell": "cspell --no-progress **",
+    "spell:unused": "npx cspell-check-unused-words",
+    "spell:fix": "npm run spell -- **  --show-suggestions --show-context",
+    "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
+    "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\""
   },
   "private": true,
   "dependencies": {
@@ -28,6 +36,7 @@
     "@cspell/dict-ru_ru": "^2.3.0",
     "@types/jasmine": "~5.1.0",
     "angular-eslint": "20.1.0",
+    "concurrently": "^9.1.2",
     "cspell": "^9.1.1",
     "eslint": "^9.29.0",
     "jasmine-core": "~5.7.0",
