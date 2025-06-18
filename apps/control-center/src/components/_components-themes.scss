@@ -1,5 +1,0 @@
-@use 'timeline/timeline-theme';
-
-@mixin cc-components-themes($theme) {
-    @include timeline-theme.cc-timeline-theme($theme);
-}

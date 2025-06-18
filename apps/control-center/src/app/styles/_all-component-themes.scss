@@ -1,7 +1,0 @@
-@use '../../components/components-themes';
-@use '../shared/components/shared-components-themes';
-
-@mixin all-component-themes($theme) {
-    @include components-themes.cc-components-themes($theme);
-    @include shared-components-themes.cc-shared-components-themes($theme);
-}
