@@ -59,6 +59,7 @@ module.exports = tseslint.config(
                     },
                 },
             ],
+            'import/no-unresolved': 'off',
         },
     },
     {
