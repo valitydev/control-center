@@ -5,5 +5,5 @@
     "import": "@cspell/dict-ru_ru/cspell-ext.json",
     "useGitignore": true,
     "language": "en,ru",
-    "words": []
+    "words": ["vality", "valitydev", "vhosts"]
 }
