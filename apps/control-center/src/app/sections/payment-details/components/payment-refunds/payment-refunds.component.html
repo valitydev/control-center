@@ -1,7 +1,0 @@
-<cc-page-layout [progress]="isLoading$ | async" fullHeight title="Refunds">
-    <cc-refunds-table
-        [invoiceID]="(payment$ | async).invoice_id"
-        [partyID]="(payment$ | async).owner_id"
-        [paymentID]="(payment$ | async).id"
-    ></cc-refunds-table>
-</cc-page-layout>

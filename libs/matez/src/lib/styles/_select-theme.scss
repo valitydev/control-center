@@ -1,6 +1,0 @@
-@use '@angular/material' as mat;
-@use '@ng-matero/extensions' as mtx;
-
-@mixin select-theme($theme) {
-    @include mtx.select-theme($theme);
-}

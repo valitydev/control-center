@@ -1,8 +1,0 @@
-{
-    "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-    "dest": "../../dist/libs/ng-thrift",
-    "lib": {
-        "entryFile": "src/index.ts"
-    },
-    "allowedNonPeerDependencies": ["yaml", "ngx-monaco-editor-v2", "monaco-editor"]
-}

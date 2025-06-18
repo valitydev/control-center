@@ -1,9 +1,0 @@
-{
-    "fileStorageEndpoint": "https://files.sample.vality.dev",
-    "api": {
-        "wachter": {
-            "hostname": "control-center.vality.dev",
-            "path": "/wachter"
-        }
-    }
-}
