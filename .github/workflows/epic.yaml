@@ -1,0 +1,18 @@
+name: Epic
+on:
+  push:
+    branches: ['epic/*']
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: valitydev/action-frontend/setup-install@v2
+      - name: Build
+        run: npm run build
+      - name: Deploy image
+        uses: valitydev/action-deploy-docker@v2
+        with:
+          registry-username: ${{ github.actor }}
+          registry-access-token: ${{ secrets.GITHUB_TOKEN }}
