@@ -43,9 +43,10 @@ export class QueryParamsService<P extends object = NonNullable<unknown>>
 {
     private router = inject(Router);
     private route = inject(ActivatedRoute);
-    private readonly serializers = inject<Serializer[]>(QUERY_PARAMS_SERIALIZERS, {
-        optional: true,
-    });
+    private readonly serializers =
+        inject<Serializer[]>(QUERY_PARAMS_SERIALIZERS, {
+            optional: true,
+        }) || [];
     params$: Observable<P> = defer(() => this.sourceParams$).pipe(
         map(({ main }) => main),
         distinctUntilChanged(isEqual),
@@ -70,12 +71,6 @@ export class QueryParamsService<P extends object = NonNullable<unknown>>
         map((p) => this.getSourceParams(p)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor() {
-        if (!this.serializers) {
-            this.serializers = [];
-        }
-    }
 
     async set(params: P, options: SerializeOptions = {}): Promise<boolean> {
         return await this.setParams(params, undefined, options);

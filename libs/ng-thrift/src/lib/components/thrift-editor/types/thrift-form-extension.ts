@@ -42,12 +42,12 @@ export function getExtensionsResult(
               map((determined) => sourceExtensions.filter((_, idx) => determined[idx])),
               switchMap((extensions) => {
                   if (!extensions?.length) {
-                      return of(null);
+                      return of({});
                   }
                   return combineLatest(extensions.map((e) => e.extension(data))).pipe(
                       map((results) => Object.assign({}, ...results)),
                   );
               }),
           )
-        : of(null);
+        : of({});
 }

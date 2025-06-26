@@ -11,13 +11,8 @@ import { DialogSuperclass } from '../utils/dialog-superclass';
 })
 export class DialogService {
     private dialog = inject(MatDialog);
-    private readonly dialogConfig = inject<DialogConfig>(DIALOG_CONFIG, { optional: true });
-
-    constructor() {
-        if (!this.dialogConfig) {
-            this.dialogConfig = DEFAULT_DIALOG_CONFIG;
-        }
-    }
+    private readonly dialogConfig =
+        inject<DialogConfig>(DIALOG_CONFIG, { optional: true }) || DEFAULT_DIALOG_CONFIG;
 
     open<TDialogComponent, TDialogData, TDialogResponseData, TDialogResponseStatus>(
         dialogComponent: ComponentType<

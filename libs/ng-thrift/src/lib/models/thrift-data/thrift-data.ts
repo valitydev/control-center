@@ -20,7 +20,7 @@ export class ThriftData<T extends ValueType = ValueType, S extends StructureType
     type!: T;
 
     objectType?: S;
-    ast?: JsonAST[S] extends object ? ValuesType<JsonAST[S]> : never;
+    ast?: ValuesType<NonNullable<JsonAST[S]>>;
 
     include?: JsonAST['include'];
 
