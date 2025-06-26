@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { InvoicePaymentFlow, InvoicePaymentStatus } from '@vality/domain-proto/internal/domain';
 import { Color } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
@@ -14,6 +14,7 @@ import { PaymentDetailsService } from './payment-details.service';
     standalone: false,
 })
 export class PaymentDetailsComponent {
+    private paymentDetailsService = inject(PaymentDetailsService);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     tags$ = this.payment$.pipe(
@@ -58,6 +59,4 @@ export class PaymentDetailsComponent {
                 : []),
         ]),
     );
-
-    constructor(private paymentDetailsService: PaymentDetailsService) {}
 }

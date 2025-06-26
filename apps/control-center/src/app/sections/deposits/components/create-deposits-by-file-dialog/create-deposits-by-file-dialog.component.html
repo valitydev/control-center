@@ -5,14 +5,11 @@
         [props]="$any(props)"
     ></cc-upload-csv>
     <v-dialog-actions>
-        <button
-            *ngIf="successfully?.length"
-            [disabled]="!!(progress$ | async)"
-            mat-button
-            (click)="closeWithSuccess()"
-        >
-            Close and reload list ({{ successfully.length }} successful)
-        </button>
+        @if (successfully?.length) {
+            <button [disabled]="!!(progress$ | async)" mat-button (click)="closeWithSuccess()">
+                Close and reload list ({{ successfully.length }} successful)
+            </button>
+        }
         <button
             [disabled]="!selected?.length || !!(progress$ | async)"
             mat-button

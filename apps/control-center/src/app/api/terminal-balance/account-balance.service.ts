@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { getImportValue } from '@vality/matez';
 import {
     ThriftAstMetadata,
@@ -13,12 +13,11 @@ import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/service
 
 @Injectable({ providedIn: 'root' })
 export class AccountBalanceService {
+    private keycloakTokenInfoService = inject(KeycloakTokenInfoService);
     private client$: Observable<account_balance_AccountServiceCodegenClient>;
 
-    constructor(
-        private keycloakTokenInfoService: KeycloakTokenInfoService,
-        configService: ConfigService,
-    ) {
+    constructor() {
+        const configService = inject(ConfigService);
         const headers$ = this.keycloakTokenInfoService.info$.pipe(map(toWachterHeaders('Scrooge')));
         const metadata$ = getImportValue<ThriftAstMetadata[]>(
             import('@vality/scrooge-proto/metadata.json'),

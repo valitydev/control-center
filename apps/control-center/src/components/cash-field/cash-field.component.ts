@@ -2,11 +2,11 @@ import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
     Component,
     DestroyRef,
-    Inject,
     Input,
     LOCALE_ID,
     OnInit,
     booleanAttribute,
+    inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
@@ -53,6 +53,9 @@ const RADIX_POINT = '.';
     ],
 })
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
+    private _locale = inject<string>(LOCALE_ID);
+    private destroyRef = inject(DestroyRef);
+    private domainStoreService = inject(DomainStoreService);
     @Input() label?: string;
     @Input({ transform: booleanAttribute }) required: boolean = false;
 
@@ -99,14 +102,6 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
 
     get prefix() {
         return getCurrencySymbol(this.currencyCode, 'narrow', this._locale);
-    }
-
-    constructor(
-        @Inject(LOCALE_ID) private _locale: string,
-        private destroyRef: DestroyRef,
-        private domainStoreService: DomainStoreService,
-    ) {
-        super();
     }
 
     override ngOnInit() {

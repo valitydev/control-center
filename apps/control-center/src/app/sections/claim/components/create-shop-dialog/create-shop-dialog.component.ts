@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -74,6 +74,11 @@ export class CreateShopDialogComponent
     extends DialogSuperclass<CreateShopDialogComponent, { party: Party; claim: Claim }>
     implements OnInit
 {
+    private claimManagementService = inject(ClaimManagementService);
+    private destroyRef = inject(DestroyRef);
+    private fb = inject(FormBuilder);
+    private log = inject(NotifyLogService);
+    private domainStoreService = inject(DomainStoreService);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
     extensions: ThriftFormExtension[] = [
         {
@@ -115,16 +120,6 @@ export class CreateShopDialogComponent
         paymentInstitution: [null as PaymentInstitutionRef, Validators.required],
     });
     progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private claimManagementService: ClaimManagementService,
-        private destroyRef: DestroyRef,
-        private fb: FormBuilder,
-        private log: NotifyLogService,
-        private domainStoreService: DomainStoreService,
-    ) {
-        super();
-    }
 
     ngOnInit() {
         this.domainStoreService

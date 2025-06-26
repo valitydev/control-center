@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { toMajorByExponent, toMinorByExponent } from '@vality/matez';
 import { first, map, shareReplay } from 'rxjs/operators';
@@ -9,12 +9,11 @@ import { CurrenciesStoreService } from '../../api/domain-config';
     providedIn: 'root',
 })
 export class AmountCurrencyService {
+    private currenciesStoreService = inject(CurrenciesStoreService);
     currencies$ = toObservable(this.currenciesStoreService.currencies).pipe(
         map((currencies) => new Map(currencies.map((c) => [c.symbolic_code, c]))),
         shareReplay(1),
     );
-
-    constructor(private currenciesStoreService: CurrenciesStoreService) {}
 
     toMajor(amount: number, symbolicCode: string) {
         return this.getCurrency(symbolicCode).pipe(

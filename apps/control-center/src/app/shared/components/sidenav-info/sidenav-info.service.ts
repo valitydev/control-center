@@ -1,4 +1,4 @@
-import { Inject, Injectable, InputSignal, Optional, Type } from '@angular/core';
+import { Injectable, InputSignal, Type, inject } from '@angular/core';
 import {
     PossiblyAsync,
     QueryParamsNamespace,
@@ -21,21 +21,21 @@ type InputType<T> = {
 })
 export class SidenavInfoService {
     component$ = new BehaviorSubject<Type<unknown> | null>(null);
+    private qps = inject(QueryParamsService);
+    private sidenavInfoComponents = inject<SidenavInfoComponents>(SIDENAV_INFO_COMPONENTS, {
+        optional: true,
+    });
     inputs?: Record<PropertyKey, unknown>;
 
     opened$ = this.component$.pipe(map(Boolean));
 
     private qp!: QueryParamsNamespace<{ id?: string; inputs?: Record<PropertyKey, unknown> }>;
 
-    constructor(
-        urlService: UrlService,
-        private qps: QueryParamsService,
-        @Optional()
-        @Inject(SIDENAV_INFO_COMPONENTS)
-        private sidenavInfoComponents?: SidenavInfoComponents,
-    ) {
+    constructor() {
+        const urlService = inject(UrlService);
+
         if (!this.sidenavInfoComponents) {
-            this.sidenavInfoComponents = sidenavInfoComponents ?? {};
+            this.sidenavInfoComponents = this.sidenavInfoComponents ?? {};
         }
         urlService.url$.pipe(filter(() => !!this.component$.value)).subscribe(() => {
             this.close();

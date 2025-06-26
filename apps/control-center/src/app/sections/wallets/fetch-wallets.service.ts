@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { StatWallet } from '@vality/fistful-proto/fistful_stat';
 import { FetchOptions, FetchSuperclass } from '@vality/matez';
 import { map } from 'rxjs/operators';
@@ -8,9 +8,7 @@ import { WalletParams } from '../../api/fistful-stat/query-dsl/types/wallet';
 
 @Injectable()
 export class FetchWalletsService extends FetchSuperclass<StatWallet, WalletParams> {
-    constructor(private fistfulStatisticsService: FistfulStatisticsService) {
-        super();
-    }
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
 
     protected fetch(params: WalletParams, { size, continuationToken }: FetchOptions) {
         return this.fistfulStatisticsService

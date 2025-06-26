@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
@@ -18,6 +18,9 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     CreateAdjustmentDialogComponent,
     { withdrawals: StatWithdrawal[] }
 > {
+    private managementService = inject(ManagementService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     control = new FormControl<Partial<AdjustmentParams>>(
         {
             id: '-',
@@ -36,14 +39,6 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
         },
     ];
     progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private managementService: ManagementService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     createAdjustment() {
         forkJoinToResult(

@@ -2,7 +2,9 @@
     class="mat-display-small mat-no-margin"
     style="display: flex; place-content: center flex-start; align-items: center; gap: 8px"
 >
-    <mat-icon *ngIf="isBackAvailable" class="back" (click)="back()">arrow_back</mat-icon>
+    @if (isBackAvailable) {
+        <mat-icon class="back" (click)="back()">arrow_back</mat-icon>
+    }
     <div>
         <ng-content></ng-content>
     </div>

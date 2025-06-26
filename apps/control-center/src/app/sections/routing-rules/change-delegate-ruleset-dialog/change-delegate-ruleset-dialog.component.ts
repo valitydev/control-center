@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
 import { DialogSuperclass } from '@vality/matez';
@@ -19,20 +19,15 @@ export class ChangeDelegateRulesetDialogComponent
     >
     implements OnInit
 {
+    private fb = inject(UntypedFormBuilder);
+    private routingRulesService = inject(RoutingRulesService);
+    private destroyRef = inject(DestroyRef);
     form = this.fb.group({
         rulesetRefId: [],
         description: '',
     });
 
     rulesets$ = this.routingRulesService.rulesets$;
-
-    constructor(
-        private fb: UntypedFormBuilder,
-        private routingRulesService: RoutingRulesService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     ngOnInit() {
         this.routingRulesService

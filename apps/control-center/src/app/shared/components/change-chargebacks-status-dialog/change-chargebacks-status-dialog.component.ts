@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,6 +56,10 @@ export class ChangeChargebacksStatusDialogComponent
     >
     implements OnInit
 {
+    private invoicingService = inject(InvoicingService);
+    private log = inject(NotifyLogService);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
+    private destroyRef = inject(DestroyRef);
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     control = new FormControl();
@@ -68,15 +72,6 @@ export class ChangeChargebacksStatusDialogComponent
         [Action.Cancel]: 'InvoicePaymentChargebackCancelParams',
     };
     progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private invoicingService: InvoicingService,
-        private log: NotifyLogService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     ngOnInit() {
         this.actionControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {

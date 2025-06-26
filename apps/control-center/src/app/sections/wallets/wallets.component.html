@@ -1,6 +1,8 @@
 <cc-page-layout fullHeight title="Wallets">
     <cc-page-layout-actions>
-        <v-more-filters-button *ngIf="filters" [filters]="filters"></v-more-filters-button>
+        @if (filters) {
+            <v-more-filters-button [filters]="filters"></v-more-filters-button>
+        }
         @if (!(party$ | async)) {
             <v-switch-button
                 [formControl]="isFilterControl"
@@ -14,10 +16,9 @@
     @if (isFilterTable$ | async) {
         <v-filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
             <ng-template [formGroup]="filtersForm">
-                <cc-merchant-field
-                    *ngIf="!(party$ | async)"
-                    formControlName="party_id"
-                ></cc-merchant-field>
+                @if (!(party$ | async)) {
+                    <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+                }
                 <v-list-field formControlName="wallet_id" label="Wallet IDs"></v-list-field>
                 <mat-form-field>
                     <mat-label>Identity ID</mat-label>

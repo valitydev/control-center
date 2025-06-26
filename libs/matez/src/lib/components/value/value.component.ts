@@ -5,6 +5,7 @@ import {
     Injector,
     Input,
     booleanAttribute,
+    inject,
     input,
     model,
     runInInjectionContext,
@@ -48,6 +49,8 @@ import { valueToString } from './utils/value-to-string';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValueComponent {
+    private injector = inject(Injector);
+    private router = inject(Router);
     value = input<Value | Nil>();
     lazyValue = input<Observable<Value> | Nil>();
     lazyVisible = model<boolean>(false);
@@ -76,11 +79,6 @@ export class ValueComponent {
         map(([compProgress, valueProgress]) => compProgress || valueProgress),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(
-        private injector: Injector,
-        private router: Router,
-    ) {}
 
     makeLazyVisible() {
         this.lazyVisible.set(true);

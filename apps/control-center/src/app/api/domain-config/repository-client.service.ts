@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
     domain_config_v2_RepositoryClientCodegenClient as CodegenClient,
     ThriftAstMetadata,
@@ -12,12 +12,11 @@ import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/service
 
 @Injectable({ providedIn: 'root' })
 export class RepositoryClientService {
+    private keycloakTokenInfoService = inject(KeycloakTokenInfoService);
     private client$: Observable<CodegenClient>;
 
-    constructor(
-        private keycloakTokenInfoService: KeycloakTokenInfoService,
-        configService: ConfigService,
-    ) {
+    constructor() {
+        const configService = inject(ConfigService);
         const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('DMTClient')),
         );

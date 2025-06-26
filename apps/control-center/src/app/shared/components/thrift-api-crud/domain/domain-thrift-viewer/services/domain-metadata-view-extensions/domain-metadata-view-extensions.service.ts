@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { DestroyRef, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ThriftAstMetadata } from '@vality/domain-proto';
@@ -28,6 +28,10 @@ import { getDomainObjectDetails } from '../../../utils';
     providedIn: 'root',
 })
 export class DomainMetadataViewExtensionsService {
+    private domainStoreService = inject(DomainStoreService);
+    private sidenavInfoService = inject(SidenavInfoService);
+    private destroyRef = inject(DestroyRef);
+    private partiesStoreService = inject(PartiesStoreService);
     extensions$: Observable<ThriftViewExtension[]> = getImportValue<ThriftAstMetadata[]>(
         import('@vality/domain-proto/metadata.json'),
     ).pipe(
@@ -69,13 +73,6 @@ export class DomainMetadataViewExtensionsService {
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
-
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private sidenavInfoService: SidenavInfoService,
-        private destroyRef: DestroyRef,
-        private partiesStoreService: PartiesStoreService,
-    ) {}
 
     createShopExtension(partyId: PartyID): ThriftViewExtension {
         return {

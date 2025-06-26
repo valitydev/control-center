@@ -16,8 +16,8 @@
             <mat-radio-button [value]="typesEnum.Different">Different</mat-radio-button>
         </mat-radio-group>
 
-        <ng-container *ngIf="hasNs">
-            <ng-container *ngIf="typeControl.value === typesEnum.Same">
+        @if (hasNs) {
+            @if (typeControl.value === typesEnum.Same) {
                 <mat-chip-listbox>
                     @for (machine of dialogData.machines; track machine.id) {
                         <v-tag>{{ machine.id }}</v-tag>
@@ -38,23 +38,25 @@
                             : 'RepairScenario'
                     "
                 ></v-thrift-form>
-            </ng-container>
+            }
+            @if (typeControl.value === typesEnum.Different) {
+                <v-thrift-form
+                    [extensions]="extensions$ | async"
+                    [formControl]="form"
+                    [metadata]="metadata$ | async"
+                    [type]="
+                        nsControl.value === nsEnum.Invoice
+                            ? 'RepairInvoicesRequest'
+                            : 'RepairWithdrawalsRequest'
+                    "
+                    namespace="repairer"
+                ></v-thrift-form>
+            }
+        }
 
-            <v-thrift-form
-                *ngIf="typeControl.value === typesEnum.Different"
-                [extensions]="extensions$ | async"
-                [formControl]="form"
-                [metadata]="metadata$ | async"
-                [type]="
-                    nsControl.value === nsEnum.Invoice
-                        ? 'RepairInvoicesRequest'
-                        : 'RepairWithdrawalsRequest'
-                "
-                namespace="repairer"
-            ></v-thrift-form>
-        </ng-container>
-
-        <mat-progress-bar *ngIf="progress$ | async"></mat-progress-bar>
+        @if (progress$ | async) {
+            <mat-progress-bar></mat-progress-bar>
+        }
     </div>
     <v-dialog-actions>
         <button

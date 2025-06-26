@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService } from '@vality/matez';
 import { Observable, of } from 'rxjs';
@@ -12,12 +12,8 @@ export class FetchDepositsService extends FetchSuperclass<
     StatDeposit,
     QueryDsl['query']['deposits']
 > {
-    constructor(
-        private fistfulStatisticsService: FistfulStatisticsService,
-        private log: NotifyLogService,
-    ) {
-        super();
-    }
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
+    private log = inject(NotifyLogService);
 
     protected fetch(
         params: QueryDsl['query']['deposits'],

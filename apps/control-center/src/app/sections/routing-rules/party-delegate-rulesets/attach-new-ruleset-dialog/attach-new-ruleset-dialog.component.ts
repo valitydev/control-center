@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
@@ -17,6 +17,10 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
     AttachNewRulesetDialogComponent,
     { partyID: string; type: RoutingRulesType }
 > {
+    private fb = inject(UntypedFormBuilder);
+    private routingRulesService = inject(RoutingRulesService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     form = this.fb.group({
         ruleset: this.fb.group({
             name: 'submain ruleset[by shop id]',
@@ -26,15 +30,6 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
 
     targetRuleset$ = new BehaviorSubject<TargetRuleset>(undefined);
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);
-
-    constructor(
-        private fb: UntypedFormBuilder,
-        private routingRulesService: RoutingRulesService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     attach() {
         const { mainRulesetRefID, mainDelegateDescription } = this.targetRuleset$.value;

@@ -7,6 +7,7 @@ import {
     Output,
     booleanAttribute,
     computed,
+    inject,
     input,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -21,6 +22,9 @@ import { map } from 'rxjs/operators';
     standalone: false,
 })
 export class PageLayoutComponent {
+    private location = inject(Location);
+    private router = inject(Router);
+    private urlService = inject(UrlService);
     @Input() title!: string;
     @Input() description?: string;
     @Input() id?: string | number;
@@ -55,12 +59,6 @@ export class PageLayoutComponent {
                 .map((v) => ({ ...v, url: v.url.join('/') }));
         }),
     );
-
-    constructor(
-        private location: Location,
-        private router: Router,
-        private urlService: UrlService,
-    ) {}
 
     back() {
         if (this.backLink() || this.upLink()) {

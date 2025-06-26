@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { LimitedVersionedObject, SearchRequestParams } from '@vality/domain-proto/domain_config_v2';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
 import { catchError, map, of } from 'rxjs';
@@ -12,12 +12,8 @@ export class FetchDomainObjectsService extends FetchSuperclass<
     LimitedVersionedObject,
     FetchParams
 > {
-    constructor(
-        private repositoryService: Repository2Service,
-        private log: NotifyLogService,
-    ) {
-        super();
-    }
+    private repositoryService = inject(Repository2Service);
+    private log = inject(NotifyLogService);
 
     fetch(params: FetchParams, options: FetchOptions) {
         return this.repositoryService

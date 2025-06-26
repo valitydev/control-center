@@ -1,9 +1,9 @@
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, TemplateRef, inject } from '@angular/core';
 
 @Directive({
     selector: '[vOtherFilters]',
     standalone: false,
 })
 export class OtherFiltersDirective {
-    constructor(public templateRef: TemplateRef<unknown>) {}
+    public templateRef = inject<TemplateRef<unknown>>(TemplateRef<unknown>);
 }

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -25,7 +24,7 @@ import { BaseColumnComponent } from './base-column.component';
         </ng-container>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, MatTableModule, MatIconModule],
+    imports: [MatTableModule, MatIconModule],
     styles: `
         .column {
             .position {

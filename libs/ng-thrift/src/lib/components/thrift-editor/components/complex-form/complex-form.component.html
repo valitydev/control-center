@@ -1,72 +1,74 @@
 <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-    <span *ngIf="hasLabel" class="mat-body-large">
-        {{ data.type | fieldLabel: data.field }}
-        <span class="mat-secondary-text">
-            ({{ data.type.name | titlecase }}:
-            {{ isKeyValue ? (keyType | ngtValueTypeTitle | titlecase) + ' - ' : '' }}
-            {{ data.type.valueType | ngtValueTypeTitle | titlecase }})
+    @if (hasLabel) {
+        <span class="mat-body-large">
+            {{ data.type | fieldLabel: data.field }}
+            <span class="mat-secondary-text">
+                ({{ data.type.name | titlecase }}:
+                {{ isKeyValue ? (keyType | ngtValueTypeTitle | titlecase) + ' - ' : '' }}
+                {{ data.type.valueType | ngtValueTypeTitle | titlecase }})
+            </span>
         </span>
-    </span>
+    }
     <mat-accordion [ngStyle]="{ 'padding-left': hasLabel && '16px', overflow: 'hidden' }">
-        <mat-expansion-panel
-            #panel
-            *ngFor="let valueControl of valueControls.controls; let i = index"
-            class="mat-elevation-z0 expansion-panel"
-        >
-            <mat-expansion-panel-header>
-                <mat-panel-title
-                    [ngStyle]="{ 'grid-template-columns': isKeyValue ? '1fr 1fr' : '1fr' }"
-                    class="panel-title"
-                >
-                    <div>
-                        {{ i + 1 }}.
-                        <ng-container *ngIf="!panel.expanded; else edited">
-                            <span *ngIf="isKeyValue; else value" class="mat-secondary-text">
-                                {{ keyControls.controls[i].value | inlineJson: false }}
-                            </span>
-                            <ng-template #value>
+        @for (valueControl of valueControls.controls; track valueControl; let i = $index) {
+            <mat-expansion-panel #panel class="mat-elevation-z0 expansion-panel">
+                <mat-expansion-panel-header>
+                    <mat-panel-title
+                        [ngStyle]="{ 'grid-template-columns': isKeyValue ? '1fr 1fr' : '1fr' }"
+                        class="panel-title"
+                    >
+                        <div>
+                            {{ i + 1 }}.
+                            @if (!panel.expanded) {
+                                @if (isKeyValue) {
+                                    <span class="mat-secondary-text">
+                                        {{ keyControls.controls[i].value | inlineJson: false }}
+                                    </span>
+                                } @else {
+                                    {{ valueControl.value | inlineJson: false }}
+                                }
+                            } @else {
+                                {{ data.type.valueType | ngtValueTypeTitle }}
+                            }
+                        </div>
+                        @if (isKeyValue && !panel.expanded) {
+                            <div>
                                 {{ valueControl.value | inlineJson: false }}
-                            </ng-template>
-                        </ng-container>
-                        <ng-template #edited>
-                            {{ data.type.valueType | ngtValueTypeTitle }}
-                        </ng-template>
-                    </div>
-                    <div *ngIf="isKeyValue && !panel.expanded">
-                        {{ valueControl.value | inlineJson: false }}
-                    </div>
-                </mat-panel-title>
-                <mat-panel-description>
-                    <button mat-icon-button (click)="delete(i)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <ng-template matExpansionPanelContent>
-                <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-                    <ng-container *ngIf="isKeyValue">
-                        <span class="mat-body-medium">Key</span>
+                            </div>
+                        }
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <button mat-icon-button (click)="delete(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <ng-template matExpansionPanelContent>
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+                        @if (isKeyValue) {
+                            <span class="mat-body-medium">Key</span>
+                            <v-thrift-form
+                                [extensions]="extensions"
+                                [formControl]="$any(keyControls.controls[i])"
+                                [metadata]="data.metadata"
+                                [namespace]="data.namespace"
+                                [parent]="data"
+                                [type]="keyType"
+                            ></v-thrift-form>
+                            <span class="mat-body-medium">Value</span>
+                        }
                         <v-thrift-form
                             [extensions]="extensions"
-                            [formControl]="$any(keyControls.controls[i])"
+                            [formControl]="$any(valueControl)"
                             [metadata]="data.metadata"
                             [namespace]="data.namespace"
                             [parent]="data"
-                            [type]="keyType"
+                            [type]="data.type.valueType"
                         ></v-thrift-form>
-                        <span class="mat-body-medium">Value</span>
-                    </ng-container>
-                    <v-thrift-form
-                        [extensions]="extensions"
-                        [formControl]="$any(valueControl)"
-                        [metadata]="data.metadata"
-                        [namespace]="data.namespace"
-                        [parent]="data"
-                        [type]="data.type.valueType"
-                    ></v-thrift-form>
-                </div>
-            </ng-template>
-        </mat-expansion-panel>
+                    </div>
+                </ng-template>
+            </mat-expansion-panel>
+        }
     </mat-accordion>
     <button [ngStyle]="{ 'margin-left': hasLabel && '16px' }" mat-button (click)="add()">
         Add {{ data.type.valueType | ngtValueTypeTitle }}

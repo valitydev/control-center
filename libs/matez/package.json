@@ -1,19 +1,19 @@
 {
   "name": "@vality/matez",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "exports": {
     ".": {
       "sass": "./_index.scss"
     }
   },
   "peerDependencies": {
-    "@angular/cdk": "^19.0.0",
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/forms": "^19.0.0",
-    "@angular/material": "^19.0.0",
-    "@angular/material-date-fns-adapter": "^19.0.0",
-    "@angular/router": "^19.0.0",
+    "@angular/cdk": "^20.0.0",
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
+    "@angular/material": "^20.0.0",
+    "@angular/material-date-fns-adapter": "^20.0.0",
+    "@angular/router": "^20.0.0",
     "@types/lodash-es": "^4.0.0",
     "date-fns": "^3.0.0",
     "lodash-es": "^4.0.0",
@@ -22,11 +22,11 @@
   },
   "dependencies": {
     "@dinero.js/currencies": "^2.0.0-alpha.14",
-    "@ng-matero/extensions": "^19.0.0",
-    "@s-libs/js-core": "^19.0.0-next.0",
-    "@s-libs/micro-dash": "^19.0.0-next.0",
-    "@s-libs/ng-core": "^19.0.0-next.0",
-    "@s-libs/rxjs-core": "^19.0.0-next.0",
+    "@ng-matero/extensions": "^20.0.0",
+    "@s-libs/js-core": "^20.0.0",
+    "@s-libs/micro-dash": "^20.0.0",
+    "@s-libs/ng-core": "^20.0.0",
+    "@s-libs/rxjs-core": "^20.0.0",
     "papaparse": "^5.4.1"
   },
   "sideEffects": false,

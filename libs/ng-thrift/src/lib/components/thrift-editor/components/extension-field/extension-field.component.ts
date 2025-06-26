@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     FormControl,
@@ -47,6 +47,7 @@ export class ExtensionFieldComponent<T>
     extends FormComponentSuperclass<T>
     implements Validator, OnChanges, OnInit
 {
+    private destroyRef = inject(DestroyRef);
     @Input() data!: ThriftData<ThriftType>;
     @Input() extensions?: ThriftFormExtension[];
 
@@ -83,10 +84,6 @@ export class ExtensionFieldComponent<T>
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(private destroyRef: DestroyRef) {
-        super();
-    }
 
     override ngOnInit() {
         this.control.valueChanges

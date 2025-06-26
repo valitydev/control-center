@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatPayment } from '@vality/magista-proto/magista';
 import { Column, LoadOptions, createMenuColumn } from '@vality/matez';
@@ -19,6 +19,7 @@ import {
     standalone: false,
 })
 export class PaymentsTableComponent {
+    private router = inject(Router);
     @Input() data!: StatPayment[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;
@@ -87,8 +88,6 @@ export class PaymentsTableComponent {
             ],
         })),
     ];
-
-    constructor(private router: Router) {}
 
     private toDetails(data: StatPayment) {
         return void this.router.navigate([

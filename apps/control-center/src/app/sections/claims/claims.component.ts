@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
@@ -26,6 +26,15 @@ import { FetchClaimsService } from './fetch-claims.service';
     standalone: false,
 })
 export class ClaimsComponent implements OnInit {
+    private fetchClaimsService = inject(FetchClaimsService);
+    private dialogService = inject(DialogService);
+    private fb = inject(NonNullableFormBuilder);
+    private qp = inject<QueryParamsService<ClaimsComponent['filtersForm']['value']>>(
+        QueryParamsService<ClaimsComponent['filtersForm']['value']>,
+    );
+    private destroyRef = inject(DestroyRef);
+    private partyStoreService = inject(PartyStoreService);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     isLoading$ = this.fetchClaimsService.isLoading$;
     claims$ = this.fetchClaimsService.result$;
     hasMore$ = this.fetchClaimsService.hasMore$;
@@ -43,16 +52,6 @@ export class ClaimsComponent implements OnInit {
 
     private selectedPartyId: PartyID;
     private initFilters = this.filtersForm.value;
-
-    constructor(
-        private fetchClaimsService: FetchClaimsService,
-        private dialogService: DialogService,
-        private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<ClaimsComponent['filtersForm']['value']>,
-        private destroyRef: DestroyRef,
-        private partyStoreService: PartyStoreService,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-    ) {}
 
     ngOnInit(): void {
         this.filtersForm.patchValue(this.qp.params);

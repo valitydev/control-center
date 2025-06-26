@@ -11,38 +11,43 @@
             >
         </mat-radio-group>
 
-        <div
-            *ngIf="form.controls['target'].value === target.PaymentInstitution"
-            style="display: flex; flex-direction: column; gap: 16px"
-        >
+        @if (form.controls['target'].value === target.PaymentInstitution) {
+            <div style="display: flex; flex-direction: column; gap: 16px">
+                <mat-form-field>
+                    <mat-label>Payment Institution</mat-label>
+                    <mat-select formControlName="paymentInstitution" required>
+                        @for (i of paymentInstitutions$ | async; track i) {
+                            <mat-option [value]="i"> #{{ i.ref.id }} {{ i.data.name }} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                @if (form.value.paymentInstitution; as paymentInstitution) {
+                    <div class="mat-label-medium mat-secondary-text">
+                        Routing Ruleset (policies)
+                    </div>
+                    <div>
+                        @if (policiesId) {
+                            #{{ policiesId }} {{ (getRulesetById(policiesId) | async)?.data?.name }}
+                        } @else {
+                            Not found
+                        }
+                    </div>
+                    <mat-divider></mat-divider>
+                }
+            </div>
+        }
+        @if (form.controls['target'].value === target.Manual) {
             <mat-form-field>
-                <mat-label>Payment Institution</mat-label>
-                <mat-select formControlName="paymentInstitution" required>
-                    <mat-option *ngFor="let i of paymentInstitutions$ | async" [value]="i">
-                        #{{ i.ref.id }} {{ i.data.name }}
-                    </mat-option>
+                <mat-label>Main Ruleset</mat-label>
+                <mat-select formControlName="mainRulesetRefID" required>
+                    @for (i of rulesets$ | async; track i) {
+                        <mat-option [value]="i.ref.id">
+                            #{{ i.ref.id }} {{ i.data.name }}
+                        </mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
-            <ng-container *ngIf="form.value.paymentInstitution as paymentInstitution">
-                <div class="mat-label-medium mat-secondary-text">Routing Ruleset (policies)</div>
-                <div>
-                    @if (policiesId) {
-                        #{{ policiesId }} {{ (getRulesetById(policiesId) | async)?.data?.name }}
-                    } @else {
-                        Not found
-                    }
-                </div>
-                <mat-divider></mat-divider>
-            </ng-container>
-        </div>
-        <mat-form-field *ngIf="form.controls['target'].value === target.Manual">
-            <mat-label>Main Ruleset</mat-label>
-            <mat-select formControlName="mainRulesetRefID" required>
-                <mat-option *ngFor="let i of rulesets$ | async" [value]="i.ref.id">
-                    #{{ i.ref.id }} {{ i.data.name }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+        }
     </div>
 
     <mat-form-field>

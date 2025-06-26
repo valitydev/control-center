@@ -1,4 +1,4 @@
-<ng-container *ngIf="data.type === 'bool'; else input">
+@if (data.type === 'bool') {
     <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
         <span class="mat-body-large">{{ data.type | fieldLabel: data.field }}</span>
         <div style="display: flex; place-content: center flex-start; align-items: center; gap: 4px">
@@ -10,21 +10,23 @@
                 <mat-radio-button [value]="false">False</mat-radio-button>
                 <mat-radio-button [value]="true">True</mat-radio-button>
             </mat-radio-group>
-            <button
-                *ngIf="!data.isRequired"
-                [disabled]="control.value === null || control.value === undefined"
-                mat-icon-button
-                (click)="clear($event)"
-            >
-                <mat-icon>clear</mat-icon>
-            </button>
-            <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
-                <mat-icon>loop</mat-icon>
-            </button>
+            @if (!data.isRequired) {
+                <button
+                    [disabled]="control.value === null || control.value === undefined"
+                    mat-icon-button
+                    (click)="clear($event)"
+                >
+                    <mat-icon>clear</mat-icon>
+                </button>
+            }
+            @if (generate$ | async) {
+                <button mat-icon-button (click)="generate($event)">
+                    <mat-icon>loop</mat-icon>
+                </button>
+            }
         </div>
     </div>
-</ng-container>
-<ng-template #input>
+} @else {
     <div style="display: flex; gap: 4px">
         <v-autocomplete-field
             [formControl]="control"
@@ -35,29 +37,30 @@
             [type]="inputType"
             style="flex: 1"
         ></v-autocomplete-field>
-        <button *ngIf="generate$ | async" mat-icon-button (click)="generate($event)">
-            <mat-icon>loop</mat-icon>
-        </button>
-        <button
-            *ngIf="(options$ | async)?.length"
-            [disabled]="!(selectedExtensionOption$ | async)"
-            mat-icon-button
-            (click)="toggleDetails()"
-        >
-            <mat-icon>{{ detailsShown() ? 'visibility_off' : 'wysiwyg' }}</mat-icon>
-        </button>
+        @if (generate$ | async) {
+            <button mat-icon-button (click)="generate($event)">
+                <mat-icon>loop</mat-icon>
+            </button>
+        }
+        @if ((options$ | async)?.length) {
+            <button
+                [disabled]="!(selectedExtensionOption$ | async)"
+                mat-icon-button
+                (click)="toggleDetails()"
+            >
+                <mat-icon>{{ detailsShown() ? 'visibility_off' : 'wysiwyg' }}</mat-icon>
+            </button>
+        }
     </div>
-</ng-template>
-<div
-    *ngIf="selectedExtensionOption$ | async"
-    [class.details_hidden]="!detailsShown()"
-    class="details"
->
-    <mat-card class="details-card">
-        <mat-card-content>
-            <v-thrift-viewer
-                [value]="(selectedExtensionOption$ | async)?.details"
-            ></v-thrift-viewer>
-        </mat-card-content>
-    </mat-card>
-</div>
+}
+@if (selectedExtensionOption$ | async) {
+    <div [class.details_hidden]="!detailsShown()" class="details">
+        <mat-card class="details-card">
+            <mat-card-content>
+                <v-thrift-viewer
+                    [value]="(selectedExtensionOption$ | async)?.details"
+                ></v-thrift-viewer>
+            </mat-card-content>
+        </mat-card>
+    </div>
+}

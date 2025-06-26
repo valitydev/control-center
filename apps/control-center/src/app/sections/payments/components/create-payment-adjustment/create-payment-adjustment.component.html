@@ -10,14 +10,15 @@
         type="InvoicePaymentAdjustmentParams"
     ></v-thrift-form>
     <v-dialog-actions>
-        <button
-            *ngIf="this.errors.length"
-            [disabled]="control.invalid || !!(progress$ | async)"
-            mat-button
-            (click)="closeAndSelectWithAnError()"
-        >
-            Close and select with an error
-        </button>
+        @if (this.errors.length) {
+            <button
+                [disabled]="control.invalid || !!(progress$ | async)"
+                mat-button
+                (click)="closeAndSelectWithAnError()"
+            >
+                Close and select with an error
+            </button>
+        }
         <button
             [disabled]="control.invalid || !!(progress$ | async)"
             mat-flat-button

@@ -1,4 +1,4 @@
-import { DestroyRef, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
@@ -7,6 +7,8 @@ import { ManagementService } from '../../../../../api/wallet/management.service'
 
 @Injectable()
 export class ReceiveWalletService {
+    private walletManagementService = inject(ManagementService);
+    private destroyRef = inject(DestroyRef);
     private receiveWallet$ = new ReplaySubject<string>();
     private error$ = new Subject<boolean>();
     private loading$ = new BehaviorSubject(false);
@@ -31,11 +33,6 @@ export class ReceiveWalletService {
     isLoading$ = this.loading$.asObservable();
 
     hasError$ = this.error$.asObservable();
-
-    constructor(
-        private walletManagementService: ManagementService,
-        private destroyRef: DestroyRef,
-    ) {}
 
     receiveWallet(id: string): void {
         this.receiveWallet$.next(id);

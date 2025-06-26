@@ -33,6 +33,9 @@ export class WalletFieldComponent
     extends FormControlSuperclass<WalletID | WalletID[]>
     implements AfterViewInit
 {
+    private deanonimusService = inject(DeanonimusService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
     @Input() size?: SelectFieldComponent['size'];
@@ -45,14 +48,6 @@ export class WalletFieldComponent
     progress$ = new BehaviorSubject(0);
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
-
-    constructor(
-        private deanonimusService: DeanonimusService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     ngAfterViewInit() {
         concat(

@@ -14,36 +14,38 @@
                 <mat-icon>more_horiz</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button
-                    *ngIf="isChangeable"
-                    [disabled]="isLoading$ | async"
-                    mat-menu-item
-                    (click)="update()"
-                >
-                    Change
-                </button>
+                @if (isChangeable) {
+                    <button [disabled]="isLoading$ | async" mat-menu-item (click)="update()">
+                        Change
+                    </button>
+                }
                 <button [disabled]="isLoading$ | async" mat-menu-item (click)="remove()">
                     Remove
                 </button>
             </mat-menu>
         </div>
     </cc-timeline-item-title>
-    <cc-timeline-item-content *ngIf="hasModificationContent">
-        <cc-timeline-item-loading *ngIf="isLoading; else loaded"></cc-timeline-item-loading>
-        <ng-template #loaded>
-            <div #content><ng-content></ng-content></div>
-            <mat-expansion-panel *ngIf="!content.innerHTML.trim().length">
-                <mat-expansion-panel-header>
-                    {{ name | ngtKeyTitle | titlecase }}
-                </mat-expansion-panel-header>
-                <v-thrift-viewer
-                    [extensions]="extensions$ | async"
-                    [metadata]="metadata$ | async"
-                    [value]="modificationUnit?.modification"
-                    namespace="claim_management"
-                    type="Modification"
-                ></v-thrift-viewer>
-            </mat-expansion-panel>
-        </ng-template>
-    </cc-timeline-item-content>
+    @if (hasModificationContent) {
+        <cc-timeline-item-content>
+            @if (isLoading) {
+                <cc-timeline-item-loading></cc-timeline-item-loading>
+            } @else {
+                <div #content><ng-content></ng-content></div>
+                @if (!content.innerHTML.trim().length) {
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            {{ name | ngtKeyTitle | titlecase }}
+                        </mat-expansion-panel-header>
+                        <v-thrift-viewer
+                            [extensions]="extensions$ | async"
+                            [metadata]="metadata$ | async"
+                            [value]="modificationUnit?.modification"
+                            namespace="claim_management"
+                            type="Modification"
+                        ></v-thrift-viewer>
+                    </mat-expansion-panel>
+                }
+            }
+        </cc-timeline-item-content>
+    }
 </cc-timeline-item>

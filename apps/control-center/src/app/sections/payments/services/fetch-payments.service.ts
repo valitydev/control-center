@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
@@ -16,12 +16,8 @@ function splitInvoicePaymentId(invoicePaymentId: string) {
     providedIn: 'root',
 })
 export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSearchQuery> {
-    constructor(
-        private merchantStatisticsService: MerchantStatisticsService,
-        private log: NotifyLogService,
-    ) {
-        super();
-    }
+    private merchantStatisticsService = inject(MerchantStatisticsService);
+    private log = inject(NotifyLogService);
 
     protected fetch(
         params: PaymentSearchQuery,

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { capitalize } from 'lodash-es';
 import { Observer, first, timeout } from 'rxjs';
@@ -14,8 +14,7 @@ const DEFAULT_TIMEOUT_MS = 10_000;
 
 @Injectable({ providedIn: 'root' })
 export class NotifyLogService {
-    constructor(private snackBar: MatSnackBar) {}
-
+    private snackBar = inject(MatSnackBar);
     success = (message: PossiblyAsync<string> = 'Completed successfully'): void => {
         this.notify(message);
     };

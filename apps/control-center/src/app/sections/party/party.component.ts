@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Link } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
@@ -23,6 +23,9 @@ interface PartyLink extends Link {
     standalone: false,
 })
 export class PartyComponent {
+    private appAuthGuardService = inject(AppAuthGuardService);
+    protected sidenavInfoService = inject(SidenavInfoService);
+    private partyStoreService = inject(PartyStoreService);
     links: PartyLink[] = [
         {
             label: 'Shops',
@@ -71,10 +74,4 @@ export class PartyComponent {
                 : []),
         ]),
     );
-
-    constructor(
-        private appAuthGuardService: AppAuthGuardService,
-        protected sidenavInfoService: SidenavInfoService,
-        private partyStoreService: PartyStoreService,
-    ) {}
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ClaimStatus } from '@vality/domain-proto/claim_management';
 
 import { CLAIM_STATUSES } from '../../../api/claim-management';
@@ -16,7 +16,7 @@ const CLAIM_STATUS_ROLES: { [N in keyof ClaimStatus]: ClaimManagementRole[] } = 
     providedIn: 'root',
 })
 export class AllowedClaimStatusesService {
-    constructor(private appAuthGuardService: AppAuthGuardService) {}
+    private appAuthGuardService = inject(AppAuthGuardService);
 
     getAllowedStatuses(currentClaimStatus: keyof ClaimStatus) {
         return CLAIM_STATUSES.filter((status) => this.isAllowed(status, currentClaimStatus));

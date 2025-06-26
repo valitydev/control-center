@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, runInInjectionContext } from '@angular/core';
+import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { DepositState } from '@vality/fistful-proto/internal/deposit';
@@ -28,6 +28,10 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     void,
     DepositState[]
 > {
+    private depositManagementService = inject(DepositManagementService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
+    private injector = inject(Injector);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     progress$ = new BehaviorSubject(0);
@@ -35,15 +39,6 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     successfully: DepositState[] = [];
     props = CSV_DEPOSIT_PROPS;
     errors?: Map<CsvDeposit, unknown>;
-
-    constructor(
-        private depositManagementService: DepositManagementService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-        private injector: Injector,
-    ) {
-        super();
-    }
 
     create() {
         const selected = this.selected;

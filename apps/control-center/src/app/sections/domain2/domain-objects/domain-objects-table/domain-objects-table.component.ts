@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, OnInit, model, output } from '@angular/core';
+import { Component, DestroyRef, Injector, OnInit, inject, model, output } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,6 +41,14 @@ import {
     ],
 })
 export class DomainObjectsTableComponent implements OnInit {
+    private fetchDomainObjectsService = inject(FetchDomainObjectsService);
+    private qp = inject<QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>>(
+        QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>,
+    );
+    private sidenavInfoService = inject(SidenavInfoService);
+    private domainObjectService = inject(DomainObjectService);
+    private dr = inject(DestroyRef);
+    private injector = inject(Injector);
     selectedTypeChange = output<keyof ReflessDomainObject>();
 
     typeControl = new FormControl<keyof ReflessDomainObject>(
@@ -122,15 +130,6 @@ export class DomainObjectsTableComponent implements OnInit {
     isLoading$ = this.fetchDomainObjectsService.isLoading$;
     hasMore$ = this.fetchDomainObjectsService.hasMore$;
     filter = model<string>(this.qp.params.filter);
-
-    constructor(
-        private fetchDomainObjectsService: FetchDomainObjectsService,
-        private qp: QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>,
-        private sidenavInfoService: SidenavInfoService,
-        private domainObjectService: DomainObjectService,
-        private dr: DestroyRef,
-        private injector: Injector,
-    ) {}
 
     ngOnInit() {
         merge(this.typeControl.valueChanges, this.qp.params$.pipe(map((params) => params.type)))

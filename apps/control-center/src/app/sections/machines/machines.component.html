@@ -18,12 +18,11 @@
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="status">
                     <mat-option [value]="null">any</mat-option>
-                    <mat-option
-                        *ngFor="let statusName of status | enumKeys"
-                        [value]="status[statusName]"
-                    >
-                        {{ statusName | ngtKeyTitle | titlecase }}
-                    </mat-option>
+                    @for (statusName of status | enumKeys; track statusName) {
+                        <mat-option [value]="status[statusName]">
+                            {{ statusName | ngtKeyTitle | titlecase }}
+                        </mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
             <mat-form-field>

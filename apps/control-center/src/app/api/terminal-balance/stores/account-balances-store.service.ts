@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
 import isNil from 'lodash-es/isNil';
 import { Observable, of } from 'rxjs';
@@ -10,6 +10,7 @@ import { AccountBalanceService } from '../account-balance.service';
     providedIn: 'root',
 })
 export class AccountBalancesStoreService {
+    private terminalBalanceService = inject(AccountBalanceService);
     balances$: Observable<AccountBalance[]> = this.terminalBalanceService
         .GetTerminalBalances()
         .pipe(
@@ -21,8 +22,6 @@ export class AccountBalancesStoreService {
             }),
             shareReplay({ refCount: true, bufferSize: 1 }),
         );
-
-    constructor(private terminalBalanceService: AccountBalanceService) {}
 
     getAccountBalance(id: string | number) {
         return this.balances$.pipe(

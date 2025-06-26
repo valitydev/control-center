@@ -1,4 +1,4 @@
-import { Component, DestroyRef, TemplateRef, ViewChild } from '@angular/core';
+import { Component, DestroyRef, TemplateRef, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { DepositParams } from '@vality/fistful-proto/deposit';
@@ -18,6 +18,11 @@ import { FetchSourcesService } from '../../../sources';
     standalone: false,
 })
 export class CreateDepositDialogComponent extends DialogSuperclass<CreateDepositDialogComponent> {
+    private destroyRef = inject(DestroyRef);
+    private depositManagementService = inject(DepositManagementService);
+    private log = inject(NotifyLogService);
+    private userInfoBasedIdGeneratorService = inject(UserInfoBasedIdGeneratorService);
+    private fetchSourcesService = inject(FetchSourcesService);
     @ViewChild('sourceCashTemplate') sourceCashTemplate: TemplateRef<unknown>;
 
     control = new FormControl(this.getDefaultValue(), [Validators.required]);
@@ -37,16 +42,6 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
             extension: () => of({ template: this.sourceCashTemplate }),
         },
     ];
-
-    constructor(
-        private destroyRef: DestroyRef,
-        private depositManagementService: DepositManagementService,
-        private log: NotifyLogService,
-        private userInfoBasedIdGeneratorService: UserInfoBasedIdGeneratorService,
-        private fetchSourcesService: FetchSourcesService,
-    ) {
-        super();
-    }
 
     create() {
         const { body: sourceCash, ...value } = this.control.value;

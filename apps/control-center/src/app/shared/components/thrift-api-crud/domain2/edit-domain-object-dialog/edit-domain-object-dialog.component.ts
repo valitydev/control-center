@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, computed, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -59,6 +59,11 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     EditDomainObjectDialogComponent,
     { domainObject: VersionedObject }
 > {
+    private dr = inject(DestroyRef);
+    private log = inject(NotifyLogService);
+    private navigateService = inject(NavigateService);
+    private metadataService = inject(MetadataService);
+    private domainService = inject(DomainService);
     static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -100,16 +105,6 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         deserialize: (v) => (enumHasValue(EditorKind, v) ? v : EditorKind.Form),
     });
     isLoading = signal(0);
-
-    constructor(
-        private dr: DestroyRef,
-        private log: NotifyLogService,
-        private navigateService: NavigateService,
-        private metadataService: MetadataService,
-        private domainService: DomainService,
-    ) {
-        super();
-    }
 
     update() {
         this.domainService

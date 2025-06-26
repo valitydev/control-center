@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Source } from '@vality/fistful-proto/internal/source';
 import { Column, DialogService } from '@vality/matez';
 
@@ -10,6 +10,8 @@ import { FetchSourcesService } from './fetch-sources.service';
     standalone: false,
 })
 export class SourcesComponent {
+    private fetchSourcesService = inject(FetchSourcesService);
+    private dialogService = inject(DialogService);
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
     columns: Column<Source>[] = [
@@ -19,11 +21,6 @@ export class SourcesComponent {
         { field: 'currency_symbolic_code' },
         { field: 'created_at', cell: { type: 'datetime' } },
     ];
-
-    constructor(
-        private fetchSourcesService: FetchSourcesService,
-        private dialogService: DialogService,
-    ) {}
 
     create() {
         this.dialogService.open(CreateSourceComponent);

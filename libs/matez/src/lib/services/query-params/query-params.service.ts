@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import isEqual from 'lodash-es/isEqual';
 import negate from 'lodash-es/negate';
@@ -41,6 +41,12 @@ const NS_PARAM_PREFIX = '__';
 export class QueryParamsService<P extends object = NonNullable<unknown>>
     implements BaseQueryParams<P>
 {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private readonly serializers =
+        inject<Serializer[]>(QUERY_PARAMS_SERIALIZERS, {
+            optional: true,
+        }) || [];
     params$: Observable<P> = defer(() => this.sourceParams$).pipe(
         map(({ main }) => main),
         distinctUntilChanged(isEqual),
@@ -65,16 +71,6 @@ export class QueryParamsService<P extends object = NonNullable<unknown>>
         map((p) => this.getSourceParams(p)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        @Optional() @Inject(QUERY_PARAMS_SERIALIZERS) private readonly serializers?: Serializer[],
-    ) {
-        if (!this.serializers) {
-            this.serializers = [];
-        }
-    }
 
     async set(params: P, options: SerializeOptions = {}): Promise<boolean> {
         return await this.setParams(params, undefined, options);

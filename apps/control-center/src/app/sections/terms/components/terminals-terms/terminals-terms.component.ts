@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -58,6 +58,12 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     templateUrl: './terminals-terms.component.html',
 })
 export class TerminalsTermsComponent implements OnInit {
+    private terminalsTermsService = inject(TerminalsTermsService);
+    private fb = inject(NonNullableFormBuilder);
+    private qp = inject<QueryParamsService<Params>>(QueryParamsService<Params>);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
+    private dr = inject(DestroyRef);
+    private sidenavInfoService = inject(SidenavInfoService);
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
@@ -96,15 +102,6 @@ export class TerminalsTermsComponent implements OnInit {
     );
 
     private initFiltersValue = this.filtersForm.value;
-
-    constructor(
-        private terminalsTermsService: TerminalsTermsService,
-        private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<Params>,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-        private dr: DestroyRef,
-        private sidenavInfoService: SidenavInfoService,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);

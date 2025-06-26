@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
@@ -24,6 +24,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
     templateUrl: './shop-card.component.html',
 })
 export class ShopCardComponent {
+    private partiesStoreService = inject(PartiesStoreService);
     partyId = input.required<PartyID>();
     id = input.required<ShopID>();
 
@@ -40,6 +41,4 @@ export class ShopCardComponent {
         switchMap(([partyId, id]) => this.partiesStoreService.getContract(id, partyId)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(private partiesStoreService: PartiesStoreService) {}
 }

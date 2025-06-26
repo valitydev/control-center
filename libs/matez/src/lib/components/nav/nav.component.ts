@@ -1,5 +1,5 @@
 import { AsyncPipe, NgClass } from '@angular/common';
-import { Component, ViewEncapsulation, booleanAttribute, input } from '@angular/core';
+import { Component, ViewEncapsulation, booleanAttribute, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatDivider } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
@@ -22,6 +22,7 @@ export interface Link {
     encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent {
+    private urlService = inject(UrlService);
     type = input<'secondary' | undefined>();
     links = input<Link[][], Link[] | Link[][]>([], {
         transform: (v) => (isArray(v[0]) ? (v as never) : [v as never]),
@@ -48,6 +49,4 @@ export class NavComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(private urlService: UrlService) {}
 }

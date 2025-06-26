@@ -1,4 +1,4 @@
-import { Component, Input, booleanAttribute, model } from '@angular/core';
+import { Component, Input, booleanAttribute, inject, model } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import {
     ConfirmDialogComponent,
@@ -29,6 +29,7 @@ export enum EditorKind {
     standalone: false,
 })
 export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
+    private dialogService = inject(DialogService);
     readonly kind = model<UnionEnum<EditorKind>>(EditorKind.Form);
 
     @Input() defaultValue?: T;
@@ -43,10 +44,6 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     content$ = getValueChanges(this.control).pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
     private editorError: unknown = null;
-
-    constructor(private dialogService: DialogService) {
-        super();
-    }
 
     override validate(control: AbstractControl): ValidationErrors | null {
         if (this.kind() === EditorKind.Editor) {

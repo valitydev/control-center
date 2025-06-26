@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Domain, DomainObject } from '@vality/domain-proto/domain';
 
 import { AppAuthGuardService } from '../../../../shared/services';
@@ -11,9 +11,8 @@ import { restoreObject } from './utils/restore-object';
     providedIn: 'root',
 })
 export class DomainSecretService {
+    private appAuthGuardService = inject(AppAuthGuardService);
     private hasDominantSecretRole = this.appAuthGuardService.userHasRoles([SECRETS_ROLE]);
-
-    constructor(private appAuthGuardService: AppAuthGuardService) {}
 
     reduceObject(obj: DomainObject): DomainObject {
         if (this.hasDominantSecretRole) {

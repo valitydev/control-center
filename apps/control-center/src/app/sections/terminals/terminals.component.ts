@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TerminalObject } from '@vality/domain-proto/domain';
 import { Column, DialogService } from '@vality/matez';
 import { map } from 'rxjs/operators';
@@ -27,6 +27,10 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
     standalone: false,
 })
 export class TerminalsComponent {
+    private domainStoreService = inject(DomainStoreService);
+    private sidenavInfoService = inject(SidenavInfoService);
+    private dialogService = inject(DialogService);
+    private accountBalancesStoreService = inject(AccountBalancesStoreService);
     columns: Column<TerminalObject>[] = [
         { field: 'ref.id', sticky: 'start' },
         {
@@ -112,13 +116,6 @@ export class TerminalsComponent {
     ];
     data$ = this.domainStoreService.getObjects('terminal');
     progress$ = this.domainStoreService.isLoading$;
-
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private sidenavInfoService: SidenavInfoService,
-        private dialogService: DialogService,
-        private accountBalancesStoreService: AccountBalancesStoreService,
-    ) {}
 
     update() {
         this.domainStoreService.forceReload();

@@ -6,9 +6,11 @@
     [title]="'changed claim status to ' + (status | ngtKeyTitle)"
     (claimChanged)="claimChanged.emit()"
 >
-    <mat-card *ngIf="reason">
-        <mat-card-content>
-            {{ reason }}
-        </mat-card-content>
-    </mat-card>
+    @if (reason) {
+        <mat-card>
+            <mat-card-content>
+                {{ reason }}
+            </mat-card-content>
+        </mat-card>
+    }
 </cc-modification-unit-timeline-item>

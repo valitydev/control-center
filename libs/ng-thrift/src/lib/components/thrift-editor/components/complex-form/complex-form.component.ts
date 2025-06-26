@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, DestroyRef, Input, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
@@ -58,6 +58,7 @@ export class ComplexFormComponent<V, K = never>
     extends FormComponentSuperclass<ComplexType<V, K>>
     implements OnInit, Validator
 {
+    private destroyRef = inject(DestroyRef);
     @Input() data!: ThriftData<SetType | MapType | ListType>;
     @Input() extensions?: ThriftFormExtension[];
 
@@ -77,10 +78,6 @@ export class ComplexFormComponent<V, K = never>
             return this.data.type.keyType;
         }
         return undefined;
-    }
-
-    constructor(private destroyRef: DestroyRef) {
-        super();
     }
 
     override ngOnInit() {

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +14,6 @@ import { FieldLabelPipe } from '../../pipes/field-label.pipe';
     templateUrl: './enum-field.component.html',
     providers: createControlProviders(() => EnumFieldComponent),
     imports: [
-        CommonModule,
         MatIconModule,
         MatFormFieldModule,
         MatSelectModule,

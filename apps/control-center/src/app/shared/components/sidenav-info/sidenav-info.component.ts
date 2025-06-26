@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -13,5 +13,5 @@ import { SidenavInfoService } from './sidenav-info.service';
     imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule],
 })
 export class SidenavInfoComponent {
-    constructor(public sidenavInfoService: SidenavInfoService) {}
+    public sidenavInfoService = inject(SidenavInfoService);
 }

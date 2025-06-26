@@ -5,6 +5,7 @@ import {
     Injector,
     Input,
     OnChanges,
+    inject,
     model,
     runInInjectionContext,
 } from '@angular/core';
@@ -44,6 +45,12 @@ import { DomainObjectCardComponent } from '../thrift-api-crud';
     templateUrl: './terminal-delegates-card.component.html',
 })
 export class TerminalDelegatesCardComponent implements OnChanges {
+    private partiesStoreService = inject(PartiesStoreService);
+    private domainStoreService = inject(DomainStoreService);
+    private sidenavInfoService = inject(SidenavInfoService);
+    private injector = inject(Injector);
+    private log = inject(NotifyLogService);
+    private dr = inject(DestroyRef);
     @Input() ref: TerminalRef;
 
     progress$ = this.domainStoreService.isLoading$;
@@ -163,15 +170,6 @@ export class TerminalDelegatesCardComponent implements OnChanges {
     );
 
     private ref$ = new ReplaySubject<TerminalRef>(1);
-
-    constructor(
-        private partiesStoreService: PartiesStoreService,
-        private domainStoreService: DomainStoreService,
-        private sidenavInfoService: SidenavInfoService,
-        private injector: Injector,
-        private log: NotifyLogService,
-        private dr: DestroyRef,
-    ) {}
 
     ngOnChanges(changes: ComponentChanges<TerminalDelegatesCardComponent>) {
         if (changes.ref) {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import jwtDecode from 'jwt-decode';
 import { KeycloakService } from 'keycloak-angular';
 import { Observable, defer, of, switchMap } from 'rxjs';
@@ -8,6 +8,7 @@ import { KeycloakToken } from './types/keycloak-token';
 
 @Injectable({ providedIn: 'root' })
 export class KeycloakTokenInfoService {
+    private keycloakService = inject(KeycloakService);
     info$: Observable<KeycloakToken> = defer(() => this.token$).pipe(
         map((token) => ({
             ...jwtDecode<KeycloakToken>(token),
@@ -19,6 +20,4 @@ export class KeycloakTokenInfoService {
     private token$ = defer(() =>
         this.keycloakService.isTokenExpired() ? this.keycloakService.updateToken() : of(null),
     ).pipe(switchMap(() => this.keycloakService.getToken()));
-
-    constructor(private keycloakService: KeycloakService) {}
 }

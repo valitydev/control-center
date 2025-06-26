@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
 import { Observable, isObservable } from 'rxjs';
 
 import { SelectFn, select } from '../utils';
@@ -12,9 +12,8 @@ import { SelectFn, select } from '../utils';
 export class VSelectPipe<TObject extends object, TResult, TParams extends Array<unknown> = []>
     implements PipeTransform, OnDestroy
 {
+    private ref = inject(ChangeDetectorRef);
     private asyncPipe?: AsyncPipe;
-
-    constructor(private ref: ChangeDetectorRef) {}
 
     transform(
         obj: TObject,

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { PartyID } from '@vality/domain-proto/domain';
@@ -51,6 +51,15 @@ interface WithdrawalsForm {
     standalone: false,
 })
 export class WithdrawalsComponent implements OnInit {
+    private fetchWithdrawalsService = inject(FetchWithdrawalsService);
+    private fb = inject(NonNullableFormBuilder);
+    private qp = inject<QueryParamsService<Partial<WithdrawalsForm>>>(
+        QueryParamsService<Partial<WithdrawalsForm>>,
+    );
+    private dialogService = inject(DialogService);
+    private destroyRef = inject(DestroyRef);
+    private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     filtersForm = this.fb.group<WithdrawalsForm>({
         dateRange: createDateRangeToToday(this.dateRangeDays),
         merchant: null,
@@ -107,16 +116,6 @@ export class WithdrawalsComponent implements OnInit {
     statuses: WithdrawalParams['status'][] = ['Pending', 'Succeeded', 'Failed'];
 
     private initFilters = this.filtersForm.value;
-
-    constructor(
-        private fetchWithdrawalsService: FetchWithdrawalsService,
-        private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<Partial<WithdrawalsForm>>,
-        private dialogService: DialogService,
-        private destroyRef: DestroyRef,
-        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(Object.assign({}, this.qp.params));

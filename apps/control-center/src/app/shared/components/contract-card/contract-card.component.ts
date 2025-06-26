@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { ComponentChanges, progressTo } from '@vality/matez';
 import { BehaviorSubject, ReplaySubject, combineLatest, defer } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
     templateUrl: './contract-card.component.html',
 })
 export class ContractCardComponent implements OnChanges {
+    private partyManagementService = inject(PartyManagementService);
     @Input() partyId: string;
     @Input() id: string;
 
@@ -27,8 +28,6 @@ export class ContractCardComponent implements OnChanges {
 
     private id$ = new ReplaySubject<string>(1);
     private partyId$ = new ReplaySubject<string>(1);
-
-    constructor(private partyManagementService: PartyManagementService) {}
 
     ngOnChanges(changes: ComponentChanges<ContractCardComponent>) {
         if (changes.id) {

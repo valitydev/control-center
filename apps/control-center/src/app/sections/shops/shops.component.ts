@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
 import { NotifyLogService, progressTo } from '@vality/matez';
 import { BehaviorSubject, Observable, Subject, combineLatest, defer, of } from 'rxjs';
@@ -20,6 +20,8 @@ import { ShopParty } from '../../shared/components/shops-table';
     standalone: false,
 })
 export class ShopsComponent {
+    private deanonimusService = inject(DeanonimusService);
+    private log = inject(NotifyLogService);
     filterChange$ = new Subject<string>();
     shopsParty$: Observable<ShopParty[]> = combineLatest([
         this.filterChange$.pipe(distinctUntilChanged(), debounceTime(500)),
@@ -47,11 +49,6 @@ export class ShopsComponent {
     progress$ = new BehaviorSubject(0);
 
     private updateShops$ = new BehaviorSubject<void>(undefined);
-
-    constructor(
-        private deanonimusService: DeanonimusService,
-        private log: NotifyLogService,
-    ) {}
 
     update() {
         this.updateShops$.next();

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { RoutingCandidate, RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { Version } from '@vality/domain-proto/domain_config';
 import { PartyConditionDefinition } from '@vality/domain-proto/internal/domain';
@@ -18,6 +18,7 @@ import { getUpdateRulesCandidates } from './utils/get-update-rules-candidates';
     providedIn: 'root',
 })
 export class RoutingRulesService {
+    private domainStoreService = inject(DomainStoreService);
     rulesets$: Observable<RoutingRulesObject[]> = this.domainStoreService
         .getObjects('routing_rules')
         .pipe(
@@ -29,8 +30,6 @@ export class RoutingRulesService {
         map((rulesets) => rulesets.map(({ ref }) => ref.id)),
         map(createNextId),
     );
-
-    constructor(private domainStoreService: DomainStoreService) {}
 
     getRuleset(refID: number): Observable<RoutingRulesObject> {
         return this.rulesets$.pipe(map((rulesets) => rulesets.find((r) => r?.ref?.id === refID)));

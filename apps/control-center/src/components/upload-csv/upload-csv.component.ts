@@ -7,6 +7,7 @@ import {
     type OnInit,
     Output,
     computed,
+    inject,
     input,
     model,
 } from '@angular/core';
@@ -72,6 +73,10 @@ function getCsvObjectErrors<R extends string, O extends string>(
 export class UploadCsvComponent<R extends string = string, O extends string = string>
     implements OnInit
 {
+    private log = inject(NotifyLogService);
+    private dr = inject(DestroyRef);
+    private injector = inject(Injector);
+    private fb = inject(NonNullableFormBuilder);
     props = input<CsvProps<R, O>>({});
     formatDescription = input<string[]>();
     errors = input<Map<CsvProps<R, O>, { name?: string; message?: string }>>();
@@ -148,13 +153,6 @@ export class UploadCsvComponent<R extends string = string, O extends string = st
             hidden: !this.errors()?.size,
         },
     ]);
-
-    constructor(
-        private log: NotifyLogService,
-        private dr: DestroyRef,
-        private injector: Injector,
-        private fb: NonNullableFormBuilder,
-    ) {}
 
     ngOnInit() {
         merge(this.data$, toObservable(this.selected, { injector: this.injector }))

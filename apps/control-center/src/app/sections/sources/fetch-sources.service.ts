@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
 import { NotifyLogService, compareDifferentTypes, progressTo } from '@vality/matez';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
@@ -11,6 +11,8 @@ import { FistfulStatisticsService } from '../../api/fistful-stat/fistful-statist
     providedIn: 'root',
 })
 export class FetchSourcesService {
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
+    private log = inject(NotifyLogService);
     sources$: Observable<StatSource[]> = this.fetch().pipe(
         map((s) =>
             s.sort(
@@ -23,11 +25,6 @@ export class FetchSourcesService {
         shareReplay(1),
     );
     progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private fistfulStatisticsService: FistfulStatisticsService,
-        private log: NotifyLogService,
-    ) {}
 
     private fetch(
         sources: StatSource[] = [],

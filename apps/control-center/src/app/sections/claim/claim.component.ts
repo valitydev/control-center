@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -30,6 +30,14 @@ import { CLAIM_STATUS_COLOR } from './types/claim-status-color';
     standalone: false,
 })
 export class ClaimComponent {
+    private route = inject(ActivatedRoute);
+    private claimManagementService = inject(ClaimManagementService);
+    private partyManagementService = inject(PartyManagementService);
+    private allowedClaimStatusesService = inject(AllowedClaimStatusesService);
+    private dialogService = inject(DialogService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     party$ = (this.route.params as Observable<Record<string, string>>).pipe(
         switchMap(({ partyID }) =>
             this.partyManagementService
@@ -63,17 +71,6 @@ export class ClaimComponent {
 
     private progress$ = new BehaviorSubject(0);
     private loadClaim$ = new Subject<void>();
-
-    constructor(
-        private route: ActivatedRoute,
-        private claimManagementService: ClaimManagementService,
-        private partyManagementService: PartyManagementService,
-        private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private dialogService: DialogService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-    ) {}
 
     reloadClaim() {
         this.loadClaim$.next();

@@ -16,16 +16,18 @@
             {{ (partyRuleset$ | async) ? 'Add' : 'Init' }}
         </button>
     </cc-page-layout-actions>
-    <cc-routing-rules-list
-        *ngIf="(routingRulesTypeService.routingRulesType$ | async) === 'payment'"
-        [data]="shopsData$ | async"
-        [displayedColumns]="shopsDisplayedColumns"
-        (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
-    ></cc-routing-rules-list>
-    <cc-routing-rules-list
-        *ngIf="(routingRulesTypeService.routingRulesType$ | async) === 'withdrawal'"
-        [data]="walletsData$ | async"
-        [displayedColumns]="walletsDisplayedColumns"
-        (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
-    ></cc-routing-rules-list>
+    @if ((routingRulesTypeService.routingRulesType$ | async) === 'payment') {
+        <cc-routing-rules-list
+            [data]="shopsData$ | async"
+            [displayedColumns]="shopsDisplayedColumns"
+            (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
+        ></cc-routing-rules-list>
+    }
+    @if ((routingRulesTypeService.routingRulesType$ | async) === 'withdrawal') {
+        <cc-routing-rules-list
+            [data]="walletsData$ | async"
+            [displayedColumns]="walletsDisplayedColumns"
+            (toDetails)="navigateToDelegate($event.parentRefId, $event.delegateIdx)"
+        ></cc-routing-rules-list>
+    }
 </cc-page-layout>

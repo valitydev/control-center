@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
     Component,
     DestroyRef,
@@ -6,6 +5,7 @@ import {
     Input,
     Output,
     booleanAttribute,
+    inject,
     input,
     model,
 } from '@angular/core';
@@ -30,9 +30,11 @@ import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-st
 @Component({
     selector: 'cc-chargebacks-table',
     templateUrl: './chargebacks-table.component.html',
-    imports: [CommonModule, TableModule, MatButtonModule],
+    imports: [TableModule, MatButtonModule],
 })
 export class ChargebacksTableComponent {
+    private dialogService = inject(DialogService);
+    private dr = inject(DestroyRef);
     @Input() data!: StatChargeback[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;
@@ -121,11 +123,6 @@ export class ChargebacksTableComponent {
             ],
         })),
     ];
-
-    constructor(
-        private dialogService: DialogService,
-        private dr: DestroyRef,
-    ) {}
 
     changeStatus(chargeback: StatChargeback) {
         this.dialogService.open(ChangeChargebacksStatusDialogComponent, {

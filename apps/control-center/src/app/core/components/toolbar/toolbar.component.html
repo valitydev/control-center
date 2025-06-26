@@ -14,21 +14,20 @@
             size="small"
         ></cc-merchant-field>
         <div>
-            <button
-                *ngIf="partyIdControl.value"
-                [cdkCopyToClipboard]="partyIdControl.value"
-                mat-icon-button
-                (cdkCopyToClipboardCopied)="copyNotify($event)"
-            >
-                <mat-icon>content_copy</mat-icon>
-            </button>
-            <button
-                *ngIf="partyIdControl.value && !(hasMenu$ | async)"
-                mat-icon-button
-                (click)="toParty()"
-            >
-                <mat-icon>arrow_forward</mat-icon>
-            </button>
+            @if (partyIdControl.value) {
+                <button
+                    [cdkCopyToClipboard]="partyIdControl.value"
+                    mat-icon-button
+                    (cdkCopyToClipboardCopied)="copyNotify($event)"
+                >
+                    <mat-icon>content_copy</mat-icon>
+                </button>
+            }
+            @if (partyIdControl.value && !(hasMenu$ | async)) {
+                <button mat-icon-button (click)="toParty()">
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            }
         </div>
     </div>
     <div class="user">

@@ -1,15 +1,17 @@
-<mat-toolbar *ngIf="tags()?.length" style="height: auto; min-height: 48px; padding: 0 24px">
-    <v-actions style="width: 100%">
-        <div class="mat-body-strong" style="margin: auto auto auto 0">
-            {{ title() }} {{ id() ? '#' + id() : '' }}
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center">
-            @for (tag of tags(); track tag) {
-                <v-tag [color]="tag.color" style="margin-top: 8px">{{ tag.value }}</v-tag>
-            }
-        </div>
-    </v-actions>
-</mat-toolbar>
+@if (tags()?.length) {
+    <mat-toolbar style="height: auto; min-height: 48px; padding: 0 24px">
+        <v-actions style="width: 100%">
+            <div class="mat-body-strong" style="margin: auto auto auto 0">
+                {{ title() }} {{ id() ? '#' + id() : '' }}
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center">
+                @for (tag of tags(); track tag) {
+                    <v-tag [color]="tag.color" style="margin-top: 8px">{{ tag.value }}</v-tag>
+                }
+            </div>
+        </v-actions>
+    </mat-toolbar>
+}
 
 <mat-sidenav-container autosize>
     <mat-sidenav-content style="overflow: unset"><ng-content></ng-content></mat-sidenav-content>

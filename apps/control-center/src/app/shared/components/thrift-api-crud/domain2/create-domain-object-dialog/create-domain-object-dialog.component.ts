@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,6 +42,10 @@ export class CreateDomainObjectDialogComponent
     >
     implements OnInit
 {
+    private domainService = inject(DomainService);
+    private destroyRef = inject(DestroyRef);
+    private log = inject(NotifyLogService);
+    private navigateService = inject(NavigateService);
     static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -50,15 +54,6 @@ export class CreateDomainObjectDialogComponent
     control = new FormControl<ReflessDomainObject | null>(null, [Validators.required]);
     progress$ = new BehaviorSubject(0);
     isReview = false;
-
-    constructor(
-        private domainService: DomainService,
-        private destroyRef: DestroyRef,
-        private log: NotifyLogService,
-        private navigateService: NavigateService,
-    ) {
-        super();
-    }
 
     ngOnInit() {
         if (this.dialogData && this.dialogData.objectType) {

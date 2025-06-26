@@ -1,6 +1,6 @@
 import { CdkCopyToClipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,17 +33,14 @@ import { KeycloakUserService } from '../../../shared/services';
     styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent implements OnInit {
+    private keycloakUserService = inject(KeycloakUserService);
+    private router = inject(Router);
+    private urlService = inject(UrlService);
+    private destroyRef = inject(DestroyRef);
+    private snackBar = inject(MatSnackBar);
     user = this.keycloakUserService.user.value;
     partyIdControl = new FormControl<string>(this.getPartyId());
     hasMenu$ = this.urlService.path$.pipe(map((p) => p.length <= 3));
-
-    constructor(
-        private keycloakUserService: KeycloakUserService,
-        private router: Router,
-        private urlService: UrlService,
-        private destroyRef: DestroyRef,
-        private snackBar: MatSnackBar,
-    ) {}
 
     ngOnInit() {
         this.partyIdControl.valueChanges

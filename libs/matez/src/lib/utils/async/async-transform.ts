@@ -30,13 +30,9 @@ export abstract class AsyncTransform<
         map(([value, params]) => [value, ...params] as [TValue, ...TParams]),
     );
 
-    private asyncPipe!: AsyncPipe;
     private cdr = inject(ChangeDetectorRef);
+    private asyncPipe = new AsyncPipe(this.cdr);
     private args$ = new ReplaySubject<[PossiblyAsync<TValue>, ...TParams]>(1);
-
-    constructor() {
-        this.asyncPipe = new AsyncPipe(this.cdr);
-    }
 
     ngOnDestroy() {
         this.asyncPipe.ngOnDestroy();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,6 +40,9 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
     { ids: ID[]; type: Type },
     { errors?: ForkJoinErrorResult<ID>[] }
 > {
+    private automatonService = inject(AutomatonService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     progress$ = new BehaviorSubject(0);
     errors: ForkJoinErrorResult<ID>[] = [];
     nsControl = new FormControl<Namespace>(TYPE_NS_MAP[this.dialogData.type][0]);
@@ -51,14 +54,6 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
 
     get hasNsControl() {
         return TYPE_NS_MAP[this.dialogData.type].length > 1;
-    }
-
-    constructor(
-        private automatonService: AutomatonService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
     }
 
     fail() {

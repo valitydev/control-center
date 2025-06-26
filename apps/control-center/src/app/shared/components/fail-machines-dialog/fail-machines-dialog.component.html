@@ -10,14 +10,15 @@
         required
     ></v-select-field>
     <v-dialog-actions>
-        <button
-            *ngIf="this.errors.length"
-            [disabled]="!!(progress$ | async)"
-            mat-button
-            (click)="closeAndSelectWithAnError()"
-        >
-            Close and select with an error
-        </button>
+        @if (this.errors.length) {
+            <button
+                [disabled]="!!(progress$ | async)"
+                mat-button
+                (click)="closeAndSelectWithAnError()"
+            >
+                Close and select with an error
+            </button>
+        }
         <button
             [disabled]="nsControl.invalid || !!(progress$ | async)"
             mat-flat-button

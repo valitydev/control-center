@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 @Component({
     selector: 'cc-headline',
@@ -8,10 +8,9 @@ import { Component } from '@angular/core';
     standalone: false,
 })
 export class HeadlineComponent {
+    private location = inject(Location);
     // 1 and 2 is default history length
     isBackAvailable = window.history.length > 2;
-
-    constructor(private location: Location) {}
 
     back() {
         this.location.back();

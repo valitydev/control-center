@@ -1,67 +1,77 @@
-<mat-toolbar *ngIf="tags?.length" style="height: 48px; padding: 0 24px">
-    <div style="display: flex; gap: 8px; align-items: center">
-        <v-tag *ngFor="let tag of tags" [color]="tag.color" style="margin-top: 8px">{{
-            tag.value
-        }}</v-tag>
-    </div>
-</mat-toolbar>
-<div [ngClass]="{ 'wrapper__full-height': fullHeight() }" class="wrapper">
-    <div *ngIf="title" style="display: flex; flex-direction: column; gap: 8px">
-        <div *ngIf="(path$ | async)?.length > 1" class="mat-label-medium mat-secondary-text">
-            <ng-container *ngFor="let p of path$ | async; let index = index">
-                <span
-                    [ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }"
-                    [routerLink]="p.url"
-                    [title]="p.url"
-                    >{{ p.label }}</span
-                >
-                <span *ngIf="index !== (path$ | async).length - 1"> / </span>
-            </ng-container>
+@if (tags?.length) {
+    <mat-toolbar style="height: 48px; padding: 0 24px">
+        <div style="display: flex; gap: 8px; align-items: center">
+            @for (tag of tags; track tag) {
+                <v-tag [color]="tag.color" style="margin-top: 8px">{{ tag.value }}</v-tag>
+            }
         </div>
-        <div class="header">
-            <h1
-                class="mat-display-small mat-no-margin"
-                style="
-                    display: flex;
-                    place-content: center flex-start;
-                    align-items: center;
-                    gap: 4px;
-                "
-            >
-                <button *ngIf="isBackAvailable()" mat-icon-button (click)="back()">
-                    <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
-                </button>
-                <div>
-                    {{ title }}
-                    <span class="mat-secondary-text"
-                        >{{ description }}
-                        <ng-container *ngIf="id">
-                            <span
-                                *ngIf="idLink() || idLinkClick.observed; else idText"
-                                [routerLink]="idLink()"
-                                class="mat-action"
-                                (click)="idLinkClick.emit($event)"
-                                ><ng-container *ngTemplateOutlet="idText"></ng-container
-                            ></span>
-                            <ng-template #idText>{{ id ? '#' + id : '' }}</ng-template>
-                        </ng-container>
-                    </span>
+    </mat-toolbar>
+}
+<div [ngClass]="{ 'wrapper__full-height': fullHeight() }" class="wrapper">
+    @if (title) {
+        <div style="display: flex; flex-direction: column; gap: 8px">
+            @if ((path$ | async)?.length > 1) {
+                <div class="mat-label-medium mat-secondary-text">
+                    @for (p of path$ | async; track p; let index = $index) {
+                        <span
+                            [ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }"
+                            [routerLink]="p.url"
+                            [title]="p.url"
+                            >{{ p.label }}</span
+                        >
+                        @if (index !== (path$ | async).length - 1) {
+                            <span> / </span>
+                        }
+                    }
                 </div>
-            </h1>
-            <div class="mat-display-small mat-no-margin">
-                <ng-content select="cc-page-layout-actions"></ng-content>
+            }
+            <div class="header">
+                <h1
+                    class="mat-display-small mat-no-margin"
+                    style="
+                        display: flex;
+                        place-content: center flex-start;
+                        align-items: center;
+                        gap: 4px;
+                    "
+                >
+                    @if (isBackAvailable()) {
+                        <button mat-icon-button (click)="back()">
+                            <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
+                        </button>
+                    }
+                    <div>
+                        {{ title }}
+                        <span class="mat-secondary-text"
+                            >{{ description }}
+                            @if (id) {
+                                @if (idLink() || idLinkClick.observed) {
+                                    <span
+                                        [routerLink]="idLink()"
+                                        class="mat-action"
+                                        (click)="idLinkClick.emit($event)"
+                                        ><ng-container *ngTemplateOutlet="idText"></ng-container
+                                    ></span>
+                                } @else {
+                                    {{ id ? '#' + id : '' }}
+                                }
+                                <ng-template #idText>{{ id ? '#' + id : '' }}</ng-template>
+                            }
+                        </span>
+                    </div>
+                </h1>
+                <div class="mat-display-small mat-no-margin">
+                    <ng-content select="cc-page-layout-actions"></ng-content>
+                </div>
             </div>
         </div>
-    </div>
+    }
 
-    <div
-        *ngIf="progress; else content"
-        style="display: flex; place-content: center; align-items: center"
-    >
-        <mat-spinner diameter="64"></mat-spinner>
-    </div>
+    @if (progress) {
+        <div style="display: flex; place-content: center; align-items: center">
+            <mat-spinner diameter="64"></mat-spinner>
+        </div>
+    } @else {
+        <ng-content></ng-content>
+    }
 </div>
-
-<ng-template #content>
-    <ng-content></ng-content>
-</ng-template>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domain';
 import { Column, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
@@ -18,6 +18,7 @@ import { FetchRefundsService } from './services/fetch-refunds.service';
     standalone: false,
 })
 export class RefundsTableComponent implements OnInit {
+    private fetchRefundsService = inject(FetchRefundsService);
     @Input() paymentID: InvoicePaymentID;
     @Input() invoiceID: InvoiceID;
     @Input() partyID: PartyID;
@@ -46,8 +47,6 @@ export class RefundsTableComponent implements OnInit {
         }),
         { field: 'reason' },
     ];
-
-    constructor(private fetchRefundsService: FetchRefundsService) {}
 
     ngOnInit() {
         this.fetchRefundsService.load({

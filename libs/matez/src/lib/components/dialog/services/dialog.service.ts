@@ -1,5 +1,5 @@
 import { ComponentType } from '@angular/cdk/overlay';
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
 import { DEFAULT_DIALOG_CONFIG, DIALOG_CONFIG, DialogConfig } from '../tokens';
@@ -10,16 +10,9 @@ import { DialogSuperclass } from '../utils/dialog-superclass';
     providedIn: 'root',
 })
 export class DialogService {
-    constructor(
-        private dialog: MatDialog,
-        @Optional()
-        @Inject(DIALOG_CONFIG)
-        private readonly dialogConfig: DialogConfig,
-    ) {
-        if (!dialogConfig) {
-            this.dialogConfig = DEFAULT_DIALOG_CONFIG;
-        }
-    }
+    private dialog = inject(MatDialog);
+    private readonly dialogConfig =
+        inject<DialogConfig>(DIALOG_CONFIG, { optional: true }) || DEFAULT_DIALOG_CONFIG;
 
     open<TDialogComponent, TDialogData, TDialogResponseData, TDialogResponseStatus>(
         dialogComponent: ComponentType<

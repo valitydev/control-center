@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
@@ -14,20 +14,15 @@ export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
     InitializeRoutingRulesDialogComponent,
     { partyID: string; refID: number }
 > {
+    private fb = inject(UntypedFormBuilder);
+    private routingRulesService = inject(RoutingRulesService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     form = this.fb.group({
         delegateDescription: 'Main delegate[party]',
         name: 'submain ruleset[by shop id]',
         description: '',
     });
-
-    constructor(
-        private fb: UntypedFormBuilder,
-        private routingRulesService: RoutingRulesService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     init() {
         const { delegateDescription, name, description } = this.form.value;

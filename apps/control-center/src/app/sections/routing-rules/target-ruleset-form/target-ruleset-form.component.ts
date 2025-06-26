@@ -6,6 +6,7 @@ import {
     Input,
     OnChanges,
     Output,
+    inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
@@ -29,6 +30,10 @@ import { TargetRuleset } from './types/target-ruleset';
     standalone: false,
 })
 export class TargetRulesetFormComponent implements OnChanges {
+    private fb = inject(UntypedFormBuilder);
+    private domainStoreService = inject(DomainStoreService);
+    private routingRulesService = inject(RoutingRulesService);
+    private destroyRef = inject(DestroyRef);
     @Output() valid = new EventEmitter<boolean>();
     @Output() valueChanges = new EventEmitter<TargetRuleset>();
     @Input() value: Partial<TargetRuleset>;
@@ -55,12 +60,7 @@ export class TargetRulesetFormComponent implements OnChanges {
         );
     }
 
-    constructor(
-        private fb: UntypedFormBuilder,
-        private domainStoreService: DomainStoreService,
-        private routingRulesService: RoutingRulesService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         this.form.controls['target'].valueChanges
             .pipe(startWith(this.form.value.target), takeUntilDestroyed(this.destroyRef))
             .subscribe((target) => {

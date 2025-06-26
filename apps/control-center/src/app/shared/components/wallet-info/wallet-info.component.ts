@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 
 import { ReceiveWalletService } from './services/receive-wallet/receive-wallet.service';
 
@@ -8,14 +8,13 @@ import { ReceiveWalletService } from './services/receive-wallet/receive-wallet.s
     providers: [ReceiveWalletService],
 })
 export class WalletInfoComponent implements OnInit {
+    private receiveWalletService = inject(ReceiveWalletService);
     @Input()
     walletID: string;
 
     wallet$ = this.receiveWalletService.wallet$;
     isLoading$ = this.receiveWalletService.isLoading$;
     hasError$ = this.receiveWalletService.hasError$;
-
-    constructor(private receiveWalletService: ReceiveWalletService) {}
 
     ngOnInit() {
         this.receiveWalletService.receiveWallet(this.walletID);

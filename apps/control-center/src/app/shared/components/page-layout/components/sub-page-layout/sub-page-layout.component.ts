@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { ActionsModule, Color, Link, NavComponent, TagModule } from '@vality/matez';
@@ -22,10 +22,9 @@ import { SidenavInfoService } from '../../../sidenav-info';
     styles: ``,
 })
 export class SubPageLayoutComponent {
+    protected sidenavInfoService = inject(SidenavInfoService);
     title = input<string>();
     id = input<string>();
     links = input<Link[]>([]);
     tags = input<{ value: string; color: Color }[] | null>([]);
-
-    constructor(protected sidenavInfoService: SidenavInfoService) {}
 }

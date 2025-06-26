@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { InvoicePaymentAdjustment } from '@vality/domain-proto/internal/domain';
@@ -28,6 +28,9 @@ export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSupercl
     void,
     InvoicePaymentAdjustment[]
 > {
+    private invoicingService = inject(InvoicingService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     progress$ = new BehaviorSubject(0);
@@ -35,14 +38,6 @@ export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSupercl
     successfully: InvoicePaymentAdjustment[] = [];
     props = CSV_PAYMENT_ADJUSTMENT_PROPS;
     errors?: Map<CsvPaymentAdjustment, unknown>;
-
-    constructor(
-        private invoicingService: InvoicingService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     create() {
         const selected = this.selected;

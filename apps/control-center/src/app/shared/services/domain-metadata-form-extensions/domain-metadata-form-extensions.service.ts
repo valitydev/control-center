@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
@@ -19,6 +19,8 @@ import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
     providedIn: 'root',
 })
 export class DomainMetadataFormExtensionsService {
+    private domainStoreService = inject(DomainStoreService);
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
     extensions$: Observable<ThriftFormExtension[]> = getImportValue<ThriftAstMetadata[]>(
         import('@vality/domain-proto/metadata.json'),
     ).pipe(
@@ -86,11 +88,6 @@ export class DomainMetadataFormExtensionsService {
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private fistfulStatisticsService: FistfulStatisticsService,
-    ) {}
 
     createPartyClaimExtensions(party: Party, claim: Claim) {
         return createPartyClaimDomainMetadataFormExtensions(party, claim);

@@ -22,8 +22,12 @@
                     style="margin-left: 8px"
                     (click)="toggleKind()"
                 >
-                    <mat-icon *ngIf="kind() === 'form'">code</mat-icon>
-                    <mat-icon *ngIf="kind() === 'editor'">edit_note</mat-icon>
+                    @if (kind() === 'form') {
+                        <mat-icon>code</mat-icon>
+                    }
+                    @if (kind() === 'editor') {
+                        <mat-icon>edit_note</mat-icon>
+                    }
                 </button>
             }
         </div>

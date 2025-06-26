@@ -1,4 +1,4 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { rxResource, toObservable } from '@angular/core/rxjs-interop';
 import { Reference } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
@@ -12,9 +12,10 @@ import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 
 @Injectable({ providedIn: 'root' })
 export class DomainObjectsStoreService {
+    private repositoryService = inject(Repository2Service);
     private types = signal(new Set<keyof Reference>());
     private objects = rxResource({
-        loader: () =>
+        stream: () =>
             toObservable(this.types).pipe(
                 mergeScan((objects, types) => {
                     const newTypes = Array.from(types).filter((t) => !objects.has(t));
@@ -33,8 +34,6 @@ export class DomainObjectsStoreService {
                 }, new Map<keyof Reference, Map<string, LimitedVersionedObject>>()),
             ),
     });
-
-    constructor(private repositoryService: Repository2Service) {}
 
     getObject(ref: Reference) {
         const type = getUnionKey(ref);

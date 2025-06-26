@@ -6,28 +6,30 @@
             [required]="data.isRequired"
             (ngModelChange)="cleanInternal()"
         >
-            <mat-option *ngFor="let option of options$ | async" [value]="option.value">{{
-                option.label
-            }}</mat-option>
+            @for (option of options$ | async; track option) {
+                <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
         </mat-select>
-        <button
-            *ngIf="!data.isRequired"
-            [disabled]="!fieldControl.value"
-            mat-icon-button
-            matSuffix
-            (click)="fieldControl.reset(); $event.stopPropagation()"
-        >
-            <mat-icon>clear</mat-icon>
-        </button>
+        @if (!data.isRequired) {
+            <button
+                [disabled]="!fieldControl.value"
+                mat-icon-button
+                matSuffix
+                (click)="fieldControl.reset(); $event.stopPropagation()"
+            >
+                <mat-icon>clear</mat-icon>
+            </button>
+        }
     </mat-form-field>
-    <v-thrift-form
-        *ngIf="fieldControl.value"
-        [extensions]="extensions"
-        [field]="fieldControl.value"
-        [formControl]="internalControl"
-        [metadata]="data.metadata"
-        [namespace]="data.namespace"
-        [parent]="$any(data)"
-        [type]="fieldControl.value.type"
-    ></v-thrift-form>
+    @if (fieldControl.value) {
+        <v-thrift-form
+            [extensions]="extensions"
+            [field]="fieldControl.value"
+            [formControl]="internalControl"
+            [metadata]="data.metadata"
+            [namespace]="data.namespace"
+            [parent]="$any(data)"
+            [type]="fieldControl.value.type"
+        ></v-thrift-form>
+    }
 </div>

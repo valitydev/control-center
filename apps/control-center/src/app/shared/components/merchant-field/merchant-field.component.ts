@@ -33,6 +33,9 @@ export class MerchantFieldComponent
     extends FormControlSuperclass<PartyID>
     implements AfterViewInit
 {
+    private deanonimusService = inject(DeanonimusService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
     @Input() size?: SelectFieldComponent['size'];
@@ -44,14 +47,6 @@ export class MerchantFieldComponent
     progress$ = new BehaviorSubject(false);
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
-
-    constructor(
-        private deanonimusService: DeanonimusService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     ngAfterViewInit() {
         merge(getValueChanges(this.control), this.searchChange$)

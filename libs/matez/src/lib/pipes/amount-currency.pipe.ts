@@ -1,4 +1,4 @@
-import { DEFAULT_CURRENCY_CODE, Inject, LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, Pipe, PipeTransform, inject } from '@angular/core';
 
 import { formatCurrency } from '../utils';
 
@@ -7,10 +7,8 @@ import { formatCurrency } from '../utils';
     name: 'amountCurrency',
 })
 export class AmountCurrencyPipe implements PipeTransform {
-    constructor(
-        @Inject(LOCALE_ID) private _locale: string,
-        @Inject(DEFAULT_CURRENCY_CODE) private _defaultCurrencyCode: string = 'USD',
-    ) {}
+    private _locale = inject<string>(LOCALE_ID);
+    private _defaultCurrencyCode = inject<string>(DEFAULT_CURRENCY_CODE);
 
     transform(
         amount: unknown,

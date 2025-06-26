@@ -5,6 +5,7 @@ import {
     Injector,
     OnInit,
     Renderer2,
+    inject,
     input,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -18,15 +19,12 @@ import { SPACES } from '../components/table/utils/normalize-string';
     selector: '[vHighlight]',
 })
 export class HighlightDirective implements OnInit {
+    private el = inject(ElementRef);
+    private renderer = inject(Renderer2);
+    private dr = inject(DestroyRef);
+    private injector = inject(Injector);
     vHighlightText = input('', { transform: (v) => String(v || '') });
     vHighlightSearch = input('', { transform: (v) => String(v || '') });
-
-    constructor(
-        private el: ElementRef,
-        private renderer: Renderer2,
-        private dr: DestroyRef,
-        private injector: Injector,
-    ) {}
 
     ngOnInit() {
         combineLatest([

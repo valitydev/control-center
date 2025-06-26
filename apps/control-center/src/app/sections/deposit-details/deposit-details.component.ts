@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat';
 import { Timestamp } from '@vality/fistful-proto/internal/base';
@@ -29,6 +29,12 @@ import { ReceiveDepositService } from './services/receive-deposit/receive-deposi
     standalone: false,
 })
 export class DepositDetailsComponent implements OnInit {
+    private fetchDepositService = inject(ReceiveDepositService);
+    private route = inject(ActivatedRoute);
+    private _locale = inject<string>(LOCALE_ID);
+    private amountCurrencyService = inject(AmountCurrencyService);
+    private walletManagementService = inject(ManagementService);
+    private fetchSourcesService = inject(FetchSourcesService);
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
@@ -121,15 +127,6 @@ export class DepositDetailsComponent implements OnInit {
             },
         ]),
     );
-
-    constructor(
-        private fetchDepositService: ReceiveDepositService,
-        private route: ActivatedRoute,
-        @Inject(LOCALE_ID) private _locale: string,
-        private amountCurrencyService: AmountCurrencyService,
-        private walletManagementService: ManagementService,
-        private fetchSourcesService: FetchSourcesService,
-    ) {}
 
     ngOnInit() {
         this.route.params

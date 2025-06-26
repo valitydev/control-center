@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
     AutocompleteFieldModule,
@@ -18,6 +18,7 @@ import { FetchSourcesService } from '../../../sections/sources';
     providers: createControlProviders(() => CurrencyFieldComponent),
 })
 export class CurrencyFieldComponent extends FormControlSuperclass<string> {
+    private fetchSourcesService = inject(FetchSourcesService);
     options$ = this.fetchSourcesService.sources$.pipe(
         map((sources): Option<string>[] => {
             const codes = [...new Set(sources.map((s) => s.currency_symbolic_code))].sort();
@@ -27,8 +28,4 @@ export class CurrencyFieldComponent extends FormControlSuperclass<string> {
             }));
         }),
     );
-
-    constructor(private fetchSourcesService: FetchSourcesService) {
-        super();
-    }
 }

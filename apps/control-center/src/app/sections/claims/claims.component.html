@@ -4,10 +4,9 @@
     ></cc-page-layout-actions>
     <v-filters #filters [active]="active$ | async">
         <ng-template [formGroup]="filtersForm">
-            <cc-merchant-field
-                *ngIf="!(party$ | async)"
-                formControlName="party_id"
-            ></cc-merchant-field>
+            @if (!(party$ | async)) {
+                <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+            }
             <mat-form-field>
                 <input
                     autocomplete="off"
@@ -19,9 +18,11 @@
             </mat-form-field>
             <mat-form-field>
                 <mat-select formControlName="statuses" multiple placeholder="Claim statuses">
-                    <mat-option *ngFor="let status of claimStatuses" [value]="status">{{
-                        status | ngtKeyTitle | titlecase
-                    }}</mat-option>
+                    @for (status of claimStatuses; track status) {
+                        <mat-option [value]="status">{{
+                            status | ngtKeyTitle | titlecase
+                        }}</mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
         </ng-template>

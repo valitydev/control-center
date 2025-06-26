@@ -3,6 +3,7 @@ import {
     Component,
     DestroyRef,
     TemplateRef,
+    inject,
     viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -31,6 +32,10 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
     CreateRevertDialogConfig,
     Revert
 > {
+    private depositManagementService = inject(DepositManagementService);
+    private idGenerator = inject(UserInfoBasedIdGeneratorService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     control = new FormControl({
         id: this.idGenerator.getUsernameBasedId(),
         body: { currencyCode: this.dialogData.currency },
@@ -47,15 +52,6 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
             extension: () => of({ template: this.cashTemplate() }),
         },
     ];
-
-    constructor(
-        private depositManagementService: DepositManagementService,
-        private idGenerator: UserInfoBasedIdGeneratorService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     createRevert() {
         const { body, ...value } = this.control.value;

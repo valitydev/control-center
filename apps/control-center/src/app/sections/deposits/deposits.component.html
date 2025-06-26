@@ -11,9 +11,11 @@
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="status">
                     <mat-option [value]="null">Any</mat-option>
-                    <mat-option *ngFor="let status of depositStatuses" [value]="status">
-                        {{ status | titlecase }}
-                    </mat-option>
+                    @for (status of depositStatuses; track status) {
+                        <mat-option [value]="status">
+                            {{ status | titlecase }}
+                        </mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
             <v-input-field formControlName="deposit_id" label="Deposit ID"></v-input-field>

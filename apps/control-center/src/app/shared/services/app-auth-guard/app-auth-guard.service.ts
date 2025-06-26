@@ -7,7 +7,9 @@ import { environment } from '../../../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class AppAuthGuardService extends KeycloakAuthGuard {
     constructor(
+        // eslint-disable-next-line @angular-eslint/prefer-inject
         protected override router: Router,
+        // eslint-disable-next-line @angular-eslint/prefer-inject
         protected override keycloakAngular: KeycloakService,
     ) {
         super(router, keycloakAngular);

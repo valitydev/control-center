@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
@@ -27,20 +27,15 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     { payments: StatPayment[] },
     { errors?: ForkJoinErrorResult<StatPayment>[] }
 > {
+    private invoicingService = inject(InvoicingService);
+    private log = inject(NotifyLogService);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
+    private destroyRef = inject(DestroyRef);
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
-
-    constructor(
-        private invoicingService: InvoicingService,
-        private log: NotifyLogService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private destroyRef: DestroyRef,
-    ) {
-        super();
-    }
 
     create() {
         const payments = this.errors.length

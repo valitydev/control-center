@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { Column, TableModule } from '@vality/matez';
 
@@ -15,7 +14,7 @@ import {
 
 @Component({
     selector: 'cc-shops-term-set-history-card',
-    imports: [CommonModule, SidenavInfoModule, TableModule],
+    imports: [SidenavInfoModule, TableModule],
     templateUrl: './terminals-term-set-history-card.component.html',
     styles: ``,
 })

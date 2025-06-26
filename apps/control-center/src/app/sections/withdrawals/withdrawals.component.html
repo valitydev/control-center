@@ -10,9 +10,11 @@
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="status">
                     <mat-option [value]="null">any</mat-option>
-                    <mat-option *ngFor="let status of statuses" [value]="status">
-                        {{ status }}
-                    </mat-option>
+                    @for (status of statuses; track status) {
+                        <mat-option [value]="status">
+                            {{ status }}
+                        </mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
             <v-list-field formControlName="withdrawalIds" label="Withdrawal IDs"></v-list-field>

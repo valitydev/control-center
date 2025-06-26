@@ -8,6 +8,7 @@ import {
     Output,
     booleanAttribute,
     computed,
+    inject,
     input,
     runInInjectionContext,
 } from '@angular/core';
@@ -41,6 +42,12 @@ export type RoutingRulesListItem<T> = DelegateId & { item: T };
     standalone: false,
 })
 export class RoutingRulesListComponent<T> {
+    private dialogService = inject(DialogService);
+    private log = inject(NotifyLogService);
+    private routingRulesService = inject(RoutingRulesService);
+    private route = inject(ActivatedRoute);
+    private destroyRef = inject(DestroyRef);
+    private injector = inject(Injector);
     @Input() data: RoutingRulesListItem<T>[];
     displayedColumns = input<Column<RoutingRulesListItem<T>>[]>([]);
     @Input({ transform: booleanAttribute }) progress: boolean = false;
@@ -79,15 +86,6 @@ export class RoutingRulesListComponent<T> {
             })),
         ]),
     );
-
-    constructor(
-        private dialogService: DialogService,
-        private log: NotifyLogService,
-        private routingRulesService: RoutingRulesService,
-        private route: ActivatedRoute,
-        private destroyRef: DestroyRef,
-        private injector: Injector,
-    ) {}
 
     changeDelegateRuleset(delegateId: DelegateId) {
         this.dialogService

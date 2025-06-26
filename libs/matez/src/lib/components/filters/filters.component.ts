@@ -9,6 +9,7 @@ import {
     TemplateRef,
     ViewChild,
     booleanAttribute,
+    inject,
     signal,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -28,6 +29,8 @@ import { OtherFiltersDirective } from './components/other-filters/other-filters.
     standalone: false,
 })
 export class FiltersComponent {
+    private dialog = inject(DialogService);
+    private breakpointObserver = inject(BreakpointObserver);
     @Input() active = 0;
     @Input({ transform: booleanAttribute }) merge = false;
     // TODO: to change from outside you need to change the logic and set $rows in two SCSS
@@ -75,11 +78,6 @@ export class FiltersComponent {
         map(([repeat, rows]) => repeat * rows),
     );
     filtersCount$ = new BehaviorSubject(0);
-
-    constructor(
-        private dialog: DialogService,
-        private breakpointObserver: BreakpointObserver,
-    ) {}
 
     open() {
         this.dialog.open(FiltersDialogComponent, { filters: this });

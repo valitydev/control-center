@@ -7,6 +7,7 @@ import {
     OnChanges,
     OnDestroy,
     OnInit,
+    inject,
     input,
     model,
 } from '@angular/core';
@@ -64,6 +65,7 @@ export class SelectColumnComponent<T>
     extends BaseColumnComponent
     implements OnInit, OnDestroy, OnChanges
 {
+    private dr = inject(DestroyRef);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selected = model<any[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,10 +80,6 @@ export class SelectColumnComponent<T>
         map(() => this.getIsAllSelected()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(private dr: DestroyRef) {
-        super();
-    }
 
     override ngOnInit() {
         super.ngOnInit();

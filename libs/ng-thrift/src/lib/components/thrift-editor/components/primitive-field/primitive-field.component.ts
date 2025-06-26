@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, model } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnInit, inject, model } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,6 +49,7 @@ export class PrimitiveFieldComponent<T>
     extends FormControlSuperclass<T>
     implements OnChanges, OnInit
 {
+    private destroyRef = inject(DestroyRef);
     @Input() data!: ThriftData<ThriftType>;
     @Input() extensions?: ThriftFormExtension[];
 
@@ -117,10 +118,6 @@ export class PrimitiveFieldComponent<T>
 
     private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
     private extensions$ = new ReplaySubject<ThriftFormExtension[]>(1);
-
-    constructor(private destroyRef: DestroyRef) {
-        super();
-    }
 
     override ngOnInit() {
         super.ngOnInit();

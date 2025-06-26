@@ -1,4 +1,4 @@
-import { Component, isDevMode } from '@angular/core';
+import { Component, inject, isDevMode } from '@angular/core';
 import { Link } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
@@ -29,17 +29,16 @@ import { AppAuthGuardService, Services } from './shared/services';
     standalone: false,
 })
 export class AppComponent {
+    private keycloakService = inject(KeycloakService);
+    private appAuthGuardService = inject(AppAuthGuardService);
+    public sidenavInfoService = inject(SidenavInfoService);
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
         startWith(null),
         map(() => this.getMenuItemsGroups()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    constructor(
-        private keycloakService: KeycloakService,
-        private appAuthGuardService: AppAuthGuardService,
-        public sidenavInfoService: SidenavInfoService,
-    ) {
+    constructor() {
         this.registerConsoleUtils();
     }
 
