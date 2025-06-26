@@ -4,7 +4,6 @@
     - Admin Dashboard
 - **Angular Libraries**
     - MatEz (eazy-to-use library that extends Angular Material)
-    - Configs (for Prettier, ESLint, CSpell)
 
 ---
 
@@ -59,8 +58,8 @@ npm run dev-libs
 
 1. Update via Nx CLI
     ```sh
-    nx migrate latest
-    nx migrate --run-migrations
+    npx nx migrate latest
+    npx nx migrate --run-migrations
     rm migrations.json
     ```
 1. Update dependencies that Nx did not update
