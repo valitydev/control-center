@@ -36,7 +36,8 @@ $theme: mat.private-deep-merge-all(mat.define-theme($config), mtx.define-theme($
         font-family: Roboto, 'Helvetica Neue', sans-serif;
     }
 
-    @include mat.core();
+    @include mat.elevation-classes();
+    @include mat.app-background();
     @include mat.all-component-themes($theme);
     @include mat.typography-hierarchy($theme);
     @include v.typography-hierarchy($theme);

@@ -14,7 +14,7 @@ import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 export class DomainObjectsStoreService {
     private types = signal(new Set<keyof Reference>());
     private objects = rxResource({
-        loader: () =>
+        stream: () =>
             toObservable(this.types).pipe(
                 mergeScan((objects, types) => {
                     const newTypes = Array.from(types).filter((t) => !objects.has(t));

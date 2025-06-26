@@ -1,9 +1,8 @@
 <div>
-    <ng-container *ngIf="numberKey$ | async as numberKey; else defKey"
-        >{{ numberKey }}.</ng-container
-    >
-    <ng-template #defKey>
-        <ng-container *ngFor="let pathItem of keys; let idx = index">
+    @if (numberKey$ | async; as numberKey) {
+        {{ numberKey }}.
+    } @else {
+        @for (pathItem of keys; track pathItem; let idx = $index) {
             <span [class]="(parentIsUnion(pathItem) | async) ? 'bold' : 'mat-secondary-text'"
                 >{{ (pathItem.key$ | async)?.renderValue$ | async | ngtKeyTitle | titlecase
                 }}{{
@@ -14,6 +13,6 @@
                         : ''
                 }}</span
             >
-        </ng-container>
-    </ng-template>
+        }
+    }
 </div>

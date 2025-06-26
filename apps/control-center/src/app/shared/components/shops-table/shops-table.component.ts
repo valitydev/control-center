@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
     Component,
     EventEmitter,
@@ -52,7 +52,7 @@ export interface ShopParty {
 
 @Component({
     selector: 'cc-shops-table',
-    imports: [CommonModule, InputFieldModule, MatCardModule, TableModule],
+    imports: [InputFieldModule, MatCardModule, TableModule],
     templateUrl: './shops-table.component.html',
     providers: [PartyDelegateRulesetsService],
 })

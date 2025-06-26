@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +16,6 @@ import { DomainObjectService } from '../services/domain-object.service';
 @Component({
     selector: 'cc-domain-object-card',
     imports: [
-        CommonModule,
         DomainThriftViewerComponent,
         CardComponent,
         SidenavInfoModule,
@@ -31,8 +29,8 @@ export class DomainObjectCardComponent {
     version = input<number>();
 
     domainObject = rxResource({
-        request: () => ({ ref: this.ref(), version: this.version() }),
-        loader: ({ request: { ref, version } }) =>
+        params: () => ({ ref: this.ref(), version: this.version() }),
+        stream: ({ params: { ref, version } }) =>
             this.domainService.get(ref, version).pipe(
                 catchError((err) => {
                     this.log.errorOperation(err, 'receive', 'domain object');

@@ -12,14 +12,14 @@ import { AuthorManagementService } from '../author-management.service';
 })
 export class AuthorStoreService {
     author = rxResource({
-        request: () => this.keycloakUserService.user.value(),
-        loader: ({ request }) =>
-            this.authorManagementService.GetByEmail(request.email).pipe(
+        params: () => this.keycloakUserService.user.value(),
+        stream: ({ params }) =>
+            this.authorManagementService.GetByEmail(params.email).pipe(
                 catchError(() =>
                     this.authorManagementService
                         .Create({
-                            email: request.email,
-                            name: request.username,
+                            email: params.email,
+                            name: params.username,
                         })
                         .pipe(
                             catchError((err) => {

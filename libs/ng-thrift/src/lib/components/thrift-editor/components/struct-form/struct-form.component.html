@@ -1,23 +1,28 @@
 <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
-    <ng-container *ngIf="hasLabel">
-        <mat-checkbox *ngIf="!labelControl.disabled; else label" [formControl]="labelControl">
-            <ng-container [ngTemplateOutlet]="label"></ng-container>
-        </mat-checkbox>
+    @if (hasLabel) {
         <ng-template #label>
             <span class="mat-body-large">{{ data.type | fieldLabel: data.field }}</span>
         </ng-template>
-    </ng-container>
-    <ng-container *ngIf="labelControl.value">
-        <v-thrift-form
-            *ngFor="let field of data.ast"
-            [extensions]="extensions"
-            [field]="field"
-            [formControl]="$any(control.get(field.name))"
-            [metadata]="data.metadata"
-            [namespace]="data.namespace"
-            [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
-            [parent]="$any(data)"
-            [type]="field.type"
-        ></v-thrift-form>
-    </ng-container>
+        @if (!labelControl.disabled) {
+            <mat-checkbox [formControl]="labelControl">
+                <ng-container [ngTemplateOutlet]="label"></ng-container>
+            </mat-checkbox>
+        } @else {
+            <ng-container [ngTemplateOutlet]="label"></ng-container>
+        }
+    }
+    @if (labelControl.value) {
+        @for (field of data.ast; track field) {
+            <v-thrift-form
+                [extensions]="extensions"
+                [field]="field"
+                [formControl]="$any(control.get(field.name))"
+                [metadata]="data.metadata"
+                [namespace]="data.namespace"
+                [ngStyle]="{ 'padding-left': hasLabel && '16px' }"
+                [parent]="$any(data)"
+                [type]="field.type"
+            ></v-thrift-form>
+        }
+    }
 </div>

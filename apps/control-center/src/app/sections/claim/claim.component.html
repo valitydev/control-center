@@ -1,98 +1,102 @@
 <cc-page-layout [id]="(claim$ | async)?.id" title="Claim">
-    <cc-page-layout-actions *ngIf="claim$ | async as claim">
-        <cc-status [color]="statusColor[claim.status | ngtUnionKey]">{{
-            claim.status | ngtUnionKey | ngtKeyTitle | titlecase
-        }}</cc-status>
+  @if (claim$ | async; as claim) {
+    <cc-page-layout-actions>
+      <cc-status [color]="statusColor[claim.status | ngtUnionKey]">{{
+        claim.status | ngtUnionKey | ngtKeyTitle | titlecase
+      }}</cc-status>
     </cc-page-layout-actions>
+  }
 
-    <div style="display: flex; flex-direction: column; gap: 24px">
-        <cc-timeline>
-            @if (isLoading$ | async) {
-                <cc-timeline-item>
-                    <cc-timeline-item-badge color="pending">
-                        <mat-icon>hourglass_empty</mat-icon>
-                    </cc-timeline-item-badge>
-                    <cc-timeline-item-title>
-                        <cc-timeline-item-header text="Loading..."></cc-timeline-item-header>
-                    </cc-timeline-item-title>
-                </cc-timeline-item>
-            } @else {
-                @let claim = claim$ | async;
+  <div style="display: flex; flex-direction: column; gap: 24px">
+    <cc-timeline>
+      @if (isLoading$ | async) {
+        <cc-timeline-item>
+          <cc-timeline-item-badge color="pending">
+            <mat-icon>hourglass_empty</mat-icon>
+          </cc-timeline-item-badge>
+          <cc-timeline-item-title>
+            <cc-timeline-item-header text="Loading..."></cc-timeline-item-header>
+          </cc-timeline-item-title>
+        </cc-timeline-item>
+      } @else {
+        @let claim = claim$ | async;
 
-                <cc-timeline-item>
-                    <cc-timeline-item-badge>
-                        <mat-icon>create</mat-icon>
-                    </cc-timeline-item-badge>
-                    <cc-timeline-item-title>
-                        <cc-timeline-item-header
-                            [createdAt]="claim.created_at"
-                            text="Claim created"
-                        ></cc-timeline-item-header>
-                    </cc-timeline-item-title>
-                </cc-timeline-item>
-                <ng-container
-                    *ngFor="let modificationUnit of claim.changeset"
-                    [ngSwitch]="modificationUnit.modification | ngtUnionKey"
-                >
-                    <ng-container
-                        *ngSwitchCase="'party_modification'"
-                        [ngSwitch]="modificationUnit.modification | ngtUnionValue | ngtUnionKey"
+        <cc-timeline-item>
+          <cc-timeline-item-badge>
+            <mat-icon>create</mat-icon>
+          </cc-timeline-item-badge>
+          <cc-timeline-item-title>
+            <cc-timeline-item-header
+              [createdAt]="claim.created_at"
+              text="Claim created"
+            ></cc-timeline-item-header>
+          </cc-timeline-item-title>
+        </cc-timeline-item>
+        @for (modificationUnit of claim.changeset; track modificationUnit) {
+          @switch (modificationUnit.modification | ngtUnionKey) {
+            @case ('party_modification') {
+              @switch (modificationUnit.modification | ngtUnionValue | ngtUnionKey) {
+                @case ('shop_modification') {
+                  <cc-shop-modification-timeline-item
+                    [claim]="claim"
+                    [modificationUnit]="modificationUnit"
+                    (claimChanged)="reloadClaim()"
                     >
-                        <cc-shop-modification-timeline-item
-                            *ngSwitchCase="'shop_modification'"
-                            [claim]="claim"
-                            [modificationUnit]="modificationUnit"
-                            (claimChanged)="reloadClaim()"
-                        >
-                        </cc-shop-modification-timeline-item>
-                        <cc-modification-unit-timeline-item
-                            *ngSwitchDefault
-                            [claim]="claim"
-                            [modificationUnit]="modificationUnit"
-                            isChangeable
-                            (claimChanged)="reloadClaim()"
-                        ></cc-modification-unit-timeline-item>
-                    </ng-container>
-                    <ng-container
-                        *ngSwitchCase="'claim_modification'"
-                        [ngSwitch]="modificationUnit.modification | ngtUnionValue | ngtUnionKey"
-                    >
-                        <cc-status-modification-timeline-item
-                            *ngSwitchCase="'status_modification'"
-                            [claim]="claim"
-                            [modificationUnit]="modificationUnit"
-                            (claimChanged)="reloadClaim()"
-                        >
-                        </cc-status-modification-timeline-item>
-                        <cc-modification-unit-timeline-item
-                            *ngSwitchDefault
-                            [claim]="claim"
-                            [modificationUnit]="modificationUnit"
-                            (claimChanged)="reloadClaim()"
-                        ></cc-modification-unit-timeline-item>
-                    </ng-container>
-                    <cc-modification-unit-timeline-item
-                        *ngSwitchDefault
-                        [claim]="claim"
-                        [modificationUnit]="modificationUnit"
-                        isChangeable
-                        (claimChanged)="reloadClaim()"
-                    ></cc-modification-unit-timeline-item>
-                </ng-container>
+                  </cc-shop-modification-timeline-item>
+                }
+                @default {
+                  <cc-modification-unit-timeline-item
+                    [claim]="claim"
+                    [modificationUnit]="modificationUnit"
+                    isChangeable
+                    (claimChanged)="reloadClaim()"
+                  ></cc-modification-unit-timeline-item>
+                }
+              }
             }
-        </cc-timeline>
+            @case ('claim_modification') {
+              @switch (modificationUnit.modification | ngtUnionValue | ngtUnionKey) {
+                @case ('status_modification') {
+                  <cc-status-modification-timeline-item
+                    [claim]="claim"
+                    [modificationUnit]="modificationUnit"
+                    (claimChanged)="reloadClaim()"
+                    >
+                  </cc-status-modification-timeline-item>
+                }
+                @default {
+                  <cc-modification-unit-timeline-item
+                    [claim]="claim"
+                    [modificationUnit]="modificationUnit"
+                    (claimChanged)="reloadClaim()"
+                  ></cc-modification-unit-timeline-item>
+                }
+              }
+            }
+            @default {
+              <cc-modification-unit-timeline-item
+                [claim]="claim"
+                [modificationUnit]="modificationUnit"
+                isChangeable
+                (claimChanged)="reloadClaim()"
+              ></cc-modification-unit-timeline-item>
+            }
+          }
+        }
+      }
+    </cc-timeline>
 
-        <v-actions>
-            <button
-                [disabled]="(isAllowedChangeStatus$ | async) === false"
-                mat-button
-                (click)="changeStatus()"
-            >
-                Change status
-            </button>
-            <button mat-button (click)="createWallet()">Add wallet modification</button>
-            <button mat-button (click)="createShop()">Add shop modifications</button>
-            <button mat-flat-button (click)="addModification()">Add modification</button>
-        </v-actions>
-    </div>
+    <v-actions>
+      <button
+        [disabled]="(isAllowedChangeStatus$ | async) === false"
+        mat-button
+        (click)="changeStatus()"
+        >
+        Change status
+      </button>
+      <button mat-button (click)="createWallet()">Add wallet modification</button>
+      <button mat-button (click)="createShop()">Add shop modifications</button>
+      <button mat-flat-button (click)="addModification()">Add modification</button>
+    </v-actions>
+  </div>
 </cc-page-layout>

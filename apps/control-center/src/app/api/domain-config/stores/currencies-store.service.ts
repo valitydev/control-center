@@ -17,7 +17,7 @@ export class CurrenciesStoreService {
 
     private currencyObjects = rxResource({
         defaultValue: [],
-        loader: () =>
+        stream: () =>
             this.getAllCurrencies().pipe(
                 catchError((err) => {
                     this.log.errorOperation(err, 'receive', 'currencies');

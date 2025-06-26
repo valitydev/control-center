@@ -1,5 +1,5 @@
-<v-thrift-viewer
-    *ngIf="data() as data"
+@if (data(); as data) {
+  <v-thrift-viewer
     [compared]="data.compared"
     [extensions]="data.extensions$ | async"
     [kind]="data.kind"
@@ -8,4 +8,5 @@
     [progress]="data.progress"
     [type]="data.type"
     [value]="data.value"
-></v-thrift-viewer>
+  ></v-thrift-viewer>
+}

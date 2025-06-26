@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ContentChild, Input } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,7 @@ import { CardActionsComponent } from '../card-actions/card-actions.component';
 
 @Component({
     selector: 'cc-card',
-    imports: [CommonModule, MatDividerModule, MatIconModule, ContentLoadingComponent],
+    imports: [MatDividerModule, MatIconModule, ContentLoadingComponent],
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss'],
 })

@@ -1,38 +1,40 @@
 <cc-page-layout fullHeight title="Deposits">
-    <cc-page-layout-actions>
-        <v-more-filters-button [filters]="filters"></v-more-filters-button>
-    </cc-page-layout-actions>
-    <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
-        <ng-template [formGroup]="filtersForm">
-            <v-date-range-field formControlName="dateRange" required></v-date-range-field>
-            <v-input-field formControlName="amount_to" label="Amount To"></v-input-field>
-            <cc-currency-field formControlName="currency_code"></cc-currency-field>
-            <mat-form-field>
-                <mat-label>Status</mat-label>
-                <mat-select formControlName="status">
-                    <mat-option [value]="null">Any</mat-option>
-                    <mat-option *ngFor="let status of depositStatuses" [value]="status">
-                        {{ status | titlecase }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <v-input-field formControlName="deposit_id" label="Deposit ID"></v-input-field>
-            <v-input-field formControlName="identity_id" label="Identity ID"></v-input-field>
-            <cc-wallet-field formControlName="wallet_id"></cc-wallet-field>
-            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
-        </ng-template>
-    </v-filters>
-    <v-table
-        [columns]="columns"
-        [data]="deposits$ | async"
-        [hasMore]="hasMore$ | async"
-        [progress]="isLoading$ | async"
-        (more)="more()"
-        (update)="reload($event)"
+  <cc-page-layout-actions>
+    <v-more-filters-button [filters]="filters"></v-more-filters-button>
+  </cc-page-layout-actions>
+  <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
+    <ng-template [formGroup]="filtersForm">
+      <v-date-range-field formControlName="dateRange" required></v-date-range-field>
+      <v-input-field formControlName="amount_to" label="Amount To"></v-input-field>
+      <cc-currency-field formControlName="currency_code"></cc-currency-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option [value]="null">Any</mat-option>
+          @for (status of depositStatuses; track status) {
+            <mat-option [value]="status">
+              {{ status | titlecase }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <v-input-field formControlName="deposit_id" label="Deposit ID"></v-input-field>
+      <v-input-field formControlName="identity_id" label="Identity ID"></v-input-field>
+      <cc-wallet-field formControlName="wallet_id"></cc-wallet-field>
+      <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+    </ng-template>
+  </v-filters>
+  <v-table
+    [columns]="columns"
+    [data]="deposits$ | async"
+    [hasMore]="hasMore$ | async"
+    [progress]="isLoading$ | async"
+    (more)="more()"
+    (update)="reload($event)"
     >
-        <v-table-actions>
-            <button mat-button (click)="createByFile()">Create by file</button>
-            <button mat-flat-button (click)="createDeposit()">Create</button>
-        </v-table-actions>
-    </v-table>
+    <v-table-actions>
+      <button mat-button (click)="createByFile()">Create by file</button>
+      <button mat-flat-button (click)="createDeposit()">Create</button>
+    </v-table-actions>
+  </v-table>
 </cc-page-layout>

@@ -17,7 +17,7 @@ import { DomainSecretService } from './domain-secret-service';
 })
 export class DomainService {
     version = rxResource({
-        loader: () => this.repositoryService.GetLatestVersion(),
+        stream: () => this.repositoryService.GetLatestVersion(),
     });
 
     constructor(

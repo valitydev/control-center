@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { ActionsModule } from '@vality/matez';
 
 @Component({
     selector: 'cc-card-actions',
-    imports: [CommonModule, ActionsModule],
+    imports: [ActionsModule],
     templateUrl: './card-actions.component.html',
     styles: [],
 })

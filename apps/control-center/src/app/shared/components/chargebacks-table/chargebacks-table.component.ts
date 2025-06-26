@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
     Component,
     DestroyRef,
@@ -30,7 +30,7 @@ import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-st
 @Component({
     selector: 'cc-chargebacks-table',
     templateUrl: './chargebacks-table.component.html',
-    imports: [CommonModule, TableModule, MatButtonModule],
+    imports: [TableModule, MatButtonModule],
 })
 export class ChargebacksTableComponent {
     @Input() data!: StatChargeback[];

@@ -15,7 +15,7 @@ export interface KeycloakUser {
 })
 export class KeycloakUserService {
     user = rxResource({
-        loader: () =>
+        stream: () =>
             this.keycloakTokenInfoService.info$.pipe(
                 map(
                     ({ email, preferred_username }): KeycloakUser => ({
