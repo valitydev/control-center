@@ -1,4 +1,3 @@
-
 import { Component, computed, input } from '@angular/core';
 import { Column, TableModule } from '@vality/matez';
 

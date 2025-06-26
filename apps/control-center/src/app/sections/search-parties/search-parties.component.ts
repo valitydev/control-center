@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Party } from '@vality/deanonimus-proto/deanonimus';
 import {
@@ -21,6 +21,9 @@ import { FetchPartiesService } from '../../shared/services/fetch-parties.service
     standalone: false,
 })
 export class SearchPartiesComponent {
+    private qp = inject<QueryParamsService<{ text: string }>>(QueryParamsService<{ text: string }>);
+    private fetchPartiesService = inject(FetchPartiesService);
+    private router = inject(Router);
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchPartiesService.isLoading$;
     parties$ = this.fetchPartiesService.result$;
@@ -67,12 +70,6 @@ export class SearchPartiesComponent {
             ],
         })),
     ];
-
-    constructor(
-        private qp: QueryParamsService<{ text: string }>,
-        private fetchPartiesService: FetchPartiesService,
-        private router: Router,
-    ) {}
 
     @DebounceTime()
     searchParamsUpdated(filter: string) {

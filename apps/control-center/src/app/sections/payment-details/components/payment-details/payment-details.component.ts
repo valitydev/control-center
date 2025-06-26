@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, Inject, LOCALE_ID } from '@angular/core';
+import { Component, LOCALE_ID, inject } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { formatCurrency, getImportValue } from '@vality/matez';
@@ -20,6 +20,10 @@ import { PaymentDetailsService } from '../../payment-details.service';
     styles: ``,
 })
 export class PaymentDetailsComponent {
+    private paymentDetailsService = inject(PaymentDetailsService);
+    private domainMetadataViewExtensionsService = inject(DomainMetadataViewExtensionsService);
+    private amountCurrencyService = inject(AmountCurrencyService);
+    private _locale = inject<string>(LOCALE_ID);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
@@ -63,11 +67,4 @@ export class PaymentDetailsComponent {
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(
-        private paymentDetailsService: PaymentDetailsService,
-        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
-        private amountCurrencyService: AmountCurrencyService,
-        @Inject(LOCALE_ID) private _locale: string,
-    ) {}
 }

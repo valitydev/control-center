@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 
@@ -10,12 +10,11 @@ import { FistfulAdminService } from '../../../api/fistful-admin';
     standalone: false,
 })
 export class CreateSourceComponent extends DialogSuperclass<void> {
+    private fistfulAdminService = inject(FistfulAdminService);
+    private log = inject(NotifyLogService);
     control = new FormControl();
 
-    constructor(
-        private fistfulAdminService: FistfulAdminService,
-        private log: NotifyLogService,
-    ) {
+    constructor() {
         super();
     }
 

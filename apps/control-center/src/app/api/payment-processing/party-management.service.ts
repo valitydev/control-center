@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
     ThriftAstMetadata,
     payment_processing_PartyManagement,
@@ -14,12 +14,11 @@ import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/service
 
 @Injectable({ providedIn: 'root' })
 export class PartyManagementService {
+    private keycloakTokenInfoService = inject(KeycloakTokenInfoService);
     private client$: Observable<payment_processing_PartyManagementCodegenClient>;
 
-    constructor(
-        private keycloakTokenInfoService: KeycloakTokenInfoService,
-        configService: ConfigService,
-    ) {
+    constructor() {
+        const configService = inject(ConfigService);
         const headers$ = this.keycloakTokenInfoService.info$.pipe(
             map(toWachterHeaders('PartyManagement')),
         );

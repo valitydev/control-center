@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
 import { Link, NavComponent } from '@vality/matez';
@@ -12,6 +12,7 @@ import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav
     templateUrl: './terms.component.html',
 })
 export class TermsComponent {
+    public sidenavInfoService = inject(SidenavInfoService);
     links: Link[] = [
         {
             label: 'Shops',
@@ -26,6 +27,4 @@ export class TermsComponent {
             url: 'terminals',
         },
     ];
-
-    constructor(public sidenavInfoService: SidenavInfoService) {}
 }

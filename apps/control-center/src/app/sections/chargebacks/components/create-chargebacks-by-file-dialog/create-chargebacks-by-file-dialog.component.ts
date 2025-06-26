@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import {
@@ -24,6 +24,9 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
     void,
     InvoicePaymentChargeback[]
 > {
+    private invoicingService = inject(InvoicingService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     progress$ = new BehaviorSubject(0);
@@ -32,11 +35,7 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
     props = CSV_CHARGEBACK_PROPS;
     errors?: Map<CsvChargeback, unknown>;
 
-    constructor(
-        private invoicingService: InvoicingService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

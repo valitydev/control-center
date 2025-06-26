@@ -4,6 +4,7 @@ import {
     OnInit,
     booleanAttribute,
     computed,
+    inject,
     input,
     numberAttribute,
     output,
@@ -20,6 +21,7 @@ import { NormColumn } from '../../types';
     standalone: false,
 })
 export class TableInfoBarComponent<T extends object, C extends object> implements OnInit {
+    private dr = inject(DestroyRef);
     progress = input(false, { transform: booleanAttribute });
     hasMore = input(false, { transform: booleanAttribute });
     hasLoad = input(false, { transform: booleanAttribute });
@@ -59,8 +61,6 @@ export class TableInfoBarComponent<T extends object, C extends object> implement
               ? '...'
               : '0',
     );
-
-    constructor(private dr: DestroyRef) {}
 
     ngOnInit() {
         this.filterControl.valueChanges.pipe(takeUntilDestroyed(this.dr)).subscribe((v) => {

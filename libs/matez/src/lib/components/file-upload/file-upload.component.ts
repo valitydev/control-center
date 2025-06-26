@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 
 import { NotifyLogService } from '../../services';
 
@@ -16,14 +16,13 @@ function hasExtension(fileName: string, extensions: string[]) {
     standalone: false,
 })
 export class FileUploadComponent {
+    private log = inject(NotifyLogService);
     @Input() label?: string;
     @Input() extensions: string[] = [];
 
     @Output() upload = new EventEmitter<File | null>();
 
     protected file?: File | null;
-
-    constructor(private log: NotifyLogService) {}
 
     loadFile(event: Event) {
         const file = (event.target as HTMLInputElement)?.files?.[0] ?? null;

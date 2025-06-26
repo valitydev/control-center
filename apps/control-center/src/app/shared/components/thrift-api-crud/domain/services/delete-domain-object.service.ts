@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Reference } from '@vality/domain-proto/domain';
 import {
     ConfirmDialogComponent,
@@ -14,11 +14,9 @@ import { DomainStoreService } from '../../../../../api/domain-config';
     providedIn: 'root',
 })
 export class DeleteDomainObjectService {
-    constructor(
-        private dialogService: DialogService,
-        private domainStoreService: DomainStoreService,
-        private log: NotifyLogService,
-    ) {}
+    private dialogService = inject(DialogService);
+    private domainStoreService = inject(DomainStoreService);
+    private log = inject(NotifyLogService);
 
     delete(domainRef: Reference) {
         return this.dialogService

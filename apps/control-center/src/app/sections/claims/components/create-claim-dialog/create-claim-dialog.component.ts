@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,15 +16,14 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
     CreateClaimDialogComponent,
     { partyId: string }
 > {
+    private claimService = inject(ClaimManagementService);
+    private log = inject(NotifyLogService);
+    private router = inject(Router);
+    private destroyRef = inject(DestroyRef);
     control = new FormControl(this.dialogData.partyId, Validators.required);
     progress$ = new BehaviorSubject(0);
 
-    constructor(
-        private claimService: ClaimManagementService,
-        private log: NotifyLogService,
-        private router: Router,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

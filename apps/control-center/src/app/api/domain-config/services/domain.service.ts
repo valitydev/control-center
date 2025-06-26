@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { Operation, Version } from '@vality/domain-proto/domain_config_v2';
@@ -16,17 +16,14 @@ import { DomainSecretService } from './domain-secret-service';
     providedIn: 'root',
 })
 export class DomainService {
+    private repositoryService = inject(Repository2Service);
+    private authorStoreService = inject(AuthorStoreService);
+    private log = inject(NotifyLogService);
+    private repositoryClientService = inject(RepositoryClientService);
+    private domainSecretService = inject(DomainSecretService);
     version = rxResource({
         stream: () => this.repositoryService.GetLatestVersion(),
     });
-
-    constructor(
-        private repositoryService: Repository2Service,
-        private authorStoreService: AuthorStoreService,
-        private log: NotifyLogService,
-        private repositoryClientService: RepositoryClientService,
-        private domainSecretService: DomainSecretService,
-    ) {}
 
     get(ref: Reference, version?: Version) {
         return this.repositoryClientService

@@ -1,44 +1,41 @@
 <mat-toolbar class="toolbar matv-primary">
-  <div class="logo" routerLink="/">
-    <mat-icon>dashboard</mat-icon>
-    <div>Control Center</div>
-  </div>
-  <div class="search">
-    <div></div>
-    <cc-merchant-field
-      [formControl]="partyIdControl"
-      appearance="outline"
-      class="input"
-      hint=""
-      label="Search merchant"
-      size="small"
-    ></cc-merchant-field>
-    <div>
-      @if (partyIdControl.value) {
-        <button
-          [cdkCopyToClipboard]="partyIdControl.value"
-          mat-icon-button
-          (cdkCopyToClipboardCopied)="copyNotify($event)"
-          >
-          <mat-icon>content_copy</mat-icon>
-        </button>
-      }
-      @if (partyIdControl.value && !(hasMenu$ | async)) {
-        <button
-          mat-icon-button
-          (click)="toParty()"
-          >
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      }
+    <div class="logo" routerLink="/">
+        <mat-icon>dashboard</mat-icon>
+        <div>Control Center</div>
     </div>
-  </div>
-  <div class="user">
-    <span>{{ user()?.username }}</span>
-    <button [matMenuTriggerFor]="userMenu" mat-icon-button>
-      <mat-icon>more_vert</mat-icon>
-    </button>
-  </div>
+    <div class="search">
+        <div></div>
+        <cc-merchant-field
+            [formControl]="partyIdControl"
+            appearance="outline"
+            class="input"
+            hint=""
+            label="Search merchant"
+            size="small"
+        ></cc-merchant-field>
+        <div>
+            @if (partyIdControl.value) {
+                <button
+                    [cdkCopyToClipboard]="partyIdControl.value"
+                    mat-icon-button
+                    (cdkCopyToClipboardCopied)="copyNotify($event)"
+                >
+                    <mat-icon>content_copy</mat-icon>
+                </button>
+            }
+            @if (partyIdControl.value && !(hasMenu$ | async)) {
+                <button mat-icon-button (click)="toParty()">
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            }
+        </div>
+    </div>
+    <div class="user">
+        <span>{{ user()?.username }}</span>
+        <button [matMenuTriggerFor]="userMenu" mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
 </mat-toolbar>
 
 <mat-menu #userMenu="matMenu"><button mat-menu-item (click)="logout()">Logout</button></mat-menu>

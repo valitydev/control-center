@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExtractParams, serializeQueryParams } from '@vality/matez';
 import { difference, pick } from 'lodash-es';
@@ -10,7 +10,7 @@ const PATH_PARAM_REGEX = /:[a-zA-Z0-9_]+/g;
 
 @Injectable({ providedIn: 'root' })
 export class NavigateService {
-    constructor(private router: Router) {}
+    private router = inject(Router);
 
     navigate<T extends Route>(
         route: T,

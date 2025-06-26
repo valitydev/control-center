@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
@@ -19,17 +19,14 @@ import { PaymentDetailsService } from '../../payment-details.service';
     providers: [FetchChargebacksService],
 })
 export class PaymentChargebacksComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private dialogService = inject(DialogService);
+    private dr = inject(DestroyRef);
+    private paymentDetailsService = inject(PaymentDetailsService);
+    protected fetchChargebacksService = inject(FetchChargebacksService);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     chargebacks$ = this.fetchChargebacksService.result$;
-
-    constructor(
-        private route: ActivatedRoute,
-        private dialogService: DialogService,
-        private dr: DestroyRef,
-        private paymentDetailsService: PaymentDetailsService,
-        protected fetchChargebacksService: FetchChargebacksService,
-    ) {}
 
     ngOnInit() {
         this.update();

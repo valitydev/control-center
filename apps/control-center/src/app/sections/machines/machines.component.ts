@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import {
@@ -52,6 +52,16 @@ interface Filters {
     standalone: false,
 })
 export class MachinesComponent implements OnInit {
+    private machinesService = inject(MachinesService);
+    private fb = inject(NonNullableFormBuilder);
+    private qp = inject<QueryParamsService<Filters>>(QueryParamsService<Filters>);
+    private dialogService = inject(DialogService);
+    private repairManagementService = inject(RepairManagementService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
+    private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
+    private sidenavInfoService = inject(SidenavInfoService);
     machines$ = this.machinesService.result$;
     inProgress$ = this.machinesService.isLoading$;
     hasMore$ = this.machinesService.hasMore$;
@@ -106,19 +116,6 @@ export class MachinesComponent implements OnInit {
     );
 
     private initFilters = this.filtersForm.value;
-
-    constructor(
-        private machinesService: MachinesService,
-        private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<Filters>,
-        private dialogService: DialogService,
-        private repairManagementService: RepairManagementService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-        private sidenavInfoService: SidenavInfoService,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);

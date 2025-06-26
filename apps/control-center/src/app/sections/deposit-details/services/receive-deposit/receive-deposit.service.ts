@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { NotifyLogService, inProgressFrom, progressTo } from '@vality/matez';
 import { BehaviorSubject, EMPTY, ReplaySubject, Subject, defer } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -8,6 +8,8 @@ import { FistfulStatisticsService } from '../../../../api/fistful-stat/fistful-s
 
 @Injectable()
 export class ReceiveDepositService {
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
+    private log = inject(NotifyLogService);
     deposit$ = defer(() => this.receiveDeposit$).pipe(
         switchMap((depositId) =>
             this.fistfulStatisticsService
@@ -29,11 +31,6 @@ export class ReceiveDepositService {
     private receiveDeposit$ = new ReplaySubject<string>();
     private error$ = new Subject<boolean>();
     private progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private fistfulStatisticsService: FistfulStatisticsService,
-        private log: NotifyLogService,
-    ) {}
 
     receiveDeposit(id: string) {
         this.receiveDeposit$.next(id);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean, handleError } from '@vality/matez';
 import { map } from 'rxjs/operators';
@@ -9,10 +9,10 @@ import { DominatorService } from '../../../../api/dominator/dominator.service';
     providedIn: 'root',
 })
 export class ShopsTermsService extends FetchSuperclass<ShopTermSet, ShopSearchQuery> {
-    constructor(
-        private dominatorService: DominatorService,
-        private log: NotifyLogService,
-    ) {
+    private dominatorService = inject(DominatorService);
+    private log = inject(NotifyLogService);
+
+    constructor() {
         super();
     }
 

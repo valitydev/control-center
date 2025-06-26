@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -48,6 +48,15 @@ interface DomainObjectData {
     ],
 })
 export class DomainObjectsTableComponent implements OnInit {
+    private domainStoreService = inject(DomainStoreService);
+    private metadataService = inject(MetadataService);
+    private qp = inject<QueryParamsService<{ types?: string[] }>>(
+        QueryParamsService<{ types?: string[] }>,
+    );
+    private sidenavInfoService = inject(SidenavInfoService);
+    private deleteDomainObjectService = inject(DeleteDomainObjectService);
+    private destroyRef = inject(DestroyRef);
+    private dialogService = inject(DialogService);
     @Output() selectedChange = new EventEmitter<string[]>();
 
     typesControl = new FormControl<string[]>(
@@ -136,16 +145,6 @@ export class DomainObjectsTableComponent implements OnInit {
         ),
     );
     isLoading$ = this.domainStoreService.isLoading$;
-
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private metadataService: MetadataService,
-        private qp: QueryParamsService<{ types?: string[] }>,
-        private sidenavInfoService: SidenavInfoService,
-        private deleteDomainObjectService: DeleteDomainObjectService,
-        private destroyRef: DestroyRef,
-        private dialogService: DialogService,
-    ) {}
 
     ngOnInit() {
         this.typesControl.valueChanges

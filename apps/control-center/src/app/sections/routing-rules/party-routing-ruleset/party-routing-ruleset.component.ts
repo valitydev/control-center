@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingDelegate } from '@vality/domain-proto/domain';
@@ -26,6 +26,14 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     standalone: false,
 })
 export class PartyRoutingRulesetComponent {
+    private dialogService = inject(DialogService);
+    private partyRoutingRulesetService = inject(PartyRoutingRulesetService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private domainStoreService = inject(DomainStoreService);
+    private destroyRef = inject(DestroyRef);
+    private sidenavInfoService = inject(SidenavInfoService);
+    protected routingRulesTypeService = inject(RoutingRulesTypeService);
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.domainStoreService.isLoading$;
@@ -98,17 +106,6 @@ export class PartyRoutingRulesetComponent {
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
-
-    constructor(
-        private dialogService: DialogService,
-        private partyRoutingRulesetService: PartyRoutingRulesetService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private domainStoreService: DomainStoreService,
-        private destroyRef: DestroyRef,
-        private sidenavInfoService: SidenavInfoService,
-        protected routingRulesTypeService: RoutingRulesTypeService,
-    ) {}
 
     add() {
         this.partyRuleset$.pipe(take(1)).subscribe((partyRuleset) => {

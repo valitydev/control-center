@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Claim, ClaimStatus } from '@vality/domain-proto/claim_management';
@@ -24,6 +24,11 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
     ChangeStatusDialogComponent,
     { partyID: string; claim: Claim }
 > {
+    private fb = inject(FormBuilder);
+    private claimManagementService = inject(ClaimManagementService);
+    private log = inject(NotifyLogService);
+    private allowedClaimStatusesService = inject(AllowedClaimStatusesService);
+    private destroyRef = inject(DestroyRef);
     form = this.fb.group({
         status: [null as keyof ClaimStatus, Validators.required],
         revokeReason: null as string,
@@ -36,13 +41,7 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
 
     private progress$ = new BehaviorSubject(0);
 
-    constructor(
-        private fb: FormBuilder,
-        private claimManagementService: ClaimManagementService,
-        private log: NotifyLogService,
-        private allowedClaimStatusesService: AllowedClaimStatusesService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

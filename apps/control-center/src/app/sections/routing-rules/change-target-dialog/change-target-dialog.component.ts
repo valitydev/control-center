@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
@@ -16,15 +16,14 @@ export class ChangeTargetDialogComponent extends DialogSuperclass<
     ChangeTargetDialogComponent,
     { mainRulesetRefID: number; delegateIdx: number; type: RoutingRulesType }
 > {
+    private routingRulesService = inject(RoutingRulesService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     targetRuleset$ = new BehaviorSubject<TargetRuleset>(undefined);
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);
     initValue: Partial<TargetRuleset> = {};
 
-    constructor(
-        private routingRulesService: RoutingRulesService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
         this.routingRulesService
             .getRuleset(this.dialogData?.mainRulesetRefID)

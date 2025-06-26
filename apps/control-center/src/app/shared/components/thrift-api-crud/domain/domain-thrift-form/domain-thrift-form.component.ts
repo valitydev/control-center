@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Claim } from '@vality/domain-proto/claim_management';
@@ -20,6 +20,7 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule],
 })
 export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     party = input<Party>();
     claim = input<Claim>();
 
@@ -39,7 +40,7 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     );
     defaultNamespace = 'domain';
 
-    constructor(private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService) {
+    constructor() {
         super();
     }
 }

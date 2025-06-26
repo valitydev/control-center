@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Claim, ClaimSearchQuery } from '@vality/domain-proto/claim_management';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService } from '@vality/matez';
 import { Observable, of } from 'rxjs';
@@ -11,10 +11,10 @@ export class FetchClaimsService extends FetchSuperclass<
     Claim,
     Omit<ClaimSearchQuery, 'continuation_token' | 'limit'>
 > {
-    constructor(
-        private claimManagementService: ClaimManagementService,
-        private log: NotifyLogService,
-    ) {
+    private claimManagementService = inject(ClaimManagementService);
+    private log = inject(NotifyLogService);
+
+    constructor() {
         super();
     }
 

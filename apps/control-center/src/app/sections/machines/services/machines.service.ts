@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { FetchOptions, FetchSuperclass, NotifyLogService } from '@vality/matez';
 import { Machine, SearchRequest } from '@vality/repairer-proto/repairer';
 import { of } from 'rxjs';
@@ -8,10 +8,10 @@ import { RepairManagementService } from '../../../api/repairer';
 
 @Injectable()
 export class MachinesService extends FetchSuperclass<Machine, SearchRequest> {
-    constructor(
-        private repairManagementService: RepairManagementService,
-        private log: NotifyLogService,
-    ) {
+    private repairManagementService = inject(RepairManagementService);
+    private log = inject(NotifyLogService);
+
+    constructor() {
         super();
     }
 

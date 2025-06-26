@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { distinctUntilChanged, filter, map, shareReplay, startWith } from 'rxjs/operators';
 
@@ -6,6 +6,7 @@ import { distinctUntilChanged, filter, map, shareReplay, startWith } from 'rxjs/
     providedIn: 'root',
 })
 export class UrlService {
+    private router = inject(Router);
     url$ = this.router.events.pipe(
         startWith(null),
         map(() => this.url),
@@ -27,6 +28,4 @@ export class UrlService {
     get path() {
         return this.url?.split('/')?.slice(1) ?? [];
     }
-
-    constructor(private router: Router) {}
 }

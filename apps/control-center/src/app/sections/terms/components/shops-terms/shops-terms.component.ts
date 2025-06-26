@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
@@ -70,6 +70,12 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     templateUrl: './shops-terms.component.html',
 })
 export class ShopsTermsComponent implements OnInit {
+    private shopsTermsService = inject(ShopsTermsService);
+    private fb = inject(NonNullableFormBuilder);
+    private qp = inject<QueryParamsService<Params>>(QueryParamsService<Params>);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
+    private dr = inject(DestroyRef);
+    private sidenavInfoService = inject(SidenavInfoService);
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,
@@ -128,15 +134,6 @@ export class ShopsTermsComponent implements OnInit {
     );
 
     private initFiltersValue = this.filtersForm.value;
-
-    constructor(
-        private shopsTermsService: ShopsTermsService,
-        private fb: NonNullableFormBuilder,
-        private qp: QueryParamsService<Params>,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-        private dr: DestroyRef,
-        private sidenavInfoService: SidenavInfoService,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);

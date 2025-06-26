@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
@@ -34,6 +34,10 @@ import { getDomainObjectDetails } from '../utils';
     templateUrl: './domain-object-card.component.html',
 })
 export class DomainObjectCardComponent implements OnChanges {
+    private deleteDomainObjectService = inject(DeleteDomainObjectService);
+    private domainStoreService = inject(DomainStoreService);
+    private destroyRef = inject(DestroyRef);
+    private dialogService = inject(DialogService);
     @Input() ref!: Reference;
 
     ref$ = new ReplaySubject<Reference>(1);
@@ -51,13 +55,6 @@ export class DomainObjectCardComponent implements OnChanges {
     kind = createStorageValue<UnionEnum<ViewerKind>>('domain-object-card-view', {
         deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
     });
-
-    constructor(
-        private deleteDomainObjectService: DeleteDomainObjectService,
-        private domainStoreService: DomainStoreService,
-        private destroyRef: DestroyRef,
-        private dialogService: DialogService,
-    ) {}
 
     ngOnChanges(changes: ComponentChanges<DomainObjectCardComponent>) {
         if (changes.ref) {

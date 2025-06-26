@@ -47,6 +47,11 @@ export class ShopFieldComponent
     extends FormControlSuperclass<ShopID | ShopID[]>
     implements AfterViewInit
 {
+    private partyManagementService = inject(PartyManagementService);
+    private deanonimusService = inject(DeanonimusService);
+    private log = inject(NotifyLogService);
+    private dr = inject(DestroyRef);
+    private injector = inject(Injector);
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
     @Input() size?: SelectFieldComponent['size'];
@@ -61,13 +66,7 @@ export class ShopFieldComponent
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
 
-    constructor(
-        private partyManagementService: PartyManagementService,
-        private deanonimusService: DeanonimusService,
-        private log: NotifyLogService,
-        private dr: DestroyRef,
-        private injector: Injector,
-    ) {
+    constructor() {
         super();
     }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
 import { FetchOptions, FetchSuperclass, clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
@@ -9,7 +9,9 @@ import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 
 @Injectable()
 export class FetchRevertsService extends FetchSuperclass<StatDepositRevert, FetchRevertsParams> {
-    constructor(private fistfulStatisticsService: FistfulStatisticsService) {
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
+
+    constructor() {
         super();
     }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, booleanAttribute, model } from '@angular/core';
+import { Component, Input, booleanAttribute, inject, model } from '@angular/core';
 import { ThriftAstMetadata } from '@vality/domain-proto';
 import { UnionEnum, getImportValue } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
@@ -13,6 +13,7 @@ import { DomainMetadataViewExtensionsService } from './services/domain-metadata-
     imports: [CommonModule, ThriftViewerModule],
 })
 export class DomainThriftViewerComponent<T> {
+    private domainMetadataViewExtensionsService = inject(DomainMetadataViewExtensionsService);
     kind = model<UnionEnum<ViewerKind>>(ViewerKind.Component);
     @Input() value: T;
     @Input() compared?: T;
@@ -23,6 +24,4 @@ export class DomainThriftViewerComponent<T> {
 
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
-
-    constructor(private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService) {}
 }

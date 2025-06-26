@@ -1,4 +1,3 @@
-
 import {
     Component,
     EventEmitter,
@@ -6,6 +5,7 @@ import {
     Input,
     Output,
     booleanAttribute,
+    inject,
     input,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -57,6 +57,14 @@ export interface ShopParty {
     providers: [PartyDelegateRulesetsService],
 })
 export class ShopsTableComponent {
+    private sidenavInfoService = inject(SidenavInfoService);
+    private partyManagementService = inject(PartyManagementService);
+    private dialogService = inject(DialogService);
+    private log = inject(NotifyLogService);
+    private router = inject(Router);
+    private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
+    private domainStoreService = inject(DomainStoreService);
+    private injector = inject(Injector);
     shops = input<ShopParty[]>([]);
     @Input() progress: number | boolean = false;
     @Output() update = new EventEmitter<void>();
@@ -189,17 +197,6 @@ export class ShopsTableComponent {
             ),
         ),
     ];
-
-    constructor(
-        private sidenavInfoService: SidenavInfoService,
-        private partyManagementService: PartyManagementService,
-        private dialogService: DialogService,
-        private log: NotifyLogService,
-        private router: Router,
-        private partyDelegateRulesetsService: PartyDelegateRulesetsService,
-        private domainStoreService: DomainStoreService,
-        private injector: Injector,
-    ) {}
 
     toggleBlocking({ party, shop }: ShopParty) {
         this.dialogService

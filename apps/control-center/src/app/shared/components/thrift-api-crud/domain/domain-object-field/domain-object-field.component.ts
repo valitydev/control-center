@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DomainObject } from '@vality/domain-proto/internal/domain';
 import {
@@ -27,6 +27,7 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
     extends FormControlSuperclass<DomainObjectID>
     implements OnChanges
 {
+    private domainStoreService = inject(DomainStoreService);
     @Input() name: T;
 
     options$ = defer(() => this.name$).pipe(
@@ -47,7 +48,7 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
 
     private name$ = new ReplaySubject<keyof DomainObject>(1);
 
-    constructor(private domainStoreService: DomainStoreService) {
+    constructor() {
         super();
     }
 

@@ -1,4 +1,4 @@
-import { DestroyRef, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { NotifyLogService } from '@vality/matez';
@@ -16,6 +16,13 @@ export const MAIN_REF = 'main';
 
 @Injectable()
 export class PartyRoutingRulesetService {
+    private route = inject(ActivatedRoute);
+    private partyManagementService = inject(PartyManagementService);
+    private routingRulesService = inject(RoutingRulesService);
+    private fistfulStatistics = inject(FistfulStatisticsService);
+    private destroyRef = inject(DestroyRef);
+    private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
+    private log = inject(NotifyLogService);
     partyID$ = this.route.params.pipe(
         map((r) => r['partyID']),
         takeUntilDestroyed(this.destroyRef),
@@ -67,16 +74,6 @@ export class PartyRoutingRulesetService {
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
-
-    constructor(
-        private route: ActivatedRoute,
-        private partyManagementService: PartyManagementService,
-        private routingRulesService: RoutingRulesService,
-        private fistfulStatistics: FistfulStatisticsService,
-        private destroyRef: DestroyRef,
-        private partyDelegateRulesetsService: PartyDelegateRulesetsService,
-        private log: NotifyLogService,
-    ) {}
 
     reload() {
         this.routingRulesService.reload();

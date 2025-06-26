@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
     type TerminalSearchQuery,
     type TerminalTermSet,
@@ -12,10 +12,10 @@ import { DominatorService } from '../../../../api/dominator/dominator.service';
     providedIn: 'root',
 })
 export class TerminalsTermsService extends FetchSuperclass<TerminalTermSet, TerminalSearchQuery> {
-    constructor(
-        private dominatorService: DominatorService,
-        private log: NotifyLogService,
-    ) {
+    private dominatorService = inject(DominatorService);
+    private log = inject(NotifyLogService);
+
+    constructor() {
         super();
     }
 

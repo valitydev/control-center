@@ -1,42 +1,40 @@
 <cc-page-layout fullHeight title="Claims">
-  <cc-page-layout-actions
-    ><v-more-filters-button [filters]="filters"></v-more-filters-button
-  ></cc-page-layout-actions>
-  <v-filters #filters [active]="active$ | async">
-    <ng-template [formGroup]="filtersForm">
-      @if (!(party$ | async)) {
-        <cc-merchant-field
-          formControlName="party_id"
-        ></cc-merchant-field>
-      }
-      <mat-form-field>
-        <input
-          autocomplete="off"
-          formControlName="claim_id"
-          matInput
-          placeholder="Claim ID"
-          type="number"
-          />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-select formControlName="statuses" multiple placeholder="Claim statuses">
-          @for (status of claimStatuses; track status) {
-            <mat-option [value]="status">{{
-              status | ngtKeyTitle | titlecase
-            }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </ng-template>
-  </v-filters>
-  <cc-claims-table
-    [data]="claims$ | async"
-    [hasMore]="hasMore$ | async"
-    [isLoading]="isLoading$ | async"
-    [noParty]="!!(party$ | async)"
-    (more)="more()"
-    (update)="reload($event)"
+    <cc-page-layout-actions
+        ><v-more-filters-button [filters]="filters"></v-more-filters-button
+    ></cc-page-layout-actions>
+    <v-filters #filters [active]="active$ | async">
+        <ng-template [formGroup]="filtersForm">
+            @if (!(party$ | async)) {
+                <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+            }
+            <mat-form-field>
+                <input
+                    autocomplete="off"
+                    formControlName="claim_id"
+                    matInput
+                    placeholder="Claim ID"
+                    type="number"
+                />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select formControlName="statuses" multiple placeholder="Claim statuses">
+                    @for (status of claimStatuses; track status) {
+                        <mat-option [value]="status">{{
+                            status | ngtKeyTitle | titlecase
+                        }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </ng-template>
+    </v-filters>
+    <cc-claims-table
+        [data]="claims$ | async"
+        [hasMore]="hasMore$ | async"
+        [isLoading]="isLoading$ | async"
+        [noParty]="!!(party$ | async)"
+        (more)="more()"
+        (update)="reload($event)"
     >
-    <button mat-flat-button (click)="create()">Create</button>
-  </cc-claims-table>
+        <button mat-flat-button (click)="create()">Create</button>
+    </cc-claims-table>
 </cc-page-layout>

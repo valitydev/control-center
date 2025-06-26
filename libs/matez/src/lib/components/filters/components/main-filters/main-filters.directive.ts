@@ -1,9 +1,9 @@
-import { Directive, TemplateRef } from '@angular/core';
+import { Directive, TemplateRef, inject } from '@angular/core';
 
 @Directive({
     selector: '[vMainFilters]',
     standalone: false,
 })
 export class MainFiltersDirective {
-    constructor(public templateRef: TemplateRef<unknown>) {}
+    public templateRef = inject<TemplateRef<unknown>>(TemplateRef<unknown>);
 }

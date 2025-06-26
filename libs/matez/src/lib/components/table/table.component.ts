@@ -11,6 +11,7 @@ import {
     ViewChild,
     booleanAttribute,
     computed,
+    inject,
     input,
     model,
     numberAttribute,
@@ -74,6 +75,9 @@ import {
     standalone: false,
 })
 export class TableComponent<T extends object, C extends object> implements OnInit {
+    private dr = inject(DestroyRef);
+    private injector = inject(Injector);
+    private cdr = inject(ChangeDetectorRef);
     data = input<T[], ArrayAttributeTransform<T>>([], { transform: arrayAttribute });
     treeData = input<TreeData<T, C>>();
     columns = input<Column<T, C>[], ArrayAttributeTransform<Column<T, C>>>([], {
@@ -211,12 +215,6 @@ export class TableComponent<T extends object, C extends object> implements OnIni
     @ViewChild('matTable', { static: false }) table!: MatTable<T>;
     @ContentChild(TableInputsComponent, { read: ElementRef }) tableInputsContent!: ElementRef;
     @ViewChild(MatRow, { static: false }) tableRow!: ElementRef;
-
-    constructor(
-        private dr: DestroyRef,
-        private injector: Injector,
-        private cdr: ChangeDetectorRef,
-    ) {}
 
     ngOnInit() {
         const sort$ = toObservable(this.sort, { injector: this.injector }).pipe(

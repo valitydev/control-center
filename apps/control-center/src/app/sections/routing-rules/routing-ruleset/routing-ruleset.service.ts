@@ -1,4 +1,4 @@
-import { DestroyRef, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -14,6 +14,11 @@ import { RoutingRulesService as RoutingRulesDamselService } from '../services/ro
 
 @Injectable()
 export class RoutingRulesetService {
+    private routingRulesService = inject(RoutingRulesDamselService);
+    private route = inject(ActivatedRoute);
+    private log = inject(NotifyLogService);
+    private dialog = inject(DialogService);
+    private destroyRef = inject(DestroyRef);
     partyID$: Observable<string> = this.route.params.pipe(
         map((r) => r['partyID']),
         shareReplay(1),
@@ -32,14 +37,6 @@ export class RoutingRulesetService {
         switchMap((refID) => this.routingRulesService.getRuleset(refID)),
         shareReplay(1),
     );
-
-    constructor(
-        private routingRulesService: RoutingRulesDamselService,
-        private route: ActivatedRoute,
-        private log: NotifyLogService,
-        private dialog: DialogService,
-        private destroyRef: DestroyRef,
-    ) {}
 
     removeRule(candidateIdx: number) {
         this.dialog

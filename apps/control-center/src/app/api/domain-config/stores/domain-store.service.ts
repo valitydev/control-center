@@ -1,4 +1,4 @@
-import { DestroyRef, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
@@ -18,6 +18,10 @@ import { createObjectHash } from '../utils/create-object-hash';
     providedIn: 'root',
 })
 export class DomainStoreService {
+    private repositoryService = inject(RepositoryService);
+    private domainSecretService = inject(DomainSecretService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     /**
      * @deprecated
      */
@@ -75,13 +79,6 @@ export class DomainStoreService {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(
-        private repositoryService: RepositoryService,
-        private domainSecretService: DomainSecretService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {}
 
     /**
      * @deprecated

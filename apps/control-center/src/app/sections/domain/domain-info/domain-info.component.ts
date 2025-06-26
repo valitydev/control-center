@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
@@ -13,15 +13,12 @@ import { CreateDomainObjectDialogComponent } from '../../../shared/components/th
     standalone: false,
 })
 export class DomainInfoComponent {
+    private domainStoreService = inject(DomainStoreService);
+    private dialogService = inject(DialogService);
+    private destroyRef = inject(DestroyRef);
     version$ = this.domainStoreService.version$;
     progress$ = this.domainStoreService.isLoading$;
     selectedTypes$ = new BehaviorSubject<string[]>([]);
-
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private dialogService: DialogService,
-        private destroyRef: DestroyRef,
-    ) {}
 
     create() {
         this.selectedTypes$

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
 import { NotifyLogService } from '@vality/matez';
@@ -15,6 +15,9 @@ import { PartyManagementService } from '../../api/payment-processing';
 
 @Injectable()
 export class PartyStoreService {
+    private route = inject(ActivatedRoute);
+    private partyManagementService = inject(PartyManagementService);
+    private log = inject(NotifyLogService);
     party$: Observable<Party | Partial<Party> | null> = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         switchMap(({ partyID }) =>
@@ -35,10 +38,4 @@ export class PartyStoreService {
     private get partyId() {
         return this.route.snapshot.params['partyID'];
     }
-
-    constructor(
-        private route: ActivatedRoute,
-        private partyManagementService: PartyManagementService,
-        private log: NotifyLogService,
-    ) {}
 }

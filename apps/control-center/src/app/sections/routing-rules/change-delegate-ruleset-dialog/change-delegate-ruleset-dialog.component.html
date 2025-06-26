@@ -1,24 +1,22 @@
 <v-dialog title="Change Delegate Ruleset">
-  <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
-    <mat-form-field>
-      <mat-label>Delegate Ruleset</mat-label>
-      <mat-select formControlName="rulesetRefId" required>
-        @for (i of rulesets$ | async; track i) {
-          <mat-option [value]="i.ref.id">
-            #{{ i.ref.id }} {{ i.data.name }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
+        <mat-form-field>
+            <mat-label>Delegate Ruleset</mat-label>
+            <mat-select formControlName="rulesetRefId" required>
+                @for (i of rulesets$ | async; track i) {
+                    <mat-option [value]="i.ref.id"> #{{ i.ref.id }} {{ i.data.name }} </mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
 
-    <mat-form-field>
-      <input formControlName="description" matInput placeholder="Delegate description" />
-    </mat-form-field>
-  </div>
+        <mat-form-field>
+            <input formControlName="description" matInput placeholder="Delegate description" />
+        </mat-form-field>
+    </div>
 
-  <v-dialog-actions>
-    <button [disabled]="form.invalid" mat-button (click)="changeRuleset()">
-      Change ruleset
-    </button>
-  </v-dialog-actions>
+    <v-dialog-actions>
+        <button [disabled]="form.invalid" mat-button (click)="changeRuleset()">
+            Change ruleset
+        </button>
+    </v-dialog-actions>
 </v-dialog>

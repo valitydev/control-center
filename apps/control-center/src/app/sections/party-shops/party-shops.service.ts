@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
 import { debounceTimeWithFirst, progressTo } from '@vality/matez';
@@ -10,6 +10,9 @@ import { DEBOUNCE_TIME_MS } from '../../tokens';
 
 @Injectable()
 export class PartyShopsService {
+    private partyManagementService = inject(PartyManagementService);
+    private route = inject(ActivatedRoute);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     party$: Observable<Party> = merge(
         this.route.params,
         defer(() => this.reload$),
@@ -30,12 +33,6 @@ export class PartyShopsService {
     progress$ = new BehaviorSubject(0);
 
     private reload$ = new Subject<void>();
-
-    constructor(
-        private partyManagementService: PartyManagementService,
-        private route: ActivatedRoute,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-    ) {}
 
     reload() {
         this.reload$.next();

@@ -1,28 +1,28 @@
 @if (tags()?.length) {
-  <mat-toolbar style="height: auto; min-height: 48px; padding: 0 24px">
-    <v-actions style="width: 100%">
-      <div class="mat-body-strong" style="margin: auto auto auto 0">
-        {{ title() }} {{ id() ? '#' + id() : '' }}
-      </div>
-      <div style="display: flex; gap: 8px; align-items: center">
-        @for (tag of tags(); track tag) {
-          <v-tag [color]="tag.color" style="margin-top: 8px">{{ tag.value }}</v-tag>
-        }
-      </div>
-    </v-actions>
-  </mat-toolbar>
+    <mat-toolbar style="height: auto; min-height: 48px; padding: 0 24px">
+        <v-actions style="width: 100%">
+            <div class="mat-body-strong" style="margin: auto auto auto 0">
+                {{ title() }} {{ id() ? '#' + id() : '' }}
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center">
+                @for (tag of tags(); track tag) {
+                    <v-tag [color]="tag.color" style="margin-top: 8px">{{ tag.value }}</v-tag>
+                }
+            </div>
+        </v-actions>
+    </mat-toolbar>
 }
 
 <mat-sidenav-container autosize>
-  <mat-sidenav-content style="overflow: unset"><ng-content></ng-content></mat-sidenav-content>
-  <mat-sidenav
-    [fixedTopGap]="64 + 48"
-    [opened]="!(sidenavInfoService.opened$ | async)"
-    fixedInViewport="true"
-    mode="side"
-    position="end"
-    style="background: transparent; border: none; padding: 24px 0 24px 0; width: auto"
+    <mat-sidenav-content style="overflow: unset"><ng-content></ng-content></mat-sidenav-content>
+    <mat-sidenav
+        [fixedTopGap]="64 + 48"
+        [opened]="!(sidenavInfoService.opened$ | async)"
+        fixedInViewport="true"
+        mode="side"
+        position="end"
+        style="background: transparent; border: none; padding: 24px 0 24px 0; width: auto"
     >
-    <v-nav [links]="links()" type="secondary"></v-nav
+        <v-nav [links]="links()" type="secondary"></v-nav
     ></mat-sidenav>
-  </mat-sidenav-container>
+</mat-sidenav-container>

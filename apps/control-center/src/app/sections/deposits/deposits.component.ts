@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -40,6 +40,14 @@ import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.s
     standalone: false,
 })
 export class DepositsComponent implements OnInit {
+    private dialog = inject(DialogService);
+    private fetchDepositsService = inject(FetchDepositsService);
+    private router = inject(Router);
+    private fb = inject(NonNullableFormBuilder);
+    private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
+    private qp = inject<QueryParamsService<object>>(QueryParamsService<object>);
+    private dr = inject(DestroyRef);
     filtersForm = this.fb.group({
         dateRange: createDateRangeToToday(this.dateRangeDays),
         amount_to: null as number,
@@ -120,17 +128,6 @@ export class DepositsComponent implements OnInit {
     );
 
     private initFilters = this.filtersForm.value;
-
-    constructor(
-        private dialog: DialogService,
-        private fetchDepositsService: FetchDepositsService,
-        private router: Router,
-        private fb: NonNullableFormBuilder,
-        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-        private qp: QueryParamsService<object>,
-        private dr: DestroyRef,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);

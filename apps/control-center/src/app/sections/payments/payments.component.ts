@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { StatPayment } from '@vality/magista-proto/magista';
@@ -41,6 +41,13 @@ interface Filters {
     standalone: false,
 })
 export class PaymentsComponent implements OnInit {
+    private qp = inject<QueryParamsService<Filters>>(QueryParamsService<Filters>);
+    private fetchPaymentsService = inject(FetchPaymentsService);
+    private dialogService = inject(DialogService);
+    private fb = inject(NonNullableFormBuilder);
+    private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
+    private dr = inject(DestroyRef);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     isLoading$ = this.fetchPaymentsService.isLoading$;
     payments$ = this.fetchPaymentsService.result$;
     hasMore$ = this.fetchPaymentsService.hasMore$;
@@ -87,16 +94,6 @@ export class PaymentsComponent implements OnInit {
     );
 
     private initFiltersValue = this.filtersForm.value;
-
-    constructor(
-        private qp: QueryParamsService<Filters>,
-        private fetchPaymentsService: FetchPaymentsService,
-        private dialogService: DialogService,
-        private fb: NonNullableFormBuilder,
-        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        private dr: DestroyRef,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(

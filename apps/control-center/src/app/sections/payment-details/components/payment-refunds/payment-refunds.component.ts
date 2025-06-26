@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { PageLayoutModule } from '../../../../shared';
 import { PaymentDetailsService } from '../../payment-details.service';
@@ -12,8 +12,7 @@ import { RefundsTableModule } from '../../refunds-table';
     styles: ``,
 })
 export class PaymentRefundsComponent {
+    private paymentDetailsService = inject(PaymentDetailsService);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
-
-    constructor(private paymentDetailsService: PaymentDetailsService) {}
 }

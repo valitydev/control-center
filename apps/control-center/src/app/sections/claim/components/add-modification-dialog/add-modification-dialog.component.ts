@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
@@ -30,6 +30,10 @@ export class AddModificationDialogComponent extends DialogSuperclass<
         createModification?: DeepPartial<Modification>;
     }
 > {
+    private fb = inject(FormBuilder);
+    private claimManagementService = inject(ClaimManagementService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     control = this.fb.control<Modification | ModificationChange>(
@@ -46,12 +50,7 @@ export class AddModificationDialogComponent extends DialogSuperclass<
 
     private progress$ = new BehaviorSubject(0);
 
-    constructor(
-        private fb: FormBuilder,
-        private claimManagementService: ClaimManagementService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

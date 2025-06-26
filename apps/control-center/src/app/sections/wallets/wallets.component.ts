@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
@@ -38,6 +38,15 @@ import { FetchWalletsService } from './fetch-wallets.service';
     standalone: false,
 })
 export class WalletsComponent implements OnInit {
+    private fetchWalletsService = inject(FetchWalletsService);
+    private fetchWalletsTextService = inject(FetchWalletsTextService);
+    private qp = inject<QueryParamsService<WalletParams>>(QueryParamsService<WalletParams>);
+    private fb = inject(NonNullableFormBuilder);
+    private walletManagementService = inject(ManagementService);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
+    private destroyRef = inject(DestroyRef);
+    private identityManagementService = inject(IdentityManagementService);
+    private partyStoreService = inject(PartyStoreService);
     isFilterControl = new FormControl(0);
 
     filterWallets$ = this.fetchWalletsService.result$;
@@ -143,18 +152,6 @@ export class WalletsComponent implements OnInit {
     );
 
     private initFilters = this.filtersForm.value;
-
-    constructor(
-        private fetchWalletsService: FetchWalletsService,
-        private fetchWalletsTextService: FetchWalletsTextService,
-        private qp: QueryParamsService<WalletParams>,
-        private fb: NonNullableFormBuilder,
-        private walletManagementService: ManagementService,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-        private destroyRef: DestroyRef,
-        private identityManagementService: IdentityManagementService,
-        private partyStoreService: PartyStoreService,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params);

@@ -1,4 +1,3 @@
-
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,13 +14,13 @@ import { FieldLabelPipe } from '../../pipes/field-label.pipe';
     templateUrl: './enum-field.component.html',
     providers: createControlProviders(() => EnumFieldComponent),
     imports: [
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    FieldLabelPipe,
-    MatButtonModule
-],
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        FieldLabelPipe,
+        MatButtonModule,
+    ],
 })
 export class EnumFieldComponent<T> extends FormControlSuperclass<T> {
     @Input() data!: ThriftData<string, 'enum'>;

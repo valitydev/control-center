@@ -4,6 +4,7 @@ import {
     ElementRef,
     OnInit,
     booleanAttribute,
+    inject,
     input,
     output,
 } from '@angular/core';
@@ -17,13 +18,10 @@ import { createIntersectionObserver } from '../utils/create-intersection-observe
     standalone: true,
 })
 export class InfinityScrollDirective implements OnInit {
+    private elementRef = inject(ElementRef);
+    private dr = inject(DestroyRef);
     vInfinityScroll = input(false, { transform: booleanAttribute });
     vInfinityScrollMore = output();
-
-    constructor(
-        private elementRef: ElementRef,
-        private dr: DestroyRef,
-    ) {}
 
     ngOnInit() {
         createIntersectionObserver(this.elementRef.nativeElement)

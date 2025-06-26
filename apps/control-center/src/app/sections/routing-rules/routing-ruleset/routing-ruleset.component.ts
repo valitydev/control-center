@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
@@ -42,6 +42,14 @@ import { RoutingRulesetService } from './routing-ruleset.service';
     standalone: false,
 })
 export class RoutingRulesetComponent {
+    private dialog = inject(DialogService);
+    private routingRulesetService = inject(RoutingRulesetService);
+    private routingRulesService = inject(RoutingRulesService);
+    private domainStoreService = inject(DomainStoreService);
+    private log = inject(NotifyLogService);
+    private route = inject(ActivatedRoute);
+    private sidenavInfoService = inject(SidenavInfoService);
+    private destroyRef = inject(DestroyRef);
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
@@ -162,17 +170,6 @@ export class RoutingRulesetComponent {
         })),
     ];
     sort: Sort = { active: 'priority', direction: 'desc' };
-
-    constructor(
-        private dialog: DialogService,
-        private routingRulesetService: RoutingRulesetService,
-        private routingRulesService: RoutingRulesService,
-        private domainStoreService: DomainStoreService,
-        private log: NotifyLogService,
-        private route: ActivatedRoute,
-        private sidenavInfoService: SidenavInfoService,
-        private destroyRef: DestroyRef,
-    ) {}
 
     addRule() {
         this.routingRulesetService.refID$

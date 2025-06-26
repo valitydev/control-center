@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { ThriftPipesModule } from '@vality/ng-thrift';
@@ -31,6 +31,8 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
     styles: ``,
 })
 export class PaymentEventsComponent {
+    private paymentDetailsService = inject(PaymentDetailsService);
+    private invoicingService = inject(InvoicingService);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     events$ = this.payment$.pipe(
@@ -42,9 +44,4 @@ export class PaymentEventsComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(
-        private paymentDetailsService: PaymentDetailsService,
-        private invoicingService: InvoicingService,
-    ) {}
 }

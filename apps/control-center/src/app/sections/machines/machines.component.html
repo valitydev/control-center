@@ -1,61 +1,59 @@
 <cc-page-layout fullHeight title="Machines">
-  <cc-page-layout-actions>
-    <v-more-filters-button [filters]="filters"></v-more-filters-button>
-  </cc-page-layout-actions>
-  <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
-    <ng-template [formGroup]="filtersForm">
-      <v-date-range-field formControlName="timespan"></v-date-range-field>
-      <v-list-field formControlName="ids" label="IDs"></v-list-field>
-      <mat-form-field>
-        <mat-label>Namespace</mat-label>
-        <input formControlName="ns" matInput />
-      </mat-form-field>
-      <cc-domain-object-field
-        formControlName="provider_id"
-        name="provider"
-      ></cc-domain-object-field>
-      <mat-form-field>
-        <mat-label>Status</mat-label>
-        <mat-select formControlName="status">
-          <mat-option [value]="null">any</mat-option>
-          @for (statusName of status | enumKeys; track statusName) {
-            <mat-option
-              [value]="status[statusName]"
-              >
-              {{ statusName | ngtKeyTitle | titlecase }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Error message</mat-label>
-        <input formControlName="error_message" matInput />
-      </mat-form-field>
-    </ng-template>
-  </v-filters>
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
+            <v-date-range-field formControlName="timespan"></v-date-range-field>
+            <v-list-field formControlName="ids" label="IDs"></v-list-field>
+            <mat-form-field>
+                <mat-label>Namespace</mat-label>
+                <input formControlName="ns" matInput />
+            </mat-form-field>
+            <cc-domain-object-field
+                formControlName="provider_id"
+                name="provider"
+            ></cc-domain-object-field>
+            <mat-form-field>
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option [value]="null">any</mat-option>
+                    @for (statusName of status | enumKeys; track statusName) {
+                        <mat-option [value]="status[statusName]">
+                            {{ statusName | ngtKeyTitle | titlecase }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Error message</mat-label>
+                <input formControlName="error_message" matInput />
+            </mat-form-field>
+        </ng-template>
+    </v-filters>
 
-  <v-table
-    [columns]="columns"
-    [data]="machines$ | async"
-    [hasMore]="hasMore$ | async"
-    [progress]="inProgress$ | async"
-    [rowSelected]="selected$ | async"
-    rowSelectable
-    (more)="more()"
-    (rowSelectedChange)="selected$.next($any($event))"
-    (update)="reload($event)"
+    <v-table
+        [columns]="columns"
+        [data]="machines$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="inProgress$ | async"
+        [rowSelected]="selected$ | async"
+        rowSelectable
+        (more)="more()"
+        (rowSelectedChange)="selected$.next($any($event))"
+        (update)="reload($event)"
     >
-    <v-table-actions>
-      <button
-        [disabled]="!(selected$ | async)?.length"
-        mat-button
-        (click)="repairByScenario()"
-        >
-        Repair by scenario
-      </button>
-      <button [disabled]="!(selected$ | async)?.length" mat-flat-button (click)="repair()">
-        Simple repair
-      </button>
-    </v-table-actions>
-  </v-table>
+        <v-table-actions>
+            <button
+                [disabled]="!(selected$ | async)?.length"
+                mat-button
+                (click)="repairByScenario()"
+            >
+                Repair by scenario
+            </button>
+            <button [disabled]="!(selected$ | async)?.length" mat-flat-button (click)="repair()">
+                Simple repair
+            </button>
+        </v-table-actions>
+    </v-table>
 </cc-page-layout>

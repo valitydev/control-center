@@ -1,4 +1,4 @@
-import { Injectable, computed } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
@@ -12,6 +12,9 @@ import { DomainStoreService } from './domain-store.service';
 
 @Injectable({ providedIn: 'root' })
 export class CurrenciesStoreService {
+    private repositoryService = inject(Repository2Service);
+    private log = inject(NotifyLogService);
+    private domainStoreService = inject(DomainStoreService);
     currencies = computed(() => this.currencyObjects.value().map((v) => v.object.currency.data));
     isLoading = computed(() => this.currencyObjects.isLoading());
 
@@ -25,13 +28,6 @@ export class CurrenciesStoreService {
                 }),
             ),
     });
-
-    constructor(
-        private repositoryService: Repository2Service,
-        private log: NotifyLogService,
-        // TODO: temporary solution, remove after migration to domain v2
-        private domainStoreService: DomainStoreService,
-    ) {}
 
     private getAllCurrencies(continuationToken = undefined): Observable<VersionedObject[]> {
         return environment.domain2

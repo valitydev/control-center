@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,6 +43,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnInit, Validator, OnChanges
 {
+    private destroyRef = inject(DestroyRef);
     @Input() data!: ThriftData<string, 'union'>;
     @Input() extensions?: ThriftFormExtension[];
 
@@ -62,7 +63,7 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
 
     private data$ = new ReplaySubject<ThriftData<string, 'union'>>(1);
 
-    constructor(private destroyRef: DestroyRef) {
+    constructor() {
         super();
     }
 

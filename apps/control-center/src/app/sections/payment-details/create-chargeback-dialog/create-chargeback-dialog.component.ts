@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
@@ -20,16 +20,15 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     { invoiceID: string; paymentID: string },
     InvoicePaymentChargeback
 > {
+    private invoicingService = inject(InvoicingService);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
+    private log = inject(NotifyLogService);
+    private destroyRef = inject(DestroyRef);
     form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: short().generate() });
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
-    constructor(
-        private invoicingService: InvoicingService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private log: NotifyLogService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

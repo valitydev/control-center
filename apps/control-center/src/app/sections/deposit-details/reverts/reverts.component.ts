@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 import { DepositStatus, StatDeposit, StatDepositRevert } from '@vality/fistful-proto/fistful_stat';
 import { Column, DialogService, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
@@ -19,6 +19,8 @@ import { FetchRevertsService } from './services/fetch-reverts/fetch-reverts.serv
     standalone: false,
 })
 export class RevertsComponent implements OnInit {
+    private fetchRevertsService = inject(FetchRevertsService);
+    private dialog = inject(DialogService);
     @Input() deposit: StatDeposit;
 
     reverts$ = this.fetchRevertsService.result$;
@@ -48,11 +50,6 @@ export class RevertsComponent implements OnInit {
         ),
         { field: 'created_at', cell: { type: 'datetime' } },
     ];
-
-    constructor(
-        private fetchRevertsService: FetchRevertsService,
-        private dialog: DialogService,
-    ) {}
 
     ngOnInit() {
         this.fetchRevertsService.load({ deposit_id: this.deposit.id });

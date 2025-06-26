@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Observable, withLatestFrom } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -13,6 +13,7 @@ import { PartyShopsService } from './party-shops.service';
     standalone: false,
 })
 export class PartyShopsComponent {
+    private partyShopsService = inject(PartyShopsService);
     shopsParty$: Observable<ShopParty[]> = this.partyShopsService.shops$.pipe(
         withLatestFrom(this.partyShopsService.party$),
         map(([shops, party]) =>
@@ -24,8 +25,6 @@ export class PartyShopsComponent {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     progress$ = this.partyShopsService.progress$;
-
-    constructor(private partyShopsService: PartyShopsService) {}
 
     update() {
         this.partyShopsService.reload();

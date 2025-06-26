@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Column, DialogService, NotifyLogService } from '@vality/matez';
@@ -25,6 +25,15 @@ import {
     standalone: false,
 })
 export class PartyDelegateRulesetsComponent {
+    private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
+    private routingRulesService = inject(RoutingRulesService);
+    private router = inject(Router);
+    private dialogService = inject(DialogService);
+    private domainStoreService = inject(DomainStoreService);
+    private log = inject(NotifyLogService);
+    private route = inject(ActivatedRoute);
+    private destroyRef = inject(DestroyRef);
+    protected routingRulesTypeService = inject(RoutingRulesTypeService);
     columns: Column<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
         {
             field: 'partyDelegate',
@@ -63,18 +72,6 @@ export class PartyDelegateRulesetsComponent {
     private get partyID() {
         return this.route.snapshot.params['partyID'] as string;
     }
-
-    constructor(
-        private partyDelegateRulesetsService: PartyDelegateRulesetsService,
-        private routingRulesService: RoutingRulesService,
-        private router: Router,
-        private dialogService: DialogService,
-        private domainStoreService: DomainStoreService,
-        private log: NotifyLogService,
-        private route: ActivatedRoute,
-        private destroyRef: DestroyRef,
-        protected routingRulesTypeService: RoutingRulesTypeService,
-    ) {}
 
     attachNewRuleset() {
         this.dialogService

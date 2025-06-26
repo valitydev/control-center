@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
@@ -30,6 +30,8 @@ export interface ToastData {
     imports: [CommonModule, MatProgressSpinnerModule, MatButtonModule],
 })
 export class ToastComponent {
+    public data = inject<ToastData>(MAT_SNACK_BAR_DATA);
+    private snackBarRef = inject<MatSnackBarRef<ToastComponent>>(MatSnackBarRef<ToastComponent>);
     message$ = combineLatest([this.data.progress$ ?? of(false), this.data.error$ ?? of(null)]).pipe(
         map(([progress, error]) => {
             if (error) {
@@ -42,11 +44,7 @@ export class ToastComponent {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    constructor(
-        @Inject(MAT_SNACK_BAR_DATA)
-        public data: ToastData,
-        private snackBarRef: MatSnackBarRef<ToastComponent>,
-    ) {
+    constructor() {
         this.subscribeProgress();
         if (!this.data.progress$) {
             this.dismissByDuration();

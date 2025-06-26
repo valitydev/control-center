@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NotifyLogService, cleanPrimitiveProps, inProgressFrom, progressTo } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
@@ -8,6 +8,9 @@ import { MerchantStatisticsService } from '../../api/magista/merchant-statistics
 
 @Injectable()
 export class PaymentDetailsService {
+    private merchantStatisticsService = inject(MerchantStatisticsService);
+    private route = inject(ActivatedRoute);
+    private log = inject(NotifyLogService);
     payment$ = this.route.params.pipe(
         switchMap(({ partyID, invoiceID, paymentID }) =>
             this.merchantStatisticsService
@@ -39,10 +42,4 @@ export class PaymentDetailsService {
     isLoading$ = inProgressFrom(() => this.progress$, this.payment$);
 
     private progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private merchantStatisticsService: MerchantStatisticsService,
-        private route: ActivatedRoute,
-        private log: NotifyLogService,
-    ) {}
 }

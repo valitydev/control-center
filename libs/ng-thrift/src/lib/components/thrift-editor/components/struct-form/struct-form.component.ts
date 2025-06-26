@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef } from '@angular/core';
+import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
@@ -45,6 +45,8 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
     extends FormComponentSuperclass<T>
     implements OnChanges, OnInit
 {
+    private fb = inject(FormBuilder);
+    private destroyRef = inject(DestroyRef);
     @Input() data!: ThriftData<string, 'struct'>;
     @Input() extensions?: ThriftFormExtension[];
 
@@ -59,10 +61,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         );
     }
 
-    constructor(
-        private fb: FormBuilder,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

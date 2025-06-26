@@ -1,4 +1,4 @@
-import { DestroyRef, Injectable } from '@angular/core';
+import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Reference } from '@vality/domain-proto/domain';
 import {
@@ -18,12 +18,10 @@ import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
     providedIn: 'root',
 })
 export class DomainObjectService {
-    constructor(
-        private dialogService: DialogService,
-        private domainService: DomainService,
-        private log: NotifyLogService,
-        private dr: DestroyRef,
-    ) {}
+    private dialogService = inject(DialogService);
+    private domainService = inject(DomainService);
+    private log = inject(NotifyLogService);
+    private dr = inject(DestroyRef);
 
     delete(ref: Reference) {
         return subscribeReturn(

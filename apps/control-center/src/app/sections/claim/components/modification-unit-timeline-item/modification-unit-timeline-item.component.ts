@@ -5,6 +5,7 @@ import {
     Input,
     Output,
     booleanAttribute,
+    inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Claim, ModificationUnit } from '@vality/domain-proto/claim_management';
@@ -35,6 +36,12 @@ import { AddModificationDialogComponent } from '../add-modification-dialog/add-m
     standalone: false,
 })
 export class ModificationUnitTimelineItemComponent {
+    private partyManagementService = inject(PartyManagementService);
+    private dialogService = inject(DialogService);
+    private claimManagementService = inject(ClaimManagementService);
+    private log = inject(NotifyLogService);
+    private domainMetadataViewExtensionsService = inject(DomainMetadataViewExtensionsService);
+    private destroyRef = inject(DestroyRef);
     @Input() claim: Claim;
     @Input() modificationUnit: ModificationUnit;
 
@@ -51,15 +58,6 @@ export class ModificationUnitTimelineItemComponent {
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 
     private progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private partyManagementService: PartyManagementService,
-        private dialogService: DialogService,
-        private claimManagementService: ClaimManagementService,
-        private log: NotifyLogService,
-        private domainMetadataViewExtensionsService: DomainMetadataViewExtensionsService,
-        private destroyRef: DestroyRef,
-    ) {}
 
     get name() {
         return getModificationName(this.modificationUnit.modification);

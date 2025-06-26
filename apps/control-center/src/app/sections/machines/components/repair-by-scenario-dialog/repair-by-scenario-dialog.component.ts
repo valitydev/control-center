@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import {
@@ -40,6 +40,10 @@ export class RepairByScenarioDialogComponent
     extends DialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>
     implements OnInit
 {
+    private repairManagementService = inject(RepairManagementService);
+    private log = inject(NotifyLogService);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
+    private destroyRef = inject(DestroyRef);
     nsControl = new FormControl<Namespace>(null, Validators.required);
     typeControl = new FormControl<Types>(Types.Same, Validators.required);
     form = new FormControl<RepairInvoicesRequest | RepairWithdrawalsRequest>(
@@ -61,12 +65,7 @@ export class RepairByScenarioDialogComponent
         return !isNil(this.nsControl.value);
     }
 
-    constructor(
-        private repairManagementService: RepairManagementService,
-        private log: NotifyLogService,
-        private domainMetadataFormExtensionsService: DomainMetadataFormExtensionsService,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

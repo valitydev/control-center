@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Column, TableModule } from '@vality/matez';
 import { AccountBalance } from '@vality/scrooge-proto/internal/account_balance';
@@ -16,6 +16,7 @@ import { CardComponent } from '../sidenav-info/components/card/card.component';
     templateUrl: './terminal-balances-card.component.html',
 })
 export class TerminalBalancesCardComponent {
+    private accountBalancesStoreService = inject(AccountBalancesStoreService);
     terminalId = input<number>();
     providerId = input<number>();
     columns: Column<AccountBalance>[] = [
@@ -32,6 +33,4 @@ export class TerminalBalancesCardComponent {
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    constructor(private accountBalancesStoreService: AccountBalancesStoreService) {}
 }

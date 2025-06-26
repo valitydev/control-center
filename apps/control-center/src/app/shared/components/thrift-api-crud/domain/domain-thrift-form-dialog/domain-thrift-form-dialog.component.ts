@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,6 +25,8 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
     },
     { object?: T; result?: R; error?: unknown }
 > {
+    private fb = inject(FormBuilder);
+    private destroyRef = inject(DestroyRef);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     control = this.fb.control<T>((this.dialogData.object as T) ?? null);
@@ -36,10 +38,7 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
         );
     }
 
-    constructor(
-        private fb: FormBuilder,
-        private destroyRef: DestroyRef,
-    ) {
+    constructor() {
         super();
     }
 

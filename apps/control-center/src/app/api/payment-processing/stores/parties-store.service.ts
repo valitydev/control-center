@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { PartyID } from '@vality/domain-proto/domain';
 import { ShopID, WalletID } from '@vality/domain-proto/internal/domain';
 import { progressTo } from '@vality/matez';
@@ -13,12 +13,9 @@ import { PartyManagementService } from '../party-management.service';
     providedIn: 'root',
 })
 export class PartiesStoreService {
+    private partyManagementService = inject(PartyManagementService);
+    private fistfulStatisticsService = inject(FistfulStatisticsService);
     progress$ = new BehaviorSubject(0);
-
-    constructor(
-        private partyManagementService: PartyManagementService,
-        private fistfulStatisticsService: FistfulStatisticsService,
-    ) {}
 
     @MemoizeExpiring(5 * 60_000)
     get(partyId: PartyID) {

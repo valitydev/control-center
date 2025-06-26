@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Author } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService } from '@vality/matez';
@@ -11,6 +11,9 @@ import { AuthorManagementService } from '../author-management.service';
     providedIn: 'root',
 })
 export class AuthorStoreService {
+    private authorManagementService = inject(AuthorManagementService);
+    private keycloakUserService = inject(KeycloakUserService);
+    private log = inject(NotifyLogService);
     author = rxResource({
         params: () => this.keycloakUserService.user.value(),
         stream: ({ params }) =>
@@ -30,10 +33,4 @@ export class AuthorStoreService {
                 ),
             ),
     });
-
-    constructor(
-        private authorManagementService: AuthorManagementService,
-        private keycloakUserService: KeycloakUserService,
-        private log: NotifyLogService,
-    ) {}
 }

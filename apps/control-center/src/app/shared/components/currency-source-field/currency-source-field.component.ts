@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, booleanAttribute } from '@angular/core';
+import { Component, Input, booleanAttribute, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -20,6 +20,7 @@ import { FetchSourcesService } from '../../../sections/sources';
     providers: createControlProviders(() => CurrencySourceFieldComponent),
 })
 export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSource> {
+    private fetchSourcesService = inject(FetchSourcesService);
     @Input({ transform: booleanAttribute }) required = false;
 
     options$ = this.fetchSourcesService.sources$.pipe(
@@ -38,7 +39,7 @@ export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSour
         ),
     );
 
-    constructor(private fetchSourcesService: FetchSourcesService) {
+    constructor() {
         super();
     }
 }

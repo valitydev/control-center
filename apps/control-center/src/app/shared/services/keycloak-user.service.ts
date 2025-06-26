@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { KeycloakService } from 'keycloak-angular';
 import { map } from 'rxjs';
@@ -14,6 +14,8 @@ export interface KeycloakUser {
     providedIn: 'root',
 })
 export class KeycloakUserService {
+    private keycloakTokenInfoService = inject(KeycloakTokenInfoService);
+    private keycloakService = inject(KeycloakService);
     user = rxResource({
         stream: () =>
             this.keycloakTokenInfoService.info$.pipe(
@@ -25,11 +27,6 @@ export class KeycloakUserService {
                 ),
             ),
     });
-
-    constructor(
-        private keycloakTokenInfoService: KeycloakTokenInfoService,
-        private keycloakService: KeycloakService,
-    ) {}
 
     logout() {
         return this.keycloakService.logout();

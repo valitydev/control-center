@@ -1,4 +1,4 @@
-import { Component, DestroyRef, Inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
@@ -48,6 +48,14 @@ type FormValue = {
     standalone: false,
 })
 export class ChargebacksComponent implements OnInit {
+    private qp = inject<QueryParamsService<Partial<FormValue>>>(
+        QueryParamsService<Partial<FormValue>>,
+    );
+    private fetchChargebacksService = inject(FetchChargebacksService);
+    private dialog = inject(DialogService);
+    private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
+    private dr = inject(DestroyRef);
+    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     filtersForm = new FormGroup(
         createControls<FormValue>({
             dateRange: createDateRangeToToday(this.dateRangeDays),
@@ -73,15 +81,6 @@ export class ChargebacksComponent implements OnInit {
     );
 
     private initFormValue = this.filtersForm.value;
-
-    constructor(
-        private qp: QueryParamsService<Partial<FormValue>>,
-        private fetchChargebacksService: FetchChargebacksService,
-        private dialog: DialogService,
-        @Inject(DATE_RANGE_DAYS) private dateRangeDays: number,
-        private dr: DestroyRef,
-        @Inject(DEBOUNCE_TIME_MS) private debounceTimeMs: number,
-    ) {}
 
     ngOnInit() {
         this.filtersForm.patchValue(this.qp.params, { emitEvent: false });

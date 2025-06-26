@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,6 +40,11 @@ export class CreateDomainObjectDialogComponent
     extends DialogSuperclass<CreateDomainObjectDialogComponent, { objectType?: string } | void>
     implements OnInit
 {
+    private domainStoreService = inject(DomainStoreService);
+    private destroyRef = inject(DestroyRef);
+    private log = inject(NotifyLogService);
+    private domainNavigateService = inject(DomainNavigateService);
+    private metadataService = inject(MetadataService);
     static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -49,13 +54,7 @@ export class CreateDomainObjectDialogComponent
     progress$ = new BehaviorSubject(0);
     isReview = false;
 
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private destroyRef: DestroyRef,
-        private log: NotifyLogService,
-        private domainNavigateService: DomainNavigateService,
-        private metadataService: MetadataService,
-    ) {
+    constructor() {
         super();
     }
 

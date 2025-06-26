@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import short from 'short-uuid';
 
 @Injectable()
 export class UserInfoBasedIdGeneratorService {
-    constructor(private keycloakService: KeycloakService) {}
+    private keycloakService = inject(KeycloakService);
 
     getUsernameBasedId(): string {
         // TODO: replace it by id-generator after fix

@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { Reference } from '@vality/domain-proto/internal/domain';
@@ -25,6 +25,9 @@ import { DomainObjectService } from '../services/domain-object.service';
     templateUrl: './domain-object-card.component.html',
 })
 export class DomainObjectCardComponent {
+    private domainObjectService = inject(DomainObjectService);
+    private domainService = inject(DomainService);
+    private log = inject(NotifyLogService);
     ref = input<Reference>();
     version = input<number>();
 
@@ -42,12 +45,6 @@ export class DomainObjectCardComponent {
     kind = createStorageValue<UnionEnum<ViewerKind>>('domain-object-card-view', {
         deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
     });
-
-    constructor(
-        private domainObjectService: DomainObjectService,
-        private domainService: DomainService,
-        private log: NotifyLogService,
-    ) {}
 
     edit() {
         this.domainObjectService.edit(this.ref());

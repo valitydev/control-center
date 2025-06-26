@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, HostBinding, Input, OnChanges, OnInit } from '@angular/core';
+import {
+    Component,
+    DestroyRef,
+    HostBinding,
+    Input,
+    OnChanges,
+    OnInit,
+    inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validator } from '@angular/forms';
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
@@ -43,6 +51,7 @@ export class ThriftFormComponent<T>
     extends FormControlSuperclass<T>
     implements OnInit, OnChanges, Validator
 {
+    private destroyRef = inject(DestroyRef);
     @Input() metadata!: ThriftAstMetadata[];
     @Input() namespace!: string;
     @Input() type?: ValueType;
@@ -60,7 +69,7 @@ export class ThriftFormComponent<T>
 
     private updated$ = new BehaviorSubject<void>(undefined);
 
-    constructor(private destroyRef: DestroyRef) {
+    constructor() {
         super();
     }
 

@@ -1,62 +1,60 @@
 <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
-  <div class="mat-display-small mat-no-margin">Change Main Ruleset</div>
+    <div class="mat-display-small mat-no-margin">Change Main Ruleset</div>
 
-  <div style="display: flex; flex-direction: column; gap: 39px">
-    <mat-radio-group formControlName="target" style="display: flex">
-      <mat-radio-button [value]="target.PaymentInstitution" style="flex: 1"
-        >Payment Institution</mat-radio-button
-        >
-        <mat-radio-button [value]="target.Manual" style="flex: 1"
-          >Manual Target</mat-radio-button
-          >
+    <div style="display: flex; flex-direction: column; gap: 39px">
+        <mat-radio-group formControlName="target" style="display: flex">
+            <mat-radio-button [value]="target.PaymentInstitution" style="flex: 1"
+                >Payment Institution</mat-radio-button
+            >
+            <mat-radio-button [value]="target.Manual" style="flex: 1"
+                >Manual Target</mat-radio-button
+            >
         </mat-radio-group>
 
         @if (form.controls['target'].value === target.PaymentInstitution) {
-          <div
-            style="display: flex; flex-direction: column; gap: 16px"
-            >
-            <mat-form-field>
-              <mat-label>Payment Institution</mat-label>
-              <mat-select formControlName="paymentInstitution" required>
-                @for (i of paymentInstitutions$ | async; track i) {
-                  <mat-option [value]="i">
-                    #{{ i.ref.id }} {{ i.data.name }}
-                  </mat-option>
+            <div style="display: flex; flex-direction: column; gap: 16px">
+                <mat-form-field>
+                    <mat-label>Payment Institution</mat-label>
+                    <mat-select formControlName="paymentInstitution" required>
+                        @for (i of paymentInstitutions$ | async; track i) {
+                            <mat-option [value]="i"> #{{ i.ref.id }} {{ i.data.name }} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                @if (form.value.paymentInstitution; as paymentInstitution) {
+                    <div class="mat-label-medium mat-secondary-text">
+                        Routing Ruleset (policies)
+                    </div>
+                    <div>
+                        @if (policiesId) {
+                            #{{ policiesId }} {{ (getRulesetById(policiesId) | async)?.data?.name }}
+                        } @else {
+                            Not found
+                        }
+                    </div>
+                    <mat-divider></mat-divider>
                 }
-              </mat-select>
-            </mat-form-field>
-            @if (form.value.paymentInstitution; as paymentInstitution) {
-              <div class="mat-label-medium mat-secondary-text">Routing Ruleset (policies)</div>
-              <div>
-                @if (policiesId) {
-                  #{{ policiesId }} {{ (getRulesetById(policiesId) | async)?.data?.name }}
-                } @else {
-                  Not found
-                }
-              </div>
-              <mat-divider></mat-divider>
-            }
-          </div>
+            </div>
         }
         @if (form.controls['target'].value === target.Manual) {
-          <mat-form-field>
-            <mat-label>Main Ruleset</mat-label>
-            <mat-select formControlName="mainRulesetRefID" required>
-              @for (i of rulesets$ | async; track i) {
-                <mat-option [value]="i.ref.id">
-                  #{{ i.ref.id }} {{ i.data.name }}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
+            <mat-form-field>
+                <mat-label>Main Ruleset</mat-label>
+                <mat-select formControlName="mainRulesetRefID" required>
+                    @for (i of rulesets$ | async; track i) {
+                        <mat-option [value]="i.ref.id">
+                            #{{ i.ref.id }} {{ i.data.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
         }
-      </div>
-
-      <mat-form-field>
-        <input
-          formControlName="mainDelegateDescription"
-          matInput
-          placeholder="Main delegate description"
-          />
-      </mat-form-field>
     </div>
+
+    <mat-form-field>
+        <input
+            formControlName="mainDelegateDescription"
+            matInput
+            placeholder="Main delegate description"
+        />
+    </mat-form-field>
+</div>

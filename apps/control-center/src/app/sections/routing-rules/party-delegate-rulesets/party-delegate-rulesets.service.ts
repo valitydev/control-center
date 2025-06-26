@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
     PartyID,
@@ -23,6 +23,9 @@ export interface DelegateWithPaymentInstitution {
 
 @Injectable()
 export class PartyDelegateRulesetsService {
+    private domainStoreService = inject(DomainStoreService);
+    private route = inject(ActivatedRoute);
+    private routingRulesService = inject(RoutingRulesService);
     private partyID$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         map((p) => p['partyID']),
@@ -31,12 +34,6 @@ export class PartyDelegateRulesetsService {
         startWith(this.route.snapshot.params),
         map((p) => p['type']),
     ) as Observable<RoutingRulesType>;
-
-    constructor(
-        private domainStoreService: DomainStoreService,
-        private route: ActivatedRoute,
-        private routingRulesService: RoutingRulesService,
-    ) {}
 
     getDelegatesWithPaymentInstitution(
         type?: RoutingRulesType,

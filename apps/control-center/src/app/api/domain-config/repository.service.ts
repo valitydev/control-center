@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
     ThriftAstMetadata,
     domain_config_Repository,
@@ -13,12 +13,11 @@ import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/service
 
 @Injectable({ providedIn: 'root' })
 export class RepositoryService {
+    private keycloakTokenInfoService = inject(KeycloakTokenInfoService);
     private client$: Observable<domain_config_RepositoryCodegenClient>;
 
-    constructor(
-        private keycloakTokenInfoService: KeycloakTokenInfoService,
-        configService: ConfigService,
-    ) {
+    constructor() {
+        const configService = inject(ConfigService);
         const headers$ = this.keycloakTokenInfoService.info$.pipe(map(toWachterHeaders('Domain')));
         const metadata$ = from(
             import('@vality/domain-proto/metadata.json').then(

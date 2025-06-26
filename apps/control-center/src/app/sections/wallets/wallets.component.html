@@ -1,56 +1,54 @@
 <cc-page-layout fullHeight title="Wallets">
-  <cc-page-layout-actions>
-    @if (filters) {
-      <v-more-filters-button [filters]="filters"></v-more-filters-button>
-    }
-    @if (!(party$ | async)) {
-      <v-switch-button
-        [formControl]="isFilterControl"
+    <cc-page-layout-actions>
+        @if (filters) {
+            <v-more-filters-button [filters]="filters"></v-more-filters-button>
+        }
+        @if (!(party$ | async)) {
+            <v-switch-button
+                [formControl]="isFilterControl"
                 [states]="[
                     { label: 'full-text search', icon: 'travel_explore' },
                     { label: 'filters', icon: 'manage_search' },
                 ]"
-      ></v-switch-button>
-    }
-  </cc-page-layout-actions>
-  @if (isFilterTable$ | async) {
-    <v-filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
-      <ng-template [formGroup]="filtersForm">
-        @if (!(party$ | async)) {
-          <cc-merchant-field
-            formControlName="party_id"
-          ></cc-merchant-field>
+            ></v-switch-button>
         }
-        <v-list-field formControlName="wallet_id" label="Wallet IDs"></v-list-field>
-        <mat-form-field>
-          <mat-label>Identity ID</mat-label>
-          <input formControlName="identity_id" matInput />
-        </mat-form-field>
-        <cc-currency-field formControlName="currency_code"></cc-currency-field>
-      </ng-template>
-    </v-filters>
-  }
+    </cc-page-layout-actions>
+    @if (isFilterTable$ | async) {
+        <v-filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
+            <ng-template [formGroup]="filtersForm">
+                @if (!(party$ | async)) {
+                    <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+                }
+                <v-list-field formControlName="wallet_id" label="Wallet IDs"></v-list-field>
+                <mat-form-field>
+                    <mat-label>Identity ID</mat-label>
+                    <input formControlName="identity_id" matInput />
+                </mat-form-field>
+                <cc-currency-field formControlName="currency_code"></cc-currency-field>
+            </ng-template>
+        </v-filters>
+    }
 
-  @if (isFilterTable$ | async) {
-    <v-table
-      [columns]="filterColumns"
-      [data]="filterWallets$ | async"
-      [hasMore]="filterHasMore$ | async"
-      [progress]="filtersLoading$ | async"
-      name="filterWallets"
-      (more)="filterMore()"
-      (update)="filterSearch($event)"
-    ></v-table>
-  } @else {
-    <v-table
-      [columns]="fullTextSearchColumns"
-      [data]="fullTextSearchWallets$ | async"
-      [progress]="fullTextSearchLoading$ | async"
-      externalFilter
-      name="ftsWallets"
-      standaloneFilter
-      (filterChange)="fullTextSearch($event)"
-      (update)="fullTextSearchReload()"
-    ></v-table>
-  }
+    @if (isFilterTable$ | async) {
+        <v-table
+            [columns]="filterColumns"
+            [data]="filterWallets$ | async"
+            [hasMore]="filterHasMore$ | async"
+            [progress]="filtersLoading$ | async"
+            name="filterWallets"
+            (more)="filterMore()"
+            (update)="filterSearch($event)"
+        ></v-table>
+    } @else {
+        <v-table
+            [columns]="fullTextSearchColumns"
+            [data]="fullTextSearchWallets$ | async"
+            [progress]="fullTextSearchLoading$ | async"
+            externalFilter
+            name="ftsWallets"
+            standaloneFilter
+            (filterChange)="fullTextSearch($event)"
+            (update)="fullTextSearchReload()"
+        ></v-table>
+    }
 </cc-page-layout>

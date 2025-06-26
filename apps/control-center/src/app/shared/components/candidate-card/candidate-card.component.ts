@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { RoutingRulesetRef, TerminalRef } from '@vality/domain-proto/domain';
 import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
@@ -15,6 +15,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
     templateUrl: './candidate-card.component.html',
 })
 export class CandidateCardComponent implements OnChanges {
+    private domainStoreService = inject(DomainStoreService);
     @Input() idx: number;
     @Input() ref: RoutingRulesetRef;
 
@@ -29,8 +30,6 @@ export class CandidateCardComponent implements OnChanges {
 
     private ref$ = new ReplaySubject<TerminalRef>(1);
     private idx$ = new ReplaySubject<number>(1);
-
-    constructor(private domainStoreService: DomainStoreService) {}
 
     ngOnChanges(changes: ComponentChanges<CandidateCardComponent>) {
         if (changes.ref) {

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ReflessDomainObject } from '@vality/domain-proto/domain';
 import { DialogResponseStatus } from '@vality/matez';
@@ -16,14 +16,11 @@ import { DomainObjectsTableComponent } from './domain-objects-table';
     providers: [FetchDomainObjectsService],
 })
 export class DomainObjectsComponent {
+    private domainService = inject(DomainService);
+    private domainObjectService = inject(DomainObjectService);
+    private fetchDomainObjectsService = inject(FetchDomainObjectsService);
     version = this.domainService.version.value;
     selectedType = signal<keyof ReflessDomainObject>(null);
-
-    constructor(
-        private domainService: DomainService,
-        private domainObjectService: DomainObjectService,
-        private fetchDomainObjectsService: FetchDomainObjectsService,
-    ) {}
 
     create() {
         this.domainObjectService.create(this.selectedType()).next((result) => {
