@@ -35,10 +35,6 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
     props = CSV_CHARGEBACK_PROPS;
     errors?: Map<CsvChargeback, unknown>;
 
-    constructor() {
-        super();
-    }
-
     create() {
         const selected = this.selected;
         forkJoinToResult(

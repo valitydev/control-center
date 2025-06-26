@@ -15,10 +15,6 @@ export class WalletsTermsService extends FetchSuperclass<WalletTermSet, WalletSe
     private dominatorService = inject(DominatorService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: WalletSearchQuery, options: FetchOptions<string>) {
         return this.dominatorService
             .SearchWalletTermSets({

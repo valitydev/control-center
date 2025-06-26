@@ -12,10 +12,6 @@ export class FetchWithdrawalsService extends FetchSuperclass<StatWithdrawal, Wit
     private fistfulStatisticsService = inject(FistfulStatisticsService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(
         params: WithdrawalParams,
         options: FetchOptions,

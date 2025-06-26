@@ -81,10 +81,6 @@ export class SelectColumnComponent<T>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         super.ngOnInit();
         this.selection.changed.pipe(takeUntilDestroyed(this.dr)).subscribe(() => {

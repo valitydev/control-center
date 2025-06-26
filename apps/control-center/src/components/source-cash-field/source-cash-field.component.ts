@@ -107,10 +107,6 @@ export class SourceCashFieldComponent
         return getCurrencySymbol(this.currencyCode, 'narrow', this._locale);
     }
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         super.ngOnInit();
         combineLatest([

@@ -85,10 +85,6 @@ export class ExtensionFieldComponent<T>
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         this.control.valueChanges
             .pipe(

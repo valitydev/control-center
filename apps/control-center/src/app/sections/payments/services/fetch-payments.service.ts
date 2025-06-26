@@ -19,10 +19,6 @@ export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSe
     private merchantStatisticsService = inject(MerchantStatisticsService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(
         params: PaymentSearchQuery,
         { size, continuationToken }: FetchOptions,

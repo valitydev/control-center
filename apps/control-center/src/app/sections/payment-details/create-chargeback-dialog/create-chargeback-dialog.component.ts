@@ -28,10 +28,6 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
-    constructor() {
-        super();
-    }
-
     create() {
         this.invoicingService
             .CreateChargeback(

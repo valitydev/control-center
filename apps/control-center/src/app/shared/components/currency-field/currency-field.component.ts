@@ -28,8 +28,4 @@ export class CurrencyFieldComponent extends FormControlSuperclass<string> {
             }));
         }),
     );
-
-    constructor() {
-        super();
-    }
 }

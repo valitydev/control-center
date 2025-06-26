@@ -23,8 +23,4 @@ export class NumberRangeFieldComponent extends FormGroupSuperclass<NumberRange> 
         start: undefined,
         end: undefined,
     });
-
-    constructor() {
-        super();
-    }
 }

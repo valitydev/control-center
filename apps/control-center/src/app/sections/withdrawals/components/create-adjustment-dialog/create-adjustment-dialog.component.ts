@@ -40,10 +40,6 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     ];
     progress$ = new BehaviorSubject(0);
 
-    constructor() {
-        super();
-    }
-
     createAdjustment() {
         forkJoinToResult(
             this.dialogData.withdrawals.map((w) =>

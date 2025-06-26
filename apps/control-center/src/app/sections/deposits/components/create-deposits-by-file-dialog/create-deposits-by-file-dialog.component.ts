@@ -40,10 +40,6 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     props = CSV_DEPOSIT_PROPS;
     errors?: Map<CsvDeposit, unknown>;
 
-    constructor() {
-        super();
-    }
-
     create() {
         const selected = this.selected;
         forkJoinToResult(

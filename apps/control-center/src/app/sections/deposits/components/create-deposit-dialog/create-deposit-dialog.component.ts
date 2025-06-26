@@ -43,10 +43,6 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
         },
     ];
 
-    constructor() {
-        super();
-    }
-
     create() {
         const { body: sourceCash, ...value } = this.control.value;
         this.fetchSourcesService.sources$

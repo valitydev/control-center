@@ -39,10 +39,6 @@ export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSupercl
     props = CSV_PAYMENT_ADJUSTMENT_PROPS;
     errors?: Map<CsvPaymentAdjustment, unknown>;
 
-    constructor() {
-        super();
-    }
-
     create() {
         const selected = this.selected;
         forkJoinToResult(

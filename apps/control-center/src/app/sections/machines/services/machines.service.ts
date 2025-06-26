@@ -11,10 +11,6 @@ export class MachinesService extends FetchSuperclass<Machine, SearchRequest> {
     private repairManagementService = inject(RepairManagementService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: SearchRequest, options: FetchOptions) {
         return this.repairManagementService
             .Search({

@@ -15,10 +15,6 @@ export class FetchDomainObjectsService extends FetchSuperclass<
     private repositoryService = inject(Repository2Service);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     fetch(params: FetchParams, options: FetchOptions) {
         return this.repositoryService
             .SearchObjects(

@@ -66,10 +66,6 @@ export class ShopFieldComponent
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
 
-    constructor() {
-        super();
-    }
-
     ngAfterViewInit() {
         const initValues = this.getCurrentValues();
         combineLatest([

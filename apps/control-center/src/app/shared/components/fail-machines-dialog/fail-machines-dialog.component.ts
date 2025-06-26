@@ -56,10 +56,6 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
         return TYPE_NS_MAP[this.dialogData.type].length > 1;
     }
 
-    constructor() {
-        super();
-    }
-
     fail() {
         const ids = this.errors.length ? this.errors.map(({ data }) => data) : this.dialogData.ids;
         this.errors = [];

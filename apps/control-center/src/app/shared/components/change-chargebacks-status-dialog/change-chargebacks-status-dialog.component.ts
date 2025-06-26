@@ -73,10 +73,6 @@ export class ChangeChargebacksStatusDialogComponent
     };
     progress$ = new BehaviorSubject(0);
 
-    constructor() {
-        super();
-    }
-
     ngOnInit() {
         this.actionControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
             this.control.reset();

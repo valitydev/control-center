@@ -55,10 +55,6 @@ export class CreateDomainObjectDialogComponent
     progress$ = new BehaviorSubject(0);
     isReview = false;
 
-    constructor() {
-        super();
-    }
-
     ngOnInit() {
         if (this.dialogData && this.dialogData.objectType) {
             this.control.setValue({ [this.dialogData.objectType]: {} });

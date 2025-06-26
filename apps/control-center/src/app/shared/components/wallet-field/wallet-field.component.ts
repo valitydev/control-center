@@ -49,10 +49,6 @@ export class WalletFieldComponent
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
 
-    constructor() {
-        super();
-    }
-
     ngAfterViewInit() {
         concat(
             of(this.control.value).pipe(

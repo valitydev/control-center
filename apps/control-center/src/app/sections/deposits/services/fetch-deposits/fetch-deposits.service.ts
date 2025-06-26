@@ -15,10 +15,6 @@ export class FetchDepositsService extends FetchSuperclass<
     private fistfulStatisticsService = inject(FistfulStatisticsService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(
         params: QueryDsl['query']['deposits'],
         options: FetchOptions,

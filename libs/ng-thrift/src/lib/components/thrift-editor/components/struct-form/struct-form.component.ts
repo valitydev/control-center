@@ -61,10 +61,6 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         );
     }
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         combineLatest([getValueChanges(this.control), getValueChanges(this.labelControl)])
             .pipe(

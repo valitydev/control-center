@@ -9,10 +9,6 @@ import { DeanonimusService } from '../../api/deanonimus';
 export class FetchWalletsTextService extends FetchSuperclass<SearchWalletHit, string> {
     private deanonimusService = inject(DeanonimusService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(text: string) {
         return this.deanonimusService.searchWalletText(text).pipe(
             map((result) => ({

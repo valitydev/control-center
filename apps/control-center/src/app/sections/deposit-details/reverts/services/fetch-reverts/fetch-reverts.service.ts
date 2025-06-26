@@ -11,10 +11,6 @@ import { FetchRevertsParams } from '../../types/fetch-reverts-params';
 export class FetchRevertsService extends FetchSuperclass<StatDepositRevert, FetchRevertsParams> {
     private fistfulStatisticsService = inject(FistfulStatisticsService);
 
-    constructor() {
-        super();
-    }
-
     fetch(params: FetchRevertsParams, options: FetchOptions) {
         return this.fistfulStatisticsService
             .GetDepositReverts({

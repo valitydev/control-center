@@ -14,10 +14,6 @@ export class FetchClaimsService extends FetchSuperclass<
     private claimManagementService = inject(ClaimManagementService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(
         params: Omit<ClaimSearchQuery, 'continuation_token' | 'limit'>,
         { size, continuationToken }: FetchOptions,

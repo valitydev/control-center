@@ -69,10 +69,6 @@ export class ThriftFormComponent<T>
 
     private updated$ = new BehaviorSubject<void>(undefined);
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         super.ngOnInit();
         this.extensionResult$

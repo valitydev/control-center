@@ -48,10 +48,6 @@ export class DomainObjectFieldComponent<T extends keyof DomainObject>
 
     private name$ = new ReplaySubject<keyof DomainObject>(1);
 
-    constructor() {
-        super();
-    }
-
     override ngOnChanges(changes: ComponentChanges<DomainObjectFieldComponent<T>>) {
         super.ngOnChanges(changes);
         if (changes.name) {

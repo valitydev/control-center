@@ -29,10 +29,6 @@ export class ChangeDelegateRulesetDialogComponent
 
     rulesets$ = this.routingRulesService.rulesets$;
 
-    constructor() {
-        super();
-    }
-
     ngOnInit() {
         this.routingRulesService
             .getRuleset(this.dialogData.mainRulesetRefID)

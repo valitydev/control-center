@@ -14,10 +14,6 @@ export class CreateSourceComponent extends DialogSuperclass<void> {
     private log = inject(NotifyLogService);
     control = new FormControl();
 
-    constructor() {
-        super();
-    }
-
     create() {
         this.fistfulAdminService.CreateSource(this.control.value).subscribe({
             next: () => {

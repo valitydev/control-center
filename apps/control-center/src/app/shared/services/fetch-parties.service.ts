@@ -11,10 +11,6 @@ export class FetchPartiesService extends SingleFetchSuperclass<Party, string> {
     private deanonimusService = inject(DeanonimusService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(text: string, _options: FetchOptions) {
         return text
             ? this.deanonimusService.searchParty(text).pipe(

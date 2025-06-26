@@ -121,10 +121,6 @@ export class CreateShopDialogComponent
     });
     progress$ = new BehaviorSubject(0);
 
-    constructor() {
-        super();
-    }
-
     ngOnInit() {
         this.domainStoreService
             .getObjects('payment_institution')

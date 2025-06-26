@@ -39,8 +39,4 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     defaultNamespace = 'domain';
-
-    constructor() {
-        super();
-    }
 }

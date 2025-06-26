@@ -38,10 +38,6 @@ export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends D
         );
     }
 
-    constructor() {
-        super();
-    }
-
     upsert() {
         this.dialogData
             .action(this.control.value)

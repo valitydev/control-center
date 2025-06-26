@@ -12,10 +12,6 @@ export class ShopsTermsService extends FetchSuperclass<ShopTermSet, ShopSearchQu
     private dominatorService = inject(DominatorService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: ShopSearchQuery, options: FetchOptions<string>) {
         return this.dominatorService
             .SearchShopTermSets({

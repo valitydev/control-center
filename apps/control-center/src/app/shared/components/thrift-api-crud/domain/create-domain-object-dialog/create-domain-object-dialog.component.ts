@@ -54,10 +54,6 @@ export class CreateDomainObjectDialogComponent
     progress$ = new BehaviorSubject(0);
     isReview = false;
 
-    constructor() {
-        super();
-    }
-
     ngOnInit() {
         if (this.dialogData) {
             this.metadataService

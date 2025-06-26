@@ -37,10 +37,6 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 
-    constructor() {
-        super();
-    }
-
     create() {
         const payments = this.errors.length
             ? this.errors.map(({ data }) => data)

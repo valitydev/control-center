@@ -80,10 +80,6 @@ export class ComplexFormComponent<V, K = never>
         return undefined;
     }
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         merge(this.valueControls.valueChanges, this.keyControls.valueChanges)
             .pipe(takeUntilDestroyed(this.destroyRef))

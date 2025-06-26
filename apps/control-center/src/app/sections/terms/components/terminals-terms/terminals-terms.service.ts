@@ -15,10 +15,6 @@ export class TerminalsTermsService extends FetchSuperclass<TerminalTermSet, Term
     private dominatorService = inject(DominatorService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: TerminalSearchQuery, options: FetchOptions) {
         return this.dominatorService
             .SearchTerminalTermSets({

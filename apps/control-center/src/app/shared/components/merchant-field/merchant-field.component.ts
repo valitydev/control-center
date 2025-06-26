@@ -48,10 +48,6 @@ export class MerchantFieldComponent
 
     private debounceTimeMs = inject(DEBOUNCE_TIME_MS);
 
-    constructor() {
-        super();
-    }
-
     ngAfterViewInit() {
         merge(getValueChanges(this.control), this.searchChange$)
             .pipe(

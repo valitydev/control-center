@@ -41,10 +41,6 @@ export class ChangeStatusDialogComponent extends DialogSuperclass<
 
     private progress$ = new BehaviorSubject(0);
 
-    constructor() {
-        super();
-    }
-
     confirm(): void {
         let result$: Observable<void>;
         const { value } = this.form;

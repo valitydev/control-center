@@ -38,8 +38,4 @@ export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSour
                 ),
         ),
     );
-
-    constructor() {
-        super();
-    }
 }

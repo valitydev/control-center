@@ -106,10 +106,6 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     });
     isLoading = signal(0);
 
-    constructor() {
-        super();
-    }
-
     update() {
         this.domainService
             .update([this.getNewObject()], this.dialogData.domainObject.info.version)

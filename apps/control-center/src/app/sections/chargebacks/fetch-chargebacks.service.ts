@@ -14,10 +14,6 @@ export class FetchChargebacksService extends FetchSuperclass<
     private merchantStatisticsService = inject(MerchantStatisticsService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: ChargebackSearchQuery, options: FetchOptions) {
         return this.merchantStatisticsService
             .SearchChargebacks({

@@ -53,10 +53,6 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
         },
     ];
 
-    constructor() {
-        super();
-    }
-
     createRevert() {
         const { body, ...value } = this.control.value;
         this.depositManagementService

@@ -28,8 +28,4 @@ export class DateRangeFieldComponent extends FormGroupSuperclass<Partial<DateRan
         start: undefined,
         end: undefined,
     });
-
-    constructor() {
-        super();
-    }
 }

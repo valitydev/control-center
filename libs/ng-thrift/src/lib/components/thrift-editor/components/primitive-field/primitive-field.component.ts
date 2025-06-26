@@ -119,10 +119,6 @@ export class PrimitiveFieldComponent<T>
     private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
     private extensions$ = new ReplaySubject<ThriftFormExtension[]>(1);
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         super.ngOnInit();
         getValueChanges(this.control)

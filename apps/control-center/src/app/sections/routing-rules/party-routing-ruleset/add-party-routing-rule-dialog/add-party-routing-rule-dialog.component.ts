@@ -40,10 +40,6 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
         description: s.id,
     }));
 
-    constructor() {
-        super();
-    }
-
     add() {
         const { shopID, walletID, name, description } = this.form.value;
         this.routingRulesService

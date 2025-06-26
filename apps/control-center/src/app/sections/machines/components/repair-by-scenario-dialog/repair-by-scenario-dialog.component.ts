@@ -65,10 +65,6 @@ export class RepairByScenarioDialogComponent
         return !isNil(this.nsControl.value);
     }
 
-    constructor() {
-        super();
-    }
-
     ngOnInit() {
         this.nsControl.valueChanges
             .pipe(

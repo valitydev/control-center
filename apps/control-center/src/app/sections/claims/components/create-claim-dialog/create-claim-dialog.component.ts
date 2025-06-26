@@ -23,10 +23,6 @@ export class CreateClaimDialogComponent extends DialogSuperclass<
     control = new FormControl(this.dialogData.partyId, Validators.required);
     progress$ = new BehaviorSubject(0);
 
-    constructor() {
-        super();
-    }
-
     create() {
         this.claimService
             .CreateClaim(this.control.value, [])

@@ -31,10 +31,6 @@ export class AttachNewRulesetDialogComponent extends DialogSuperclass<
     targetRuleset$ = new BehaviorSubject<TargetRuleset>(undefined);
     targetRulesetValid$ = new BehaviorSubject<boolean>(undefined);
 
-    constructor() {
-        super();
-    }
-
     attach() {
         const { mainRulesetRefID, mainDelegateDescription } = this.targetRuleset$.value;
         this.routingRulesService

@@ -20,10 +20,6 @@ export class FetchRefundsService extends FetchSuperclass<
     private merchantStatisticsService = inject(MerchantStatisticsService);
     private log = inject(NotifyLogService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: DeepPartial<RefundSearchQuery>, options: FetchOptions) {
         return this.merchantStatisticsService
             .SearchRefunds(

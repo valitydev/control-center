@@ -50,10 +50,6 @@ export class AddModificationDialogComponent extends DialogSuperclass<
 
     private progress$ = new BehaviorSubject(0);
 
-    constructor() {
-        super();
-    }
-
     add() {
         const { party, claim } = this.dialogData;
         this.claimManagementService

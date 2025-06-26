@@ -24,10 +24,6 @@ export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<
         description: '',
     });
 
-    constructor() {
-        super();
-    }
-
     init() {
         const { delegateDescription, name, description } = this.form.value;
         this.routingRulesService

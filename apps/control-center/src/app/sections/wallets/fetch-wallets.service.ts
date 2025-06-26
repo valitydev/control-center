@@ -10,10 +10,6 @@ import { WalletParams } from '../../api/fistful-stat/query-dsl/types/wallet';
 export class FetchWalletsService extends FetchSuperclass<StatWallet, WalletParams> {
     private fistfulStatisticsService = inject(FistfulStatisticsService);
 
-    constructor() {
-        super();
-    }
-
     protected fetch(params: WalletParams, { size, continuationToken }: FetchOptions) {
         return this.fistfulStatisticsService
             .GetWallets({

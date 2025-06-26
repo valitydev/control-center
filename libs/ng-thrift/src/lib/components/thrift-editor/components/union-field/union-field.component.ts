@@ -63,10 +63,6 @@ export class UnionFieldComponent<T extends { [N in string]: unknown }>
 
     private data$ = new ReplaySubject<ThriftData<string, 'union'>>(1);
 
-    constructor() {
-        super();
-    }
-
     override ngOnInit() {
         merge(this.fieldControl.valueChanges, this.internalControl.valueChanges)
             .pipe(

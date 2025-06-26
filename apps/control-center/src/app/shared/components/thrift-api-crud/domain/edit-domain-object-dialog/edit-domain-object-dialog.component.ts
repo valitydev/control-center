@@ -109,10 +109,6 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         deserialize: (v) => (enumHasValue(EditorKind, v) ? v : EditorKind.Form),
     });
 
-    constructor() {
-        super();
-    }
-
     update(isRepeat = false) {
         combineLatest([this.getCurrentObject(), this.getCurrentObject(true)])
             .pipe(
