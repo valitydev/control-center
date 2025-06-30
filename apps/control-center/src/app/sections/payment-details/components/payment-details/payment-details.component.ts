@@ -1,8 +1,8 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, LOCALE_ID, inject } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { ThriftAstMetadata } from '@vality/domain-proto';
-import { formatCurrency, getImportValue } from '@vality/matez';
+import { metadata$ } from '@vality/magista-proto';
+import { formatCurrency } from '@vality/matez';
 import { ThriftViewExtension, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export class PaymentDetailsComponent {
     private _locale = inject<string>(LOCALE_ID);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
+    metadata$ = metadata$;
     extensions$: Observable<ThriftViewExtension[]> = this.payment$.pipe(
         map((payment): ThriftViewExtension[] => [
             this.domainMetadataViewExtensionsService.createShopExtension(payment.owner_id),

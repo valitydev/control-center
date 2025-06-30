@@ -5,7 +5,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { StatChargeback } from '@vality/magista-proto/internal/magista';
+import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     DialogModule,
     DialogSuperclass,

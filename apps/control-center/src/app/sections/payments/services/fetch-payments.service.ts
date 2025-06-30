@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
+import {
+    MerchantStatisticsService,
+    PaymentSearchQuery,
+    StatPayment,
+} from '@vality/magista-proto/magista';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-
-import { MerchantStatisticsService } from '../../../api/magista/merchant-statistics.service';
 
 function splitInvoicePaymentId(invoicePaymentId: string) {
     const [invoiceId, paymentId] = invoicePaymentId.split('.');

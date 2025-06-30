@@ -1,5 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { RefundSearchQuery, StatRefund } from '@vality/magista-proto/magista';
+import {
+    MerchantStatisticsService,
+    RefundSearchQuery,
+    StatRefund,
+} from '@vality/magista-proto/magista';
 import {
     FetchOptions,
     FetchSuperclass,
@@ -9,8 +13,6 @@ import {
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { DeepPartial } from 'utility-types';
-
-import { MerchantStatisticsService } from '../../../../api/magista';
 
 @Injectable()
 export class FetchRefundsService extends FetchSuperclass<

@@ -1,10 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
+import {
+    ChargebackSearchQuery,
+    MerchantStatisticsService,
+    StatChargeback,
+} from '@vality/magista-proto/magista';
 import { FetchOptions, FetchSuperclass, NotifyLogService } from '@vality/matez';
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-
-import { MerchantStatisticsService } from '../../api/magista';
 
 @Injectable()
 export class FetchChargebacksService extends FetchSuperclass<
