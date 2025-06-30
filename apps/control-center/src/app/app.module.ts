@@ -15,6 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
+import { RepairManagement } from '@vality/repairer-proto/repairer';
+
+import { provideThriftServices } from '../utils';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -93,6 +96,7 @@ registerLocaleData(localeRu);
             },
         },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
+        provideThriftServices([{ service: RepairManagement, name: 'RepairManagement' }]),
     ],
     bootstrap: [AppComponent],
 })

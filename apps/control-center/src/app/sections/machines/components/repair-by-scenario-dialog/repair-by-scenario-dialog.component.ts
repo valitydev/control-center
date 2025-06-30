@@ -5,21 +5,20 @@ import {
     DialogResponseStatus,
     DialogSuperclass,
     NotifyLogService,
-    getImportValue,
     getValue,
     progressTo,
 } from '@vality/matez';
-import { ThriftAstMetadata } from '@vality/ng-thrift';
+import { metadata$ } from '@vality/repairer-proto';
 import {
     Machine,
     RepairInvoicesRequest,
+    RepairManagement,
     RepairWithdrawalsRequest,
 } from '@vality/repairer-proto/repairer';
 import isNil from 'lodash-es/isNil';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { RepairManagementService } from '../../../../api/repairer';
 import { DomainMetadataFormExtensionsService } from '../../../../shared/services';
 
 enum Types {
@@ -40,7 +39,7 @@ export class RepairByScenarioDialogComponent
     extends DialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>
     implements OnInit
 {
-    private repairManagementService = inject(RepairManagementService);
+    private repairManagementService = inject(RepairManagement);
     private log = inject(NotifyLogService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);
@@ -54,7 +53,7 @@ export class RepairByScenarioDialogComponent
         null,
         Validators.required,
     );
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/repairer-proto/metadata.json'));
+    metadata$ = metadata$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
