@@ -17,6 +17,7 @@ import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
+import { AccountService } from '@vality/scrooge-proto/account_balance';
 
 import { provideThriftServices } from '../utils';
 
@@ -100,6 +101,7 @@ registerLocaleData(localeRu);
         provideThriftServices([
             { service: RepairManagement, name: 'RepairManagement' },
             { service: Deanonimus, name: 'Deanonimus' },
+            { service: AccountService, name: 'Scrooge' },
         ]),
     ],
     bootstrap: [AppComponent],

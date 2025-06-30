@@ -39,7 +39,7 @@
         "@vality/machinegun-proto": "1.0.1-3decc8f.0",
         "@vality/magista-proto": "2.0.2-e49ad10.0",
         "@vality/repairer-proto": "2.0.2-636fb38.0",
-        "@vality/scrooge-proto": "0.1.1-9ce7fc6.0",
+        "@vality/scrooge-proto": "0.1.1-d9a7996.0",
         "@vality/thrift-ts": "2.4.1-8ad5123.0",
         "@vality/woody": "0.1.3",
         "date-fns": "^3.6.0",
