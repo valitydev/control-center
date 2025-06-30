@@ -32,7 +32,7 @@
         "@angular/router": "20.0.5",
         "@ngneat/input-mask": "6.0.0",
         "@s-libs/ng-core": "^20.0.0",
-        "@vality/deanonimus-proto": "2.0.1-6605c72.0",
+        "@vality/deanonimus-proto": "2.0.1-03613cc.0",
         "@vality/domain-proto": "2.0.1-35a8abf.0",
         "@vality/dominator-proto": "1.0.1-41bee97.0",
         "@vality/fistful-proto": "2.0.1-88e69a5.0",

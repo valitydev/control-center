@@ -1,7 +1,7 @@
 import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, NonNullableFormBuilder } from '@angular/forms';
-import { SearchWalletHit } from '@vality/deanonimus-proto/internal/deanonimus';
+import { SearchWalletHit } from '@vality/deanonimus-proto/deanonimus';
 import { IdentityState } from '@vality/fistful-proto/identity';
 import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { StatWallet } from '@vality/fistful-proto/internal/fistful_stat';

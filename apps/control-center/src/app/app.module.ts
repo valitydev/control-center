@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
+import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
@@ -96,7 +97,10 @@ registerLocaleData(localeRu);
             },
         },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
-        provideThriftServices([{ service: RepairManagement, name: 'RepairManagement' }]),
+        provideThriftServices([
+            { service: RepairManagement, name: 'RepairManagement' },
+            { service: Deanonimus, name: 'Deanonimus' },
+        ]),
     ],
     bootstrap: [AppComponent],
 })
