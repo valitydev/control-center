@@ -1,17 +1,10 @@
-import {
-    CashFlowPosting,
-    PartyID,
-    Predicate,
-    WalletID,
-} from '@vality/domain-proto/internal/domain';
-
-import type { TermSetHierarchyObject } from '@vality/dominator-proto/internal/proto/domain';
+import type { domain } from '@vality/dominator-proto/dominator';
 
 import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
-export function getWalletCashFlowSelectors(d: TermSetHierarchyObject) {
+export function getWalletCashFlowSelectors(d: domain.TermSetHierarchyObject) {
     return (
         d.data.term_sets
             ?.map?.((t) => t?.terms?.wallets?.withdrawals?.cash_flow)
@@ -19,11 +12,15 @@ export function getWalletCashFlowSelectors(d: TermSetHierarchyObject) {
     );
 }
 
-export function isWalletFee(v: CashFlowPosting) {
+export function isWalletFee(v: domain.CashFlowPosting) {
     return v?.source?.wallet === 1 && v?.destination?.system === 0;
 }
 
-export function isThatWalletParty(predicate: Predicate, partyId: PartyID, walletId: WalletID) {
+export function isThatWalletParty(
+    predicate: domain.Predicate,
+    partyId: domain.PartyID,
+    walletId: domain.WalletID,
+) {
     return (
         predicate?.condition?.party?.id === partyId &&
         predicate?.condition?.party?.definition?.wallet_is === walletId
@@ -32,7 +29,7 @@ export function isThatWalletParty(predicate: Predicate, partyId: PartyID, wallet
 
 export function isWalletTermSetDecision(
     v: FlatDecision,
-    params: { partyId: PartyID; walletId: WalletID; currency: string },
+    params: { partyId: domain.PartyID; walletId: domain.WalletID; currency: string },
 ) {
     return (
         (!v?.if?.condition?.party?.definition?.wallet_is ||

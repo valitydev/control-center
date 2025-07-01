@@ -7,10 +7,10 @@ import {
     TermSetHierarchyRef,
 } from '@vality/domain-proto/internal/domain';
 import {
-    CommonSearchQueryParams,
+    type CommonSearchQueryParams,
     type WalletSearchQuery,
     type WalletTermSet,
-} from '@vality/dominator-proto/internal/dominator';
+} from '@vality/dominator-proto/dominator';
 import {
     Column,
     FiltersModule,

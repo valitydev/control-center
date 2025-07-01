@@ -14,6 +14,7 @@ import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
+import { DominatorService } from '@vality/dominator-proto/dominator';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
@@ -104,6 +105,7 @@ registerLocaleData(localeRu);
             { service: Deanonimus, name: 'Deanonimus' },
             { service: AccountService, name: 'Scrooge' },
             { service: MerchantStatisticsService, name: 'MerchantStatistics' },
+            { service: DominatorService, name: 'Dominator' },
         ]),
     ],
     bootstrap: [AppComponent],

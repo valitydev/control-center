@@ -1,12 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import {
+    DominatorService,
     type WalletSearchQuery,
     type WalletTermSet,
-} from '@vality/dominator-proto/internal/dominator';
+} from '@vality/dominator-proto/dominator';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean, handleError } from '@vality/matez';
 import { map } from 'rxjs/operators';
-
-import { DominatorService } from '../../../../api/dominator/dominator.service';
 
 @Injectable({
     providedIn: 'root',
