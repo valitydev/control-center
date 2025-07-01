@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { NotifyLogService, cleanPrimitiveProps, inProgressFrom, progressTo } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
-
-import { MerchantStatisticsService } from '../../api/magista/merchant-statistics.service';
 
 @Injectable()
 export class PaymentDetailsService {

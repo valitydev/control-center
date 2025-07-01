@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
+import { Deanonimus, SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
 import { NotifyLogService, progressTo } from '@vality/matez';
 import { BehaviorSubject, Observable, Subject, combineLatest, defer, of } from 'rxjs';
 import {
@@ -11,7 +11,6 @@ import {
     switchMap,
 } from 'rxjs/operators';
 
-import { DeanonimusService } from '../../api/deanonimus';
 import { ShopParty } from '../../shared/components/shops-table';
 
 @Component({
@@ -20,7 +19,7 @@ import { ShopParty } from '../../shared/components/shops-table';
     standalone: false,
 })
 export class ShopsComponent {
-    private deanonimusService = inject(DeanonimusService);
+    private deanonimusService = inject(Deanonimus);
     private log = inject(NotifyLogService);
     filterChange$ = new Subject<string>();
     shopsParty$: Observable<ShopParty[]> = combineLatest([

@@ -1,16 +1,11 @@
-import { CashFlow } from '@vality/domain-proto/internal/domain';
 import { getUnionKey } from '@vality/ng-thrift';
 
-import type {
-    CashFlowAccount,
-    CashFlowSelector,
-    Predicate,
-} from '@vality/dominator-proto/internal/proto/domain';
+import type { domain } from '@vality/dominator-proto/dominator';
 
 import { compareCashVolumes, formatPredicate } from '../../../shared';
 
 // TODO: use enums
-function formatCashFlowAccount(acc: CashFlowAccount) {
+function formatCashFlowAccount(acc: domain.CashFlowAccount) {
     return (
         getUnionKey(acc) +
         ':' +
@@ -48,13 +43,13 @@ function formatCashFlowAccount(acc: CashFlowAccount) {
     );
 }
 
-export function formatLevelPredicate(v: { level: number; if?: Predicate }) {
+export function formatLevelPredicate(v: { level: number; if?: domain.Predicate }) {
     return `${'\xa0'.repeat(Math.max(v.level - 1, 0))}${v.level > 0 ? '↳' : ''} ${formatPredicate(
         v.if,
     )}`;
 }
 
-export function formatCashFlowSourceDestination(value: CashFlow): string {
+export function formatCashFlowSourceDestination(value: domain.CashFlow): string {
     return value
         .sort((a, b) => compareCashVolumes(a.volume, b.volume))
         .map(
@@ -66,12 +61,12 @@ export function formatCashFlowSourceDestination(value: CashFlow): string {
 }
 
 export interface FlatDecision {
-    value: CashFlow;
+    value: domain.CashFlow;
     level: number;
-    if?: Predicate;
+    if?: domain.Predicate;
 }
 
-export function getFlatDecisions(d: CashFlowSelector[], level = 0) {
+export function getFlatDecisions(d: domain.CashFlowSelector[], level = 0) {
     return d.reduce<FlatDecision[]>((acc, c) => {
         if (c.value) {
             acc.push({

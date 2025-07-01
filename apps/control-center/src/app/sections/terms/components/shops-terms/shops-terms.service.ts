@@ -1,9 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/internal/dominator';
+import { DominatorService, ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/dominator';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean, handleError } from '@vality/matez';
 import { map } from 'rxjs/operators';
-
-import { DominatorService } from '../../../../api/dominator/dominator.service';
 
 @Injectable({
     providedIn: 'root',

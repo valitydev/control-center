@@ -7,7 +7,7 @@ import {
     CommonSearchQueryParams,
     ShopSearchQuery,
     ShopTermSet,
-} from '@vality/dominator-proto/internal/dominator';
+} from '@vality/dominator-proto/dominator';
 import {
     Column,
     FiltersModule,

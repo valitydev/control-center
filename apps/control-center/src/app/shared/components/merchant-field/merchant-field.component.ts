@@ -7,6 +7,7 @@ import {
     inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
 import { PartyID } from '@vality/domain-proto/domain';
 import {
     FormControlSuperclass,
@@ -20,7 +21,6 @@ import {
 import { BehaviorSubject, Observable, ReplaySubject, Subject, merge, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 
-import { DeanonimusService } from '../../../api/deanonimus/deanonimus.service';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';
 
 @Component({
@@ -33,7 +33,7 @@ export class MerchantFieldComponent
     extends FormControlSuperclass<PartyID>
     implements AfterViewInit
 {
-    private deanonimusService = inject(DeanonimusService);
+    private deanonimusService = inject(Deanonimus);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     @Input() label: string;

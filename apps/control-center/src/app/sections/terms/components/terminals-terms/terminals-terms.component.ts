@@ -3,11 +3,6 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
-    CommonSearchQueryParams,
-    type TerminalSearchQuery,
-    type TerminalTermSet,
-} from '@vality/dominator-proto/internal/dominator';
-import {
     Column,
     FiltersModule,
     InputFieldModule,
@@ -26,7 +21,12 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import type { ProviderRef, TerminalRef } from '@vality/dominator-proto/internal/proto/domain';
+import type {
+    CommonSearchQueryParams,
+    TerminalSearchQuery,
+    TerminalTermSet,
+    domain,
+} from '@vality/dominator-proto/dominator';
 
 import { PageLayoutModule, createDomainObjectColumn } from '../../../../shared';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
@@ -40,7 +40,7 @@ import { TERMINAL_FEES_COLUMNS, getTerminalTreeDataItem } from './utils/terminal
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
         Omit<TerminalSearchQuery, 'common_search_query_params'>,
-        { provider_ids?: ProviderRef['id'][]; terminal_ids?: TerminalRef['id'][] }
+        { provider_ids?: domain.ProviderRef['id'][]; terminal_ids?: domain.TerminalRef['id'][] }
     >;
 
 @Component({

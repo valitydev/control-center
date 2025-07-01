@@ -9,6 +9,7 @@ import {
     input,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
 import { Party, PartyID, Shop } from '@vality/domain-proto/internal/domain';
 import { ShopID } from '@vality/domain-proto/payment_processing';
 import {
@@ -33,7 +34,6 @@ import {
 } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
-import { DeanonimusService } from '../../../api/deanonimus';
 import { PartyManagementService } from '../../../api/payment-processing';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';
 
@@ -48,7 +48,7 @@ export class ShopFieldComponent
     implements AfterViewInit
 {
     private partyManagementService = inject(PartyManagementService);
-    private deanonimusService = inject(DeanonimusService);
+    private deanonimusService = inject(Deanonimus);
     private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);
     private injector = inject(Injector);

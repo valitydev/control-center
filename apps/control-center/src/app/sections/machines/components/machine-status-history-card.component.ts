@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Column, TableModule, getEnumKey } from '@vality/matez';
-import { repairer } from '@vality/repairer-proto';
-import { StatusHistory } from '@vality/repairer-proto/repairer';
+import { RepairStatus, StatusHistory } from '@vality/repairer-proto/repairer';
 import { startCase } from 'lodash-es';
 
 import { SidenavInfoModule } from '../../../shared/components/sidenav-info/sidenav-info.module';
@@ -21,14 +20,14 @@ export class MachineStatusHistoryCardComponent {
         {
             field: 'status',
             cell: (d) => ({
-                value: startCase(getEnumKey(repairer.RepairStatus, d.status)),
+                value: startCase(getEnumKey(RepairStatus, d.status)),
                 color: (
                     {
                         failed: 'warn',
                         in_progress: 'pending',
                         repaired: 'success',
                     } as const
-                )[getEnumKey(repairer.RepairStatus, d.status)],
+                )[getEnumKey(RepairStatus, d.status)],
             }),
         },
     ];

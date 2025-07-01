@@ -13,8 +13,16 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
+import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
+import { DominatorService } from '@vality/dominator-proto/dominator';
+import { Automaton } from '@vality/machinegun-proto/state_processing';
+import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
+import { RepairManagement } from '@vality/repairer-proto/repairer';
+import { AccountService } from '@vality/scrooge-proto/account_balance';
+
+import { provideThriftServices } from '../utils';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -93,6 +101,14 @@ registerLocaleData(localeRu);
             },
         },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
+        provideThriftServices([
+            { service: RepairManagement, name: 'RepairManagement' },
+            { service: Deanonimus, name: 'Deanonimus' },
+            { service: AccountService, name: 'Scrooge' },
+            { service: MerchantStatisticsService, name: 'MerchantStatistics' },
+            { service: DominatorService, name: 'Dominator' },
+            { service: Automaton, name: 'Automaton' },
+        ]),
     ],
     bootstrap: [AppComponent],
 })

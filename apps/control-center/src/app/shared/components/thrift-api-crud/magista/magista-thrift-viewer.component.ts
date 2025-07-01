@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ThriftAstMetadata } from '@vality/domain-proto';
-import { getImportValue } from '@vality/matez';
+import { metadata$ } from '@vality/magista-proto';
 import { ThriftViewExtension } from '@vality/ng-thrift';
 import { Observable } from 'rxjs';
 
@@ -16,7 +15,7 @@ export class MagistaThriftViewerComponent<T> extends ThriftViewerSuperclass<T> {
     domainMetadataViewExtensionsService = inject(DomainMetadataViewExtensionsService);
 
     defaultNamespace = 'magista';
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/magista-proto/metadata.json'));
+    metadata$ = metadata$;
     override extensions$: Observable<ThriftViewExtension[]> =
         this.domainMetadataViewExtensionsService.extensions$;
 }

@@ -19,15 +19,19 @@ import {
     getValueChanges,
     isEqualDateRange,
 } from '@vality/matez';
-import { repairer } from '@vality/repairer-proto';
-import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-proto/repairer';
+import {
+    Machine,
+    Namespace,
+    ProviderID,
+    RepairManagement,
+    RepairStatus,
+} from '@vality/repairer-proto/repairer';
 import { endOfDay } from 'date-fns';
 import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { RepairManagementService } from '../../api/repairer';
 import { createDomainObjectColumn } from '../../shared';
 import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav-info.service';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
@@ -56,7 +60,7 @@ export class MachinesComponent implements OnInit {
     private fb = inject(NonNullableFormBuilder);
     private qp = inject<QueryParamsService<Filters>>(QueryParamsService<Filters>);
     private dialogService = inject(DialogService);
-    private repairManagementService = inject(RepairManagementService);
+    private repairManagementService = inject(RepairManagement);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
@@ -74,7 +78,7 @@ export class MachinesComponent implements OnInit {
         error_message: null as string,
     });
     selected$ = new BehaviorSubject<Machine[]>([]);
-    status = repairer.RepairStatus;
+    status = RepairStatus;
     columns: Column<Machine>[] = [
         { field: 'id', sticky: 'start' },
         { header: 'Namespace', field: 'ns' },
@@ -85,14 +89,14 @@ export class MachinesComponent implements OnInit {
         {
             field: 'status',
             cell: (d) => ({
-                value: startCase(getEnumKey(repairer.RepairStatus, d.status)),
+                value: startCase(getEnumKey(RepairStatus, d.status)),
                 color: (
                     {
                         failed: 'warn',
                         in_progress: 'pending',
                         repaired: 'success',
                     } as const
-                )[getEnumKey(repairer.RepairStatus, d.status)],
+                )[getEnumKey(RepairStatus, d.status)],
             }),
         },
         {

@@ -3,7 +3,7 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { ID } from '@vality/machinegun-proto/internal/base';
+import { Automaton, type base } from '@vality/machinegun-proto/state_processing';
 import {
     DialogModule,
     DialogSuperclass,
@@ -19,7 +19,7 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { AutomatonService, FAILS_MACHINE_VALUE, Namespace } from '../../../api/machinegun';
+import { FAILS_MACHINE_VALUE, Namespace } from '../../../api/machinegun';
 
 export enum Type {
     Invoice,
@@ -37,14 +37,14 @@ const TYPE_NS_MAP: Record<Type, Namespace[]> = {
 })
 export class FailMachinesDialogComponent extends DialogSuperclass<
     FailMachinesDialogComponent,
-    { ids: ID[]; type: Type },
-    { errors?: ForkJoinErrorResult<ID>[] }
+    { ids: base.ID[]; type: Type },
+    { errors?: ForkJoinErrorResult<base.ID>[] }
 > {
-    private automatonService = inject(AutomatonService);
+    private automatonService = inject(Automaton);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     progress$ = new BehaviorSubject(0);
-    errors: ForkJoinErrorResult<ID>[] = [];
+    errors: ForkJoinErrorResult<base.ID>[] = [];
     nsControl = new FormControl<Namespace>(TYPE_NS_MAP[this.dialogData.type][0]);
     nsOptions: Option<Namespace>[] = TYPE_NS_MAP[this.dialogData.type].map((ns) => ({
         label: startCase(getEnumKey(Namespace, ns)),
@@ -72,10 +72,10 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
                     )
                     .pipe(
                         catchError((err) => {
-                            if (err?.name === 'MachineFailed') {
-                                return of(err);
+                            if (err?.error?.name === 'MachineFailed') {
+                                return of(err?.error);
                             }
-                            throw err;
+                            throw err?.error;
                         }),
                     ),
             ),
