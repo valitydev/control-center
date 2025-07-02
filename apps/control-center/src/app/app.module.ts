@@ -10,7 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
@@ -28,7 +28,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
 import { CoreModule } from './core/core.module';
-import icons from './icons.json';
 import { ClaimsModule } from './sections/claims/claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
@@ -113,20 +112,11 @@ registerLocaleData(localeRu);
     bootstrap: [AppComponent],
 })
 export class AppModule {
-    constructor(
-        private matIconRegistry: MatIconRegistry,
-        private domSanitizer: DomSanitizer,
-    ) {
+    constructor(private matIconRegistry: MatIconRegistry) {
         this.registerIcons();
     }
 
     registerIcons(): void {
         this.matIconRegistry.setDefaultFontSetClass('material-symbols-outlined');
-        for (const name of icons) {
-            this.matIconRegistry.addSvgIcon(
-                name,
-                this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${name}.svg`),
-            );
-        }
     }
 }
