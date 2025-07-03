@@ -18,9 +18,8 @@ import { BehaviorSubject, EMPTY, switchMap } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainStoreService } from '../../../../../api/domain-config';
+import { DomainStoreService, MetadataService } from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
-import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
 

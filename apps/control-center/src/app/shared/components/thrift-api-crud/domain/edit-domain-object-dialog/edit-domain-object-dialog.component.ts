@@ -29,9 +29,12 @@ import { BehaviorSubject, EMPTY, Observable, combineLatest, switchMap } from 'rx
 import { catchError, distinctUntilChanged, first, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainSecretService, DomainStoreService } from '../../../../../api/domain-config';
+import {
+    DomainSecretService,
+    DomainStoreService,
+    MetadataService,
+} from '../../../../../api/domain-config';
 import { DomainNavigateService } from '../../../../../sections/domain/services/domain-navigate.service';
-import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
 import { DomainThriftFormComponent } from '../domain-thrift-form';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
 

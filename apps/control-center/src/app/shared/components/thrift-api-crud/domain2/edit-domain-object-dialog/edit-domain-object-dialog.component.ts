@@ -29,9 +29,8 @@ import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainService } from '../../../../../api/domain-config';
+import { DomainService, MetadataService } from '../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
-import { MetadataService } from '../../../../../sections/domain/services/metadata.service';
 import { NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
