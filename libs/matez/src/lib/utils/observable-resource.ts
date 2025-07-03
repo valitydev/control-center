@@ -1,19 +1,22 @@
 import { DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Subject, from, of } from 'rxjs';
-import { map, mergeWith, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { map, mergeScan, mergeWith, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { Async } from './async';
+import { Async, PossiblyAsync, getPossiblyAsyncObservable } from './async';
 
-interface Options<T, P = void> {
-    loader: (params: P) => Async<T>;
+interface Options<T, P = void, R = T> {
+    loader: (params: P, prev: T) => Async<T>;
+    map?: (value: T) => PossiblyAsync<R>;
     params?: () => Async<P>;
+    seed?: T;
 }
 
-export function observableResource<T, P = void>({ loader, params }: Options<T, P>) {
+export function observableResource<T, P = void>(options: Options<T, P>) {
     const dr = inject(DestroyRef);
 
-    const params$ = params ? from(params()) : of(undefined as P);
+    const params$ = options.params ? from(options.params()) : of(undefined as P);
+    const mapFn = options.map ?? ((v) => v);
 
     const reload$ = new Subject<void>();
     const set$ = new Subject<T>();
@@ -25,7 +28,8 @@ export function observableResource<T, P = void>({ loader, params }: Options<T, P
                 startWith(p),
             ),
         ),
-        switchMap((p) => loader(p)),
+        mergeScan((acc, p) => options.loader(p, acc), options.seed as T, 1),
+        switchMap((v) => getPossiblyAsyncObservable(mapFn(v))),
         mergeWith(set$),
         takeUntilDestroyed(dr),
         shareReplay(1),

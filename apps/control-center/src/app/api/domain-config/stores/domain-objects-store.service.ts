@@ -4,17 +4,7 @@ import { Reference } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject, Repository } from '@vality/domain-proto/domain_config_v2';
 import { observableResource } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import {
-    Observable,
-    combineLatest,
-    first,
-    map,
-    mergeScan,
-    of,
-    retry,
-    skipWhile,
-    switchMap,
-} from 'rxjs';
+import { Observable, combineLatest, first, map, of, retry, skipWhile, switchMap } from 'rxjs';
 
 import { DOMAIN_OBJECT_TYPE$ } from '../types';
 import { createObjectHash } from '../utils/create-object-hash';
@@ -26,24 +16,23 @@ export class DomainObjectsStoreService {
     private types = signal(new Set<keyof Reference>());
 
     private objects = observableResource({
-        loader: () =>
-            toObservable(this.types).pipe(
-                mergeScan((objects, types) => {
-                    const newTypes = Array.from(types).filter((t) => !objects.has(t));
-                    if (!newTypes.length) return of(objects);
-                    return combineLatest(newTypes.map((t) => this.getAllObjectByType(t))).pipe(
-                        map((newObjects) => {
-                            newObjects.forEach((newObjectsByType, idx) => {
-                                objects.set(
-                                    newTypes[idx],
-                                    createObjectsHashMap(newObjectsByType, (obj) => obj.ref),
-                                );
-                            });
-                            return objects;
-                        }),
-                    );
-                }, new Map<keyof Reference, Map<string, LimitedVersionedObject>>()),
-            ),
+        params: () => toObservable(this.types),
+        loader: (types, objects) => {
+            const newTypes = Array.from(types).filter((t) => !objects.has(t));
+            if (!newTypes.length) return of(objects);
+            return combineLatest(newTypes.map((t) => this.getAllObjectByType(t))).pipe(
+                map((newObjects) => {
+                    newObjects.forEach((newObjectsByType, idx) => {
+                        objects.set(
+                            newTypes[idx],
+                            createObjectsHashMap(newObjectsByType, (obj) => obj.ref),
+                        );
+                    });
+                    return objects;
+                }),
+            );
+        },
+        seed: new Map<keyof Reference, Map<string, LimitedVersionedObject>>(),
     });
 
     getObject(ref: Reference) {
