@@ -28,7 +28,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
 import { CoreModule } from './core/core.module';
-import { ClaimsModule } from './sections/claims/claims.module';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
@@ -63,7 +62,6 @@ registerLocaleData(localeRu);
         MatSidenavModule,
         MatListModule,
         SearchPartiesModule,
-        ClaimsModule,
         KeycloakTokenInfoModule,
         SectionsModule,
         SidenavInfoComponent,

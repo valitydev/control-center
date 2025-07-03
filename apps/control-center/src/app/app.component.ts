@@ -7,7 +7,6 @@ import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 
-import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/claims/routing-config';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
 import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './sections/domain/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
@@ -99,11 +98,6 @@ export class AppComponent {
                     label: 'Wallets',
                     url: '/wallets',
                     services: WALLETS_ROUTING_CONFIG.services,
-                },
-                {
-                    label: 'Claims',
-                    url: '/claims',
-                    services: CLAIMS_ROUTING_CONFIG.services,
                 },
             ],
             [
