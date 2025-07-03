@@ -1,7 +1,8 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { rxResource, toObservable } from '@angular/core/rxjs-interop';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Reference } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject, Repository } from '@vality/domain-proto/domain_config_v2';
+import { observableResource } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { Observable, combineLatest, first, map, mergeScan, of, retry, switchMap } from 'rxjs';
 
@@ -13,8 +14,9 @@ import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 export class DomainObjectsStoreService {
     private repositoryService = inject(Repository);
     private types = signal(new Set<keyof Reference>());
-    private objects = rxResource({
-        stream: () =>
+
+    private objects = observableResource({
+        loader: () =>
             toObservable(this.types).pipe(
                 mergeScan((objects, types) => {
                     const newTypes = Array.from(types).filter((t) => !objects.has(t));
@@ -55,7 +57,7 @@ export class DomainObjectsStoreService {
                 }),
             ),
         ).pipe(
-            retry(2),
+            retry(1),
             switchMap((resp) => {
                 if (resp.continuation_token) {
                     return this.getAllObjectByType(type, resp.continuation_token).pipe(

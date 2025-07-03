@@ -24,7 +24,7 @@ export class CurrenciesStoreService {
             ),
     });
 
-    private getAllCurrencies(continuationToken = undefined): Observable<VersionedObject[]> {
+    private getAllCurrencies(continuationToken?: string): Observable<VersionedObject[]> {
         return this.repositoryService
             .SearchFullObjects({
                 type: 2 satisfies DomainObjectType.currency,
@@ -33,7 +33,7 @@ export class CurrenciesStoreService {
                 continuation_token: continuationToken,
             })
             .pipe(
-                retry(2),
+                retry(1),
                 switchMap((resp) => {
                     if (resp.continuation_token) {
                         return this.getAllCurrencies(resp.continuation_token).pipe(
