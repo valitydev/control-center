@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { RoutingCandidate, RoutingDelegate, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { Version } from '@vality/domain-proto/domain_config';
-import { PartyConditionDefinition } from '@vality/domain-proto/internal/domain';
+import { PartyConditionDefinition } from '@vality/domain-proto/domain';
 import { uniq } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, concat } from 'rxjs';

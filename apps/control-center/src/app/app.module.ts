@@ -14,6 +14,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
 import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
+import { Repository as OldRepository } from '@vality/domain-proto/domain_config';
+import {
+    AuthorManagement,
+    Repository,
+    RepositoryClient,
+} from '@vality/domain-proto/domain_config_v2';
+import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
 import { DominatorService } from '@vality/dominator-proto/dominator';
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
@@ -105,6 +112,12 @@ registerLocaleData(localeRu);
             { service: MerchantStatisticsService, name: 'MerchantStatistics' },
             { service: DominatorService, name: 'Dominator' },
             { service: Automaton, name: 'Automaton' },
+            { service: Invoicing, name: 'Invoicing' },
+            { service: PartyManagement, name: 'PartyManagement' },
+            { service: Repository, name: 'DMT' },
+            { service: RepositoryClient, name: 'DMTClient' },
+            { service: AuthorManagement, name: 'DMTAuthor' },
+            { service: OldRepository, name: 'Domain' },
         ]),
     ],
     bootstrap: [AppComponent],

@@ -1,18 +1,17 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { rxResource, toObservable } from '@angular/core/rxjs-interop';
 import { Reference } from '@vality/domain-proto/domain';
-import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
+import { LimitedVersionedObject, Repository } from '@vality/domain-proto/domain_config_v2';
 import { getUnionKey } from '@vality/ng-thrift';
 import { Observable, combineLatest, first, map, mergeScan, of, retry, switchMap } from 'rxjs';
 
-import { Repository2Service } from '../repository2.service';
 import { DOMAIN_OBJECT_TYPE$ } from '../types';
 import { createObjectHash } from '../utils/create-object-hash';
 import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 
 @Injectable({ providedIn: 'root' })
 export class DomainObjectsStoreService {
-    private repositoryService = inject(Repository2Service);
+    private repositoryService = inject(Repository);
     private types = signal(new Set<keyof Reference>());
     private objects = rxResource({
         stream: () =>

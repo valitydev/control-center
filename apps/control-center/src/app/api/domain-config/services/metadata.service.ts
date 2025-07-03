@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ThriftAstMetadata } from '@vality/domain-proto';
+import { metadata$ } from '@vality/domain-proto';
 import { Reference } from '@vality/domain-proto/domain';
-import { getImportValue } from '@vality/matez';
 import { Field } from '@vality/thrift-ts';
 import { Observable, of } from 'rxjs';
-import { map, shareReplay, withLatestFrom } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class MetadataService {
-    private metadata$ = getImportValue<ThriftAstMetadata[]>(
-        import('@vality/domain-proto/metadata.json'),
-    ).pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    private metadata$ = metadata$;
 
     getDomainObjectType(ref: Reference): Observable<string | null> {
         if (!ref) {

@@ -2,11 +2,8 @@ import { formatDate } from '@angular/common';
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { ThriftAstMetadata } from '@vality/domain-proto';
-import { DomainObject } from '@vality/domain-proto/domain';
-import { Rational, Timestamp } from '@vality/domain-proto/internal/base';
-import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
-import { getImportValue } from '@vality/matez';
+import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
+import { DomainObject, PartyID, ShopID, base } from '@vality/domain-proto/domain';
 import {
     ThriftData,
     ThriftViewExtension,
@@ -32,9 +29,7 @@ export class DomainMetadataViewExtensionsService {
     private sidenavInfoService = inject(SidenavInfoService);
     private destroyRef = inject(DestroyRef);
     private partiesStoreService = inject(PartiesStoreService);
-    extensions$: Observable<ThriftViewExtension[]> = getImportValue<ThriftAstMetadata[]>(
-        import('@vality/domain-proto/metadata.json'),
-    ).pipe(
+    extensions$: Observable<ThriftViewExtension[]> = metadata$.pipe(
         map((metadata): ThriftViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
             {
@@ -54,7 +49,7 @@ export class DomainMetadataViewExtensionsService {
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
-                extension: (_, value: Timestamp) =>
+                extension: (_, value: base.Timestamp) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
             },
             {
@@ -63,7 +58,7 @@ export class DomainMetadataViewExtensionsService {
                         isTypeWithAliases(data, 'Rational', 'base') &&
                             isTypeWithAliases(data.parent, 'CashVolumeShare', 'domain'),
                     ),
-                extension: (_, value: Rational) =>
+                extension: (_, value: base.Rational) =>
                     of({
                         value: `${round((value.p / value.q) * 100, 4)}%`,
                         tooltip: `${value.p}/${value.q}`,

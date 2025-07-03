@@ -12,6 +12,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { Party, PartyID, RoutingRulesetRef, Shop } from '@vality/domain-proto/domain';
+import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import {
     Column,
     ConfirmDialogComponent,
@@ -30,7 +31,6 @@ import { filter, first, shareReplay, startWith, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { DomainStoreService } from '../../../api/domain-config';
-import { PartyManagementService } from '../../../api/payment-processing';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
@@ -59,7 +59,7 @@ export interface ShopParty {
 })
 export class ShopsTableComponent {
     private sidenavInfoService = inject(SidenavInfoService);
-    private partyManagementService = inject(PartyManagementService);
+    private partyManagementService = inject(PartyManagement);
     private dialogService = inject(DialogService);
     private log = inject(NotifyLogService);
     private router = inject(Router);

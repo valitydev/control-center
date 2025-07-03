@@ -1,19 +1,18 @@
 import { Injectable, inject } from '@angular/core';
-import { PartyID } from '@vality/domain-proto/domain';
-import { ShopID, WalletID } from '@vality/domain-proto/internal/domain';
+import { PartyID, ShopID, WalletID } from '@vality/domain-proto/domain';
+import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import { progressTo } from '@vality/matez';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { FistfulStatisticsService, createDsl } from '../../fistful-stat';
-import { PartyManagementService } from '../party-management.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PartiesStoreService {
-    private partyManagementService = inject(PartyManagementService);
+    private partyManagementService = inject(PartyManagement);
     private fistfulStatisticsService = inject(FistfulStatisticsService);
     progress$ = new BehaviorSubject(0);
 

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
+import { PartyID, ShopID } from '@vality/domain-proto/domain';
 import { ThriftViewerModule } from '@vality/ng-thrift';
 import { combineLatest } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
