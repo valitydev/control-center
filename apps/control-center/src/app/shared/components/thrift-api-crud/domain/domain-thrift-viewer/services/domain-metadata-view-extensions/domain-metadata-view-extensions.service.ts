@@ -3,32 +3,31 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { DomainObject, PartyID, ShopID, base } from '@vality/domain-proto/domain';
+import { PartyID, Reference, ShopID, base } from '@vality/domain-proto/domain';
 import {
     ThriftData,
     ThriftViewExtension,
     getUnionValue,
     isTypeWithAliases,
 } from '@vality/ng-thrift';
-import isEqual from 'lodash-es/isEqual';
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../../../../../api/domain-config/stores/domain-store.service';
+import { DomainObjectsStoreService } from '../../../../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
 import { ShopCardComponent } from '../../../../../shop-card/shop-card.component';
 import { SidenavInfoService } from '../../../../../sidenav-info';
-import { getDomainObjectDetails } from '../../../utils';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainMetadataViewExtensionsService {
-    private domainStoreService = inject(DomainStoreService);
+    private domainObjectsStoreService = inject(DomainObjectsStoreService);
     private sidenavInfoService = inject(SidenavInfoService);
     private destroyRef = inject(DestroyRef);
     private partiesStoreService = inject(PartiesStoreService);
+
     extensions$: Observable<ThriftViewExtension[]> = metadata$.pipe(
         map((metadata): ThriftViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
@@ -101,7 +100,6 @@ export class DomainMetadataViewExtensionsService {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
         return domainFields.map((f) => {
-            const objectKey = f.name as keyof DomainObject;
             const objectFields = new ThriftData<string, 'struct'>(
                 metadata,
                 'domain',
@@ -118,23 +116,18 @@ export class DomainMetadataViewExtensionsService {
                                 'domain',
                             ),
                     ),
-                extension: (_, value) =>
-                    this.domainStoreService.getObjectsRefs(objectKey).pipe(
-                        map((refObjs) => refObjs.find(([, o]) => isEqual(o[objectKey].ref, value))),
-                        map((refObj) => {
-                            if (!refObj) {
+                extension: (_, ref: Reference) =>
+                    this.domainObjectsStoreService.getObject(ref).pipe(
+                        map((obj) => {
+                            if (!obj) {
                                 return undefined;
                             }
-                            const [ref, obj] = refObj;
-                            const details = getDomainObjectDetails(obj);
                             return {
-                                value: details.label,
-                                tooltip: details.description
-                                    ? {
-                                          description: details.description,
-                                          ref: getUnionValue(ref),
-                                      }
-                                    : { ref: getUnionValue(ref) },
+                                value: obj.name,
+                                tooltip: {
+                                    description: obj.description,
+                                    ref: getUnionValue(ref),
+                                },
                                 click: () => {
                                     this.sidenavInfoService.toggle('domainObject', { ref });
                                 },
