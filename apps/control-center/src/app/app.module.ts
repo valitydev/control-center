@@ -36,7 +36,7 @@ import { ShopCardComponent } from './shared/components/shop-card/shop-card.compo
 import { ShopContractCardComponent } from './shared/components/shop-contract-card/shop-contract-card.component';
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud';
+import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
 import { KeycloakTokenInfoModule } from './shared/services';
 import {
     DATE_RANGE_DAYS,

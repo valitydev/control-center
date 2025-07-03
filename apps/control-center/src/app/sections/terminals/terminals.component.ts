@@ -13,11 +13,11 @@ import {
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalBalancesCardComponent } from '../../shared/components/terminal-balances-card/terminal-balances-card.component';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
+import { getDomainObjectDetails } from '../../shared/components/thrift-api-crud';
 import {
+    CreateDomainObjectDialogComponent,
     DomainObjectCardComponent,
-    getDomainObjectDetails,
-} from '../../shared/components/thrift-api-crud';
-import { CreateDomainObjectDialogComponent } from '../../shared/components/thrift-api-crud/domain2';
+} from '../../shared/components/thrift-api-crud/domain2';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 

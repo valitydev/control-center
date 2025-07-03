@@ -6,10 +6,8 @@ import { map, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { SidenavInfoService } from '../../components/sidenav-info';
-import {
-    DomainObjectCardComponent,
-    getDomainObjectDetails,
-} from '../../components/thrift-api-crud';
+import { getDomainObjectDetails } from '../../components/thrift-api-crud';
+import { DomainObjectCardComponent } from '../../components/thrift-api-crud/domain2';
 
 export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference }) => {
     const sourceObj = {

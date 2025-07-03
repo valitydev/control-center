@@ -40,7 +40,8 @@ import { createPartyColumn } from '../../utils';
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
-import { DomainObjectCardComponent, getDomainObjectDetails } from '../thrift-api-crud';
+import { getDomainObjectDetails } from '../thrift-api-crud';
+import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 
 export interface ShopParty {
     shop: Shop;

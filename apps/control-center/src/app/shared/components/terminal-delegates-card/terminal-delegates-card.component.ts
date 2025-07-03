@@ -30,7 +30,7 @@ import {
 import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainObjectCardComponent } from '../thrift-api-crud';
+import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
