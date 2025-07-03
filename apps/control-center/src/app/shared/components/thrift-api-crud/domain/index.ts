@@ -5,5 +5,4 @@ export * from './domain-object-card/domain-object-card.component';
 export * from './domain-thrift-form';
 export * from './utils';
 export * from './services';
-export * from './create-domain-object-dialog';
 export * from './edit-domain-object-dialog';
