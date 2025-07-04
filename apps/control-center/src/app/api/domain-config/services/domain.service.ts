@@ -40,7 +40,7 @@ export class DomainService {
     insert(objs: ReflessDomainObject[], attempts = 1) {
         return this.commit(objs.map((obj) => ({ insert: { object: obj } }))).pipe(
             catchError((err) => {
-                if (err?.name === 'ObsoleteCommitVersion') {
+                if (err?.error?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.version.reload();
                         this.insert(objs, attempts - 1);
@@ -64,7 +64,7 @@ export class DomainService {
             version,
         ).pipe(
             catchError((err) => {
-                if (err?.name === 'ObsoleteCommitVersion') {
+                if (err?.error?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.version.reload();
                         this.update(objs, version, attempts - 1);
