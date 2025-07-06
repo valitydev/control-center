@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { Reference } from '@vality/domain-proto/domain';
+import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
 import {
     LimitedVersionedObject,
     Repository,
@@ -8,9 +8,8 @@ import {
 } from '@vality/domain-proto/domain_config_v2';
 import { observableResource } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { Observable, combineLatest, first, map, of, retry, skipWhile, switchMap } from 'rxjs';
+import { Observable, combineLatest, map, of, retry, skipWhile, switchMap } from 'rxjs';
 
-import { DOMAIN_OBJECT_TYPE$ } from '../types';
 import { createObjectHash } from '../utils/create-object-hash';
 import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 
@@ -57,26 +56,23 @@ export class DomainObjectsStoreService {
         type: keyof Reference,
         continuationToken = undefined,
     ): Observable<LimitedVersionedObject[]> {
-        return DOMAIN_OBJECT_TYPE$.pipe(
-            first(),
-            switchMap((types) =>
-                this.repositoryService.SearchObjects({
-                    type: types[type],
-                    query: '*',
-                    limit: 1_000_000,
-                    continuation_token: continuationToken,
+        return this.repositoryService
+            .SearchObjects({
+                type: DomainObjectType[type],
+                query: '*',
+                limit: 1_000_000,
+                continuation_token: continuationToken,
+            })
+            .pipe(
+                retry(1),
+                switchMap((resp) => {
+                    if (resp.continuation_token) {
+                        return this.getAllObjectByType(type, resp.continuation_token).pipe(
+                            map((nextObject) => [...resp.result, ...nextObject]),
+                        );
+                    }
+                    return of(resp.result);
                 }),
-            ),
-        ).pipe(
-            retry(1),
-            switchMap((resp) => {
-                if (resp.continuation_token) {
-                    return this.getAllObjectByType(type, resp.continuation_token).pipe(
-                        map((nextObject) => [...resp.result, ...nextObject]),
-                    );
-                }
-                return of(resp.result);
-            }),
-        );
+            );
     }
 }
