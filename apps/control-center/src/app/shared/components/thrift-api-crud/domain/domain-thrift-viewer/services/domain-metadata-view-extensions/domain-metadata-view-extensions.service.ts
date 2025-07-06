@@ -4,12 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import { PartyID, Reference, ShopID, base } from '@vality/domain-proto/domain';
-import {
-    ThriftData,
-    ThriftViewExtension,
-    getUnionValue,
-    isTypeWithAliases,
-} from '@vality/ng-thrift';
+import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
@@ -108,8 +103,9 @@ export class DomainMetadataViewExtensionsService {
                                 'domain',
                             ),
                     ),
-                extension: (_, ref: ValuesType<Reference>) =>
-                    this.domainObjectsStoreService.getObject({ [f.name]: ref }).pipe(
+                extension: (_, refId: ValuesType<Reference>) => {
+                    const ref = { [f.name]: refId };
+                    return this.domainObjectsStoreService.getObject(ref).pipe(
                         map((obj) => {
                             if (!obj) {
                                 return undefined;
@@ -118,14 +114,15 @@ export class DomainMetadataViewExtensionsService {
                                 value: obj.name,
                                 tooltip: {
                                     description: obj.description,
-                                    ref: getUnionValue(ref),
+                                    ref: refId,
                                 },
                                 click: () => {
                                     this.sidenavInfoService.toggle('domainObject', { ref });
                                 },
                             };
                         }),
-                    ),
+                    );
+                },
             };
         });
     }
