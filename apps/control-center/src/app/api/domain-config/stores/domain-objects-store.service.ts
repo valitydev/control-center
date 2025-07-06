@@ -42,7 +42,7 @@ export class DomainObjectsStoreService {
 
     getObject(ref: Reference) {
         const type = getUnionKey(ref);
-        this.types.update((types) => types.add(type));
+        this.types.update((types) => new Set(types.add(type)));
         return this.objects.value$.pipe(
             skipWhile((objs) => !objs.has(type)),
             map((objs) => objs.get(type).get(createObjectHash(ref))),

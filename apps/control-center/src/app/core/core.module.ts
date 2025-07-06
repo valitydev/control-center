@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule, inject, provideAppInitializer } from '@angular/core';
+import { NgModule, inject, isDevMode, provideAppInitializer } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../../environments/environment';
@@ -16,7 +16,7 @@ const initializer = (keycloak: KeycloakService, configService: ConfigService) =>
                         config: environment.authConfigPath,
                         initOptions: {
                             onLoad: 'login-required',
-                            checkLoginIframe: true,
+                            checkLoginIframe: !isDevMode(),
                         },
                         enableBearerInterceptor: true,
                         bearerExcludedUrls: ['/assets'],
