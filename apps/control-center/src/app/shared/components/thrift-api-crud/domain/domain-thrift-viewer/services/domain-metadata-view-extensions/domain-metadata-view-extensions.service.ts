@@ -83,7 +83,9 @@ export class DomainMetadataViewExtensionsService {
         shareReplay(1),
     );
 
-    createDomainObjectExtensions(metadata: ThriftAstMetadata[]): ThriftViewExtension[] {
+    createDomainObjectExtensions(
+        metadata: ThriftAstMetadata[],
+    ): ThriftViewExtension<ValuesType<Reference>>[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
         return domainFields.map((f) => {
@@ -103,7 +105,7 @@ export class DomainMetadataViewExtensionsService {
                                 'domain',
                             ),
                     ),
-                extension: (_, refId: ValuesType<Reference>) => {
+                extension: (_, refId) => {
                     const ref = { [f.name]: refId };
                     return this.domainObjectsStoreService.getObject(ref).pipe(
                         map((obj) => {
