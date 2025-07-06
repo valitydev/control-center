@@ -83,7 +83,6 @@ export class ShopsTableComponent {
                 description: d.shop.details.description,
                 click: () => {
                     this.sidenavInfoService.toggle(ShopCardComponent, {
-                        partyId: d.party.id,
                         id: d.shop.id,
                     });
                 },

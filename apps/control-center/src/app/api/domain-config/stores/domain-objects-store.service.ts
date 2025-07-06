@@ -1,7 +1,11 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { Reference } from '@vality/domain-proto/domain';
-import { LimitedVersionedObject, Repository } from '@vality/domain-proto/domain_config_v2';
+import {
+    LimitedVersionedObject,
+    Repository,
+    RepositoryClient,
+} from '@vality/domain-proto/domain_config_v2';
 import { observableResource } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { Observable, combineLatest, first, map, of, retry, skipWhile, switchMap } from 'rxjs';
@@ -13,6 +17,7 @@ import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 @Injectable({ providedIn: 'root' })
 export class DomainObjectsStoreService {
     private repositoryService = inject(Repository);
+    private repositoryClientService = inject(RepositoryClient);
     private types = signal(new Set<keyof Reference>());
 
     private objects = observableResource({
@@ -42,6 +47,10 @@ export class DomainObjectsStoreService {
             skipWhile((objs) => !objs.has(type)),
             map((objs) => objs.get(type).get(createObjectHash(ref))),
         );
+    }
+
+    getFullObject(ref: Reference) {
+        return this.repositoryClientService.CheckoutObject({ head: {} }, ref);
     }
 
     private getAllObjectByType(

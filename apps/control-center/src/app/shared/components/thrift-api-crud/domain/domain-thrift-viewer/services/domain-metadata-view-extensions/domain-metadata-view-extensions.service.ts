@@ -13,6 +13,7 @@ import {
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
+import { ValuesType } from 'utility-types';
 
 import { DomainObjectsStoreService } from '../../../../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
@@ -47,6 +48,25 @@ export class DomainMetadataViewExtensionsService {
                     ),
             },
             {
+                determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
+                extension: (_, shopId: ShopID) =>
+                    this.partiesStoreService.getShop(shopId).pipe(
+                        map((p) => ({
+                            value: p.details.name,
+                            tooltip: shopId,
+                            click: () => {
+                                this.sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                            },
+                        })),
+                        startWith({
+                            value: String(shopId),
+                            click: () => {
+                                this.sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                            },
+                        }),
+                    ),
+            },
+            {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
                 extension: (_, value: base.Timestamp) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
@@ -68,34 +88,6 @@ export class DomainMetadataViewExtensionsService {
         shareReplay(1),
     );
 
-    createShopExtension(partyId: PartyID): ThriftViewExtension {
-        return {
-            determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
-            extension: (_, shopId: ShopID) =>
-                this.partiesStoreService.getShop(shopId, partyId).pipe(
-                    map((p) => ({
-                        value: p.details.name,
-                        tooltip: shopId,
-                        click: () => {
-                            this.sidenavInfoService.toggle(ShopCardComponent, {
-                                partyId,
-                                id: shopId,
-                            });
-                        },
-                    })),
-                    startWith({
-                        value: String(shopId),
-                        click: () => {
-                            this.sidenavInfoService.toggle(ShopCardComponent, {
-                                partyId,
-                                id: shopId,
-                            });
-                        },
-                    }),
-                ),
-        };
-    }
-
     createDomainObjectExtensions(metadata: ThriftAstMetadata[]): ThriftViewExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
@@ -116,8 +108,8 @@ export class DomainMetadataViewExtensionsService {
                                 'domain',
                             ),
                     ),
-                extension: (_, ref: Reference) =>
-                    this.domainObjectsStoreService.getObject(ref).pipe(
+                extension: (_, ref: ValuesType<Reference>) =>
+                    this.domainObjectsStoreService.getObject({ [f.name]: ref }).pipe(
                         map((obj) => {
                             if (!obj) {
                                 return undefined;
