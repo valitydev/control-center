@@ -31,7 +31,7 @@ export class WalletFieldComponent extends FormControlSuperclass<WalletID | Walle
         map((objs) =>
             objs.map((obj) => ({
                 value: obj.ref.wallet_config.id,
-                label: obj.name || obj.ref.wallet_config.id,
+                label: obj.name || `#${obj.ref.wallet_config.id}`,
                 description: obj.description,
             })),
         ),
