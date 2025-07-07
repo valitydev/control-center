@@ -2,7 +2,6 @@ import { isDevMode } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../environments/environment';
-
 import { ConfigService } from '../services/config';
 
 export const initializer = (keycloak: KeycloakService, configService: ConfigService) => () =>
