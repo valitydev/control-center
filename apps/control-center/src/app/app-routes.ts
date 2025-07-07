@@ -7,7 +7,7 @@ type SectionPageRoutes = { [KSection: string]: { [KPage: string]: Route } };
 export const APP_ROUTES = {
     domain: {
         root: new Route('domain', {
-            services: [Services.Domain],
+            services: [Services.DMT],
             loadComponent: () => import('./domain-config').then((m) => m.DomainConfigComponent),
             queryParams: z.object({ type: z.string() }),
         }),
