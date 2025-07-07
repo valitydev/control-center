@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
-import { Party, PartyID, Shop } from '@vality/domain-proto/internal/domain';
-import { ShopID } from '@vality/domain-proto/payment_processing';
+import { Party, PartyID, Shop } from '@vality/domain-proto/domain';
+import { PartyManagement, ShopID } from '@vality/domain-proto/payment_processing';
 import {
     FormControlSuperclass,
     NotifyLogService,
@@ -34,7 +34,6 @@ import {
 } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 
-import { PartyManagementService } from '../../../api/payment-processing';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';
 
 @Component({
@@ -47,7 +46,7 @@ export class ShopFieldComponent
     extends FormControlSuperclass<ShopID | ShopID[]>
     implements AfterViewInit
 {
-    private partyManagementService = inject(PartyManagementService);
+    private partyManagementService = inject(PartyManagement);
     private deanonimusService = inject(Deanonimus);
     private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);

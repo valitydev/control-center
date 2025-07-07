@@ -1,22 +1,21 @@
 import { Injectable, inject } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { Author } from '@vality/domain-proto/domain_config_v2';
-import { NotifyLogService } from '@vality/matez';
-import { catchError, of } from 'rxjs';
+import { AuthorManagement } from '@vality/domain-proto/domain_config_v2';
+import { NotifyLogService, observableResource } from '@vality/matez';
+import { catchError } from 'rxjs';
 
 import { KeycloakUserService } from '../../../shared/services';
-import { AuthorManagementService } from '../author-management.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthorStoreService {
-    private authorManagementService = inject(AuthorManagementService);
+    private authorManagementService = inject(AuthorManagement);
     private keycloakUserService = inject(KeycloakUserService);
     private log = inject(NotifyLogService);
-    author = rxResource({
-        params: () => this.keycloakUserService.user.value(),
-        stream: ({ params }) =>
+
+    author = observableResource({
+        params: () => this.keycloakUserService.user.value$,
+        loader: (params) =>
             this.authorManagementService.GetByEmail(params.email).pipe(
                 catchError(() =>
                     this.authorManagementService
@@ -27,7 +26,7 @@ export class AuthorStoreService {
                         .pipe(
                             catchError((err) => {
                                 this.log.errorOperation(err, 'create', 'author');
-                                return of<Author>({ id: '', email: '', name: '' });
+                                throw err;
                             }),
                         ),
                 ),

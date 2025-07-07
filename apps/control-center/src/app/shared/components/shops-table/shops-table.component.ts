@@ -12,6 +12,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { Party, PartyID, RoutingRulesetRef, Shop } from '@vality/domain-proto/domain';
+import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import {
     Column,
     ConfirmDialogComponent,
@@ -30,7 +31,6 @@ import { filter, first, shareReplay, startWith, take } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { DomainStoreService } from '../../../api/domain-config';
-import { PartyManagementService } from '../../../api/payment-processing';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
@@ -40,7 +40,8 @@ import { createPartyColumn } from '../../utils';
 import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { ShopContractCardComponent } from '../shop-contract-card/shop-contract-card.component';
 import { SidenavInfoService } from '../sidenav-info';
-import { DomainObjectCardComponent, getDomainObjectDetails } from '../thrift-api-crud';
+import { getDomainObjectDetails } from '../thrift-api-crud';
+import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 
 export interface ShopParty {
     shop: Shop;
@@ -58,7 +59,7 @@ export interface ShopParty {
 })
 export class ShopsTableComponent {
     private sidenavInfoService = inject(SidenavInfoService);
-    private partyManagementService = inject(PartyManagementService);
+    private partyManagementService = inject(PartyManagement);
     private dialogService = inject(DialogService);
     private log = inject(NotifyLogService);
     private router = inject(Router);
@@ -82,7 +83,6 @@ export class ShopsTableComponent {
                 description: d.shop.details.description,
                 click: () => {
                     this.sidenavInfoService.toggle(ShopCardComponent, {
-                        partyId: d.party.id,
                         id: d.shop.id,
                     });
                 },
