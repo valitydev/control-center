@@ -1,31 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { NgModule, inject, isDevMode, provideAppInitializer } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
-import { environment } from '../../environments/environment';
+import { initializer } from '../initializer';
 
 import { ConfigService } from './config.service';
-
-const initializer = (keycloak: KeycloakService, configService: ConfigService) => () =>
-    Promise.all([
-        configService.load().then(() =>
-            Promise.all([
-                keycloak
-                    .init({
-                        config: environment.authConfigPath,
-                        initOptions: {
-                            onLoad: 'login-required',
-                            checkLoginIframe: !isDevMode(),
-                        },
-                        enableBearerInterceptor: true,
-                        bearerExcludedUrls: ['/assets'],
-                        bearerPrefix: 'Bearer',
-                    })
-                    .then(() => keycloak.getToken()),
-            ]),
-        ),
-    ]);
 
 @NgModule({
     imports: [CommonModule, KeycloakAngularModule],
