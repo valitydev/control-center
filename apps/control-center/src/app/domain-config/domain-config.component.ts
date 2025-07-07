@@ -10,8 +10,8 @@ import { DomainObjectService } from '../shared/components/thrift-api-crud/domain
 import { DomainObjectsTableComponent } from './domain-objects-table';
 
 @Component({
-    templateUrl: './domain-objects.component.html',
-    styleUrls: ['./domain-objects.component.scss'],
+    templateUrl: './domain-config.component.html',
+    styleUrls: ['./domain-config.component.scss'],
     imports: [PageLayoutModule, DomainObjectsTableComponent, MatButtonModule],
     providers: [FetchDomainObjectsService],
 })
@@ -19,6 +19,7 @@ export class DomainObjectsComponent {
     private domainService = inject(DomainService);
     private domainObjectService = inject(DomainObjectService);
     private fetchDomainObjectsService = inject(FetchDomainObjectsService);
+
     version = this.domainService.version.value;
     selectedType = signal<keyof ReflessDomainObject>(null);
 

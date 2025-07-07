@@ -1,1 +1,1 @@
-export * from './domain-objects.component';
+export * from './domain-config.component';
