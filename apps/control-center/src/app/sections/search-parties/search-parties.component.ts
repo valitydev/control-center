@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Party } from '@vality/deanonimus-proto/deanonimus';
+import { DomainObjectType, PartyConfig } from '@vality/domain-proto/domain';
 import {
     Column,
     DebounceTime,
@@ -12,22 +12,24 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
-import { FetchPartiesService } from '../../shared/services/fetch-parties.service';
+import { FetchFullDomainObjectsService } from '../../api/domain-config';
 
 @Component({
     templateUrl: 'search-parties.component.html',
     styleUrls: ['search-parties.component.scss'],
-    providers: [FetchPartiesService],
+    providers: [FetchFullDomainObjectsService],
     standalone: false,
 })
-export class SearchPartiesComponent {
+export class SearchPartiesComponent implements OnInit {
     private qp = inject<QueryParamsService<{ text: string }>>(QueryParamsService<{ text: string }>);
-    private fetchPartiesService = inject(FetchPartiesService);
+    private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
     private router = inject(Router);
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
-    inProgress$ = this.fetchPartiesService.isLoading$;
-    parties$ = this.fetchPartiesService.result$;
-    columns: Column<Party>[] = [
+    inProgress$ = this.fetchFullDomainObjectsService.isLoading$;
+    parties$ = this.fetchFullDomainObjectsService.result$.pipe(
+        map((objs) => objs.map((obj) => obj.object.party_config.data)),
+    );
+    columns: Column<PartyConfig>[] = [
         { field: 'id' },
         {
             field: 'email',
@@ -59,7 +61,7 @@ export class SearchPartiesComponent {
         },
         {
             field: 'shops',
-            cell: (party) => ({ value: party.shops.size }),
+            cell: (party) => ({ value: party.shops.length }),
         },
         createMenuColumn((party) => ({
             items: [
@@ -71,13 +73,20 @@ export class SearchPartiesComponent {
         })),
     ];
 
+    ngOnInit() {
+        this.searchParamsUpdated(this.qp.params.text);
+    }
+
     @DebounceTime()
     searchParamsUpdated(filter: string) {
         void this.qp.set({ text: filter });
-        this.fetchPartiesService.load(filter);
+        this.fetchFullDomainObjectsService.load({
+            query: filter,
+            type: DomainObjectType.party_config,
+        });
     }
 
     reload(options: UpdateOptions) {
-        this.fetchPartiesService.reload(options);
+        this.fetchFullDomainObjectsService.reload(options);
     }
 }
