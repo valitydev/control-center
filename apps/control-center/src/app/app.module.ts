@@ -42,7 +42,6 @@ import { SearchPartiesModule } from './sections/search-parties/search-parties.mo
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
 import { ShopCardComponent } from './shared/components/shop-card/shop-card.component';
-import { ShopContractCardComponent } from './shared/components/shop-contract-card/shop-contract-card.component';
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
@@ -108,7 +107,6 @@ registerLocaleData(localeRu);
             useValue: {
                 domainObject: DomainObjectCardComponent,
                 shop: ShopCardComponent,
-                shopContract: ShopContractCardComponent,
                 terminalDelegates: TerminalDelegatesCardComponent,
                 candidate: CandidateCardComponent,
             },

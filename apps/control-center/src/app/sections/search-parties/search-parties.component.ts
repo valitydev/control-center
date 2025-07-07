@@ -24,6 +24,7 @@ export class SearchPartiesComponent implements OnInit {
     private qp = inject<QueryParamsService<{ text: string }>>(QueryParamsService<{ text: string }>);
     private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
     private router = inject(Router);
+
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchFullDomainObjectsService.isLoading$;
     parties$ = this.fetchFullDomainObjectsService.result$.pipe(
@@ -88,5 +89,9 @@ export class SearchPartiesComponent implements OnInit {
 
     reload(options: UpdateOptions) {
         this.fetchFullDomainObjectsService.reload(options);
+    }
+
+    more() {
+        this.fetchFullDomainObjectsService.more();
     }
 }
