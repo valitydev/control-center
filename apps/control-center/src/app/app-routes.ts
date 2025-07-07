@@ -8,7 +8,7 @@ export const APP_ROUTES = {
     domain: {
         root: new Route('domain', {
             services: [Services.Domain],
-            loadComponent: () => import('./domain-config').then((m) => m.DomainObjectsComponent),
+            loadComponent: () => import('./domain-config').then((m) => m.DomainConfigComponent),
             queryParams: z.object({ type: z.string() }),
         }),
     },

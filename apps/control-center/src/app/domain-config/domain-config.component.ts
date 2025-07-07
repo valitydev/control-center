@@ -15,7 +15,7 @@ import { DomainObjectsTableComponent } from './domain-objects-table';
     imports: [PageLayoutModule, DomainObjectsTableComponent, MatButtonModule],
     providers: [FetchDomainObjectsService],
 })
-export class DomainObjectsComponent {
+export class DomainConfigComponent {
     private domainService = inject(DomainService);
     private domainObjectService = inject(DomainObjectService);
     private fetchDomainObjectsService = inject(FetchDomainObjectsService);

@@ -7,7 +7,7 @@ import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 
-import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './domain-config/routing-config';
+import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';
@@ -60,7 +60,7 @@ export class AppComponent {
                 {
                     label: 'Domain config',
                     url: '/domain',
-                    services: DOMAIN_ROUTING_CONFIG.services,
+                    services: APP_ROUTES.domain.root.config.services,
                 },
                 {
                     label: 'Terminals',
