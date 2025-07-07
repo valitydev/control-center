@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
-import { InvoicePaymentAdjustment } from '@vality/domain-proto/internal/domain';
+import { InvoicePaymentAdjustment } from '@vality/domain-proto/domain';
+import { Invoicing } from '@vality/domain-proto/payment_processing';
 import {
     DEFAULT_DIALOG_CONFIG,
     DialogModule,
@@ -13,7 +14,6 @@ import {
 import { BehaviorSubject } from 'rxjs';
 
 import { UploadCsvComponent } from '../../../../../components/upload-csv';
-import { InvoicingService } from '../../../../api/payment-processing/invoicing.service';
 
 import { CSV_PAYMENT_ADJUSTMENT_PROPS, CsvPaymentAdjustment } from './types/csv-payment-adjustment';
 import { getCreatePaymentAdjustmentsArgs } from './utils/get-create-payment-adjustments-args';
@@ -28,7 +28,7 @@ export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSupercl
     void,
     InvoicePaymentAdjustment[]
 > {
-    private invoicingService = inject(InvoicingService);
+    private invoicingService = inject(Invoicing);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
