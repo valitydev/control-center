@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
+import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import { NotifyLogService } from '@vality/matez';
 import { EMPTY, Observable, of } from 'rxjs';
 import {
@@ -11,12 +12,10 @@ import {
     switchMap,
 } from 'rxjs/operators';
 
-import { PartyManagementService } from '../../api/payment-processing';
-
 @Injectable()
 export class PartyStoreService {
     private route = inject(ActivatedRoute);
-    private partyManagementService = inject(PartyManagementService);
+    private partyManagementService = inject(PartyManagement);
     private log = inject(NotifyLogService);
     party$: Observable<Party | Partial<Party> | null> = this.route.params.pipe(
         startWith(this.route.snapshot.params),

@@ -1,4 +1,4 @@
-import { CashFlowPosting } from '@vality/domain-proto/internal/domain';
+import { CashFlowPosting } from '@vality/domain-proto/domain';
 import { Column } from '@vality/matez';
 
 import { formatCashVolumes, getCashVolumeParts } from '../../../shared';

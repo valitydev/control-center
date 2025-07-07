@@ -1,4 +1,4 @@
-import { CashVolume } from '@vality/domain-proto/internal/domain';
+import { CashVolume } from '@vality/domain-proto/domain';
 import { formatCurrency } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 
