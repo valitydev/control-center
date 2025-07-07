@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
-import { metadata$ } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { Party } from '@vality/domain-proto/domain';
-import { createControlProviders } from '@vality/matez';
+import { ThriftAstMetadata } from '@vality/fistful-proto';
+import { createControlProviders, getImportValue } from '@vality/matez';
 import { ThriftEditorModule, ThriftFormModule } from '@vality/ng-thrift';
 import { combineLatest, filter } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     party = input<Party>();
     claim = input<Claim>();
 
-    metadata$ = metadata$;
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     override internalExtensions$ = combineLatest([
         this.domainMetadataFormExtensionsService.extensions$,
         combineLatest([toObservable(this.party), toObservable(this.claim)]).pipe(

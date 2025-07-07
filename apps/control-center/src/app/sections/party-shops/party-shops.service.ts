@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Party } from '@vality/domain-proto/domain';
-import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import { debounceTimeWithFirst, progressTo } from '@vality/matez';
 import { BehaviorSubject, Observable, Subject, defer, merge } from 'rxjs';
 import { map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
+import { PartyManagementService } from '../../api/payment-processing/party-management.service';
 import { DEBOUNCE_TIME_MS } from '../../tokens';
 
 @Injectable()
 export class PartyShopsService {
-    private partyManagementService = inject(PartyManagement);
+    private partyManagementService = inject(PartyManagementService);
     private route = inject(ActivatedRoute);
     private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     party$: Observable<Party> = merge(

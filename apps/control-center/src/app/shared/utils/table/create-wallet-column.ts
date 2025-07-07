@@ -6,12 +6,12 @@ import { map, startWith } from 'rxjs/operators';
 import { PartiesStoreService } from '../../../api/payment-processing';
 
 export const createWalletColumn = createColumn(
-    ({ id, ...params }: { id: string; name?: string }) => {
+    ({ id, partyId, ...params }: { id: string; partyId: string; name?: string }) => {
         const name$ =
             'name' in params
                 ? of(params.name)
                 : inject(PartiesStoreService)
-                      .getWallet(id)
+                      .getWallet(id, partyId)
                       .pipe(map((wallet) => wallet?.name));
         const cell = { description: id };
         return name$.pipe(

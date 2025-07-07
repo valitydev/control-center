@@ -15,7 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TerminalRef } from '@vality/domain-proto/domain';
 import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
-import { getUnionKey } from '@vality/ng-thrift';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
@@ -30,7 +30,7 @@ import {
 import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
+import { DomainObjectCardComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
@@ -106,33 +106,34 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         },
         {
             field: 'definition',
-            cell: (d) => {
-                const party = d.delegate.allowed.condition?.party;
-                switch (getUnionKey(party?.definition)) {
-                    case 'shop_is':
-                        return this.partiesStoreService.getShop(party?.definition?.shop_is).pipe(
-                            map((shop) => ({
-                                value: shop.details.name,
-                                description: shop.id,
-                                link: () =>
-                                    `/party/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
-                            })),
-                        );
-                    case 'wallet_is':
-                        return this.partiesStoreService.getShop(party?.definition?.wallet_is).pipe(
-                            map((wallet) => ({
-                                value: wallet.details.name,
-                                description: wallet.id,
-                                link: () =>
-                                    `/party/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
-                            })),
-                        );
-                    case 'contract_is':
-                        return {
-                            value: party.definition.contract_is,
-                        };
-                }
-            },
+            cell: (d) =>
+                this.partiesStoreService.get(d.delegate.allowed.condition?.party?.id).pipe(
+                    map((p) => ({
+                        value:
+                            (getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
+                            'shop_is'
+                                ? p.shops.get(
+                                      getUnionValue(
+                                          d.delegate.allowed.condition?.party?.definition,
+                                      ),
+                                  )?.details?.name
+                                : p.wallets.get(
+                                      getUnionValue(
+                                          d.delegate.allowed.condition?.party?.definition,
+                                      ),
+                                  )?.name) ??
+                            `#${getUnionValue(d.delegate.allowed.condition?.party?.definition)}`,
+
+                        description: getUnionValue(d.delegate.allowed.condition?.party?.definition),
+                        link: () =>
+                            `/party/${d.delegate.allowed.condition.party.id}/routing-rules/${
+                                getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
+                                'shop_is'
+                                    ? 'payment'
+                                    : 'withdrawal'
+                            }/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                    })),
+                ),
         },
     ];
     terminalObj$ = defer(() => this.ref$).pipe(

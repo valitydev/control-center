@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
+import { ThriftAstMetadata } from '@vality/domain-proto';
 import { Claim } from '@vality/domain-proto/claim_management';
 import { DomainObject, Party } from '@vality/domain-proto/domain';
-import { getNoTimeZoneIsoString } from '@vality/matez';
+import { getImportValue, getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -21,7 +21,9 @@ import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
 export class DomainMetadataFormExtensionsService {
     private domainStoreService = inject(DomainStoreService);
     private fistfulStatisticsService = inject(FistfulStatisticsService);
-    extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
+    extensions$: Observable<ThriftFormExtension[]> = getImportValue<ThriftAstMetadata[]>(
+        import('@vality/domain-proto/metadata.json'),
+    ).pipe(
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
             {

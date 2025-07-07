@@ -4,7 +4,7 @@ import {
     Predicate,
     ShopID,
     TermSetHierarchyObject,
-} from '@vality/domain-proto/domain';
+} from '@vality/domain-proto/internal/domain';
 import { Column } from '@vality/matez';
 
 import { formatCashVolumes } from '../../../../../shared';

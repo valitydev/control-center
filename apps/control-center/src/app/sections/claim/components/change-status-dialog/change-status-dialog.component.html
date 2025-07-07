@@ -1,0 +1,62 @@
+<v-dialog [progress]="inProgress$ | async" title="Change claim status">
+    <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 16px">
+        <mat-form-field>
+            <mat-select
+                [disabled]="inProgress$ | async"
+                formControlName="status"
+                placeholder="Status"
+            >
+                @for (status of statuses; track status) {
+                    <mat-option [value]="status">{{ status | ngtKeyTitle | titlecase }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        @if (form.value.status === 'denied') {
+            <mat-form-field>
+                <input
+                    [disabled]="inProgress$ | async"
+                    aria-label="reason"
+                    formControlName="denyReason"
+                    matInput
+                    placeholder="Reason"
+                    required
+                />
+            </mat-form-field>
+        }
+        @if (form.value.status === 'revoked') {
+            <mat-form-field>
+                <mat-label>Reason</mat-label>
+                <mat-select
+                    [disabled]="inProgress$ | async"
+                    formControlName="revokeReason"
+                    required
+                >
+                    <!-- TODO: It's necessary to hardcode reasons (backend issue) -->
+                    @for (
+                        reason of [
+                            'Длительное ожидание подключения',
+                            'Не устраивает комиссия',
+                            'Большой пакет документов',
+                            'Не подходит продукт',
+                            'Нет сплитов',
+                        ];
+                        track reason
+                    ) {
+                        <mat-option [value]="reason">
+                            {{ reason }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        }
+    </div>
+    <v-dialog-actions>
+        <button
+            [disabled]="form.invalid || (inProgress$ | async)"
+            mat-flat-button
+            (click)="confirm()"
+        >
+            Confirm
+        </button>
+    </v-dialog-actions>
+</v-dialog>

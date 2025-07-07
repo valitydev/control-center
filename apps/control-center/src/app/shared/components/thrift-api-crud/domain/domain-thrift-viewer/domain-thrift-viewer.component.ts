@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, booleanAttribute, inject, model } from '@angular/core';
-import { metadata$ } from '@vality/domain-proto';
-import { UnionEnum } from '@vality/matez';
+import { ThriftAstMetadata } from '@vality/domain-proto';
+import { UnionEnum, getImportValue } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 
@@ -22,6 +22,6 @@ export class DomainThriftViewerComponent<T> {
     @Input() namespace = 'domain';
     // @Input() extensions?: MetadataViewExtension[];
 
-    metadata$ = metadata$;
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 }

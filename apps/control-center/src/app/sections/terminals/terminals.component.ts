@@ -13,11 +13,11 @@ import {
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalBalancesCardComponent } from '../../shared/components/terminal-balances-card/terminal-balances-card.component';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { getDomainObjectDetails } from '../../shared/components/thrift-api-crud';
 import {
     CreateDomainObjectDialogComponent,
     DomainObjectCardComponent,
-} from '../../shared/components/thrift-api-crud/domain2';
+    getDomainObjectDetails,
+} from '../../shared/components/thrift-api-crud';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
@@ -122,7 +122,9 @@ export class TerminalsComponent {
     }
 
     create() {
-        this.dialogService.open(CreateDomainObjectDialogComponent, { objectType: 'terminal' });
+        this.dialogService.open(CreateDomainObjectDialogComponent, {
+            objectType: 'TerminalObject',
+        });
     }
 
     private getTerminalShopWalletDelegates(terminalObj: TerminalObject) {

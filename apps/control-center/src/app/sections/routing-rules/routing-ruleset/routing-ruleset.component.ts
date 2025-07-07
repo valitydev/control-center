@@ -26,10 +26,10 @@ import {
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import {
+    DomainObjectCardComponent,
     DomainThriftFormDialogComponent,
     UpdateThriftDialogComponent,
 } from '../../../shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';

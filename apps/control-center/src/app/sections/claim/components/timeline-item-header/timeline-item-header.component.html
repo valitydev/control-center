@@ -1,0 +1,17 @@
+<span [ngClass]="{ outdated: outdated, removed: removed }">{{ username }}</span>
+<span [ngClass]="{ outdated: outdated, removed: removed }">
+    {{ text }}
+    @if (createdAt) {
+        <span
+            >at {{ createdAt | date: 'dd.MM.yyyy HH:mm:ss' }} ({{
+                createdAt | humanizedDuration: { hasAgoEnding: true }
+            }})</span
+        >
+    }
+</span>
+@if (outdated) {
+    <span> (Outdated)</span>
+}
+@if (removed) {
+    <span> (Removed)</span>
+}

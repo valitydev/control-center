@@ -1,12 +1,13 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
-import { InvoicePaymentChargebackParams, Invoicing } from '@vality/domain-proto/payment_processing';
-import { DialogSuperclass, NotifyLogService } from '@vality/matez';
+import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
+import { DialogSuperclass, NotifyLogService, getImportValue } from '@vality/matez';
+import { ThriftAstMetadata } from '@vality/ng-thrift';
 import short from 'short-uuid';
 
+import { InvoicingService } from '../../../api/payment-processing/invoicing.service';
 import { DomainMetadataFormExtensionsService } from '../../../shared/services';
 
 @Component({
@@ -19,12 +20,12 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     { invoiceID: string; paymentID: string },
     InvoicePaymentChargeback
 > {
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(InvoicingService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: short().generate() });
-    metadata$ = metadata$;
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     create() {

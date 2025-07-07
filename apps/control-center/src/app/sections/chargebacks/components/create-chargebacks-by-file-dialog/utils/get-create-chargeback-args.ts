@@ -1,4 +1,4 @@
-import { Invoicing } from '@vality/domain-proto/payment_processing';
+import { CodegenClient } from '@vality/domain-proto/internal/payment_processing-Invoicing';
 import { clean } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import short from 'short-uuid';
@@ -7,7 +7,7 @@ import { CsvChargeback } from '../types/csv-chargeback';
 
 export function getCreateChargebackArgs(
     c: CsvChargeback,
-): Parameters<Invoicing['CreateChargeback']> {
+): Parameters<CodegenClient['CreateChargeback']> {
     return [
         c.invoice_id,
         c.payment_id,

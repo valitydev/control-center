@@ -29,6 +29,7 @@ export class PaymentDetailsComponent {
     metadata$ = metadata$;
     extensions$: Observable<ThriftViewExtension[]> = this.payment$.pipe(
         map((payment): ThriftViewExtension[] => [
+            this.domainMetadataViewExtensionsService.createShopExtension(payment.owner_id),
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'Amount', 'domain')),
                 extension: (_, amount: number) =>

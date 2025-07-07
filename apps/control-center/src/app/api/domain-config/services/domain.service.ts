@@ -1,16 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference, ReflessDomainObject } from '@vality/domain-proto/domain';
-import {
-    Operation,
-    Repository,
-    RepositoryClient,
-    Version,
-} from '@vality/domain-proto/domain_config_v2';
+import { Operation, Version } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, switchCombineWith } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { EMPTY, catchError, map, tap } from 'rxjs';
 
+import { RepositoryClientService } from '../repository-client.service';
+import { Repository2Service } from '../repository2.service';
 import { AuthorStoreService } from '../stores/author-store.service';
 
 import { DomainSecretService } from './domain-secret-service';
@@ -19,10 +16,10 @@ import { DomainSecretService } from './domain-secret-service';
     providedIn: 'root',
 })
 export class DomainService {
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(Repository2Service);
     private authorStoreService = inject(AuthorStoreService);
     private log = inject(NotifyLogService);
-    private repositoryClientService = inject(RepositoryClient);
+    private repositoryClientService = inject(RepositoryClientService);
     private domainSecretService = inject(DomainSecretService);
     version = rxResource({
         stream: () => this.repositoryService.GetLatestVersion(),
@@ -40,7 +37,7 @@ export class DomainService {
     insert(objs: ReflessDomainObject[], attempts = 1) {
         return this.commit(objs.map((obj) => ({ insert: { object: obj } }))).pipe(
             catchError((err) => {
-                if (err?.error?.name === 'ObsoleteCommitVersion') {
+                if (err?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.version.reload();
                         this.insert(objs, attempts - 1);
@@ -64,7 +61,7 @@ export class DomainService {
             version,
         ).pipe(
             catchError((err) => {
-                if (err?.error?.name === 'ObsoleteCommitVersion') {
+                if (err?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.version.reload();
                         this.update(objs, version, attempts - 1);
