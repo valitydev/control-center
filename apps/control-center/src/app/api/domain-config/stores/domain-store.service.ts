@@ -1,12 +1,13 @@
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
-import { Commit, Repository, Snapshot, Version } from '@vality/domain-proto/domain_config';
+import { Commit, Snapshot, Version } from '@vality/domain-proto/domain_config';
 import { NotifyLogService, handleError, inProgressFrom, progressTo } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject, Observable, ReplaySubject, combineLatest, defer, filter, of } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
+import { RepositoryService } from '../repository.service';
 import { DomainSecretService } from '../services';
 import { createObjectHash } from '../utils/create-object-hash';
 
@@ -17,7 +18,7 @@ import { createObjectHash } from '../utils/create-object-hash';
     providedIn: 'root',
 })
 export class DomainStoreService {
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(RepositoryService);
     private domainSecretService = inject(DomainSecretService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);

@@ -1,11 +1,11 @@
-import { Invoicing } from '@vality/domain-proto/payment_processing';
+import { CodegenClient } from '@vality/domain-proto/internal/payment_processing-Invoicing';
 import { clean } from '@vality/matez';
 
 import { CsvPaymentAdjustment } from '../types/csv-payment-adjustment';
 
 export function getCreatePaymentAdjustmentsArgs(
     c: CsvPaymentAdjustment,
-): Parameters<Invoicing['CreatePaymentAdjustment']> {
+): Parameters<CodegenClient['CreatePaymentAdjustment']> {
     return [
         c.invoice_id,
         c.payment_id,

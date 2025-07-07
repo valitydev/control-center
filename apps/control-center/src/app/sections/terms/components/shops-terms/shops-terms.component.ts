@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TermSetHierarchyRef } from '@vality/domain-proto/domain';
+import { TermSetHierarchyRef } from '@vality/domain-proto/internal/domain';
 import {
     CommonSearchQueryParams,
     ShopSearchQuery,

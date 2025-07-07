@@ -5,8 +5,6 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { metadata$ } from '@vality/domain-proto';
-import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     DialogModule,
@@ -15,10 +13,12 @@ import {
     EnumKeysPipe,
     NotifyLogService,
     forkJoinToResult,
+    getImportValue,
 } from '@vality/matez';
-import { ThriftFormModule } from '@vality/ng-thrift';
+import { ThriftAstMetadata, ThriftFormModule } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 
+import { InvoicingService } from '../../../api/payment-processing/invoicing.service';
 import { DomainMetadataFormExtensionsService } from '../../services';
 
 enum Action {
@@ -56,11 +56,11 @@ export class ChangeChargebacksStatusDialogComponent
     >
     implements OnInit
 {
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(InvoicingService);
     private log = inject(NotifyLogService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);
-    metadata$ = metadata$;
+    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     control = new FormControl();
     actionControl = new FormControl<Action>(null, Validators.required);

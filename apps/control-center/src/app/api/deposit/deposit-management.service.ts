@@ -11,7 +11,7 @@ import { ContextSet } from '@vality/fistful-proto/internal/context';
 import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { ConfigService } from '../../../services';
+import { ConfigService } from '../../core/config.service';
 import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })

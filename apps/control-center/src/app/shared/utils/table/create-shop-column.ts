@@ -8,18 +8,18 @@ import { ShopCardComponent } from '../../components/shop-card/shop-card.componen
 import { SidenavInfoService } from '../../components/sidenav-info';
 
 export const createShopColumn = createColumn(
-    ({ shopId, ...params }: { shopId: string; shopName?: string }) => {
+    ({ shopId, partyId, ...params }: { shopId: string; partyId: string; shopName?: string }) => {
         const name$ =
             'shopName' in params
                 ? of(params.shopName)
                 : inject(PartiesStoreService)
-                      .getShop(shopId)
-                      .pipe(map((shop) => shop.details.name));
+                      .get(partyId)
+                      .pipe(map((party) => party.shops.get(shopId).details.name));
         const sidenavInfoService = inject(SidenavInfoService);
         const shopCell = {
             description: shopId,
             click: () => {
-                sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                sidenavInfoService.toggle(ShopCardComponent, { id: shopId, partyId });
             },
         };
         return name$.pipe(
