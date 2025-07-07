@@ -31,12 +31,12 @@ import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { KeycloakService } from 'keycloak-angular';
 
+import { ToolbarComponent } from '../components';
 import { provideThriftServices } from '../utils';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConfigService } from './config';
-import { ToolbarComponent } from './config/components/toolbar/toolbar.component';
 import { initializer } from './initializer';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';

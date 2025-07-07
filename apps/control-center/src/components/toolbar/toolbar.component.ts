@@ -12,8 +12,8 @@ import { Router, RouterModule } from '@angular/router';
 import { UrlService } from '@vality/matez';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
-import { MerchantFieldModule } from '../../../shared/components/merchant-field';
-import { KeycloakUserService } from '../../../shared/services';
+import { MerchantFieldModule } from '../../app/shared/components/merchant-field';
+import { KeycloakUserService } from '../../app/shared/services';
 
 @Component({
     selector: 'cc-toolbar',
