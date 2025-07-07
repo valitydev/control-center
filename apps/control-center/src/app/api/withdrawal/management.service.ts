@@ -9,7 +9,7 @@ import { AdjustmentParams, AdjustmentState } from '@vality/fistful-proto/withdra
 import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { ConfigService } from '../../config';
+import { ConfigService } from '../../../services/config';
 import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })

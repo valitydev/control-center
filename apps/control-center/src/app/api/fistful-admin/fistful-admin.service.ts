@@ -10,7 +10,7 @@ import { SourceParams } from '@vality/fistful-proto/internal/fistful_admin';
 import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { ConfigService } from '../../config';
+import { ConfigService } from '../../../services';
 import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })
