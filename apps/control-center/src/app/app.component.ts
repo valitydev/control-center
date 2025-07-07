@@ -7,7 +7,7 @@ import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 
-import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './domain/routing-config';
+import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './domain-config/routing-config';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';

@@ -8,7 +8,7 @@ import { AppAuthGuardService } from './shared/services';
     imports: [
         RouterModule.forRoot(
             [
-                APP_ROUTES.domain2.root.getRoute(),
+                APP_ROUTES.domain.root.getRoute(),
                 {
                     path: '',
                     redirectTo: '/domain',

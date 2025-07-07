@@ -5,10 +5,10 @@ import { Route, Services } from './shared/services';
 type SectionPageRoutes = { [KSection: string]: { [KPage: string]: Route } };
 
 export const APP_ROUTES = {
-    domain2: {
+    domain: {
         root: new Route('domain', {
             services: [Services.Domain],
-            loadChildren: () => import('./domain').then((m) => m.DomainModule),
+            loadComponent: () => import('./domain-config').then((m) => m.DomainObjectsComponent),
             queryParams: z.object({ type: z.string() }),
         }),
     },

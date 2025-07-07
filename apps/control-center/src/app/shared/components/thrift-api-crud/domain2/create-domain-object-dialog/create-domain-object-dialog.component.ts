@@ -67,7 +67,7 @@ export class CreateDomainObjectDialogComponent
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
-                void this.navigateService.navigate(APP_ROUTES.domain2.root, {
+                void this.navigateService.navigate(APP_ROUTES.domain.root, {
                     type: getUnionKey(this.control.value),
                 });
                 this.closeWithSuccess();
