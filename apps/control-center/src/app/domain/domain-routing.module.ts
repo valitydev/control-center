@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '../../shared/services';
+import { AppAuthGuardService } from '../shared/services';
 
 import { DomainObjectsComponent } from './domain-objects';
 import { ROUTING_CONFIG } from './routing-config';
