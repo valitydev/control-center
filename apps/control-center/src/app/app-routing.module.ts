@@ -9,7 +9,7 @@ import { AppAuthGuardService } from './shared/services';
             [
                 {
                     path: '',
-                    redirectTo: '/payments',
+                    redirectTo: '/domain',
                     pathMatch: 'full',
                 },
             ],
