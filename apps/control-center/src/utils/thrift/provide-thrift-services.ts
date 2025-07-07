@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { map } from 'rxjs';
 
-import { ConfigService } from '../../app/core/config.service';
+import { ConfigService } from '../../app/config';
 import { KeycloakTokenInfoService, toWachterHeaders } from '../../app/shared/services';
 
 function provideThriftService<T extends Type<unknown>>(

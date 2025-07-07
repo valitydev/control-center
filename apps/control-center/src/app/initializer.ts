@@ -3,7 +3,7 @@ import { KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../environments/environment';
 
-import { ConfigService } from './core/config.service';
+import { ConfigService } from './config';
 
 export const initializer = (keycloak: KeycloakService, configService: ConfigService) => () =>
     Promise.all([

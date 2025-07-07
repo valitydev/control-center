@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, inject, provideAppInitializer } from '@angular/core';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -28,13 +29,15 @@ import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
+import { KeycloakService } from 'keycloak-angular';
 
 import { provideThriftServices } from '../utils';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
-import { CoreModule } from './core/core.module';
+import { ConfigService } from './config';
+import { ToolbarComponent } from './config/components/toolbar/toolbar.component';
+import { initializer } from './initializer';
 import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
@@ -61,7 +64,6 @@ registerLocaleData(localeRu);
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        CoreModule,
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
@@ -88,6 +90,13 @@ registerLocaleData(localeRu);
         InputMaskModule,
     ],
     providers: [
+        ConfigService,
+        KeycloakService,
+        provideAppInitializer(() => {
+            const initializerFn = initializer(inject(KeycloakService), inject(ConfigService));
+            return initializerFn();
+        }),
+        provideHttpClient(withInterceptorsFromDi()),
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
         { provide: LOCALE_ID, useValue: 'ru' },
