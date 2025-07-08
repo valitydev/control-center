@@ -1,55 +1,41 @@
-import { Component, inject } from '@angular/core';
-import { Deanonimus, SearchShopHit } from '@vality/deanonimus-proto/deanonimus';
-import { NotifyLogService, progressTo } from '@vality/matez';
-import { BehaviorSubject, Observable, Subject, combineLatest, defer, of } from 'rxjs';
-import {
-    catchError,
-    debounceTime,
-    distinctUntilChanged,
-    map,
-    shareReplay,
-    switchMap,
-} from 'rxjs/operators';
+import { Component, OnInit, inject } from '@angular/core';
+import { DomainObjectType } from '@vality/domain-proto/domain';
+import { DebounceTime, UpdateOptions } from '@vality/matez';
+import { map } from 'rxjs/operators';
 
-import { ShopParty } from '../../shared/components/shops-table';
+import { FetchFullDomainObjectsService } from '../../api/domain-config';
 
 @Component({
     selector: 'cc-shops',
     templateUrl: './shops.component.html',
+    providers: [FetchFullDomainObjectsService],
     standalone: false,
 })
-export class ShopsComponent {
-    private deanonimusService = inject(Deanonimus);
-    private log = inject(NotifyLogService);
-    filterChange$ = new Subject<string>();
-    shopsParty$: Observable<ShopParty[]> = combineLatest([
-        this.filterChange$.pipe(distinctUntilChanged(), debounceTime(500)),
-        defer(() => this.updateShops$),
-    ]).pipe(
-        switchMap(([search]) =>
-            search
-                ? this.deanonimusService.searchShopText(search.trim()).pipe(
-                      progressTo(this.progress$),
-                      catchError((err) => {
-                          this.log.error(err);
-                          return of<SearchShopHit[]>([]);
-                      }),
-                  )
-                : of<SearchShopHit[]>([]),
-        ),
-        map((shops) =>
-            shops.map(({ shop, party }) => ({
-                shop: shop as ShopParty['shop'],
-                party,
-            })),
-        ),
-        shareReplay({ refCount: true, bufferSize: 1 }),
+export class ShopsComponent implements OnInit {
+    private fetchDomainObjectsService = inject(FetchFullDomainObjectsService);
+
+    shops$ = this.fetchDomainObjectsService.result$.pipe(
+        map((objs) => objs.map((obj) => obj.object.shop_config.data)),
     );
-    progress$ = new BehaviorSubject(0);
+    progress$ = this.fetchDomainObjectsService.isLoading$;
 
-    private updateShops$ = new BehaviorSubject<void>(undefined);
+    ngOnInit() {
+        this.searchParamsUpdated('');
+    }
 
-    update() {
-        this.updateShops$.next();
+    @DebounceTime()
+    searchParamsUpdated(search: string) {
+        this.fetchDomainObjectsService.load({
+            query: search.trim(),
+            type: DomainObjectType.shop_config,
+        });
+    }
+
+    reload(options: UpdateOptions) {
+        this.fetchDomainObjectsService.reload(options);
+    }
+
+    more() {
+        this.fetchDomainObjectsService.more();
     }
 }

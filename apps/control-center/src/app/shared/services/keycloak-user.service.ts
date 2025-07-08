@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
+import { observableResource } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import { map } from 'rxjs';
 
@@ -16,8 +16,9 @@ export interface KeycloakUser {
 export class KeycloakUserService {
     private keycloakTokenInfoService = inject(KeycloakTokenInfoService);
     private keycloakService = inject(KeycloakService);
-    user = rxResource({
-        stream: () =>
+
+    user = observableResource({
+        loader: () =>
             this.keycloakTokenInfoService.info$.pipe(
                 map(
                     ({ email, preferred_username }): KeycloakUser => ({

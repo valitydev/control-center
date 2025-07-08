@@ -2,9 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { PartyID, ShopID } from '@vality/domain-proto/internal/domain';
+import { ShopID } from '@vality/domain-proto/domain';
 import { ThriftViewerModule } from '@vality/ng-thrift';
-import { combineLatest } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
@@ -25,20 +24,19 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 })
 export class ShopCardComponent {
     private partiesStoreService = inject(PartiesStoreService);
-    partyId = input.required<PartyID>();
     id = input.required<ShopID>();
 
     progress$ = this.partiesStoreService.progress$;
-    shop$ = combineLatest([toObservable(this.partyId), toObservable(this.id)]).pipe(
-        switchMap(([partyId, id]) => this.partiesStoreService.getShop(id, partyId)),
+    shop$ = toObservable(this.id).pipe(
+        switchMap((id) => this.partiesStoreService.getShop(id)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    contractor$ = combineLatest([toObservable(this.partyId), toObservable(this.id)]).pipe(
-        switchMap(([partyId, id]) => this.partiesStoreService.getContractor(id, partyId)),
+    contractor$ = toObservable(this.id).pipe(
+        switchMap((id) => this.partiesStoreService.getContractor(id)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    contract$ = combineLatest([toObservable(this.partyId), toObservable(this.id)]).pipe(
-        switchMap(([partyId, id]) => this.partiesStoreService.getContract(id, partyId)),
+    contract$ = toObservable(this.id).pipe(
+        switchMap((id) => this.partiesStoreService.getContract(id)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 }

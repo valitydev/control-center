@@ -26,14 +26,6 @@ import { ROUTING_CONFIG } from './routing-config';
                             import('../routing-rules').then((m) => m.RoutingRulesModule),
                     },
                     {
-                        path: 'claims',
-                        loadChildren: () => import('../claims').then((m) => m.ClaimsModule),
-                    },
-                    {
-                        path: 'claim',
-                        redirectTo: 'claims',
-                    },
-                    {
                         path: 'wallets',
                         loadChildren: () =>
                             import('../wallets/wallets.module').then((m) => m.WalletsModule),

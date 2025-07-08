@@ -1,15 +1,13 @@
 import { inject } from '@angular/core';
-import { Reference } from '@vality/domain-proto/internal/domain';
+import { Reference } from '@vality/domain-proto/domain';
 import { createColumn } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { map, startWith } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../api/domain-config';
 import { SidenavInfoService } from '../../components/sidenav-info';
-import {
-    DomainObjectCardComponent,
-    getDomainObjectDetails,
-} from '../../components/thrift-api-crud';
+import { getDomainObjectDetails } from '../../components/thrift-api-crud';
+import { DomainObjectCardComponent } from '../../components/thrift-api-crud/domain2';
 
 export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference }) => {
     const sourceObj = {

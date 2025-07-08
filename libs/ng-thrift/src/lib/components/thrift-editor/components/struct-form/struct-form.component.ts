@@ -7,7 +7,7 @@ import {
     FormGroup,
     ReactiveFormsModule,
     ValidationErrors,
-    Validators,
+    ValidatorFn,
 } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {
@@ -28,6 +28,10 @@ import { isRequiredField } from '../../../../utils';
 import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import { ThriftFormExtension } from '../../types/thrift-form-extension';
 import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
+
+const structFieldRequiredValidator: ValidatorFn = (control) => {
+    return control.value ? null : { required: true };
+};
 
 @Component({
     selector: 'v-struct-form',
@@ -89,7 +93,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
                         validators: isRequiredField(
                             (this.data.ast || []).find((f: Field) => f.name === name),
                         )
-                            ? [Validators.required]
+                            ? [structFieldRequiredValidator]
                             : [],
                     }) as never,
                 ),

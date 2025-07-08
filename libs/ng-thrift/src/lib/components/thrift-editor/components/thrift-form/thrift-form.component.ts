@@ -6,6 +6,7 @@ import {
     Input,
     OnChanges,
     OnInit,
+    SimpleChanges,
     inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -70,7 +71,6 @@ export class ThriftFormComponent<T>
     private updated$ = new BehaviorSubject<void>(undefined);
 
     override ngOnInit() {
-        super.ngOnInit();
         this.extensionResult$
             .pipe(
                 map((res) => !!res?.hidden),
@@ -80,9 +80,10 @@ export class ThriftFormComponent<T>
             .subscribe((hidden) => {
                 this.hidden = hidden;
             });
+        return super.ngOnInit();
     }
 
-    override ngOnChanges() {
+    override ngOnChanges(changes: SimpleChanges) {
         if (this.metadata && this.namespace && this.type) {
             try {
                 this.data = new ThriftData(
@@ -98,5 +99,6 @@ export class ThriftFormComponent<T>
                 console.warn(err);
             }
         }
+        return super.ngOnChanges(changes);
     }
 }

@@ -8,11 +8,7 @@
             <v-list-field formControlName="chargeback_ids" label="Chargeback Ids"></v-list-field>
             <v-list-field formControlName="invoice_ids" label="Invoice Ids"></v-list-field>
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
-            <cc-shop-field
-                [partyId]="filtersForm.value.party_id"
-                formControlName="shop_ids"
-                multiple
-            ></cc-shop-field>
+            <cc-shop-field formControlName="shop_ids" multiple></cc-shop-field>
             <mat-form-field>
                 <mat-label>Statuses</mat-label>
                 <mat-select formControlName="chargeback_statuses" multiple>

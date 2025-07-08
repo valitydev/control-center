@@ -9,7 +9,7 @@ import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/opera
 import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
 import { createShopColumn, createWalletColumn } from '../../../shared';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
-import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';

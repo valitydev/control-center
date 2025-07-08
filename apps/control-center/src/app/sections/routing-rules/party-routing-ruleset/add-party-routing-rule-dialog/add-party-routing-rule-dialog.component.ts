@@ -1,8 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { Shop } from '@vality/domain-proto/domain';
-import { ShopID, WalletID } from '@vality/domain-proto/internal/domain';
+import { Shop, ShopID, WalletID } from '@vality/domain-proto/domain';
 import { StatWallet } from '@vality/fistful-proto/fistful_stat';
 import { DialogResponseStatus, DialogSuperclass, NotifyLogService, Option } from '@vality/matez';
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnInit, forwardRef, inject } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, Input, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
@@ -17,6 +17,7 @@ import {
     PipesModule,
     createControlProviders,
     getErrorsTree,
+    getValueChanges,
 } from '@vality/matez';
 import { ListType, MapType, SetType } from '@vality/thrift-ts';
 import { merge } from 'rxjs';
@@ -56,7 +57,7 @@ type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
 })
 export class ComplexFormComponent<V, K = never>
     extends FormComponentSuperclass<ComplexType<V, K>>
-    implements OnInit, Validator
+    implements AfterViewInit, Validator
 {
     private destroyRef = inject(DestroyRef);
     @Input() data!: ThriftData<SetType | MapType | ListType>;
@@ -80,8 +81,8 @@ export class ComplexFormComponent<V, K = never>
         return undefined;
     }
 
-    override ngOnInit() {
-        merge(this.valueControls.valueChanges, this.keyControls.valueChanges)
+    ngAfterViewInit() {
+        merge(getValueChanges(this.valueControls), getValueChanges(this.keyControls))
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 const values = this.valueControls.value;

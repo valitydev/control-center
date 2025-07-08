@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DomainObject } from '@vality/domain-proto/internal/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 import {
     ComponentChanges,
     FormControlSuperclass,

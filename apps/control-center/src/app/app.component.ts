@@ -1,4 +1,4 @@
-import { Component, inject, isDevMode } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Link } from '@vality/matez';
 import { KeycloakService } from 'keycloak-angular';
 import sortBy from 'lodash-es/sortBy';
@@ -7,12 +7,10 @@ import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 
-import { ROUTING_CONFIG as CLAIMS_ROUTING_CONFIG } from './sections/claims/routing-config';
+import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
-import { ROUTING_CONFIG as DOMAIN_ROUTING_CONFIG } from './sections/domain/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';
-import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
@@ -61,17 +59,8 @@ export class AppComponent {
                 {
                     label: 'Domain config',
                     url: '/domain',
-                    services: DOMAIN_ROUTING_CONFIG.services,
+                    services: APP_ROUTES.domain.root.config.services,
                 },
-                ...(isDevMode()
-                    ? [
-                          {
-                              label: 'Domain config 2',
-                              url: '/domain2',
-                              services: DOMAIN_ROUTING_CONFIG.services,
-                          },
-                      ]
-                    : []),
                 {
                     label: 'Terminals',
                     url: '/terminals',
@@ -97,7 +86,7 @@ export class AppComponent {
                 {
                     label: 'Merchants',
                     url: '/parties',
-                    services: PARTIES_ROUTING_CONFIG.services,
+                    services: APP_ROUTES.parties.root.config.services,
                 },
                 {
                     label: 'Shops',
@@ -108,11 +97,6 @@ export class AppComponent {
                     label: 'Wallets',
                     url: '/wallets',
                     services: WALLETS_ROUTING_CONFIG.services,
-                },
-                {
-                    label: 'Claims',
-                    url: '/claims',
-                    services: CLAIMS_ROUTING_CONFIG.services,
                 },
             ],
             [

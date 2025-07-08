@@ -3,16 +3,16 @@ import { createColumn } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../../api/payment-processing';
+import { DomainObjectsStoreService } from '../../../api/domain-config';
 
 export const createPartyColumn = createColumn(
     ({ id, ...params }: { id: string; partyName?: string }) => {
         const partyName$ =
             'partyName' in params
                 ? of(params.partyName)
-                : inject(PartiesStoreService)
-                      .get(id)
-                      .pipe(map((party) => party.contact_info.registration_email));
+                : inject(DomainObjectsStoreService)
+                      .getObject({ party_config: { id } })
+                      .pipe(map((party) => party.name));
         const partyCell = {
             description: id,
             link: () => `/party/${id}`,

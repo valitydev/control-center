@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { AppAuthGuardService, Services } from '../../shared/services';
-import { ROUTING_CONFIG as CLAIMS_CONFIG } from '../claims/routing-config';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
 import { SHOPS_ROUTING_CONFIG } from '../shops';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../wallets/routing-config';
@@ -36,11 +35,6 @@ export class PartyComponent {
             label: 'Wallets',
             url: 'wallets',
             services: WALLETS_ROUTING_CONFIG.services,
-        },
-        {
-            label: 'Claims',
-            url: 'claims',
-            services: CLAIMS_CONFIG.services,
         },
         {
             label: 'Payment Routing Rules',

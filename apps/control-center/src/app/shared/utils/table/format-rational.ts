@@ -1,6 +1,6 @@
-import { Rational } from '@vality/domain-proto/internal/base';
+import { type base } from '@vality/domain-proto/domain';
 import round from 'lodash-es/round';
 
-export function formatRational(value: Rational) {
+export function formatRational(value: base.Rational) {
     return `${round((value.p / value.q) * 100, 4)}%`;
 }
