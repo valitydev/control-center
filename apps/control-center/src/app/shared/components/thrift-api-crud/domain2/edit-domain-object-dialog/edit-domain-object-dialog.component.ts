@@ -112,7 +112,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
             .subscribe({
                 next: () => {
                     this.log.successOperation('update', 'domain object');
-                    void this.navigateService.navigate(APP_ROUTES.domain2.root, {
+                    void this.navigateService.navigate(APP_ROUTES.domain.root, {
                         type: this.type,
                     });
                     this.closeWithSuccess();

@@ -21,13 +21,13 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { FetchDomainObjectsService } from '../../../../api/domain-config';
-import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
-import { getReferenceId } from '../../../../shared/components/thrift-api-crud';
+import { FetchDomainObjectsService } from '../../api/domain-config';
+import { SidenavInfoService } from '../../shared/components/sidenav-info';
+import { getReferenceId } from '../../shared/components/thrift-api-crud';
 import {
     DomainObjectCardComponent,
     DomainObjectService,
-} from '../../../../shared/components/thrift-api-crud/domain2';
+} from '../../shared/components/thrift-api-crud/domain2';
 
 @Component({
     selector: 'cc-domain-objects-table',

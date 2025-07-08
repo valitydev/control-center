@@ -52,6 +52,14 @@ export class DomainObjectsStoreService {
         return this.repositoryClientService.CheckoutObject({ head: {} }, ref);
     }
 
+    getObjects(type: keyof Reference) {
+        this.types.update((types) => new Set(types.add(type)));
+        return this.objects.value$.pipe(
+            skipWhile((objs) => !objs.has(type)),
+            map((objs) => Array.from(objs.get(type).values())),
+        );
+    }
+
     private getAllObjectByType(
         type: keyof Reference,
         continuationToken = undefined,

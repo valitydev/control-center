@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { DomainObject, Reference, ReflessDomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import {
+    InsertOp,
     Operation,
     Repository,
     RepositoryClient,
@@ -37,13 +38,13 @@ export class DomainService {
             );
     }
 
-    insert(objs: ReflessDomainObject[], attempts = 1) {
-        return this.commit(objs.map((obj) => ({ insert: { object: obj } }))).pipe(
+    insert(inserts: InsertOp[], attempts = 1) {
+        return this.commit(inserts.map((insert) => ({ insert }))).pipe(
             catchError((err) => {
                 if (err?.error?.name === 'ObsoleteCommitVersion') {
                     if (attempts !== 0) {
                         this.version.reload();
-                        this.insert(objs, attempts - 1);
+                        this.insert(inserts, attempts - 1);
                         this.log.error(err, `Domain config is out of date, one more attempt...`);
                         return EMPTY;
                     } else {
