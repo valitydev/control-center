@@ -3,7 +3,9 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { ReflessDomainObject } from '@vality/domain-proto/domain';
+import { InsertOp } from '@vality/domain-proto/domain_config_v2';
 import {
     DEFAULT_DIALOG_CONFIG,
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -32,6 +34,7 @@ import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
         DomainThriftFormComponent,
         ReactiveFormsModule,
         DomainThriftViewerComponent,
+        MatDividerModule,
     ],
     templateUrl: './create-domain-object-dialog.component.html',
 })
@@ -51,13 +54,13 @@ export class CreateDomainObjectDialogComponent
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     };
 
-    control = new FormControl<ReflessDomainObject | null>(null, [Validators.required]);
+    control = new FormControl<InsertOp | null>(null, [Validators.required]);
     progress$ = new BehaviorSubject(0);
     isReview = false;
 
     ngOnInit() {
         if (this.dialogData && this.dialogData.objectType) {
-            this.control.setValue({ [this.dialogData.objectType]: {} });
+            this.control.setValue({ object: { [this.dialogData.objectType]: {} } });
         }
     }
 
