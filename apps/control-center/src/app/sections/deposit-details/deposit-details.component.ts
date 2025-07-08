@@ -16,7 +16,7 @@ import startCase from 'lodash-es/startCase';
 import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { ManagementService } from '../../api/wallet';
+import { DomainObjectsStoreService } from '../../api/domain-config';
 import { AmountCurrencyService } from '../../shared/services';
 import { FetchSourcesService } from '../sources';
 
@@ -33,8 +33,9 @@ export class DepositDetailsComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private _locale = inject<string>(LOCALE_ID);
     private amountCurrencyService = inject(AmountCurrencyService);
-    private walletManagementService = inject(ManagementService);
+    private domainObjectsStoreService = inject(DomainObjectsStoreService);
     private fetchSourcesService = inject(FetchSourcesService);
+
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
     metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
@@ -99,14 +100,14 @@ export class DepositDetailsComponent implements OnInit {
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'WalletID', 'fistful_stat')),
                 extension: (_, id: string) =>
-                    this.walletManagementService.Get(id, {}).pipe(
+                    this.domainObjectsStoreService.getObject({ wallet_config: { id } }).pipe(
                         map(
                             (wallet): ThriftViewExtensionResult => ({
                                 value: wallet.name,
-                                tooltip: wallet.id,
+                                tooltip: id,
                                 link: [
                                     ['/wallets'],
-                                    { queryParams: { wallet_id: JSON.stringify([wallet.id]) } },
+                                    { queryParams: { wallet_id: JSON.stringify([id]) } },
                                 ],
                             }),
                         ),

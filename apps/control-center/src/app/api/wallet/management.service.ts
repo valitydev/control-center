@@ -4,9 +4,8 @@ import {
     wallet_Management,
     wallet_ManagementCodegenClient,
 } from '@vality/fistful-proto';
-import { ContextSet } from '@vality/fistful-proto/internal/context';
-import { AccountBalance, WalletParams } from '@vality/fistful-proto/internal/wallet';
-import { EventRange, WalletID, WalletState } from '@vality/fistful-proto/wallet';
+import { AccountBalance } from '@vality/fistful-proto/internal/wallet';
+import { WalletID } from '@vality/fistful-proto/wallet';
 import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
@@ -38,14 +37,6 @@ export class ManagementService {
                 }),
             ),
         );
-    }
-
-    Get(id: WalletID, range: EventRange): Observable<WalletState> {
-        return this.client$.pipe(switchMap((c) => c.Get(id, range)));
-    }
-
-    Create(params: WalletParams, context: ContextSet): Observable<WalletState> {
-        return this.client$.pipe(switchMap((c) => c.Create(params, context)));
     }
 
     GetAccountBalance(id: WalletID): Observable<AccountBalance> {
