@@ -2,13 +2,14 @@ import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
     Component,
     DestroyRef,
+    Injector,
     Input,
     LOCALE_ID,
     OnInit,
     booleanAttribute,
     inject,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -27,7 +28,7 @@ import isNil from 'lodash-es/isNil';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../app/api/domain-config';
+import { CurrenciesStoreService } from '../../app/api/domain-config';
 import { FetchSourcesService } from '../../app/sections/sources';
 
 export interface SourceCash {
@@ -59,7 +60,9 @@ export class SourceCashFieldComponent
     private _locale = inject<string>(LOCALE_ID);
     private destroyRef = inject(DestroyRef);
     private fetchSourcesService = inject(FetchSourcesService);
-    private domainStoreService = inject(DomainStoreService);
+    private currenciesStoreService = inject(CurrenciesStoreService);
+    private injecotor = inject(Injector);
+
     @Input() label?: string;
     @Input({ transform: booleanAttribute }) required: boolean = false;
 
@@ -163,15 +166,15 @@ export class SourceCashFieldComponent
     }
 
     private getCurrencyExponent(symbolicCode: string) {
-        return this.domainStoreService
-            .getObjects('currency')
-            .pipe(
-                map(
-                    (currencies) =>
-                        currencies.find((c) => c.data.symbolic_code === symbolicCode)?.data
-                            ?.exponent ?? DEFAULT_EXPONENT,
-                ),
-            );
+        return toObservable(this.currenciesStoreService.currencies, {
+            injector: this.injecotor,
+        }).pipe(
+            map(
+                (currencies) =>
+                    currencies.find((c) => c.symbolic_code === symbolicCode)?.exponent ??
+                    DEFAULT_EXPONENT,
+            ),
+        );
     }
 
     private setValues(amount: number, source: StatSource, exponent: number = DEFAULT_EXPONENT) {

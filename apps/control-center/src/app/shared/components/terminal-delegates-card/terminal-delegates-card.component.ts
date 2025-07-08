@@ -14,7 +14,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
+import { Column, ComponentChanges, TableModule } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
@@ -49,8 +49,8 @@ export class TerminalDelegatesCardComponent implements OnChanges {
     private domainStoreService = inject(DomainStoreService);
     private sidenavInfoService = inject(SidenavInfoService);
     private injector = inject(Injector);
-    private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);
+
     @Input() ref: TerminalRef;
 
     progress$ = this.domainStoreService.isLoading$;

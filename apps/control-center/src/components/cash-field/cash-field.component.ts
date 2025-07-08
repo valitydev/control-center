@@ -8,7 +8,7 @@ import {
     booleanAttribute,
     inject,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +28,7 @@ import isNil from 'lodash-es/isNil';
 import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../app/api/domain-config';
+import { CurrenciesStoreService } from '../../app/api/domain-config';
 
 export interface Cash {
     amount: number;
@@ -55,14 +55,15 @@ const RADIX_POINT = '.';
 export class CashFieldComponent extends FormComponentSuperclass<Cash> implements Validator, OnInit {
     private _locale = inject<string>(LOCALE_ID);
     private destroyRef = inject(DestroyRef);
-    private domainStoreService = inject(DomainStoreService);
+    private currenciesStoreService = inject(CurrenciesStoreService);
+
     @Input() label?: string;
     @Input({ transform: booleanAttribute }) required: boolean = false;
 
     amountControl = new FormControl<string>(null);
     currencyControl = new FormControl<CurrencyObject>(null);
 
-    options$ = this.domainStoreService.getObjects('currency').pipe(
+    options$ = toObservable(this.currenciesStoreService.currencies).pipe(
         startWith([] as CurrencyObject[]),
         map((objs): Option<CurrencyObject>[] =>
             objs

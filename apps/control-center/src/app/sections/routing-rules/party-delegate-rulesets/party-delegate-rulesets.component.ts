@@ -34,6 +34,7 @@ export class PartyDelegateRulesetsComponent {
     private route = inject(ActivatedRoute);
     private destroyRef = inject(DestroyRef);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
+
     columns: Column<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
         {
             field: 'partyDelegate',
