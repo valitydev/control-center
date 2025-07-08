@@ -29,6 +29,15 @@ export class DomainMetadataFormExtensionsService {
                 extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
             },
             {
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'PartyID', 'domain') ||
+                            isTypeWithAliases(data, 'WalletConfigID', 'domain') ||
+                            isTypeWithAliases(data, 'ShopConfigID', 'domain'),
+                    ),
+                extension: () => of({ generate: () => of(short().uuid()), isIdentifier: true }),
+            },
+            {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
                 extension: () =>
                     of({
