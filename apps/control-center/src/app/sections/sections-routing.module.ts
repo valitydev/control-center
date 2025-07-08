@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { APP_ROUTES } from '../app-routes';
-
 const ROUTES: Routes = [
-    APP_ROUTES.domain2.root.getRoute(),
     {
         path: 'party',
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),

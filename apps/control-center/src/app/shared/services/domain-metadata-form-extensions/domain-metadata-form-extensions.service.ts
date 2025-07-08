@@ -8,19 +8,19 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
-import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
+import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
-import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
+import { getDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainMetadataFormExtensionsService {
-    private domainStoreService = inject(DomainStoreService);
-    private fistfulStatisticsService = inject(FistfulStatisticsService);
+    private domainStoreService = inject(DomainObjectsStoreService);
+    private domainService = inject(DomainService);
+
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
@@ -29,12 +29,13 @@ export class DomainMetadataFormExtensionsService {
                 extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
             },
             {
-                determinant: (data) => of(isTypeWithAliases(data, 'WalletID', 'claim_management')),
-                extension: () =>
-                    of({
-                        generate: () => this.generateNextWalletId(),
-                        isIdentifier: true,
-                    }),
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'PartyID', 'domain') ||
+                            isTypeWithAliases(data, 'WalletConfigID', 'domain') ||
+                            isTypeWithAliases(data, 'ShopConfigID', 'domain'),
+                    ),
+                extension: () => of({ generate: () => of(short().uuid()), isIdentifier: true }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
@@ -77,11 +78,9 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'DataRevision', 'domain')),
                 extension: () =>
-                    this.domainStoreService.version$.pipe(
-                        map(() => ({
-                            generate: () => this.domainStoreService.version$,
-                        })),
-                    ),
+                    of({
+                        generate: () => of(this.domainService.version.value()),
+                    }),
             },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -89,23 +88,6 @@ export class DomainMetadataFormExtensionsService {
 
     createPartyClaimExtensions(party: Party, claim: Claim) {
         return createPartyClaimDomainMetadataFormExtensions(party, claim);
-    }
-
-    generateNextWalletId() {
-        return this.fistfulStatisticsService
-            .GetWallets({
-                dsl: createDsl({ wallets: {} }),
-            })
-            .pipe(
-                map((res) =>
-                    String(
-                        Math.max(
-                            1,
-                            ...res.data.wallets.map((w) => Number(w.id)).filter((id) => !isNaN(id)),
-                        ) + 1,
-                    ),
-                ),
-            );
     }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
@@ -124,12 +106,9 @@ export class DomainMetadataFormExtensionsService {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
-            this.domainStoreService.getObjects(objectKey).pipe(
-                map((objects) => {
-                    const domainObjectToOption = getDomainObjectValueOptionFn(objectKey);
-                    return objects.map(domainObjectToOption);
-                }),
-            ),
+            this.domainStoreService
+                .getObjects(objectKey)
+                .pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
         );
     }
 }

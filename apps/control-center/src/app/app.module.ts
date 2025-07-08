@@ -14,7 +14,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
-import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
 import { Repository as OldRepository } from '@vality/domain-proto/domain_config';
 import {
     AuthorManagement,
@@ -38,11 +37,9 @@ import { provideThriftServices } from '../utils';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { initializer } from './initializer';
-import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
 import { ShopCardComponent } from './shared/components/shop-card/shop-card.component';
-import { ShopContractCardComponent } from './shared/components/shop-contract-card/shop-contract-card.component';
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
@@ -70,7 +67,6 @@ registerLocaleData(localeRu);
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        SearchPartiesModule,
         KeycloakTokenInfoModule,
         SectionsModule,
         SidenavInfoComponent,
@@ -108,7 +104,6 @@ registerLocaleData(localeRu);
             useValue: {
                 domainObject: DomainObjectCardComponent,
                 shop: ShopCardComponent,
-                shopContract: ShopContractCardComponent,
                 terminalDelegates: TerminalDelegatesCardComponent,
                 candidate: CandidateCardComponent,
             },
@@ -116,7 +111,6 @@ registerLocaleData(localeRu);
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
         provideThriftServices([
             { service: RepairManagement, name: 'RepairManagement' },
-            { service: Deanonimus, name: 'Deanonimus' },
             { service: AccountService, name: 'Scrooge' },
             { service: MerchantStatisticsService, name: 'MerchantStatistics' },
             { service: DominatorService, name: 'Dominator' },

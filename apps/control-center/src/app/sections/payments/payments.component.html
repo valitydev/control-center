@@ -17,11 +17,7 @@
             ></v-list-field>
             <v-input-field formControlName="external_id" label="External Id"></v-input-field>
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
-            <cc-shop-field
-                [partyId]="filtersForm.value.party_id"
-                formControlName="shop_ids"
-                multiple
-            ></cc-shop-field>
+            <cc-shop-field formControlName="shop_ids" multiple></cc-shop-field>
             <v-input-field formControlName="payment_first6" label="Card BIN"></v-input-field>
             <v-input-field formControlName="payment_last4" label="Card PAN"></v-input-field>
             <v-input-field formControlName="payment_rrn" label="Payment RRN"></v-input-field>

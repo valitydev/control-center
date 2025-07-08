@@ -2,12 +2,12 @@
     [appearance]="appearance"
     [formControl]="control"
     [hint]="hint"
-    [label]="label || (multiple ? 'Shops' : 'Shop')"
-    [multiple]="multiple"
+    [label]="label || (multiple() ? 'Shops' : 'Shop')"
+    [multiple]="multiple()"
     [options]="options$ | async"
     [progress]="!!(progress$ | async)"
     [required]="required"
     [size]="size"
     externalSearch
-    (searchChange)="this.searchChange$.next($event)"
+    (searchChange)="search($event)"
 ></v-select-field>
