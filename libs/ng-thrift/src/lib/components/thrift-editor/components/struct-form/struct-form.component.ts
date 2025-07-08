@@ -30,7 +30,6 @@ import { ThriftFormExtension } from '../../types/thrift-form-extension';
 import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
 
 const structFieldRequiredValidator: ValidatorFn = (control) => {
-    console.log(control.value);
     return control.value ? null : { required: true };
 };
 
