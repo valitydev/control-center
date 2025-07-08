@@ -9,7 +9,6 @@ import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
 import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
-import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
@@ -21,7 +20,6 @@ import { getDomainObjectOption } from './utils/get-domain-object-option';
 export class DomainMetadataFormExtensionsService {
     private domainStoreService = inject(DomainObjectsStoreService);
     private domainService = inject(DomainService);
-    private fistfulStatisticsService = inject(FistfulStatisticsService);
 
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
@@ -29,14 +27,6 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
                 extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
-            },
-            {
-                determinant: (data) => of(isTypeWithAliases(data, 'WalletID', 'claim_management')),
-                extension: () =>
-                    of({
-                        generate: () => this.generateNextWalletId(),
-                        isIdentifier: true,
-                    }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),
@@ -89,23 +79,6 @@ export class DomainMetadataFormExtensionsService {
 
     createPartyClaimExtensions(party: Party, claim: Claim) {
         return createPartyClaimDomainMetadataFormExtensions(party, claim);
-    }
-
-    generateNextWalletId() {
-        return this.fistfulStatisticsService
-            .GetWallets({
-                dsl: createDsl({ wallets: {} }),
-            })
-            .pipe(
-                map((res) =>
-                    String(
-                        Math.max(
-                            1,
-                            ...res.data.wallets.map((w) => Number(w.id)).filter((id) => !isNaN(id)),
-                        ) + 1,
-                    ),
-                ),
-            );
     }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
