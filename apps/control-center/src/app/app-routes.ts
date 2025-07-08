@@ -12,4 +12,11 @@ export const APP_ROUTES = {
             queryParams: z.object({ type: z.string() }),
         }),
     },
+    parties: {
+        root: new Route('parties', {
+            services: [Services.DMT],
+            loadComponent: () => import('./parties').then((m) => m.PartiesComponent),
+            queryParams: z.object({ type: z.string() }),
+        }),
+    },
 } satisfies SectionPageRoutes;

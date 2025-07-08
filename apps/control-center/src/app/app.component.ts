@@ -11,7 +11,6 @@ import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';
-import { ROUTING_CONFIG as PARTIES_ROUTING_CONFIG } from './sections/search-parties/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
@@ -87,7 +86,7 @@ export class AppComponent {
                 {
                     label: 'Merchants',
                     url: '/parties',
-                    services: PARTIES_ROUTING_CONFIG.services,
+                    services: APP_ROUTES.parties.root.config.services,
                 },
                 {
                     label: 'Shops',

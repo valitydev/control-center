@@ -37,7 +37,6 @@ import { provideThriftServices } from '../utils';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { initializer } from './initializer';
-import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
 import { ShopCardComponent } from './shared/components/shop-card/shop-card.component';
@@ -68,7 +67,6 @@ registerLocaleData(localeRu);
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        SearchPartiesModule,
         KeycloakTokenInfoModule,
         SectionsModule,
         SidenavInfoComponent,

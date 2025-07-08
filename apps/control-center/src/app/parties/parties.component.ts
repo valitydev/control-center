@@ -1,10 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
 import { DomainObjectType, PartyConfig } from '@vality/domain-proto/domain';
 import {
     Column,
     DebounceTime,
     QueryParamsService,
+    TableModule,
     UpdateOptions,
     createMenuColumn,
 } from '@vality/matez';
@@ -12,15 +16,16 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
-import { FetchFullDomainObjectsService } from '../../api/domain-config';
+import { FetchFullDomainObjectsService } from '../api/domain-config';
+import { PageLayoutModule } from '../shared';
 
 @Component({
-    templateUrl: 'search-parties.component.html',
-    styleUrls: ['search-parties.component.scss'],
+    templateUrl: 'parties.component.html',
+    styleUrls: ['parties.component.scss'],
     providers: [FetchFullDomainObjectsService],
-    standalone: false,
+    imports: [MatCardModule, CommonModule, MatProgressBarModule, PageLayoutModule, TableModule],
 })
-export class SearchPartiesComponent implements OnInit {
+export class PartiesComponent implements OnInit {
     private qp = inject<QueryParamsService<{ text: string }>>(QueryParamsService<{ text: string }>);
     private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
     private router = inject(Router);
