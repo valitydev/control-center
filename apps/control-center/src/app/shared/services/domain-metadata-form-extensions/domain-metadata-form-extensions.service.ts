@@ -8,19 +8,21 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
 import { FistfulStatisticsService, createDsl } from '../../../api/fistful-stat';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
 import { createPartyClaimDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
-import { getDomainObjectValueOptionFn } from './utils/get-domain-object-option';
+import { getDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DomainMetadataFormExtensionsService {
-    private domainStoreService = inject(DomainStoreService);
+    private domainStoreService = inject(DomainObjectsStoreService);
+    private domainService = inject(DomainService);
     private fistfulStatisticsService = inject(FistfulStatisticsService);
+
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
@@ -77,11 +79,9 @@ export class DomainMetadataFormExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'DataRevision', 'domain')),
                 extension: () =>
-                    this.domainStoreService.version$.pipe(
-                        map(() => ({
-                            generate: () => this.domainStoreService.version$,
-                        })),
-                    ),
+                    of({
+                        generate: () => of(this.domainService.version.value()),
+                    }),
             },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -124,12 +124,9 @@ export class DomainMetadataFormExtensionsService {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
-            this.domainStoreService.getObjects(objectKey).pipe(
-                map((objects) => {
-                    const domainObjectToOption = getDomainObjectValueOptionFn(objectKey);
-                    return objects.map(domainObjectToOption);
-                }),
-            ),
+            this.domainStoreService
+                .getObjects(objectKey)
+                .pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
         );
     }
 }
