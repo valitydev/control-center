@@ -1,25 +1,41 @@
-import { DestroyRef, inject } from '@angular/core';
+import { DestroyRef, Signal, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { Subject, from, of } from 'rxjs';
-import { map, mergeScan, mergeWith, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { map, mergeScan, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { Async, PossiblyAsync, getPossiblyAsyncObservable } from './async';
 
-interface Options<T, P = void, R = T> {
-    loader: (params: P, prev: T) => Async<T>;
-    map?: (value: T) => PossiblyAsync<R>;
-    params?: () => Async<P>;
-    seed?: T;
+interface Options<TAccResult, TParams = void, TResult = TAccResult> {
+    loader: (params: TParams, acc: TAccResult) => Async<TAccResult>;
+    map?: (value: TAccResult) => PossiblyAsync<TResult>;
+    seed?: TAccResult;
+    initParams?: TParams;
 }
 
-export function observableResource<T, P = void>(options: Options<T, P>) {
+export type ObservableResource<TResult, TParams = void> = {
+    value$: Observable<TResult>;
+    value: Signal<TResult | undefined>;
+    reload: () => void;
+
+    params$: Observable<TParams>;
+    params: Signal<TParams | undefined>;
+    setParams?: (params: TParams) => void;
+    updateParams?: (fn: (prevParams: TParams) => TParams) => void;
+};
+
+export function observableResource<TAccResult, TParams = void, TResult = TAccResult>(
+    options: Options<TAccResult, TParams, TResult>,
+): ObservableResource<TResult, TParams> {
     const dr = inject(DestroyRef);
 
-    const params$ = options.params ? from(options.params()) : of(undefined as P);
-    const mapFn = options.map ?? ((v) => v);
+    let params: TParams = options.initParams as TParams;
+    const params$ = new ReplaySubject<TParams>(1);
+    if ('initParams' in options) {
+        params$.next(options.initParams as TParams);
+    }
 
+    const mapFn = options.map ?? ((v: TAccResult) => v as never as TResult);
     const reload$ = new Subject<void>();
-    const set$ = new Subject<T>();
 
     const value$ = params$.pipe(
         switchMap((p) =>
@@ -28,9 +44,8 @@ export function observableResource<T, P = void>(options: Options<T, P>) {
                 startWith(p),
             ),
         ),
-        mergeScan((acc, p) => options.loader(p, acc), options.seed as T, 1),
+        mergeScan((acc, params) => options.loader(params, acc), options.seed as TAccResult, 1),
         switchMap((v) => getPossiblyAsyncObservable(mapFn(v))),
-        mergeWith(set$),
         takeUntilDestroyed(dr),
         shareReplay(1),
     );
@@ -38,11 +53,20 @@ export function observableResource<T, P = void>(options: Options<T, P>) {
     return {
         value$,
         value: toSignal(value$),
+
+        params$: params$,
+        params: toSignal(params$),
+
         reload: () => {
             reload$.next();
         },
-        set: (value: T) => {
-            set$.next(value);
+        setParams: (p) => {
+            params = p;
+            params$.next(params);
+        },
+        updateParams: (fn) => {
+            params = fn(params);
+            params$.next(params);
         },
     };
 }

@@ -1,5 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { Injectable, inject } from '@angular/core';
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
 import {
     LimitedVersionedObject,
@@ -17,10 +16,9 @@ import { createObjectsHashMap } from '../utils/create-objects-hash-map';
 export class DomainObjectsStoreService {
     private repositoryService = inject(Repository);
     private repositoryClientService = inject(RepositoryClient);
-    private types = signal(new Set<keyof Reference>());
 
     private objects = observableResource({
-        params: () => toObservable(this.types),
+        initParams: new Set<keyof Reference>(),
         loader: (types, objects) => {
             const newTypes = Array.from(types).filter((t) => !objects.has(t));
             if (!newTypes.length) return of(objects);
@@ -41,7 +39,7 @@ export class DomainObjectsStoreService {
 
     getObject(ref: Reference) {
         const type = getUnionKey(ref);
-        this.types.update((types) => new Set(types.add(type)));
+        this.objects.updateParams((types) => new Set(types.add(type)));
         return this.objects.value$.pipe(
             skipWhile((objs) => !objs.has(type)),
             map((objs) => objs.get(type).get(createObjectHash(ref))),
@@ -53,7 +51,7 @@ export class DomainObjectsStoreService {
     }
 
     getObjects(type: keyof Reference) {
-        this.types.update((types) => new Set(types.add(type)));
+        this.objects.updateParams((types) => new Set(types.add(type)));
         return this.objects.value$.pipe(
             skipWhile((objs) => !objs.has(type)),
             map((objs) => Array.from(objs.get(type).values())),
