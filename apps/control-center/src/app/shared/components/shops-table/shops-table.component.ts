@@ -85,17 +85,19 @@ export class ShopsTableComponent {
         {
             field: 'terms',
             lazyCell: (d) =>
-                this.domainStoreService.getObject({ term_set_hierarchy: { id: d.terms.id } }).pipe(
-                    map((obj) => ({
-                        value: obj?.name,
-                        description: obj?.description,
-                        click: () => {
-                            this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                                ref: obj.ref,
-                            });
-                        },
-                    })),
-                ),
+                this.domainStoreService
+                    .getLimitedObject({ term_set_hierarchy: { id: d.terms.id } })
+                    .value$.pipe(
+                        map((obj) => ({
+                            value: obj?.name,
+                            description: obj?.description,
+                            click: () => {
+                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                    ref: obj.ref,
+                                });
+                            },
+                        })),
+                    ),
         },
         {
             field: 'location.url',
@@ -228,8 +230,8 @@ export class ShopsTableComponent {
         partyId: string,
     ) {
         this.domainStoreService
-            .getFullObject({ routing_rules: { id: partyDelegateRulesetId } })
-            .pipe(take(1))
+            .getObject({ routing_rules: { id: partyDelegateRulesetId } })
+            .value$.pipe(take(1))
             .subscribe((ruleset) => {
                 const delegates =
                     ruleset?.object?.routing_rules?.data?.decisions?.delegates?.filter?.(

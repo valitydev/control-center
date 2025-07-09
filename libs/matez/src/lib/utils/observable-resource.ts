@@ -20,8 +20,8 @@ export type ObservableResource<TResult, TParams = void> = {
 
     params$: Observable<TParams>;
     params: Signal<TParams | undefined>;
-    setParams?: (params: TParams) => void;
-    updateParams?: (fn: (prevParams: TParams) => TParams) => void;
+    setParams: (params: TParams) => void;
+    updateParams: (fn: (prevParams: TParams) => TParams) => void;
 
     isLoading$: Observable<boolean>;
     isLoading: Signal<boolean | undefined>;
@@ -82,4 +82,12 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
         isLoading$,
         isLoading: toSignal(isLoading$),
     };
+}
+
+export function mapObservableResource<TResult, TParams, TNewResult>(
+    resource: ObservableResource<TResult, TParams>,
+    mapFn: (value: TResult) => PossiblyAsync<TNewResult>,
+): ObservableResource<TNewResult, TParams> {
+    const value$ = resource.value$.pipe(switchMap((v) => getPossiblyAsyncObservable(mapFn(v))));
+    return { ...resource, value$, value: toSignal(value$) };
 }

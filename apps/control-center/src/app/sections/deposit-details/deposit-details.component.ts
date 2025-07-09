@@ -100,18 +100,20 @@ export class DepositDetailsComponent implements OnInit {
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'WalletID', 'fistful_stat')),
                 extension: (_, id: string) =>
-                    this.domainObjectsStoreService.getObject({ wallet_config: { id } }).pipe(
-                        map(
-                            (wallet): ThriftViewExtensionResult => ({
-                                value: wallet.name,
-                                tooltip: id,
-                                link: [
-                                    ['/wallets'],
-                                    { queryParams: { wallet_id: JSON.stringify([id]) } },
-                                ],
-                            }),
+                    this.domainObjectsStoreService
+                        .getLimitedObject({ wallet_config: { id } })
+                        .value$.pipe(
+                            map(
+                                (wallet): ThriftViewExtensionResult => ({
+                                    value: wallet.name,
+                                    tooltip: id,
+                                    link: [
+                                        ['/wallets'],
+                                        { queryParams: { wallet_id: JSON.stringify([id]) } },
+                                    ],
+                                }),
+                            ),
                         ),
-                    ),
             },
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'SourceID', 'fistful_stat')),

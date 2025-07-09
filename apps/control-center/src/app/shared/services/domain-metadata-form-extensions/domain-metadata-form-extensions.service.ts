@@ -107,8 +107,8 @@ export class DomainMetadataFormExtensionsService {
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
         return createDomainObjectExtension(refType, () =>
             this.domainStoreService
-                .getObjects(objectKey)
-                .pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
+                .getLimitedObjects(objectKey)
+                .value$.pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
         );
     }
 }

@@ -16,29 +16,33 @@ export class PartiesStoreService {
 
     @MemoizeExpiring(5 * 60_000)
     get(partyId: PartyID) {
-        return this.domainObjectsStoreService.getFullObject({ party_config: { id: partyId } }).pipe(
-            map((obj) => obj.object.party_config.data),
-            progressTo(this.progress$),
-            // TODO
-            shareReplay(1),
-        );
+        return this.domainObjectsStoreService
+            .getObject({ party_config: { id: partyId } })
+            .value$.pipe(
+                map((obj) => obj.object.party_config.data),
+                progressTo(this.progress$),
+                // TODO
+                shareReplay(1),
+            );
     }
 
     @MemoizeExpiring(5 * 60_000)
     getShop(shopId: ShopID) {
-        return this.domainObjectsStoreService.getFullObject({ shop_config: { id: shopId } }).pipe(
-            map((obj) => obj.object.shop_config.data),
-            progressTo(this.progress$),
-            // TODO
-            shareReplay(1),
-        );
+        return this.domainObjectsStoreService
+            .getObject({ shop_config: { id: shopId } })
+            .value$.pipe(
+                map((obj) => obj.object.shop_config.data),
+                progressTo(this.progress$),
+                // TODO
+                shareReplay(1),
+            );
     }
 
     @MemoizeExpiring(5 * 60_000)
     getWallet(walletId: WalletID) {
         return this.domainObjectsStoreService
-            .getFullObject({ wallet_config: { id: walletId } })
-            .pipe(
+            .getObject({ wallet_config: { id: walletId } })
+            .value$.pipe(
                 map((obj) => obj.object.wallet_config.data),
                 progressTo(this.progress$),
                 shareReplay(1),

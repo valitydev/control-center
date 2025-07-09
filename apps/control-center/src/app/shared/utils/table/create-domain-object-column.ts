@@ -18,8 +18,8 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
         sidenavInfoService.toggle(DomainObjectCardComponent, { ref });
     };
     return inject(DomainObjectsStoreService)
-        .getObject(ref)
-        .pipe(
+        .getLimitedObject(ref)
+        .value$.pipe(
             map((obj) => ({
                 value: obj.name || '',
                 description: getReferenceId(obj.ref) || '',
