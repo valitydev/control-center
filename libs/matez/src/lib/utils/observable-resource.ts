@@ -1,12 +1,13 @@
 import { DestroyRef, Signal, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 import { map, mergeScan, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
-import { Async, PossiblyAsync, getPossiblyAsyncObservable } from './async';
+import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
+import { progressTo } from './operators';
 
 interface Options<TAccResult, TParams = void, TResult = TAccResult> {
-    loader: (params: TParams, acc: TAccResult) => Async<TAccResult>;
+    loader: (params: TParams, acc: TAccResult) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
     initParams?: TParams;
@@ -21,6 +22,9 @@ export type ObservableResource<TResult, TParams = void> = {
     params: Signal<TParams | undefined>;
     setParams?: (params: TParams) => void;
     updateParams?: (fn: (prevParams: TParams) => TParams) => void;
+
+    isLoading$: Observable<boolean>;
+    isLoading: Signal<boolean | undefined>;
 };
 
 export function observableResource<TAccResult, TParams = void, TResult = TAccResult>(
@@ -36,6 +40,8 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
 
     const mapFn = options.map ?? ((v: TAccResult) => v as never as TResult);
     const reload$ = new Subject<void>();
+    const progress$ = new BehaviorSubject(0);
+    const isLoading$ = progress$.pipe(map(Boolean));
 
     const value$ = params$.pipe(
         switchMap((p) =>
@@ -44,7 +50,11 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
                 startWith(p),
             ),
         ),
-        mergeScan((acc, params) => options.loader(params, acc), options.seed as TAccResult, 1),
+        mergeScan(
+            (acc, params) => options.loader(params, acc).pipe(progressTo(progress$)),
+            options.seed as TAccResult,
+            1,
+        ),
         switchMap((v) => getPossiblyAsyncObservable(mapFn(v))),
         takeUntilDestroyed(dr),
         shareReplay(1),
@@ -68,5 +78,8 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
             params = fn(params);
             params$.next(params);
         },
+
+        isLoading$,
+        isLoading: toSignal(isLoading$),
     };
 }
