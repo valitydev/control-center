@@ -8,7 +8,7 @@ import {
     booleanAttribute,
     inject,
 } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -63,7 +63,7 @@ export class CashFieldComponent extends FormComponentSuperclass<Cash> implements
     amountControl = new FormControl<string>(null);
     currencyControl = new FormControl<CurrencyObject>(null);
 
-    options$ = toObservable(this.currenciesStoreService.currencies).pipe(
+    options$ = this.currenciesStoreService.currencies$.pipe(
         startWith([] as CurrencyObject[]),
         map((objs): Option<CurrencyObject>[] =>
             objs

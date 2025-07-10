@@ -2,14 +2,13 @@ import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
     Component,
     DestroyRef,
-    Injector,
     Input,
     LOCALE_ID,
     OnInit,
     booleanAttribute,
     inject,
 } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -61,7 +60,6 @@ export class SourceCashFieldComponent
     private destroyRef = inject(DestroyRef);
     private fetchSourcesService = inject(FetchSourcesService);
     private currenciesStoreService = inject(CurrenciesStoreService);
-    private injecotor = inject(Injector);
 
     @Input() label?: string;
     @Input({ transform: booleanAttribute }) required: boolean = false;
@@ -166,9 +164,7 @@ export class SourceCashFieldComponent
     }
 
     private getCurrencyExponent(symbolicCode: string) {
-        return toObservable(this.currenciesStoreService.currencies, {
-            injector: this.injecotor,
-        }).pipe(
+        return this.currenciesStoreService.currencies$.pipe(
             map(
                 (currencies) =>
                     currencies.find((c) => c.symbolic_code === symbolicCode)?.exponent ??

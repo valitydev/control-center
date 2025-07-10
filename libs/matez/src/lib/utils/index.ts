@@ -19,3 +19,4 @@ export * from './decorators';
 export * from './create-storage-value';
 export * from './subscribe-return';
 export * from './observable-resource';
+export * from './fetch-all';
