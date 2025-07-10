@@ -231,7 +231,7 @@ export class ShopsTableComponent {
     ) {
         this.domainStoreService
             .getObject({ routing_rules: { id: partyDelegateRulesetId } })
-            .value$.pipe(take(1))
+            .pipe(take(1))
             .subscribe((ruleset) => {
                 const delegates =
                     ruleset?.object?.routing_rules?.data?.decisions?.delegates?.filter?.(
