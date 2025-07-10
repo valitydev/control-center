@@ -28,6 +28,7 @@ export class DomainObjectCardComponent {
     private domainObjectService = inject(DomainObjectService);
     private domainService = inject(DomainService);
     private log = inject(NotifyLogService);
+
     ref = input<Reference>();
     version = input<number>();
 

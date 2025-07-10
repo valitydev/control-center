@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
 import {
     LimitedVersionedObject,
@@ -14,6 +14,7 @@ import { createObjectHash } from '../utils/create-object-hash';
 @Injectable({ providedIn: 'root' })
 export class DomainObjectsStoreService {
     private repositoryService = inject(Repository);
+    private injector = inject(Injector);
 
     private limitedObjects = new Map<
         keyof Reference,
@@ -23,27 +24,35 @@ export class DomainObjectsStoreService {
 
     getLimitedObject(ref: Reference) {
         const type = getUnionKey(ref);
-        return mapObservableResource(this.getLimitedObjectsByType(type), (objects) =>
-            objects.get(createObjectHash(ref)),
+        return runInInjectionContext(this.injector, () =>
+            mapObservableResource(this.getLimitedObjectsByType(type), (objects) =>
+                objects.get(createObjectHash(ref)),
+            ),
         );
     }
 
     getLimitedObjects(type: keyof Reference) {
-        return mapObservableResource(this.getLimitedObjectsByType(type), (objects) =>
-            Array.from(objects.values()),
+        return runInInjectionContext(this.injector, () =>
+            mapObservableResource(this.getLimitedObjectsByType(type), (objects) =>
+                Array.from(objects.values()),
+            ),
         );
     }
 
     getObject(ref: Reference) {
         const type = getUnionKey(ref);
-        return mapObservableResource(this.getObjectsByType(type), (objects) =>
-            objects.get(createObjectHash(ref)),
+        return runInInjectionContext(this.injector, () =>
+            mapObservableResource(this.getObjectsByType(type), (objects) =>
+                objects.get(createObjectHash(ref)),
+            ),
         );
     }
 
     getObjects(type: keyof Reference) {
-        return mapObservableResource(this.getObjectsByType(type), (objects) =>
-            Array.from(objects.values()),
+        return runInInjectionContext(this.injector, () =>
+            mapObservableResource(this.getObjectsByType(type), (objects) =>
+                Array.from(objects.values()),
+            ),
         );
     }
 
@@ -51,20 +60,22 @@ export class DomainObjectsStoreService {
         if (!this.limitedObjects.has(type))
             this.limitedObjects.set(
                 type,
-                observableResource({
-                    initParams: null,
-                    loader: (_, objects) =>
-                        this.loadLimitedObjects(type).pipe(
-                            map((result) => {
-                                objects.clear();
-                                result.forEach((obj) => {
-                                    objects.set(createObjectHash(obj.ref), obj);
-                                });
-                                return objects;
-                            }),
-                        ),
-                    seed: new Map<string, LimitedVersionedObject>(),
-                }),
+                runInInjectionContext(this.injector, () =>
+                    observableResource({
+                        initParams: null,
+                        loader: (_, objects) =>
+                            this.loadLimitedObjects(type).pipe(
+                                map((result) => {
+                                    objects.clear();
+                                    result.forEach((obj) => {
+                                        objects.set(createObjectHash(obj.ref), obj);
+                                    });
+                                    return objects;
+                                }),
+                            ),
+                        seed: new Map<string, LimitedVersionedObject>(),
+                    }),
+                ),
             );
         return this.limitedObjects.get(type);
     }
@@ -73,26 +84,28 @@ export class DomainObjectsStoreService {
         if (!this.objects.has(type))
             this.objects.set(
                 type,
-                observableResource({
-                    initParams: null,
-                    loader: (_, objects) =>
-                        this.loadObjects(type).pipe(
-                            map((result) => {
-                                objects.clear();
-                                result.forEach((obj) => {
-                                    objects.set(
-                                        createObjectHash({
-                                            [getUnionKey(obj.object)]: getUnionValue(obj.object)
-                                                .ref,
-                                        }),
-                                        obj,
-                                    );
-                                });
-                                return objects;
-                            }),
-                        ),
-                    seed: new Map<string, VersionedObject>(),
-                }),
+                runInInjectionContext(this.injector, () =>
+                    observableResource({
+                        initParams: null,
+                        loader: (_, objects) =>
+                            this.loadObjects(type).pipe(
+                                map((result) => {
+                                    objects.clear();
+                                    result.forEach((obj) => {
+                                        objects.set(
+                                            createObjectHash({
+                                                [getUnionKey(obj.object)]: getUnionValue(obj.object)
+                                                    .ref,
+                                            }),
+                                            obj,
+                                        );
+                                    });
+                                    return objects;
+                                }),
+                            ),
+                        seed: new Map<string, VersionedObject>(),
+                    }),
+                ),
             );
         return this.objects.get(type);
     }
