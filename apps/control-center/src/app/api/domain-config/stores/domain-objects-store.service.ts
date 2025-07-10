@@ -52,6 +52,7 @@ export class DomainObjectsStoreService {
             this.limitedObjects.set(
                 type,
                 observableResource({
+                    initParams: null,
                     loader: (_, objects) =>
                         this.loadLimitedObjects(type).pipe(
                             map((result) => {
@@ -73,6 +74,7 @@ export class DomainObjectsStoreService {
             this.objects.set(
                 type,
                 observableResource({
+                    initParams: null,
                     loader: (_, objects) =>
                         this.loadObjects(type).pipe(
                             map((result) => {
