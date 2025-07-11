@@ -1,7 +1,7 @@
 import { DestroyRef, Signal, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, mergeScan, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { map, mergeScan, mergeWith, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
 import { progressTo } from './operators';
@@ -25,6 +25,8 @@ export type ObservableResource<TResult, TParams = void> = {
 
     isLoading$: Observable<boolean>;
     isLoading: Signal<boolean | undefined>;
+
+    next: (res: TResult) => void;
 };
 
 export function observableResource<TAccResult, TParams = void, TResult = TAccResult>(
@@ -42,6 +44,7 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
     const reload$ = new Subject<void>();
     const progress$ = new BehaviorSubject(0);
     const isLoading$ = progress$.pipe(map(Boolean));
+    const res$ = new Subject<TResult>();
 
     const value$ = params$.pipe(
         switchMap((p) =>
@@ -56,6 +59,7 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
             1,
         ),
         switchMap((v) => getPossiblyAsyncObservable(mapFn(v))),
+        mergeWith(res$),
         takeUntilDestroyed(dr),
         shareReplay(1),
     );
@@ -81,6 +85,10 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
 
         isLoading$,
         isLoading: toSignal(isLoading$),
+
+        next: (res) => {
+            res$.next(res);
+        },
     };
 }
 
@@ -88,6 +96,23 @@ export function mapObservableResource<TResult, TParams, TNewResult>(
     resource: ObservableResource<TResult, TParams>,
     mapFn: (value: TResult) => PossiblyAsync<TNewResult>,
 ): ObservableResource<TNewResult, TParams> {
-    const value$ = resource.value$.pipe(switchMap((v) => getPossiblyAsyncObservable(mapFn(v))));
-    return { ...resource, value$, value: toSignal(value$) };
+    const dr = inject(DestroyRef);
+
+    const res$ = new Subject<TNewResult>();
+    // TODO: use internal value$ without shareReplay
+    const value$ = resource.value$.pipe(
+        switchMap((v) => getPossiblyAsyncObservable(mapFn(v))),
+        mergeWith(res$),
+        takeUntilDestroyed(dr),
+        shareReplay(1),
+    );
+
+    return {
+        ...resource,
+        value$,
+        value: toSignal(value$),
+        next: (res) => {
+            res$.next(res);
+        },
+    };
 }
