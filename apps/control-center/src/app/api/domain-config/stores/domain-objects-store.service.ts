@@ -1,10 +1,9 @@
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
-import { RepositoryClient } from '@vality/domain-proto/domain_config';
 import {
     LimitedVersionedObject,
     Repository,
-    VersionedObject,
+    RepositoryClient,
 } from '@vality/domain-proto/domain_config_v2';
 import {
     ObservableResource,
@@ -27,7 +26,6 @@ export class DomainObjectsStoreService {
         keyof Reference,
         ObservableResource<Map<string, LimitedVersionedObject>>
     >();
-    private objects = new Map<keyof Reference, ObservableResource<Map<string, VersionedObject>>>();
 
     getLimitedObject(ref: Reference) {
         const type = getUnionKey(ref);
@@ -47,7 +45,7 @@ export class DomainObjectsStoreService {
     }
 
     getObject(ref: Reference) {
-        return this.repositoryClientService.checkoutObject({ head: {} }, ref);
+        return this.repositoryClientService.CheckoutObject({ head: {} }, ref);
     }
 
     private getLimitedObjectsByType(type: keyof Reference) {
