@@ -1,7 +1,7 @@
 import { DestroyRef, Signal, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
-import { map, mergeScan, mergeWith, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import { map, mergeScan, mergeWith, shareReplay, switchMap } from 'rxjs/operators';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
 import { progressTo } from './operators';
@@ -41,20 +41,13 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
     }
 
     const mapFn = options.map ?? ((v: TAccResult) => v as never as TResult);
-    const reload$ = new Subject<void>();
     const progress$ = new BehaviorSubject(0);
     const isLoading$ = progress$.pipe(map(Boolean));
     const res$ = new Subject<TResult>();
 
     const value$ = params$.pipe(
-        switchMap((p) =>
-            reload$.pipe(
-                map(() => p),
-                startWith(p),
-            ),
-        ),
         mergeScan(
-            (acc, params) => options.loader(params, acc).pipe(progressTo(progress$)),
+            (acc, p) => options.loader(p, acc).pipe(progressTo(progress$)),
             options.seed as TAccResult,
             1,
         ),
@@ -72,7 +65,7 @@ export function observableResource<TAccResult, TParams = void, TResult = TAccRes
         params: toSignal(params$),
 
         reload: () => {
-            reload$.next();
+            params$.next(params);
         },
         setParams: (p) => {
             params = p;
