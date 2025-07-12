@@ -5,12 +5,7 @@ import {
     Repository,
     RepositoryClient,
 } from '@vality/domain-proto/domain_config_v2';
-import {
-    ObservableResource,
-    fetchAll,
-    mapObservableResource,
-    observableResource,
-} from '@vality/matez';
+import { ObservableResource, fetchAll, observableResource } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { map } from 'rxjs';
 
@@ -29,19 +24,13 @@ export class DomainObjectsStoreService {
 
     getLimitedObject(ref: Reference) {
         const type = getUnionKey(ref);
-        return runInInjectionContext(this.injector, () =>
-            mapObservableResource(this.getLimitedObjectsByType(type), (objects) =>
-                objects.get(createObjectHash(ref)),
-            ),
+        return this.getLimitedObjectsByType(type).map((objects) =>
+            objects.get(createObjectHash(ref)),
         );
     }
 
     getLimitedObjects(type: keyof Reference) {
-        return runInInjectionContext(this.injector, () =>
-            mapObservableResource(this.getLimitedObjectsByType(type), (objects) =>
-                Array.from(objects.values()),
-            ),
-        );
+        return this.getLimitedObjectsByType(type).map((objects) => Array.from(objects.values()));
     }
 
     getObject(ref: Reference) {
