@@ -3,6 +3,7 @@ import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
@@ -21,6 +22,7 @@ import {
 import {
     EditorKind,
     ThriftPipesModule,
+    getThriftObjectFieldType,
     getUnionKey,
     getUnionValue,
     isEqualThrift,
@@ -29,7 +31,7 @@ import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainService, MetadataService } from '../../../../../api/domain-config';
+import { DomainService } from '../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
@@ -61,8 +63,8 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     private dr = inject(DestroyRef);
     private log = inject(NotifyLogService);
     private navigateService = inject(NavigateService);
-    private metadataService = inject(MetadataService);
     private domainService = inject(DomainService);
+
     static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -81,8 +83,10 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     get type() {
         return getUnionKey(this.dialogData.domainObject.object);
     }
-    dataType$ = this.metadataService.getDomainObjectDataFieldByName(this.type).pipe(
-        map((f) => String(f.type)),
+    dataType$ = metadata$.pipe(
+        map((metadata) =>
+            getThriftObjectFieldType<string>(metadata, 'domain', 'DomainObject', this.type),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     currentObject = signal(this.dialogData.domainObject.object);
