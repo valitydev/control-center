@@ -66,7 +66,7 @@ export class CreateDomainObjectDialogComponent
 
     create() {
         this.domainService
-            .insert([this.control.value])
+            .commit([{ insert: this.control.value }])
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
