@@ -1,7 +1,16 @@
 import { DestroyRef, Injector, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, Observable, OperatorFunction, ReplaySubject, Subject } from 'rxjs';
-import { map, mergeScan, mergeWith, shareReplay, switchMap } from 'rxjs/operators';
+import {
+    map,
+    mergeScan,
+    mergeWith,
+    shareReplay,
+    skipWhile,
+    switchMap,
+    take,
+    withLatestFrom,
+} from 'rxjs/operators';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
 import { progressTo } from './operators';
@@ -67,6 +76,15 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
 
     setValue(value: TResult) {
         this.mergedValue$.next(value);
+    }
+
+    getFirstValue(): Observable<TResult> {
+        return this.value$.pipe(
+            withLatestFrom(this.isLoading$),
+            skipWhile(([_, isLoading]) => isLoading),
+            map(([value]) => value),
+            take(1),
+        );
     }
 
     setParams(paramsOrParamsFn: TParams | ((prevParams: TParams) => TParams)) {
