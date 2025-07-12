@@ -74,7 +74,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
         this.value = toSignal(this.value$);
     }
 
-    setValue(value: TResult) {
+    set(value: TResult) {
         this.mergedValue$.next(value);
     }
 

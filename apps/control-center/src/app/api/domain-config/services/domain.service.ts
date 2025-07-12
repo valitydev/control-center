@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
 import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import {
     InsertOp,
@@ -8,7 +7,7 @@ import {
     RepositoryClient,
     Version,
 } from '@vality/domain-proto/domain_config_v2';
-import { NotifyLogService, switchCombineWith } from '@vality/matez';
+import { NotifyLogService, observableResource, switchCombineWith } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import { EMPTY, catchError, map, tap } from 'rxjs';
 
@@ -25,8 +24,10 @@ export class DomainService {
     private log = inject(NotifyLogService);
     private repositoryClientService = inject(RepositoryClient);
     private domainSecretService = inject(DomainSecretService);
-    version = rxResource({
-        stream: () => this.repositoryService.GetLatestVersion(),
+
+    version = observableResource({
+        initParams: null,
+        loader: () => this.repositoryService.GetLatestVersion(),
     });
 
     get(ref: Reference, version?: Version) {
@@ -91,7 +92,7 @@ export class DomainService {
         );
     }
 
-    private commit(ops: Operation[], version: Version = this.version.value()) {
+    commit(ops: Operation[], version: Version = this.version.value()) {
         return this.repositoryService
             .Commit(version, ops, this.authorStoreService.author.value().id)
             .pipe(
