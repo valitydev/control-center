@@ -17,7 +17,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { DomainService, RoutingRulesStoreService } from '../../../api/domain-config';
 import {
     createDomainObjectColumn,
     createPredicateColumn,
@@ -45,7 +45,8 @@ export class RoutingRulesetComponent {
     private dialog = inject(DialogService);
     private routingRulesetService = inject(RoutingRulesetService);
     private routingRulesService = inject(RoutingRulesService);
-    private domainStoreService = inject(DomainStoreService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
+    private domainService = inject(DomainService);
     private log = inject(NotifyLogService);
     private route = inject(ActivatedRoute);
     private sidenavInfoService = inject(SidenavInfoService);
@@ -58,7 +59,8 @@ export class RoutingRulesetComponent {
         map((p) => p['type']),
     ) as Observable<RoutingRulesType>;
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
-    isLoading$ = this.domainStoreService.isLoading$;
+    isLoading$ = this.routingRulesStoreService.isLoading$;
+
     columns: Column<RoutingCandidate>[] = [
         { field: 'priority' },
         {
@@ -87,11 +89,11 @@ export class RoutingRulesetComponent {
         createPredicateColumn(
             (d) =>
                 combineLatest([
-                    this.domainStoreService.getObjects('terminal'),
+                    this.domainService.get({ terminal: { id: d.terminal.id } }),
                     this.routingRulesType$,
                 ]).pipe(
-                    map(([terminals, type]) => {
-                        const terms = terminals.find((t) => t.ref.id === d.terminal.id).data?.terms;
+                    map(([terminal, type]) => {
+                        const terms = terminal?.object?.terminal?.data?.terms;
                         return {
                             predicate:
                                 type === RoutingRulesType.Payment
@@ -191,7 +193,7 @@ export class RoutingRulesetComponent {
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
-                        this.domainStoreService.forceReload();
+                        this.routingRulesStoreService.reload();
                         this.log.successOperation('create', 'Routing rule');
                     }
                 },
@@ -225,7 +227,7 @@ export class RoutingRulesetComponent {
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
-                        this.domainStoreService.forceReload();
+                        this.routingRulesStoreService.reload();
                         this.log.successOperation('update', 'Routing rule');
                     }
                 },
@@ -257,7 +259,7 @@ export class RoutingRulesetComponent {
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
-                        this.domainStoreService.forceReload();
+                        this.routingRulesStoreService.reload();
                         this.log.successOperation('create', 'Routing rule');
                     }
                 },
@@ -317,23 +319,16 @@ export class RoutingRulesetComponent {
                     ]) => {
                         const newRuleset = cloneDeep(ruleset);
                         newRuleset.data.decisions.candidates = candidates as RoutingCandidate[];
-                        return this.domainStoreService.commit({
-                            ops: [
-                                {
-                                    update: {
-                                        old_object: { routing_rules: ruleset },
-                                        new_object: { routing_rules: newRuleset },
-                                    },
-                                },
-                            ],
-                        });
+                        return this.routingRulesStoreService.commit([
+                            { update: { object: { routing_rules: newRuleset } } },
+                        ]);
                     },
                 ),
             )
             .subscribe({
                 next: () => {
                     this.log.successOperation('update', 'candidates');
-                    this.domainStoreService.forceReload();
+                    this.routingRulesStoreService.reload();
                 },
                 error: (err) => {
                     this.log.error(err);
