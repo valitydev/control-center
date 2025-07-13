@@ -1,6 +1,13 @@
 <v-select-field
+    [appearance]="appearance"
     [formControl]="control"
-    [label]="name | titlecase"
+    [hint]="hint"
+    [label]="label || (name | titlecase)"
+    [multiple]="multiple()"
     [options]="options$ | async"
-    [progress]="isLoading$ | async"
+    [progress]="!!(progress$ | async)"
+    [required]="required"
+    [size]="size"
+    externalSearch
+    (searchChange)="search($event)"
 ></v-select-field>
