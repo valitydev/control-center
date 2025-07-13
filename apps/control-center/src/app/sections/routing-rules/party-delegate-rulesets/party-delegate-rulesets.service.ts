@@ -10,7 +10,7 @@ import isNil from 'lodash-es/isNil';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { PaymentInstitutionsStoreService } from '../../../api/domain-config';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
@@ -23,9 +23,10 @@ export interface DelegateWithPaymentInstitution {
 
 @Injectable()
 export class PartyDelegateRulesetsService {
-    private domainStoreService = inject(DomainStoreService);
+    private paymentInstitutionsStoreService = inject(PaymentInstitutionsStoreService);
     private route = inject(ActivatedRoute);
     private routingRulesService = inject(RoutingRulesService);
+
     private partyID$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         map((p) => p['partyID']),
@@ -74,7 +75,7 @@ export class PartyDelegateRulesetsService {
 
     private getPaymentInstitutionsWithRoutingRule(type?: RoutingRulesType) {
         return combineLatest([
-            this.domainStoreService.getObjects('payment_institution'),
+            this.paymentInstitutionsStoreService.paymentInstitutions$,
             this.routingRulesType$.pipe(map((routeType) => type ?? routeType)),
         ]).pipe(
             switchMap(([paymentInstitutions, routingRulesType]) => {
