@@ -75,7 +75,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     };
 
     control = new FormControl<ValuesType<DomainObject>['data']>(
-        getUnionValue(this.dialogData.domainObject.object).data,
+        getUnionValue(this.sourceObject).data,
         [Validators.required],
     );
     step: Step = Step.Edit;
@@ -92,7 +92,12 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     }
     dataType$ = metadata$.pipe(
         map((metadata) =>
-            getThriftObjectFieldType<string>(metadata, 'domain', 'DomainObject', this.type),
+            getThriftObjectFieldType<string>(
+                metadata,
+                'domain',
+                getThriftObjectFieldType<string>(metadata, 'domain', 'DomainObject', this.type),
+                'data',
+            ),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
