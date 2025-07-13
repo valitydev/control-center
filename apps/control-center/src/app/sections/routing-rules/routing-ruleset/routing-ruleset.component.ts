@@ -213,8 +213,10 @@ export class RoutingRulesetComponent {
                             type: 'RoutingCandidate',
                             title: `Edit routing candidate #${idx + 1}`,
                             object: candidate,
-                            action: (params) =>
-                                this.routingRulesService.updateRule(refId, idx, params),
+                            action: (newCandidate) =>
+                                this.routingRulesService.updateRules([
+                                    { refId, candidateIdx: idx, newCandidate },
+                                ]),
                         })
                         .afterClosed(),
                 ),
