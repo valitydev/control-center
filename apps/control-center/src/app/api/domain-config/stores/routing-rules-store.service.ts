@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { DomainObjectType } from '@vality/domain-proto/domain';
+import { DomainObjectType, RoutingRulesetRef } from '@vality/domain-proto/domain';
 import { Repository, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, fetchAll, observableResource } from '@vality/matez';
 import { catchError, map, of, shareReplay } from 'rxjs';
@@ -28,7 +28,7 @@ export class RoutingRulesStoreService {
     });
 
     routingRules$ = this.resource.value$.pipe(
-        map((objs) => objs.map((obj) => obj.object.routing_rules.data)),
+        map((objs) => objs.map((obj) => obj.object.routing_rules)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     version$ = this.resource.value$.pipe(
@@ -39,5 +39,12 @@ export class RoutingRulesStoreService {
 
     reload() {
         this.resource.reload();
+    }
+
+    get(ref: RoutingRulesetRef) {
+        return this.routingRules$.pipe(
+            map((objs) => objs.find((o) => o.ref.id === ref.id)),
+            shareReplay({ refCount: true, bufferSize: 1 }),
+        );
     }
 }

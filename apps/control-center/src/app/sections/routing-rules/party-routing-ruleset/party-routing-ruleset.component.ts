@@ -6,7 +6,7 @@ import { Column, DialogResponseStatus, DialogService, compareDifferentTypes } fr
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createShopColumn, createWalletColumn } from '../../../shared';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
@@ -30,13 +30,14 @@ export class PartyRoutingRulesetComponent {
     private partyRoutingRulesetService = inject(PartyRoutingRulesetService);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
-    private domainStoreService = inject(DomainStoreService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
     private destroyRef = inject(DestroyRef);
     private sidenavInfoService = inject(SidenavInfoService);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
+
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
-    isLoading$ = this.domainStoreService.isLoading$;
+    isLoading$ = this.routingRulesStoreService.isLoading$;
 
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         {

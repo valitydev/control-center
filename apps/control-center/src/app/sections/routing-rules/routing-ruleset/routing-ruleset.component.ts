@@ -50,6 +50,7 @@ export class RoutingRulesetComponent {
     private route = inject(ActivatedRoute);
     private sidenavInfoService = inject(SidenavInfoService);
     private destroyRef = inject(DestroyRef);
+
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
