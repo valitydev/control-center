@@ -1,13 +1,13 @@
 @switch (step) {
     @case (stepEnum.Edit) {
         <v-dialog [progress]="!!isLoading()" title="Edit domain object">
-            <cc-domain-thrift-form
+            <cc-domain-thrift-editor
                 [defaultValue]="(currentObject().object | ngtUnionValue)?.data"
                 [formControl]="control"
                 [kind]="kind.value()"
                 [type]="dataType$ | async"
                 (kindChange)="kind.set($event)"
-            ></cc-domain-thrift-form>
+            ></cc-domain-thrift-editor>
             <v-dialog-actions
                 ><ng-container *ngTemplateOutlet="actions"></ng-container
             ></v-dialog-actions>
