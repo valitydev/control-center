@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { TerminalObject } from '@vality/domain-proto/domain';
-import { Column, DialogService } from '@vality/matez';
+import { Component, OnInit, inject } from '@angular/core';
+import { DomainObjectType, TerminalObject } from '@vality/domain-proto/domain';
+import { Column, DialogService, UpdateOptions } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../api/domain-config';
+import { FetchFullDomainObjectsService, RoutingRulesStoreService } from '../../api/domain-config';
 import { AccountBalancesStoreService } from '../../api/terminal-balance';
 import {
     createCurrencyColumn,
@@ -25,12 +25,15 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
     selector: 'cc-terminals',
     templateUrl: './terminals.component.html',
     standalone: false,
+    providers: [FetchFullDomainObjectsService],
 })
-export class TerminalsComponent {
-    private domainStoreService = inject(DomainStoreService);
+export class TerminalsComponent implements OnInit {
+    private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
     private sidenavInfoService = inject(SidenavInfoService);
     private dialogService = inject(DialogService);
     private accountBalancesStoreService = inject(AccountBalancesStoreService);
+
     columns: Column<TerminalObject>[] = [
         { field: 'ref.id', sticky: 'start' },
         {
@@ -114,11 +117,24 @@ export class TerminalsComponent {
             },
         ),
     ];
-    data$ = this.domainStoreService.getObjects('terminal');
-    progress$ = this.domainStoreService.isLoading$;
+    data$ = this.fetchFullDomainObjectsService.result$.pipe(
+        map((d) => d.map((o) => o.object.terminal)),
+    );
+    hasMore$ = this.fetchFullDomainObjectsService.hasMore$;
+    progress$ = this.fetchFullDomainObjectsService.isLoading$;
 
-    update() {
-        this.domainStoreService.forceReload();
+    ngOnInit() {
+        this.fetchFullDomainObjectsService.load({
+            type: DomainObjectType.terminal,
+        });
+    }
+
+    update(options: UpdateOptions) {
+        this.fetchFullDomainObjectsService.reload(options);
+    }
+
+    more() {
+        this.fetchFullDomainObjectsService.more();
     }
 
     create() {
@@ -126,9 +142,9 @@ export class TerminalsComponent {
     }
 
     private getTerminalShopWalletDelegates(terminalObj: TerminalObject) {
-        return this.domainStoreService
-            .getObjects('routing_rules')
-            .pipe(map((rules) => getTerminalShopWalletDelegates(rules, terminalObj)));
+        return this.routingRulesStoreService.routingRules$.pipe(
+            map((rules) => getTerminalShopWalletDelegates(rules, terminalObj)),
+        );
     }
 
     private toggleBalancesCard(d: TerminalObject) {
