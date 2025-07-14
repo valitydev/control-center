@@ -15,8 +15,6 @@ import { Observable, catchError, iif, map, of, switchMap, tap } from 'rxjs';
 import { AuthorStoreService } from '../stores/author-store.service';
 import { getDomainObjectReference } from '../utils/get-domain-object-reference';
 
-import { DomainSecretService } from './domain-secret-service';
-
 export class DomainServiceObsoleteCommitVersionError {
     constructor(
         public error: unknown,
@@ -32,7 +30,6 @@ export class DomainService {
     private authorStoreService = inject(AuthorStoreService);
     private log = inject(NotifyLogService);
     private repositoryClientService = inject(RepositoryClient);
-    private domainSecretService = inject(DomainSecretService);
 
     version = observableResource({
         initParams: null,
@@ -47,15 +44,7 @@ export class DomainService {
                 version ? { version } : { head: {} },
                 Array.isArray(refs) ? refs : [refs],
             )
-            .pipe(
-                map((objs) => {
-                    const res = objs.map((obj) => ({
-                        ...obj,
-                        object: this.domainSecretService.reduceObject(obj.object),
-                    }));
-                    return Array.isArray(refs) ? res : res[0];
-                }),
-            );
+            .pipe(map((objs) => (Array.isArray(refs) ? objs : objs[0])));
     }
 
     commit(ops: Operation[], version?: Version, attempts = 1): Observable<CommitResponse> {
