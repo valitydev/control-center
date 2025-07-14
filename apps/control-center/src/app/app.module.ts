@@ -14,7 +14,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
-import { Repository as OldRepository } from '@vality/domain-proto/domain_config';
 import {
     AuthorManagement,
     Repository,
@@ -120,7 +119,6 @@ registerLocaleData(localeRu);
             { service: Repository, name: 'DMT' },
             { service: RepositoryClient, name: 'DMTClient' },
             { service: AuthorManagement, name: 'DMTAuthor' },
-            { service: OldRepository, name: 'Domain' },
         ]),
     ],
     bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
 import { RoutingCandidate, RoutingRulesObject } from '@vality/domain-proto/domain';
-import { UpdateOp } from '@vality/domain-proto/domain_config';
+import { UpdateOp } from '@vality/domain-proto/domain_config_v2';
 import { cloneDeep } from 'lodash-es';
 
 import { CandidateId } from '../types/candidate-id';
@@ -20,8 +20,7 @@ export function getUpdateRulesCandidates(
             }
         }
     }
-    return rulesets.map((ruleset, idx) => ({
-        old_object: { routing_rules: ruleset },
-        new_object: { routing_rules: newRulesets[idx] },
+    return rulesets.map((_, idx) => ({
+        object: { routing_rules: newRulesets[idx] },
     }));
 }

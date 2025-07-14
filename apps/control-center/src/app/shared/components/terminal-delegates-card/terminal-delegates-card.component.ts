@@ -14,13 +14,13 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
+import { Column, ComponentChanges, TableModule } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config';
+import { DomainService, RoutingRulesStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
@@ -46,14 +46,15 @@ import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 })
 export class TerminalDelegatesCardComponent implements OnChanges {
     private partiesStoreService = inject(PartiesStoreService);
-    private domainStoreService = inject(DomainStoreService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
+    private domainService = inject(DomainService);
     private sidenavInfoService = inject(SidenavInfoService);
     private injector = inject(Injector);
-    private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);
+
     @Input() ref: TerminalRef;
 
-    progress$ = this.domainStoreService.isLoading$;
+    progress$ = this.routingRulesStoreService.isLoading$;
     columns: Column<TerminalShopWalletDelegate>[] = [
         {
             header: 'Routing Rule',
@@ -136,20 +137,17 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         },
     ];
     terminalObj$ = defer(() => this.ref$).pipe(
-        switchMap((ref) => this.domainStoreService.getObject({ terminal: ref })),
+        switchMap((ref) => this.domainService.get({ terminal: ref })),
+        map((obj) => obj.object),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     rules$ = this.terminalObj$.pipe(
         switchMap((terminalObj) =>
-            this.domainStoreService
-                .getObjects('routing_rules')
-                .pipe(
-                    map((rules) =>
-                        terminalObj
-                            ? getTerminalShopWalletDelegates(rules, terminalObj.terminal)
-                            : [],
-                    ),
+            this.routingRulesStoreService.routingRules$.pipe(
+                map((rules) =>
+                    terminalObj ? getTerminalShopWalletDelegates(rules, terminalObj.terminal) : [],
                 ),
+            ),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

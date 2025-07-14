@@ -1,20 +1,26 @@
 import { Injectable, inject } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { DomainObject, Reference } from '@vality/domain-proto/domain';
+import { Reference } from '@vality/domain-proto/domain';
 import {
-    InsertOp,
+    CommitResponse,
     Operation,
     Repository,
     RepositoryClient,
     Version,
+    VersionedObject,
 } from '@vality/domain-proto/domain_config_v2';
-import { NotifyLogService, switchCombineWith } from '@vality/matez';
-import { getUnionKey } from '@vality/ng-thrift';
-import { EMPTY, catchError, map, tap } from 'rxjs';
+import { NotifyLogService, observableResource, switchCombineWith } from '@vality/matez';
+import { getUnionKey, isEqualThrift } from '@vality/ng-thrift';
+import { Observable, catchError, iif, map, of, switchMap, tap } from 'rxjs';
 
 import { AuthorStoreService } from '../stores/author-store.service';
+import { getDomainObjectReference } from '../utils/get-domain-object-reference';
 
-import { DomainSecretService } from './domain-secret-service';
+export class DomainServiceObsoleteCommitVersionError {
+    constructor(
+        public error: unknown,
+        public newObject: VersionedObject,
+    ) {}
+}
 
 @Injectable({
     providedIn: 'root',
@@ -24,94 +30,80 @@ export class DomainService {
     private authorStoreService = inject(AuthorStoreService);
     private log = inject(NotifyLogService);
     private repositoryClientService = inject(RepositoryClient);
-    private domainSecretService = inject(DomainSecretService);
-    version = rxResource({
-        stream: () => this.repositoryService.GetLatestVersion(),
+
+    version = observableResource({
+        initParams: null,
+        loader: () => this.repositoryService.GetLatestVersion(),
     });
 
-    get(ref: Reference, version?: Version) {
+    get(ref: Reference, version?: Version): Observable<VersionedObject>;
+    get(refs: Reference[], version?: Version): Observable<VersionedObject[]>;
+    get(refs: Reference | Reference[], version?: Version) {
         return this.repositoryClientService
-            .CheckoutObject(version ? { version } : { head: {} }, ref)
-            .pipe(
-                switchCombineWith((obj) => [this.domainSecretService.reduceObject(obj.object)]),
-                map(([{ info }, object]) => ({ info, object })),
-            );
+            .CheckoutObjects(
+                version ? { version } : { head: {} },
+                Array.isArray(refs) ? refs : [refs],
+            )
+            .pipe(map((objs) => (Array.isArray(refs) ? objs : objs[0])));
     }
 
-    insert(inserts: InsertOp[], attempts = 1) {
-        return this.commit(inserts.map((insert) => ({ insert }))).pipe(
+    commit(ops: Operation[], version?: Version, attempts = 1): Observable<CommitResponse> {
+        return iif(() => !!version, of(version), this.version.getFirstValue()).pipe(
+            switchMap((ver) =>
+                this.repositoryService.Commit(ver, ops, this.authorStoreService.author.value().id),
+            ),
             catchError((err) => {
                 if (err?.error?.name === 'ObsoleteCommitVersion') {
-                    if (attempts !== 0) {
+                    if (
+                        attempts !== 0 &&
+                        // If no updates or only one update operation
+                        (ops.every((o) => getUnionKey(o) !== 'update') || ops.length === 1)
+                    ) {
+                        console.warn(err, `Domain config is out of date, one more attempt...`);
                         this.version.reload();
-                        this.insert(inserts, attempts - 1);
-                        this.log.error(err, `Domain config is out of date, one more attempt...`);
-                        return EMPTY;
+                        if (ops.every((o) => getUnionKey(o) !== 'update'))
+                            return this.commit(ops, undefined, attempts - 1);
+                        // If one update operation
+                        return this.version.getFirstValue().pipe(
+                            switchCombineWith(() => [
+                                this.get(ops.map((o) => getDomainObjectReference(o.update.object))),
+                            ]),
+                            switchMap(([ver, obj]) => {
+                                if (isEqualThrift(obj[0].object, ops[0].update.object))
+                                    return this.commit(ops, ver, attempts - 1);
+                                throw new DomainServiceObsoleteCommitVersionError(err, obj[0]);
+                            }),
+                        );
                     } else {
                         this.log.error(err, `Domain config is out of date, please try again`);
                     }
-                }
-                throw err;
-            }),
-            tap((res) => {
-                this.version.set(res.version);
-            }),
-        );
-    }
-
-    update(objs: DomainObject[], version: Version, attempts = 1) {
-        return this.commit(
-            objs.map((obj) => ({ update: { object: obj } })),
-            version,
-        ).pipe(
-            catchError((err) => {
-                if (err?.error?.name === 'ObsoleteCommitVersion') {
-                    if (attempts !== 0) {
-                        this.version.reload();
-                        this.update(objs, version, attempts - 1);
-                        this.log.error(err, `Domain config is out of date, one more attempt...`);
-                        return EMPTY;
-                    } else {
-                        this.log.error(err, `Domain config is out of date, please try again`);
-                    }
-                }
-                throw err;
-            }),
-            tap((res) => {
-                this.version.set(res.version);
-            }),
-        );
-    }
-
-    remove(refs: Reference[]) {
-        return this.commit(refs.map((ref) => ({ remove: { ref } }))).pipe(
-            tap((res) => {
-                this.version.set(res.version);
-            }),
-        );
-    }
-
-    private commit(ops: Operation[], version: Version = this.version.value()) {
-        return this.repositoryService
-            .Commit(version, ops, this.authorStoreService.author.value().id)
-            .pipe(
-                catchError((err) => {
-                    const types = ops.map((o) => getUnionKey(o));
-                    const operationType = types.every((t) => t === types[0]) ? types[0] : 'update';
-                    this.log.errorOperation(
+                } else {
+                    const types = Array.from(new Set(ops.map((o) => getUnionKey(o))));
+                    this.log.error(
                         err,
-                        operationType === 'update'
-                            ? 'update'
-                            : operationType === 'insert'
-                              ? 'create'
-                              : 'delete',
-                        types.length > 1 ? 'domain objects' : 'domain object',
+                        `Error ${types
+                            .map((t) => {
+                                switch (t) {
+                                    case 'insert':
+                                        return 'inserting';
+                                    case 'update':
+                                        return 'updating';
+                                    case 'remove':
+                                        return 'removing';
+                                    default:
+                                        return 'operating';
+                                }
+                            })
+                            .join(
+                                ', ',
+                            )} ${ops.length > 1 ? `(${ops.length}) domain objects` : 'domain object'}`,
                     );
-                    throw err;
-                }),
-                tap((res) => {
-                    this.version.set(res.version);
-                }),
-            );
+                }
+                throw err;
+            }),
+            tap((res) => {
+                this.version.set(res.version);
+            }),
+        );
     }
 }

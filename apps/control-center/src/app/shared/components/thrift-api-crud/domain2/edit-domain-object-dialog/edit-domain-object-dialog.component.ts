@@ -3,6 +3,7 @@ import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
@@ -21,6 +22,7 @@ import {
 import {
     EditorKind,
     ThriftPipesModule,
+    getThriftObjectFieldType,
     getUnionKey,
     getUnionValue,
     isEqualThrift,
@@ -29,10 +31,14 @@ import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainService, MetadataService } from '../../../../../api/domain-config';
+import {
+    DomainService,
+    DomainServiceObsoleteCommitVersionError,
+    getDomainObjectReference,
+} from '../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
-import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
+import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 
 enum Step {
@@ -61,40 +67,53 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     private dr = inject(DestroyRef);
     private log = inject(NotifyLogService);
     private navigateService = inject(NavigateService);
-    private metadataService = inject(MetadataService);
     private domainService = inject(DomainService);
+
     static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     };
 
     control = new FormControl<ValuesType<DomainObject>['data']>(
-        getUnionValue(this.dialogData.domainObject.object).data,
+        getUnionValue(this.sourceObject).data,
         [Validators.required],
     );
     step: Step = Step.Edit;
     stepEnum = Step;
 
-    get srcObject(): DomainObject {
+    get sourceObject(): DomainObject {
         return this.dialogData.domainObject.object;
     }
-    get type() {
-        return getUnionKey(this.dialogData.domainObject.object);
+    get ref() {
+        return getDomainObjectReference(this.sourceObject);
     }
-    dataType$ = this.metadataService.getDomainObjectDataFieldByName(this.type).pipe(
-        map((f) => String(f.type)),
+    get type() {
+        return getUnionKey(this.sourceObject);
+    }
+    dataType$ = metadata$.pipe(
+        map((metadata) =>
+            getThriftObjectFieldType<string>(
+                metadata,
+                'domain',
+                getThriftObjectFieldType<string>(metadata, 'domain', 'DomainObject', this.type),
+                'data',
+            ),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    currentObject = signal(this.dialogData.domainObject.object);
+    currentObject = signal(this.dialogData.domainObject);
     newObject$ = getValueChanges(this.control).pipe(
         map(() => this.getNewObject()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     hasConflict = computed(() => {
-        return !isEqualThrift(this.currentObject(), this.dialogData.domainObject.object);
+        return !isEqualThrift(this.currentObject().object, this.sourceObject);
     });
-    hasChanges$ = combineLatest([toObservable(this.currentObject), this.newObject$]).pipe(
+    hasChanges$ = combineLatest([
+        toObservable(this.currentObject).pipe(map((o) => o.object)),
+        this.newObject$,
+    ]).pipe(
         map(([a, b]) => !isEqualThrift(a, b)),
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -107,7 +126,10 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
 
     update() {
         this.domainService
-            .update([this.getNewObject()], this.dialogData.domainObject.info.version)
+            .commit(
+                [{ update: { object: this.getNewObject() } }],
+                this.dialogData.domainObject.info.version,
+            )
             .pipe(progressTo(this.isLoading), takeUntilDestroyed(this.dr))
             .subscribe({
                 next: () => {
@@ -118,7 +140,9 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
                     this.closeWithSuccess();
                 },
                 error: (err) => {
-                    this.log.errorOperation(err, 'update', 'domain object');
+                    if (err instanceof DomainServiceObsoleteCommitVersionError) {
+                        this.currentObject.set(err.newObject);
+                    }
                 },
             });
     }

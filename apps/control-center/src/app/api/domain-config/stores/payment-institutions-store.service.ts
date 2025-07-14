@@ -2,10 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { Repository, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, fetchAll, observableResource } from '@vality/matez';
-import { catchError, map, of } from 'rxjs';
+import { catchError, map, of, shareReplay } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class CurrenciesStoreService {
+export class PaymentInstitutionsStoreService {
     private repositoryService = inject(Repository);
     private log = inject(NotifyLogService);
 
@@ -14,22 +14,26 @@ export class CurrenciesStoreService {
         loader: () =>
             fetchAll((continuationToken) =>
                 this.repositoryService.SearchFullObjects({
-                    type: DomainObjectType.currency,
+                    type: DomainObjectType.payment_institution,
                     query: '*',
                     limit: 1_000_000,
                     continuation_token: continuationToken,
                 }),
             ).pipe(
                 catchError((err) => {
-                    this.log.errorOperation(err, 'receive', 'currencies');
+                    this.log.errorOperation(err, 'receive', 'payment institutions');
                     return of<VersionedObject[]>([]);
                 }),
             ),
     });
 
-    currencies$ = this.resource.value$.pipe(
-        map((objs) => objs.map((obj) => obj.object.currency.data)),
+    paymentInstitutions$ = this.resource.value$.pipe(
+        map((objs) => objs.map((obj) => obj.object.payment_institution)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
     isLoading$ = this.resource.isLoading$;
+
+    reload() {
+        this.resource.reload();
+    }
 }

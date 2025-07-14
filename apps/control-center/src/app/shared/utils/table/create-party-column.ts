@@ -11,8 +11,8 @@ export const createPartyColumn = createColumn(
             'partyName' in params
                 ? of(params.partyName)
                 : inject(DomainObjectsStoreService)
-                      .getObject({ party_config: { id } })
-                      .pipe(map((party) => party.name));
+                      .getLimitedObject({ party_config: { id } })
+                      .value$.pipe(map((party) => party?.name));
         const partyCell = {
             description: id,
             link: () => `/party/${id}`,

@@ -15,7 +15,7 @@ import { ComponentChanges } from '@vality/matez';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { PaymentInstitutionsStoreService } from '../../../api/domain-config';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
@@ -31,7 +31,7 @@ import { TargetRuleset } from './types/target-ruleset';
 })
 export class TargetRulesetFormComponent implements OnChanges {
     private fb = inject(UntypedFormBuilder);
-    private domainStoreService = inject(DomainStoreService);
+    private paymentInstitutionsStoreService = inject(PaymentInstitutionsStoreService);
     private routingRulesService = inject(RoutingRulesService);
     private destroyRef = inject(DestroyRef);
     @Output() valid = new EventEmitter<boolean>();
@@ -48,9 +48,9 @@ export class TargetRulesetFormComponent implements OnChanges {
 
     target = Target;
 
-    paymentInstitutions$ = this.domainStoreService
-        .getObjects('payment_institution')
-        .pipe(map((r) => sortBy(r, ['ref.id'])));
+    paymentInstitutions$ = this.paymentInstitutionsStoreService.paymentInstitutions$.pipe(
+        map((r) => sortBy(r, ['ref.id'])),
+    );
     rulesets$ = this.routingRulesService.rulesets$;
 
     get policiesId() {
