@@ -107,7 +107,7 @@ export class DomainMetadataViewExtensionsService {
                     ),
                 extension: (_, refId) => {
                     const ref = { [f.name]: refId };
-                    return this.domainObjectsStoreService.getObject(ref).pipe(
+                    return this.domainObjectsStoreService.getLimitedObject(ref).value$.pipe(
                         map((obj) => {
                             if (!obj) {
                                 return undefined;

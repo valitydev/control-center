@@ -76,6 +76,7 @@ export class ShopsTermsComponent implements OnInit {
     private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     private dr = inject(DestroyRef);
     private sidenavInfoService = inject(SidenavInfoService);
+
     filtersForm = this.fb.group(
         createControls<Params>({
             currencies: null,

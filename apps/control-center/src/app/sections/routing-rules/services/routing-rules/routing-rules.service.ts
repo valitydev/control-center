@@ -4,15 +4,15 @@ import {
     RoutingCandidate,
     RoutingDelegate,
     RoutingRulesObject,
+    RoutingRuleset,
 } from '@vality/domain-proto/domain';
-import { Version } from '@vality/domain-proto/domain_config';
 import { uniq } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, concat } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { createNextId } from '../../../../../utils/create-next-id';
-import { DomainStoreService } from '../../../../api/domain-config/stores/domain-store.service';
+import { RoutingRulesStoreService } from '../../../../api/domain-config';
 
 import { CandidateId } from './types/candidate-id';
 import { getDelegate } from './utils/get-delegate';
@@ -22,13 +22,12 @@ import { getUpdateRulesCandidates } from './utils/get-update-rules-candidates';
     providedIn: 'root',
 })
 export class RoutingRulesService {
-    private domainStoreService = inject(DomainStoreService);
-    rulesets$: Observable<RoutingRulesObject[]> = this.domainStoreService
-        .getObjects('routing_rules')
-        .pipe(
-            map((r) => r.sort((a, b) => a.ref.id - b.ref.id)),
-            shareReplay(1),
-        );
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
+
+    rulesets$: Observable<RoutingRulesObject[]> = this.routingRulesStoreService.routingRules$.pipe(
+        map((r) => r.sort((a, b) => a.ref.id - b.ref.id)),
+        shareReplay(1),
+    );
 
     nextRefID$ = this.rulesets$.pipe(
         map((rulesets) => rulesets.map(({ ref }) => ref.id)),
@@ -58,18 +57,15 @@ export class RoutingRulesService {
         partyID: string;
         description?: string;
         delegateDescription?: string;
-    }): Observable<Version> {
+    }) {
         return combineLatest([this.getRuleset(mainRulesetRefID), this.nextRefID$]).pipe(
             take(1),
             switchMap(([mainRuleset, id]) => {
-                const ruleset: RoutingRulesObject = {
-                    ref: { id },
-                    data: {
-                        name,
-                        description,
-                        decisions: {
-                            delegates: [],
-                        },
+                const ruleset: RoutingRuleset = {
+                    name,
+                    description,
+                    decisions: {
+                        delegates: [],
                     },
                 };
                 const newMainRuleset = this.cloneRulesetAndPushDelegate(mainRuleset, {
@@ -83,21 +79,15 @@ export class RoutingRulesService {
                         },
                     },
                 });
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            insert: {
-                                object: { routing_rules: ruleset },
-                            },
+                return this.routingRulesStoreService.commit([
+                    {
+                        insert: {
+                            object: { routing_rules: ruleset },
+                            force_ref: { routing_rules: { id } },
                         },
-                        {
-                            update: {
-                                old_object: { routing_rules: mainRuleset },
-                                new_object: { routing_rules: newMainRuleset },
-                            },
-                        },
-                    ],
-                });
+                    },
+                    { update: { object: { routing_rules: newMainRuleset } } },
+                ]);
             }),
         );
     }
@@ -114,18 +104,15 @@ export class RoutingRulesService {
         partyID: string;
         partyRulesetRefID: number;
         description?: string;
-    }): Observable<Version> {
+    }) {
         return combineLatest([this.getRuleset(partyRulesetRefID), this.nextRefID$]).pipe(
             take(1),
             switchMap(([partyRuleset, id]) => {
-                const ruleset: RoutingRulesObject = {
-                    ref: { id },
-                    data: {
-                        name,
-                        description,
-                        decisions: {
-                            candidates: [],
-                        },
+                const ruleset: RoutingRuleset = {
+                    name,
+                    description,
+                    decisions: {
+                        candidates: [],
                     },
                 };
                 const newPartyRuleset = this.cloneRulesetAndPushDelegate(partyRuleset, {
@@ -139,83 +126,43 @@ export class RoutingRulesService {
                         },
                     },
                 });
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            insert: {
-                                object: { routing_rules: ruleset },
-                            },
+                return this.routingRulesStoreService.commit([
+                    {
+                        insert: {
+                            object: { routing_rules: ruleset },
+                            force_ref: { routing_rules: { id } },
                         },
-                        {
-                            update: {
-                                old_object: { routing_rules: partyRuleset },
-                                new_object: { routing_rules: newPartyRuleset },
-                            },
-                        },
-                    ],
-                });
+                    },
+                    {
+                        update: { object: { routing_rules: newPartyRuleset } },
+                    },
+                ]);
             }),
         );
     }
 
-    addRule(refID: number, params: RoutingCandidate): Observable<Version> {
+    addRule(refID: number, params: RoutingCandidate) {
         return this.getRuleset(refID).pipe(
             take(1),
             switchMap((ruleset) => {
                 const newShopRuleset = this.cloneRulesetAndPushCandidate(ruleset, params);
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            update: {
-                                old_object: { routing_rules: ruleset },
-                                new_object: { routing_rules: newShopRuleset },
-                            },
-                        },
-                    ],
-                });
+                return this.routingRulesStoreService.commit([
+                    { update: { object: { routing_rules: newShopRuleset } } },
+                ]);
             }),
         );
     }
 
-    // @deprecated use updateRules
-    updateRule(
-        refID: number,
-        candidateIdx: number,
-        candidate: RoutingCandidate,
-    ): Observable<Version> {
-        return this.getRuleset(refID).pipe(
-            take(1),
-            switchMap((ruleset) => {
-                const newRuleset = cloneDeep(ruleset);
-                newRuleset.data.decisions.candidates.splice(candidateIdx, 1, candidate);
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            update: {
-                                old_object: { routing_rules: ruleset },
-                                new_object: { routing_rules: newRuleset },
-                            },
-                        },
-                    ],
-                });
-            }),
-        );
-    }
-
-    updateRules(
-        candidates: (CandidateId & { newCandidate: RoutingCandidate })[],
-    ): Observable<Version> {
+    updateRules(candidates: (CandidateId & { newCandidate: RoutingCandidate })[]) {
         return combineLatest(
             uniq(candidates.map((c) => c.refId)).map((refId) =>
                 this.getRuleset(refId).pipe(take(1)),
             ),
         ).pipe(
             switchMap((rulesets) =>
-                this.domainStoreService.commit({
-                    ops: getUpdateRulesCandidates(rulesets, candidates).map((update) => ({
-                        update,
-                    })),
-                }),
+                this.routingRulesStoreService.commit(
+                    getUpdateRulesCandidates(rulesets, candidates).map((update) => ({ update })),
+                ),
             ),
         );
     }
@@ -230,7 +177,7 @@ export class RoutingRulesService {
         partyID: string;
         mainDelegateDescription?: string;
         ruleset: { name: string; description?: string };
-    }): Observable<Version> {
+    }) {
         return combineLatest([this.getRuleset(mainRulesetRefID), this.nextRefID$]).pipe(
             take(1),
             switchMap(([mainRuleset, id]) => {
@@ -251,45 +198,30 @@ export class RoutingRulesService {
                         decisions: { delegates: [] },
                     },
                 };
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            insert: { object: { routing_rules: ruleset } },
+                return this.routingRulesStoreService.commit([
+                    {
+                        insert: {
+                            object: { routing_rules: ruleset.data },
+                            force_ref: { routing_rules: { id } },
                         },
-                        {
-                            update: {
-                                old_object: { routing_rules: mainRuleset },
-                                new_object: { routing_rules: newMainPaymentRoutingRuleset },
-                            },
-                        },
-                    ],
-                });
+                    },
+                    {
+                        update: { object: { routing_rules: newMainPaymentRoutingRuleset } },
+                    },
+                ]);
             }),
         );
     }
 
-    removeShopRule({
-        refID,
-        candidateIdx,
-    }: {
-        refID: number;
-        candidateIdx: number;
-    }): Observable<Version> {
+    removeShopRule({ refID, candidateIdx }: { refID: number; candidateIdx: number }) {
         return this.getRuleset(refID).pipe(
             take(1),
             switchMap((shopRuleset) => {
                 const newShopRule = cloneDeep(shopRuleset);
                 newShopRule.data.decisions.candidates.splice(candidateIdx, 1);
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            update: {
-                                old_object: { routing_rules: shopRuleset },
-                                new_object: { routing_rules: newShopRule },
-                            },
-                        },
-                    ],
-                });
+                return this.routingRulesStoreService.commit([
+                    { update: { object: { routing_rules: newShopRule } } },
+                ]);
             }),
         );
     }
@@ -300,22 +232,15 @@ export class RoutingRulesService {
     }: {
         mainRulesetRefID: number;
         delegateIdx: number;
-    }): Observable<Version> {
+    }) {
         return this.getRuleset(mainRulesetRefID).pipe(
             take(1),
             switchMap((mainRuleset) => {
                 const newMainPaymentRoutingRuleset = cloneDeep(mainRuleset);
                 newMainPaymentRoutingRuleset.data.decisions.delegates.splice(delegateIdx, 1);
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            update: {
-                                old_object: { routing_rules: mainRuleset },
-                                new_object: { routing_rules: newMainPaymentRoutingRuleset },
-                            },
-                        },
-                    ],
-                });
+                return this.routingRulesStoreService.commit([
+                    { update: { object: { routing_rules: newMainPaymentRoutingRuleset } } },
+                ]);
             }),
         );
     }
@@ -330,7 +255,7 @@ export class RoutingRulesService {
         mainRulesetRefID: number;
         delegateIdx: number;
         mainDelegateDescription?: string;
-    }): Observable<Version> {
+    }) {
         return combineLatest([
             this.getRuleset(mainRulesetRefID),
             this.getRuleset(previousMainRulesetRefID),
@@ -350,22 +275,14 @@ export class RoutingRulesService {
                     ...delegate,
                     description: mainDelegateDescription,
                 });
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            update: {
-                                old_object: { routing_rules: previousMainRuleset },
-                                new_object: { routing_rules: newPreviousMainRuleset },
-                            },
-                        },
-                        {
-                            update: {
-                                old_object: { routing_rules: mainRuleset },
-                                new_object: { routing_rules: newMainPaymentRoutingRuleset },
-                            },
-                        },
-                    ],
-                });
+                return this.routingRulesStoreService.commit([
+                    {
+                        update: { object: { routing_rules: newPreviousMainRuleset } },
+                    },
+                    {
+                        update: { object: { routing_rules: newMainPaymentRoutingRuleset } },
+                    },
+                ]);
             }),
         );
     }
@@ -380,7 +297,7 @@ export class RoutingRulesService {
         delegateIdx: number;
         newDelegateRulesetRefID: number;
         description?: string;
-    }): Observable<Version> {
+    }) {
         return this.getRuleset(mainRulesetRefID).pipe(
             take(1),
             switchMap((mainRuleset) => {
@@ -390,16 +307,9 @@ export class RoutingRulesService {
                 if (description !== undefined) {
                     newMainRuleset.data.decisions.delegates[delegateIdx].description = description;
                 }
-                return this.domainStoreService.commit({
-                    ops: [
-                        {
-                            update: {
-                                old_object: { routing_rules: mainRuleset },
-                                new_object: { routing_rules: newMainRuleset },
-                            },
-                        },
-                    ],
-                });
+                return this.routingRulesStoreService.commit([
+                    { update: { object: { routing_rules: newMainRuleset } } },
+                ]);
             }),
         );
     }
@@ -425,32 +335,24 @@ export class RoutingRulesService {
                 const newDelegateRuleset = cloneDeep(delegateRuleset);
                 newDelegateRuleset.ref.id = nextRefID;
                 return concat(
-                    this.domainStoreService.commit({
-                        ops: [
-                            {
-                                insert: {
-                                    object: { routing_rules: newDelegateRuleset },
-                                },
+                    this.routingRulesStoreService.commit([
+                        {
+                            insert: {
+                                object: { routing_rules: newDelegateRuleset.data },
+                                force_ref: { routing_rules: newDelegateRuleset.ref },
                             },
-                        ],
-                    }),
-                    this.domainStoreService.commit({
-                        ops: [
-                            {
-                                update: {
-                                    old_object: { routing_rules: mainRuleset },
-                                    new_object: { routing_rules: newMainRuleset },
-                                },
-                            },
-                        ],
-                    }),
+                        },
+                    ]),
+                    this.routingRulesStoreService.commit([
+                        { update: { object: { routing_rules: newMainRuleset } } },
+                    ]),
                 );
             }),
         );
     }
 
     reload(): void {
-        this.domainStoreService.forceReload();
+        this.routingRulesStoreService.reload();
     }
 
     private cloneRulesetAndPushDelegate(ruleset: RoutingRulesObject, delegate: RoutingDelegate) {

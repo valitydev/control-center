@@ -22,7 +22,7 @@ import { ValuesType } from 'utility-types';
 import { DomainService } from '../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
-import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
+import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 
 @Component({
@@ -66,7 +66,7 @@ export class CreateDomainObjectDialogComponent
 
     create() {
         this.domainService
-            .insert([this.control.value])
+            .commit([{ insert: this.control.value }])
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');

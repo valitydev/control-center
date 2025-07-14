@@ -1,14 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { DomainObjectType, WalletConfig } from '@vality/domain-proto/domain';
-import { AccountBalance } from '@vality/fistful-proto/internal/account';
 import { Column, DebounceTime, UpdateOptions } from '@vality/matez';
 import { of } from 'rxjs';
-import { catchError, map, shareReplay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { FetchFullDomainObjectsService } from '../../api/domain-config';
-import { ManagementService } from '../../api/wallet/management.service';
-import { createCurrencyColumn, createPartyColumn } from '../../shared';
+import { createPartyColumn } from '../../shared';
 import { PartyStoreService } from '../party';
 
 @Component({
@@ -19,7 +17,6 @@ import { PartyStoreService } from '../party';
 })
 export class WalletsComponent implements OnInit {
     private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
-    private walletManagementService = inject(ManagementService);
     private partyStoreService = inject(PartyStoreService);
 
     wallets$ = this.fetchFullDomainObjectsService.result$.pipe(
@@ -31,30 +28,30 @@ export class WalletsComponent implements OnInit {
         { field: 'id' },
         { field: 'name' },
         createPartyColumn((d) => ({ id: d.party_id })),
-        createCurrencyColumn(
-            (d) =>
-                this.getBalance(d.id).pipe(
-                    map((b) => ({ amount: b.current, code: b.currency.symbolic_code })),
-                ),
-            { header: 'Balance', isLazyCell: true },
-        ),
-        createCurrencyColumn(
-            (d) =>
-                this.getBalance(d.id).pipe(
-                    map((b) => ({
-                        amount: b.current - b.expected_min,
-                        code: b.currency.symbolic_code,
-                    })),
-                ),
-            { header: 'Hold', isLazyCell: true },
-        ),
-        createCurrencyColumn(
-            (d) =>
-                this.getBalance(d.id).pipe(
-                    map((b) => ({ amount: b.expected_min, code: b.currency.symbolic_code })),
-                ),
-            { header: 'Expected Min', isLazyCell: true },
-        ),
+        // createCurrencyColumn(
+        //     (d) =>
+        //         this.getBalance(d.id).pipe(
+        //             map((b) => ({ amount: b.current, code: b.currency.symbolic_code })),
+        //         ),
+        //     { header: 'Balance', isLazyCell: true },
+        // ),
+        // createCurrencyColumn(
+        //     (d) =>
+        //         this.getBalance(d.id).pipe(
+        //             map((b) => ({
+        //                 amount: b.current - b.expected_min,
+        //                 code: b.currency.symbolic_code,
+        //             })),
+        //         ),
+        //     { header: 'Hold', isLazyCell: true },
+        // ),
+        // createCurrencyColumn(
+        //     (d) =>
+        //         this.getBalance(d.id).pipe(
+        //             map((b) => ({ amount: b.expected_min, code: b.currency.symbolic_code })),
+        //         ),
+        //     { header: 'Expected Min', isLazyCell: true },
+        // ),
     ];
     party$ = this.partyStoreService.party$;
 
@@ -79,13 +76,15 @@ export class WalletsComponent implements OnInit {
     }
 
     @MemoizeExpiring(5 * 60_000)
-    getBalance(walletId: string) {
-        return this.walletManagementService.GetAccountBalance(walletId).pipe(
-            catchError((err) => {
-                console.error(err);
-                return of<Partial<AccountBalance>>({});
-            }),
-            shareReplay({ refCount: true, bufferSize: 1 }),
-        );
+    getBalance(_walletId: string) {
+        // TODO
+        return of({});
+        // return this.walletManagementService.GetAccountBalance(walletId).pipe(
+        //     catchError((err) => {
+        //         console.error(err);
+        //         return of<Partial<AccountBalance>>({});
+        //     }),
+        //     shareReplay({ refCount: true, bufferSize: 1 }),
+        // );
     }
 }

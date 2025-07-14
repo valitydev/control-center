@@ -5,5 +5,4 @@ export const environment: Environment = {
     appConfigPath: '/assets/appConfig.json',
     authConfigPath: '/assets/authConfig.json',
     logging: {},
-    domain2: true,
 };

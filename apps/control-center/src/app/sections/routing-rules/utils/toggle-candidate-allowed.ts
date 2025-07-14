@@ -5,7 +5,7 @@ import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/m
 import { uniq } from 'lodash-es';
 import { combineLatest, switchMap, take } from 'rxjs';
 
-import { DomainStoreService } from '../../../api/domain-config';
+import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { UpdateThriftDialogComponent } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { CandidateId } from '../services/routing-rules/types/candidate-id';
@@ -20,9 +20,10 @@ function getCandidateIdLabel({ refId, candidateIdx }: CandidateId) {
 export function changeCandidatesAllowed(candidateIds: CandidateId[], allowedOrToggle?: boolean) {
     const routingRulesService = inject(RoutingRulesService);
     const dr = inject(DestroyRef);
-    const domainStoreService = inject(DomainStoreService);
+    const routingRulesStoreService = inject(RoutingRulesStoreService);
     const log = inject(NotifyLogService);
     const dialogService = inject(DialogService);
+
     combineLatest([
         combineLatest(
             candidateIds.map(({ refId, candidateIdx }) =>
@@ -65,12 +66,10 @@ export function changeCandidatesAllowed(candidateIds: CandidateId[], allowedOrTo
                                   ])
                                 : getChangedPredicate(candidates[0].allowed, allowedOrToggle),
                         prevReviewObject:
-                            candidates.length > 1
-                                ? reviewObjects.map((r) => r.old_object)
-                                : undefined,
+                            candidates.length > 1 ? rulesets.map((r) => r) : undefined,
                         reviewObject:
                             candidates.length > 1
-                                ? reviewObjects.map((r) => r.new_object)
+                                ? reviewObjects.map((r) => r.object.routing_rules)
                                 : undefined,
                         action: () => routingRulesService.updateRules(candidatesForUpdate),
                     })
@@ -80,7 +79,7 @@ export function changeCandidatesAllowed(candidateIds: CandidateId[], allowedOrTo
         )
         .subscribe((res) => {
             if (res.status === DialogResponseStatus.Success) {
-                domainStoreService.forceReload();
+                routingRulesStoreService.reload();
                 log.successOperation('update', 'Allowed');
             }
         });

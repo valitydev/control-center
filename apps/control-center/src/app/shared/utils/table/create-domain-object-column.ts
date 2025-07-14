@@ -4,9 +4,9 @@ import { createColumn } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { map, startWith } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config';
+import { DomainObjectsStoreService } from '../../../api/domain-config';
 import { SidenavInfoService } from '../../components/sidenav-info';
-import { getDomainObjectDetails } from '../../components/thrift-api-crud';
+import { getDomainObjectDetails, getReferenceId } from '../../components/thrift-api-crud';
 import { DomainObjectCardComponent } from '../../components/thrift-api-crud/domain2';
 
 export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference }) => {
@@ -17,12 +17,12 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
     const click = () => {
         sidenavInfoService.toggle(DomainObjectCardComponent, { ref });
     };
-    return inject(DomainStoreService)
-        .getObject(ref)
-        .pipe(
+    return inject(DomainObjectsStoreService)
+        .getLimitedObject(ref)
+        .value$.pipe(
             map((obj) => ({
-                value: getDomainObjectDetails(obj).label || '',
-                description: getDomainObjectDetails(obj).id || '',
+                value: obj.name || '',
+                description: getReferenceId(obj.ref) || '',
                 click,
             })),
             startWith({

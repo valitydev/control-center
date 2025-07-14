@@ -4,7 +4,7 @@ import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { PickByValue, ValuesType } from 'utility-types';
 
-type ReferenceId = number | string | null;
+export type ReferenceId = number | string | null;
 
 type IdReferences = PickByValue<Reference, { id: number | string }>;
 type NoIdReferences = Omit<Reference, keyof IdReferences>;
