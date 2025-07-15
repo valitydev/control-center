@@ -67,10 +67,18 @@ function provideThriftService<T extends Type<unknown>>(
             return new service(
                 keycloakTokenInfoService.info$.pipe(
                     map(
-                        (kcInfo): ConnectOptions => ({
+                        (
+                            kcInfo,
+                        ): ConnectOptions & {
+                            createCallOptions: () => ConnectOptions['headers'];
+                        } => ({
+                            // TODO: remove after update all protos
                             headers: toWachterHeaders(serviceName)(kcInfo),
                             logging: true,
                             loggingFn: logger,
+                            createCallOptions: () => ({
+                                headers: toWachterHeaders(serviceName)(kcInfo),
+                            }),
                             ...configService.config.api.wachter,
                         }),
                     ),

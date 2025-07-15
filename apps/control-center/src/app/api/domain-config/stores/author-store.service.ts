@@ -14,7 +14,6 @@ export class AuthorStoreService {
     private log = inject(NotifyLogService);
 
     author = observableResource({
-        initParams: null,
         loader: () =>
             this.keycloakUserService.user.value$.pipe(
                 switchMap((user) =>

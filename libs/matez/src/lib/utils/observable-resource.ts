@@ -1,16 +1,7 @@
 import { DestroyRef, Injector, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, OperatorFunction, ReplaySubject, Subject } from 'rxjs';
-import {
-    map,
-    mergeScan,
-    mergeWith,
-    shareReplay,
-    skipWhile,
-    switchMap,
-    take,
-    withLatestFrom,
-} from 'rxjs/operators';
+import { BehaviorSubject, Observable, OperatorFunction, Subject, combineLatest } from 'rxjs';
+import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } from 'rxjs/operators';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
 import { progressTo } from './operators';
@@ -30,7 +21,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
 
     progress$!: BehaviorSubject<number>;
 
-    params$!: ReplaySubject<TParams>;
+    params$!: BehaviorSubject<TParams>;
     params!: Signal<TParams | undefined>;
 
     value$!: Observable<TResult>;
@@ -40,17 +31,13 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     isLoading!: Signal<boolean>;
 
     constructor(options: Options<TAccResult, TParams, TResult>) {
-        this.params$ = new ReplaySubject<TParams>(1);
+        this.params$ = new BehaviorSubject<TParams>(options.initParams as TParams);
         this.params = toSignal(this.params$);
 
         this.progress$ = new BehaviorSubject<number>(0);
         this.isLoading$ = this.progress$.pipe(map(Boolean));
         const isLoading = toSignal(this.isLoading$);
         this.isLoading = computed(() => isLoading() || false);
-
-        if ('initParams' in options) {
-            this.params$.next(options.initParams as TParams);
-        }
 
         this.value$ = this.params$.pipe(
             mergeScan(
@@ -79,8 +66,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     }
 
     getFirstValue(): Observable<TResult> {
-        return this.value$.pipe(
-            withLatestFrom(this.isLoading$),
+        return combineLatest([this.value$, this.isLoading$]).pipe(
             skipWhile(([_, isLoading]) => isLoading),
             map(([value]) => value),
             take(1),
