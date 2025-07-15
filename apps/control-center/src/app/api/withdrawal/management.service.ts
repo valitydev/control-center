@@ -10,7 +10,7 @@ import { Observable, combineLatest, from, map, switchMap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { ConfigService } from '../../../services/config';
-import { KeycloakTokenInfoService, toWachterHeaders } from '../../shared/services';
+import { KeycloakTokenInfoService, createOldWachterHeaders } from '../../shared/services';
 
 @Injectable({ providedIn: 'root' })
 export class ManagementService {
@@ -20,7 +20,7 @@ export class ManagementService {
     constructor() {
         const configService = inject(ConfigService);
         const headers$ = this.keycloakTokenInfoService.info$.pipe(
-            map(toWachterHeaders('WithdrawalManagement')),
+            map(createOldWachterHeaders('WithdrawalManagement')),
         );
         const metadata$ = from(
             import('@vality/fistful-proto/metadata.json').then(

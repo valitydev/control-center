@@ -1,25 +1,25 @@
 import { DestroyRef, Injector, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, OperatorFunction, ReplaySubject, Subject } from 'rxjs';
 import {
-    map,
-    mergeScan,
-    mergeWith,
-    shareReplay,
-    skipWhile,
-    switchMap,
-    take,
-    withLatestFrom,
-} from 'rxjs/operators';
+    BehaviorSubject,
+    Observable,
+    OperatorFunction,
+    ReplaySubject,
+    Subject,
+    combineLatest,
+    from,
+    merge,
+} from 'rxjs';
+import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } from 'rxjs/operators';
 
-import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
+import { PossiblyAsync, getPossiblyAsyncObservable, isAsync } from './async';
 import { progressTo } from './operators';
 
 interface Options<TAccResult, TParams = void, TResult = TAccResult> {
     loader: (params: TParams, acc: TAccResult) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
-    initParams?: TParams;
+    params?: PossiblyAsync<TParams>;
 }
 
 export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult> {
@@ -27,10 +27,11 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     private injector = inject(Injector);
 
     private mergedValue$ = new Subject<TResult>();
+    private mergedParams$ = new ReplaySubject<TParams>(1);
 
     progress$!: BehaviorSubject<number>;
 
-    params$!: ReplaySubject<TParams>;
+    params$!: Observable<TParams>;
     params!: Signal<TParams | undefined>;
 
     value$!: Observable<TResult>;
@@ -40,17 +41,18 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     isLoading!: Signal<boolean>;
 
     constructor(options: Options<TAccResult, TParams, TResult>) {
-        this.params$ = new ReplaySubject<TParams>(1);
+        if (isAsync(options.params)) {
+            this.params$ = merge(from(options.params), this.mergedParams$).pipe(shareReplay(1));
+        } else {
+            this.mergedParams$.next(options.params as TParams);
+            this.params$ = this.mergedParams$;
+        }
         this.params = toSignal(this.params$);
 
         this.progress$ = new BehaviorSubject<number>(0);
         this.isLoading$ = this.progress$.pipe(map(Boolean));
         const isLoading = toSignal(this.isLoading$);
         this.isLoading = computed(() => isLoading() || false);
-
-        if ('initParams' in options) {
-            this.params$.next(options.initParams as TParams);
-        }
 
         this.value$ = this.params$.pipe(
             mergeScan(
@@ -79,8 +81,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     }
 
     getFirstValue(): Observable<TResult> {
-        return this.value$.pipe(
-            withLatestFrom(this.isLoading$),
+        return combineLatest([this.value$, this.isLoading$]).pipe(
             skipWhile(([_, isLoading]) => isLoading),
             map(([value]) => value),
             take(1),
@@ -91,7 +92,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
         if (typeof paramsOrParamsFn === 'function') {
             (paramsOrParamsFn as (prevParams: TParams) => TParams)(this.params() as TParams);
         }
-        this.params$.next(paramsOrParamsFn as TParams);
+        this.mergedParams$.next(paramsOrParamsFn as TParams);
     }
 
     reload() {
