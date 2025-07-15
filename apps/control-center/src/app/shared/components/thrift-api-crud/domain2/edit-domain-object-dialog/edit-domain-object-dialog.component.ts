@@ -128,7 +128,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
         this.domainService
             .commit(
                 [{ update: { object: this.getNewObject() } }],
-                this.dialogData.domainObject.info.version,
+                this.currentObject().info.version,
             )
             .pipe(progressTo(this.isLoading), takeUntilDestroyed(this.dr))
             .subscribe({
@@ -150,7 +150,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     private getNewObject(): DomainObject {
         return {
             [this.type]: {
-                ref: getUnionValue(this.dialogData.domainObject.object).ref,
+                ref: getUnionValue(this.sourceObject).ref,
                 data: this.control.value,
             },
         };
