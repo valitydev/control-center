@@ -1,16 +1,25 @@
 import { DestroyRef, Injector, Signal, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, OperatorFunction, Subject, combineLatest } from 'rxjs';
+import {
+    BehaviorSubject,
+    Observable,
+    OperatorFunction,
+    ReplaySubject,
+    Subject,
+    combineLatest,
+    from,
+    merge,
+} from 'rxjs';
 import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } from 'rxjs/operators';
 
-import { PossiblyAsync, getPossiblyAsyncObservable } from './async';
+import { PossiblyAsync, getPossiblyAsyncObservable, isAsync } from './async';
 import { progressTo } from './operators';
 
 interface Options<TAccResult, TParams = void, TResult = TAccResult> {
     loader: (params: TParams, acc: TAccResult) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
-    initParams?: TParams;
+    params?: PossiblyAsync<TParams>;
 }
 
 export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult> {
@@ -18,10 +27,11 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     private injector = inject(Injector);
 
     private mergedValue$ = new Subject<TResult>();
+    private mergedParams$ = new ReplaySubject<TParams>(1);
 
     progress$!: BehaviorSubject<number>;
 
-    params$!: BehaviorSubject<TParams>;
+    params$!: Observable<TParams>;
     params!: Signal<TParams | undefined>;
 
     value$!: Observable<TResult>;
@@ -31,7 +41,12 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     isLoading!: Signal<boolean>;
 
     constructor(options: Options<TAccResult, TParams, TResult>) {
-        this.params$ = new BehaviorSubject<TParams>(options.initParams as TParams);
+        if (isAsync(options.params)) {
+            this.params$ = merge(from(options.params), this.mergedParams$).pipe(shareReplay(1));
+        } else {
+            this.mergedParams$.next(options.params as TParams);
+            this.params$ = this.mergedParams$;
+        }
         this.params = toSignal(this.params$);
 
         this.progress$ = new BehaviorSubject<number>(0);
@@ -77,7 +92,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
         if (typeof paramsOrParamsFn === 'function') {
             (paramsOrParamsFn as (prevParams: TParams) => TParams)(this.params() as TParams);
         }
-        this.params$.next(paramsOrParamsFn as TParams);
+        this.mergedParams$.next(paramsOrParamsFn as TParams);
     }
 
     reload() {
