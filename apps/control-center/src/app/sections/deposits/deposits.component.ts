@@ -1,10 +1,4 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    OnInit,
-    DestroyRef as dr,
-    inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -51,7 +45,7 @@ export class DepositsComponent implements OnInit {
     private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
     private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     private qp = inject<QueryParamsService<object>>(QueryParamsService<object>);
-    private dr = inject(dr);
+    private dr = inject(DestroyRef);
 
     filtersForm = this.fb.group({
         dateRange: createDateRangeToToday(this.dateRangeDays),
