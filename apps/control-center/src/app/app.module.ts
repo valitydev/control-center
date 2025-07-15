@@ -23,6 +23,7 @@ import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_process
 import { DominatorService } from '@vality/dominator-proto/dominator';
 import { Management as DepositManagement } from '@vality/fistful-proto/deposit';
 import { FistfulStatistics } from '@vality/fistful-proto/fistful_stat';
+import { Management as SourceManagement } from '@vality/fistful-proto/source';
 import { Management as WithdrawalManagement } from '@vality/fistful-proto/withdrawal';
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
@@ -133,6 +134,7 @@ registerLocaleData(localeRu);
             { service: DepositManagement, name: 'DepositManagement' },
             { service: FistfulStatistics, name: 'FistfulStatistics' },
             { service: WithdrawalManagement, name: 'WithdrawalManagement' },
+            { service: SourceManagement, name: 'SourceManagement' },
         ]),
     ],
     bootstrap: [AppComponent],
