@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
-
-import { FistfulAdminService } from '../../../api/fistful-admin';
+import { throwError } from 'rxjs';
 
 @Component({
     selector: 'cc-create-source',
@@ -10,12 +9,14 @@ import { FistfulAdminService } from '../../../api/fistful-admin';
     standalone: false,
 })
 export class CreateSourceComponent extends DialogSuperclass<void> {
-    private fistfulAdminService = inject(FistfulAdminService);
+    // private fistfulAdminService = inject(FistfulAdminService);
     private log = inject(NotifyLogService);
     control = new FormControl();
 
     create() {
-        this.fistfulAdminService.CreateSource(this.control.value).subscribe({
+        // TODO: Wait fistful-admin service
+        // this.fistfulAdminService.CreateSource(this.control.value).subscribe({
+        throwError(new Error('No fistful-admin service')).subscribe({
             next: () => {
                 this.closeWithSuccess();
                 this.log.success('Source created successfully!');
