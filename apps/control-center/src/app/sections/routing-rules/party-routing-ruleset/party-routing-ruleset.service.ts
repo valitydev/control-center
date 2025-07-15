@@ -2,13 +2,13 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { PartyManagement } from '@vality/domain-proto/payment_processing';
+import { FistfulStatistics } from '@vality/fistful-proto/fistful_stat';
 import { NotifyLogService } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
 import { createDsl } from '../../../api/fistful-stat';
-import { FistfulStatisticsService } from '../../../api/fistful-stat/fistful-statistics.service';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -19,10 +19,11 @@ export class PartyRoutingRulesetService {
     private route = inject(ActivatedRoute);
     private partyManagementService = inject(PartyManagement);
     private routingRulesService = inject(RoutingRulesService);
-    private fistfulStatistics = inject(FistfulStatisticsService);
+    private fistfulStatistics = inject(FistfulStatistics);
     private destroyRef = inject(DestroyRef);
     private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
     private log = inject(NotifyLogService);
+
     partyID$ = this.route.params.pipe(
         map((r) => r['partyID']),
         takeUntilDestroyed(this.destroyRef),
