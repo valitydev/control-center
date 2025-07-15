@@ -10,7 +10,7 @@ import {
 } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, observableResource, switchCombineWith } from '@vality/matez';
 import { getUnionKey, isEqualThrift } from '@vality/ng-thrift';
-import { Observable, catchError, iif, map, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, first, iif, map, of, switchMap, tap } from 'rxjs';
 
 import { AuthorStoreService } from '../stores/author-store.service';
 import { getDomainObjectReference } from '../utils/get-domain-object-reference';
@@ -48,10 +48,12 @@ export class DomainService {
     }
 
     commit(ops: Operation[], version?: Version, attempts = 1): Observable<CommitResponse> {
-        return iif(() => !!version, of(version), this.version.getFirstValue()).pipe(
-            switchMap((ver) =>
-                this.repositoryService.Commit(ver, ops, this.authorStoreService.author.value().id),
-            ),
+        return combineLatest([
+            iif(() => !!version, of(version), this.version.getFirstValue()),
+            this.authorStoreService.author.value$,
+        ]).pipe(
+            first(),
+            switchMap(([ver, author]) => this.repositoryService.Commit(ver, ops, author.id)),
             catchError((err) => {
                 if (err?.error?.name === 'ObsoleteCommitVersion') {
                     if (
