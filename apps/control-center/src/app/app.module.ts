@@ -23,7 +23,7 @@ import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_process
 import { DominatorService } from '@vality/dominator-proto/dominator';
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
-import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import { ERROR_PARSER, LogError, NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
@@ -31,7 +31,7 @@ import { KeycloakService } from 'keycloak-angular';
 
 import { ToolbarComponent } from '../components';
 import { ConfigService } from '../services';
-import { provideThriftServices } from '../utils';
+import { parseThriftError, provideThriftServices } from '../utils';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -98,6 +98,14 @@ registerLocaleData(localeRu);
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
         { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },
+        {
+            provide: ERROR_PARSER,
+            useValue: (err) => {
+                const parsedError = parseThriftError(err) as LogError;
+                parsedError.noConsole = parsedError.name !== 'UnknownError';
+                return parsedError;
+            },
+        },
         {
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {
