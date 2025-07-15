@@ -43,7 +43,6 @@ export class DomainObjectsStoreService {
                 type,
                 runInInjectionContext(this.injector, () =>
                     observableResource({
-                        initParams: null,
                         loader: (_, objects) =>
                             fetchAll((continuationToken) =>
                                 this.repositoryService.SearchObjects({

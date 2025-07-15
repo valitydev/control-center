@@ -1,32 +1,55 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, InjectionToken, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { capitalize } from 'lodash-es';
+import { capitalize, isObject } from 'lodash-es';
 import { Observer, first, timeout } from 'rxjs';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from '../../utils';
 
-import { DEFAULT_ERROR_NAME, LogError } from './log-error';
 import { Operation } from './types/operation';
+
+export interface LogError {
+    name?: string;
+    message?: string;
+    details?: object;
+    error?: unknown;
+    noConsole?: boolean;
+}
+
+type ErrorParser = (error: unknown) => LogError;
+
+export const ERROR_PARSER = new InjectionToken<ErrorParser>('ErrorParser');
 
 const DEFAULT_DURATION_MS = 3_000;
 const DEFAULT_ERROR_DURATION_MS = 10_000;
 const DEFAULT_TIMEOUT_MS = 10_000;
+const DEFAULT_ERROR_PARSER: ErrorParser = (error: unknown) =>
+    ({ ...(isObject(error) ? error : new Error(String(error))), error }) as LogError;
 
 @Injectable({ providedIn: 'root' })
 export class NotifyLogService {
     private snackBar = inject(MatSnackBar);
+    private parseError = inject(ERROR_PARSER, { optional: true }) || DEFAULT_ERROR_PARSER;
+
     success = (message: PossiblyAsync<string> = 'Completed successfully'): void => {
         this.notify(message);
     };
 
-    error = (errors: unknown | unknown[], message?: PossiblyAsync<string>): void => {
-        const logErrors = (Array.isArray(errors) ? errors : [errors]).map((e) => new LogError(e));
-        message = message || (logErrors.length === 1 ? logErrors[0].message : DEFAULT_ERROR_NAME);
-        this.subscribeWithTimeout(message, (msg) => {
-            console.warn(
-                [`Caught error: ${msg}.`, ...logErrors.map((e) => e.getLogMessage())].join('\n'),
-            );
-        });
+    error = (error: unknown, message?: PossiblyAsync<string>): void => {
+        const parsedError = this.parseError(error);
+        message = message || parsedError.message || parsedError.name || 'An error occurred';
+        if (!parsedError.noConsole) {
+            this.subscribeWithTimeout(message, (msg) => {
+                console.warn(
+                    [
+                        `Caught error: ${msg}.`,
+                        parsedError.name,
+                        parsedError.message,
+                        parsedError.details,
+                    ].join('\n'),
+                    parsedError.error,
+                );
+            });
+        }
         this.notify(message, DEFAULT_ERROR_DURATION_MS);
     };
 

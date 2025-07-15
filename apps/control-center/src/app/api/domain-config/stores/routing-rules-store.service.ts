@@ -13,7 +13,6 @@ export class RoutingRulesStoreService {
     private log = inject(NotifyLogService);
 
     resource = observableResource({
-        initParams: null,
         loader: () =>
             fetchAll((continuationToken) =>
                 this.repositoryService.SearchFullObjects({

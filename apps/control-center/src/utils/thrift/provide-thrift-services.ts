@@ -10,19 +10,64 @@ import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
 import { map } from 'rxjs';
 
-import { KeycloakTokenInfoService, toWachterHeaders } from '../../app/shared/services';
+import {
+    KeycloakTokenInfoService,
+    createRequestWachterHeaders,
+    createWachterHeaders,
+} from '../../app/shared/services';
 import { ConfigService } from '../../services';
+
+export function parseThriftError<T extends object>(error: unknown) {
+    switch (error?.['name']) {
+        case 'ThriftServiceError':
+            return {
+                type: 'ThriftServiceError',
+                name: String(error?.['error']?.name),
+                message: String(error?.['error']?.message),
+                details: Object.fromEntries(
+                    Object.entries(error?.['error'] || {}).filter(
+                        ([k, v]) => k !== 'name' && k !== 'message' && v,
+                    ),
+                ) as T,
+                error: error?.['error'],
+                wrapper: error,
+            } as const;
+        case 'ThriftServiceNotFoundError':
+            return {
+                type: 'ThriftServiceNotFoundError',
+                name: String(error?.['name']),
+                message: String(error?.['message']),
+                error,
+            } as const;
+        case 'ThriftServiceTimeoutError':
+            return {
+                type: 'ThriftServiceTimeoutError',
+                name: String(error?.['name']),
+                message: String(error?.['message']),
+                error,
+            } as const;
+        default:
+            return {
+                type: 'UnknownError',
+                name: String(error?.['name']),
+                message: String(error?.['message']),
+                error,
+            } as const;
+    }
+}
 
 const logger: ConnectOptions['loggingFn'] = (params) => {
     const info = `${params.name} (${params.namespace} ${params.serviceName})`;
 
     switch (params.type) {
         case 'error': {
+            const parsedError = parseThriftError(params.error);
             console.groupCollapsed(
                 `🔴\u00A0${info}`,
+                `\n⚠️\u00A0${parsedError.message || parsedError.name || 'Unknown error'}`,
                 `\n🆔\u00A0Trace:\u00A0${params.headers['x-woody-trace-id']}`,
             );
-            console.error(params.error);
+            console.error(parsedError.error);
             if (isDevMode()) {
                 console.log('Arguments');
                 console.log(JSON.stringify(toJson(params.args), null, 2));
@@ -67,10 +112,17 @@ function provideThriftService<T extends Type<unknown>>(
             return new service(
                 keycloakTokenInfoService.info$.pipe(
                     map(
-                        (kcInfo): ConnectOptions => ({
-                            headers: toWachterHeaders(serviceName)(kcInfo),
+                        (
+                            kcInfo,
+                        ): ConnectOptions & {
+                            createCallOptions: () => ConnectOptions['headers'];
+                        } => ({
+                            headers: createWachterHeaders(serviceName, kcInfo),
                             logging: true,
                             loggingFn: logger,
+                            createCallOptions: () => ({
+                                headers: createRequestWachterHeaders(),
+                            }),
                             ...configService.config.api.wachter,
                         }),
                     ),
