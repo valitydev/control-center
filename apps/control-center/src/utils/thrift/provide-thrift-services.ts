@@ -10,7 +10,11 @@ import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
 import { map } from 'rxjs';
 
-import { KeycloakTokenInfoService, toWachterHeaders } from '../../app/shared/services';
+import {
+    KeycloakTokenInfoService,
+    createRequestWachterHeaders,
+    createWachterHeaders,
+} from '../../app/shared/services';
 import { ConfigService } from '../../services';
 
 const logger: ConnectOptions['loggingFn'] = (params) => {
@@ -72,12 +76,11 @@ function provideThriftService<T extends Type<unknown>>(
                         ): ConnectOptions & {
                             createCallOptions: () => ConnectOptions['headers'];
                         } => ({
-                            // TODO: remove after update all protos
-                            headers: toWachterHeaders(serviceName)(kcInfo),
+                            headers: createWachterHeaders(serviceName, kcInfo),
                             logging: true,
                             loggingFn: logger,
                             createCallOptions: () => ({
-                                headers: toWachterHeaders(serviceName)(kcInfo),
+                                headers: createRequestWachterHeaders(),
                             }),
                             ...configService.config.api.wachter,
                         }),
