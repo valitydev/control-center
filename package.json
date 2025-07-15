@@ -34,7 +34,7 @@
         "@s-libs/ng-core": "^20.0.0",
         "@vality/domain-proto": "2.0.1-559aadc.0",
         "@vality/dominator-proto": "1.0.1-67ea35c.0",
-        "@vality/fistful-proto": "2.0.1-f478436.0",
+        "@vality/fistful-proto": "2.0.1-2ef9702.0",
         "@vality/machinegun-proto": "1.0.1-cc2c27c.0",
         "@vality/magista-proto": "2.0.2-0e0b068.0",
         "@vality/repairer-proto": "2.0.2-1a48729.0",
