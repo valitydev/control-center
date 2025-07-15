@@ -45,7 +45,7 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
         forkJoinToResult(
             selected.map((c) =>
                 runInInjectionContext(this.injector, () => getCreateDepositArgs(c)).pipe(
-                    switchMap((params) => this.depositManagementService.Create(...params)),
+                    switchMap((params) => this.depositManagementService.Create(params, new Map())),
                 ),
             ),
             this.progress$,

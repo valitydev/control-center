@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { CodegenClient } from '@vality/fistful-proto/internal/deposit-Management';
+import { DepositParams } from '@vality/fistful-proto/deposit';
 import { clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
@@ -14,12 +14,13 @@ export function getCreateDepositArgs(c: CsvDeposit) {
     const amountCurrencyService = inject(AmountCurrencyService);
     return amountCurrencyService.toMinor(Number(c['body.amount']), c['body.currency']).pipe(
         map(
-            (amount): Parameters<CodegenClient['Create']> => [
+            (amount): DepositParams =>
                 clean(
                     {
                         id: userInfoBasedIdGeneratorService.getUsernameBasedId(),
                         wallet_id: c.wallet_id,
                         source_id: c.source_id,
+                        party_id: c.party_id,
                         body: {
                             amount,
                             currency: { symbolic_code: c['body.currency'] },
@@ -31,8 +32,6 @@ export function getCreateDepositArgs(c: CsvDeposit) {
                     false,
                     true,
                 ),
-                new Map(),
-            ],
         ),
     );
 }
