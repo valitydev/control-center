@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { StatSource } from '@vality/fistful-proto/internal/fistful_stat';
+import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import { NotifyLogService, compareDifferentTypes, progressTo } from '@vality/matez';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
