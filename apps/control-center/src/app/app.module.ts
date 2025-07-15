@@ -21,6 +21,7 @@ import {
 } from '@vality/domain-proto/domain_config_v2';
 import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
 import { DominatorService } from '@vality/dominator-proto/dominator';
+import { Management } from '@vality/fistful-proto/deposit';
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { ERROR_PARSER, LogError, NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
@@ -127,6 +128,7 @@ registerLocaleData(localeRu);
             { service: Repository, name: 'DMT' },
             { service: RepositoryClient, name: 'DMTClient' },
             { service: AuthorManagement, name: 'DMTAuthor' },
+            { service: Management, name: 'DepositManagement' },
         ]),
     ],
     bootstrap: [AppComponent],

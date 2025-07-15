@@ -8,15 +8,14 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { DepositParams } from '@vality/fistful-proto/deposit';
-import { Revert } from '@vality/fistful-proto/internal/deposit_revert';
+import { DepositParams, Management } from '@vality/fistful-proto/deposit';
+import { Revert } from '@vality/fistful-proto/deposit_revert';
 import { DialogSuperclass, NotifyLogService, clean } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { Overwrite } from 'utility-types';
 
 import { Cash } from '../../../../../components/cash-field';
-import { DepositManagementService } from '../../../../api/deposit/deposit-management.service';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 
 import { CreateRevertDialogConfig } from './types/create-revert-dialog-config';
@@ -32,7 +31,7 @@ export class CreateRevertDialogComponent extends DialogSuperclass<
     CreateRevertDialogConfig,
     Revert
 > {
-    private depositManagementService = inject(DepositManagementService);
+    private depositManagementService = inject(Management);
     private idGenerator = inject(UserInfoBasedIdGeneratorService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);

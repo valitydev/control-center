@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
-import { DepositState } from '@vality/fistful-proto/internal/deposit';
+import { DepositState, Management } from '@vality/fistful-proto/deposit';
 import {
     DEFAULT_DIALOG_CONFIG,
     DialogModule,
@@ -13,7 +13,6 @@ import {
 import { BehaviorSubject, switchMap } from 'rxjs';
 
 import { UploadCsvComponent } from '../../../../../components/upload-csv';
-import { DepositManagementService } from '../../../../api/deposit';
 
 import { CSV_DEPOSIT_PROPS, CsvDeposit } from './types/csv-deposit';
 import { getCreateDepositArgs } from './utils/get-create-deposit-args';
@@ -28,10 +27,11 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     void,
     DepositState[]
 > {
-    private depositManagementService = inject(DepositManagementService);
+    private depositManagementService = inject(Management);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     private injector = inject(Injector);
+
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;
 
     progress$ = new BehaviorSubject(0);
