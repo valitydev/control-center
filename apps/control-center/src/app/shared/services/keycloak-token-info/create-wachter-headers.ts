@@ -1,24 +1,22 @@
 import { generateId } from '@vality/domain-proto';
 
-import { KeycloakToken } from './types';
-
 export const createWachterHeaders = (
     service: string,
-    { email, sub, preferred_username, token }: KeycloakToken,
+    user: { token: string; id: string; username?: string; email?: string },
 ) => ({
     service,
-    authorization: `Bearer ${token}`,
-    'x-woody-meta-user-identity-email': email,
-    'x-woody-meta-user-identity-id': sub,
+    authorization: `Bearer ${user.token}`,
+    'x-woody-meta-user-identity-email': user.email,
+    'x-woody-meta-user-identity-id': user.id,
     'x-woody-meta-user-identity-realm': 'internal',
-    'x-woody-meta-user-identity-username': preferred_username,
+    'x-woody-meta-user-identity-username': user.username,
     'x-woody-parent-id': undefined,
 });
 
 export const createRequestWachterHeaders = () => {
-    const id = generateId();
+    const traceId = generateId();
     return {
-        'x-woody-span-id': id,
-        'x-woody-trace-id': id,
+        'x-woody-span-id': traceId,
+        'x-woody-trace-id': traceId,
     };
 };

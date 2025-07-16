@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { APP_ROUTES } from './app-routes';
-import { AppAuthGuardService } from './shared/services';
 
 @NgModule({
     imports: [
@@ -21,7 +20,6 @@ import { AppAuthGuardService } from './shared/services';
             },
         ),
     ],
-    providers: [AppAuthGuardService],
     exports: [RouterModule],
 })
 export class AppRoutingModule {}

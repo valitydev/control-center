@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Link } from '@vality/matez';
-import { KeycloakService } from 'keycloak-angular';
+import Keycloak from 'keycloak-js';
 import sortBy from 'lodash-es/sortBy';
 import { Observable, from } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 import { SidenavInfoService } from './shared/components/sidenav-info';
-import { AppAuthGuardService, Services } from './shared/services';
+import { KeycloakUserService, Services } from './shared/services';
 
 @Component({
     selector: 'cc-root',
@@ -27,8 +27,8 @@ import { AppAuthGuardService, Services } from './shared/services';
     standalone: false,
 })
 export class AppComponent {
-    private keycloakService = inject(KeycloakService);
-    private appAuthGuardService = inject(AppAuthGuardService);
+    private keycloakService = inject(Keycloak);
+    private userService = inject(KeycloakUserService);
     public sidenavInfoService = inject(SidenavInfoService);
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
         startWith(null),
@@ -48,7 +48,7 @@ export class AppComponent {
                 console.log(`Logging ${environment.logging.requests ? 'enabled' : 'disabled'}`);
             },
             ccGetMyRoles: () => {
-                console.log(this.keycloakService.getUserRoles(true).sort().join('\n'));
+                console.log(this.userService.roles.sort().join('\n'));
             },
         });
     }
@@ -124,9 +124,7 @@ export class AppComponent {
         ];
         return menuItems
             .map((group) =>
-                group.filter((item) =>
-                    this.appAuthGuardService.userHasSomeServiceMethods(item.services),
-                ),
+                group.filter((item) => this.userService.hasServiceRole(...item.services)),
             )
             .map((group) => sortBy(group, 'label'));
     }
