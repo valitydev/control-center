@@ -1,4 +1,4 @@
-import { Injectable, inject, isDevMode } from '@angular/core';
+import { Injectable, computed, inject, isDevMode } from '@angular/core';
 import { observableResource } from '@vality/matez';
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
 import { from, map } from 'rxjs';
@@ -35,6 +35,8 @@ export class KeycloakUserService {
                 }),
             ),
     });
+
+    username = computed(() => (this.user.value()?.username || '').split('@')[0]);
 
     logout() {
         return this.keycloak.logout();

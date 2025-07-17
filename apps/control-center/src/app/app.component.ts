@@ -30,14 +30,21 @@ export class AppComponent {
     private keycloakService = inject(Keycloak);
     private userService = inject(KeycloakUserService);
     public sidenavInfoService = inject(SidenavInfoService);
+    private keycloakUserService = inject(KeycloakUserService);
+
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
         startWith(null),
         map(() => this.getMenuItemsGroups()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    username = this.keycloakUserService.username;
 
     constructor() {
         this.registerConsoleUtils();
+    }
+
+    logout() {
+        this.keycloakService.logout();
     }
 
     private registerConsoleUtils() {
