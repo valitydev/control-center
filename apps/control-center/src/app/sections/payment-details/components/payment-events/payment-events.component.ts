@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
+import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 import { switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { TimelineModule } from '../../../../../components/timeline';
-import { InvoicingService } from '../../../../api/payment-processing';
 import { PageLayoutModule } from '../../../../shared';
 import { DomainThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { PaymentDetailsService } from '../../payment-details.service';
@@ -32,7 +32,7 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
 })
 export class PaymentEventsComponent {
     private paymentDetailsService = inject(PaymentDetailsService);
-    private invoicingService = inject(InvoicingService);
+    private invoicingService = inject(Invoicing);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     events$ = this.payment$.pipe(

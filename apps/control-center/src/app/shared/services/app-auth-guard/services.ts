@@ -1,9 +1,8 @@
 export enum Services {
-    Domain = 'Domain',
+    DMT = 'DMT',
     PartyManagement = 'PartyManagement',
     FistfulStatistics = 'FistfulStatistics',
     MerchantStatistics = 'MerchantStatistics',
-    Deanonimus = 'Deanonimus',
     ClaimManagement = 'ClaimManagement',
     Invoicing = 'Invoicing',
     RepairManagement = 'RepairManagement',

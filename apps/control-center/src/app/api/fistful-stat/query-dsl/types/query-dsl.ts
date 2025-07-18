@@ -1,6 +1,5 @@
 import { Chargebacks } from './chargebacks';
 import { Deposit } from './deposit';
-import { DepositRevertParams } from './deposit-revert';
 import { PagedBaseParameters } from './paged-base-parameters';
 import { Params } from './params';
 import { Payment } from './payment';
@@ -25,7 +24,6 @@ export interface QueryDsl {
         chargebacks?: ChargebacksParams;
         refunds?: RefundsParams;
         wallets?: WalletParams;
-        deposit_reverts?: DepositRevertParams;
         withdrawals?: WithdrawalParams;
         sources?: SourceParams;
     };

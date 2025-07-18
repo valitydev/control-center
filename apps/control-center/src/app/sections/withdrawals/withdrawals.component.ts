@@ -110,7 +110,7 @@ export class WithdrawalsComponent implements OnInit {
         createDomainObjectColumn((d) => ({ ref: { provider: { id: d.provider_id } } }), {
             header: 'Provider',
         }),
-        createFailureColumn((d) => ({ failure: d.status?.failed?.base_failure })),
+        createFailureColumn((d) => ({ failure: d.status?.failed?.failure })),
     ];
     selected: StatWithdrawal[] = [];
     statuses: WithdrawalParams['status'][] = ['Pending', 'Succeeded', 'Failed'];

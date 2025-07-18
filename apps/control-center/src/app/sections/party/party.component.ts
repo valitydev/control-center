@@ -5,8 +5,7 @@ import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
-import { AppAuthGuardService, Services } from '../../shared/services';
-import { ROUTING_CONFIG as CLAIMS_CONFIG } from '../claims/routing-config';
+import { KeycloakUserService, Services } from '../../shared/services';
 import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from '../routing-rules/party-routing-ruleset/routing-config';
 import { SHOPS_ROUTING_CONFIG } from '../shops';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../wallets/routing-config';
@@ -23,7 +22,7 @@ interface PartyLink extends Link {
     standalone: false,
 })
 export class PartyComponent {
-    private appAuthGuardService = inject(AppAuthGuardService);
+    private userService = inject(KeycloakUserService);
     protected sidenavInfoService = inject(SidenavInfoService);
     private partyStoreService = inject(PartyStoreService);
     links: PartyLink[] = [
@@ -38,11 +37,6 @@ export class PartyComponent {
             services: WALLETS_ROUTING_CONFIG.services,
         },
         {
-            label: 'Claims',
-            url: 'claims',
-            services: CLAIMS_CONFIG.services,
-        },
-        {
             label: 'Payment Routing Rules',
             url: 'routing-rules/payment/main',
             services: RULESET_ROUTING_CONFIG.services,
@@ -52,7 +46,7 @@ export class PartyComponent {
             url: 'routing-rules/withdrawal/main',
             services: RULESET_ROUTING_CONFIG.services,
         },
-    ].filter((item) => this.appAuthGuardService.userHasSomeServiceMethods(item.services));
+    ].filter((item) => this.userService.hasServiceRole(...item.services));
     party$ = this.partyStoreService.party$;
     tags$ = this.party$.pipe(
         map((party) => [

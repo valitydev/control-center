@@ -5,11 +5,7 @@
     <v-filters #filters [active]="active$ | async" (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
-            <cc-shop-field
-                [partyId]="filtersForm.value.party_id"
-                formControlName="shop_ids"
-                multiple
-            ></cc-shop-field>
+            <cc-shop-field formControlName="shop_ids" multiple></cc-shop-field>
             <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
             <v-list-field formControlName="term_sets_names" label="Term sets names"></v-list-field>
             <v-list-field formControlName="term_sets_ids" label="Term sets IDs"></v-list-field>

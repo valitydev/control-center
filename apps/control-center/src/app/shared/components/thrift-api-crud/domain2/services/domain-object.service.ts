@@ -30,7 +30,7 @@ export class DomainObjectService {
                 .afterClosed()
                 .pipe(
                     filter((r) => r.status === DialogResponseStatus.Success),
-                    switchMap(() => this.domainService.remove([ref])),
+                    switchMap(() => this.domainService.commit([{ remove: { ref } }])),
                     takeUntilDestroyed(this.dr),
                 ),
             {

@@ -2,13 +2,12 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
+import { Management } from '@vality/fistful-proto/withdrawal';
 import { AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { DialogSuperclass, NotifyLogService, forkJoinToResult } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import short from 'short-uuid';
-
-import { ManagementService } from '../../../../api/withdrawal/management.service';
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',
@@ -18,7 +17,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     CreateAdjustmentDialogComponent,
     { withdrawals: StatWithdrawal[] }
 > {
-    private managementService = inject(ManagementService);
+    private managementService = inject(Management);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     control = new FormControl<Partial<AdjustmentParams>>(

@@ -14,13 +14,13 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TerminalRef } from '@vality/domain-proto/domain';
-import { Column, ComponentChanges, NotifyLogService, TableModule } from '@vality/matez';
-import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
+import { Column, ComponentChanges, TableModule } from '@vality/matez';
+import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config';
+import { DomainService, RoutingRulesStoreService } from '../../../api/domain-config';
 import { PartiesStoreService } from '../../../api/payment-processing';
 import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
@@ -30,7 +30,7 @@ import {
 import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
-import { DomainObjectCardComponent } from '../thrift-api-crud';
+import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 
 @Component({
     selector: 'cc-terminal-delegates-card',
@@ -46,14 +46,15 @@ import { DomainObjectCardComponent } from '../thrift-api-crud';
 })
 export class TerminalDelegatesCardComponent implements OnChanges {
     private partiesStoreService = inject(PartiesStoreService);
-    private domainStoreService = inject(DomainStoreService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
+    private domainService = inject(DomainService);
     private sidenavInfoService = inject(SidenavInfoService);
     private injector = inject(Injector);
-    private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);
+
     @Input() ref: TerminalRef;
 
-    progress$ = this.domainStoreService.isLoading$;
+    progress$ = this.routingRulesStoreService.isLoading$;
     columns: Column<TerminalShopWalletDelegate>[] = [
         {
             header: 'Routing Rule',
@@ -106,51 +107,47 @@ export class TerminalDelegatesCardComponent implements OnChanges {
         },
         {
             field: 'definition',
-            cell: (d) =>
-                this.partiesStoreService.get(d.delegate.allowed.condition?.party?.id).pipe(
-                    map((p) => ({
-                        value:
-                            (getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
-                            'shop_is'
-                                ? p.shops.get(
-                                      getUnionValue(
-                                          d.delegate.allowed.condition?.party?.definition,
-                                      ),
-                                  )?.details?.name
-                                : p.wallets.get(
-                                      getUnionValue(
-                                          d.delegate.allowed.condition?.party?.definition,
-                                      ),
-                                  )?.name) ??
-                            `#${getUnionValue(d.delegate.allowed.condition?.party?.definition)}`,
-
-                        description: getUnionValue(d.delegate.allowed.condition?.party?.definition),
-                        link: () =>
-                            `/party/${d.delegate.allowed.condition.party.id}/routing-rules/${
-                                getUnionKey(d.delegate.allowed.condition?.party?.definition) ===
-                                'shop_is'
-                                    ? 'payment'
-                                    : 'withdrawal'
-                            }/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
-                    })),
-                ),
+            cell: (d) => {
+                const party = d.delegate.allowed.condition?.party;
+                switch (getUnionKey(party?.definition)) {
+                    case 'shop_is':
+                        return this.partiesStoreService.getShop(party?.definition?.shop_is).pipe(
+                            map((shop) => ({
+                                value: shop.details.name,
+                                description: shop.id,
+                                link: () =>
+                                    `/party/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                            })),
+                        );
+                    case 'wallet_is':
+                        return this.partiesStoreService.getShop(party?.definition?.wallet_is).pipe(
+                            map((wallet) => ({
+                                value: wallet.details.name,
+                                description: wallet.id,
+                                link: () =>
+                                    `/party/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                            })),
+                        );
+                    case 'contract_is':
+                        return {
+                            value: party.definition.contract_is,
+                        };
+                }
+            },
         },
     ];
     terminalObj$ = defer(() => this.ref$).pipe(
-        switchMap((ref) => this.domainStoreService.getObject({ terminal: ref })),
+        switchMap((ref) => this.domainService.get({ terminal: ref })),
+        map((obj) => obj.object),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     rules$ = this.terminalObj$.pipe(
         switchMap((terminalObj) =>
-            this.domainStoreService
-                .getObjects('routing_rules')
-                .pipe(
-                    map((rules) =>
-                        terminalObj
-                            ? getTerminalShopWalletDelegates(rules, terminalObj.terminal)
-                            : [],
-                    ),
+            this.routingRulesStoreService.routingRules$.pipe(
+                map((rules) =>
+                    terminalObj ? getTerminalShopWalletDelegates(rules, terminalObj.terminal) : [],
                 ),
+            ),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

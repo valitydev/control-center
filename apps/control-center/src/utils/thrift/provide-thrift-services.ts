@@ -3,12 +3,112 @@ import {
     FactoryProvider,
     Type,
     inject,
+    isDevMode,
     makeEnvironmentProviders,
 } from '@angular/core';
-import { map } from 'rxjs';
+import { ConnectOptions } from '@vality/domain-proto';
+import { toJson } from '@vality/ng-thrift';
+import Keycloak from 'keycloak-js';
+import { isObject } from 'lodash-es';
+import { combineLatest, map } from 'rxjs';
 
-import { ConfigService } from '../../app/core/config.service';
-import { KeycloakTokenInfoService, toWachterHeaders } from '../../app/shared/services';
+import {
+    KeycloakUserService,
+    createRequestWachterHeaders,
+    createWachterHeaders,
+} from '../../app/shared/services';
+import { ConfigService } from '../../services';
+
+export function parseThriftError<T extends object>(error: unknown) {
+    switch (error?.['name']) {
+        case 'ThriftServiceError':
+            return {
+                type: 'ThriftServiceError',
+                name: String(error?.['error']?.name),
+                message: String(error?.['error']?.message),
+                details: Object.fromEntries(
+                    Object.entries(error?.['error'] || {}).filter(
+                        ([k, v]) => k !== 'name' && k !== 'message' && v,
+                    ),
+                ) as T,
+                error: error?.['error'],
+                wrapper: error,
+            } as const;
+        case 'ThriftServiceNotFoundError':
+            return {
+                type: 'ThriftServiceNotFoundError',
+                name: String(error?.['name']),
+                message: String(error?.['message']),
+                error,
+            } as const;
+        case 'ThriftServiceTimeoutError':
+            return {
+                type: 'ThriftServiceTimeoutError',
+                name: String(error?.['name']),
+                message: String(error?.['message']),
+                error,
+            } as const;
+        default: {
+            if (isObject(error))
+                return {
+                    type: 'UnknownError',
+                    name: String(error?.['name']),
+                    message: String(error?.['message']),
+                    error,
+                } as const;
+            return {
+                type: 'UnknownError',
+                name: String(error),
+                message: String(error),
+                error,
+            } as const;
+        }
+    }
+}
+
+const logger: ConnectOptions['loggingFn'] = (params) => {
+    const info = `${params.name} (${params.namespace} ${params.serviceName})`;
+
+    switch (params.type) {
+        case 'error': {
+            const parsedError = parseThriftError(params.error);
+            console.groupCollapsed(
+                `🔴\u00A0${info}`,
+                `\n⚠️\u00A0${parsedError.message || parsedError.name || 'Unknown error'}`,
+                `\n🆔\u00A0Trace:\u00A0${params.headers['x-woody-trace-id']}`,
+            );
+            console.error(parsedError.error);
+            if (isDevMode()) {
+                console.log('Arguments');
+                console.log(JSON.stringify(toJson(params.args), null, 2));
+
+                console.groupCollapsed('Headers');
+                console.table(params.headers);
+                console.groupEnd();
+            }
+            console.groupEnd();
+            return;
+        }
+        case 'success': {
+            if (isDevMode()) {
+                console.groupCollapsed(`🟢\u00A0${info}`);
+                console.log('Arguments');
+                console.log(JSON.stringify(toJson(params.args), null, 2));
+                console.log('Response');
+                console.log(JSON.stringify(toJson(params.response), null, 2));
+
+                console.groupCollapsed('Headers');
+                console.table(params.headers);
+                console.groupEnd();
+                console.groupEnd();
+            }
+            return;
+        }
+        case 'call': {
+            return;
+        }
+    }
+};
 
 function provideThriftService<T extends Type<unknown>>(
     service: T,
@@ -17,14 +117,25 @@ function provideThriftService<T extends Type<unknown>>(
     return {
         provide: service,
         useFactory: () => {
-            const keycloakTokenInfoService = inject(KeycloakTokenInfoService);
             const configService = inject(ConfigService);
+            const keycloak = inject(Keycloak);
+            const keycloakUserService = inject(KeycloakUserService);
+
             return new service(
-                keycloakTokenInfoService.info$.pipe(
-                    map((kcInfo) => ({
-                        headers: toWachterHeaders(serviceName)(kcInfo),
+                combineLatest([keycloakUserService.user.value$, configService.config.value$]).pipe(
+                    map(([user, config]) => ({
+                        headers: createWachterHeaders(serviceName, {
+                            id: user.id,
+                            email: user.email,
+                            username: user.username,
+                            token: keycloak.token ?? '',
+                        }),
                         logging: true,
-                        ...configService.config.api.wachter,
+                        loggingFn: logger,
+                        createCallOptions: () => ({
+                            headers: createRequestWachterHeaders(),
+                        }),
+                        ...config.api.wachter,
                     })),
                 ),
             );

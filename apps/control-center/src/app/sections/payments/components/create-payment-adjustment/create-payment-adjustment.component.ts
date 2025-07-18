@@ -1,20 +1,18 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
-import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
+import { metadata$ } from '@vality/domain-proto';
+import { InvoicePaymentAdjustmentParams, Invoicing } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogSuperclass,
     ForkJoinErrorResult,
     NotifyLogService,
     forkJoinToResult,
-    getImportValue,
     splitResultsErrors,
 } from '@vality/matez';
-import { ThriftAstMetadata } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 
-import { InvoicingService } from '../../../../api/payment-processing';
 import { DomainMetadataFormExtensionsService } from '../../../../shared/services';
 
 @Component({
@@ -27,13 +25,13 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     { payments: StatPayment[] },
     { errors?: ForkJoinErrorResult<StatPayment>[] }
 > {
-    private invoicingService = inject(InvoicingService);
+    private invoicingService = inject(Invoicing);
     private log = inject(NotifyLogService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/domain-proto/metadata.json'));
+    metadata$ = metadata$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 

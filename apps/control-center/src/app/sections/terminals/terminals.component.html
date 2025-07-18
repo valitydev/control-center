@@ -5,9 +5,11 @@
     <v-table
         [columns]="columns"
         [data]="data$ | async"
+        [hasMore]="hasMore$ | async"
         [progress]="progress$ | async"
         name="terminals"
         standaloneFilter
-        (update)="update()"
+        (more)="more()"
+        (update)="update($event)"
     ></v-table>
 </cc-page-layout>

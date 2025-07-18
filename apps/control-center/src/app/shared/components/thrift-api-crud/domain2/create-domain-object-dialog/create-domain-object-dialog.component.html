@@ -6,13 +6,15 @@
         <cc-domain-thrift-viewer
             [value]="control.value"
             kind="editor"
-            type="ReflessDomainObject"
+            namespace="domain_config_v2"
+            type="InsertOp"
         ></cc-domain-thrift-viewer>
     } @else {
-        <cc-domain-thrift-form
+        <cc-domain-thrift-editor
             [formControl]="control"
-            type="ReflessDomainObject"
-        ></cc-domain-thrift-form>
+            namespace="domain_config_v2"
+            type="InsertOp"
+        ></cc-domain-thrift-editor>
     }
 
     <v-dialog-actions>

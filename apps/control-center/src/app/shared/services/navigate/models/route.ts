@@ -1,8 +1,8 @@
-import { LoadChildren, Route as NgRoute } from '@angular/router';
+import { Route as NgRoute } from '@angular/router';
 import { Overwrite } from 'utility-types';
 import { ZodObject, ZodRawShape } from 'zod';
 
-import { AppAuthGuardService, RoutingConfig, Services } from '../../app-auth-guard';
+import { RoutingConfig, Services, canActivateAuthRole } from '../../app-auth-guard';
 
 export class Route<
     const TPath extends string = string,
@@ -13,16 +13,17 @@ export class Route<
         public readonly config: {
             services?: Services[];
             queryParams?: TQpSchema;
-            loadChildren?: LoadChildren;
-        } = {},
+        } & NgRoute = {},
     ) {}
 
     getRoute(): Overwrite<NgRoute, { data: RoutingConfig }> {
+        const { services, ...routeParams } = this.config;
+
         return {
+            ...routeParams,
             path: this.path,
-            loadChildren: this.config.loadChildren,
-            canActivate: [AppAuthGuardService],
-            data: { services: this.config.services },
+            canActivate: [canActivateAuthRole],
+            data: { services },
         };
     }
 }

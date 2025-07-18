@@ -7,7 +7,7 @@ import { ValueType } from '@vality/thrift-ts';
 import { Observable } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 
-import { DomainThriftFormComponent } from '../domain-thrift-form';
+import { DomainThriftFormComponent } from '../domain-thrift-editor';
 
 @Component({
     templateUrl: 'domain-thrift-form-dialog.component.html',

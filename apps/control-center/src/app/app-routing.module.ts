@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from './shared/services';
+import { APP_ROUTES } from './app-routes';
 
 @NgModule({
     imports: [
         RouterModule.forRoot(
             [
+                APP_ROUTES.domain.root.getRoute(),
+                APP_ROUTES.parties.root.getRoute(),
                 {
                     path: '',
-                    redirectTo: '/payments',
+                    redirectTo: '/domain',
                     pathMatch: 'full',
                 },
             ],
@@ -18,7 +20,6 @@ import { AppAuthGuardService } from './shared/services';
             },
         ),
     ],
-    providers: [AppAuthGuardService],
     exports: [RouterModule],
 })
 export class AppRoutingModule {}

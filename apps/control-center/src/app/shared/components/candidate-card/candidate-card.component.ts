@@ -5,7 +5,7 @@ import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config';
+import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
@@ -15,16 +15,14 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
     templateUrl: './candidate-card.component.html',
 })
 export class CandidateCardComponent implements OnChanges {
-    private domainStoreService = inject(DomainStoreService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
     @Input() idx: number;
     @Input() ref: RoutingRulesetRef;
 
-    progress$ = this.domainStoreService.isLoading$;
+    progress$ = this.routingRulesStoreService.isLoading$;
     candidate$ = defer(() => this.ref$).pipe(
-        switchMap((ref) => this.domainStoreService.getObject({ routing_rules: ref })),
-        switchMap((s) =>
-            this.idx$.pipe(map((idx) => s.routing_rules.data.decisions.candidates[idx])),
-        ),
+        switchMap((ref) => this.routingRulesStoreService.get(ref)),
+        switchMap((s) => this.idx$.pipe(map((idx) => s.data.decisions.candidates[idx]))),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 

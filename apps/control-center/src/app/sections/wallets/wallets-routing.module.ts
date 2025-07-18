@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '../../shared/services';
+import { canActivateAuthRole } from '../../shared/services';
 
 import { ROUTING_CONFIG } from './routing-config';
 import { WalletsComponent } from './wallets.component';
@@ -12,7 +12,7 @@ import { WalletsComponent } from './wallets.component';
             {
                 path: '',
                 component: WalletsComponent,
-                canActivate: [AppAuthGuardService],
+                canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,
             },
         ]),

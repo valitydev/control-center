@@ -1,13 +1,12 @@
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Management } from '@vality/fistful-proto/withdrawal';
 import { BehaviorSubject, NEVER, ReplaySubject, Subject } from 'rxjs';
 import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import { ManagementService } from '../../../../../api/wallet/management.service';
-
 @Injectable()
 export class ReceiveWalletService {
-    private walletManagementService = inject(ManagementService);
+    private walletManagementService = inject(Management);
     private destroyRef = inject(DestroyRef);
     private receiveWallet$ = new ReplaySubject<string>();
     private error$ = new Subject<boolean>();

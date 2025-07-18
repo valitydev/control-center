@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '../../shared/services';
+import { canActivateAuthRole } from '../../shared/services';
 
 import { PartyComponent } from './party.component';
 import { ROUTING_CONFIG } from './routing-config';
@@ -12,7 +12,7 @@ import { ROUTING_CONFIG } from './routing-config';
             {
                 path: ':partyID',
                 component: PartyComponent,
-                canActivate: [AppAuthGuardService],
+                canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,
                 children: [
                     {
@@ -24,14 +24,6 @@ import { ROUTING_CONFIG } from './routing-config';
                         path: 'routing-rules',
                         loadChildren: () =>
                             import('../routing-rules').then((m) => m.RoutingRulesModule),
-                    },
-                    {
-                        path: 'claims',
-                        loadChildren: () => import('../claims').then((m) => m.ClaimsModule),
-                    },
-                    {
-                        path: 'claim',
-                        redirectTo: 'claims',
                     },
                     {
                         path: 'wallets',

@@ -1,9 +1,9 @@
 <v-dialog [title]="dialogData.title" fullSize>
-    <cc-domain-thrift-form
+    <cc-domain-thrift-editor
         [formControl]="control"
         [namespace]="dialogData.namespace"
         [type]="dialogData.type"
-    ></cc-domain-thrift-form>
+    ></cc-domain-thrift-editor>
 
     <v-dialog-actions>
         <button [disabled]="control.invalid" mat-button (click)="upsert()">

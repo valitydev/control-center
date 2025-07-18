@@ -1,11 +1,10 @@
 import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat';
-import { Timestamp } from '@vality/fistful-proto/internal/base';
-import { formatCurrency, getImportValue } from '@vality/matez';
+import { metadata$ } from '@vality/fistful-proto';
+import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
+import { formatCurrency } from '@vality/matez';
 import {
-    ThriftAstMetadata,
     ThriftViewExtension,
     ThriftViewExtensionResult,
     getUnionKey,
@@ -16,7 +15,7 @@ import startCase from 'lodash-es/startCase';
 import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { ManagementService } from '../../api/wallet';
+import { DomainObjectsStoreService } from '../../api/domain-config';
 import { AmountCurrencyService } from '../../shared/services';
 import { FetchSourcesService } from '../sources';
 
@@ -33,16 +32,17 @@ export class DepositDetailsComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private _locale = inject<string>(LOCALE_ID);
     private amountCurrencyService = inject(AmountCurrencyService);
-    private walletManagementService = inject(ManagementService);
+    private domainObjectsStoreService = inject(DomainObjectsStoreService);
     private fetchSourcesService = inject(FetchSourcesService);
+
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
+    metadata$ = metadata$;
     extensions$: Observable<ThriftViewExtension[]> = this.fetchDepositService.deposit$.pipe(
         map((deposit) => [
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'Timestamp', 'base')),
-                extension: (_, value: Timestamp) =>
+                extension: (_, value: string) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
             },
             {
@@ -83,34 +83,22 @@ export class DepositDetailsComponent implements OnInit {
                     }),
             },
             {
-                determinant: (d) => of(isTypeWithAliases(d, 'RevertStatus', 'fistful_stat')),
-                extension: (_, status: RevertStatus, viewValue: string) =>
-                    of({
-                        value: startCase(viewValue),
-                        color: (
-                            {
-                                [1]: 'pending',
-                                [2]: 'success',
-                                [0]: 'neutral',
-                            } as const
-                        )[status],
-                    }),
-            },
-            {
                 determinant: (d) => of(isTypeWithAliases(d, 'WalletID', 'fistful_stat')),
                 extension: (_, id: string) =>
-                    this.walletManagementService.Get(id, {}).pipe(
-                        map(
-                            (wallet): ThriftViewExtensionResult => ({
-                                value: wallet.name,
-                                tooltip: wallet.id,
-                                link: [
-                                    ['/wallets'],
-                                    { queryParams: { wallet_id: JSON.stringify([wallet.id]) } },
-                                ],
-                            }),
+                    this.domainObjectsStoreService
+                        .getLimitedObject({ wallet_config: { id } })
+                        .value$.pipe(
+                            map(
+                                (wallet): ThriftViewExtensionResult => ({
+                                    value: wallet.name,
+                                    tooltip: id,
+                                    link: [
+                                        ['/wallets'],
+                                        { queryParams: { wallet_id: JSON.stringify([id]) } },
+                                    ],
+                                }),
+                            ),
                         ),
-                    ),
             },
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'SourceID', 'fistful_stat')),

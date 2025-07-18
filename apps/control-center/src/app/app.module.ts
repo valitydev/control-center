@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, isDevMode } from '@angular/core';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -10,35 +11,41 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowserModule, DomSanitizer } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
-import { Deanonimus } from '@vality/deanonimus-proto/deanonimus';
+import {
+    AuthorManagement,
+    Repository,
+    RepositoryClient,
+} from '@vality/domain-proto/domain_config_v2';
+import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
 import { DominatorService } from '@vality/dominator-proto/dominator';
+import { Management as DepositManagement } from '@vality/fistful-proto/deposit';
+import { FistfulStatistics } from '@vality/fistful-proto/fistful_stat';
+import { Management as SourceManagement } from '@vality/fistful-proto/source';
+import { Management as WithdrawalManagement } from '@vality/fistful-proto/withdrawal';
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
-import { NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import { ERROR_PARSER, LogError, NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
+import { provideKeycloak } from 'keycloak-angular';
 
-import { provideThriftServices } from '../utils';
+import { ToolbarComponent } from '../components';
+import { environment } from '../environments/environment';
+import { ConfigService } from '../services';
+import { parseThriftError, provideThriftServices } from '../utils';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
-import { CoreModule } from './core/core.module';
-import icons from './icons.json';
-import { ClaimsModule } from './sections/claims/claims.module';
-import { SearchPartiesModule } from './sections/search-parties/search-parties.module';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
 import { ShopCardComponent } from './shared/components/shop-card/shop-card.component';
-import { ShopContractCardComponent } from './shared/components/shop-contract-card/shop-contract-card.component';
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud';
-import { KeycloakTokenInfoModule } from './shared/services';
+import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
 import {
     DATE_RANGE_DAYS,
     DEBOUNCE_TIME_MS,
@@ -56,16 +63,12 @@ registerLocaleData(localeRu);
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        CoreModule,
         MatToolbarModule,
         MatIconModule,
         MatButtonModule,
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        SearchPartiesModule,
-        ClaimsModule,
-        KeycloakTokenInfoModule,
         SectionsModule,
         SidenavInfoComponent,
         ToolbarComponent,
@@ -84,6 +87,12 @@ registerLocaleData(localeRu);
         InputMaskModule,
     ],
     providers: [
+        ConfigService,
+        provideKeycloak({
+            config: environment.authConfigPath as never,
+            initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
+        }),
+        provideHttpClient(withInterceptorsFromDi()),
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
         { provide: LOCALE_ID, useValue: 'ru' },
@@ -91,11 +100,18 @@ registerLocaleData(localeRu);
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
         { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },
         {
+            provide: ERROR_PARSER,
+            useValue: (err) => {
+                const parsedError = parseThriftError(err) as LogError;
+                parsedError.noConsole = parsedError.name !== 'UnknownError';
+                return parsedError;
+            },
+        },
+        {
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {
                 domainObject: DomainObjectCardComponent,
                 shop: ShopCardComponent,
-                shopContract: ShopContractCardComponent,
                 terminalDelegates: TerminalDelegatesCardComponent,
                 candidate: CandidateCardComponent,
             },
@@ -103,30 +119,29 @@ registerLocaleData(localeRu);
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
         provideThriftServices([
             { service: RepairManagement, name: 'RepairManagement' },
-            { service: Deanonimus, name: 'Deanonimus' },
             { service: AccountService, name: 'Scrooge' },
             { service: MerchantStatisticsService, name: 'MerchantStatistics' },
             { service: DominatorService, name: 'Dominator' },
             { service: Automaton, name: 'Automaton' },
+            { service: Invoicing, name: 'Invoicing' },
+            { service: PartyManagement, name: 'PartyManagement' },
+            { service: Repository, name: 'DMT' },
+            { service: RepositoryClient, name: 'DMTClient' },
+            { service: AuthorManagement, name: 'DMTAuthor' },
+            { service: DepositManagement, name: 'DepositManagement' },
+            { service: FistfulStatistics, name: 'FistfulStatistics' },
+            { service: WithdrawalManagement, name: 'WithdrawalManagement' },
+            { service: SourceManagement, name: 'SourceManagement' },
         ]),
     ],
     bootstrap: [AppComponent],
 })
 export class AppModule {
-    constructor(
-        private matIconRegistry: MatIconRegistry,
-        private domSanitizer: DomSanitizer,
-    ) {
+    constructor(private matIconRegistry: MatIconRegistry) {
         this.registerIcons();
     }
 
     registerIcons(): void {
         this.matIconRegistry.setDefaultFontSetClass('material-symbols-outlined');
-        for (const name of icons) {
-            this.matIconRegistry.addSvgIcon(
-                name,
-                this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${name}.svg`),
-            );
-        }
     }
 }

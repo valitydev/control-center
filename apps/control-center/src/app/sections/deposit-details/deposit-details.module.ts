@@ -11,7 +11,6 @@ import { PageLayoutModule, StatusModule } from '../../shared/components';
 
 import { DepositDetailsRoutingModule } from './deposit-details-routing.module';
 import { DepositDetailsComponent } from './deposit-details.component';
-import { RevertsModule } from './reverts/reverts.module';
 
 @NgModule({
     imports: [
@@ -23,7 +22,6 @@ import { RevertsModule } from './reverts/reverts.module';
         MatProgressSpinnerModule,
         MatButtonModule,
         MatDialogModule,
-        RevertsModule,
         PageLayoutModule,
         ThriftViewerModule,
     ],

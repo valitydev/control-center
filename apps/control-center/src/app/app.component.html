@@ -9,7 +9,18 @@
         role="navigation"
         style="width: auto; border-right: 1px solid #ddd; border-radius: 0"
     >
-        <v-nav [links]="links$ | async" exact style="display: block"></v-nav>
+        <div style="display: flex; flex-direction: column; height: 100%">
+            <v-nav [links]="links$ | async" exact style="display: block"></v-nav>
+            <div style="margin-top: auto; padding: 16px 8px">
+                <button [matMenuTriggerFor]="userMenu" mat-button>
+                    <mat-icon>account_circle</mat-icon>
+                    {{ username() }}
+                </button>
+                <mat-menu #userMenu="matMenu">
+                    <button mat-menu-item (click)="logout()">Logout</button>
+                </mat-menu>
+            </div>
+        </div>
     </mat-sidenav>
     <mat-sidenav-content class="content" role="main">
         <router-outlet></router-outlet>

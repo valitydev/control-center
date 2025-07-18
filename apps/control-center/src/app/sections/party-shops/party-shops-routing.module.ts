@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '../../shared/services';
+import { canActivateAuthRole } from '../../shared/services';
 
 import { PartyShopsComponent } from './party-shops.component';
 import { ROUTING_CONFIG } from './routing-config';
@@ -12,7 +12,7 @@ import { ROUTING_CONFIG } from './routing-config';
             {
                 path: '',
                 component: PartyShopsComponent,
-                canActivate: [AppAuthGuardService],
+                canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,
             },
         ]),

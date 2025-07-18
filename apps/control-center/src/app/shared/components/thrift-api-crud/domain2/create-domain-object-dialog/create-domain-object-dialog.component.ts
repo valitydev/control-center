@@ -3,7 +3,9 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { ReflessDomainObject } from '@vality/domain-proto/domain';
+import { InsertOp } from '@vality/domain-proto/domain_config_v2';
 import {
     DEFAULT_DIALOG_CONFIG,
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -20,7 +22,7 @@ import { ValuesType } from 'utility-types';
 import { DomainService } from '../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
-import { DomainThriftFormComponent } from '../../domain/domain-thrift-form';
+import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 
 @Component({
@@ -32,6 +34,7 @@ import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
         DomainThriftFormComponent,
         ReactiveFormsModule,
         DomainThriftViewerComponent,
+        MatDividerModule,
     ],
     templateUrl: './create-domain-object-dialog.component.html',
 })
@@ -51,23 +54,23 @@ export class CreateDomainObjectDialogComponent
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     };
 
-    control = new FormControl<ReflessDomainObject | null>(null, [Validators.required]);
+    control = new FormControl<InsertOp | null>(null, [Validators.required]);
     progress$ = new BehaviorSubject(0);
     isReview = false;
 
     ngOnInit() {
         if (this.dialogData && this.dialogData.objectType) {
-            this.control.setValue({ [this.dialogData.objectType]: {} });
+            this.control.setValue({ object: { [this.dialogData.objectType]: {} } });
         }
     }
 
     create() {
         this.domainService
-            .insert([this.control.value])
+            .commit([{ insert: this.control.value }])
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
-                void this.navigateService.navigate(APP_ROUTES.domain2.root, {
+                void this.navigateService.navigate(APP_ROUTES.domain.root, {
                     type: getUnionKey(this.control.value),
                 });
                 this.closeWithSuccess();

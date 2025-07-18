@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Column, DialogService, NotifyLogService } from '@vality/matez';
 import { catchError, first, map } from 'rxjs/operators';
 
-import { DomainStoreService } from '../../../api/domain-config/stores/domain-store.service';
+import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createDomainObjectColumn } from '../../../shared';
 import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
@@ -29,11 +29,12 @@ export class PartyDelegateRulesetsComponent {
     private routingRulesService = inject(RoutingRulesService);
     private router = inject(Router);
     private dialogService = inject(DialogService);
-    private domainStoreService = inject(DomainStoreService);
+    private routingRulesStoreService = inject(RoutingRulesStoreService);
     private log = inject(NotifyLogService);
     private route = inject(ActivatedRoute);
     private destroyRef = inject(DestroyRef);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
+
     columns: Column<RoutingRulesListItem<DelegateWithPaymentInstitution>>[] = [
         {
             field: 'partyDelegate',
@@ -56,7 +57,7 @@ export class PartyDelegateRulesetsComponent {
             { header: 'Main Ruleset' },
         ),
     ];
-    isLoading$ = this.domainStoreService.isLoading$;
+    isLoading$ = this.routingRulesStoreService.isLoading$;
     data$ = this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution().pipe(
         map((rules): RoutingRulesListItem<DelegateWithPaymentInstitution>[] =>
             rules.map((item) => ({
