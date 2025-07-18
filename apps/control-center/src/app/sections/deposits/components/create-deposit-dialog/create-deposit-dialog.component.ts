@@ -1,7 +1,7 @@
 import { Component, DestroyRef, TemplateRef, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
-import { DepositParams } from '@vality/fistful-proto/deposit';
+import { DepositParams, Management } from '@vality/fistful-proto/deposit';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
@@ -9,7 +9,6 @@ import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../../components/source-cash-field';
-import { DepositManagementService } from '../../../../api/deposit';
 import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
 import { FetchSourcesService } from '../../../sources';
 
@@ -19,10 +18,11 @@ import { FetchSourcesService } from '../../../sources';
 })
 export class CreateDepositDialogComponent extends DialogSuperclass<CreateDepositDialogComponent> {
     private destroyRef = inject(DestroyRef);
-    private depositManagementService = inject(DepositManagementService);
+    private depositManagementService = inject(Management);
     private log = inject(NotifyLogService);
     private userInfoBasedIdGeneratorService = inject(UserInfoBasedIdGeneratorService);
     private fetchSourcesService = inject(FetchSourcesService);
+
     @ViewChild('sourceCashTemplate') sourceCashTemplate: TemplateRef<unknown>;
 
     control = new FormControl(this.getDefaultValue(), [Validators.required]);

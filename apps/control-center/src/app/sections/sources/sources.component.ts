@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Source } from '@vality/fistful-proto/internal/source';
+import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import { Column, DialogService } from '@vality/matez';
 
 import { CreateSourceComponent } from './create-source/create-source.component';
@@ -12,9 +12,10 @@ import { FetchSourcesService } from './fetch-sources.service';
 export class SourcesComponent {
     private fetchSourcesService = inject(FetchSourcesService);
     private dialogService = inject(DialogService);
+
     sources$ = this.fetchSourcesService.sources$;
     progress$ = this.fetchSourcesService.progress$;
-    columns: Column<Source>[] = [
+    columns: Column<StatSource>[] = [
         { field: 'id' },
         { field: 'name' },
         { field: 'identity' },

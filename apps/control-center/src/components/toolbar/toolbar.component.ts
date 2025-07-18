@@ -13,7 +13,6 @@ import { UrlService } from '@vality/matez';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { MerchantFieldModule } from '../../app/shared/components/merchant-field';
-import { KeycloakUserService } from '../../app/shared/services';
 
 @Component({
     selector: 'cc-toolbar',
@@ -33,12 +32,11 @@ import { KeycloakUserService } from '../../app/shared/services';
     styleUrl: './toolbar.component.scss',
 })
 export class ToolbarComponent implements OnInit {
-    private keycloakUserService = inject(KeycloakUserService);
     private router = inject(Router);
     private urlService = inject(UrlService);
     private destroyRef = inject(DestroyRef);
     private snackBar = inject(MatSnackBar);
-    user = this.keycloakUserService.user.value;
+
     partyIdControl = new FormControl<string>(this.getPartyId());
     hasMenu$ = this.urlService.path$.pipe(map((p) => p.length <= 3));
 
@@ -61,10 +59,6 @@ export class ToolbarComponent implements OnInit {
                 this.partyIdControl.setValue(partyId);
             }
         });
-    }
-
-    logout() {
-        void this.keycloakUserService.logout();
     }
 
     copyNotify(res: boolean) {

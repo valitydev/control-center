@@ -2,7 +2,7 @@ import { Route as NgRoute } from '@angular/router';
 import { Overwrite } from 'utility-types';
 import { ZodObject, ZodRawShape } from 'zod';
 
-import { AppAuthGuardService, RoutingConfig, Services } from '../../app-auth-guard';
+import { RoutingConfig, Services, canActivateAuthRole } from '../../app-auth-guard';
 
 export class Route<
     const TPath extends string = string,
@@ -22,7 +22,7 @@ export class Route<
         return {
             ...routeParams,
             path: this.path,
-            canActivate: [AppAuthGuardService],
+            canActivate: [canActivateAuthRole],
             data: { services },
         };
     }

@@ -7,8 +7,6 @@ import isNil from 'lodash-es/isNil';
 import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
-import { createDsl } from '../../../api/fistful-stat';
-import { FistfulStatisticsService } from '../../../api/fistful-stat/fistful-statistics.service';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -19,13 +17,13 @@ export class PartyRoutingRulesetService {
     private route = inject(ActivatedRoute);
     private partyManagementService = inject(PartyManagement);
     private routingRulesService = inject(RoutingRulesService);
-    private fistfulStatistics = inject(FistfulStatisticsService);
-    private destroyRef = inject(DestroyRef);
+    private dr = inject(DestroyRef);
     private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
     private log = inject(NotifyLogService);
+
     partyID$ = this.route.params.pipe(
         map((r) => r['partyID']),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.dr),
         shareReplay(1),
     ) as Observable<string>;
     refID$ = this.route.params.pipe(
@@ -43,35 +41,28 @@ export class PartyRoutingRulesetService {
                 this.log.error('Unknown delegate');
             }
         }),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.dr),
         shareReplay(1),
     );
 
     shops$ = defer(() => this.party$).pipe(
-        map((p) => p.shops),
-        map((shops) => Array.from(shops.values())),
+        map((p) => Array.from(p.shops.values())),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    wallets$ = defer(() => this.partyID$).pipe(
-        switchMap((partyID) =>
-            this.fistfulStatistics.GetWallets({
-                dsl: createDsl({ wallets: { party_id: partyID } }),
-            }),
-        ),
-        map((v) => v?.data?.wallets),
-        takeUntilDestroyed(this.destroyRef),
-        shareReplay(1),
+    wallets$ = defer(() => this.party$).pipe(
+        map((p) => Array.from(p.wallets.values())),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.dr),
         shareReplay(1),
     );
 
     private party$ = this.partyID$.pipe(
         switchMap((partyID) => this.partyManagementService.Get(partyID)),
-        takeUntilDestroyed(this.destroyRef),
+        takeUntilDestroyed(this.dr),
         shareReplay(1),
     );
 

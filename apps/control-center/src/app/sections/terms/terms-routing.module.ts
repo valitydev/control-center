@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AppAuthGuardService } from '../../shared/services';
+import { canActivateAuthRole } from '../../shared/services';
 
 import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
 import { TerminalsTermsComponent } from './components/terminals-terms/terminals-terms.component';
@@ -15,7 +15,7 @@ import { TermsComponent } from './terms.component';
             {
                 path: '',
                 component: TermsComponent,
-                canActivate: [AppAuthGuardService],
+                canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,
                 children: [
                     {

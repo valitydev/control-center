@@ -1,11 +1,10 @@
 import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DepositStatus, RevertStatus } from '@vality/fistful-proto/fistful_stat';
-import { Timestamp } from '@vality/fistful-proto/internal/base';
-import { formatCurrency, getImportValue } from '@vality/matez';
+import { metadata$ } from '@vality/fistful-proto';
+import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
+import { formatCurrency } from '@vality/matez';
 import {
-    ThriftAstMetadata,
     ThriftViewExtension,
     ThriftViewExtensionResult,
     getUnionKey,
@@ -38,12 +37,12 @@ export class DepositDetailsComponent implements OnInit {
 
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
-    metadata$ = getImportValue<ThriftAstMetadata[]>(import('@vality/fistful-proto/metadata.json'));
+    metadata$ = metadata$;
     extensions$: Observable<ThriftViewExtension[]> = this.fetchDepositService.deposit$.pipe(
         map((deposit) => [
             {
                 determinant: (d) => of(isTypeWithAliases(d, 'Timestamp', 'base')),
-                extension: (_, value: Timestamp) =>
+                extension: (_, value: string) =>
                     of({ value: formatDate(value, 'dd.MM.yyyy HH:mm:ss', 'en') }),
             },
             {
@@ -81,20 +80,6 @@ export class DepositDetailsComponent implements OnInit {
                                 succeeded: 'success',
                             } as const
                         )[getUnionKey(status)],
-                    }),
-            },
-            {
-                determinant: (d) => of(isTypeWithAliases(d, 'RevertStatus', 'fistful_stat')),
-                extension: (_, status: RevertStatus, viewValue: string) =>
-                    of({
-                        value: startCase(viewValue),
-                        color: (
-                            {
-                                [1]: 'pending',
-                                [2]: 'success',
-                                [0]: 'neutral',
-                            } as const
-                        )[status],
                     }),
             },
             {
