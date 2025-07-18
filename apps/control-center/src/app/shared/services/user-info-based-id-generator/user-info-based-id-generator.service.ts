@@ -7,11 +7,10 @@ export class UserInfoBasedIdGeneratorService {
     private keycloakService = inject(Keycloak);
 
     getUsernameBasedId(): string {
-        // TODO: replace it by id-generator after fix
         return `${this.getUsernameForId()}-${short().new()}`;
     }
 
     private getUsernameForId(): string {
-        return this.keycloakService.profile.username.substr(0, 10);
+        return this.keycloakService.profile.username.substring(0, 10);
     }
 }
