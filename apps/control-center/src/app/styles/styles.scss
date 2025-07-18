@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @use '@ng-matero/extensions' as mtx;
-// @use 'tailwindcss';
+@use 'tailwindcss/theme.css';
+@use 'tailwindcss/utilities.css';
 @use './theme-colors';
 
 @use './all-component-themes';
