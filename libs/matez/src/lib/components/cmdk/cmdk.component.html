@@ -1,6 +1,28 @@
 <div class="m-8">
-    <mat-form-field appearance="outline">
-        <mat-label>Search</mat-label>
-        <input matInput />
-    </mat-form-field>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Search</mat-label>
+            <input matInput />
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <mat-list>
+        <mat-list-item>
+            <mat-icon matListItemIcon>home</mat-icon>
+            <span matListItemTitle>Home</span>
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon matListItemIcon>settings</mat-icon>
+            <span matListItemTitle>Settings</span>
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon matListItemIcon>person</mat-icon>
+            <span matListItemTitle>Profile</span>
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon matListItemIcon>dashboard</mat-icon>
+            <span matListItemTitle>Dashboard</span>
+        </mat-list-item>
+    </mat-list>
 </div>

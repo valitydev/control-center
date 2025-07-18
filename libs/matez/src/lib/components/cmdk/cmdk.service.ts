@@ -18,15 +18,33 @@ export class CmdkService {
     }
 
     open() {
+        if (this.dialog.openDialogs.length) return;
         this.dialog.open(CmdkComponent, {
             width: 'calc(max(400px, 100vw - 32px))',
+            maxWidth: '600px',
+            position: { top: '20vh' },
+            hasBackdrop: true,
+            backdropClass: 'cmdk-backdrop',
+            panelClass: 'cmdk-panel',
         });
+    }
+
+    close() {
+        this.dialog.closeAll();
+    }
+
+    toggle() {
+        if (this.dialog.openDialogs.length) {
+            this.close();
+        } else {
+            this.open();
+        }
     }
 
     private listener = (e: KeyboardEvent) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
             e.preventDefault();
-            this.open();
+            this.toggle();
         }
     };
 }
