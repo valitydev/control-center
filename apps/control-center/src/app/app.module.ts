@@ -33,7 +33,6 @@ import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { provideKeycloak } from 'keycloak-angular';
 
-import { ToolbarComponent } from '../components';
 import { environment } from '../environments/environment';
 import { ConfigService } from '../services';
 import { parseThriftError, provideThriftServices } from '../utils';
@@ -71,7 +70,6 @@ registerLocaleData(localeRu);
         MatListModule,
         SectionsModule,
         SidenavInfoComponent,
-        ToolbarComponent,
         NavComponent,
         MonacoEditorModule.forRoot({
             requireConfig: {

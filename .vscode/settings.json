@@ -8,5 +8,6 @@
         "angular-component": {
             "skipDisplayBlock": true
         }
-    }
+    },
+    "tailwindCSS.experimental.configFile": "apps/control-center/src/app/styles/styles.scss"
 }

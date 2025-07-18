@@ -1,18 +1,21 @@
-<cc-toolbar />
-
 <mat-sidenav-container autosize class="app-container">
     <mat-sidenav
+        class="!w-auto !border-r !border-gray-300 !rounded-none"
         fixedInViewport="true"
-        fixedTopGap="64"
         mode="side"
         opened
         role="navigation"
-        style="width: auto; border-right: 1px solid #ddd; border-radius: 0"
     >
-        <div style="display: flex; flex-direction: column; height: 100%">
-            <v-nav [links]="links$ | async" exact style="display: block"></v-nav>
-            <div style="margin-top: auto; padding: 16px 8px">
-                <button [matMenuTriggerFor]="userMenu" mat-button>
+        <div class="flex flex-col h-full">
+            <div class="px-2 py-4">
+                <button class="flex items-center gap-1" mat-button routerLink="/">
+                    <mat-icon>dashboard</mat-icon>
+                    Control Center
+                </button>
+            </div>
+            <v-nav [links]="links$ | async" class="block" exact></v-nav>
+            <div class="mt-auto px-2 py-4">
+                <button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2" mat-button>
                     <mat-icon>account_circle</mat-icon>
                     {{ username() }}
                 </button>
@@ -22,14 +25,13 @@
             </div>
         </div>
     </mat-sidenav>
-    <mat-sidenav-content class="content" role="main">
+    <mat-sidenav-content role="main">
         <router-outlet></router-outlet>
     </mat-sidenav-content>
     <mat-sidenav
         [opened]="sidenavInfoService.opened$ | async"
         class="sidenav-info"
         fixedInViewport="true"
-        fixedTopGap="64"
         mode="side"
         position="end"
         style="border-left: 1px solid #ddd; border-radius: 0"
