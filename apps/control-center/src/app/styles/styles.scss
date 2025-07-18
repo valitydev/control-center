@@ -1,50 +1,58 @@
-@use 'sass:map';
 @use '@angular/material' as mat;
-@use '../../../../../libs/matez/index' as v;
-@use './all-component-themes';
-@use './theme-colors' as palette;
 @use '@ng-matero/extensions' as mtx;
+// @use 'tailwindcss';
+@use './theme-colors';
 
-// Google Fonts Settings
-.material-symbols-outlined {
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 300,
-        'GRAD' 0,
-        'opsz' 24;
-}
+@use './all-component-themes';
+@use '../../../../../libs/matez/index' as v;
 
 $config: (
-    color: (
-        theme-type: light,
-        primary: palette.$primary-palette,
-    ),
-    density: (
-        scale: 0,
-    ),
+    color: theme-colors.$primary-palette,
+    typography: Roboto,
+    density: 0,
 );
 
-$theme: mat.private-deep-merge-all(mat.define-theme($config), mtx.define-theme($config));
+html,
+body {
+    height: 100%;
+}
 
+html {
+    color-scheme: light;
+    @include mat.theme($config);
+}
+
+body {
+    margin: 0;
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+}
+
+body.dark-mode {
+    color-scheme: dark;
+}
+
+// Deprecated
 :root {
-    html,
-    body {
-        height: 100%;
-    }
-    body {
-        margin: 0;
-        font-family: Roboto, 'Helvetica Neue', sans-serif;
-    }
+    $oldTheme: mat.define-theme(
+        (
+            color: (
+                theme-type: light,
+                primary: theme-colors.$primary-palette,
+            ),
+            density: (
+                scale: 0,
+            ),
+        )
+    );
 
-    @include mat.elevation-classes();
-    @include mat.app-background();
-    @include mat.all-component-themes($theme);
-    @include mat.typography-hierarchy($theme);
-    @include v.typography-hierarchy($theme);
-    @include v.v-tokens($theme);
-    @include all-component-themes.all-component-themes($theme);
-    @include v.all-component-themes($theme);
-    @include v.mat-component-variants($theme);
+    @include mat.all-component-themes($oldTheme);
+    @include mat.typography-hierarchy($oldTheme);
+    @include v.typography-hierarchy($oldTheme);
+    @include v.v-tokens($oldTheme);
+    @include all-component-themes.all-component-themes($oldTheme);
+    @include v.all-component-themes($oldTheme);
+    @include v.mat-component-variants($oldTheme);
 
     @include mat.divider-overrides(
         (
