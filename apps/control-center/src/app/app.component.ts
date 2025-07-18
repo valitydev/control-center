@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Link } from '@vality/matez';
+import { CmdkService, Link } from '@vality/matez';
 import Keycloak from 'keycloak-js';
 import sortBy from 'lodash-es/sortBy';
 import { Observable, from } from 'rxjs';
@@ -31,6 +31,7 @@ export class AppComponent {
     private userService = inject(KeycloakUserService);
     public sidenavInfoService = inject(SidenavInfoService);
     private keycloakUserService = inject(KeycloakUserService);
+    private cmdkService = inject(CmdkService);
 
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
         startWith(null),
