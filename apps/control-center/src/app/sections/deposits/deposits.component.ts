@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { fistful_stat } from '@vality/fistful-proto';
 import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
 import {
     Column,
@@ -15,7 +14,6 @@ import {
     createDateRangeToToday,
     createMenuColumn,
     debounceTimeWithFirst,
-    getEnumKey,
     getNoTimeZoneIsoString,
     getValueChanges,
     isEqualDateRange,
@@ -48,6 +46,7 @@ export class DepositsComponent implements OnInit {
     private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
     private qp = inject<QueryParamsService<object>>(QueryParamsService<object>);
     private dr = inject(DestroyRef);
+
     filtersForm = this.fb.group({
         dateRange: createDateRangeToToday(this.dateRangeDays),
         amount_to: null as number,
@@ -99,19 +98,6 @@ export class DepositsComponent implements OnInit {
         createCurrencyColumn((d) => ({ amount: d.fee, code: d.currency_symbolic_code }), {
             header: 'Fee',
         }),
-        {
-            field: 'revert_status',
-            cell: (d) => ({
-                value: startCase(getEnumKey(fistful_stat.RevertStatus, d.revert_status)),
-                color: (
-                    {
-                        none: 'neutral',
-                        partial: 'pending',
-                        full: 'success',
-                    } as const
-                )[getEnumKey(fistful_stat.RevertStatus, d.revert_status)],
-            }),
-        },
         createMenuColumn((d) => ({
             items: [
                 {

@@ -8,10 +8,12 @@ import {
 } from '@angular/core';
 import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
-import { map } from 'rxjs';
+import Keycloak from 'keycloak-js';
+import { isObject } from 'lodash-es';
+import { combineLatest, map } from 'rxjs';
 
 import {
-    KeycloakTokenInfoService,
+    KeycloakUserService,
     createRequestWachterHeaders,
     createWachterHeaders,
 } from '../../app/shared/services';
@@ -46,13 +48,21 @@ export function parseThriftError<T extends object>(error: unknown) {
                 message: String(error?.['message']),
                 error,
             } as const;
-        default:
+        default: {
+            if (isObject(error))
+                return {
+                    type: 'UnknownError',
+                    name: String(error?.['name']),
+                    message: String(error?.['message']),
+                    error,
+                } as const;
             return {
                 type: 'UnknownError',
-                name: String(error?.['name']),
-                message: String(error?.['message']),
+                name: String(error),
+                message: String(error),
                 error,
             } as const;
+        }
     }
 }
 
@@ -107,25 +117,26 @@ function provideThriftService<T extends Type<unknown>>(
     return {
         provide: service,
         useFactory: () => {
-            const keycloakTokenInfoService = inject(KeycloakTokenInfoService);
             const configService = inject(ConfigService);
+            const keycloak = inject(Keycloak);
+            const keycloakUserService = inject(KeycloakUserService);
+
             return new service(
-                keycloakTokenInfoService.info$.pipe(
-                    map(
-                        (
-                            kcInfo,
-                        ): ConnectOptions & {
-                            createCallOptions: () => ConnectOptions['headers'];
-                        } => ({
-                            headers: createWachterHeaders(serviceName, kcInfo),
-                            logging: true,
-                            loggingFn: logger,
-                            createCallOptions: () => ({
-                                headers: createRequestWachterHeaders(),
-                            }),
-                            ...configService.config.api.wachter,
+                combineLatest([keycloakUserService.user.value$, configService.config.value$]).pipe(
+                    map(([user, config]) => ({
+                        headers: createWachterHeaders(serviceName, {
+                            id: user.id,
+                            email: user.email,
+                            username: user.username,
+                            token: keycloak.token ?? '',
                         }),
-                    ),
+                        logging: true,
+                        loggingFn: logger,
+                        createCallOptions: () => ({
+                            headers: createRequestWachterHeaders(),
+                        }),
+                        ...config.api.wachter,
+                    })),
                 ),
             );
         },

@@ -29,8 +29,8 @@ import { FieldLabelPipe } from '../../pipes/field-label.pipe';
 import { ThriftFormExtension } from '../../types/thrift-form-extension';
 import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
 
-const structFieldRequiredValidator: ValidatorFn = (control) => {
-    return control.value ? null : { required: true };
+const nilValidator: ValidatorFn = (control) => {
+    return isNil(control.value) ? { required: true } : null;
 };
 
 @Component({
@@ -93,7 +93,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
                         validators: isRequiredField(
                             (this.data.ast || []).find((f: Field) => f.name === name),
                         )
-                            ? [structFieldRequiredValidator]
+                            ? [nilValidator]
                             : [],
                     }) as never,
                 ),

@@ -30,12 +30,4 @@
             }
         </div>
     </div>
-    <div class="user">
-        <span>{{ user()?.username }}</span>
-        <button [matMenuTriggerFor]="userMenu" mat-icon-button>
-            <mat-icon>more_vert</mat-icon>
-        </button>
-    </div>
 </mat-toolbar>
-
-<mat-menu #userMenu="matMenu"><button mat-menu-item (click)="logout()">Logout</button></mat-menu>

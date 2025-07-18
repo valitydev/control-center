@@ -1,4 +1,4 @@
-import { DestroyRef, Injector, Signal, computed, inject } from '@angular/core';
+import { DestroyRef, Injector, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
     BehaviorSubject,
@@ -15,56 +15,84 @@ import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } fr
 import { PossiblyAsync, getPossiblyAsyncObservable, isAsync } from './async';
 import { progressTo } from './operators';
 
-interface Options<TAccResult, TParams = void, TResult = TAccResult> {
-    loader: (params: TParams, acc: TAccResult) => Observable<TAccResult>;
+enum ObservableResourceActionType {
+    load,
+    set,
+}
+
+interface ObservableResourceAction {
+    type: ObservableResourceActionType;
+}
+
+interface ObservableResourceActionWithParams<TParams> extends ObservableResourceAction {
+    params: TParams;
+}
+
+interface ObservableResourceOptions<TAccResult, TParams = void, TResult = TAccResult> {
+    loader: (
+        params: TParams,
+        acc: TAccResult,
+        action: ObservableResourceAction,
+    ) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
     params?: PossiblyAsync<TParams>;
 }
 
 export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult> {
-    private dr = inject(DestroyRef);
-    private injector = inject(Injector);
+    protected dr = inject(DestroyRef);
+    protected injector = inject(Injector);
 
-    private mergedValue$ = new Subject<TResult>();
-    private mergedParams$ = new ReplaySubject<TParams>(1);
+    protected mergedValue$ = new Subject<TResult>();
+    protected mergedParams$ = isAsync(this.options.params)
+        ? new ReplaySubject<TParams>(1)
+        : new BehaviorSubject<TParams>(this.options.params as TParams);
+    protected actionParams$ = this.createActionParams();
+    protected progress$ = new BehaviorSubject<number>(0);
 
-    progress$!: BehaviorSubject<number>;
+    params$ = this.actionParams$.pipe(map(({ params }) => params));
+    params = toSignal(this.params$);
 
-    params$!: Observable<TParams>;
-    params!: Signal<TParams | undefined>;
+    value$ = this.createValue();
+    value = toSignal(this.value$);
 
-    value$!: Observable<TResult>;
-    value!: Signal<TResult | undefined>;
+    isLoading$ = this.progress$.pipe(map(Boolean));
+    protected _isLoading = toSignal(this.isLoading$);
+    isLoading = computed(() => this._isLoading() || false);
 
-    isLoading$!: Observable<boolean>;
-    isLoading!: Signal<boolean>;
+    constructor(protected options: ObservableResourceOptions<TAccResult, TParams, TResult>) {}
 
-    constructor(options: Options<TAccResult, TParams, TResult>) {
-        if (isAsync(options.params)) {
-            this.params$ = merge(from(options.params), this.mergedParams$).pipe(shareReplay(1));
-        } else {
-            this.mergedParams$.next(options.params as TParams);
-            this.params$ = this.mergedParams$;
-        }
-        this.params = toSignal(this.params$);
+    protected createActionParams(): Observable<ObservableResourceActionWithParams<TParams>> {
+        const mergedParamsAction$ = this.mergedParams$.pipe(
+            map((params) => ({ type: ObservableResourceActionType.set, params })),
+        );
+        return isAsync(this.options.params)
+            ? merge(
+                  from(this.options.params).pipe(
+                      map((params) => ({ type: ObservableResourceActionType.load, params })),
+                  ),
+                  mergedParamsAction$,
+              ).pipe(takeUntilDestroyed(this.dr), shareReplay(1))
+            : mergedParamsAction$;
+    }
 
-        this.progress$ = new BehaviorSubject<number>(0);
-        this.isLoading$ = this.progress$.pipe(map(Boolean));
-        const isLoading = toSignal(this.isLoading$);
-        this.isLoading = computed(() => isLoading() || false);
-
-        this.value$ = this.params$.pipe(
+    protected createValue() {
+        return this.actionParams$.pipe(
             mergeScan(
-                (acc, p) => options.loader(p, acc).pipe(progressTo(this.progress$)),
-                options.seed as TAccResult,
+                (acc, { params, ...action }) =>
+                    this.options.loader(params, acc, action).pipe(progressTo(this.progress$)),
+                this.options.seed as TAccResult,
                 1,
             ),
-            ...((options.map
+            ...((this.options.map
                 ? [
                       switchMap((v) =>
                           getPossiblyAsyncObservable(
-                              (options.map as NonNullable<(typeof options)['map']>)(v),
+                              (
+                                  this.options.map as NonNullable<
+                                      ObservableResourceOptions<TAccResult, TParams, TResult>['map']
+                                  >
+                              )(v),
                           ),
                       ),
                   ]
@@ -73,7 +101,6 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
             takeUntilDestroyed(this.dr),
             shareReplay(1),
         );
-        this.value = toSignal(this.value$);
     }
 
     set(value: TResult) {
@@ -119,7 +146,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
 }
 
 export function observableResource<TAccResult, TParams = void, TResult = TAccResult>(
-    options: Options<TAccResult, TParams, TResult>,
+    options: ObservableResourceOptions<TAccResult, TParams, TResult>,
 ) {
     return new ObservableResource<TAccResult, TParams, TResult>(options);
 }

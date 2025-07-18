@@ -1,8 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { Shop, ShopID, WalletID } from '@vality/domain-proto/domain';
-import { StatWallet } from '@vality/fistful-proto/fistful_stat';
+import { Shop, ShopID, Wallet, WalletID } from '@vality/domain-proto/domain';
 import { DialogResponseStatus, DialogSuperclass, NotifyLogService, Option } from '@vality/matez';
 
 import { RoutingRulesService } from '../../services/routing-rules';
@@ -14,12 +13,19 @@ import { RoutingRulesType } from '../../types/routing-rules-type';
 })
 export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     AddPartyRoutingRuleDialogComponent,
-    { refID: number; partyID: string; shops: Shop[]; wallets: StatWallet[]; type: RoutingRulesType }
+    {
+        refID: number;
+        partyID: string;
+        shops: Shop[];
+        wallets: Wallet[];
+        type: RoutingRulesType;
+    }
 > {
     private fb = inject(FormBuilder);
     private routingRulesService = inject(RoutingRulesService);
     private log = inject(NotifyLogService);
-    private destroyRef = inject(DestroyRef);
+    private dr = inject(DestroyRef);
+
     form = this.fb.group<{ shopID: string; walletID: string; name: string; description: string }>({
         shopID: null,
         walletID: null,
@@ -52,7 +58,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
                         ? { shop_is: shopID }
                         : { wallet_is: walletID },
             })
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.dr))
             .subscribe({
                 next: () => this.dialogRef.close({ status: DialogResponseStatus.Success }),
                 error: this.log.error,
