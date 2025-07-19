@@ -17,7 +17,7 @@ export class SelectFieldComponent<T = unknown> extends FormControlSuperclass<T[]
     @Input() options: Option<T>[] = [];
     @Output() searchChange = new EventEmitter<string>();
 
-    @Input() appearance: MatFormFieldAppearance = 'fill';
+    @Input() appearance?: MatFormFieldAppearance;
 
     @Input() label?: string;
     @Input() hint?: string;
