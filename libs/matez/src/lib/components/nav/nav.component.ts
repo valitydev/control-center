@@ -1,7 +1,6 @@
 import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, ViewEncapsulation, booleanAttribute, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { MatDivider } from '@angular/material/divider';
 import { RouterLink } from '@angular/router';
 import { isArray } from 'lodash-es';
 import { combineLatest } from 'rxjs';
@@ -18,7 +17,7 @@ export interface Link {
     selector: 'v-nav',
     styleUrls: ['./nav.component.scss'],
     templateUrl: './nav.component.html',
-    imports: [RouterLink, NgClass, AsyncPipe, MatDivider],
+    imports: [RouterLink, NgClass, AsyncPipe],
     encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent {
