@@ -1,15 +1,18 @@
 <div [ngClass]="{ 'v-nav__secondary': type() === 'secondary' }" class="v-nav gap-3">
     @for (linksGroup of links(); track linksGroup; let index = $index) {
-        <div>
+        @if (index > 0) {
+            <mat-divider></mat-divider>
+        }
+        <div class="flex flex-col">
             @for (link of linksGroup; track link) {
-                <div
-                    [ngClass]="{ item__active: (activeLink$ | async) === link }"
+                <button
+                    [matButton]="(activeLink$ | async) === link ? 'tonal' : 'text'"
                     [routerLink]="link.url"
                     [title]="link.label"
-                    class="mat-body-large item mat-no-margin"
+                    class="!justify-start mx-2 !px-4 !text-gray-700"
                 >
                     {{ link.label }}
-                </div>
+                </button>
             }
         </div>
     }
