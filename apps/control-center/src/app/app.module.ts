@@ -4,6 +4,7 @@ import localeRu from '@angular/common/locales/ru';
 import { LOCALE_ID, NgModule, isDevMode } from '@angular/core';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -83,6 +84,7 @@ registerLocaleData(localeRu);
         MatDatepickerModule,
         // TODO: hack for cash field 😡
         InputMaskModule,
+        MatChipsModule,
     ],
     providers: [
         ConfigService,

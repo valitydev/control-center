@@ -31,8 +31,9 @@ export class AppComponent {
     private userService = inject(KeycloakUserService);
     public sidenavInfoService = inject(SidenavInfoService);
     private keycloakUserService = inject(KeycloakUserService);
-    private cmdkService = inject(CmdkService);
+    public cmdkService = inject(CmdkService);
 
+    searchKeys = [navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl', 'K'];
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
         startWith(null),
         map(() => this.getMenuItemsGroups()),
