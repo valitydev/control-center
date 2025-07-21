@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
+import { Repository } from '@vality/domain-proto/domain_config_v2';
 import { BaseLink, CmdkService, Link, getUrlPath } from '@vality/matez';
 import Keycloak from 'keycloak-js';
+import { map } from 'rxjs';
 
 import { environment } from '../environments/environment';
 
@@ -170,6 +172,7 @@ const createNavLinks = (): Link[] => [
 export class AppComponent {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
+    private repositoryService = inject(Repository);
 
     sidenavInfoService = inject(SidenavInfoService);
     cmdkService = inject(CmdkService);
@@ -180,6 +183,19 @@ export class AppComponent {
 
     constructor() {
         this.registerConsoleUtils();
+        this.cmdkService.init({
+            search: (searchStr) => {
+                return this.repositoryService.SearchObjects({ query: searchStr, limit: 25 }).pipe(
+                    map((objects) => {
+                        return objects.result.map((object) => ({
+                            label: object.name,
+                            description: object.description,
+                            url: `/domain?__sidenav=${JSON.stringify({ id: 'domainObject', inputs: { ref: object.ref } })}`,
+                        }));
+                    }),
+                );
+            },
+        });
     }
 
     logout() {

@@ -1,13 +1,52 @@
 import { Injectable, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import {
+    BehaviorSubject,
+    Subject,
+    debounceTime,
+    distinctUntilChanged,
+    finalize,
+    shareReplay,
+    switchMap,
+    tap,
+} from 'rxjs';
+
+import { PossiblyAsync, getPossiblyAsyncObservable } from '../../utils';
 
 import { CmdkComponent } from './cmdk.component';
+
+export interface CmdkOption {
+    label: string;
+    icon?: string;
+    url?: string;
+}
+
+export interface CmdkOptions {
+    search: (searchStr: string) => PossiblyAsync<CmdkOption[]>;
+}
 
 @Injectable({
     providedIn: 'root',
 })
 export class CmdkService {
     private dialog = inject(MatDialog);
+    private options: CmdkOptions = {
+        search: () => [],
+    };
+    search$ = new Subject<string>();
+
+    inProgress$ = new BehaviorSubject(false);
+    options$ = this.search$.pipe(
+        distinctUntilChanged(),
+        tap(() => this.inProgress$.next(true)),
+        debounceTime(300),
+        switchMap((searchStr) =>
+            getPossiblyAsyncObservable(this.options.search(searchStr)).pipe(
+                finalize(() => this.inProgress$.next(false)),
+            ),
+        ),
+        shareReplay(1),
+    );
 
     constructor() {
         document.addEventListener('keydown', this.listener);
@@ -39,6 +78,10 @@ export class CmdkService {
         } else {
             this.open();
         }
+    }
+
+    init(options: CmdkOptions) {
+        this.options = options;
     }
 
     private listener = (e: KeyboardEvent) => {

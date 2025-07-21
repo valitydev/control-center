@@ -1,28 +1,38 @@
-<div class="m-8">
+<div class="p-8 overflow-auto h-full flex flex-col">
     <div>
         <mat-form-field appearance="outline" class="w-full">
             <mat-label>Search</mat-label>
-            <input matInput />
+            <input [formControl]="searchControl" matInput />
             <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
     </div>
 
-    <mat-list>
-        <mat-list-item>
-            <mat-icon matListItemIcon>home</mat-icon>
-            <span matListItemTitle>Home</span>
-        </mat-list-item>
-        <mat-list-item>
-            <mat-icon matListItemIcon>settings</mat-icon>
-            <span matListItemTitle>Settings</span>
-        </mat-list-item>
-        <mat-list-item>
-            <mat-icon matListItemIcon>person</mat-icon>
-            <span matListItemTitle>Profile</span>
-        </mat-list-item>
-        <mat-list-item>
-            <mat-icon matListItemIcon>dashboard</mat-icon>
-            <span matListItemTitle>Dashboard</span>
-        </mat-list-item>
+    <mat-list class="overflow-y-auto">
+        @let options = options$ | async;
+
+        @if (options?.length) {
+            @for (option of options; track $index) {
+                <mat-list-item [routerLink]="option.url">
+                    <mat-icon matListItemIcon>{{ option.icon || 'article' }}</mat-icon>
+                    <span matListItemTitle>{{ option.label }}</span>
+                </mat-list-item>
+            }
+        } @else if (searchControl.value) {
+            @if (inProgress$ | async) {
+                <mat-list-item>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </mat-list-item>
+            } @else {
+                <mat-list-item>
+                    <mat-icon matListItemIcon>list</mat-icon>
+                    <span matListItemTitle>No results found</span>
+                </mat-list-item>
+            }
+        } @else {
+            <mat-list-item>
+                <mat-icon matListItemIcon>help</mat-icon>
+                <span matListItemTitle>Start typing to search</span>
+            </mat-list-item>
+        }
     </mat-list>
 </div>
