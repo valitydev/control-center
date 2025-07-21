@@ -8,7 +8,6 @@ import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';
-import { ROUTING_CONFIG as RULESET_ROUTING_CONFIG } from './sections/routing-rules/routing-ruleset/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './sections/shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
@@ -69,37 +68,36 @@ const createNavLinks = (): Link[] => [
     },
     {
         children: [
-            (url) => ({
-                label: 'Merchants',
-                url: '/parties',
-                isHidden: isHidden(APP_ROUTES.parties.root.config.services),
-                children: [
-                    {
-                        label: 'Shops',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/shops`,
-                        isHidden:
-                            getUrlPath(url).length < 3 || isHidden(SHOPS_ROUTING_CONFIG.services),
-                    },
-                    {
-                        label: 'Wallets',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/wallets`,
-                        isHidden:
-                            getUrlPath(url).length < 3 || isHidden(WALLETS_ROUTING_CONFIG.services),
-                    },
-                    {
-                        label: 'Payment RR',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/routing-rules/payment/main`,
-                        isHidden:
-                            getUrlPath(url).length < 3 || isHidden(RULESET_ROUTING_CONFIG.services),
-                    },
-                    {
-                        label: 'Withdrawal RR',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/routing-rules/withdrawal/main`,
-                        isHidden:
-                            getUrlPath(url).length < 3 || isHidden(RULESET_ROUTING_CONFIG.services),
-                    },
-                ],
-            }),
+            (url) => {
+                const urlPath = getUrlPath(url);
+                const partyPath = '/' + urlPath.slice(0, 2).join('/');
+                const isPartyPath = urlPath[0] === 'parties' && urlPath.length > 1;
+                return {
+                    label: 'Merchants',
+                    url: '/parties',
+                    isHidden: isHidden(APP_ROUTES.parties.root.config.services),
+                    children: isPartyPath
+                        ? [
+                              {
+                                  label: 'Shops',
+                                  url: `${partyPath}/shops`,
+                              },
+                              {
+                                  label: 'Wallets',
+                                  url: `${partyPath}/wallets`,
+                              },
+                              {
+                                  label: 'Payment RR',
+                                  url: `${partyPath}/routing-rules/payment/main`,
+                              },
+                              {
+                                  label: 'Withdrawal RR',
+                                  url: `${partyPath}/routing-rules/withdrawal/main`,
+                              },
+                          ]
+                        : [],
+                };
+            },
             {
                 label: 'Shops',
                 url: '/shops',
@@ -114,33 +112,36 @@ const createNavLinks = (): Link[] => [
     },
     {
         children: [
-            (url) => ({
-                label: 'Payments',
-                url: '/payments',
-                isHidden: isHidden(PAYMENTS_ROUTING_CONFIG.services),
-                children: [
-                    {
-                        label: 'Details',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/details`,
-                        isHidden: getUrlPath(url).length < 3,
-                    },
-                    {
-                        label: 'Events',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/events`,
-                        isHidden: getUrlPath(url).length < 3,
-                    },
-                    {
-                        label: 'Refunds',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/refunds`,
-                        isHidden: getUrlPath(url).length < 3,
-                    },
-                    {
-                        label: 'Chargebacks',
-                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/chargebacks`,
-                        isHidden: getUrlPath(url).length < 3,
-                    },
-                ],
-            }),
+            (url) => {
+                const urlPath = getUrlPath(url);
+                const paymentPath = '/' + urlPath.slice(0, 2).join('/');
+                const isPaymentPath = urlPath[0] === 'payments' && urlPath.length > 1;
+                return {
+                    label: 'Payments',
+                    url: '/payments',
+                    isHidden: isHidden(PAYMENTS_ROUTING_CONFIG.services),
+                    children: isPaymentPath
+                        ? [
+                              {
+                                  label: 'Details',
+                                  url: `${paymentPath}/details`,
+                              },
+                              {
+                                  label: 'Events',
+                                  url: `${paymentPath}/events`,
+                              },
+                              {
+                                  label: 'Refunds',
+                                  url: `${paymentPath}/refunds`,
+                              },
+                              {
+                                  label: 'Chargebacks',
+                                  url: `${paymentPath}/chargebacks`,
+                              },
+                          ]
+                        : [],
+                };
+            },
             {
                 label: 'Chargebacks',
                 url: '/chargebacks',

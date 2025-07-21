@@ -74,6 +74,9 @@ export class NavComponent {
     );
 
     getViewedLinks(links: Link[], url: string): Observable<BaseLink[]> {
+        if (!links?.length) {
+            return of([]);
+        }
         return combineLatest(
             links.map((link) =>
                 runInInjectionContext(this.injector, () => getPossiblyAsyncValue(link, [url])),
