@@ -3,17 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 const ROUTES: Routes = [
     {
-        path: 'party',
+        path: 'parties',
         loadChildren: () => import('./party/party.module').then((m) => m.PartyModule),
-    },
-    {
-        path: 'party/:partyID',
-        children: [
-            {
-                path: 'invoice/:invoiceID/payment/:paymentID',
-                loadChildren: () => import('./payment-details').then((m) => m.PaymentDetailsModule),
-            },
-        ],
     },
     {
         path: 'withdrawals',
@@ -27,6 +18,10 @@ const ROUTES: Routes = [
     {
         path: 'payments',
         loadChildren: () => import('./payments/payments.module').then((m) => m.PaymentsModule),
+    },
+    {
+        path: 'payments/:paymentID',
+        loadChildren: () => import('./payment-details').then((m) => m.PaymentDetailsModule),
     },
     {
         path: 'deposits',

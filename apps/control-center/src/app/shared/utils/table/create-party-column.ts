@@ -15,7 +15,7 @@ export const createPartyColumn = createColumn(
                       .value$.pipe(map((party) => party?.name));
         const partyCell = {
             description: id,
-            link: () => `/party/${id}`,
+            link: () => `/parties/${id}`,
         };
         return partyName$.pipe(
             map((partyName) => ({

@@ -4,9 +4,9 @@ import { getPossiblyAsyncObservable } from './get-possibly-async-observable';
 import { PossiblyAsyncFn, PossiblyAsyncValue } from './types/possibly-async-value';
 
 export function getPossiblyAsyncValue<T, P extends unknown[] = [], D = undefined>(
-    getValue: PossiblyAsyncValue<T> | D,
-    defaultValue: T = undefined as T,
+    getValue: PossiblyAsyncValue<T, P> | D,
     args: P = [] as never as P,
+    defaultValue: T = undefined as T,
     isDefaultValue: (v: T | D) => boolean = ((v: T | D) => v === undefined) as (
         v: T | D,
     ) => boolean,

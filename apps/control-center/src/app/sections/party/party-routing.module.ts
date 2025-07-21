@@ -31,10 +31,6 @@ import { ROUTING_CONFIG } from './routing-config';
                             import('../wallets/wallets.module').then((m) => m.WalletsModule),
                     },
                     {
-                        path: 'wallet',
-                        redirectTo: 'wallets',
-                    },
-                    {
                         path: '',
                         redirectTo: 'shops',
                         pathMatch: 'full',

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CmdkService, Link } from '@vality/matez';
+import { BaseLink, CmdkService, Link, getUrlPath } from '@vality/matez';
 import Keycloak from 'keycloak-js';
 
 import { environment } from '../environments/environment';
@@ -18,40 +18,38 @@ import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdra
 import { SidenavInfoService } from './shared/components/sidenav-info';
 import { KeycloakUserService, Services } from './shared/services';
 
-function createIsHidden(services: Services[]) {
-    return () => {
-        const keycloakUserService = inject(KeycloakUserService);
-        return !keycloakUserService.hasServiceRole(...services);
-    };
+function isHidden(services: Services[]): BaseLink['isHidden'] {
+    const keycloakUserService = inject(KeycloakUserService);
+    return !keycloakUserService.hasServiceRole(...services);
 }
 
-const NAV_LINKS: Link[] = [
+const createNavLinks = (): Link[] => [
     {
         children: [
             {
                 label: 'Domain config',
                 url: '/domain',
-                isHidden: createIsHidden(APP_ROUTES.domain.root.config.services),
+                isHidden: isHidden(APP_ROUTES.domain.root.config.services),
             },
             {
                 label: 'Terminals',
                 url: '/terminals',
-                isHidden: createIsHidden(TERMINALS_ROUTING_CONFIG.services),
+                isHidden: isHidden(TERMINALS_ROUTING_CONFIG.services),
             },
             {
                 label: 'Machines',
                 url: '/machines',
-                isHidden: createIsHidden(MACHINES_ROUTING_CONFIG.services),
+                isHidden: isHidden(MACHINES_ROUTING_CONFIG.services),
             },
             {
                 label: 'Sources',
                 url: '/sources',
-                isHidden: createIsHidden(SOURCES_ROUTING_CONFIG.services),
+                isHidden: isHidden(SOURCES_ROUTING_CONFIG.services),
             },
             {
                 label: 'Terms',
                 url: '/terms',
-                isHidden: createIsHidden(TERMS_ROUTING_CONFIG.services),
+                isHidden: isHidden(TERMS_ROUTING_CONFIG.services),
                 children: [
                     {
                         label: 'Shops',
@@ -71,72 +69,92 @@ const NAV_LINKS: Link[] = [
     },
     {
         children: [
-            {
+            (url) => ({
                 label: 'Merchants',
                 url: '/parties',
-                isHidden: createIsHidden(APP_ROUTES.parties.root.config.services),
+                isHidden: isHidden(APP_ROUTES.parties.root.config.services),
                 children: [
                     {
                         label: 'Shops',
-                        url: 'shops',
-                        isHidden: createIsHidden(SHOPS_ROUTING_CONFIG.services),
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/shops`,
+                        isHidden:
+                            getUrlPath(url).length < 3 || isHidden(SHOPS_ROUTING_CONFIG.services),
                     },
                     {
                         label: 'Wallets',
-                        url: 'wallets',
-                        isHidden: createIsHidden(WALLETS_ROUTING_CONFIG.services),
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/wallets`,
+                        isHidden:
+                            getUrlPath(url).length < 3 || isHidden(WALLETS_ROUTING_CONFIG.services),
                     },
                     {
                         label: 'Payment RR',
-                        url: 'routing-rules/payment/main',
-                        isHidden: createIsHidden(RULESET_ROUTING_CONFIG.services),
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/routing-rules/payment/main`,
+                        isHidden:
+                            getUrlPath(url).length < 3 || isHidden(RULESET_ROUTING_CONFIG.services),
                     },
                     {
                         label: 'Withdrawal RR',
-                        url: 'routing-rules/withdrawal/main',
-                        isHidden: createIsHidden(RULESET_ROUTING_CONFIG.services),
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/routing-rules/withdrawal/main`,
+                        isHidden:
+                            getUrlPath(url).length < 3 || isHidden(RULESET_ROUTING_CONFIG.services),
                     },
                 ],
-            },
+            }),
             {
                 label: 'Shops',
                 url: '/shops',
-                isHidden: createIsHidden(SHOPS_ROUTING_CONFIG.services),
+                isHidden: isHidden(SHOPS_ROUTING_CONFIG.services),
             },
             {
                 label: 'Wallets',
                 url: '/wallets',
-                isHidden: createIsHidden(WALLETS_ROUTING_CONFIG.services),
+                isHidden: isHidden(WALLETS_ROUTING_CONFIG.services),
             },
         ],
     },
     {
         children: [
-            {
+            (url) => ({
                 label: 'Payments',
                 url: '/payments',
-                isHidden: createIsHidden(PAYMENTS_ROUTING_CONFIG.services),
+                isHidden: isHidden(PAYMENTS_ROUTING_CONFIG.services),
                 children: [
-                    { label: 'Payment', url: 'details' },
-                    { label: 'Events', url: 'events' },
-                    { label: 'Refunds', url: 'refunds' },
-                    { label: 'Chargebacks', url: 'chargebacks' },
+                    {
+                        label: 'Details',
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/details`,
+                        isHidden: getUrlPath(url).length < 3,
+                    },
+                    {
+                        label: 'Events',
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/events`,
+                        isHidden: getUrlPath(url).length < 3,
+                    },
+                    {
+                        label: 'Refunds',
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/refunds`,
+                        isHidden: getUrlPath(url).length < 3,
+                    },
+                    {
+                        label: 'Chargebacks',
+                        url: `/${getUrlPath(url).slice(0, 2).join('/')}/chargebacks`,
+                        isHidden: getUrlPath(url).length < 3,
+                    },
                 ],
-            },
+            }),
             {
                 label: 'Chargebacks',
                 url: '/chargebacks',
-                isHidden: createIsHidden(WALLETS_ROUTING_CONFIG.services),
+                isHidden: isHidden(WALLETS_ROUTING_CONFIG.services),
             },
             {
                 label: 'Deposits',
                 url: '/deposits',
-                isHidden: createIsHidden(DEPOSITS_ROUTING_CONFIG.services),
+                isHidden: isHidden(DEPOSITS_ROUTING_CONFIG.services),
             },
             {
                 label: 'Withdrawals',
                 url: '/withdrawals',
-                isHidden: createIsHidden(WITHDRAWALS_ROUTING_CONFIG.services),
+                isHidden: isHidden(WITHDRAWALS_ROUTING_CONFIG.services),
             },
         ],
     },
@@ -156,7 +174,7 @@ export class AppComponent {
     cmdkService = inject(CmdkService);
 
     searchKeys = [navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl', 'K'];
-    links = NAV_LINKS;
+    links = createNavLinks();
     username = this.keycloakUserService.username;
 
     constructor() {

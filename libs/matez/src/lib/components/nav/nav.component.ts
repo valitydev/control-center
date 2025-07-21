@@ -22,29 +22,32 @@ import {
     shareReplay,
     switchMap,
 } from 'rxjs';
+import { Overwrite } from 'utility-types';
 
 import { UrlService } from '../../services';
 import { PossiblyAsyncValue, getPossiblyAsyncValue } from '../../utils';
 
-export interface Link {
+export interface BaseLink {
     label?: string;
     url?: string;
     icon?: string;
-    children?: Link[];
-    isHidden?: PossiblyAsyncValue<boolean>;
+    children?: BaseLink[];
+    isHidden?: boolean;
 }
 
-function isActiveLink(link: Link, url: string): boolean {
+export type Link = PossiblyAsyncValue<Overwrite<BaseLink, { children?: Link[] }>, [url: string]>;
+
+function isActiveLink(link: BaseLink, url: string): boolean {
     return !isNil(url) && url.startsWith(link.url || '');
 }
 
-function getActiveLinks(links: Link[], url: string): Link[] {
+function getActiveLinks(links: BaseLink[], url: string): BaseLink[] {
     return links.reduce((acc, link) => {
         if (isActiveLink(link, url)) {
             acc.push(link);
         }
         return acc.concat(getActiveLinks(link.children || [], url));
-    }, [] as Link[]);
+    }, [] as BaseLink[]);
 }
 
 @Component({
@@ -60,8 +63,8 @@ export class NavComponent {
 
     links = input<Link[]>([]);
 
-    viewedLinks$ = toObservable(this.links).pipe(
-        switchMap((links) => this.getViewedLinks(links)),
+    viewedLinks$ = combineLatest([toObservable(this.links), this.urlService.url$]).pipe(
+        switchMap(([links, url]) => this.getViewedLinks(links, url)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     activeLinks$ = this.viewedLinks$.pipe(
@@ -70,25 +73,25 @@ export class NavComponent {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    getViewedLinks(links: Link[]): Observable<Link[]> {
+    getViewedLinks(links: Link[], url: string): Observable<BaseLink[]> {
         return combineLatest(
             links.map((link) =>
-                runInInjectionContext(this.injector, () => getPossiblyAsyncValue(link.isHidden)),
+                runInInjectionContext(this.injector, () => getPossiblyAsyncValue(link, [url])),
             ),
         ).pipe(
-            map((hiddenStates) => links.filter((_, index) => !hiddenStates[index])),
-            switchMap((filteredLinks) =>
+            switchMap((links) =>
                 combineLatest(
-                    filteredLinks.map((link) =>
-                        link.children ? this.getViewedLinks(link.children) : of(null),
+                    links.map((link) =>
+                        link.children ? this.getViewedLinks(link.children, url) : of(undefined),
                     ),
                 ).pipe(
-                    map(
-                        (childrenLinks) =>
-                            filteredLinks.map((link, index) => ({
+                    map((children) =>
+                        links
+                            .map((link, index) => ({
                                 ...link,
-                                children: childrenLinks[index],
-                            })) as Link[],
+                                children: children[index],
+                            }))
+                            .filter((link) => !link.isHidden),
                     ),
                 ),
             ),

@@ -116,7 +116,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                                 value: shop.details.name,
                                 description: shop.id,
                                 link: () =>
-                                    `/party/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                    `/parties/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
                             })),
                         );
                     case 'wallet_is':
@@ -125,7 +125,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                                 value: wallet.details.name,
                                 description: wallet.id,
                                 link: () =>
-                                    `/party/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                    `/parties/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
                             })),
                         );
                     case 'contract_is':

@@ -11,19 +11,22 @@ export class PaymentDetailsService {
     private route = inject(ActivatedRoute);
     private log = inject(NotifyLogService);
     payment$ = this.route.params.pipe(
-        switchMap(({ partyID, invoiceID, paymentID }) =>
+        map(({ paymentID }) => {
+            const [invoiceId, paymentId] = (paymentID || '').split('.');
+            return { invoiceId, paymentId };
+        }),
+        switchMap(({ paymentId, invoiceId }) =>
             this.merchantStatisticsService
                 .SearchPayments(
                     cleanPrimitiveProps({
                         common_search_query_params: {
                             from_time: new Date('2020-01-01').toISOString(), // TODO
                             to_time: new Date().toISOString(),
-                            party_id: partyID,
                         },
                         payment_params: {
-                            payment_id: paymentID,
+                            payment_id: paymentId,
                         },
-                        invoice_ids: [invoiceID],
+                        invoice_ids: [invoiceId],
                     }),
                 )
                 .pipe(

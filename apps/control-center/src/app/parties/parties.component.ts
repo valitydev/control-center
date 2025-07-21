@@ -39,7 +39,7 @@ export class PartiesComponent implements OnInit {
         { field: 'id' },
         {
             field: 'email',
-            cell: (party) => ({ link: () => `/party/${party.id}` }),
+            cell: (party) => ({ link: () => `/parties/${party.id}` }),
         },
         {
             field: 'blocking',
@@ -73,7 +73,7 @@ export class PartiesComponent implements OnInit {
             items: [
                 {
                     label: 'Details',
-                    click: () => this.router.navigate([`/party/${party.id}`]),
+                    click: () => this.router.navigate([`/parties/${party.id}`]),
                 },
             ],
         })),

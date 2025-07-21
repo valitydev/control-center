@@ -90,13 +90,6 @@ export class PaymentsTableComponent {
     ];
 
     private toDetails(data: StatPayment) {
-        return void this.router.navigate([
-            'party',
-            data.owner_id,
-            'invoice',
-            data.invoice_id,
-            'payment',
-            data.id,
-        ]);
+        return void this.router.navigate(['payments', `${data.invoice_id}.${data.id}`]);
     }
 }
