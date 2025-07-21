@@ -80,7 +80,7 @@ export class NavComponent {
             switchMap((filteredLinks) =>
                 combineLatest(
                     filteredLinks.map((link) =>
-                        link.children ? this.getViewedLinks(link.children) : of([]),
+                        link.children ? this.getViewedLinks(link.children) : of(null),
                     ),
                 ).pipe(
                     map(

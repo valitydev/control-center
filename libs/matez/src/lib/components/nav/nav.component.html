@@ -9,7 +9,7 @@
             @for (link of linkGroup.children; track link) {
                 @let isActive = activeLinks.includes(link);
 
-                @if (link.children?.length) {
+                @if (link.children) {
                     <button
                         [ngClass]="{
                             '!text-gray-700': !isActive,
@@ -21,7 +21,11 @@
                     >
                         {{ link.label }}
                         <mat-icon class="pl-2">{{
-                            isActive ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+                            link.children.length
+                                ? isActive
+                                    ? 'keyboard_arrow_down'
+                                    : 'keyboard_arrow_up'
+                                : 'fiber_manual_record'
                         }}</mat-icon>
                     </button>
                 } @else {
