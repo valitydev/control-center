@@ -1,14 +1,1 @@
-<mat-sidenav-container autosize class="!bg-transparent">
-    <mat-sidenav-content style="overflow: unset"
-        ><router-outlet></router-outlet
-    ></mat-sidenav-content>
-    <mat-sidenav
-        [opened]="!(sidenavInfoService.opened$ | async)"
-        fixedInViewport="true"
-        mode="side"
-        position="end"
-        style="background: transparent; border: none; padding: 24px 0 24px 0; width: auto"
-    >
-        <v-nav [links]="links" type="secondary"></v-nav
-    ></mat-sidenav>
-</mat-sidenav-container>
+<router-outlet></router-outlet>

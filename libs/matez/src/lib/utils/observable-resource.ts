@@ -7,12 +7,11 @@ import {
     ReplaySubject,
     Subject,
     combineLatest,
-    from,
     merge,
 } from 'rxjs';
 import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } from 'rxjs/operators';
 
-import { PossiblyAsync, getPossiblyAsyncObservable, isAsync } from './async';
+import { PossiblyAsync, fromAsync, getPossiblyAsyncObservable, isAsync } from './async';
 import { progressTo } from './operators';
 
 enum ObservableResourceActionType {
@@ -68,7 +67,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
         );
         return isAsync(this.options.params)
             ? merge(
-                  from(this.options.params).pipe(
+                  fromAsync(this.options.params).pipe(
                       map((params) => ({ type: ObservableResourceActionType.load, params })),
                   ),
                   mergedParamsAction$,

@@ -1,18 +1,53 @@
-<div [ngClass]="{ 'v-nav__secondary': type() === 'secondary' }" class="v-nav gap-3">
-    @for (linksGroup of links(); track linksGroup; let index = $index) {
+<div class="v-nav gap-3">
+    @let activeLinks = (activeLinks$ | async) || [];
+
+    @for (linkGroup of viewedLinks$ | async; track linkGroup; let index = $index) {
         @if (index > 0) {
             <mat-divider></mat-divider>
         }
         <div class="flex flex-col">
-            @for (link of linksGroup; track link) {
-                <button
-                    [matButton]="(activeLink$ | async) === link ? 'tonal' : 'text'"
-                    [routerLink]="link.url"
-                    [title]="link.label"
-                    class="!justify-start mx-2 !px-4 !text-gray-700"
-                >
-                    {{ link.label }}
-                </button>
+            @for (link of linkGroup.children; track link) {
+                @let isActive = activeLinks.includes(link);
+
+                @if (link.children?.length) {
+                    <button
+                        [ngClass]="{
+                            '!text-gray-700': !isActive,
+                        }"
+                        [routerLink]="link.url"
+                        [title]="link.label"
+                        class="!justify-end mx-2 !px-4 !flex-row-reverse"
+                        matButton
+                    >
+                        {{ link.label }}
+                        <mat-icon class="pl-2">{{
+                            isActive ? 'keyboard_arrow_down' : 'keyboard_arrow_up'
+                        }}</mat-icon>
+                    </button>
+                } @else {
+                    <button
+                        [matButton]="isActive ? 'tonal' : 'text'"
+                        [routerLink]="link.url"
+                        [title]="link.label"
+                        class="!justify-start mx-2 !px-4 !text-gray-700"
+                    >
+                        {{ link.label }}
+                    </button>
+                }
+                @if (isActive && link.children?.length) {
+                    <div class="pl-2 flex flex-col">
+                        @for (childLink of link.children; track childLink) {
+                            <button
+                                [matButton]="activeLinks.includes(childLink) ? 'tonal' : 'text'"
+                                [routerLink]="childLink.url"
+                                [title]="childLink.label"
+                                class="!justify-start mx-2 !px-4 !text-gray-700"
+                            >
+                                {{ childLink.label }}
+                            </button>
+                        }
+                    </div>
+                }
             }
         </div>
     }
