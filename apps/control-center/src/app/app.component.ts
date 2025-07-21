@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, Injector, inject, runInInjectionContext } from '@angular/core';
+import { Router } from '@angular/router';
 import { Repository } from '@vality/domain-proto/domain_config_v2';
-import { BaseLink, CmdkService, Link, getUrlPath } from '@vality/matez';
+import { BaseLink, CmdkOption, CmdkService, Link, getUrlPath } from '@vality/matez';
 import Keycloak from 'keycloak-js';
-import { map } from 'rxjs';
+import { map, of } from 'rxjs';
 
 import { environment } from '../environments/environment';
 
@@ -17,6 +18,8 @@ import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 import { SidenavInfoService } from './shared/components/sidenav-info';
+import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
+import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
 import { KeycloakUserService, Services } from './shared/services';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
@@ -173,6 +176,7 @@ export class AppComponent {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
     private repositoryService = inject(Repository);
+    private injector = inject(Injector);
 
     sidenavInfoService = inject(SidenavInfoService);
     cmdkService = inject(CmdkService);
@@ -184,17 +188,32 @@ export class AppComponent {
     constructor() {
         this.registerConsoleUtils();
         this.cmdkService.init({
-            search: (searchStr) => {
-                return this.repositoryService.SearchObjects({ query: searchStr, limit: 25 }).pipe(
-                    map((objects) => {
-                        return objects.result.map((object) => ({
-                            label: object.name,
-                            description: object.description,
-                            url: `/domain?__sidenav=${JSON.stringify({ id: 'domainObject', inputs: { ref: object.ref } })}`,
-                        }));
-                    }),
-                );
-            },
+            search: (searchStr) =>
+                runInInjectionContext(this.injector, () => {
+                    if (!searchStr) return of([]);
+                    const router = inject(Router);
+                    const sidenavInfoService = inject(SidenavInfoService);
+                    return this.repositoryService
+                        .SearchObjects({ query: searchStr, limit: 25 })
+                        .pipe(
+                            map((objects): CmdkOption[] => {
+                                return objects.result.map((obj) => {
+                                    const details = getLimitedDomainObjectDetails(obj);
+                                    return {
+                                        label: details.label,
+                                        description: details.description,
+                                        tooltip: `${details.id} (${details.type})`,
+                                        action: async () => {
+                                            await router.navigate(['/domain']);
+                                            sidenavInfoService.open(DomainObjectCardComponent, {
+                                                ref: obj.ref,
+                                            });
+                                        },
+                                    };
+                                });
+                            }),
+                        );
+                }),
         });
     }
 

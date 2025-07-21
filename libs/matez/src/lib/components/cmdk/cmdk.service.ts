@@ -17,8 +17,11 @@ import { CmdkComponent } from './cmdk.component';
 
 export interface CmdkOption {
     label: string;
+    description?: string;
+    tooltip?: string;
     icon?: string;
     url?: string;
+    action?: () => void;
 }
 
 export interface CmdkOptions {
@@ -69,6 +72,7 @@ export class CmdkService {
     }
 
     close() {
+        this.search$.next('');
         this.dialog.closeAll();
     }
 

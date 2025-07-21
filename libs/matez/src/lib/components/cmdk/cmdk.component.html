@@ -12,9 +12,24 @@
 
         @if (options?.length) {
             @for (option of options; track $index) {
-                <mat-list-item [routerLink]="option.url">
+                <mat-list-item
+                    matTooltip="{{ option.tooltip || '' }}"
+                    matTooltipPosition="left"
+                    (click)="action(option)"
+                >
                     <mat-icon matListItemIcon>{{ option.icon || 'article' }}</mat-icon>
-                    <span matListItemTitle>{{ option.label }}</span>
+                    <span
+                        [vHighlightSearch]="searchControl.value"
+                        [vHighlightText]="option.label"
+                        matListItemTitle
+                        vHighlight
+                    ></span>
+                    <span
+                        [vHighlightSearch]="searchControl.value"
+                        [vHighlightText]="option.description"
+                        matListItemLine
+                        vHighlight
+                    ></span>
                 </mat-list-item>
             }
         } @else if (searchControl.value) {
