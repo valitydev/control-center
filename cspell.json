@@ -60,6 +60,8 @@
         "buildable",
         "matv",
         "autorenew",
-        "refless"
+        "refless",
+
+        "cmdk"
     ]
 }
