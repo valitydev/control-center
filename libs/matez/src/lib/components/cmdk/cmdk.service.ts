@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
     BehaviorSubject,
@@ -11,27 +11,15 @@ import {
     tap,
 } from 'rxjs';
 
-import { PossiblyAsync, getPossiblyAsyncObservable } from '../../utils';
+import { getPossiblyAsyncObservable } from '../../utils';
 
 import { CmdkComponent } from './cmdk.component';
-
-export interface CmdkOption {
-    label: string;
-    description?: string;
-    tooltip?: string;
-    icon?: string;
-    url?: string;
-    action?: () => void;
-}
-
-export interface CmdkOptions {
-    search: (searchStr: string) => PossiblyAsync<CmdkOption[]>;
-}
+import { CmdkOptions } from './types/cmdk-options';
 
 @Injectable({
     providedIn: 'root',
 })
-export class CmdkService {
+export class CmdkService implements OnDestroy {
     private dialog = inject(MatDialog);
     private options: CmdkOptions = {
         search: () => [],
@@ -55,7 +43,7 @@ export class CmdkService {
         document.addEventListener('keydown', this.listener);
     }
 
-    ngOnDestoroy() {
+    ngOnDestroy() {
         document.removeEventListener('keydown', this.listener);
     }
 

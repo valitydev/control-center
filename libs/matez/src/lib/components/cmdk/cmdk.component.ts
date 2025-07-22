@@ -14,7 +14,8 @@ import { Router, RouterModule } from '@angular/router';
 import { HighlightDirective } from '../../directives';
 import { getValueChanges } from '../../utils';
 
-import { CmdkOption, CmdkService } from './cmdk.service';
+import { CmdkService } from './cmdk.service';
+import { CmdkOption } from './types/cmdk-option';
 
 @Component({
     selector: 'v-cmdk',
