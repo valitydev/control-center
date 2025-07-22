@@ -2,7 +2,7 @@
     [id]="(ruleset$ | async)?.ref?.id"
     [title]="((routingRulesType$ | async) === 'payment' ? 'Shop' : 'Wallet') + ' Routing Rules'"
     [upLink]="[
-        '/party/' +
+        '/parties/' +
             (partyID$ | async) +
             '/routing-rules/' +
             (routingRulesType$ | async) +

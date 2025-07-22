@@ -1,9 +1,12 @@
 import { DomainObject } from '@vality/domain-proto/domain';
+import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
 import { PickByValue, ValuesType } from 'utility-types';
+
+import { getReferenceId } from './get-reference-id';
 
 export interface DomainObjectDetails {
     id: number | string;
@@ -123,4 +126,13 @@ export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
         description: result.label ? result.description : '',
         type: startCase(getUnionKey(o)),
     };
+}
+
+export function getLimitedDomainObjectDetails(o: LimitedVersionedObject): DomainObjectDetails {
+    const id = getReferenceId(o.ref);
+    const type = startCase(getUnionKey(o.ref));
+    const label = o.name || `#${id}`;
+    const description = o.description;
+
+    return { id, label, description, type };
 }

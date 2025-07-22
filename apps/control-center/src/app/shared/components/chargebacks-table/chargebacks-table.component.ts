@@ -100,7 +100,7 @@ export class ChargebacksTableComponent {
             },
             cell: (d) => ({
                 description: d.payment_id,
-                link: () => `/party/${d.party_id}/invoice/${d.invoice_id}/payment/${d.payment_id}`,
+                link: () => `/payments/${d.invoice_id}.${d.payment_id}`,
             }),
             hidden: toObservable(this.onePayment),
         },

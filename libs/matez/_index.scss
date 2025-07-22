@@ -1,9 +1,4 @@
-@forward './src/lib/styles/utils/create-palette' show create-palette;
-
 @forward './src/lib/styles/typography-hierarchy' show typography-hierarchy;
 @forward './src/lib/styles/all-component-themes' show all-component-themes;
-@forward './src/lib/styles/select-theme' show select-theme;
-@forward './src/lib/styles/app' show app;
-@forward './src/lib/styles/core' show core;
 @forward './src/lib/styles/mat-component-variants' show mat-component-variants;
 @forward './src/lib/styles/v-tokens' show v-tokens;

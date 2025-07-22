@@ -33,12 +33,12 @@ export class DomainMetadataViewExtensionsService {
                     this.partiesStoreService.get(partyId).pipe(
                         map((p) => ({
                             value: p.contact_info.registration_email,
-                            link: [[`/party/${p.id}`]] as Parameters<Router['navigate']>,
+                            link: [[`/parties/${p.id}`]] as Parameters<Router['navigate']>,
                             tooltip: p.id,
                         })),
                         startWith({
                             value: String(partyId),
-                            link: [[`/party/${partyId}`]] as Parameters<Router['navigate']>,
+                            link: [[`/parties/${partyId}`]] as Parameters<Router['navigate']>,
                         }),
                     ),
             },

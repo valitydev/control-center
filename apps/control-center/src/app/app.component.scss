@@ -1,5 +1,6 @@
-.container {
+.app-container {
     min-height: 100vh;
+    background: linear-gradient(67deg, #eeefff, #fbfbff);
 }
 
 .spacer {
@@ -13,10 +14,6 @@
 .toolbar {
     position: fixed;
     z-index: 2;
-}
-
-.content {
-    margin-top: 64px;
 }
 
 .sidenav-info {

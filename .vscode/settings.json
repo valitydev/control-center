@@ -1,3 +1,13 @@
 {
-    "typescript.preferences.importModuleSpecifier": "relative"
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "angular-schematics.schematicsDefaultOptions": {
+        "angular-*": {
+            "externalTemplate": true,
+            "style": "scss"
+        },
+        "angular-component": {
+            "skipDisplayBlock": true
+        }
+    },
+    "tailwindCSS.experimental.configFile": "apps/control-center/src/app/styles/styles.scss"
 }

@@ -1,0 +1,49 @@
+<div class="p-8 overflow-auto h-full flex flex-col">
+    <div>
+        <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Search</mat-label>
+            <input [formControl]="searchControl" matInput />
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <mat-list class="overflow-y-auto">
+        @let options = options$ | async;
+
+        @if (options?.length) {
+            @for (option of options; track $index) {
+                <mat-list-item [title]="option.tooltip" (click)="action(option)">
+                    <mat-icon matListItemIcon>{{ option.icon || 'article' }}</mat-icon>
+                    <span
+                        [vHighlightSearch]="searchControl.value"
+                        [vHighlightText]="option.label"
+                        matListItemTitle
+                        vHighlight
+                    ></span>
+                    <span
+                        [vHighlightSearch]="searchControl.value"
+                        [vHighlightText]="option.description"
+                        matListItemLine
+                        vHighlight
+                    ></span>
+                </mat-list-item>
+            }
+        } @else if (searchControl.value) {
+            @if (inProgress$ | async) {
+                <mat-list-item>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </mat-list-item>
+            } @else {
+                <mat-list-item>
+                    <mat-icon matListItemIcon>list</mat-icon>
+                    <span matListItemTitle>No results found</span>
+                </mat-list-item>
+            }
+        } @else {
+            <mat-list-item>
+                <mat-icon matListItemIcon>help</mat-icon>
+                <span matListItemTitle>Start typing to search</span>
+            </mat-list-item>
+        }
+    </mat-list>
+</div>

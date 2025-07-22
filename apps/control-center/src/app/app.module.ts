@@ -4,8 +4,10 @@ import localeRu from '@angular/common/locales/ru';
 import { LOCALE_ID, NgModule, isDevMode } from '@angular/core';
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -33,7 +35,6 @@ import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { provideKeycloak } from 'keycloak-angular';
 
-import { ToolbarComponent } from '../components';
 import { environment } from '../environments/environment';
 import { ConfigService } from '../services';
 import { parseThriftError, provideThriftServices } from '../utils';
@@ -71,7 +72,6 @@ registerLocaleData(localeRu);
         MatListModule,
         SectionsModule,
         SidenavInfoComponent,
-        ToolbarComponent,
         NavComponent,
         MonacoEditorModule.forRoot({
             requireConfig: {
@@ -85,6 +85,7 @@ registerLocaleData(localeRu);
         MatDatepickerModule,
         // TODO: hack for cash field 😡
         InputMaskModule,
+        MatChipsModule,
     ],
     providers: [
         ConfigService,
@@ -116,6 +117,7 @@ registerLocaleData(localeRu);
                 candidate: CandidateCardComponent,
             },
         },
+        { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
         provideThriftServices([
             { service: RepairManagement, name: 'RepairManagement' },
