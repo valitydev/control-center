@@ -60,4 +60,13 @@ export class CmdkComponent {
         }
         this.router.navigate([option.url]);
     }
+
+    onKeydown(event: KeyboardEvent) {
+        event.preventDefault();
+        this.options$.pipe(takeUntilDestroyed(this.dr)).subscribe((options) => {
+            if (options.length) {
+                this.action(options[0]);
+            }
+        });
+    }
 }
