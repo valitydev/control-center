@@ -25,7 +25,7 @@ import {
 import { catchError, filter, switchMap } from 'rxjs/operators';
 
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
-import { ChangeTargetDialogComponent } from '../change-target-dialog';
+import { ChangeTargetDialogComponent } from '../components/change-target-dialog';
 import { RoutingRulesService } from '../services/routing-rules';
 
 type DelegateId = {

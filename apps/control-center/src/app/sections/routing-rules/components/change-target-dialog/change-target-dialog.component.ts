@@ -3,9 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { TargetRuleset } from '../components/target-ruleset-form';
-import { RoutingRulesService } from '../services/routing-rules';
-import { RoutingRulesType } from '../types/routing-rules-type';
+import { RoutingRulesService } from '../../services/routing-rules';
+import { RoutingRulesType } from '../../types/routing-rules-type';
+import { TargetRuleset } from '../target-ruleset-form';
 
 @Component({
     templateUrl: 'change-target-dialog.component.html',
