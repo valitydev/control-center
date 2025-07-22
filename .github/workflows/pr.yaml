@@ -21,23 +21,23 @@ jobs:
       - uses: valitydev/action-frontend/setup-install@v2
       - name: Build
         run: npm run build
-      - name: Publish MatEz Library
-        if: >
-          contains(github.event.pull_request.labels.*.name, 'publish')
-          || contains(github.event.pull_request.labels.*.name, 'publish matez')
-        working-directory: ./dist/libs/matez
-        run: >
-          npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
-          && npm publish --tag pr
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Publish NgThrift Library
-        if: >
-          contains(github.event.pull_request.labels.*.name, 'publish')
-          || contains(github.event.pull_request.labels.*.name, 'publish ng-thrift')
-        working-directory: ./dist/libs/ng-thrift
-        run: >
-          npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
-          && npm publish --tag pr
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish MatEz Library
+      #   if: >
+      #     contains(github.event.pull_request.labels.*.name, 'publish')
+      #     || contains(github.event.pull_request.labels.*.name, 'publish matez')
+      #   working-directory: ./dist/libs/matez
+      #   run: >
+      #     npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
+      #     && npm publish --tag pr
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish NgThrift Library
+      #   if: >
+      #     contains(github.event.pull_request.labels.*.name, 'publish')
+      #     || contains(github.event.pull_request.labels.*.name, 'publish ng-thrift')
+      #   working-directory: ./dist/libs/ng-thrift
+      #   run: >
+      #     npm version prerelease --preid pr-${{ github.event.number }}-${{ env.SHORT_SHA }} --no-git-tag-version
+      #     && npm publish --tag pr
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
