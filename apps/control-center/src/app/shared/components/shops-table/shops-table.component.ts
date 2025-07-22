@@ -240,7 +240,7 @@ export class ShopsTableComponent {
                             delegate?.allowed?.condition?.party?.definition?.shop_is === shopId,
                     ) || [];
                 const paymentRulesCommands = [
-                    '/party',
+                    '/parties',
                     partyId,
                     'routing-rules',
                     'payment',
