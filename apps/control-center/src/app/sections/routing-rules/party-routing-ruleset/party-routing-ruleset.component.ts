@@ -10,8 +10,8 @@ import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createShopColumn, createWalletColumn } from '../../../shared';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
+import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
-import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';

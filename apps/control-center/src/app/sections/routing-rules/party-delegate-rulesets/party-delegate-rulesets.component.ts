@@ -6,7 +6,7 @@ import { catchError, first, map } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createDomainObjectColumn } from '../../../shared';
-import { RoutingRulesListItem } from '../routing-rules-list';
+import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';

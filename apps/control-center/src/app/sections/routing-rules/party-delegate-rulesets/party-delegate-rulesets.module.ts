@@ -17,8 +17,8 @@ import { DialogModule } from '@vality/matez';
 
 import { PageLayoutModule } from '../../../shared';
 import { ChangeTargetDialogModule } from '../components/change-target-dialog';
+import { RoutingRulesListModule } from '../components/routing-rules-list';
 import { TargetRulesetFormModule } from '../components/target-ruleset-form';
-import { RoutingRulesListModule } from '../routing-rules-list';
 
 import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
 import { PartyDelegateRulesetsRoutingModule } from './party-delegate-rulesets-routing.module';
