@@ -78,7 +78,7 @@ const createNavLinks = (): Link[] => [
                 const partyPath = '/' + urlPath.slice(0, 2).join('/');
                 const isPartyPath = urlPath[0] === 'parties' && urlPath.length > 1;
                 return {
-                    label: 'Merchants',
+                    label: 'Parties',
                     url: '/parties',
                     isHidden: isHidden(APP_ROUTES.parties.root.config.services),
                     children: isPartyPath
