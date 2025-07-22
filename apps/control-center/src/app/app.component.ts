@@ -78,7 +78,7 @@ const createNavLinks = (): Link[] => [
                 const partyPath = '/' + urlPath.slice(0, 2).join('/');
                 const isPartyPath = urlPath[0] === 'parties' && urlPath.length > 1;
                 return {
-                    label: 'Parties',
+                    label: isPartyPath ? 'Party' : 'Parties',
                     url: '/parties',
                     isHidden: isHidden(APP_ROUTES.parties.root.config.services),
                     children: isPartyPath
@@ -122,7 +122,7 @@ const createNavLinks = (): Link[] => [
                 const paymentPath = '/' + urlPath.slice(0, 2).join('/');
                 const isPaymentPath = urlPath[0] === 'payments' && urlPath.length > 1;
                 return {
-                    label: 'Payments',
+                    label: isPaymentPath ? 'Payment' : 'Payments',
                     url: '/payments',
                     isHidden: isHidden(PAYMENTS_ROUTING_CONFIG.services),
                     children: isPaymentPath
