@@ -15,10 +15,10 @@ import { ComponentChanges } from '@vality/matez';
 import sortBy from 'lodash-es/sortBy';
 import { map, startWith } from 'rxjs/operators';
 
-import { PaymentInstitutionsStoreService } from '../../../api/domain-config';
-import { RoutingRulesService } from '../services/routing-rules';
-import { RoutingRulesType } from '../types/routing-rules-type';
-import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
+import { PaymentInstitutionsStoreService } from '../../../../api/domain-config';
+import { RoutingRulesService } from '../../services/routing-rules';
+import { RoutingRulesType } from '../../types/routing-rules-type';
+import { getPoliciesIdByType } from '../../utils/get-policies-id-by-type';
 
 import { Target } from './types/target';
 import { TargetRuleset } from './types/target-ruleset';

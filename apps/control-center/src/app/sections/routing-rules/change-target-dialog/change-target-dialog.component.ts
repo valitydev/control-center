@@ -3,8 +3,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
+import { TargetRuleset } from '../components/target-ruleset-form';
 import { RoutingRulesService } from '../services/routing-rules';
-import { TargetRuleset } from '../target-ruleset-form';
 import { RoutingRulesType } from '../types/routing-rules-type';
 
 @Component({
