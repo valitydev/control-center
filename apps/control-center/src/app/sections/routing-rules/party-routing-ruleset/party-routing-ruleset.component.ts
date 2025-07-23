@@ -2,7 +2,14 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingDelegate } from '@vality/domain-proto/domain';
-import { Column, DialogResponseStatus, DialogService, compareDifferentTypes } from '@vality/matez';
+import {
+    Column,
+    DialogResponseStatus,
+    DialogService,
+    NotifyLogService,
+    UrlService,
+    compareDifferentTypes,
+} from '@vality/matez';
 import { combineLatest } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
@@ -33,6 +40,8 @@ export class PartyRoutingRulesetComponent {
     private routingRulesStoreService = inject(RoutingRulesStoreService);
     private destroyRef = inject(DestroyRef);
     private sidenavInfoService = inject(SidenavInfoService);
+    private urlService = inject(UrlService);
+    private log = inject(NotifyLogService);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
 
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
@@ -107,6 +116,15 @@ export class PartyRoutingRulesetComponent {
         takeUntilDestroyed(this.destroyRef),
         shareReplay(1),
     );
+
+    constructor() {
+        this.partyRoutingRulesetService.refID$.subscribe((refID) => {
+            if (!refID) {
+                this.log.error('Main ref id not found');
+                this.router.navigate(this.urlService.path().slice(0, -1));
+            }
+        });
+    }
 
     add() {
         this.partyRuleset$.pipe(take(1)).subscribe((partyRuleset) => {
