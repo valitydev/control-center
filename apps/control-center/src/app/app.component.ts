@@ -94,10 +94,12 @@ const createNavLinks = (): Link[] => [
                               {
                                   label: 'Payment RR',
                                   url: `${partyPath}/routing-rules/payment/main`,
+                                  checkUrl: `${partyPath}/routing-rules/payment`,
                               },
                               {
                                   label: 'Withdrawal RR',
                                   url: `${partyPath}/routing-rules/withdrawal/main`,
+                                  checkUrl: `${partyPath}/routing-rules/withdrawal`,
                               },
                           ]
                         : [],
