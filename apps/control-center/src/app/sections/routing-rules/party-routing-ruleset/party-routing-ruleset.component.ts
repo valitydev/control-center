@@ -7,11 +7,10 @@ import {
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
-    UrlService,
     compareDifferentTypes,
 } from '@vality/matez';
 import { combineLatest } from 'rxjs';
-import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createShopColumn, createWalletColumn } from '../../../shared';
@@ -40,13 +39,19 @@ export class PartyRoutingRulesetComponent {
     private routingRulesStoreService = inject(RoutingRulesStoreService);
     private destroyRef = inject(DestroyRef);
     private sidenavInfoService = inject(SidenavInfoService);
-    private urlService = inject(UrlService);
     private log = inject(NotifyLogService);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
 
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.routingRulesStoreService.isLoading$;
+    upLink$ = combineLatest([this.partyID$, this.routingRulesTypeService.routingRulesType$]).pipe(
+        map(
+            ([partyID, routingRulesType]) =>
+                `/parties/${partyID}/routing-rules/${routingRulesType}`,
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         {
@@ -118,12 +123,14 @@ export class PartyRoutingRulesetComponent {
     );
 
     constructor() {
-        this.partyRoutingRulesetService.refID$.subscribe((refID) => {
-            if (!refID) {
-                this.log.error('Main ref id not found');
-                this.router.navigate(this.urlService.path().slice(0, -1));
-            }
-        });
+        combineLatest([this.partyRoutingRulesetService.refID$, this.upLink$])
+            .pipe(first())
+            .subscribe(([refID, upLink]) => {
+                if (!refID) {
+                    this.log.error('Main ref id not found');
+                    this.router.navigate([upLink]);
+                }
+            });
     }
 
     add() {
