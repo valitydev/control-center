@@ -97,7 +97,7 @@ export class PartyDelegateRulesetsComponent {
             .pipe(first(), takeUntilDestroyed(this.destroyRef))
             .subscribe((parent) => {
                 void this.router.navigate([
-                    'party',
+                    'parties',
                     this.partyID,
                     'routing-rules',
                     this.route.snapshot.params['type'] as RoutingRulesType,

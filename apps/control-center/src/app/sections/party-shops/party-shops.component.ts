@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { DomainObjectType } from '@vality/domain-proto/domain';
 import { UpdateOptions } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
@@ -17,6 +18,10 @@ export class PartyShopsComponent {
         map((objs) => objs.map((obj) => obj.object.shop_config.data)),
     );
     progress$ = this.fetchFullDomainObjectsService.isLoading$;
+
+    constructor() {
+        this.fetchFullDomainObjectsService.load({ type: DomainObjectType.shop_config });
+    }
 
     reload(options: UpdateOptions) {
         this.fetchFullDomainObjectsService.reload(options);

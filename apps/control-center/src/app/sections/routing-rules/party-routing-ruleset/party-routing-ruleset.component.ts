@@ -148,7 +148,7 @@ export class PartyRoutingRulesetComponent {
             .pipe(take(1), takeUntilDestroyed(this.destroyRef))
             .subscribe((ruleset) =>
                 this.router.navigate([
-                    'party',
+                    'parties',
                     this.route.snapshot.params['partyID'],
                     'routing-rules',
                     this.route.snapshot.params['type'],
