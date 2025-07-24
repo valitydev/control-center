@@ -36,10 +36,19 @@ export class PartiesComponent implements OnInit {
         map((objs) => objs.map((obj) => obj.object.party_config.data)),
     );
     columns: Column<PartyConfig>[] = [
-        { field: 'id' },
+        {
+            field: 'id',
+            cell: (party) => ({ value: party.id }),
+        },
         {
             field: 'email',
-            cell: (party) => ({ link: () => `/parties/${party.id}` }),
+            cell: (party) => ({
+                value: party.contact_info.registration_email,
+                description: (party.contact_info.manager_contact_emails || [])
+                    .filter(Boolean)
+                    .join(', '),
+                link: () => `/parties/${party.id}`,
+            }),
         },
         {
             field: 'blocking',
@@ -67,7 +76,10 @@ export class PartiesComponent implements OnInit {
         },
         {
             field: 'shops',
-            cell: (party) => ({ value: party.shops.length }),
+            cell: (party) => ({
+                value: party.shops.length,
+                link: () => `/parties/${party.id}/shops`,
+            }),
         },
         createMenuColumn((party) => ({
             items: [

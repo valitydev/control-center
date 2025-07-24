@@ -123,20 +123,23 @@ function provideThriftService<T extends Type<unknown>>(
 
             return new service(
                 combineLatest([keycloakUserService.user.value$, configService.config.value$]).pipe(
-                    map(([user, config]) => ({
-                        headers: createWachterHeaders(serviceName, {
-                            id: user.id,
-                            email: user.email,
-                            username: user.username,
-                            token: keycloak.token ?? '',
+                    map(
+                        ([user, config]): ConnectOptions => ({
+                            headers: createWachterHeaders(serviceName, {
+                                id: user.id,
+                                email: user.email,
+                                username: user.username,
+                                token: keycloak.token ?? '',
+                            }),
+                            logging: true,
+                            loggingFn: logger,
+                            createCallOptions: () => ({
+                                headers: createRequestWachterHeaders(),
+                            }),
+                            timeout: isDevMode() ? 10_000 : 60_000,
+                            ...config.api.wachter,
                         }),
-                        logging: true,
-                        loggingFn: logger,
-                        createCallOptions: () => ({
-                            headers: createRequestWachterHeaders(),
-                        }),
-                        ...config.api.wachter,
-                    })),
+                    ),
                 ),
             );
         },
