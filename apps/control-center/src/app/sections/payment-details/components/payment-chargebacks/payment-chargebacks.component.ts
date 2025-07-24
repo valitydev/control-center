@@ -33,11 +33,10 @@ export class PaymentChargebacksComponent implements OnInit {
     }
 
     createChargeback() {
+        const [invoiceID, paymentID] = this.route.snapshot.params['paymentID'].split('.');
+
         this.dialogService
-            .open(
-                CreateChargebackDialogComponent,
-                this.route.snapshot.params as Record<'invoiceID' | 'paymentID', string>,
-            )
+            .open(CreateChargebackDialogComponent, { invoiceID, paymentID })
             .afterClosed()
             .pipe(takeUntilDestroyed(this.dr))
             .subscribe(({ status }) => {
