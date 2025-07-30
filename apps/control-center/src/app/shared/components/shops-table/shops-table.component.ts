@@ -28,7 +28,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { isNil } from 'lodash-es';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, map, of, switchMap } from 'rxjs';
-import { filter, startWith, take } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../api/domain-config';
 import {
@@ -230,7 +230,7 @@ export class ShopsTableComponent {
     ) {
         this.domainStoreService
             .getObject({ routing_rules: { id: partyDelegateRulesetId } })
-            .pipe(take(1))
+            .getFirstValue()
             .subscribe((ruleset) => {
                 const delegates =
                     ruleset?.object?.routing_rules?.data?.decisions?.delegates?.filter?.(

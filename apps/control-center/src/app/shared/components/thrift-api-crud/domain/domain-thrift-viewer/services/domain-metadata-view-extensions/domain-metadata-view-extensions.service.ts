@@ -30,7 +30,7 @@ export class DomainMetadataViewExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'PartyID', 'domain')),
                 extension: (_, partyId: PartyID) =>
-                    this.partiesStoreService.get(partyId).pipe(
+                    this.partiesStoreService.getParty(partyId).pipe(
                         map((p) => ({
                             value: p.contact_info.registration_email,
                             link: [[`/parties/${p.id}`]] as Parameters<Router['navigate']>,
