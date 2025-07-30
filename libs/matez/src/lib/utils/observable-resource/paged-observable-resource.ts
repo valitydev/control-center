@@ -1,19 +1,37 @@
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Observable, map } from 'rxjs';
+
 import {
     ObservableResource,
-    ObservableResourceBaseAction,
+    ObservableResourceAction,
     ObservableResourceOptions,
 } from './observable-resource';
 
-class ObservableResourceMoreAction<TParams> extends ObservableResourceBaseAction<TParams> {}
+const MORE_ACTION = new ObservableResourceAction('more');
 
-interface PagedObservableResourceAccResult<TItem> {
+class ObservableResourceSetOptionsAction extends ObservableResourceAction {
+    constructor(public readonly options: PagedObservableResourceLoaderOptions) {
+        super('options');
+    }
+}
+
+export interface PagedObservableResourceAccResult<TItem> {
     result: TItem[];
     continuationToken?: string;
 }
 
-interface PagedObservableResourceOptions<TItem, TParams = void>
-    extends ObservableResourceOptions<PagedObservableResourceAccResult<TItem>, TParams, TItem[]> {
-    pageSize?: number;
+export interface PagedObservableResourceLoaderOptions {
+    size: number;
+    continuationToken?: string;
+}
+
+export interface PagedObservableResourceOptions<TItem, TParams = void>
+    extends ObservableResourceOptions<PagedObservableResourceAccResult<TItem>, TParams, TItem[]>,
+        Partial<PagedObservableResourceLoaderOptions> {
+    partialLoader: (
+        params: TParams,
+        options: PagedObservableResourceLoaderOptions,
+    ) => Observable<PagedObservableResourceAccResult<TItem>>;
 }
 
 export class PagedObservableResource<TItem, TParams = void> extends ObservableResource<
@@ -21,12 +39,15 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
     TParams,
     TItem[]
 > {
-    constructor(options: PagedObservableResourceOptions<TItem, TParams>) {
-        super(options);
-    }
+    hasMore$ = this.accValue$.pipe(map((value) => !!value.continuationToken));
+    hasMore = toSignal(this.hasMore$, { initialValue: false });
 
     more() {
-        this.mergedAction$.next(new ObservableResourceMoreAction(this.params() as TParams));
+        this.action$.next(MORE_ACTION);
+    }
+
+    setOptions(options: PagedObservableResourceLoaderOptions) {
+        this.action$.next(new ObservableResourceSetOptionsAction(options));
     }
 }
 
@@ -35,3 +56,8 @@ export function pagedObservableResource<TItem, TParams = void>(
 ) {
     return new PagedObservableResource<TItem, TParams>(options);
 }
+
+export abstract class PagedObservableResourceSuperClass<
+    TItem,
+    TParams = void,
+> extends PagedObservableResource<TItem, TParams> {}

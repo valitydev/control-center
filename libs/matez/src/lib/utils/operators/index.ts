@@ -7,3 +7,4 @@ export * from './debounce-time-with-first';
 export * from './handle-error';
 export * from './async-start-with';
 export * from './tap-log';
+export * from './filter-operator';
