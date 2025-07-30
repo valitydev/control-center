@@ -4,8 +4,8 @@ import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
-import { ShopCardComponent } from '../../components/shop-card/shop-card.component';
 import { SidenavInfoService } from '../../components/sidenav-info';
+import { DomainObjectCardComponent } from '../../components/thrift-api-crud/domain2';
 
 export const createShopColumn = createColumn(
     ({ shopId, ...params }: { shopId: string; shopName?: string }) => {
@@ -19,7 +19,9 @@ export const createShopColumn = createColumn(
         const shopCell = {
             description: shopId,
             click: () => {
-                sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                sidenavInfoService.toggle(DomainObjectCardComponent, {
+                    ref: { shop_config: { id: shopId } },
+                });
             },
         };
         return name$.pipe(

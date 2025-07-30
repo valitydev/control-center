@@ -12,8 +12,8 @@ import { ValuesType } from 'utility-types';
 
 import { DomainObjectsStoreService } from '../../../../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
-import { ShopCardComponent } from '../../../../../shop-card/shop-card.component';
 import { SidenavInfoService } from '../../../../../sidenav-info';
+import { DomainObjectCardComponent } from '../../../../domain2';
 
 @Injectable({
     providedIn: 'root',
@@ -50,13 +50,17 @@ export class DomainMetadataViewExtensionsService {
                             value: p.details.name,
                             tooltip: shopId,
                             click: () => {
-                                this.sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                    ref: { shop_config: { id: shopId } },
+                                });
                             },
                         })),
                         startWith({
                             value: String(shopId),
                             click: () => {
-                                this.sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                    ref: { shop_config: { id: shopId } },
+                                });
                             },
                         }),
                     ),

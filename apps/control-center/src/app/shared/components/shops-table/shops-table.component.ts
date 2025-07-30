@@ -37,7 +37,6 @@ import {
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
 import { createPartyColumn } from '../../utils';
-import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 
@@ -73,8 +72,8 @@ export class ShopsTableComponent {
             cell: (d) => ({
                 description: d.details.description,
                 click: () => {
-                    this.sidenavInfoService.toggle(ShopCardComponent, {
-                        id: d.id,
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: { shop_config: { id: d.id } },
                     });
                 },
             }),
