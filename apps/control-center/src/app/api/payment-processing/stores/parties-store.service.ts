@@ -11,6 +11,11 @@ import { DomainObjectsStoreService } from '../../domain-config';
 export class PartiesStoreService {
     private domainObjectsStoreService = inject(DomainObjectsStoreService);
 
+    parties$ = this.domainObjectsStoreService.getObjects('party_config').value$.pipe(
+        map((objs) => objs.map((obj) => obj.object.party_config)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
     @MemoizeExpiring(5_000)
     getParty(partyId: PartyID) {
         return this.domainObjectsStoreService
