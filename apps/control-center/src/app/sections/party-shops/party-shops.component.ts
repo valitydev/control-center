@@ -1,33 +1,26 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DomainObjectType } from '@vality/domain-proto/domain';
 import { UpdateOptions } from '@vality/matez';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
-import { FetchFullDomainObjectsService } from '../../api/domain-config';
+import { PartiesStoreService } from '../../api/payment-processing';
+import { PartyStoreService } from '../party/party-store.service';
 
 @Component({
     templateUrl: 'party-shops.component.html',
-    providers: [FetchFullDomainObjectsService],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false,
 })
 export class PartyShopsComponent {
-    private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
+    private partiesStoreService = inject(PartiesStoreService);
+    private partyStoreService = inject(PartyStoreService);
 
-    shops$ = this.fetchFullDomainObjectsService.result$.pipe(
-        map((objs) => objs.map((obj) => obj.object.shop_config.data)),
+    shopsResource$ = this.partyStoreService.party$.pipe(
+        map((party) => this.partiesStoreService.getPartyShops(party.id)),
     );
-    progress$ = this.fetchFullDomainObjectsService.isLoading$;
+    shops$ = this.shopsResource$.pipe(switchMap((res) => res.value$));
+    progress$ = this.shopsResource$.pipe(switchMap((res) => res.isLoading$));
 
-    constructor() {
-        this.fetchFullDomainObjectsService.load({ type: DomainObjectType.shop_config });
-    }
-
-    reload(options: UpdateOptions) {
-        this.fetchFullDomainObjectsService.reload(options);
-    }
-
-    more() {
-        this.fetchFullDomainObjectsService.more();
+    reload(_options: UpdateOptions) {
+        this.partiesStoreService.reloadParties();
     }
 }

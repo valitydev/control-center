@@ -50,4 +50,16 @@ export class PartiesStoreService {
             .getObject({ wallet_config: { id: walletId } })
             .map((obj) => obj.object.wallet_config);
     }
+
+    reloadParties() {
+        this.parties.reload();
+    }
+
+    reloadShops() {
+        this.shops.reload();
+    }
+
+    reloadWallets() {
+        this.wallets.reload();
+    }
 }

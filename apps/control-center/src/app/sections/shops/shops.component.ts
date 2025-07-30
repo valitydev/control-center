@@ -15,7 +15,7 @@ export class ShopsComponent implements OnInit {
     private fetchDomainObjectsService = inject(FetchFullDomainObjectsService);
 
     shops$ = this.fetchDomainObjectsService.result$.pipe(
-        map((objs) => objs.map((obj) => obj.object.shop_config.data)),
+        map((objs) => objs.map((obj) => obj.object.shop_config)),
     );
     progress$ = this.fetchDomainObjectsService.isLoading$;
 
