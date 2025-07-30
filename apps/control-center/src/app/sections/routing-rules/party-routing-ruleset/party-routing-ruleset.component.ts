@@ -208,21 +208,21 @@ export class PartyRoutingRulesetComponent {
                                     ruleset.data.decisions.delegates.every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.shop_is !==
-                                            s.id,
+                                            s.ref.id,
                                     ),
                                 )
                                 .sort((a, b) =>
-                                    compareDifferentTypes(a.details.name, b.details.name),
+                                    compareDifferentTypes(a.data.details.name, b.data.details.name),
                                 ),
                             wallets: wallets
                                 .filter((w) =>
                                     ruleset.data.decisions.delegates.every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.wallet_is !==
-                                            w.id,
+                                            w.ref.id,
                                     ),
                                 )
-                                .sort((a, b) => compareDifferentTypes(a.name, b.name)),
+                                .sort((a, b) => compareDifferentTypes(a.data.name, b.data.name)),
                             type,
                             partyID,
                         })

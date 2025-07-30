@@ -1,7 +1,12 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
-import { Shop, ShopID, Wallet, WalletID } from '@vality/domain-proto/domain';
+import {
+    ShopConfigObject,
+    ShopID,
+    WalletConfigObject,
+    WalletID,
+} from '@vality/domain-proto/domain';
 import { DialogResponseStatus, DialogSuperclass, NotifyLogService, Option } from '@vality/matez';
 
 import { RoutingRulesService } from '../../services/routing-rules';
@@ -16,8 +21,8 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     {
         refID: number;
         partyID: string;
-        shops: Shop[];
-        wallets: Wallet[];
+        shops: ShopConfigObject[];
+        wallets: WalletConfigObject[];
         type: RoutingRulesType;
     }
 > {
@@ -34,15 +39,15 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     });
 
     shopsOptions: Option<ShopID>[] = this.dialogData.shops.map((s) => ({
-        value: s.id,
-        label: s.details.name,
-        description: s.id,
+        value: s.ref.id,
+        label: s.data.details.name,
+        description: s.ref.id,
     }));
 
     walletsOptions: Option<WalletID>[] = this.dialogData.wallets.map((s) => ({
-        value: s.id,
-        label: s.name,
-        description: s.id,
+        value: s.data.id,
+        label: s.data.name,
+        description: s.data.id,
     }));
 
     add() {
