@@ -12,10 +12,11 @@ export const createPartyColumn = createColumn(
                 ? of(params.partyName)
                 : inject(PartiesStoreService)
                       .getParty(id)
-                      .pipe(
+                      .value$.pipe(
                           map(
                               (party) =>
-                                  party?.party_name ?? party?.contact_info?.registration_email,
+                                  party?.data?.party_name ??
+                                  party?.data?.contact_info?.registration_email,
                           ),
                       );
         const partyCell = {

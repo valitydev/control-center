@@ -12,7 +12,7 @@ export const createWalletColumn = createColumn(
                 ? of(params.name)
                 : inject(PartiesStoreService)
                       .getWallet(id)
-                      .pipe(map((wallet) => wallet?.name));
+                      .value$.pipe(map((wallet) => wallet?.data?.name));
         const cell = { description: id };
         return name$.pipe(
             map((name) => ({

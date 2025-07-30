@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Party } from '@vality/domain-proto/domain';
+import { PartyConfig } from '@vality/domain-proto/domain';
 import { NotifyLogService } from '@vality/matez';
 import { EMPTY, Observable, of } from 'rxjs';
 import {
     catchError,
     distinctUntilChanged,
+    map,
     shareReplay,
     startWith,
     switchMap,
@@ -18,11 +19,12 @@ export class PartyStoreService {
     private route = inject(ActivatedRoute);
     private partiesStoreService = inject(PartiesStoreService);
     private log = inject(NotifyLogService);
-    party$: Observable<Party | Partial<Party> | null> = this.route.params.pipe(
+    party$: Observable<PartyConfig | Partial<PartyConfig> | null> = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         switchMap(({ partyID }) =>
             partyID
-                ? this.partiesStoreService.getParty(partyID).pipe(
+                ? this.partiesStoreService.getParty(partyID).value$.pipe(
+                      map((party) => party.data),
                       catchError((err) => {
                           this.log.error(err);
                           return EMPTY;

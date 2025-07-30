@@ -46,11 +46,11 @@ export class PartyRoutingRulesetService {
     );
 
     shops$ = this.partyID$.pipe(
-        switchMap((id) => this.partiesStoreService.getPartyShops(id)),
+        switchMap((id) => this.partiesStoreService.getPartyShops(id).value$),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     wallets$ = this.partyID$.pipe(
-        switchMap((id) => this.partiesStoreService.getPartyWallets(id)),
+        switchMap((id) => this.partiesStoreService.getPartyWallets(id).value$),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
