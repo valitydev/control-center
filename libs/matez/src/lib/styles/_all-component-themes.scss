@@ -2,7 +2,6 @@
 
 @use '../components/table/table-theme';
 @use '../components/dialog/dialog-theme';
-@use '../components/tag/tag-theme';
 @use '../components/input-field/input-field-theme';
 @use '../components/nav/nav-theme';
 
@@ -11,7 +10,6 @@
 // that you are using.
 @mixin all-component-themes($theme) {
     @include dialog-theme.theme($theme);
-    @include tag-theme.theme($theme);
     @include input-field-theme.theme($theme);
     @include nav-theme.theme($theme);
 }
