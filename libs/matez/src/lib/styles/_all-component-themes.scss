@@ -1,7 +1,6 @@
 @use '@angular/material' as mat;
 
 @use '../components/table/table-theme';
-@use '../components/value/value-theme';
 @use '../components/dialog/dialog-theme';
 @use '../components/tag/tag-theme';
 @use '../components/input-field/input-field-theme';
@@ -11,7 +10,6 @@
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @mixin all-component-themes($theme) {
-    @include value-theme.theme($theme);
     @include dialog-theme.theme($theme);
     @include tag-theme.theme($theme);
     @include input-field-theme.theme($theme);
