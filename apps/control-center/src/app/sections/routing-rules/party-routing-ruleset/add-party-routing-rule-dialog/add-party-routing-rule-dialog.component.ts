@@ -45,9 +45,9 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
     }));
 
     walletsOptions: Option<WalletID>[] = this.dialogData.wallets.map((s) => ({
-        value: s.data.id,
+        value: s.ref.id,
         label: s.data.name,
-        description: s.data.id,
+        description: s.ref.id,
     }));
 
     add() {
