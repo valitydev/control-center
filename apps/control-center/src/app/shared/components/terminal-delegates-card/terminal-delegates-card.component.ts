@@ -111,23 +111,27 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                 const party = d.delegate.allowed.condition?.party;
                 switch (getUnionKey(party?.definition)) {
                     case 'shop_is':
-                        return this.partiesStoreService.getShop(party?.definition?.shop_is).pipe(
-                            map((shop) => ({
-                                value: shop.details.name,
-                                description: shop.id,
-                                link: () =>
-                                    `/parties/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
-                            })),
-                        );
+                        return this.partiesStoreService
+                            .getShop(party?.definition?.shop_is)
+                            .value$.pipe(
+                                map((shop) => ({
+                                    value: shop.data.details.name,
+                                    description: shop.ref.id,
+                                    link: () =>
+                                        `/parties/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                })),
+                            );
                     case 'wallet_is':
-                        return this.partiesStoreService.getShop(party?.definition?.wallet_is).pipe(
-                            map((wallet) => ({
-                                value: wallet.details.name,
-                                description: wallet.id,
-                                link: () =>
-                                    `/parties/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
-                            })),
-                        );
+                        return this.partiesStoreService
+                            .getShop(party?.definition?.wallet_is)
+                            .value$.pipe(
+                                map((wallet) => ({
+                                    value: wallet.data.details.name,
+                                    description: wallet.ref.id,
+                                    link: () =>
+                                        `/parties/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                })),
+                            );
                     case 'contract_is':
                         return {
                             value: party.definition.contract_is,

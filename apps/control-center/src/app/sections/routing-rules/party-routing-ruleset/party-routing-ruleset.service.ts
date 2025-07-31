@@ -1,12 +1,12 @@
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import { NotifyLogService } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
-import { Observable, combineLatest, defer, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
+import { PartiesStoreService } from '../../../api/payment-processing';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesService } from '../services/routing-rules';
 
@@ -15,7 +15,7 @@ export const MAIN_REF = 'main';
 @Injectable()
 export class PartyRoutingRulesetService {
     private route = inject(ActivatedRoute);
-    private partyManagementService = inject(PartyManagement);
+    private partiesStoreService = inject(PartiesStoreService);
     private routingRulesService = inject(RoutingRulesService);
     private dr = inject(DestroyRef);
     private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
@@ -45,23 +45,17 @@ export class PartyRoutingRulesetService {
         shareReplay(1),
     );
 
-    shops$ = defer(() => this.party$).pipe(
-        map((p) => Array.from(p.shops.values())),
+    shops$ = this.partyID$.pipe(
+        switchMap((id) => this.partiesStoreService.getPartyShops(id).value$),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    wallets$ = defer(() => this.party$).pipe(
-        map((p) => Array.from(p.wallets.values())),
+    wallets$ = this.partyID$.pipe(
+        switchMap((id) => this.partiesStoreService.getPartyWallets(id).value$),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     partyRuleset$ = combineLatest([this.routingRulesService.rulesets$, this.refID$]).pipe(
         map(([rules, refID]) => rules.find((r) => r?.ref?.id === refID)),
-        takeUntilDestroyed(this.dr),
-        shareReplay(1),
-    );
-
-    private party$ = this.partyID$.pipe(
-        switchMap((partyID) => this.partyManagementService.Get(partyID)),
         takeUntilDestroyed(this.dr),
         shareReplay(1),
     );

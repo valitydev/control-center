@@ -2,16 +2,22 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RoutingDelegate } from '@vality/domain-proto/domain';
-import { Column, DialogResponseStatus, DialogService, compareDifferentTypes } from '@vality/matez';
+import {
+    Column,
+    DialogResponseStatus,
+    DialogService,
+    NotifyLogService,
+    compareDifferentTypes,
+} from '@vality/matez';
 import { combineLatest } from 'rxjs';
-import { filter, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createShopColumn, createWalletColumn } from '../../../shared';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
+import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
-import { RoutingRulesListItem } from '../routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 
 import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dialog';
@@ -33,11 +39,19 @@ export class PartyRoutingRulesetComponent {
     private routingRulesStoreService = inject(RoutingRulesStoreService);
     private destroyRef = inject(DestroyRef);
     private sidenavInfoService = inject(SidenavInfoService);
+    private log = inject(NotifyLogService);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
 
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.routingRulesStoreService.isLoading$;
+    upLink$ = combineLatest([this.partyID$, this.routingRulesTypeService.routingRulesType$]).pipe(
+        map(
+            ([partyID, routingRulesType]) =>
+                `/parties/${partyID}/routing-rules/${routingRulesType}`,
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         {
@@ -108,6 +122,17 @@ export class PartyRoutingRulesetComponent {
         shareReplay(1),
     );
 
+    constructor() {
+        combineLatest([this.partyRoutingRulesetService.refID$, this.upLink$])
+            .pipe(first())
+            .subscribe(([refID, upLink]) => {
+                if (!refID) {
+                    this.log.error('Main ref id not found');
+                    this.router.navigate([upLink]);
+                }
+            });
+    }
+
     add() {
         this.partyRuleset$.pipe(take(1)).subscribe((partyRuleset) => {
             if (partyRuleset) {
@@ -123,7 +148,7 @@ export class PartyRoutingRulesetComponent {
             .pipe(take(1), takeUntilDestroyed(this.destroyRef))
             .subscribe((ruleset) =>
                 this.router.navigate([
-                    'party',
+                    'parties',
                     this.route.snapshot.params['partyID'],
                     'routing-rules',
                     this.route.snapshot.params['type'],
@@ -183,21 +208,21 @@ export class PartyRoutingRulesetComponent {
                                     ruleset.data.decisions.delegates.every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.shop_is !==
-                                            s.id,
+                                            s.ref.id,
                                     ),
                                 )
                                 .sort((a, b) =>
-                                    compareDifferentTypes(a.details.name, b.details.name),
+                                    compareDifferentTypes(a.data.details.name, b.data.details.name),
                                 ),
                             wallets: wallets
                                 .filter((w) =>
                                     ruleset.data.decisions.delegates.every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.wallet_is !==
-                                            w.id,
+                                            w.ref.id,
                                     ),
                                 )
-                                .sort((a, b) => compareDifferentTypes(a.name, b.name)),
+                                .sort((a, b) => compareDifferentTypes(a.data.name, b.data.name)),
                             type,
                             partyID,
                         })

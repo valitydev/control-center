@@ -30,6 +30,7 @@ import { PossiblyAsyncValue, getPossiblyAsyncValue } from '../../utils';
 export interface BaseLink {
     label?: string;
     url?: string;
+    checkUrl?: string;
     icon?: string;
     children?: BaseLink[];
     isHidden?: boolean;
@@ -38,7 +39,10 @@ export interface BaseLink {
 export type Link = PossiblyAsyncValue<Overwrite<BaseLink, { children?: Link[] }>, [url: string]>;
 
 function isActiveLink(link: BaseLink, url: string): boolean {
-    return !isNil(url) && url.startsWith(link.url || '');
+    return (
+        !isNil(url) &&
+        (url.startsWith(link.url || '') || (!!link.checkUrl && url.startsWith(link.checkUrl || '')))
+    );
 }
 
 function getActiveLinks(links: BaseLink[], url: string): BaseLink[] {

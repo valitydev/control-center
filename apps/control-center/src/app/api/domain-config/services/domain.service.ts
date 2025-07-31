@@ -59,7 +59,7 @@ export class DomainService {
                         // If no updates or only one update operation
                         (ops.every((o) => getUnionKey(o) !== 'update') || ops.length === 1)
                     ) {
-                        console.warn(err, `Domain config is out of date, one more attempt...`);
+                        this.log.error(err, `Domain config is out of date, one more attempt...`);
                         this.version.reload();
                         if (ops.every((o) => getUnionKey(o) !== 'update'))
                             return this.commit(ops, undefined, attempts - 1);
@@ -71,6 +71,10 @@ export class DomainService {
                             switchMap(([ver, obj]) => {
                                 if (isEqualThrift(obj[0].object, ops[0].update.object))
                                     return this.commit(ops, ver, attempts - 1);
+                                this.log.error(
+                                    err,
+                                    `Domain config is out of date, please try again`,
+                                );
                                 throw new DomainServiceObsoleteCommitVersionError(err, obj[0]);
                             }),
                         );
