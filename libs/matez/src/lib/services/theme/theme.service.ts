@@ -1,24 +1,25 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, effect, signal } from '@angular/core';
 
 export type Theme = 'light' | 'dark' | 'system';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
     private readonly storageKey = 'theme';
 
     theme = signal<Theme>(this.getStoredTheme());
+    isDark = computed(
+        () => this.theme() === 'dark' || (this.theme() === 'system' && this.isSystemDark()),
+    );
 
     constructor() {
-        this.applyTheme(this.theme());
+        effect(() => this.updateTheme(this.isDark()));
         this.listenToSystemThemeChanges();
     }
 
     setTheme(theme: Theme) {
         this.theme.set(theme);
         localStorage.setItem(this.storageKey, theme);
-        this.applyTheme(theme);
+        this.updateTheme();
     }
 
     private getStoredTheme(): Theme {
@@ -26,9 +27,7 @@ export class ThemeService {
         return stored && ['light', 'dark', 'system'].includes(stored) ? stored : 'system';
     }
 
-    private applyTheme(theme: Theme) {
-        const isDark = theme === 'dark' || (theme === 'system' && this.isSystemDark());
-
+    private updateTheme(isDark = this.isDark()) {
         if (isDark) {
             document.body.classList.add('dark-mode');
         } else {
@@ -43,7 +42,7 @@ export class ThemeService {
     private listenToSystemThemeChanges() {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
             if (this.theme() === 'system') {
-                this.applyTheme('system');
+                this.updateTheme();
             }
         });
     }

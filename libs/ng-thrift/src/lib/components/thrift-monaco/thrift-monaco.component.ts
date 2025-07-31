@@ -1,5 +1,6 @@
-import { Component, booleanAttribute, computed, input, model, output } from '@angular/core';
+import { Component, booleanAttribute, computed, inject, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ThemeService } from '@vality/matez';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { toJson } from '../../utils';
@@ -11,19 +12,24 @@ import { toJson } from '../../utils';
     styleUrl: './thrift-monaco.component.scss',
 })
 export class ThriftMonacoComponent<T> {
+    private theme = inject(ThemeService);
+
     value = model.required<T>();
     original = input<T>();
     readOnly = input(false, { transform: booleanAttribute });
     parseError = output<unknown | null>();
 
-    private modelOptions = { language: 'json' };
+    private modelOptions = computed(() => ({
+        language: 'json',
+        theme: this.theme.isDark() ? 'vs-dark' : 'vs-light',
+    }));
     private baseOptions = computed(() => ({
         automaticLayout: true,
         readOnly: this.readOnly(),
     }));
     editorOptions = computed(() => ({
         ...this.baseOptions(),
-        ...this.modelOptions,
+        ...this.modelOptions(),
     }));
     diffOptions = computed(() => ({
         ...this.baseOptions(),
@@ -33,11 +39,11 @@ export class ThriftMonacoComponent<T> {
     innerValue = computed(() => this.stringifyThrift(this.value()));
     modifiedModel = computed(() => ({
         code: this.innerValue(),
-        ...this.modelOptions,
+        ...this.modelOptions(),
     }));
     originalModel = computed(() => ({
         code: this.stringifyThrift(this.original()),
-        ...this.modelOptions,
+        ...this.modelOptions(),
     }));
 
     stringifyThrift(outer: unknown): string {
