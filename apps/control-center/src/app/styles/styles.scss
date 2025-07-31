@@ -30,8 +30,8 @@ body {
     color: var(--mat-sys-on-surface);
     background: linear-gradient(67deg, #eeefff, #fbfbff);
 
-    --v-color-success-bg: #22c55e;
-    --v-color-pending-bg: #f59e0b;
+    --v-color-success-bg: #16a34a;
+    --v-color-pending-bg: #d97706;
     --v-color-success-text: #ffffff;
     --v-color-pending-text: #ffffff;
 }
@@ -41,13 +41,7 @@ body.dark-mode {
     background: linear-gradient(67deg, #2a2b3d, #3a3b4d);
 
     --mat-sys-surface: #242538;
-    --mat-sys-surface-dim: #1f2032;
-    --mat-sys-surface-bright: #32334a;
-    --mat-sys-surface-container-lowest: #1a1b30;
     --mat-sys-surface-container-low: #202135;
-    --mat-sys-surface-container: #24253a;
-    --mat-sys-surface-container-high: #2e2f42;
-    --mat-sys-surface-container-highest: #38394c;
 
     --v-color-success-bg: #2e7d32;
     --v-color-pending-bg: #f57c00;
