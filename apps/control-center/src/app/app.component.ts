@@ -1,7 +1,7 @@
 import { Component, Injector, inject, runInInjectionContext } from '@angular/core';
 import { Router } from '@angular/router';
 import { Repository } from '@vality/domain-proto/domain_config_v2';
-import { BaseLink, CmdkOption, CmdkService, Link, getUrlPath } from '@vality/matez';
+import { BaseLink, CmdkOption, CmdkService, Link, ThemeService, getUrlPath } from '@vality/matez';
 import Keycloak from 'keycloak-js';
 import { map, of } from 'rxjs';
 
@@ -20,7 +20,7 @@ import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdra
 import { SidenavInfoService } from './shared/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
-import { KeycloakUserService, Services, ThemeService } from './shared/services';
+import { KeycloakUserService, Services } from './shared/services';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);
