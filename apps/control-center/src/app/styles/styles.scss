@@ -61,12 +61,12 @@ body.dark-mode {
 
     @include mat.divider-overrides(
         (
-            color: #ddd,
+            color: var(--mat-sys-outline-variant),
         )
     );
     @include mat.table-overrides(
         (
-            row-item-outline-color: #ddd,
+            row-item-outline-color: var(--mat-sys-surface-variant),
         )
     );
 }
