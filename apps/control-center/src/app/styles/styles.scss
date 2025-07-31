@@ -19,6 +19,8 @@ body {
 html {
     color-scheme: light;
     @include mat.theme($config);
+    @include mat.form-field-density(-3);
+    @include mat.table-density(-2);
 }
 
 body.dark-mode {
