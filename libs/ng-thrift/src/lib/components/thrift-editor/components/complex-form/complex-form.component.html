@@ -2,7 +2,7 @@
     @if (hasLabel) {
         <span class="mat-body-large">
             {{ data.type | fieldLabel: data.field }}
-            <span class="mat-secondary-text">
+            <span class="text-[var(--mat-sys-outline)]">
                 ({{ data.type.name | titlecase }}:
                 {{ isKeyValue ? (keyType | ngtValueTypeTitle | titlecase) + ' - ' : '' }}
                 {{ data.type.valueType | ngtValueTypeTitle | titlecase }})
@@ -21,7 +21,7 @@
                             {{ i + 1 }}.
                             @if (!panel.expanded) {
                                 @if (isKeyValue) {
-                                    <span class="mat-secondary-text">
+                                    <span class="text-[var(--mat-sys-outline)]">
                                         {{ keyControls.controls[i].value | inlineJson: false }}
                                     </span>
                                 } @else {

@@ -1,11 +1,6 @@
 @use '@angular/material' as mat;
 
 @mixin typography-hierarchy($theme, $selector: '.mat-typography') {
-    .mat-secondary-text.mat-secondary-text {
-        color: mat.get-theme-color($theme, neutral, 50);
-        font-weight: 400;
-    }
-
     .mat-mono.mat-mono {
         font-family: 'Roboto Mono', monospace;
     }

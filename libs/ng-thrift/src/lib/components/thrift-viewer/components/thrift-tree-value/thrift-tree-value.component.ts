@@ -7,7 +7,6 @@ import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-res
 @Component({
     selector: 'v-thrift-tree-value',
     templateUrl: './thrift-tree-value.component.html',
-    styleUrl: './thrift-tree-value.component.scss',
     imports: [ValueComponent],
 })
 export class ThriftTreeValueComponent {

@@ -1,7 +1,7 @@
 <mat-form-field style="width: 100%">
     <mat-label>{{ label }}</mat-label>
     <input #input="matInput" [formControl]="control" autocomplete="false" matInput type="string" />
-    <mat-hint class="mat-secondary-text">{{
+    <mat-hint class="text-[var(--mat-sys-outline)]">{{
         (items$ | async)?.length
             ? (items$ | async)?.length === 1
                 ? '1 item'
