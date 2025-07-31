@@ -50,8 +50,3 @@ body.dark-mode {
         color: var(--mat-sys-outline-variant),
     )
 );
-@include mat.table-overrides(
-    (
-        row-item-outline-color: var(--mat-sys-surface-variant),
-    )
-);
