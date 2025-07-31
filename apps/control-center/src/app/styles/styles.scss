@@ -49,8 +49,10 @@ body.dark-mode {
     --v-color-pending-text: #fff3e0;
 }
 
-@include mat.divider-overrides(
-    (
-        color: var(--mat-sys-outline-variant),
-    )
-);
+:root {
+    @include mat.divider-overrides(
+        (
+            color: var(--mat-sys-outline-variant),
+        )
+    );
+}
