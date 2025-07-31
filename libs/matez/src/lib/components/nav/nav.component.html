@@ -12,7 +12,7 @@
                 @if (link.children) {
                     <button
                         [ngClass]="{
-                            '!text-gray-700': !isActive,
+                            '!text-[var(--mat-sys-on-surface-variant)]': !isActive,
                         }"
                         [routerLink]="link.url"
                         [title]="link.label"
@@ -33,7 +33,7 @@
                         [matButton]="isActive ? 'tonal' : 'text'"
                         [routerLink]="link.url"
                         [title]="link.label"
-                        class="!justify-start mx-2 !px-4 !text-gray-700"
+                        class="!justify-start mx-2 !px-4 !text-[var(--mat-sys-on-surface-variant)]"
                     >
                         {{ link.label }}
                     </button>
@@ -45,7 +45,7 @@
                                 [matButton]="activeLinks.includes(childLink) ? 'tonal' : 'text'"
                                 [routerLink]="childLink.url"
                                 [title]="childLink.label"
-                                class="!justify-start mx-2 !px-4 !text-gray-700"
+                                class="!justify-start mx-2 !px-4 !text-[var(--mat-sys-on-surface-variant)]"
                             >
                                 {{ childLink.label }}
                             </button>
