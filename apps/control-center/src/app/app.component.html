@@ -31,8 +31,8 @@
                 </button>
             </div>
 
-            <v-nav [links]="links" class="block"></v-nav>
-            <div class="mt-auto px-2 py-4">
+            <v-nav [links]="links" class="block overflow-auto flex-1"></v-nav>
+            <div class="mt-auto px-2 pb-4">
                 <button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2" mat-button>
                     <mat-icon>account_circle</mat-icon>
                     {{ username() }}

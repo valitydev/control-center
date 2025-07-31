@@ -17,8 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
 import { PageLayoutModule } from '../../../shared';
-import { ChangeTargetDialogModule } from '../change-target-dialog';
-import { RoutingRulesListModule } from '../routing-rules-list';
+import { ChangeTargetDialogModule } from '../components/change-target-dialog';
+import { RoutingRulesListModule } from '../components/routing-rules-list';
 
 import { AddPartyRoutingRuleDialogModule } from './add-party-routing-rule-dialog';
 import { InitializeRoutingRulesDialogModule } from './initialize-routing-rules-dialog';

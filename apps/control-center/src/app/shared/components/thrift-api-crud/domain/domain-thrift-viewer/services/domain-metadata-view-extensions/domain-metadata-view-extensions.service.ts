@@ -12,8 +12,8 @@ import { ValuesType } from 'utility-types';
 
 import { DomainObjectsStoreService } from '../../../../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../../../../api/payment-processing';
-import { ShopCardComponent } from '../../../../../shop-card/shop-card.component';
 import { SidenavInfoService } from '../../../../../sidenav-info';
+import { DomainObjectCardComponent } from '../../../../domain2';
 
 @Injectable({
     providedIn: 'root',
@@ -30,11 +30,11 @@ export class DomainMetadataViewExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'PartyID', 'domain')),
                 extension: (_, partyId: PartyID) =>
-                    this.partiesStoreService.get(partyId).pipe(
+                    this.partiesStoreService.getParty(partyId).value$.pipe(
                         map((p) => ({
-                            value: p.contact_info.registration_email,
-                            link: [[`/parties/${p.id}`]] as Parameters<Router['navigate']>,
-                            tooltip: p.id,
+                            value: p.data.contact_info.registration_email,
+                            link: [[`/parties/${p.ref.id}`]] as Parameters<Router['navigate']>,
+                            tooltip: p.ref.id,
                         })),
                         startWith({
                             value: String(partyId),
@@ -45,18 +45,22 @@ export class DomainMetadataViewExtensionsService {
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
                 extension: (_, shopId: ShopID) =>
-                    this.partiesStoreService.getShop(shopId).pipe(
+                    this.partiesStoreService.getShop(shopId).value$.pipe(
                         map((p) => ({
-                            value: p.details.name,
+                            value: p.data.details.name,
                             tooltip: shopId,
                             click: () => {
-                                this.sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                    ref: { shop_config: { id: shopId } },
+                                });
                             },
                         })),
                         startWith({
                             value: String(shopId),
                             click: () => {
-                                this.sidenavInfoService.toggle(ShopCardComponent, { id: shopId });
+                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                    ref: { shop_config: { id: shopId } },
+                                });
                             },
                         }),
                     ),

@@ -11,7 +11,7 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
-import { RoutingRulesetRef, ShopConfig } from '@vality/domain-proto/domain';
+import { RoutingRulesetRef, ShopConfigObject } from '@vality/domain-proto/domain';
 import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import {
     Column,
@@ -28,7 +28,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { isNil } from 'lodash-es';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, map, of, switchMap } from 'rxjs';
-import { filter, startWith, take } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../api/domain-config';
 import {
@@ -37,7 +37,6 @@ import {
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
 import { createPartyColumn } from '../../utils';
-import { ShopCardComponent } from '../shop-card/shop-card.component';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 
@@ -57,36 +56,36 @@ export class ShopsTableComponent {
     private domainStoreService = inject(DomainObjectsStoreService);
     private injector = inject(Injector);
 
-    shops = input<ShopConfig[]>([]);
+    shops = input<ShopConfigObject[]>([]);
     @Input() progress: number | boolean = false;
     @Output() update = new EventEmitter<UpdateOptions>();
     @Output() filterChange = new EventEmitter<string>();
 
     noPartyColumn = input(false, { transform: booleanAttribute });
 
-    columns: Column<ShopConfig>[] = [
+    columns: Column<ShopConfigObject>[] = [
         {
-            field: 'id',
+            field: 'ref.id',
         },
         {
             field: 'details.name',
             cell: (d) => ({
-                description: d.details.description,
+                description: d.data.details.description,
                 click: () => {
-                    this.sidenavInfoService.toggle(ShopCardComponent, {
-                        id: d.id,
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: { shop_config: { id: d.ref.id } },
                     });
                 },
             }),
         },
-        createPartyColumn((d) => ({ id: d.party_id }), {
+        createPartyColumn((d) => ({ id: d.data.party_id }), {
             hidden: toObservable(this.noPartyColumn),
         }),
         {
             field: 'terms',
             lazyCell: (d) =>
                 this.domainStoreService
-                    .getLimitedObject({ term_set_hierarchy: { id: d.terms.id } })
+                    .getLimitedObject({ term_set_hierarchy: { id: d.data.terms.id } })
                     .value$.pipe(
                         map((obj) => ({
                             value: obj?.name,
@@ -109,25 +108,25 @@ export class ShopsTableComponent {
         {
             field: 'blocking',
             cell: (d) => ({
-                value: startCase(getUnionKey(d.blocking)),
+                value: startCase(getUnionKey(d.data.blocking)),
                 color: (
                     {
                         blocked: 'warn',
                         unblocked: 'success',
                     } as const
-                )[getUnionKey(d.blocking)],
+                )[getUnionKey(d.data.blocking)],
             }),
         },
         {
             field: 'suspension',
             cell: (d) => ({
-                value: startCase(getUnionKey(d.suspension)),
+                value: startCase(getUnionKey(d.data.suspension)),
                 color: (
                     {
                         suspended: 'warn',
                         active: 'success',
                     } as const
-                )[getUnionKey(d.suspension)],
+                )[getUnionKey(d.data.suspension)],
             }),
         },
         createMenuColumn((d) =>
@@ -137,24 +136,27 @@ export class ShopsTableComponent {
                         ...delegatesByParty.rulesetIds.map((id) => {
                             const rulesetId =
                                 delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                    ?.get?.(d.party_id)
+                                    ?.get?.(d.data.party_id)
                                     ?.find?.((v) => v?.partyDelegate?.ruleset?.id === id)
                                     ?.partyDelegate?.ruleset?.id;
                             return {
                                 label: `Routing rules #${id}`,
-                                click: () => this.openRoutingRules(rulesetId, d.id, d.party_id),
+                                click: () =>
+                                    this.openRoutingRules(rulesetId, d.ref.id, d.data.party_id),
                                 disabled: isNil(rulesetId),
                             };
                         }),
                         {
                             label:
-                                getUnionKey(d.suspension) === 'suspended' ? 'Activate' : 'Suspend',
+                                getUnionKey(d.data.suspension) === 'suspended'
+                                    ? 'Activate'
+                                    : 'Suspend',
                             click: () => {
                                 this.toggleSuspension(d);
                             },
                         },
                         {
-                            label: getUnionKey(d.blocking) === 'blocked' ? 'Unblock' : 'Block',
+                            label: getUnionKey(d.data.blocking) === 'blocked' ? 'Unblock' : 'Block',
                             click: () => {
                                 this.toggleBlocking(d);
                             },
@@ -165,25 +167,26 @@ export class ShopsTableComponent {
         ),
     ];
 
-    toggleBlocking(shop: ShopConfig) {
+    toggleBlocking(shop: ShopConfigObject) {
         this.dialogService
             .open(ConfirmDialogComponent, {
-                title: getUnionKey(shop.blocking) === 'unblocked' ? 'Block shop' : 'Unblock shop',
+                title:
+                    getUnionKey(shop.data.blocking) === 'unblocked' ? 'Block shop' : 'Unblock shop',
                 hasReason: true,
             })
             .afterClosed()
             .pipe(
                 filter((r) => r.status === DialogResponseStatus.Success),
                 switchMap((r) =>
-                    getUnionKey(shop.blocking) === 'unblocked'
+                    getUnionKey(shop.data.blocking) === 'unblocked'
                         ? this.partyManagementService.BlockShop(
-                              shop.party_id,
-                              shop.id,
+                              shop.data.party_id,
+                              shop.ref.id,
                               r.data.reason,
                           )
                         : this.partyManagementService.UnblockShop(
-                              shop.party_id,
-                              shop.id,
+                              shop.data.party_id,
+                              shop.ref.id,
                               r.data.reason,
                           ),
                 ),
@@ -199,18 +202,21 @@ export class ShopsTableComponent {
             });
     }
 
-    toggleSuspension(shop: ShopConfig) {
+    toggleSuspension(shop: ShopConfigObject) {
         this.dialogService
             .open(ConfirmDialogComponent, {
-                title: getUnionKey(shop.suspension) === 'active' ? 'Suspend shop' : 'Activate shop',
+                title:
+                    getUnionKey(shop.data.suspension) === 'active'
+                        ? 'Suspend shop'
+                        : 'Activate shop',
             })
             .afterClosed()
             .pipe(
                 filter((r) => r.status === DialogResponseStatus.Success),
                 switchMap(() =>
-                    getUnionKey(shop.suspension) === 'active'
-                        ? this.partyManagementService.SuspendShop(shop.party_id, shop.id)
-                        : this.partyManagementService.ActivateShop(shop.party_id, shop.id),
+                    getUnionKey(shop.data.suspension) === 'active'
+                        ? this.partyManagementService.SuspendShop(shop.data.party_id, shop.ref.id)
+                        : this.partyManagementService.ActivateShop(shop.data.party_id, shop.ref.id),
                 ),
             )
             .subscribe({
@@ -231,7 +237,7 @@ export class ShopsTableComponent {
     ) {
         this.domainStoreService
             .getObject({ routing_rules: { id: partyDelegateRulesetId } })
-            .pipe(take(1))
+            .getFirstValue()
             .subscribe((ruleset) => {
                 const delegates =
                     ruleset?.object?.routing_rules?.data?.decisions?.delegates?.filter?.(
@@ -274,7 +280,7 @@ export class ShopsTableComponent {
         return toObservable(this.shops, { injector: this.injector }).pipe(
             startWith(null),
             map((shops) =>
-                shops?.length ? Array.from(new Set(shops.map((s) => s.party_id))) : [],
+                shops?.length ? Array.from(new Set(shops.map((s) => s.data.party_id))) : [],
             ),
             switchMap((parties) =>
                 parties?.length

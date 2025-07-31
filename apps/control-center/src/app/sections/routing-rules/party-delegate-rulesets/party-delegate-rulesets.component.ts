@@ -6,7 +6,7 @@ import { catchError, first, map } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '../../../api/domain-config';
 import { createDomainObjectColumn } from '../../../shared';
-import { RoutingRulesListItem } from '../routing-rules-list';
+import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
@@ -97,7 +97,7 @@ export class PartyDelegateRulesetsComponent {
             .pipe(first(), takeUntilDestroyed(this.destroyRef))
             .subscribe((parent) => {
                 void this.router.navigate([
-                    'party',
+                    'parties',
                     this.partyID,
                     'routing-rules',
                     this.route.snapshot.params['type'] as RoutingRulesType,

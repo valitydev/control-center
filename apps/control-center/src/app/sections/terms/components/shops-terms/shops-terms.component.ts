@@ -30,7 +30,6 @@ import { Overwrite } from 'utility-types';
 import {
     PageLayoutModule,
     ShopFieldModule,
-    createContractColumn,
     createDomainObjectColumn,
     createPartyColumn,
     createShopColumn,
@@ -111,10 +110,6 @@ export class ShopsTermsComponent implements OnInit {
             { sticky: 'start' },
         ),
         createPartyColumn((d) => ({ id: d.owner_id })),
-        createContractColumn((d) => ({
-            id: d.contract_id,
-            partyId: d.owner_id,
-        })),
         { field: 'currency' },
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',

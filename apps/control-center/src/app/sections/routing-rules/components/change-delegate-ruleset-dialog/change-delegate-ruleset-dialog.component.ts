@@ -4,7 +4,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { DialogSuperclass } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { RoutingRulesService } from '../services/routing-rules';
+import { RoutingRulesService } from '../../services/routing-rules';
 
 @Component({
     selector: 'cc-change-delegate-ruleset-dialog',

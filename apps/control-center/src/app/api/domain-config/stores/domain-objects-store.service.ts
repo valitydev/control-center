@@ -3,10 +3,10 @@ import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
 import {
     LimitedVersionedObject,
     Repository,
-    RepositoryClient,
+    VersionedObject,
 } from '@vality/domain-proto/domain_config_v2';
 import { ObservableResource, fetchAll, observableResource } from '@vality/matez';
-import { getUnionKey } from '@vality/ng-thrift';
+import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 import { map } from 'rxjs';
 
 import { createObjectHash } from '../utils/create-object-hash';
@@ -14,13 +14,18 @@ import { createObjectHash } from '../utils/create-object-hash';
 @Injectable({ providedIn: 'root' })
 export class DomainObjectsStoreService {
     private repositoryService = inject(Repository);
-    private repositoryClientService = inject(RepositoryClient);
     private injector = inject(Injector);
 
     private limitedObjects = new Map<
         keyof Reference,
         ObservableResource<Map<string, LimitedVersionedObject>>
     >();
+
+    private objects = new Map<keyof Reference, ObservableResource<Map<string, VersionedObject>>>();
+
+    getLimitedObjects(type: keyof Reference) {
+        return this.getLimitedObjectsByType(type).map((objects) => Array.from(objects.values()));
+    }
 
     getLimitedObject(ref: Reference) {
         const type = getUnionKey(ref);
@@ -29,12 +34,13 @@ export class DomainObjectsStoreService {
         );
     }
 
-    getLimitedObjects(type: keyof Reference) {
-        return this.getLimitedObjectsByType(type).map((objects) => Array.from(objects.values()));
+    getObjects(type: keyof Reference) {
+        return this.getObjectsByType(type).map((objects) => Array.from(objects.values()));
     }
 
     getObject(ref: Reference) {
-        return this.repositoryClientService.CheckoutObject({ head: {} }, ref);
+        const type = getUnionKey(ref);
+        return this.getObjectsByType(type).map((objects) => objects.get(createObjectHash(ref)));
     }
 
     private getLimitedObjectsByType(type: keyof Reference) {
@@ -65,5 +71,41 @@ export class DomainObjectsStoreService {
                 ),
             );
         return this.limitedObjects.get(type);
+    }
+
+    private getObjectsByType(type: keyof Reference) {
+        if (!this.objects.has(type))
+            this.objects.set(
+                type,
+                runInInjectionContext(this.injector, () =>
+                    observableResource({
+                        loader: (_, objects) =>
+                            fetchAll((continuationToken) =>
+                                this.repositoryService.SearchFullObjects({
+                                    type: DomainObjectType[type],
+                                    query: '*',
+                                    limit: 1_000_000,
+                                    continuation_token: continuationToken,
+                                }),
+                            ).pipe(
+                                map((result) => {
+                                    objects.clear();
+                                    result.forEach((obj) => {
+                                        objects.set(
+                                            createObjectHash({
+                                                [getUnionKey(obj.object)]: getUnionValue(obj.object)
+                                                    .ref,
+                                            }),
+                                            obj,
+                                        );
+                                    });
+                                    return objects;
+                                }),
+                            ),
+                        seed: new Map<string, VersionedObject>(),
+                    }),
+                ),
+            );
+        return this.objects.get(type);
     }
 }

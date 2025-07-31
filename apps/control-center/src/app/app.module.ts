@@ -43,7 +43,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SectionsModule } from './sections/sections.module';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
-import { ShopCardComponent } from './shared/components/shop-card/shop-card.component';
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponent } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
@@ -112,7 +111,6 @@ registerLocaleData(localeRu);
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {
                 domainObject: DomainObjectCardComponent,
-                shop: ShopCardComponent,
                 terminalDelegates: TerminalDelegatesCardComponent,
                 candidate: CandidateCardComponent,
             },

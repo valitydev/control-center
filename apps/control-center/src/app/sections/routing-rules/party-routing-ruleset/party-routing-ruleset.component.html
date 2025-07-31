@@ -1,12 +1,7 @@
 <cc-page-layout
     [id]="(partyRuleset$ | async)?.ref?.id"
     [progress]="isLoading$ | async"
-    [upLink]="[
-        '/party/' +
-            (partyID$ | async) +
-            '/routing-rules/' +
-            (routingRulesTypeService.routingRulesType$ | async),
-    ]"
+    [upLink]="[upLink$ | async]"
     fullHeight
     title="Party Routing Rules"
     (idLinkClick)="openRefId()"
