@@ -10,3 +10,15 @@
     min-height: 300px;
     flex: 1;
 }
+
+ngx-monaco-editor {
+    background: transparent;
+}
+
+::ng-deep .monaco-editor {
+    .margin,
+    .sticky-widget,
+    .monaco-editor-background {
+        background: var(--mat-sys-surface) !important;
+    }
+}

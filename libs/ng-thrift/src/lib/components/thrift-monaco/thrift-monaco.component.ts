@@ -21,11 +21,12 @@ export class ThriftMonacoComponent<T> {
 
     private modelOptions = computed(() => ({
         language: 'json',
-        theme: this.theme.isDark() ? 'vs-dark' : 'vs-light',
     }));
     private baseOptions = computed(() => ({
         automaticLayout: true,
         readOnly: this.readOnly(),
+        theme: this.theme.isDark() ? 'vs-dark' : 'vs-light',
+        minimap: { enabled: false },
     }));
     editorOptions = computed(() => ({
         ...this.baseOptions(),
