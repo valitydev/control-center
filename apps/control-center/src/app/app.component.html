@@ -14,7 +14,11 @@
                 </button>
             </div>
             <div class="px-2">
-                <button class="search-button !text-gray-500" matButton (click)="cmdkService.open()">
+                <button
+                    class="search-button !text-[var(--mat-sys-outline)]"
+                    matButton
+                    (click)="cmdkService.open()"
+                >
                     <mat-icon>search</mat-icon>
                     <div class="flex items-center gap-1">
                         <div>Search...</div>
@@ -22,7 +26,7 @@
                             @for (key of searchKeys; track key) {
                                 <kbd
                                     [ngClass]="{ 'px-1': key.length > 1 }"
-                                    class="bg-gray-200 rounded min-w-4 h-4"
+                                    class="bg-[var(--mat-sys-surface-container-high)] rounded min-w-4 h-4"
                                     >{{ key }}</kbd
                                 >
                             }
@@ -71,7 +75,7 @@
     </mat-sidenav-content>
     <mat-sidenav
         [opened]="sidenavInfoService.opened$ | async"
-        class="!border-l-[1px] !border-gray-200 !rounded-none !w-[50vw]"
+        class="!border-l-[1px] !border-[var(--mat-sys-outline-variant)] !rounded-none !w-[50vw]"
         fixedInViewport="true"
         mode="side"
         position="end"
