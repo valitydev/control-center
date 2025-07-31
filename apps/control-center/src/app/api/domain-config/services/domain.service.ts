@@ -69,11 +69,6 @@ export class DomainService {
                                 this.get(ops.map((o) => getDomainObjectReference(o.update.object))),
                             ]),
                             switchMap(([ver, obj]) => {
-                                console.log(
-                                    obj[0].object,
-                                    ops[0].update.object,
-                                    isEqualThrift(obj[0].object, ops[0].update.object),
-                                );
                                 if (isEqualThrift(obj[0].object, ops[0].update.object))
                                     return this.commit(ops, ver, attempts - 1);
                                 this.log.error(
