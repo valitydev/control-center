@@ -1,14 +1,6 @@
 .app-container {
     min-height: 100vh;
-    background: linear-gradient(67deg, #eeefff, #fbfbff);
-}
-
-:host-context(.dark-mode) .app-container {
-    background: linear-gradient(
-        67deg,
-        var(--mat-sys-surface-container-lowest),
-        var(--mat-sys-surface-container-low)
-    );
+    background: transparent;
 }
 
 .spacer {

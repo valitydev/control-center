@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use '@ng-matero/extensions' as mtx;
 @use 'tailwindcss/theme.css';
 @use 'tailwindcss/utilities.css';
 @use './theme-colors';
@@ -25,12 +26,13 @@ body.dark-mode {
 
 body {
     margin: 0;
-    background: var(--mat-sys-surface);
     color: var(--mat-sys-on-surface);
+    background: linear-gradient(67deg, #eeefff, #fbfbff);
 }
 
 body.dark-mode {
     color-scheme: dark;
+    background: var(--mat-sys-surface);
 }
 
 @include mat.divider-overrides(
