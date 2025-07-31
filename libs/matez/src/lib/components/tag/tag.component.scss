@@ -34,7 +34,7 @@
     }
 }
 
-.tag {
+.tag.tag {
     transition: all 300ms ease-in-out;
     background-color: var(--mat-sys-primary-container);
 
@@ -42,7 +42,7 @@
         background-color: var(--v-color-pending-bg);
 
         ::ng-deep * {
-            color: var(--v-color-pending-text) !important;
+            color: var(--v-color-pending-text);
         }
     }
 
@@ -50,7 +50,7 @@
         background-color: var(--v-color-success-bg);
 
         ::ng-deep * {
-            color: var(--v-color-success-text) !important;
+            color: var(--v-color-success-text);
         }
     }
 
@@ -58,7 +58,7 @@
         background-color: var(--mat-sys-error);
 
         ::ng-deep * {
-            color: var(--mat-sys-on-primary) !important;
+            color: var(--mat-sys-on-primary);
         }
     }
 }
