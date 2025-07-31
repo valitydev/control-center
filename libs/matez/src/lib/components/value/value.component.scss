@@ -22,6 +22,11 @@
 }
 
 .value {
+    &__click,
+    &__link {
+        color: var(--mat-sys-primary);
+    }
+
     &__click {
         &:hover {
             text-decoration: underline;
