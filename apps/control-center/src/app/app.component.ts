@@ -20,7 +20,7 @@ import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdra
 import { SidenavInfoService } from './shared/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
-import { KeycloakUserService, Services } from './shared/services';
+import { KeycloakUserService, Services, ThemeService } from './shared/services';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);
@@ -182,6 +182,7 @@ export class AppComponent {
 
     sidenavInfoService = inject(SidenavInfoService);
     cmdkService = inject(CmdkService);
+    themeService = inject(ThemeService);
 
     searchKeys = [navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl', 'K'];
     links = createNavLinks();
@@ -221,6 +222,17 @@ export class AppComponent {
 
     logout() {
         this.keycloakService.logout();
+    }
+
+    getThemeIcon(theme = this.themeService.theme()) {
+        switch (theme) {
+            case 'light':
+                return 'light_mode';
+            case 'dark':
+                return 'dark_mode';
+            case 'system':
+                return 'routine';
+        }
     }
 
     private registerConsoleUtils() {
