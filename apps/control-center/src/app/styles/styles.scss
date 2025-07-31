@@ -23,6 +23,10 @@ html {
     @include mat.theme($config);
 }
 
+body.dark-mode {
+    color-scheme: dark;
+}
+
 body {
     margin: 0;
     background: var(--mat-sys-surface);

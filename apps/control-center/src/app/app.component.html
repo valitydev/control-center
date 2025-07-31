@@ -32,11 +32,28 @@
             </div>
 
             <v-nav [links]="links" class="block overflow-auto flex-1"></v-nav>
-            <div class="mt-auto px-2 pb-4">
-                <button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2" mat-button>
+            <div class="mt-auto px-2 pb-4 flex flex-row items-center">
+                <button [matMenuTriggerFor]="themeMenu" class="!text-gray-500" mat-icon-button>
+                    <mat-icon>{{ getThemeIcon() }}</mat-icon>
+                </button>
+                <button [matMenuTriggerFor]="userMenu" mat-button>
                     <mat-icon>account_circle</mat-icon>
                     {{ username() }}
                 </button>
+                <mat-menu #themeMenu="matMenu">
+                    <button mat-menu-item (click)="themeService.setTheme('light')">
+                        <mat-icon>{{ getThemeIcon('light') }}</mat-icon>
+                        <span>Light</span>
+                    </button>
+                    <button mat-menu-item (click)="themeService.setTheme('dark')">
+                        <mat-icon>{{ getThemeIcon('dark') }}</mat-icon>
+                        <span>Dark</span>
+                    </button>
+                    <button mat-menu-item (click)="themeService.setTheme('system')">
+                        <mat-icon>{{ getThemeIcon('system') }}</mat-icon>
+                        <span>System</span>
+                    </button>
+                </mat-menu>
                 <mat-menu #userMenu="matMenu">
                     <button mat-menu-item (click)="logout()">Logout</button>
                 </mat-menu>
