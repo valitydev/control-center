@@ -33,7 +33,7 @@ body {
 
 body.dark-mode {
     color-scheme: dark;
-    background: var(--mat-sys-surface);
+    background: linear-gradient(67deg, #2a2b3d, #3a3b4d);
 }
 
 @include mat.divider-overrides(
