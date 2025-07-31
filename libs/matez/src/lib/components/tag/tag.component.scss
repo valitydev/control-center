@@ -38,24 +38,28 @@
     transition: all 300ms ease-in-out;
     background-color: var(--mat-sys-primary-container);
 
-    ::ng-deep &.color-pending,
-    ::ng-deep &.color-success,
-    ::ng-deep &.color-warn {
-        * {
-            color: var(--mat-sys-on-primary) !important;
+    &.color-pending {
+        background-color: var(--v-color-pending-bg);
+
+        ::ng-deep * {
+            color: var(--v-color-pending-text) !important;
         }
     }
 
-    &.color-pending {
-        background-color: var(--mat-sys-tertiary);
-    }
-
     &.color-success {
-        background-color: var(--mat-sys-primary);
+        background-color: var(--v-color-success-bg);
+
+        ::ng-deep * {
+            color: var(--v-color-success-text) !important;
+        }
     }
 
     &.color-warn {
         background-color: var(--mat-sys-error);
+
+        ::ng-deep * {
+            color: var(--mat-sys-on-primary) !important;
+        }
     }
 }
 

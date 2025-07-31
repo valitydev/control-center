@@ -29,6 +29,11 @@ body {
     margin: 0;
     color: var(--mat-sys-on-surface);
     background: linear-gradient(67deg, #eeefff, #fbfbff);
+
+    --v-color-success-bg: #22c55e;
+    --v-color-pending-bg: #f59e0b;
+    --v-color-success-text: #ffffff;
+    --v-color-pending-text: #ffffff;
 }
 
 body.dark-mode {
@@ -43,6 +48,11 @@ body.dark-mode {
     --mat-sys-surface-container: #24253a;
     --mat-sys-surface-container-high: #2e2f42;
     --mat-sys-surface-container-highest: #38394c;
+
+    --v-color-success-bg: #2e7d32;
+    --v-color-pending-bg: #f57c00;
+    --v-color-success-text: #e8f5e8;
+    --v-color-pending-text: #fff3e0;
 }
 
 @include mat.divider-overrides(
