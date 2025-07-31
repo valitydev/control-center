@@ -67,9 +67,10 @@
                         <v-thrift-tree-key
                             [keys]="item.path$ | async"
                             [ngClass]="{
-                                'mat-title-large': level() === 0,
-                                'mat-title-medium': level() === 1,
-                                'mat-body-large': level() >= 2,
+                                'text-2xl': level() === 0,
+                                'text-xl': level() === 1,
+                                'text-lg': level() === 2,
+                                'text-m': level() >= 3,
                             }"
                         ></v-thrift-tree-key>
                     }
