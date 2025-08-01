@@ -88,11 +88,15 @@ export class DomainMetadataFormExtensionsService {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
         return domainFields.map((f) =>
-            this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
+            this.createDomainObjectsOptionsByType(
+                metadata,
+                f.type as string,
+                f.name as keyof DomainObject,
+            ),
         );
     }
 
-    private createFieldOptions(
+    private createDomainObjectsOptionsByType(
         metadata: ThriftAstMetadata[],
         objectType: string,
         objectKey: keyof DomainObject,
