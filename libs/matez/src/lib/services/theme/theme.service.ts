@@ -19,7 +19,6 @@ export class ThemeService {
     setTheme(theme: Theme) {
         this.theme.set(theme);
         localStorage.setItem(this.storageKey, theme);
-        this.updateTheme();
     }
 
     private getStoredTheme(): Theme {
