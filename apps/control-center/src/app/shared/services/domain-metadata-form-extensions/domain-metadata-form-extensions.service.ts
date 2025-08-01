@@ -9,7 +9,7 @@ import short from 'short-uuid';
 
 import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
 
-import { createDomainObjectExtension } from './utils/create-domain-object-extension';
+import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
 import { getDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
@@ -87,7 +87,7 @@ export class DomainMetadataFormExtensionsService {
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
-        return domainFields.map((f) =>
+        return domainFields.flatMap((f) =>
             this.createDomainObjectsOptionsByType(
                 metadata,
                 f.type as string,
@@ -100,10 +100,10 @@ export class DomainMetadataFormExtensionsService {
         metadata: ThriftAstMetadata[],
         objectType: string,
         objectKey: keyof DomainObject,
-    ): ThriftFormExtension {
+    ): ThriftFormExtension[] {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
-        return createDomainObjectExtension(refType, () =>
+        return createDomainObjectExtensions(refType, () =>
             this.domainStoreService
                 .getLimitedObjects(objectKey)
                 .value$.pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
