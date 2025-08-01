@@ -1,5 +1,13 @@
+@use '@angular/material' as mat;
+
 :host {
     min-height: 0;
+
+    @include mat.table-overrides(
+        (
+            row-item-outline-color: var(--mat-sys-surface-variant),
+        )
+    );
 }
 
 .wrapper {
@@ -27,7 +35,7 @@
     }
 }
 
-table,
+::ng-deep table,
 ::ng-deep .cdk-drag-preview {
     ::ng-deep .cdk-drag-placeholder {
         background: #eee;
@@ -35,6 +43,7 @@ table,
 
     .column {
         max-width: max(20px, 30vw);
+        border-color: var(--mat-sys-surface-variant) !important;
 
         &__sticky-start,
         &__sticky-end {

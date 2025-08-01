@@ -3,6 +3,15 @@
     text-align: left;
 }
 
+.action {
+    opacity: 0.1;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
 ::ng-deep .inline {
     &,
     & * {
@@ -22,6 +31,11 @@
 }
 
 .value {
+    &__click,
+    &__link {
+        color: var(--mat-sys-primary);
+    }
+
     &__click {
         &:hover {
             text-decoration: underline;

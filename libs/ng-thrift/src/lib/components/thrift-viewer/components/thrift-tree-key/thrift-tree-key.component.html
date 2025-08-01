@@ -3,7 +3,14 @@
         {{ numberKey }}.
     } @else {
         @for (pathItem of keys; track pathItem; let idx = $index) {
-            <span [class]="(parentIsUnion(pathItem) | async) ? 'bold' : 'mat-secondary-text'"
+            <span
+                [class]="
+                    idx === 0
+                        ? 'font-normal'
+                        : (parentIsUnion(pathItem) | async)
+                          ? 'font-medium'
+                          : 'text-[var(--mat-sys-outline)]'
+                "
                 >{{ (pathItem.key$ | async)?.renderValue$ | async | ngtKeyTitle | titlecase
                 }}{{
                     idx !== (keys?.length || 0) - 1

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { DomainObject, Party } from '@vality/domain-proto/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
@@ -9,8 +9,7 @@ import short from 'short-uuid';
 
 import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
 
-import { createDomainObjectExtension } from './utils/create-domain-object-extension';
-import { createPartyDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
+import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
 import { getDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
@@ -85,26 +84,26 @@ export class DomainMetadataFormExtensionsService {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    createPartyExtensions(party: Party) {
-        return createPartyDomainMetadataFormExtensions(party);
-    }
-
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
-        return domainFields.map((f) =>
-            this.createFieldOptions(metadata, f.type as string, f.name as keyof DomainObject),
+        return domainFields.flatMap((f) =>
+            this.createDomainObjectsOptionsByType(
+                metadata,
+                f.type as string,
+                f.name as keyof DomainObject,
+            ),
         );
     }
 
-    private createFieldOptions(
+    private createDomainObjectsOptionsByType(
         metadata: ThriftAstMetadata[],
         objectType: string,
         objectKey: keyof DomainObject,
-    ): ThriftFormExtension {
+    ): ThriftFormExtension[] {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
-        return createDomainObjectExtension(refType, () =>
+        return createDomainObjectExtensions(refType, () =>
             this.domainStoreService
                 .getLimitedObjects(objectKey)
                 .value$.pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),

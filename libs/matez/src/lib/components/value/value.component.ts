@@ -11,7 +11,7 @@ import {
     runInInjectionContext,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { MatIconButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
@@ -33,13 +33,13 @@ import { valueToString } from './utils/value-to-string';
     imports: [
         CommonModule,
         MatIcon,
-        MatIconButton,
         TagModule,
         MatTooltip,
         MenuValueComponent,
         ContentLoadingComponent,
         HighlightDirective,
         ToggleValueComponent,
+        MatButtonModule,
     ],
     templateUrl: './value.component.html',
     styleUrl: './value.component.scss',

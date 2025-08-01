@@ -11,7 +11,7 @@
     @if (title) {
         <div style="display: flex; flex-direction: column; gap: 8px">
             @if ((path$ | async)?.length > 1) {
-                <div class="mat-label-medium mat-secondary-text">
+                <div class="text-[var(--mat-sys-outline)] text-xs mt-[-12px] mb-[-12px]">
                     @for (p of path$ | async; track p; let index = $index) {
                         <span
                             [ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }"
@@ -25,9 +25,9 @@
                     }
                 </div>
             }
-            <div class="header">
+            <div class="header items-center">
                 <h1
-                    class="mat-display-small mat-no-margin"
+                    class="text-2xl font-normal m-0"
                     style="
                         display: flex;
                         place-content: center flex-start;
@@ -42,7 +42,7 @@
                     }
                     <div>
                         {{ title }}
-                        <span class="mat-secondary-text"
+                        <span class="text-[var(--mat-sys-outline)]"
                             >{{ description }}
                             @if (id) {
                                 @if (idLink() || idLinkClick.observed) {
@@ -60,7 +60,7 @@
                         </span>
                     </div>
                 </h1>
-                <div class="mat-display-small mat-no-margin">
+                <div class="text-2xl font-normal m-0">
                     <ng-content select="cc-page-layout-actions"></ng-content>
                 </div>
             </div>

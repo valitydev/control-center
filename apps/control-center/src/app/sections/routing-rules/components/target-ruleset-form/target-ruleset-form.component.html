@@ -1,5 +1,5 @@
 <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
-    <div class="mat-display-small mat-no-margin">Change Main Ruleset</div>
+    <div class="text-2xl font-normal m-0">Change Main Ruleset</div>
 
     <div style="display: flex; flex-direction: column; gap: 39px">
         <mat-radio-group formControlName="target" style="display: flex">
@@ -22,7 +22,7 @@
                     </mat-select>
                 </mat-form-field>
                 @if (form.value.paymentInstitution; as paymentInstitution) {
-                    <div class="mat-label-medium mat-secondary-text">
+                    <div class="mat-label-medium text-[var(--mat-sys-outline)]">
                         Routing Ruleset (policies)
                     </div>
                     <div>

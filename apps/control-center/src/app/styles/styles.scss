@@ -4,9 +4,6 @@
 @use 'tailwindcss/utilities.css';
 @use './theme-colors';
 
-@use './all-component-themes';
-@use '../../../../../libs/matez/index' as v;
-
 $config: (
     color: theme-colors.$primary-palette,
     typography: Roboto,
@@ -16,53 +13,48 @@ $config: (
 html,
 body {
     height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 
 html {
     color-scheme: light;
     @include mat.theme($config);
-}
-
-body {
-    margin: 0;
-    background: var(--mat-sys-surface);
-    color: var(--mat-sys-on-surface);
+    @include mat.form-field-density(-3);
+    @include mat.table-density(-2);
 }
 
 body.dark-mode {
     color-scheme: dark;
 }
 
-// Deprecated
+body {
+    margin: 0;
+    color: var(--mat-sys-on-surface);
+    background: linear-gradient(67deg, #eeefff, #fbfbff);
+
+    --v-color-success-bg: #16a34a;
+    --v-color-pending-bg: #d97706;
+    --v-color-success-text: #ffffff;
+    --v-color-pending-text: #ffffff;
+}
+
+body.dark-mode {
+    color-scheme: dark;
+    background: linear-gradient(67deg, #2a2b3d, #3a3b4d);
+
+    --mat-sys-surface: #242538;
+    --mat-sys-surface-container-low: #202135;
+
+    --v-color-success-bg: #2e7d32;
+    --v-color-pending-bg: #f57c00;
+    --v-color-success-text: #e8f5e8;
+    --v-color-pending-text: #fff3e0;
+}
+
 :root {
-    $oldTheme: mat.define-theme(
-        (
-            color: (
-                theme-type: light,
-                primary: theme-colors.$primary-palette,
-            ),
-            density: (
-                scale: 0,
-            ),
-        )
-    );
-
-    @include mat.all-component-themes($oldTheme);
-    @include mat.typography-hierarchy($oldTheme);
-    @include v.typography-hierarchy($oldTheme);
-    @include v.v-tokens($oldTheme);
-    @include all-component-themes.all-component-themes($oldTheme);
-    @include v.all-component-themes($oldTheme);
-    @include v.mat-component-variants($oldTheme);
-
     @include mat.divider-overrides(
         (
-            color: #ddd,
-        )
-    );
-    @include mat.table-overrides(
-        (
-            row-item-outline-color: #ddd,
+            color: var(--mat-sys-outline-variant),
         )
     );
 }

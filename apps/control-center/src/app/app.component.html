@@ -14,7 +14,11 @@
                 </button>
             </div>
             <div class="px-2">
-                <button class="search-button !text-gray-500" matButton (click)="cmdkService.open()">
+                <button
+                    class="search-button !text-[var(--mat-sys-outline)]"
+                    matButton
+                    (click)="cmdkService.open()"
+                >
                     <mat-icon>search</mat-icon>
                     <div class="flex items-center gap-1">
                         <div>Search...</div>
@@ -22,7 +26,7 @@
                             @for (key of searchKeys; track key) {
                                 <kbd
                                     [ngClass]="{ 'px-1': key.length > 1 }"
-                                    class="bg-gray-200 rounded min-w-4 h-4"
+                                    class="bg-[var(--mat-sys-surface-container-high)] rounded min-w-4 h-4"
                                     >{{ key }}</kbd
                                 >
                             }
@@ -32,13 +36,36 @@
             </div>
 
             <v-nav [links]="links" class="block overflow-auto flex-1"></v-nav>
-            <div class="mt-auto px-2 pb-4">
-                <button [matMenuTriggerFor]="userMenu" class="flex items-center gap-2" mat-button>
-                    <mat-icon>account_circle</mat-icon>
-                    {{ username() }}
+            <div class="m-auto px-2 pb-4 flex items-center gap-1">
+                <button [matMenuTriggerFor]="userMenu" class="!rounded-full" matMiniFab>
+                    {{ username().slice(0, 2).toUpperCase() }}
                 </button>
+                <button [matMenuTriggerFor]="themeMenu" mat-icon-button>
+                    <mat-icon>{{ getThemeIcon() }}</mat-icon>
+                </button>
+                <mat-menu #themeMenu="matMenu">
+                    <button mat-menu-item (click)="themeService.setTheme('light')">
+                        <mat-icon>{{ getThemeIcon('light') }}</mat-icon>
+                        <span>Light</span>
+                    </button>
+                    <button mat-menu-item (click)="themeService.setTheme('dark')">
+                        <mat-icon>{{ getThemeIcon('dark') }}</mat-icon>
+                        <span>Dark</span>
+                    </button>
+                    <button mat-menu-item (click)="themeService.setTheme('system')">
+                        <mat-icon>{{ getThemeIcon('system') }}</mat-icon>
+                        <span>System</span>
+                    </button>
+                </mat-menu>
                 <mat-menu #userMenu="matMenu">
-                    <button mat-menu-item (click)="logout()">Logout</button>
+                    <button class="pointer-events-none" mat-menu-item>
+                        <mat-icon>account_circle</mat-icon>
+                        <span>{{ username() }}</span>
+                    </button>
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                        <span>Logout</span>
+                    </button>
                 </mat-menu>
             </div>
         </div>
@@ -48,7 +75,7 @@
     </mat-sidenav-content>
     <mat-sidenav
         [opened]="sidenavInfoService.opened$ | async"
-        class="!border-l-[1px] !border-gray-200 !rounded-none !w-[50vw]"
+        class="!border-l-[1px] !border-[var(--mat-sys-outline-variant)] !rounded-none !w-[50vw]"
         fixedInViewport="true"
         mode="side"
         position="end"

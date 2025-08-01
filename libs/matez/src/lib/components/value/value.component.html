@@ -4,69 +4,91 @@
     </button>
 } @else {
     @if (value$ | async; as v) {
-        <div
-            [ngClass]="{ wrapper__action: v.click || v.link }"
-            class="wrapper"
-            (click)="click($event)"
-        >
-            @if (v.template) {
-                <ng-container *ngTemplateOutlet="v.template; context: {}"></ng-container>
-            } @else {
-                @if (v.color) {
-                    <v-tag [color]="v.color">
-                        <ng-container *ngTemplateOutlet="tooltipTemplate"></ng-container>
-                    </v-tag>
+        <div class="flex gap-1 items-center">
+            @if (v.prefix) {
+                <button
+                    class="action ml-[-16px]"
+                    mat-icon-button
+                    (click)="v.prefix.click ? v.prefix.click($event) : undefined"
+                >
+                    <mat-icon>{{ v.prefix.icon }}</mat-icon>
+                </button>
+            }
+            <div
+                [ngClass]="{ wrapper__action: v.click || v.link }"
+                class="wrapper"
+                (click)="click($event)"
+            >
+                @if (v.template) {
+                    <ng-container *ngTemplateOutlet="v.template; context: {}"></ng-container>
                 } @else {
-                    <ng-container *ngTemplateOutlet="tooltipTemplate"></ng-container>
-                }
-
-                <ng-template #tooltipTemplate>
-                    @if (v.tooltip) {
-                        <span [matTooltip]="v.tooltip" class="tooltip">
-                            <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
-                        </span>
+                    @if (v.color) {
+                        <v-tag [color]="v.color">
+                            <ng-container *ngTemplateOutlet="tooltipTemplate"></ng-container>
+                        </v-tag>
                     } @else {
-                        <span [title]="v.value">
-                            <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
-                        </span>
+                        <ng-container *ngTemplateOutlet="tooltipTemplate"></ng-container>
                     }
-                </ng-template>
 
-                <ng-template #valueTemplate>
-                    @switch (v.type) {
-                        @case ('menu') {
-                            <v-menu-value [value]="v"></v-menu-value>
+                    <ng-template #tooltipTemplate>
+                        @if (v.tooltip) {
+                            <span [matTooltip]="v.tooltip" class="tooltip">
+                                <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
+                            </span>
+                        } @else {
+                            <span [title]="v.value">
+                                <ng-container *ngTemplateOutlet="valueTemplate"></ng-container>
+                            </span>
                         }
-                        @case ('toggle') {
-                            <v-toggle-value [value]="v"></v-toggle-value>
-                        }
-                        @default {
-                            @let valueText = valueText$ | async;
-                            @if (inProgress$ | async) {
-                                <v-content-loading [hiddenText]="valueText"></v-content-loading>
-                            } @else if (valueText) {
-                                <span
-                                    [ngClass]="{ value__click: v.click, value__link: v.link }"
-                                    [vHighlightSearch]="highlight"
-                                    [vHighlightText]="valueText"
-                                    vHighlight
-                                ></span>
-                            } @else if (emptySymbol) {
-                                <span style="color: #ccc">{{ emptySymbol }}</span>
+                    </ng-template>
+
+                    <ng-template #valueTemplate>
+                        @switch (v.type) {
+                            @case ('menu') {
+                                <v-menu-value [value]="v"></v-menu-value>
+                            }
+                            @case ('toggle') {
+                                <v-toggle-value [value]="v"></v-toggle-value>
+                            }
+                            @default {
+                                @let valueText = valueText$ | async;
+                                @if (inProgress$ | async) {
+                                    <v-content-loading [hiddenText]="valueText"></v-content-loading>
+                                } @else if (valueText) {
+                                    <span
+                                        [ngClass]="{ value__click: v.click, value__link: v.link }"
+                                        [vHighlightSearch]="highlight"
+                                        [vHighlightText]="valueText"
+                                        vHighlight
+                                    ></span>
+                                } @else if (emptySymbol) {
+                                    <span class="text-[var(--mat-sys-outline)]">{{
+                                        emptySymbol
+                                    }}</span>
+                                }
                             }
                         }
-                    }
-                </ng-template>
-            }
+                    </ng-template>
+                }
 
-            @if (v.description) {
-                <div
-                    [title]="v.description"
-                    [vHighlightSearch]="highlight"
-                    [vHighlightText]="v.description"
-                    class="description mat-label-medium mat-secondary-text"
-                    vHighlight
-                ></div>
+                @if (v.description) {
+                    <div
+                        [title]="v.description"
+                        [vHighlightSearch]="highlight"
+                        [vHighlightText]="v.description"
+                        class="description text-[var(--mat-sys-outline)] text-xs"
+                        vHighlight
+                    ></div>
+                }
+            </div>
+            @if (v.postfix) {
+                <button
+                    class="action ml-auto mr-[-16px]"
+                    mat-icon-button
+                    (click)="v.postfix.click ? v.postfix.click($event) : undefined"
+                >
+                    <mat-icon>{{ v.postfix.icon }}</mat-icon>
+                </button>
             }
         </div>
     } @else {

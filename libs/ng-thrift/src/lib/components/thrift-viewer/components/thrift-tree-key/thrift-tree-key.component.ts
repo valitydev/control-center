@@ -10,7 +10,6 @@ import { ThriftViewData } from '../../models/thrift-view-data';
 @Component({
     selector: 'v-thrift-tree-key',
     templateUrl: './thrift-tree-key.component.html',
-    styleUrls: ['./thrift-tree-key.component.scss'],
     imports: [CommonModule, ThriftPipesModule],
 })
 export class ThriftTreeKeyComponent implements OnChanges {

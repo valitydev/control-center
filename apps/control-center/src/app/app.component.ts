@@ -1,7 +1,7 @@
 import { Component, Injector, inject, runInInjectionContext } from '@angular/core';
 import { Router } from '@angular/router';
 import { Repository } from '@vality/domain-proto/domain_config_v2';
-import { BaseLink, CmdkOption, CmdkService, Link, getUrlPath } from '@vality/matez';
+import { BaseLink, CmdkOption, CmdkService, Link, ThemeService, getUrlPath } from '@vality/matez';
 import Keycloak from 'keycloak-js';
 import { map, of } from 'rxjs';
 
@@ -182,6 +182,7 @@ export class AppComponent {
 
     sidenavInfoService = inject(SidenavInfoService);
     cmdkService = inject(CmdkService);
+    themeService = inject(ThemeService);
 
     searchKeys = [navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl', 'K'];
     links = createNavLinks();
@@ -221,6 +222,17 @@ export class AppComponent {
 
     logout() {
         this.keycloakService.logout();
+    }
+
+    getThemeIcon(theme = this.themeService.theme()) {
+        switch (theme) {
+            case 'light':
+                return 'light_mode';
+            case 'dark':
+                return 'dark_mode';
+            case 'system':
+                return 'routine';
+        }
     }
 
     private registerConsoleUtils() {
