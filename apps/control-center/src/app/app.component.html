@@ -47,8 +47,8 @@
                 </button>
                 <button
                     [matMenuTriggerFor]="themeMenu"
+                    [matTooltip]="(themeService.theme() | titlecase) + ' theme'"
                     mat-icon-button
-                    matTooltip="{{ themeService.theme() | titlecase }} theme"
                 >
                     <mat-icon>{{ getThemeIcon() }}</mat-icon>
                 </button>
