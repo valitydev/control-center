@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { DomainObject, Party } from '@vality/domain-proto/domain';
+import { DomainObject } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
@@ -10,7 +10,6 @@ import short from 'short-uuid';
 import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
 
 import { createDomainObjectExtension } from './utils/create-domain-object-extension';
-import { createPartyDomainMetadataFormExtensions } from './utils/create-party-claim-domain-metadata-form-extensions';
 import { getDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
@@ -84,10 +83,6 @@ export class DomainMetadataFormExtensionsService {
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    createPartyExtensions(party: Party) {
-        return createPartyDomainMetadataFormExtensions(party);
-    }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
