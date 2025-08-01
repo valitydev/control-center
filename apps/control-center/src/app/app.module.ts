@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InputMaskModule } from '@ngneat/input-mask';
@@ -85,6 +86,7 @@ registerLocaleData(localeRu);
         // TODO: hack for cash field 😡
         InputMaskModule,
         MatChipsModule,
+        MatTooltipModule,
     ],
     providers: [
         ConfigService,

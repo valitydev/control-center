@@ -53,4 +53,3 @@ jobs:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: 'control-center-new'
           username: 'Frontend'
-          branch: 'epic/new-domain'
