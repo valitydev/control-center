@@ -115,7 +115,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                             .getShop(party?.definition?.shop_is)
                             .value$.pipe(
                                 map((shop) => ({
-                                    value: shop.data.details.name,
+                                    value: shop.data.name,
                                     description: shop.ref.id,
                                     link: () =>
                                         `/parties/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
@@ -126,16 +126,12 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                             .getShop(party?.definition?.wallet_is)
                             .value$.pipe(
                                 map((wallet) => ({
-                                    value: wallet.data.details.name,
+                                    value: wallet.data.name,
                                     description: wallet.ref.id,
                                     link: () =>
                                         `/parties/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
                                 })),
                             );
-                    case 'contract_is':
-                        return {
-                            value: party.definition.contract_is,
-                        };
                 }
             },
         },

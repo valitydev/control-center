@@ -15,7 +15,7 @@ export class PartyShopsComponent {
     private partyStoreService = inject(PartyStoreService);
 
     shopsResource$ = this.partyStoreService.party$.pipe(
-        map((party) => this.partiesStoreService.getPartyShops(party.id)),
+        map((party) => this.partiesStoreService.getPartyShops(party.ref.id)),
     );
     shops$ = this.shopsResource$.pipe(switchMap((res) => res.value$));
     progress$ = this.shopsResource$.pipe(switchMap((res) => res.isLoading$));

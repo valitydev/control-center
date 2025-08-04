@@ -1,10 +1,5 @@
-import {
-    CashFlowPosting,
-    PartyID,
-    Predicate,
-    ShopID,
-    TermSetHierarchyObject,
-} from '@vality/domain-proto/domain';
+import { CashFlowPosting, PartyID, Predicate, ShopID } from '@vality/domain-proto/domain';
+import { TermSetHistory } from '@vality/dominator-proto/dominator';
 import { Column } from '@vality/matez';
 
 import { formatCashVolumes } from '../../../../../shared';
@@ -12,7 +7,7 @@ import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
-export function getShopCashFlowSelectors(d: TermSetHierarchyObject) {
+export function getShopCashFlowSelectors(d: TermSetHistory['term_set']) {
     return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
 }
 

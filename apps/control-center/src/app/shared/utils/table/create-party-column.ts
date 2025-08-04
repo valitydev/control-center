@@ -15,7 +15,7 @@ export const createPartyColumn = createColumn(
                       .value$.pipe(
                           map(
                               (party) =>
-                                  party?.data?.party_name ??
+                                  party?.data?.name ??
                                   party?.data?.contact_info?.registration_email,
                           ),
                       );

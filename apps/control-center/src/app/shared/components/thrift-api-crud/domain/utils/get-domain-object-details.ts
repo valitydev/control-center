@@ -93,11 +93,6 @@ const GET_DOMAIN_OBJECTS_DETAILS: {
         label: startCase(getUnionKey(o.data)),
         description: inlineJson(o.data),
     }),
-    identity_provider: (o) => ({
-        id: o.ref.id,
-        label: startCase(getUnionKey(o.data)),
-        description: inlineJson(o.data),
-    }),
     dummy_link: (o) => ({
         id: o.ref.id,
         label: o.data.link.id,

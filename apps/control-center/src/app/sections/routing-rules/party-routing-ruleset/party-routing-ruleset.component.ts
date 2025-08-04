@@ -211,9 +211,7 @@ export class PartyRoutingRulesetComponent {
                                             s.ref.id,
                                     ),
                                 )
-                                .sort((a, b) =>
-                                    compareDifferentTypes(a.data.details.name, b.data.details.name),
-                                ),
+                                .sort((a, b) => compareDifferentTypes(a.data.name, b.data.name)),
                             wallets: wallets
                                 .filter((w) =>
                                     ruleset.data.decisions.delegates.every(

@@ -1,14 +1,16 @@
 import { Injectable, inject } from '@angular/core';
-import { PartyID, ShopID, WalletID } from '@vality/domain-proto/domain';
+import { PartyID, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
+import { cloneDeep } from 'lodash-es';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { DomainObjectsStoreService } from '../../domain-config';
+import { DomainObjectsStoreService, DomainService } from '../../domain-config';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PartiesStoreService {
     private domainObjectsStoreService = inject(DomainObjectsStoreService);
+    private domainService = inject(DomainService);
 
     parties = this.domainObjectsStoreService
         .getObjects('party_config')
@@ -61,5 +63,65 @@ export class PartiesStoreService {
 
     reloadWallets() {
         this.wallets.reload();
+    }
+
+    blockShop(shop: ShopConfigObject, reason: string) {
+        const newShopConfig = cloneDeep(shop);
+        newShopConfig.data.block = { blocked: { reason, since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        shop_config: newShopConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    unblockShop(shop: ShopConfigObject, reason: string) {
+        const newShopConfig = cloneDeep(shop);
+        newShopConfig.data.block = { unblocked: { reason, since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        shop_config: newShopConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    suspendShop(shop: ShopConfigObject) {
+        const newShopConfig = cloneDeep(shop);
+        newShopConfig.data.suspension = { suspended: { since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        shop_config: newShopConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    activateShop(shop: ShopConfigObject) {
+        const newShopConfig = cloneDeep(shop);
+        newShopConfig.data.suspension = { active: { since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        shop_config: newShopConfig,
+                    },
+                },
+            },
+        ]);
     }
 }

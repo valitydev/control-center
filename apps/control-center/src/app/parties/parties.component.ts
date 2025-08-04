@@ -3,7 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
-import { DomainObjectType, PartyConfig } from '@vality/domain-proto/domain';
+import { DomainObjectType, PartyConfigObject } from '@vality/domain-proto/domain';
 import {
     Column,
     DebounceTime,
@@ -33,59 +33,59 @@ export class PartiesComponent implements OnInit {
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
     inProgress$ = this.fetchFullDomainObjectsService.isLoading$;
     parties$ = this.fetchFullDomainObjectsService.result$.pipe(
-        map((objs) => objs.map((obj) => obj.object.party_config.data)),
+        map((objs) => objs.map((obj) => obj.object.party_config)),
     );
-    columns: Column<PartyConfig>[] = [
+    columns: Column<PartyConfigObject>[] = [
         {
             field: 'id',
-            cell: (party) => ({ value: party.id }),
+            cell: (party) => ({ value: party.ref.id }),
         },
         {
             field: 'email',
             cell: (party) => ({
-                value: party.contact_info.registration_email,
-                description: (party.contact_info.manager_contact_emails || [])
+                value: party.data.contact_info.registration_email,
+                description: (party.data.contact_info.manager_contact_emails || [])
                     .filter(Boolean)
                     .join(', '),
-                link: () => `/parties/${party.id}`,
+                link: () => `/parties/${party.ref.id}`,
             }),
         },
         {
             field: 'blocking',
             cell: (party) => ({
-                value: startCase(getUnionKey(party.blocking)),
+                value: startCase(getUnionKey(party.data.block)),
                 color: (
                     {
                         blocked: 'warn',
                         unblocked: 'success',
                     } as const
-                )[getUnionKey(party.blocking)],
+                )[getUnionKey(party.data.block)],
             }),
         },
         {
             field: 'suspension',
             cell: (party) => ({
-                value: startCase(getUnionKey(party.suspension)),
+                value: startCase(getUnionKey(party.data.suspension)),
                 color: (
                     {
                         suspended: 'warn',
                         active: 'success',
                     } as const
-                )[getUnionKey(party.suspension)],
+                )[getUnionKey(party.data.suspension)],
             }),
         },
         {
             field: 'shops',
             cell: (party) => ({
-                value: party.shops.length,
-                link: () => `/parties/${party.id}/shops`,
+                value: party.data.shops.length,
+                link: () => `/parties/${party.ref.id}/shops`,
             }),
         },
         createMenuColumn((party) => ({
             items: [
                 {
                     label: 'Details',
-                    click: () => this.router.navigate([`/parties/${party.id}`]),
+                    click: () => this.router.navigate([`/parties/${party.ref.id}`]),
                 },
             ],
         })),

@@ -12,7 +12,6 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { RoutingRulesetRef, ShopConfigObject } from '@vality/domain-proto/domain';
-import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import {
     Column,
     ConfirmDialogComponent,
@@ -31,6 +30,7 @@ import { combineLatest, map, of, switchMap } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../api/domain-config';
+import { PartiesStoreService } from '../../../api/payment-processing';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
@@ -48,7 +48,7 @@ import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 })
 export class ShopsTableComponent {
     private sidenavInfoService = inject(SidenavInfoService);
-    private partyManagementService = inject(PartyManagement);
+    private partiesStoreService = inject(PartiesStoreService);
     private dialogService = inject(DialogService);
     private log = inject(NotifyLogService);
     private router = inject(Router);
@@ -70,7 +70,7 @@ export class ShopsTableComponent {
         {
             field: 'details.name',
             cell: (d) => ({
-                description: d.data.details.description,
+                description: d.data.description,
                 click: () => {
                     this.sidenavInfoService.toggle(DomainObjectCardComponent, {
                         ref: { shop_config: { id: d.ref.id } },
@@ -108,13 +108,13 @@ export class ShopsTableComponent {
         {
             field: 'blocking',
             cell: (d) => ({
-                value: startCase(getUnionKey(d.data.blocking)),
+                value: startCase(getUnionKey(d.data.block)),
                 color: (
                     {
                         blocked: 'warn',
                         unblocked: 'success',
                     } as const
-                )[getUnionKey(d.data.blocking)],
+                )[getUnionKey(d.data.block)],
             }),
         },
         {
@@ -156,7 +156,7 @@ export class ShopsTableComponent {
                             },
                         },
                         {
-                            label: getUnionKey(d.data.blocking) === 'blocked' ? 'Unblock' : 'Block',
+                            label: getUnionKey(d.data.block) === 'blocked' ? 'Unblock' : 'Block',
                             click: () => {
                                 this.toggleBlocking(d);
                             },
@@ -170,25 +170,16 @@ export class ShopsTableComponent {
     toggleBlocking(shop: ShopConfigObject) {
         this.dialogService
             .open(ConfirmDialogComponent, {
-                title:
-                    getUnionKey(shop.data.blocking) === 'unblocked' ? 'Block shop' : 'Unblock shop',
+                title: getUnionKey(shop.data.block) === 'unblocked' ? 'Block shop' : 'Unblock shop',
                 hasReason: true,
             })
             .afterClosed()
             .pipe(
                 filter((r) => r.status === DialogResponseStatus.Success),
                 switchMap((r) =>
-                    getUnionKey(shop.data.blocking) === 'unblocked'
-                        ? this.partyManagementService.BlockShop(
-                              shop.data.party_id,
-                              shop.ref.id,
-                              r.data.reason,
-                          )
-                        : this.partyManagementService.UnblockShop(
-                              shop.data.party_id,
-                              shop.ref.id,
-                              r.data.reason,
-                          ),
+                    getUnionKey(shop.data.block) === 'unblocked'
+                        ? this.partiesStoreService.blockShop(shop, r.data.reason)
+                        : this.partiesStoreService.unblockShop(shop, r.data.reason),
                 ),
             )
             .subscribe({
@@ -215,8 +206,8 @@ export class ShopsTableComponent {
                 filter((r) => r.status === DialogResponseStatus.Success),
                 switchMap(() =>
                     getUnionKey(shop.data.suspension) === 'active'
-                        ? this.partyManagementService.SuspendShop(shop.data.party_id, shop.ref.id)
-                        : this.partyManagementService.ActivateShop(shop.data.party_id, shop.ref.id),
+                        ? this.partiesStoreService.suspendShop(shop)
+                        : this.partiesStoreService.activateShop(shop),
                 ),
             )
             .subscribe({

@@ -14,7 +14,7 @@ export const createShopColumn = createColumn(
                 ? of(params.shopName)
                 : inject(PartiesStoreService)
                       .getShop(shopId)
-                      .value$.pipe(map((shop) => shop.data.details.name));
+                      .value$.pipe(map((shop) => shop.data.name));
         const sidenavInfoService = inject(SidenavInfoService);
         const shopCell = {
             description: shopId,

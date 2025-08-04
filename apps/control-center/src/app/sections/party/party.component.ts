@@ -19,19 +19,22 @@ export class PartyComponent {
     party$ = this.partyStoreService.party$;
     tags$ = this.party$.pipe(
         map((party) => [
-            ...(party?.blocking
+            ...(party?.data?.block
                 ? [
                       {
-                          value: startCase(getUnionKey(party.blocking)),
-                          color: getUnionKey(party.blocking) === 'blocked' ? 'warn' : 'success',
+                          value: startCase(getUnionKey(party.data.block)),
+                          color: getUnionKey(party.data.block) === 'blocked' ? 'warn' : 'success',
                       },
                   ]
                 : []),
-            ...(party?.suspension
+            ...(party?.data?.suspension
                 ? [
                       {
-                          value: startCase(getUnionKey(party.suspension)),
-                          color: getUnionKey(party.suspension) === 'suspended' ? 'warn' : 'success',
+                          value: startCase(getUnionKey(party.data.suspension)),
+                          color:
+                              getUnionKey(party.data.suspension) === 'suspended'
+                                  ? 'warn'
+                                  : 'success',
                       },
                   ]
                 : []),

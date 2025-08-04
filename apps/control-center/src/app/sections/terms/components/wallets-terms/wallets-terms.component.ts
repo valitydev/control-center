@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { type IdentityProviderRef, TermSetHierarchyRef } from '@vality/domain-proto/domain';
 import {
     type CommonSearchQueryParams,
     type WalletSearchQuery,
@@ -50,7 +49,10 @@ import { WalletsTermsService } from './wallets-terms.service';
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
         Omit<WalletSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][]; identity_ids?: IdentityProviderRef['id'][] }
+        {
+            term_sets_ids?: WalletSearchQuery['term_sets_ids'][number]['id'][];
+            identity_ids?: WalletSearchQuery['identity_ids'][number]['id'][];
+        }
     >;
 
 @Component({
