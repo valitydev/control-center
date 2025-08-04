@@ -33,7 +33,7 @@
         "@ngneat/input-mask": "6.0.0",
         "@s-libs/ng-core": "^20.0.0",
         "@tailwindcss/postcss": "^4.1.11",
-        "@vality/domain-proto": "2.0.1-559aadc.0",
+        "@vality/domain-proto": "2.0.1-ff9b01f.0",
         "@vality/dominator-proto": "1.0.1-67ea35c.0",
         "@vality/fistful-proto": "2.0.1-fe195c5.0",
         "@vality/machinegun-proto": "1.0.1-cc2c27c.0",
