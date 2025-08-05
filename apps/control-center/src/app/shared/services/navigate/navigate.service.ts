@@ -22,7 +22,7 @@ export class NavigateService {
         const queryParams = pick(params, difference(Object.keys(params), pathParams));
         const resultPath = route.path;
         for (const param of pathParams) {
-            resultPath.replace(`:${param}`, params[param]);
+            resultPath.replace(`:${param}`, params[param as keyof typeof params] as string);
         }
         return this.router.navigate(['/', resultPath], {
             queryParams: serializeQueryParams(queryParams),
