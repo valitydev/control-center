@@ -1,4 +1,4 @@
-<div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+<div class="grid grid-cols-1 gap-4">
     @if (hasLabel) {
         <span class="mat-body-large">
             {{ data.type | fieldLabel: data.field }}
@@ -44,7 +44,7 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <ng-template matExpansionPanelContent>
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+                    <div class="grid grid-cols-1 gap-1">
                         @if (isKeyValue) {
                             <span class="mat-body-medium">Key</span>
                             <v-thrift-form
