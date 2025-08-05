@@ -1,7 +1,9 @@
-import { PossiblyAsync } from '../../../utils';
+import { Signal } from '@angular/core';
 
 import { CmdkOption } from './cmdk-option';
 
 export interface CmdkOptions {
-    search: (searchStr: string) => PossiblyAsync<CmdkOption[]>;
+    search: (searchStr: string) => void;
+    options: Signal<CmdkOption[]>;
+    progress?: Signal<boolean>;
 }
