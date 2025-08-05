@@ -27,7 +27,7 @@ import isNil from 'lodash-es/isNil';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
-import { CurrenciesStoreService } from '../../app/api/domain-config';
+import { CurrenciesStoreService } from '../../api/domain-config';
 import { FetchSourcesService } from '../../app/sections/sources';
 
 export interface SourceCash {

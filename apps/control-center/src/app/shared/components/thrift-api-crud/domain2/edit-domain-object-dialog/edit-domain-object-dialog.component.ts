@@ -35,7 +35,7 @@ import {
     DomainService,
     DomainServiceObsoleteCommitVersionError,
     getDomainObjectReference,
-} from '../../../../../api/domain-config';
+} from '../../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';

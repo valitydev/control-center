@@ -12,7 +12,7 @@ import {
 import { combineLatest } from 'rxjs';
 import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { RoutingRulesStoreService } from '../../../api/domain-config';
+import { RoutingRulesStoreService } from '../../../../api/domain-config';
 import { createShopColumn, createWalletColumn } from '../../../shared';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';

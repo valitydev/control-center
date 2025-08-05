@@ -20,8 +20,8 @@ import startCase from 'lodash-es/startCase';
 import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 
-import { DomainService, RoutingRulesStoreService } from '../../../api/domain-config';
-import { PartiesStoreService } from '../../../api/payment-processing';
+import { DomainService, RoutingRulesStoreService } from '../../../../api/domain-config';
+import { PartiesStoreService } from '../../../../api/payment-processing';
 import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,

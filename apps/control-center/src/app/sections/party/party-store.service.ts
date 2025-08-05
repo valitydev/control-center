@@ -10,7 +10,7 @@ import {
     switchMap,
 } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../api/payment-processing';
+import { PartiesStoreService } from '../../../api/payment-processing';
 
 @Injectable()
 export class PartyStoreService {

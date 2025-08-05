@@ -5,7 +5,7 @@ import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/m
 import { uniq } from 'lodash-es';
 import { combineLatest, switchMap, take } from 'rxjs';
 
-import { RoutingRulesStoreService } from '../../../api/domain-config';
+import { RoutingRulesStoreService } from '../../../../api/domain-config';
 import { UpdateThriftDialogComponent } from '../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { CandidateId } from '../services/routing-rules/types/candidate-id';

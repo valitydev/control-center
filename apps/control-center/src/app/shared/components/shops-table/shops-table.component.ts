@@ -29,8 +29,8 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, map, of, switchMap } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
-import { DomainObjectsStoreService } from '../../../api/domain-config';
-import { PartiesStoreService } from '../../../api/payment-processing';
+import { DomainObjectsStoreService } from '../../../../api/domain-config';
+import { PartiesStoreService } from '../../../../api/payment-processing';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,

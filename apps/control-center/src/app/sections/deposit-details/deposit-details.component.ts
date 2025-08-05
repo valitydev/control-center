@@ -15,7 +15,7 @@ import startCase from 'lodash-es/startCase';
 import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { DomainObjectsStoreService } from '../../api/domain-config';
+import { DomainObjectsStoreService } from '../../../api/domain-config';
 import { AmountCurrencyService } from '../../shared/services';
 import { FetchSourcesService } from '../sources';
 

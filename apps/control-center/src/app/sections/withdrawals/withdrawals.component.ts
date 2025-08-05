@@ -24,7 +24,7 @@ import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { WithdrawalParams } from '../../api/fistful-stat';
+import { WithdrawalParams } from '../../../api/fistful-stat';
 import { createCurrencyColumn, createDomainObjectColumn, createFailureColumn } from '../../shared';
 import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UpdateOptions } from '@vality/matez';
 import { map, switchMap } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../api/payment-processing';
+import { PartiesStoreService } from '../../../api/payment-processing';
 import { PartyStoreService } from '../party/party-store.service';
 
 @Component({

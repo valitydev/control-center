@@ -23,7 +23,7 @@ import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { filter, map, shareReplay } from 'rxjs/operators';
 
-import { QueryDsl } from '../../api/fistful-stat';
+import { QueryDsl } from '../../../api/fistful-stat';
 import { createCurrencyColumn } from '../../shared';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
 

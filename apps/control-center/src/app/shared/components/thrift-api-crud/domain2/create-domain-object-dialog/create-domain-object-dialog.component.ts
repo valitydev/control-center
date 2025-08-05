@@ -18,7 +18,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
-import { DomainService } from '../../../../../api/domain-config';
+import { DomainService } from '../../../../../../api/domain-config';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../services';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
