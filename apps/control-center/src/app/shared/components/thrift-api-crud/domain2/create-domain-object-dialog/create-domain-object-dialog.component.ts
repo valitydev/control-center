@@ -5,7 +5,6 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ReflessDomainObject } from '@vality/domain-proto/domain';
-import { InsertOp } from '@vality/domain-proto/domain_config_v2';
 import {
     DEFAULT_DIALOG_CONFIG,
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -54,19 +53,19 @@ export class CreateDomainObjectDialogComponent
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     };
 
-    control = new FormControl<InsertOp | null>(null, [Validators.required]);
+    control = new FormControl<ReflessDomainObject | null>(null, [Validators.required]);
     progress$ = new BehaviorSubject(0);
     isReview = false;
 
     ngOnInit() {
         if (this.dialogData && this.dialogData.objectType) {
-            this.control.setValue({ object: { [this.dialogData.objectType]: {} } });
+            this.control.setValue({ [this.dialogData.objectType]: {} });
         }
     }
 
     create() {
         this.domainService
-            .commit([{ insert: this.control.value }])
+            .commit([{ insert: { object: this.control.value } }])
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
