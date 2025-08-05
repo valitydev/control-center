@@ -5,7 +5,7 @@
         "access": "public"
     },
     "dependencies": {
-        "ngx-monaco-editor-v2": "^19.0.2",
+        "ngx-monaco-editor-v2": "^20.0.0",
         "yaml": "^2.4.5"
     },
     "peerDependencies": {
