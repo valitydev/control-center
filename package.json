@@ -103,7 +103,7 @@
         "typescript": "5.8.3",
         "typescript-eslint": "^8.33.1",
         "typescript-memoize": "1.1.1",
-        "verdaccio": "6.0.5",
+        "verdaccio": "6.1.6",
         "jest-util": "30.0.5"
     },
     "nx": {
