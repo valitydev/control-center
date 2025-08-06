@@ -1,8 +1,0 @@
-<cc-sub-page-layout
-    id="{{
-        (payment$ | async) ? (payment$ | async)?.invoice_id + '.' + (payment$ | async)?.id : ''
-    }}"
-    title="Payment"
->
-    <router-outlet></router-outlet>
-</cc-sub-page-layout>

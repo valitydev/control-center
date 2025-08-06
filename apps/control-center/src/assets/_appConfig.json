@@ -1,8 +1,0 @@
-{
-    "api": {
-        "wachter": {
-            "hostname": "control-center.vality.dev",
-            "path": "/wachter"
-        }
-    }
-}
