@@ -1,8 +1,23 @@
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router, RouterOutlet } from '@angular/router';
 import { Repository } from '@vality/domain-proto/domain_config_v2';
-import { BaseLink, CmdkOption, Link, ThemeService, getUrlPath } from '@vality/matez';
+import {
+    BaseLink,
+    CmdkModule,
+    CmdkOption,
+    Link,
+    NavComponent,
+    ThemeService,
+    getUrlPath,
+} from '@vality/matez';
 import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
@@ -18,7 +33,7 @@ import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals
 import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
-import { SidenavInfoService } from './shared/components/sidenav-info';
+import { SidenavInfoModule, SidenavInfoService } from './shared/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
 import { KeycloakUserService, Services } from './shared/services';
@@ -172,20 +187,19 @@ const createNavLinks = (): Link[] => [
 @Component({
     selector: 'cc-root',
     templateUrl: './app.component.html',
-    standalone: false,
-    // imports: [
-    //     MatSidenavModule,
-    //     MatIconModule,
-    //     CmdkModule,
-    //     CommonModule,
-    //     NavComponent,
-    //     MatMenuModule,
-    //     MatToolbarModule,
-    //     RouterOutlet,
-    //     SidenavInfoModule,
-    //     MatButtonModule,
-    //     MatTooltipModule,
-    // ],
+    imports: [
+        MatSidenavModule,
+        MatIconModule,
+        CmdkModule,
+        CommonModule,
+        NavComponent,
+        MatMenuModule,
+        MatToolbarModule,
+        RouterOutlet,
+        SidenavInfoModule,
+        MatButtonModule,
+        MatTooltipModule,
+    ],
 })
 export class AppComponent {
     private keycloakService = inject(Keycloak);
