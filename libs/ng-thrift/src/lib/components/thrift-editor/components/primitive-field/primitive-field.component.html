@@ -1,5 +1,5 @@
 @if (data.type === 'bool') {
-    <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+    <div class="grid grid-cols-1 gap-4">
         <span class="mat-body-large">{{ data.type | fieldLabel: data.field }}</span>
         <div style="display: flex; place-content: center flex-start; align-items: center; gap: 4px">
             <mat-radio-group

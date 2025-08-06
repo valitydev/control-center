@@ -12,7 +12,11 @@
 
         @if (options?.length) {
             @for (option of options; track $index) {
-                <mat-list-item [title]="option.tooltip" (click)="action(option)">
+                <mat-list-item
+                    [title]="option.tooltip"
+                    class="!cursor-pointer"
+                    (click)="action(option)"
+                >
                     <mat-icon matListItemIcon>{{ option.icon || 'article' }}</mat-icon>
                     <span
                         [vHighlightSearch]="searchControl.value"

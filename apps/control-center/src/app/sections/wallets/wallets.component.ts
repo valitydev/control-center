@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { FetchFullDomainObjectsService } from '../../api/domain-config';
+import { FetchFullDomainObjectsService } from '../../../api/domain-config';
 import { createPartyColumn } from '../../shared';
 import { PartyStoreService } from '../party';
 

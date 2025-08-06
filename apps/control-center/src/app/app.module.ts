@@ -30,7 +30,13 @@ import { Management as SourceManagement } from '@vality/fistful-proto/source';
 import { Management as WithdrawalManagement } from '@vality/fistful-proto/withdrawal';
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
-import { ERROR_PARSER, LogError, NavComponent, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import {
+    CmdkModule,
+    ERROR_PARSER,
+    LogError,
+    NavComponent,
+    QUERY_PARAMS_SERIALIZERS,
+} from '@vality/matez';
 import { MonacoEditorModule } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
@@ -87,6 +93,7 @@ registerLocaleData(localeRu);
         InputMaskModule,
         MatChipsModule,
         MatTooltipModule,
+        CmdkModule,
     ],
     providers: [
         ConfigService,

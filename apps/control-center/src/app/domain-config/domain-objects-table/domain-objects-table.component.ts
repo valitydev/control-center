@@ -21,7 +21,7 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { FetchDomainObjectsService } from '../../api/domain-config';
+import { FetchDomainObjectsService } from '../../../api/domain-config';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { getReferenceId } from '../../shared/components/thrift-api-crud';
 import {

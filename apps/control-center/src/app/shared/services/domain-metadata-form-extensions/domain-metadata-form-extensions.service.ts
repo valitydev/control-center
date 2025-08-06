@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
-import { DomainObjectsStoreService, DomainService } from '../../../api/domain-config';
+import { DomainObjectsStoreService, DomainService } from '../../../../api/domain-config';
 
 import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
 import { getDomainObjectOption } from './utils/get-domain-object-option';

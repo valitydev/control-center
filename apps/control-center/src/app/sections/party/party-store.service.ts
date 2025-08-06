@@ -1,30 +1,27 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PartyConfig } from '@vality/domain-proto/domain';
 import { NotifyLogService } from '@vality/matez';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import {
     catchError,
     distinctUntilChanged,
-    map,
     shareReplay,
     startWith,
     switchMap,
 } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../api/payment-processing';
+import { PartiesStoreService } from '../../../api/payment-processing';
 
 @Injectable()
 export class PartyStoreService {
     private route = inject(ActivatedRoute);
     private partiesStoreService = inject(PartiesStoreService);
     private log = inject(NotifyLogService);
-    party$: Observable<PartyConfig | Partial<PartyConfig> | null> = this.route.params.pipe(
+    party$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         switchMap(({ partyID }) =>
             partyID
                 ? this.partiesStoreService.getParty(partyID).value$.pipe(
-                      map((party) => party.data),
                       catchError((err) => {
                           this.log.error(err);
                           return EMPTY;
@@ -32,12 +29,11 @@ export class PartyStoreService {
                   )
                 : of(null),
         ),
-        startWith(this.partyId ? { id: this.partyId } : null),
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     private get partyId() {
-        return this.route.snapshot.params['partyID'];
+        return this.route.snapshot.params['partyID'] as string;
     }
 }

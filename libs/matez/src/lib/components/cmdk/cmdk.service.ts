@@ -1,17 +1,7 @@
-import { Injectable, OnDestroy, inject } from '@angular/core';
+import { DestroyRef, Injectable, Injector, OnDestroy, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import {
-    BehaviorSubject,
-    Subject,
-    debounceTime,
-    distinctUntilChanged,
-    finalize,
-    shareReplay,
-    switchMap,
-    tap,
-} from 'rxjs';
-
-import { getPossiblyAsyncObservable } from '../../utils';
+import { Subject, distinctUntilChanged, of, shareReplay, switchMap } from 'rxjs';
 
 import { CmdkComponent } from './cmdk.component';
 import { CmdkOptions } from './types/cmdk-options';
@@ -21,26 +11,33 @@ import { CmdkOptions } from './types/cmdk-options';
 })
 export class CmdkService implements OnDestroy {
     private dialog = inject(MatDialog);
-    private options: CmdkOptions = {
-        search: () => [],
-    };
-    search$ = new Subject<string>();
+    private dr = inject(DestroyRef);
+    private injector = inject(Injector);
 
-    inProgress$ = new BehaviorSubject(false);
-    options$ = this.search$.pipe(
-        distinctUntilChanged(),
-        tap(() => this.inProgress$.next(true)),
-        debounceTime(300),
-        switchMap((searchStr) =>
-            getPossiblyAsyncObservable(this.options.search(searchStr)).pipe(
-                finalize(() => this.inProgress$.next(false)),
-            ),
+    private config = signal<CmdkOptions | null>(null);
+    search$ = new Subject<string>();
+    inProgress$ = toObservable(this.config).pipe(
+        switchMap((config) =>
+            config?.progress
+                ? toObservable(config.progress, { injector: this.injector })
+                : of(false),
         ),
-        shareReplay(1),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    options$ = toObservable(this.config).pipe(
+        switchMap((config) =>
+            config?.options ? toObservable(config.options, { injector: this.injector }) : of([]),
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     constructor() {
         document.addEventListener('keydown', this.listener);
+        this.search$
+            .pipe(distinctUntilChanged(), takeUntilDestroyed(this.dr))
+            .subscribe((searchStr) => {
+                this.config()?.search?.(searchStr);
+            });
     }
 
     ngOnDestroy() {
@@ -73,7 +70,7 @@ export class CmdkService implements OnDestroy {
     }
 
     init(options: CmdkOptions) {
-        this.options = options;
+        this.config.set(options);
     }
 
     private listener = (e: KeyboardEvent) => {

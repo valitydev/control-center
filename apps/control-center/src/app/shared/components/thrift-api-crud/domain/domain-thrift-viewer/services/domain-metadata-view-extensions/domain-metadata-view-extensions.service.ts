@@ -10,8 +10,8 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainObjectsStoreService } from '../../../../../../../api/domain-config';
-import { PartiesStoreService } from '../../../../../../../api/payment-processing';
+import { DomainObjectsStoreService } from '../../../../../../../../api/domain-config';
+import { PartiesStoreService } from '../../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { DomainObjectCardComponent } from '../../../../domain2';
 
@@ -47,7 +47,7 @@ export class DomainMetadataViewExtensionsService {
                 extension: (_, shopId: ShopID) =>
                     this.partiesStoreService.getShop(shopId).value$.pipe(
                         map((p) => ({
-                            value: p.data.details.name,
+                            value: p.data.name,
                             tooltip: shopId,
                             click: () => {
                                 this.sidenavInfoService.toggle(DomainObjectCardComponent, {

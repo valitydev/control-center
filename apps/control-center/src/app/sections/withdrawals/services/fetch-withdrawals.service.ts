@@ -8,7 +8,7 @@ import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService } from '@v
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { WithdrawalParams, createDsl } from '../../../api/fistful-stat';
+import { WithdrawalParams, createDsl } from '../../../../api/fistful-stat';
 
 @Injectable()
 export class FetchWithdrawalsService extends FetchSuperclass<StatWithdrawal, WithdrawalParams> {

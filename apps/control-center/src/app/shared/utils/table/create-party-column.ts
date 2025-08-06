@@ -3,7 +3,7 @@ import { createColumn } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../../api/payment-processing';
+import { PartiesStoreService } from '../../../../api/payment-processing';
 
 export const createPartyColumn = createColumn(
     ({ id, ...params }: { id: string; partyName?: string }) => {
@@ -15,7 +15,7 @@ export const createPartyColumn = createColumn(
                       .value$.pipe(
                           map(
                               (party) =>
-                                  party?.data?.party_name ??
+                                  party?.data?.name ??
                                   party?.data?.contact_info?.registration_email,
                           ),
                       );

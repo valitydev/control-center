@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Column, DialogService, NotifyLogService } from '@vality/matez';
 import { catchError, first, map } from 'rxjs/operators';
 
-import { RoutingRulesStoreService } from '../../../api/domain-config';
+import { RoutingRulesStoreService } from '../../../../api/domain-config';
 import { createDomainObjectColumn } from '../../../shared';
 import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';

@@ -1,9 +1,10 @@
-import { Component, Injector, inject, runInInjectionContext } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { Repository } from '@vality/domain-proto/domain_config_v2';
-import { BaseLink, CmdkOption, CmdkService, Link, ThemeService, getUrlPath } from '@vality/matez';
+import { BaseLink, CmdkOption, Link, ThemeService, getUrlPath } from '@vality/matez';
 import Keycloak from 'keycloak-js';
-import { map, of } from 'rxjs';
+import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { environment } from '../environments/environment';
 
@@ -171,53 +172,54 @@ const createNavLinks = (): Link[] => [
 @Component({
     selector: 'cc-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
     standalone: false,
 })
 export class AppComponent {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
     private repositoryService = inject(Repository);
-    private injector = inject(Injector);
+    private router = inject(Router);
+    private dr = inject(DestroyRef);
 
     sidenavInfoService = inject(SidenavInfoService);
-    cmdkService = inject(CmdkService);
     themeService = inject(ThemeService);
 
-    searchKeys = [navigator.platform.toUpperCase().includes('MAC') ? '⌘' : 'Ctrl', 'K'];
     links = createNavLinks();
     username = this.keycloakUserService.username;
+    search = signal<string>('');
+    searchProgress = signal<boolean>(false);
+    options$ = toObservable(this.search).pipe(
+        tap(() => this.searchProgress.set(true)),
+        debounceTime(300),
+        switchMap((searchStr) =>
+            searchStr
+                ? this.repositoryService.SearchObjects({ query: searchStr, limit: 25 }).pipe(
+                      map((objects): CmdkOption[] =>
+                          objects.result.map((obj) => {
+                              const details = getLimitedDomainObjectDetails(obj);
+                              return {
+                                  label: details.label,
+                                  description: details.description,
+                                  tooltip: `${details.id} (${details.type})`,
+                                  action: async () => {
+                                      await this.router.navigate(['/domain']);
+                                      this.sidenavInfoService.open(DomainObjectCardComponent, {
+                                          ref: obj.ref,
+                                      });
+                                  },
+                              };
+                          }),
+                      ),
+                  )
+                : of([]),
+        ),
+        tap(() => this.searchProgress.set(false)),
+        takeUntilDestroyed(this.dr),
+        shareReplay(1),
+    );
 
     constructor() {
         this.registerConsoleUtils();
-        this.cmdkService.init({
-            search: (searchStr) =>
-                runInInjectionContext(this.injector, () => {
-                    if (!searchStr) return of([]);
-                    const router = inject(Router);
-                    const sidenavInfoService = inject(SidenavInfoService);
-                    return this.repositoryService
-                        .SearchObjects({ query: searchStr, limit: 25 })
-                        .pipe(
-                            map((objects): CmdkOption[] => {
-                                return objects.result.map((obj) => {
-                                    const details = getLimitedDomainObjectDetails(obj);
-                                    return {
-                                        label: details.label,
-                                        description: details.description,
-                                        tooltip: `${details.id} (${details.type})`,
-                                        action: async () => {
-                                            await router.navigate(['/domain']);
-                                            sidenavInfoService.open(DomainObjectCardComponent, {
-                                                ref: obj.ref,
-                                            });
-                                        },
-                                    };
-                                });
-                            }),
-                        );
-                }),
-        });
     }
 
     logout() {

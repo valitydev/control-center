@@ -10,7 +10,7 @@ import {
 } from '@vality/matez';
 import { filter, first, switchMap } from 'rxjs/operators';
 
-import { DomainService } from '../../../../../api/domain-config';
+import { DomainService } from '../../../../../../api/domain-config';
 import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 

@@ -5,7 +5,7 @@ import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { RoutingRulesStoreService } from '../../../api/domain-config';
+import { RoutingRulesStoreService } from '../../../../api/domain-config';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 

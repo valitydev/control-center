@@ -40,7 +40,7 @@ export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<
 
     shopsOptions: Option<ShopID>[] = this.dialogData.shops.map((s) => ({
         value: s.ref.id,
-        label: s.data.details.name,
+        label: s.data.name,
         description: s.ref.id,
     }));
 

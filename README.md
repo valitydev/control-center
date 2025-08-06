@@ -12,7 +12,6 @@
 ### ⚙️ Installation
 
 1. Add configurations:
-
     - [`apps/control-center/src/assets/appConfig.json`](./apps/control-center/src/assets/_appConfig.json)
     - [`apps/control-center/src/assets/authConfig.json`](./apps/control-center/src/assets/_authConfig.json)
 

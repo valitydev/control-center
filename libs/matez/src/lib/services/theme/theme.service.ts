@@ -1,10 +1,19 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { fromEvent, map } from 'rxjs';
 
 export type Theme = 'light' | 'dark' | 'system';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
     private readonly storageKey = 'theme';
+    private isSystemDark = toSignal(
+        fromEvent<MediaQueryListEvent>(
+            window.matchMedia('(prefers-color-scheme: dark)'),
+            'change',
+        ).pipe(map((event) => event.matches)),
+        { initialValue: window.matchMedia('(prefers-color-scheme: dark)').matches },
+    );
 
     theme = signal<Theme>(this.getStoredTheme());
     isDark = computed(
@@ -13,7 +22,6 @@ export class ThemeService {
 
     constructor() {
         effect(() => this.updateTheme(this.isDark()));
-        this.listenToSystemThemeChanges();
     }
 
     setTheme(theme: Theme) {
@@ -32,17 +40,5 @@ export class ThemeService {
         } else {
             document.body.classList.remove('dark-mode');
         }
-    }
-
-    private isSystemDark(): boolean {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-
-    private listenToSystemThemeChanges() {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-            if (this.theme() === 'system') {
-                this.updateTheme();
-            }
-        });
     }
 }

@@ -76,20 +76,15 @@ export function formatPredicate(predicate: Predicate, level = 0, not = false): s
                         condition.cost_is_multiple_of.amount,
                         condition.cost_is_multiple_of.currency.symbolic_code,
                     )}`;
-                case 'identification_level_is':
-                    return `identification_level ${equalSymbol} ${condition.identification_level_is}`; // TODO: fix enum value
                 case 'party':
                     return `party ${equalSymbol} (#${condition.party.id}${
                         condition.party?.definition
                             ? ' & ' + inlineJson(toJson(condition.party?.definition), Infinity)
                             : ''
                     })`;
-                case 'payout_method_is':
-                    return `payout_method ${equalSymbol} ${condition.payout_method_is.id}`; // TODO: fix enum value
                 case 'shop_location_is':
                     return `shop_url ${equalSymbol} ${condition.shop_location_is.url}`;
                 case 'bin_data':
-                case 'p2p_tool':
                 case 'payment_tool':
                 default:
                     return `${conditionType} ${equalSymbol} ${inlineJson(

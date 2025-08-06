@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UpdateOptions } from '@vality/matez';
 import { map, switchMap } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../api/payment-processing';
+import { PartiesStoreService } from '../../../api/payment-processing';
 import { PartyStoreService } from '../party/party-store.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class PartyShopsComponent {
     private partyStoreService = inject(PartyStoreService);
 
     shopsResource$ = this.partyStoreService.party$.pipe(
-        map((party) => this.partiesStoreService.getPartyShops(party.id)),
+        map((party) => this.partiesStoreService.getPartyShops(party.ref.id)),
     );
     shops$ = this.shopsResource$.pipe(switchMap((res) => res.value$));
     progress$ = this.shopsResource$.pipe(switchMap((res) => res.isLoading$));
