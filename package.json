@@ -4,8 +4,7 @@
     "private": true,
     "scripts": {
         "start": "nx serve control-center --port 4200",
-        "prod": "cross-env NODE_ENV=stage nx serve control-center --port 4200 --configuration=production",
-        "stage": "cross-env NODE_ENV=stage nx serve control-center --port 4201 --configuration=stage",
+        "prod": "nx serve control-center --port 4200 --configuration=production",
         "build": "nx run-many -t build",
         "test": "nx test",
         "lint": "nx run-many -t lint",
@@ -79,7 +78,6 @@
         "angular-eslint": "20.1.1",
         "autoprefixer": "^10.4.0",
         "concurrently": "^9.2.0",
-        "cross-env": "^10.0.0",
         "cspell": "^9.2.0",
         "eslint": "^9.28.0",
         "eslint-config-prettier": "^10.1.5",

@@ -46,26 +46,12 @@
                             "maximumError": "8kb"
                         }
                     ],
-                    "fileReplacements": [
-                        {
-                            "replace": "apps/control-center/src/environments/environment.ts",
-                            "with": "apps/control-center/src/environments/environment.prod.ts"
-                        }
-                    ],
                     "outputHashing": "all"
                 },
                 "development": {
                     "optimization": false,
                     "extractLicenses": false,
                     "sourceMap": true
-                },
-                "stage": {
-                    "fileReplacements": [
-                        {
-                            "replace": "apps/control-center/src/environments/environment.ts",
-                            "with": "apps/control-center/src/environments/environment.stage.ts"
-                        }
-                    ]
                 }
             },
             "defaultConfiguration": "production"
@@ -78,9 +64,6 @@
                 },
                 "development": {
                     "buildTarget": "control-center:build:development"
-                },
-                "stage": {
-                    "buildTarget": "control-center:build:development,stage"
                 }
             },
             "defaultConfiguration": "development",

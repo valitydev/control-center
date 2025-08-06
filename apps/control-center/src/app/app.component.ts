@@ -21,7 +21,7 @@ import {
 import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
-import { environment } from '../environments/environment';
+import { LOGGING } from '../utils';
 
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
@@ -267,9 +267,8 @@ export class AppComponent {
     private registerConsoleUtils() {
         Object.assign(window as never as object, {
             ccSwitchLogging: () => {
-                environment.logging = { requests: !environment.logging.requests };
-
-                console.log(`Logging ${environment.logging.requests ? 'enabled' : 'disabled'}`);
+                LOGGING.fullLogging = !LOGGING.fullLogging;
+                console.log(`Logging ${LOGGING.fullLogging ? 'enabled' : 'disabled'}`);
             },
             ccGetMyRoles: () => {
                 console.log(this.keycloakUserService.roles.sort().join('\n'));

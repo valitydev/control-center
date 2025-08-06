@@ -34,7 +34,6 @@ import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { provideKeycloak } from 'keycloak-angular';
 
-import { environment } from '../environments/environment';
 import { parseThriftError, provideThriftServices } from '../utils';
 
 import { routes } from './app.routes';
@@ -59,7 +58,7 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),
         provideKeycloak({
-            config: environment.authConfigPath as never,
+            config: './assets/authConfig.json' as never,
             initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
         }),
         provideHttpClient(withInterceptorsFromDi()),
