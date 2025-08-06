@@ -1,5 +1,6 @@
 import { DestroyRef, Injector, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import autoBind from 'auto-bind';
 import { BehaviorSubject, Observable, Subject, combineLatest, merge } from 'rxjs';
 import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } from 'rxjs/operators';
 
@@ -37,7 +38,10 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     value$ = this.createValue().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
     value = toSignal(this.value$);
 
-    constructor(protected options: ObservableResourceOptions<TAccResult, TParams, TResult>) {}
+    constructor(protected options: ObservableResourceOptions<TAccResult, TParams, TResult>) {
+        // need for map method
+        autoBind(this);
+    }
 
     protected createParams() {
         return merge(
@@ -100,13 +104,12 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
             shareReplay({ refCount: true, bufferSize: 1 }),
         );
 
-        return {
-            ...this,
+        return Object.assign({}, this, {
             value$,
             value: toSignal(value$, { injector: this.injector }),
             map: (fn: (value: TResult) => PossiblyAsync<TNewResult>) =>
                 this.map(fn, value$ as never),
-        } as never;
+        }) as never;
     }
 }
 
