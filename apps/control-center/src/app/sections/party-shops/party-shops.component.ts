@@ -21,6 +21,6 @@ export class PartyShopsComponent {
     progress$ = this.shopsResource$.pipe(switchMap((res) => res.isLoading$));
 
     reload(_options: UpdateOptions) {
-        this.partiesStoreService.reloadParties();
+        this.partiesStoreService.reloadShops();
     }
 }
