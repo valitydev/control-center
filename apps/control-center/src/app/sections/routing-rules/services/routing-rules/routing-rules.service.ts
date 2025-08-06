@@ -11,8 +11,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, concat } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { createNextId } from '../../../../../utils/create-next-id';
 import { RoutingRulesStoreService } from '../../../../../api/domain-config';
+import { createNextId } from '../../../../../utils/create-next-id';
 
 import { CandidateId } from './types/candidate-id';
 import { getDelegate } from './utils/get-delegate';
