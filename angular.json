@@ -123,6 +123,36 @@
           }
         }
       }
+    },
+    "ng-thrift": {
+      "projectType": "library",
+      "root": "projects/ng-thrift",
+      "sourceRoot": "projects/ng-thrift/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-thrift/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ng-thrift/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/ng-thrift/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
     }
   }
 }

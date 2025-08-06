@@ -9,6 +9,9 @@
     "paths": {
       "matez": [
         "./dist/matez"
+      ],
+      "ng-thrift": [
+        "./dist/ng-thrift"
       ]
     },
     "noImplicitReturns": true,
@@ -40,6 +43,12 @@
     },
     {
       "path": "./projects/matez/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/ng-thrift/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/ng-thrift/tsconfig.spec.json"
     }
   ]
 }
