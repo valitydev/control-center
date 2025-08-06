@@ -8,7 +8,7 @@ import {
 } from '@vality/matez';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, first, map } from 'rxjs/operators';
 
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
 
@@ -60,7 +60,7 @@ export class SidenavInfoService {
         const component$ = getPossiblyAsyncObservable(
             typeof component === 'string' ? this.getComponentById(component) : component,
         );
-        component$.subscribe((comp) => {
+        component$.pipe(first()).subscribe((comp) => {
             if (this.isEqual(comp, inputs)) {
                 this.close();
             } else {

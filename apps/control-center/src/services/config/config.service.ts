@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 
 import { AppConfig } from './types/app-config';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ConfigService {
     private http = inject(HttpClient);
 

@@ -173,6 +173,19 @@ const createNavLinks = (): Link[] => [
     selector: 'cc-root',
     templateUrl: './app.component.html',
     standalone: false,
+    // imports: [
+    //     MatSidenavModule,
+    //     MatIconModule,
+    //     CmdkModule,
+    //     CommonModule,
+    //     NavComponent,
+    //     MatMenuModule,
+    //     MatToolbarModule,
+    //     RouterOutlet,
+    //     SidenavInfoModule,
+    //     MatButtonModule,
+    //     MatTooltipModule,
+    // ],
 })
 export class AppComponent {
     private keycloakService = inject(Keycloak);

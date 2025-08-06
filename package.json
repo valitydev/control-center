@@ -28,7 +28,6 @@
         "@angular/material": "20.1.2",
         "@angular/material-date-fns-adapter": "20.1.2",
         "@angular/platform-browser": "20.1.2",
-        "@angular/platform-browser-dynamic": "20.1.2",
         "@angular/router": "20.1.2",
         "@ngneat/input-mask": "^6.1.0",
         "@s-libs/ng-core": "^20.0.0",

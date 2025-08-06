@@ -1,6 +1,6 @@
 {
     "realm": "internal",
-    "auth-server-url": "https://auth.vality.dev/auth/",
+    "auth-server-url": "https://auth.vality.dev",
     "ssl-required": "external",
     "resource": "control-center",
     "public-client": true
