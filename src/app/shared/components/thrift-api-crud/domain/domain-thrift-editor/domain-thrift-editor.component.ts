@@ -5,8 +5,8 @@ import { metadata$ } from '@vality/domain-proto';
 import { createControlProviders } from '@vality/matez';
 import { ThriftEditorModule, ThriftFormModule } from '@vality/ng-thrift';
 
-import { DomainMetadataFormExtensionsService } from '../../../../services';
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
+import { DomainMetadataFormExtensionsService } from '../services/domain-metadata-form-extensions';
 
 @Component({
     selector: 'cc-domain-thrift-editor',

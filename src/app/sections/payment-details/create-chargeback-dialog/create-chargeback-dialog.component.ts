@@ -7,7 +7,7 @@ import { InvoicePaymentChargebackParams, Invoicing } from '@vality/domain-proto/
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 import short from 'short-uuid';
 
-import { DomainMetadataFormExtensionsService } from '../../../shared/services';
+import { DomainMetadataFormExtensionsService } from '../../../shared/components/thrift-api-crud';
 
 @Component({
     selector: 'cc-create-chargeback-dialog',

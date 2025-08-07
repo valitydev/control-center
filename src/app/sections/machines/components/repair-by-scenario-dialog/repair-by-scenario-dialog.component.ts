@@ -19,7 +19,7 @@ import isNil from 'lodash-es/isNil';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DomainMetadataFormExtensionsService } from '../../../../shared/services';
+import { DomainMetadataFormExtensionsService } from '../../../../shared/components/thrift-api-crud';
 
 enum Types {
     Same,

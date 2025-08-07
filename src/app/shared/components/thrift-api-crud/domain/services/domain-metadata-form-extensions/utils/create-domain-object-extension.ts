@@ -5,8 +5,7 @@ import {
 } from '@vality/ng-thrift';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { createNextId } from '../../../../../utils/create-next-id';
+import { createNextId } from '../../../../../../../../utils/create-next-id';
 
 export function createDomainObjectExtensions(
     refType: string,
