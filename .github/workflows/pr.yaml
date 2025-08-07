@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: valitydev/action-frontend/setup-install@v2
+      - uses: valitydev/action-frontend/setup-install
+        with:
+          npm-not-ci: true
       - name: Check
         run: npm run check
   build:
@@ -18,6 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: valitydev/action-frontend/setup-install@v2
+        with:
+          npm-not-ci: true
       - name: Build
         run: npm run build
       # - name: Publish MatEz Library
