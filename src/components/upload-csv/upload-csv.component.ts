@@ -33,10 +33,10 @@ import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 const DEFAULT_DELIMITER = ';';
 
-export type CsvProps<R extends string = string, O extends string = string> = {
+export interface CsvProps<R extends string = string, O extends string = string> {
     required?: R[];
     optional?: O[];
-};
+}
 
 export type CsvObject<R extends string = string, O extends string = string> = Record<R, string> &
     Partial<Record<O, string>>;

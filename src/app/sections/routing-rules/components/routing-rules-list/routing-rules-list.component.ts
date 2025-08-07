@@ -28,10 +28,10 @@ import { RoutingRulesService } from '../../services/routing-rules';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';
 import { ChangeTargetDialogComponent } from '../change-target-dialog';
 
-type DelegateId = {
+interface DelegateId {
     parentRefId: number;
     delegateIdx: number;
-};
+}
 
 export type RoutingRulesListItem<T> = DelegateId & { item: T };
 

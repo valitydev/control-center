@@ -3,9 +3,10 @@ import { PickByValue } from 'utility-types';
 
 import { RoutingRulesType } from '../types/routing-rules-type';
 
-const TYPE_TO_PAYMENT_INSTITUTION_KEY: {
-    [N in RoutingRulesType]: keyof PickByValue<PaymentInstitution, RoutingRules>;
-} = {
+const TYPE_TO_PAYMENT_INSTITUTION_KEY: Record<
+    RoutingRulesType,
+    keyof PickByValue<PaymentInstitution, RoutingRules>
+> = {
     [RoutingRulesType.Payment]: 'payment_routing_rules',
     [RoutingRulesType.Withdrawal]: 'withdrawal_routing_rules',
 };

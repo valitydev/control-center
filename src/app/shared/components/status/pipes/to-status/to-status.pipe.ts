@@ -7,7 +7,7 @@ import startCase from 'lodash-es/startCase';
     standalone: false,
 })
 export class ToStatusPipe implements PipeTransform {
-    transform(status: { [N in string]: unknown }): string {
+    transform(status: Record<string, unknown>): string {
         return startCase(getUnionKey(status));
     }
 }
