@@ -19,8 +19,8 @@ import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { DomainService } from '../../../../../../api/domain-config';
-import { APP_ROUTES } from '../../../../../app-routes';
 import { NavigateService } from '../../../../../../services';
+import { APP_ROUTES } from '../../../../../app-routes';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 

@@ -4,8 +4,8 @@ import { clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
 import { UserInfoBasedIdGeneratorService } from '../../../../../../services';
-import { CsvDeposit } from '../types/csv-deposit';
 import { AmountCurrencyService } from '../../../../../../services';
+import { CsvDeposit } from '../types/csv-deposit';
 
 export function getCreateDepositArgs(c: CsvDeposit) {
     const userInfoBasedIdGeneratorService = inject(UserInfoBasedIdGeneratorService);

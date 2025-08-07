@@ -12,6 +12,7 @@ import {
     splitResultsErrors,
 } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
+
 import { DomainMetadataFormExtensionsService } from '../../../../shared/components/thrift-api-crud';
 
 @Component({

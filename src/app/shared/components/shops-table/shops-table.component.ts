@@ -31,12 +31,12 @@ import { filter, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../api/payment-processing';
+import { createPartyColumn } from '../../../../utils';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
-import { createPartyColumn } from '../../../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 

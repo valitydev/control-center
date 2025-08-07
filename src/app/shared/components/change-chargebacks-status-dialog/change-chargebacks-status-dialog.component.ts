@@ -18,6 +18,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
+
 import { DomainMetadataFormExtensionsService } from '../thrift-api-crud';
 
 enum Action {
