@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { Services } from '../services';
-import { Route } from './shared/services';
+import { Route } from '../services';
 
 type SectionPageRoutes = Record<string, Record<string, Route>>;
 
