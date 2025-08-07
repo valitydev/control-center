@@ -9,7 +9,7 @@ export function handleError<T>(
 ): MonoTypeOperatorFunction<T> {
     return (source) =>
         source.pipe(
-            catchError((err, _caught) => {
+            catchError((err) => {
                 handler(err);
                 return getPossiblyAsyncObservable(result);
             }),

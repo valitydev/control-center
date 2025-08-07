@@ -45,7 +45,7 @@ const nilValidator: ValidatorFn = (control) => {
         FieldLabelPipe,
     ],
 })
-export class StructFormComponent<T extends { [N in string]: unknown }>
+export class StructFormComponent<T extends Record<string, unknown>>
     extends FormComponentSuperclass<T>
     implements OnChanges, OnInit
 {
@@ -112,7 +112,7 @@ export class StructFormComponent<T extends { [N in string]: unknown }>
         return this.labelControl.value ? getErrorsTree(this.control) : null;
     }
 
-    private setLabelControl(value: boolean = false) {
+    private setLabelControl(value = false) {
         if (!this.hasLabel || this.data.isRequired) {
             if (!this.labelControl.value) {
                 this.labelControl.setValue(true);

@@ -5,10 +5,10 @@ import { map } from 'rxjs/operators';
 
 import { ThriftData } from '../../../models';
 
-export type ThriftFormExtension = {
+export interface ThriftFormExtension {
     determinant: (data: ThriftData) => Observable<boolean>;
     extension: (data: ThriftData) => Observable<ThriftFormExtensionResult>;
-};
+}
 
 export interface Converter<O = unknown, I = O> {
     outputToInternal: (outputValue: O) => I;

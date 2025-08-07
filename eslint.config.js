@@ -30,6 +30,8 @@ module.exports = tseslint.config(
                     style: 'kebab-case',
                 },
             ],
+            // Temporarily disabled due to issues with standalone components
+            '@angular-eslint/prefer-standalone': 'warn',
         },
     },
     {

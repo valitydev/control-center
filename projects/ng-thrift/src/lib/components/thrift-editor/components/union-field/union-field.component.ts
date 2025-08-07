@@ -39,7 +39,7 @@ import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
         forwardRef(() => ThriftFormComponent),
     ],
 })
-export class UnionFieldComponent<T extends { [N in string]: unknown }>
+export class UnionFieldComponent<T extends Record<string, unknown>>
     extends FormComponentSuperclass<T>
     implements OnInit, Validator, OnChanges
 {
