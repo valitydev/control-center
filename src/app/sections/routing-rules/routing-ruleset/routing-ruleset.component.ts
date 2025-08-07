@@ -22,7 +22,7 @@ import {
     createDomainObjectColumn,
     createPredicateColumn,
     getPredicateBoolean,
-} from '../../../shared';
+} from '../../../../utils';
 import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import {

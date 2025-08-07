@@ -7,7 +7,7 @@ import { combineLatest } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { AccountBalancesStoreService } from '../../../../api/terminal-balance';
-import { createCurrencyColumn } from '../../utils';
+import { createCurrencyColumn } from '../../../../utils';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 
 @Component({

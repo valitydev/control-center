@@ -13,7 +13,7 @@ import { combineLatest } from 'rxjs';
 import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '../../../../api/domain-config';
-import { createShopColumn, createWalletColumn } from '../../../shared';
+import { createShopColumn, createWalletColumn } from '../../../../utils';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
 import { RoutingRulesListItem } from '../components/routing-rules-list';

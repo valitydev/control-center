@@ -12,7 +12,7 @@ import {
     createCurrencyColumn,
     createDomainObjectColumn,
     createPredicateColumn,
-} from '../../shared';
+} from '../../../utils';
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { TerminalBalancesCardComponent } from '../../shared/components/terminal-balances-card/terminal-balances-card.component';
 import { TerminalDelegatesCardComponent } from '../../shared/components/terminal-delegates-card/terminal-delegates-card.component';

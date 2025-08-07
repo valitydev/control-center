@@ -28,7 +28,8 @@ import type {
     domain,
 } from '@vality/dominator-proto/dominator';
 
-import { PageLayoutModule, createDomainObjectColumn } from '../../../../shared';
+import { PageLayoutModule } from '../../../../shared';
+import { createDomainObjectColumn } from '../../../../../utils';
 import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '../../../../tokens';

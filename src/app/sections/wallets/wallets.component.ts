@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { FetchFullDomainObjectsService } from '../../../api/domain-config';
-import { createPartyColumn } from '../../shared';
+import { createPartyColumn } from '../../../utils';
 import { PartyStoreService } from '../party';
 
 @Component({

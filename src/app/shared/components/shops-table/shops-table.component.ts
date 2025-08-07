@@ -36,7 +36,7 @@ import {
     PartyDelegateRulesetsService,
 } from '../../../sections/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
-import { createPartyColumn } from '../../utils';
+import { createPartyColumn } from '../../../../utils';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
 

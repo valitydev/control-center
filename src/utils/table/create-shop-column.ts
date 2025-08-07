@@ -3,9 +3,9 @@ import { createColumn } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../../../api/payment-processing';
-import { SidenavInfoService } from '../../components/sidenav-info';
-import { DomainObjectCardComponent } from '../../components/thrift-api-crud/domain2';
+import { PartiesStoreService } from '../../api/payment-processing';
+import { SidenavInfoService } from '../../app/shared/components/sidenav-info';
+import { DomainObjectCardComponent } from '../../app/shared/components/thrift-api-crud/domain2';
 
 export const createShopColumn = createColumn(
     ({ shopId, ...params }: { shopId: string; shopName?: string }) => {

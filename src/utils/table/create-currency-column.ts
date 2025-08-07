@@ -5,8 +5,8 @@ import { groupBy, uniq } from 'lodash-es';
 import { combineLatest, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { CurrenciesStoreService } from '../../../../api/domain-config';
-import { AmountCurrencyService } from '../../services';
+import { CurrenciesStoreService } from '../../api/domain-config';
+import { AmountCurrencyService } from '../../app/shared/services';
 
 interface CurrencyValue {
     amount: number;
