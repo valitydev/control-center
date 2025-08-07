@@ -3,8 +3,7 @@ import { DepositParams } from '@vality/fistful-proto/deposit';
 import { clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { UserInfoBasedIdGeneratorService } from '../../../../../../services';
-import { AmountCurrencyService } from '../../../../../../services';
+import { AmountCurrencyService, UserInfoBasedIdGeneratorService } from '../../../../../../services';
 import { CsvDeposit } from '../types/csv-deposit';
 
 export function getCreateDepositArgs(c: CsvDeposit) {
