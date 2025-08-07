@@ -65,12 +65,12 @@ export const routes: Routes = [
         loadChildren: () => import('./sections/not-found').then((m) => m.NotFoundModule),
     },
     {
-        path: '**',
-        redirectTo: '/404',
-    },
-    {
         path: '',
         redirectTo: '/domain',
         pathMatch: 'full',
+    },
+    {
+        path: '**',
+        redirectTo: '/404',
     },
 ];
