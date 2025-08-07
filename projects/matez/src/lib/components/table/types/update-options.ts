@@ -1,3 +1,3 @@
-export type UpdateOptions = {
+export interface UpdateOptions {
     size: number;
-};
+}

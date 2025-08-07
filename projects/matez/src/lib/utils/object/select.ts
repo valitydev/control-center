@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 export type SelectFn<
     TObject extends object = object,
     TResult = unknown,
-    TParams extends Array<unknown> = [],
+    TParams extends unknown[] = [],
 > = string | ((obj: TObject, ...params: TParams) => Observable<TResult> | TResult);
 
-export function select<TObject extends object, TResult, TParams extends Array<unknown> = []>(
+export function select<TObject extends object, TResult, TParams extends unknown[] = []>(
     obj: TObject,
     selectFn: SelectFn<TObject, TResult, TParams>,
     defaultValue?: TResult,

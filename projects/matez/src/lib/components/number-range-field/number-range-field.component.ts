@@ -3,10 +3,10 @@ import { NonNullableFormBuilder } from '@angular/forms';
 
 import { FormGroupSuperclass, createControlProviders } from '../../utils';
 
-export type NumberRange = {
+export interface NumberRange {
     start?: number;
     end?: number;
-};
+}
 
 @Component({
     selector: 'v-number-range-field',

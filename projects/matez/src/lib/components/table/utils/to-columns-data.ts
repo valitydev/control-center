@@ -10,12 +10,12 @@ import { CellFnArgs, Fn, NormColumn } from '../types';
 export type DisplayedDataItem<T extends object, C extends object> = TreeInlineDataItem<T, C> | T;
 export type DisplayedData<T extends object, C extends object> = TreeInlineData<T, C> | T[];
 
-export type ColumnDataItem = {
+export interface ColumnDataItem {
     value: Value | null;
     lazyValue?: Observable<Value>;
     isChild?: boolean;
     isNextChild?: boolean;
-};
+}
 export type ColumnData = ColumnDataItem[];
 
 type ScanColumnDataItem = Overwrite<ColumnDataItem, { value: Observable<Value | null> }>;

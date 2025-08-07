@@ -46,8 +46,8 @@ export function tableToCsvObject<T extends object, C extends object>(
     }
     emptyCols = emptyCols.reverse();
     for (const i of emptyCols) {
-        for (let j = 0; j < res.length; ++j) {
-            res[j].splice(i, 1);
+        for (const values of res) {
+            values.splice(i, 1);
         }
     }
     return res;

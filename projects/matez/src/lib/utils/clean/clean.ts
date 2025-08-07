@@ -5,7 +5,7 @@ import { isEmptyPrimitive } from '../empty/is-empty-primitive';
 
 export function clean<
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    T extends ReadonlyArray<any> | ArrayLike<any> | Record<any, any>,
+    T extends readonly any[] | ArrayLike<any> | Record<any, any>,
     TAllowRootRemoval extends boolean = false,
 >(
     obj: T,

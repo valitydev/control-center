@@ -9,7 +9,7 @@ import { SelectFn, select } from '../utils';
     name: 'vSelect',
     pure: false,
 })
-export class VSelectPipe<TObject extends object, TResult, TParams extends Array<unknown> = []>
+export class VSelectPipe<TObject extends object, TResult, TParams extends unknown[] = []>
     implements PipeTransform, OnDestroy
 {
     private ref = inject(ChangeDetectorRef);

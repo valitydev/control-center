@@ -7,8 +7,8 @@ import { map } from 'rxjs/operators';
 import { Async, PossiblyAsync, getPossiblyAsyncObservable } from '../../../utils';
 import { Value } from '../../value';
 
-export type Fn<R, P extends Array<unknown> = []> = (...args: P) => R;
-export type PossiblyFn<R, P extends Array<unknown> = []> = Fn<R, P> | R;
+export type Fn<R, P extends unknown[] = []> = (...args: P) => R;
+export type PossiblyFn<R, P extends unknown[] = []> = Fn<R, P> | R;
 
 export type CellFnArgs<T extends object> = [data: T, index: number];
 
@@ -32,14 +32,14 @@ export interface Column<T extends object, C extends object = object> extends Col
     sort?: PossiblyAsync<boolean>;
 }
 
-export function normalizePossiblyFn<R, P extends Array<unknown>>(fn: PossiblyFn<R, P>): Fn<R, P> {
+export function normalizePossiblyFn<R, P extends unknown[]>(fn: PossiblyFn<R, P>): Fn<R, P> {
     return typeof fn === 'function' ? (fn as Fn<R, P>) : () => fn;
 }
 
 export function normalizeCell<T extends object, C extends object>(
     field: string,
     cell: Column<T, C>['cell'],
-    hasChild: boolean = false,
+    hasChild = false,
 ): Fn<Observable<Value>, CellFnArgs<T>> {
     const cellFn = normalizePossiblyFn(cell);
     return (...args) =>
