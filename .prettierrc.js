@@ -16,6 +16,10 @@ module.exports = {
     ],
     overrides: [
         {
+            files: '*.html',
+            options: { parser: 'angular' },
+        },
+        {
             files: ['.{vscode,github}/**'],
             options: {
                 tabWidth: 2,

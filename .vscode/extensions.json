@@ -1,14 +1,4 @@
 {
-  "recommendations": [
-    "hediet.tasks-statusbar",
-    "streetsidesoftware.code-spell-checker-russian",
-    "wmaurer.change-case",
-    "johnpapa.vscode-peacock",
-    "streetsidesoftware.code-spell-checker",
-    "nrwl.angular-console",
-    "angular.ng-template",
-    "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "firsttris.vscode-jest-runner"
-  ]
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
+  "recommendations": ["angular.ng-template"]
 }

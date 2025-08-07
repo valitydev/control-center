@@ -1,0 +1,50 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "strict": false,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "paths": {
+            "@vality/matez": ["./projects/matez/src/public-api.ts"],
+            "@vality/ng-thrift": ["./projects/ng-thrift/src/public-api.ts"]
+        },
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "ES2022",
+        "module": "preserve"
+    },
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "typeCheckHostBindings": true,
+        "strictTemplates": true
+    },
+    "files": [],
+    "references": [
+        {
+            "path": "./tsconfig.app.json"
+        },
+        {
+            "path": "./tsconfig.spec.json"
+        },
+        {
+            "path": "./projects/matez/tsconfig.lib.json"
+        },
+        {
+            "path": "./projects/matez/tsconfig.spec.json"
+        },
+        {
+            "path": "./projects/ng-thrift/tsconfig.lib.json"
+        },
+        {
+            "path": "./projects/ng-thrift/tsconfig.spec.json"
+        }
+    ]
+}

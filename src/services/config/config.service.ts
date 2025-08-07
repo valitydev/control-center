@@ -1,0 +1,14 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { observableResource } from '@vality/matez';
+
+import { AppConfig } from './types/app-config';
+
+@Injectable({ providedIn: 'root' })
+export class ConfigService {
+    private http = inject(HttpClient);
+
+    config = observableResource({
+        loader: () => this.http.get<AppConfig>('./assets/appConfig.json'),
+    });
+}
