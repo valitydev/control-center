@@ -114,6 +114,13 @@
                         "tsConfig": "projects/matez/tsconfig.spec.json",
                         "polyfills": ["zone.js", "zone.js/testing"]
                     }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["projects/matez/**/*.ts", "projects/matez/**/*.html"],
+                        "eslintConfig": "projects/matez/eslint.config.js"
+                    }
                 }
             }
         },
@@ -141,8 +148,21 @@
                         "tsConfig": "projects/ng-thrift/tsconfig.spec.json",
                         "polyfills": ["zone.js", "zone.js/testing"]
                     }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "projects/ng-thrift/**/*.ts",
+                            "projects/ng-thrift/**/*.html"
+                        ],
+                        "eslintConfig": "projects/ng-thrift/eslint.config.js"
+                    }
                 }
             }
         }
+    },
+    "cli": {
+        "schematicCollections": ["angular-eslint"]
     }
 }
