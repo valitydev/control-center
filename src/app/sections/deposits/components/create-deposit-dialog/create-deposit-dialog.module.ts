@@ -12,7 +12,7 @@ import { DialogModule } from '@vality/matez';
 import { SourceCashFieldComponent } from '../../../../../components/source-cash-field';
 import { CurrencySourceFieldComponent } from '../../../../shared/components/currency-source-field';
 import { FistfulThriftFormComponent } from '../../../../shared/components/fistful-thrift-form';
-import { UserInfoBasedIdGeneratorModule } from '../../../../shared/services/user-info-based-id-generator/user-info-based-id-generator.module';
+import { UserInfoBasedIdGeneratorModule } from '../../../../../services/user-info-based-id-generator/user-info-based-id-generator.module';
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog.component';
 

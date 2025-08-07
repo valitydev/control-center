@@ -9,7 +9,7 @@ import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../../components/source-cash-field';
-import { UserInfoBasedIdGeneratorService } from '../../../../shared/services';
+import { UserInfoBasedIdGeneratorService } from '../../../../../services';
 import { FetchSourcesService } from '../../../sources';
 
 @Component({
