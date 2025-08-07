@@ -39,7 +39,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     value = toSignal(this.value$);
 
     constructor(protected options: ObservableResourceOptions<TAccResult, TParams, TResult>) {
-        // need for map method
+        // needed for map method
         autoBind(this);
     }
 
