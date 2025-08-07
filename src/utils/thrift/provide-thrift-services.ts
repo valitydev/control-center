@@ -12,7 +12,7 @@ import Keycloak from 'keycloak-js';
 import { isObject } from 'lodash-es';
 import { combineLatest, map } from 'rxjs';
 
-import { createRequestWachterHeaders, createWachterHeaders } from '../../app/shared/services';
+import { createRequestWachterHeaders, createWachterHeaders } from './create-wachter-headers';
 import { ConfigService, KeycloakUserService } from '../../services';
 
 export const LOGGING = {
