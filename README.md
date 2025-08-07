@@ -6,7 +6,7 @@
     - MatEz (eazy-to-use library that extends Angular Material)
     - NgThrift (Angular Material Thrift Components)
 
-> This project was generated using [Angular CLI](https://github.com/angular/angular-cli)
+> This project was generated using [Angular CLI](https://github.com/angular/angular-cli).
 
 ## Development server
 
