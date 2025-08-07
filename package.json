@@ -4,10 +4,19 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prod": "ng serve --configuration=production",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix=true",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write",
+    "spell": "cspell --no-progress **",
+    "spell:unused": "npx cspell-check-unused-words",
+    "spell:fix": "npm run spell -- **  --show-suggestions --show-context",
+    "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
+    "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\""
   },
   "workspaces": [
     "projects/*"
