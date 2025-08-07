@@ -12,12 +12,8 @@ import Keycloak from 'keycloak-js';
 import { isObject } from 'lodash-es';
 import { combineLatest, map } from 'rxjs';
 
-import {
-    KeycloakUserService,
-    createRequestWachterHeaders,
-    createWachterHeaders,
-} from '../../app/shared/services';
-import { ConfigService } from '../../services';
+import { createRequestWachterHeaders, createWachterHeaders } from '../../app/shared/services';
+import { ConfigService, KeycloakUserService } from '../../services';
 
 export const LOGGING = {
     fullLogging: isDevMode(),

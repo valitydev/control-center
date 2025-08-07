@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { canActivateAuthRole } from '../../shared/services';
+import { canActivateAuthRole } from '../../../services';
 
 import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
 import { TerminalsTermsComponent } from './components/terminals-terms/terminals-terms.component';

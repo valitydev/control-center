@@ -36,7 +36,7 @@ import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdra
 import { SidenavInfoModule, SidenavInfoService } from './shared/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
-import { KeycloakUserService, Services } from './shared/services';
+import { KeycloakUserService, Services } from '../services';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);

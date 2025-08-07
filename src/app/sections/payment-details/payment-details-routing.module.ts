@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { canActivateAuthRole } from '../../shared/services';
+import { canActivateAuthRole } from '../../../services';
 
 import { PaymentDetailsComponent } from './payment-details.component';
 import { ROUTING_CONFIG } from './routing-config';
