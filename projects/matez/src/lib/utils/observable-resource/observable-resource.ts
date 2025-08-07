@@ -7,20 +7,30 @@ import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } fr
 import { PossiblyAsync, getPossiblyAsyncObservable } from '../async';
 import { filterOperator, progressTo } from '../operators';
 
-export class ObservableResourceAction {
-    constructor(public readonly type: string) {}
-}
+export type ObservableResourceActionType = string;
 
-const INIT_ACTION = new ObservableResourceAction('init');
+const INIT_ACTION = 'init' satisfies ObservableResourceActionType;
 
-export interface ObservableResourceOptions<TAccResult, TParams = void, TResult = TAccResult> {
-    loader: (params: TParams, acc: TAccResult) => Observable<TAccResult>;
+export type ObservableResourceActions = typeof INIT_ACTION;
+
+export interface ObservableResourceOptions<
+    TAccResult,
+    TParams = void,
+    TResult = TAccResult,
+    TAction = ObservableResourceActionType,
+> {
+    loader: (params: TParams, acc: TAccResult, action: TAction) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
     params?: PossiblyAsync<TParams>;
 }
 
-export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult> {
+export class ObservableResource<
+    TAccResult,
+    TParams = void,
+    TResult = TAccResult,
+    TAction = ObservableResourceActionType,
+> {
     protected dr = inject(DestroyRef);
     protected injector = inject(Injector);
 
@@ -28,7 +38,7 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     isLoading$ = this.progress$.pipe(map(Boolean));
     isLoading = toSignal(this.isLoading$, { initialValue: false });
 
-    protected action$ = new BehaviorSubject<ObservableResourceAction>(INIT_ACTION);
+    protected action$ = new BehaviorSubject<TAction>(INIT_ACTION as TAction);
     protected mergedParams$ = new Subject<TParams>();
     params$!: Observable<TParams>;
     params!: Signal<TParams | undefined>;
@@ -38,7 +48,9 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     value$!: Observable<TResult>;
     value!: Signal<TResult | undefined>;
 
-    constructor(protected options: ObservableResourceOptions<TAccResult, TParams, TResult>) {
+    constructor(
+        protected options: ObservableResourceOptions<TAccResult, TParams, TResult, TAction>,
+    ) {
         // needed for map method
         autoBind(this);
 
@@ -60,8 +72,10 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     protected createAccValue() {
         return combineLatest([this.params$, this.action$]).pipe(
             mergeScan(
-                (acc, [params]) =>
-                    this.options.loader(params as TParams, acc).pipe(progressTo(this.progress$)),
+                (acc, [params, action]) =>
+                    this.options
+                        .loader(params as TParams, acc, action as TAction)
+                        .pipe(progressTo(this.progress$)),
                 this.options.seed as TAccResult,
                 1,
             ),
@@ -102,6 +116,10 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
         this.setParams((p) => p);
     }
 
+    protected action(action: TAction) {
+        this.action$.next(action);
+    }
+
     map<TNewResult>(
         mapFn: (value: TResult) => PossiblyAsync<TNewResult>,
         sourceValue$ = this.value$,
@@ -120,8 +138,11 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
     }
 }
 
-export function observableResource<TAccResult, TParams = void, TResult = TAccResult>(
-    options: ObservableResourceOptions<TAccResult, TParams, TResult>,
-) {
-    return new ObservableResource<TAccResult, TParams, TResult>(options);
+export function observableResource<
+    TAccResult,
+    TParams = void,
+    TResult = TAccResult,
+    TAction = ObservableResourceActionType,
+>(options: ObservableResourceOptions<TAccResult, TParams, TResult, TAction>) {
+    return new ObservableResource<TAccResult, TParams, TResult, TAction>(options);
 }

@@ -3,16 +3,19 @@ import { Observable, map } from 'rxjs';
 
 import {
     ObservableResource,
-    ObservableResourceAction,
-    ObservableResourceOptions,
+    ObservableResourceActionType,
+    ObservableResourceActions,
 } from './observable-resource';
 
-const MORE_ACTION = new ObservableResourceAction('more');
+const MORE_ACTION = 'more' satisfies ObservableResourceActionType;
+const UPDATE_PAGED_OPTIONS_ACTION = 'update-options' satisfies ObservableResourceActionType;
+type PagedObservableResourceActions =
+    | ObservableResourceActions
+    | typeof MORE_ACTION
+    | typeof UPDATE_PAGED_OPTIONS_ACTION;
 
-class ObservableResourceSetOptionsAction extends ObservableResourceAction {
-    constructor(public readonly options: PagedObservableResourceLoaderOptions) {
-        super('options');
-    }
+export interface PagedObservableResourceInternalOptions {
+    size: number;
 }
 
 export interface PagedObservableResourceAccResult<TItem> {
@@ -20,34 +23,64 @@ export interface PagedObservableResourceAccResult<TItem> {
     continuationToken?: string;
 }
 
-export interface PagedObservableResourceLoaderOptions {
-    size: number;
+export type PagedObservableResourceLoaderOptions = PagedObservableResourceInternalOptions & {
     continuationToken?: string;
-}
+};
 
-export interface PagedObservableResourceOptions<TItem, TParams = void>
-    extends ObservableResourceOptions<PagedObservableResourceAccResult<TItem>, TParams, TItem[]>,
-        Partial<PagedObservableResourceLoaderOptions> {
-    partialLoader: (
+interface PagedObservableResourceOptions<TItem, TParams = void>
+    extends Partial<PagedObservableResourceInternalOptions> {
+    loader: (
         params: TParams,
         options: PagedObservableResourceLoaderOptions,
     ) => Observable<PagedObservableResourceAccResult<TItem>>;
 }
-
 export class PagedObservableResource<TItem, TParams = void> extends ObservableResource<
     PagedObservableResourceAccResult<TItem>,
     TParams,
-    TItem[]
+    TItem[],
+    PagedObservableResourceActions
 > {
     hasMore$ = this.accValue$.pipe(map((value) => !!value.continuationToken));
     hasMore = toSignal(this.hasMore$, { initialValue: false });
 
-    more() {
-        this.action$.next(MORE_ACTION);
+    // TODO: deprecated
+    result$ = this.value$;
+
+    protected pagedOptions: PagedObservableResourceInternalOptions = { size: 20 };
+
+    constructor(options: PagedObservableResourceOptions<TItem, TParams>) {
+        super({
+            loader: (params, acc, action) => {
+                return options
+                    .loader(
+                        params,
+                        action === 'more'
+                            ? { ...this.pagedOptions, continuationToken: acc.continuationToken }
+                            : this.pagedOptions,
+                    )
+                    .pipe(
+                        map((result) => ({
+                            result: [...acc.result, ...result.result],
+                            continuationToken: result.continuationToken,
+                        })),
+                    );
+            },
+        });
     }
 
-    setOptions(options: PagedObservableResourceLoaderOptions) {
-        this.action$.next(new ObservableResourceSetOptionsAction(options));
+    more() {
+        this.action(MORE_ACTION);
+    }
+
+    setOptions(options: PagedObservableResourceInternalOptions) {
+        this.pagedOptions = options;
+        this.action(UPDATE_PAGED_OPTIONS_ACTION);
+    }
+
+    // TODO: deprecated
+    load(params: TParams, options?: PagedObservableResourceInternalOptions) {
+        this.pagedOptions = options;
+        this.setParams(params);
     }
 }
 
@@ -57,7 +90,15 @@ export function pagedObservableResource<TItem, TParams = void>(
     return new PagedObservableResource<TItem, TParams>(options);
 }
 
-export abstract class PagedObservableResourceSuperClass<
+export abstract class PagedObservableResourceSuperclass<
     TItem,
     TParams = void,
-> extends PagedObservableResource<TItem, TParams> {}
+> extends PagedObservableResource<TItem, TParams> {
+    abstract loader(
+        ...args: Parameters<PagedObservableResourceOptions<TItem, TParams>['loader']>
+    ): ReturnType<PagedObservableResourceOptions<TItem, TParams>['loader']>;
+
+    constructor() {
+        super({ loader: (params, options) => this.loader(params, options) });
+    }
+}
