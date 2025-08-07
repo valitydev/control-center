@@ -5,7 +5,7 @@ import { DialogResponseStatus } from '@vality/matez';
 
 import { DomainService, FetchDomainObjectsService } from '../../api/domain-config';
 import { PageLayoutModule } from '../shared';
-import { DomainObjectService } from '../shared/components/thrift-api-crud/domain2';
+import { DomainObjectService } from '../shared/components/thrift-api-crud/domain';
 
 import { DomainObjectsTableComponent } from './domain-objects-table';
 

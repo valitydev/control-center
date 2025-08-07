@@ -27,7 +27,7 @@ import { getReferenceId } from '../../shared/components/thrift-api-crud';
 import {
     DomainObjectCardComponent,
     DomainObjectService,
-} from '../../shared/components/thrift-api-crud/domain2';
+} from '../../shared/components/thrift-api-crud/domain';
 
 @Component({
     selector: 'cc-domain-objects-table',

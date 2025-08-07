@@ -40,7 +40,7 @@ import { routes } from './app.routes';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
 import { SIDENAV_INFO_COMPONENTS } from './shared/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2/domain-object-card/domain-object-card.component';
+import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
 import {
     DATE_RANGE_DAYS,
     DEBOUNCE_TIME_MS,

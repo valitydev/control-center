@@ -20,7 +20,7 @@ import { getDomainObjectDetails } from '../../shared/components/thrift-api-crud'
 import {
     CreateDomainObjectDialogComponent,
     DomainObjectCardComponent,
-} from '../../shared/components/thrift-api-crud/domain2';
+} from '../../shared/components/thrift-api-crud/domain';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 

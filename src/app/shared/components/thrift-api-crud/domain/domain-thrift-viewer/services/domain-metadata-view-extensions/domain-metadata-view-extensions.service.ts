@@ -13,7 +13,7 @@ import { ValuesType } from 'utility-types';
 import { DomainObjectsStoreService } from '../../../../../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
-import { DomainObjectCardComponent } from '../../../../domain2';
+import { DomainObjectCardComponent } from '../../../../domain';
 
 @Injectable({
     providedIn: 'root',

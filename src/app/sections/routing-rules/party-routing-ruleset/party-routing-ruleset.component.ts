@@ -15,7 +15,7 @@ import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxj
 import { RoutingRulesStoreService } from '../../../../api/domain-config';
 import { createShopColumn, createWalletColumn } from '../../../../utils';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
-import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
+import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain';
 import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';

@@ -29,7 +29,7 @@ import {
     DomainThriftFormDialogComponent,
     UpdateThriftDialogComponent,
 } from '../../../shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain2';
+import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';

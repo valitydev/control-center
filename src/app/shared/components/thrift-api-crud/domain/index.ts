@@ -3,3 +3,7 @@ export * from './domain-object-field';
 export * from './domain-thrift-form-dialog';
 export * from './domain-thrift-editor';
 export * from './utils';
+export * from './create-domain-object-dialog';
+export * from './edit-domain-object-dialog';
+export * from './domain-object-card';
+export * from './services/domain-object.service';

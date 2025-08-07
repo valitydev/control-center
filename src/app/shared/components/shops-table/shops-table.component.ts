@@ -38,7 +38,7 @@ import {
 import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
 import { createPartyColumn } from '../../../../utils';
 import { SidenavInfoService } from '../sidenav-info';
-import { DomainObjectCardComponent } from '../thrift-api-crud/domain2';
+import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 
 @Component({
     selector: 'cc-shops-table',
