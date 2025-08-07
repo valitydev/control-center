@@ -2,4 +2,4 @@
  * Public API Surface of matez
  */
 
-export * from "./lib";
+export * from './lib';
