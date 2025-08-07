@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+
+@mixin cc-status-theme($theme) {
+    .cc-status {
+        &-success {
+            color: var(--v-success-bg);
+        }
+
+        &-pending {
+            color: var(--v-pending-bg);
+        }
+
+        &-warn {
+            color: var(--v-error-bg);
+        }
+    }
+}

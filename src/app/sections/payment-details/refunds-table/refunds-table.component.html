@@ -1,0 +1,8 @@
+<v-table
+    [columns]="columns"
+    [data]="refunds$ | async"
+    [hasMore]="hasMore$ | async"
+    [progress]="isLoading$ | async"
+    (more)="more()"
+    (update)="reload($event)"
+></v-table>

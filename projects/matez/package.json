@@ -1,12 +1,39 @@
 {
-  "name": "matez",
-  "version": "0.0.1",
+  "name": "@vality/matez",
+  "version": "20.1.0",
+  "exports": {
+    ".": {
+      "sass": "./_index.scss"
+    }
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
+    "@angular/cdk": "^20.1.0",
     "@angular/common": "^20.1.0",
-    "@angular/core": "^20.1.0"
+    "@angular/core": "^20.1.0",
+    "@angular/forms": "^20.1.0",
+    "@angular/material": "^20.1.0",
+    "@angular/material-date-fns-adapter": "^20.1.0",
+    "@angular/router": "^20.1.0",
+    "date-fns": "^4.1.0",
+    "lodash-es": "^4.0.0",
+    "rxjs": "^7.0.0",
+    "utility-types": "^3.0.0"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "@dinero.js/currencies": "^2.0.0-alpha.14",
+    "@ng-matero/extensions": "^20.2.0",
+    "@s-libs/js-core": "^20.0.0",
+    "@s-libs/micro-dash": "^20.0.0",
+    "@s-libs/ng-core": "^20.0.0",
+    "@s-libs/rxjs-core": "^20.0.0",
+    "papaparse": "^5.5.3"
   },
-  "sideEffects": false
+  "devDependencies": {
+    "@types/lodash-es": "^4.0.0",
+    "@types/papaparse": "^5.3.16"
+  }
 }

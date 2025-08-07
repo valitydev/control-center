@@ -1,0 +1,50 @@
+<div class="wrapper">
+    @if (progress()) {
+        <div>
+            <div style="display: grid; grid-template-columns: 1fr; gap: 32px">
+                <v-content-loading class="text-2xl font-normal"></v-content-loading>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+                    <v-content-loading class="text-lg font-normal"></v-content-loading>
+                    <v-content-loading class="text-lg font-normal"></v-content-loading>
+                    <v-content-loading class="text-lg font-normal"></v-content-loading>
+                    <v-content-loading class="text-lg font-normal"></v-content-loading>
+                </div>
+            </div>
+        </div>
+    } @else {
+        @if (value()) {
+            @if (isDiff()) {
+                <v-thrift-monaco
+                    [original]="value()"
+                    [value]="compared()"
+                    readOnly
+                ></v-thrift-monaco>
+            } @else {
+                @switch (kind()) {
+                    @case ('component') {
+                        <v-thrift-tree-viewer [view]="view()"></v-thrift-tree-viewer>
+                    }
+                    @case ('editor') {
+                        <v-thrift-monaco [value]="value()" readOnly></v-thrift-monaco>
+                    }
+                }
+            }
+        }
+    }
+    @if (!isDiff()) {
+        <div class="actions">
+            <button [disabled]="progress()" mat-mini-fab (click)="toggleKind()">
+                <mat-icon>
+                    @switch (kind()) {
+                        @case ('component') {
+                            code_blocks
+                        }
+                        @case ('editor') {
+                            view_comfy_alt
+                        }
+                    }
+                </mat-icon>
+            </button>
+        </div>
+    }
+</div>

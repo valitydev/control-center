@@ -1,0 +1,11 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin v-tokens($theme) {
+    & {
+        --v-success-bg: #{map.get(mat.$green-palette, 50)};
+        --v-pending-bg: #{map.get(mat.$orange-palette, 70)};
+        --v-error-bg: #{mat.get-theme-color($theme, error, 50)};
+        --v-primary-bg: #{mat.get-theme-color($theme, primary, 40)};
+    }
+}

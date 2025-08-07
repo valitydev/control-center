@@ -1,0 +1,12 @@
+<v-select-field
+    [appearance]="appearance"
+    [formControl]="control"
+    [hint]="hint"
+    [label]="label || 'Merchant'"
+    [options]="options$ | async"
+    [progress]="!!(progress$ | async)"
+    [required]="required"
+    [size]="size"
+    externalSearch
+    (searchChange)="search($event)"
+></v-select-field>

@@ -1,0 +1,10 @@
+<v-table
+    [columns]="columns"
+    [data]="shops()"
+    [externalFilter]="filterChange.observed"
+    [progress]="progress"
+    name="shops"
+    standaloneFilter
+    (filterChange)="filterChange.emit($event)"
+    (update)="update.emit($event)"
+></v-table>

@@ -1,0 +1,11 @@
+.wrapper {
+    display: flex;
+    gap: 8px;
+
+    .date {
+        flex: 1;
+    }
+    .time {
+        width: 100px;
+    }
+}

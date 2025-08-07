@@ -1,0 +1,19 @@
+$max-columns: 5;
+$rows: 1;
+
+.filters {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    .other-filters {
+        display: block !important;
+    }
+}
+
+@for $i from 1 through $max-columns {
+    ::ng-deep .v-filters-dialog-cols-#{$i} {
+        & > *:nth-child(-n + #{$i * $rows}) {
+            display: none;
+        }
+    }
+}

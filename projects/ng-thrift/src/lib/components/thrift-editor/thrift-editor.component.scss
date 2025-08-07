@@ -1,0 +1,18 @@
+.wrapper {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    grid-template-rows: auto 1fr;
+
+    .actions {
+        display: flex;
+        place-content: center flex-end;
+        align-items: center;
+        gap: 2px;
+        margin-left: auto;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
+}

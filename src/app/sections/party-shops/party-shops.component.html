@@ -1,0 +1,8 @@
+<cc-page-layout fullHeight title="Shops">
+    <cc-shops-table
+        [progress]="progress$ | async"
+        [shops]="shops$ | async"
+        noPartyColumn
+        (update)="reload($event)"
+    ></cc-shops-table>
+</cc-page-layout>

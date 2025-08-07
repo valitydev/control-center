@@ -1,0 +1,7 @@
+@use '@angular/material' as mat;
+
+@mixin theme($theme) {
+    .v-input-field__small {
+        @include mat.all-component-densities(-5);
+    }
+}

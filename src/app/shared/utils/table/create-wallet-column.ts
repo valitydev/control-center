@@ -1,0 +1,29 @@
+import { inject } from '@angular/core';
+import { createColumn } from '@vality/matez';
+import { of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
+import { PartiesStoreService } from '../../../../api/payment-processing';
+
+export const createWalletColumn = createColumn(
+    ({ id, ...params }: { id: string; name?: string }) => {
+        const name$ =
+            'name' in params
+                ? of(params.name)
+                : inject(PartiesStoreService)
+                      .getWallet(id)
+                      .value$.pipe(map((wallet) => wallet?.data?.name));
+        const cell = { description: id };
+        return name$.pipe(
+            map((name) => ({
+                ...cell,
+                value: name,
+            })),
+            startWith({
+                ...cell,
+                inProgress: true,
+            }),
+        );
+    },
+    { header: 'Wallet' },
+);

@@ -1,0 +1,12 @@
+<cc-page-layout [progress]="isLoading$ | async" fullHeight title="Chargebacks">
+    <cc-chargebacks-table
+        [data]="chargebacks$ | async"
+        [hasMore]="fetchChargebacksService.hasMore$ | async"
+        [isLoading]="isLoading$ | async"
+        onePayment
+        (more)="fetchChargebacksService.more()"
+        (update)="update()"
+    >
+        <button mat-flat-button (click)="createChargeback()">Create</button>
+    </cc-chargebacks-table>
+</cc-page-layout>

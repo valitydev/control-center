@@ -1,0 +1,35 @@
+<div [ngClass]="{ 'full-size': fullSize }" class="dialog">
+    <div class="dialog-title">
+        <div>
+            <h2 class="font-normal text-2xl">{{ title }}</h2>
+        </div>
+        @if (!noCloseButton) {
+            <mat-icon
+                [matDialogClose]="cancelData"
+                class="dialog-title-close"
+                inline
+                (click)="cancelDialog()"
+                >clear</mat-icon
+            >
+        }
+    </div>
+
+    @if (!noContent) {
+        @if (hasDivider) {
+            <mat-divider></mat-divider>
+        }
+        <div class="dialog-content">
+            <ng-content></ng-content>
+        </div>
+    }
+    @if (!noActions) {
+        @if (hasDivider) {
+            <mat-divider></mat-divider>
+        }
+        <div class="dialog-actions">
+            <ng-content select="v-dialog-actions"></ng-content>
+        </div>
+    }
+
+    <v-progress [progress]="progress"></v-progress>
+</div>

@@ -1,0 +1,11 @@
+<cc-page-layout fullHeight title="Sources">
+    <cc-page-layout-actions>
+        <button mat-flat-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
+    <v-table
+        [columns]="columns"
+        [data]="sources$ | async"
+        [progress]="!!(progress$ | async)"
+        standaloneFilter
+    ></v-table>
+</cc-page-layout>

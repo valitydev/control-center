@@ -1,0 +1,11 @@
+<div
+    class="text-2xl font-normal m-0"
+    style="display: flex; place-content: center flex-start; align-items: center; gap: 8px"
+>
+    @if (isBackAvailable) {
+        <mat-icon class="back" (click)="back()">arrow_back</mat-icon>
+    }
+    <div>
+        <ng-content></ng-content>
+    </div>
+</div>

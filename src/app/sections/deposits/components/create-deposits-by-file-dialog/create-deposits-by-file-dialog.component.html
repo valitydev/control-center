@@ -1,0 +1,21 @@
+<v-dialog [progress]="progress$ | async" title="Create deposits">
+    <cc-upload-csv
+        [(selected)]="selected"
+        [errors]="$any(errors)"
+        [props]="$any(props)"
+    ></cc-upload-csv>
+    <v-dialog-actions>
+        @if (successfully?.length) {
+            <button [disabled]="!!(progress$ | async)" mat-button (click)="closeWithSuccess()">
+                Close and reload list ({{ successfully.length }} successful)
+            </button>
+        }
+        <button
+            [disabled]="!selected?.length || !!(progress$ | async)"
+            mat-button
+            (click)="create()"
+        >
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

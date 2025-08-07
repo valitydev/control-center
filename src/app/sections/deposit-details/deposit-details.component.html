@@ -1,0 +1,15 @@
+<cc-page-layout [progress]="isLoading$ | async" title="Deposit details">
+    @if (deposit$ | async) {
+        <mat-card>
+            <mat-card-content>
+                <v-thrift-viewer
+                    [extensions]="extensions$ | async"
+                    [metadata]="metadata$ | async"
+                    [value]="deposit$ | async"
+                    namespace="fistful_stat"
+                    type="StatDeposit"
+                ></v-thrift-viewer>
+            </mat-card-content>
+        </mat-card>
+    }
+</cc-page-layout>

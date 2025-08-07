@@ -1,0 +1,15 @@
+<cc-page-layout fullHeight title="Terminals">
+    <cc-page-layout-actions>
+        <button mat-flat-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
+    <v-table
+        [columns]="columns"
+        [data]="data$ | async"
+        [hasMore]="hasMore$ | async"
+        [progress]="progress$ | async"
+        name="terminals"
+        standaloneFilter
+        (more)="more()"
+        (update)="update($event)"
+    ></v-table>
+</cc-page-layout>

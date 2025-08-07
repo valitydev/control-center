@@ -1,0 +1,6 @@
+@use '../timeline-item.scss';
+
+.cc-timeline-item-content {
+    display: block;
+    padding-top: timeline-item.$content-padding;
+}

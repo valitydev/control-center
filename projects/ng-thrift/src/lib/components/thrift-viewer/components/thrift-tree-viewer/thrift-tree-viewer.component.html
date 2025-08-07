@@ -1,0 +1,88 @@
+@let extension = view().extension$ | async;
+
+@if (!extension?.hidden) {
+    @if (view().isValue$ | async) {
+        <v-thrift-tree-value
+            [extension]="extension"
+            [renderValue]="view().renderValue$ | async"
+        ></v-thrift-tree-value>
+    } @else {
+        <div style="display: grid; grid-template-columns: 1fr; gap: 16px">
+            @let leaves = view().leaves$ | async;
+            @let count = leaves?.length;
+
+            @if (count) {
+                <div class="grid-container">
+                    <div [ngClass]="['grid', 'grid-columns-' + count]">
+                        @for (item of leaves; track item; let i = $index) {
+                            @let current = item.current$ | async;
+
+                            @if (!(current?.extension$ | async)?.hidden) {
+                                <div style="display: grid; grid-template-rows: auto 1fr; gap: 8px">
+                                    <v-thrift-tree-key
+                                        [keys]="item.path$ | async"
+                                        class="mat-label-medium text-[var(--mat-sys-outline)]"
+                                    ></v-thrift-tree-key>
+
+                                    @if (current) {
+                                        <v-thrift-tree-viewer
+                                            [level]="level() + 1"
+                                            [view]="current"
+                                        ></v-thrift-tree-viewer>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            @let nodes = view().nodes$ | async;
+            @if (!leaves || !nodes) {
+                <v-content-loading></v-content-loading>
+            }
+            @for (item of nodes; track item; let idx = $index) {
+                @let current = item.current$ | async;
+
+                @if (idx > 0 || count) {
+                    <mat-divider></mat-divider>
+                }
+                @let key = current?.key;
+                <div
+                    [ngStyle]="{
+                        display: 'grid',
+                        'grid-template-columns':
+                            key && typeof (key?.value$ | async) === 'number' ? 'auto 1fr' : '1fr',
+                        gap: '32px',
+                    }"
+                >
+                    @let keyData = key?.data$ | async;
+
+                    @if (key && keyData) {
+                        <v-thrift-tree-viewer
+                            [level]="level() + 1"
+                            [view]="key"
+                        ></v-thrift-tree-viewer>
+                    } @else {
+                        <v-thrift-tree-key
+                            [keys]="item.path$ | async"
+                            [ngClass]="{
+                                'text-2xl': level() === 0,
+                                'text-xl': level() === 1,
+                                'text-lg': level() === 2,
+                                'text-m': level() >= 3,
+                            }"
+                        ></v-thrift-tree-key>
+                    }
+
+                    @if (current) {
+                        <v-thrift-tree-viewer
+                            [level]="level() + 1"
+                            [view]="current"
+                        ></v-thrift-tree-viewer>
+                    }
+                </div>
+            }
+        </div>
+    }
+}

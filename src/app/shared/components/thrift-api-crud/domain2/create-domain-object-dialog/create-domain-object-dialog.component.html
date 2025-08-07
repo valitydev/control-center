@@ -1,0 +1,32 @@
+<v-dialog
+    [progress]="!!(progress$ | async)"
+    title="{{ isReview ? 'Review' : 'Create' }} domain object"
+>
+    @if (isReview) {
+        <cc-domain-thrift-viewer
+            [value]="control.value"
+            kind="editor"
+            type="ReflessDomainObject"
+        ></cc-domain-thrift-viewer>
+    } @else {
+        <cc-domain-thrift-editor
+            [formControl]="control"
+            type="ReflessDomainObject"
+        ></cc-domain-thrift-editor>
+    }
+
+    <v-dialog-actions>
+        @if (isReview) {
+            <button [disabled]="!!(progress$ | async)" mat-button (click)="isReview = false">
+                Edit
+            </button>
+            <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="create()">
+                Create
+            </button>
+        } @else {
+            <button [disabled]="control.invalid" mat-flat-button (click)="isReview = true">
+                Review
+            </button>
+        }
+    </v-dialog-actions>
+</v-dialog>

@@ -1,0 +1,54 @@
+<cc-page-layout fullHeight title="Chargebacks">
+    <cc-page-layout-actions>
+        <v-more-filters-button [filters]="filters"></v-more-filters-button>
+    </cc-page-layout-actions>
+    <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
+        <ng-template [formGroup]="filtersForm">
+            <v-date-range-field formControlName="dateRange"></v-date-range-field>
+            <v-list-field formControlName="chargeback_ids" label="Chargeback Ids"></v-list-field>
+            <v-list-field formControlName="invoice_ids" label="Invoice Ids"></v-list-field>
+            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
+            <cc-shop-field formControlName="shop_ids" multiple></cc-shop-field>
+            <mat-form-field>
+                <mat-label>Statuses</mat-label>
+                <mat-select formControlName="chargeback_statuses" multiple>
+                    @for (status of statuses; track status) {
+                        <mat-option [value]="status">
+                            {{ status | ngtKeyTitle | titlecase }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Stages</mat-label>
+                <mat-select formControlName="chargeback_stages" multiple>
+                    @for (stage of stages; track stage) {
+                        <mat-option [value]="stage">
+                            {{ stage | ngtKeyTitle | titlecase }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Categories</mat-label>
+                <mat-select formControlName="chargeback_categories" multiple>
+                    @for (category of categories; track category) {
+                        <mat-option [value]="category">
+                            {{ category | ngtKeyTitle | titlecase }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </ng-template>
+    </v-filters>
+    <cc-chargebacks-table
+        [(selected)]="selected"
+        [data]="chargebacks$ | async"
+        [hasMore]="hasMore$ | async"
+        [isLoading]="isLoading$ | async"
+        (more)="more()"
+        (update)="reload($event)"
+    >
+        <button mat-flat-button (click)="create()">Create by file</button>
+    </cc-chargebacks-table>
+</cc-page-layout>

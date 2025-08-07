@@ -1,0 +1,17 @@
+<v-actions>
+    @if (filters.active && filters.clear.observed) {
+        <button mat-icon-button (click)="filters.clear.emit()">
+            <mat-icon [matBadge]="filters.active || undefined" matBadgeColor="accent"
+                >restart_alt</mat-icon
+            >
+        </button>
+    }
+    @if (
+        filters.otherFiltersDirective ||
+        ((filters.filtersCount$ | async) ?? 0) - ((filters.displayedFiltersCount$ | async) ?? 0) > 0
+    ) {
+        <button mat-icon-button (click)="filters.open()">
+            <mat-icon>filter_alt</mat-icon>
+        </button>
+    }
+</v-actions>

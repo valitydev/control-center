@@ -1,0 +1,77 @@
+@if (tags?.length) {
+    <mat-toolbar style="height: 48px; padding: 0 24px">
+        <div style="display: flex; gap: 8px; align-items: center">
+            @for (tag of tags; track tag) {
+                <v-tag [color]="tag.color" style="margin-top: 8px">{{ tag.value }}</v-tag>
+            }
+        </div>
+    </mat-toolbar>
+}
+<div [ngClass]="{ 'wrapper__full-height': fullHeight() }" class="wrapper">
+    @if (title) {
+        <div style="display: flex; flex-direction: column; gap: 8px">
+            @if ((path$ | async)?.length > 1) {
+                <div class="text-[var(--mat-sys-outline)] text-xs mt-[-12px] mb-[-12px]">
+                    @for (p of path$ | async; track p; let index = $index) {
+                        <span
+                            [ngClass]="{ 'mat-link': index !== (path$ | async).length - 1 }"
+                            [routerLink]="p.url"
+                            [title]="p.url"
+                            >{{ p.label }}</span
+                        >
+                        @if (index !== (path$ | async).length - 1) {
+                            <span> / </span>
+                        }
+                    }
+                </div>
+            }
+            <div class="header items-center">
+                <h1
+                    class="text-2xl font-normal m-0"
+                    style="
+                        display: flex;
+                        place-content: center flex-start;
+                        align-items: center;
+                        gap: 4px;
+                    "
+                >
+                    @if (isBackAvailable()) {
+                        <button mat-icon-button (click)="back()">
+                            <mat-icon>{{ upLink() ? 'arrow_upward' : 'arrow_back' }}</mat-icon>
+                        </button>
+                    }
+                    <div>
+                        {{ title }}
+                        <span class="text-[var(--mat-sys-outline)]"
+                            >{{ description }}
+                            @if (id) {
+                                @if (idLink() || idLinkClick.observed) {
+                                    <span
+                                        [routerLink]="idLink()"
+                                        class="mat-action"
+                                        (click)="idLinkClick.emit($event)"
+                                        ><ng-container *ngTemplateOutlet="idText"></ng-container
+                                    ></span>
+                                } @else {
+                                    {{ id ? '#' + id : '' }}
+                                }
+                                <ng-template #idText>{{ id ? '#' + id : '' }}</ng-template>
+                            }
+                        </span>
+                    </div>
+                </h1>
+                <div class="text-2xl font-normal m-0">
+                    <ng-content select="cc-page-layout-actions"></ng-content>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (progress) {
+        <div style="display: flex; place-content: center; align-items: center">
+            <mat-spinner diameter="64"></mat-spinner>
+        </div>
+    } @else {
+        <ng-content></ng-content>
+    }
+</div>

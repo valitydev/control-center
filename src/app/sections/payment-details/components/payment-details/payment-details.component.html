@@ -1,0 +1,17 @@
+<cc-page-layout
+    [progress]="isLoading$ | async"
+    id="{{
+        (payment$ | async) ? (payment$ | async)?.invoice_id + '.' + (payment$ | async)?.id : ''
+    }}"
+    title="Payment"
+>
+    <mat-card>
+        <mat-card-content>
+            <cc-magista-thrift-viewer
+                [extensions]="extensions$ | async"
+                [value]="payment$ | async"
+                type="StatPayment"
+            ></cc-magista-thrift-viewer>
+        </mat-card-content>
+    </mat-card>
+</cc-page-layout>
