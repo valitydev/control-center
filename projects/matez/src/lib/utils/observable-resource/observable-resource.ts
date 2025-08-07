@@ -13,17 +13,24 @@ const INIT_ACTION = 'init' satisfies ObservableResourceActionType;
 
 export type ObservableResourceActions = typeof INIT_ACTION;
 
-export interface ObservableResourceOptions<
+export type ObservableResourceOptions<
     TAccResult,
     TParams = void,
     TResult = TAccResult,
     TAction = ObservableResourceActionType,
-> {
+> = {
     loader: (params: TParams, acc: TAccResult, action: TAction) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
-    params?: PossiblyAsync<TParams>;
-}
+    // no undefined init params and ignore options params
+    noInitParams?: boolean;
+} & (TParams extends undefined | void
+    ? {
+          params?: PossiblyAsync<TParams>;
+      }
+    : {
+          params: PossiblyAsync<TParams>;
+      });
 
 export class ObservableResource<
     TAccResult,
@@ -31,6 +38,8 @@ export class ObservableResource<
     TResult = TAccResult,
     TAction = ObservableResourceActionType,
 > {
+    protected internalOptions!: ObservableResourceOptions<TAccResult, TParams, TResult, TAction>;
+
     protected dr = inject(DestroyRef);
     protected injector = inject(Injector);
 
@@ -48,11 +57,15 @@ export class ObservableResource<
     value$!: Observable<TResult>;
     value!: Signal<TResult | undefined>;
 
-    constructor(
-        protected options: ObservableResourceOptions<TAccResult, TParams, TResult, TAction>,
-    ) {
+    constructor(options?: ObservableResourceOptions<TAccResult, TParams, TResult, TAction>) {
+        if (options) this.init(options);
+    }
+
+    protected init(options: ObservableResourceOptions<TAccResult, TParams, TResult, TAction>) {
         // needed for map method
         autoBind(this);
+
+        this.internalOptions = options;
 
         this.params$ = this.createParams().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
         this.params = toSignal(this.params$);
@@ -63,27 +76,29 @@ export class ObservableResource<
     }
 
     protected createParams() {
-        return merge(
-            getPossiblyAsyncObservable<TParams>(this.options.params as never),
-            this.mergedParams$,
-        );
+        return this.internalOptions.noInitParams
+            ? this.mergedParams$
+            : merge(
+                  getPossiblyAsyncObservable<TParams>(this.internalOptions.params as never),
+                  this.mergedParams$,
+              );
     }
 
     protected createAccValue() {
         return combineLatest([this.params$, this.action$]).pipe(
             mergeScan(
                 (acc, [params, action]) =>
-                    this.options
+                    this.internalOptions
                         .loader(params as TParams, acc, action as TAction)
                         .pipe(progressTo(this.progress$)),
-                this.options.seed as TAccResult,
+                this.internalOptions.seed as TAccResult,
                 1,
             ),
         );
     }
 
     protected createValue() {
-        const mapFn = this.options.map;
+        const mapFn = this.internalOptions.map;
         return this.accValue$.pipe(
             ...filterOperator(
                 mapFn && switchMap((v: TAccResult) => getPossiblyAsyncObservable(mapFn(v))),
