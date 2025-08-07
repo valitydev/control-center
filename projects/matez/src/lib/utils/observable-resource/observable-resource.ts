@@ -1,4 +1,4 @@
-import { DestroyRef, Injector, inject } from '@angular/core';
+import { DestroyRef, Injector, Signal, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import autoBind from 'auto-bind';
 import { BehaviorSubject, Observable, Subject, combineLatest, merge } from 'rxjs';
@@ -30,17 +30,24 @@ export class ObservableResource<TAccResult, TParams = void, TResult = TAccResult
 
     protected action$ = new BehaviorSubject<ObservableResourceAction>(INIT_ACTION);
     protected mergedParams$ = new Subject<TParams>();
-    params$ = this.createParams().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
-    params = toSignal(this.params$);
+    params$!: Observable<TParams>;
+    params!: Signal<TParams | undefined>;
 
-    protected accValue$ = this.createAccValue().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
+    protected accValue$!: Observable<TAccResult>;
     protected mergedValue$ = new Subject<TResult>();
-    value$ = this.createValue().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
-    value = toSignal(this.value$);
+    value$!: Observable<TResult>;
+    value!: Signal<TResult | undefined>;
 
     constructor(protected options: ObservableResourceOptions<TAccResult, TParams, TResult>) {
         // needed for map method
         autoBind(this);
+
+        this.params$ = this.createParams().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
+        this.params = toSignal(this.params$);
+
+        this.accValue$ = this.createAccValue().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
+        this.value$ = this.createValue().pipe(takeUntilDestroyed(this.dr), shareReplay(1));
+        this.value = toSignal(this.value$);
     }
 
     protected createParams() {
