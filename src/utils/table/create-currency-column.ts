@@ -6,7 +6,7 @@ import { combineLatest, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { CurrenciesStoreService } from '../../api/domain-config';
-import { AmountCurrencyService } from '../../app/shared/services';
+import { AmountCurrencyService } from '../../services';
 
 interface CurrencyValue {
     amount: number;

@@ -3,11 +3,9 @@ import { DepositParams } from '@vality/fistful-proto/deposit';
 import { clean } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import {
-    AmountCurrencyService,
-    UserInfoBasedIdGeneratorService,
-} from '../../../../../shared/services';
+import { UserInfoBasedIdGeneratorService } from '../../../../../shared/services';
 import { CsvDeposit } from '../types/csv-deposit';
+import { AmountCurrencyService } from '../../../../../../services';
 
 export function getCreateDepositArgs(c: CsvDeposit) {
     const userInfoBasedIdGeneratorService = inject(UserInfoBasedIdGeneratorService);

@@ -10,7 +10,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { PageLayoutModule } from '../../../../shared';
 import { MagistaThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { DomainMetadataViewExtensionsService } from '../../../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
-import { AmountCurrencyService } from '../../../../shared/services';
+import { AmountCurrencyService } from '../../../../../services';
 import { PaymentDetailsService } from '../../payment-details.service';
 
 @Component({

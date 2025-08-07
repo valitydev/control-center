@@ -16,7 +16,7 @@ import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../api/domain-config';
-import { AmountCurrencyService } from '../../shared/services';
+import { AmountCurrencyService } from '../../../services';
 import { FetchSourcesService } from '../sources';
 
 import { ReceiveDepositService } from './services/receive-deposit/receive-deposit.service';
