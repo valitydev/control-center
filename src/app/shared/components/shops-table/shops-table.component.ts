@@ -31,7 +31,7 @@ import { filter, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../api/payment-processing';
-import { createPartyColumn } from '../../../../utils';
+import { createDomainObjectColumn, createPartyColumn } from '../../../../utils';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
@@ -81,23 +81,9 @@ export class ShopsTableComponent {
         createPartyColumn((d) => ({ id: d.data.party_id }), {
             hidden: toObservable(this.noPartyColumn),
         }),
-        {
+        createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.data.terms } }), {
             field: 'terms',
-            lazyCell: (d) =>
-                this.domainStoreService
-                    .getLimitedObject({ term_set_hierarchy: { id: d.data.terms.id } })
-                    .value$.pipe(
-                        map((obj) => ({
-                            value: obj?.name,
-                            description: obj?.description,
-                            click: () => {
-                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                                    ref: obj.ref,
-                                });
-                            },
-                        })),
-                    ),
-        },
+        }),
         {
             field: 'location.url',
         },

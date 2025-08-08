@@ -28,7 +28,7 @@ import { ROUTING_CONFIG } from './routing-config';
                     },
                     {
                         path: 'wallets',
-                        loadChildren: () =>
+                        loadComponent: () =>
                             import('../wallets/wallets.component').then((m) => m.WalletsComponent),
                         canActivate: [canActivateAuthRole],
                         data: WALLETS_ROUTING_CONFIG,

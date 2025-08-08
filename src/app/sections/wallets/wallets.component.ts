@@ -18,12 +18,13 @@ import {
     TableModule,
     UpdateOptions,
 } from '@vality/matez';
-import { ThriftFormModule } from '@vality/ng-thrift';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
+import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
+import { startCase } from 'lodash-es';
+import { map, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { FetchFullDomainObjectsService } from '../../../api/domain-config';
-import { createCurrencyColumn, createPartyColumn } from '../../../utils';
+import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '../../../utils';
 import { PageLayoutModule } from '../../shared';
 import { MerchantFieldModule } from '../../shared/components/merchant-field';
 import { PartyStoreService } from '../party';
@@ -61,6 +62,42 @@ export class WalletsComponent implements OnInit {
         { field: 'id', cell: (d) => ({ value: d.object.wallet_config.ref.id }) },
         { field: 'name', cell: (d) => ({ value: d.object.wallet_config.data.name }) },
         createPartyColumn((d) => ({ id: d.object.wallet_config.data.party_id })),
+        {
+            field: 'blocking',
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.object.wallet_config.data.block)),
+                color: (
+                    {
+                        blocked: 'warn',
+                        unblocked: 'success',
+                    } as const
+                )[getUnionKey(d.object.wallet_config.data.block)],
+            }),
+        },
+        {
+            field: 'suspension',
+            cell: (d) => ({
+                value: startCase(getUnionKey(d.object.wallet_config.data.suspension)),
+                color: (
+                    {
+                        suspended: 'warn',
+                        active: 'success',
+                    } as const
+                )[getUnionKey(d.object.wallet_config.data.suspension)],
+            }),
+        },
+        createDomainObjectColumn(
+            (d) => ({
+                ref: { payment_institution: d.object.wallet_config.data.payment_institution },
+            }),
+            { field: 'payment_institution' },
+        ),
+        createDomainObjectColumn(
+            (d) => ({
+                ref: { term_set_hierarchy: d.object.wallet_config.data.terms },
+            }),
+            { field: 'terms' },
+        ),
         createCurrencyColumn(
             (d) =>
                 this.getAccountState(d).pipe(
@@ -111,20 +148,11 @@ export class WalletsComponent implements OnInit {
     @MemoizeExpiring(5 * 60_000)
     getAccountState(wallet: VersionedObject) {
         return this.partyManagementService
-            .GetWalletAccount(
+            .GetAccountState(
                 wallet.object.wallet_config.data.party_id,
-                wallet.object.wallet_config.ref.id,
+                wallet.object.wallet_config.data.account.settlement,
                 Number.MAX_SAFE_INTEGER,
             )
-            .pipe(
-                switchMap((account) =>
-                    this.partyManagementService.GetAccountState(
-                        wallet.object.wallet_config.data.party_id,
-                        account.settlement,
-                        Number.MAX_SAFE_INTEGER,
-                    ),
-                ),
-                shareReplay({ refCount: true, bufferSize: 1 }),
-            );
+            .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     }
 }
