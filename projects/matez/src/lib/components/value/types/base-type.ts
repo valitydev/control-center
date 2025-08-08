@@ -23,6 +23,7 @@ export interface BaseValue<V = unknown> extends Click {
     template?: TemplateRef<unknown>;
 
     inProgress?: boolean;
+    error?: unknown;
 
     prefix?: Action;
     postfix?: Action;
