@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { UpdateOptions } from '@vality/matez';
 import { map, switchMap } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../../api/payment-processing';
-import { PartyStoreService } from '../party/party-store.service';
+import { PartiesStoreService } from '../../../../api/payment-processing';
+import { PartyStoreService } from '../../party/party-store.service';
 
 @Component({
     templateUrl: 'shops.component.html',
