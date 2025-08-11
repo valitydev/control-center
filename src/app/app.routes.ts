@@ -24,8 +24,7 @@ export const routes: Routes = [
     },
     {
         path: 'payments',
-        loadChildren: () =>
-            import('./sections/payments/payments.module').then((m) => m.PaymentsModule),
+        loadChildren: () => import('./payments/payments.module').then((m) => m.PaymentsModule),
     },
     {
         path: 'payments/:paymentID',

@@ -13,7 +13,7 @@ import {
 } from '@vality/matez';
 import { BehaviorSubject } from 'rxjs';
 
-import { DomainMetadataFormExtensionsService } from '../../../../shared/components/thrift-api-crud';
+import { DomainMetadataFormExtensionsService } from '../../../shared/components/thrift-api-crud';
 
 @Component({
     selector: 'cc-create-payment-adjustment',

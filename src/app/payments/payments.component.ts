@@ -23,8 +23,8 @@ import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, merge, of } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
-import { FailMachinesDialogComponent, Type } from '../../shared/components/fail-machines-dialog';
-import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
+import { FailMachinesDialogComponent, Type } from '../shared/components/fail-machines-dialog';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { CreatePaymentAdjustmentsByFileDialogComponent } from './components/create-payment-adjustments-by-file-dialog/create-payment-adjustments-by-file-dialog.component';
