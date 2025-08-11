@@ -67,7 +67,7 @@ export const routes: Routes = [
     },
     {
         path: '404',
-        loadChildren: () => import('./sections/not-found').then((m) => m.NotFoundModule),
+        loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },
     {
         path: '',
