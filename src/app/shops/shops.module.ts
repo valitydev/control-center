@@ -4,8 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { InputFieldModule, TableModule } from '@vality/matez';
 
-import { PageLayoutModule } from '../../shared';
-import { ShopsTableComponent } from '../../shared/components/shops-table';
+import { PageLayoutModule } from '../shared';
+import { ShopsTableComponent } from '../shared/components/shops-table';
 
 import { ShopsRoutingModule } from './shops-routing.module';
 import { ShopsComponent } from './shops.component';

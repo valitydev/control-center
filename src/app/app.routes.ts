@@ -59,7 +59,7 @@ export const routes: Routes = [
     },
     {
         path: 'shops',
-        loadChildren: () => import('./sections/shops').then((m) => m.ShopsModule),
+        loadChildren: () => import('./shops').then((m) => m.ShopsModule),
     },
     {
         path: 'terms',
