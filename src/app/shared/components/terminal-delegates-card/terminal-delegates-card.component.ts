@@ -27,7 +27,7 @@ import { changeCandidatesAllowed } from '../../../parties/party/routing-rules/ut
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,
-} from '../../../sections/terminals/utils/get-terminal-shop-wallet-delegates';
+} from '../../../terminals/utils/get-terminal-shop-wallet-delegates';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';

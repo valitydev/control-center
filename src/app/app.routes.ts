@@ -46,7 +46,7 @@ export const routes: Routes = [
     },
     {
         path: 'terminals',
-        loadChildren: () => import('./sections/terminals').then((m) => m.TerminalsModule),
+        loadChildren: () => import('./terminals').then((m) => m.TerminalsModule),
     },
     {
         path: 'shops',
