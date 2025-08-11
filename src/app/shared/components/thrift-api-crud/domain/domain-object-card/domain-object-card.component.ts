@@ -6,12 +6,13 @@ import { NotifyLogService, UnionEnum, createStorageValue, enumHasValue } from '@
 import { ThriftPipesModule, ViewerKind } from '@vality/ng-thrift';
 import { catchError } from 'rxjs';
 
-import { DomainService } from '../../../../../../api/domain-config';
 import { SidenavInfoModule } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 import { getDomainObjectDetails } from '../../domain/utils';
 import { DomainObjectService } from '../services/domain-object.service';
+
+import { DomainService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-domain-object-card',

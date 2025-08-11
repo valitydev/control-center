@@ -11,12 +11,13 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, concat } from 'rxjs';
 import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
-import { RoutingRulesStoreService } from '../../../../../../api/domain-config';
 import { createNextId } from '../../../../../../utils/create-next-id';
 
 import { CandidateId } from './types/candidate-id';
 import { getDelegate } from './utils/get-delegate';
 import { getUpdateRulesCandidates } from './utils/get-update-rules-candidates';
+
+import { RoutingRulesStoreService } from '~/api/domain-config';
 
 @Injectable({
     providedIn: 'root',

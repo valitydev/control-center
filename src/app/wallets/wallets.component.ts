@@ -23,11 +23,12 @@ import { startCase } from 'lodash-es';
 import { map, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { FetchFullDomainObjectsService } from '../../api/domain-config';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '../../utils';
 import { PartyStoreService } from '../parties/party';
 import { PageLayoutModule } from '../shared';
 import { MerchantFieldModule } from '../shared/components/merchant-field';
+
+import { FetchFullDomainObjectsService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-wallets',

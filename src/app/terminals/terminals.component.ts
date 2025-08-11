@@ -3,8 +3,6 @@ import { DomainObjectType, TerminalObject } from '@vality/domain-proto/domain';
 import { Column, DialogService, UpdateOptions } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { FetchFullDomainObjectsService, RoutingRulesStoreService } from '../../api/domain-config';
-import { AccountBalancesStoreService } from '../../api/terminal-balance';
 import { createCurrencyColumn, createDomainObjectColumn, createPredicateColumn } from '../../utils';
 import { SidenavInfoService } from '../shared/components/sidenav-info';
 import { TerminalBalancesCardComponent } from '../shared/components/terminal-balances-card/terminal-balances-card.component';
@@ -16,6 +14,9 @@ import {
 } from '../shared/components/thrift-api-crud/domain';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
+
+import { FetchFullDomainObjectsService, RoutingRulesStoreService } from '~/api/domain-config';
+import { AccountBalancesStoreService } from '~/api/terminal-balance';
 
 @Component({
     selector: 'cc-terminals',

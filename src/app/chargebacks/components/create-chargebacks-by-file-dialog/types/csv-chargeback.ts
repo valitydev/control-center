@@ -1,6 +1,6 @@
 import { DeepReadonly } from 'utility-types';
 
-import { CsvObject, CsvProps } from '../../../../../components/upload-csv';
+import { CsvObject, CsvProps } from '~/components/upload-csv';
 
 export const CSV_CHARGEBACK_PROPS = {
     required: [

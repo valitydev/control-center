@@ -4,7 +4,7 @@ import { NotifyLogService, inProgressFrom, progressTo } from '@vality/matez';
 import { BehaviorSubject, EMPTY, ReplaySubject, Subject, defer } from 'rxjs';
 import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { createDsl } from '../../../../../api/fistful-stat';
+import { createDsl } from '~/api/fistful-stat';
 
 @Injectable()
 export class ReceiveDepositService {

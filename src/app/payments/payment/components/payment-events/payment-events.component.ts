@@ -7,13 +7,14 @@ import { ThriftPipesModule } from '@vality/ng-thrift';
 import { switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { TimelineModule } from '../../../../../components/timeline';
 import { PageLayoutModule } from '../../../../shared';
 import { DomainThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { PaymentDetailsService } from '../../payment.service';
 
 import { TimelineItemHeaderComponent } from './components/timeline-item-header/timeline-item-header.component';
 import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
+
+import { TimelineModule } from '~/components/timeline';
 
 @Component({
     selector: 'cc-payment-events',

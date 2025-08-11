@@ -15,11 +15,12 @@ import startCase from 'lodash-es/startCase';
 import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { DomainObjectsStoreService } from '../../../api/domain-config';
 import { AmountCurrencyService } from '../../../services';
 import { FetchSourcesService } from '../../sources';
 
 import { ReceiveDepositService } from './services/receive-deposit/receive-deposit.service';
+
+import { DomainObjectsStoreService } from '~/api/domain-config';
 
 @Component({
     templateUrl: 'deposit-details.component.html',

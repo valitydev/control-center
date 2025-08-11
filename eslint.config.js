@@ -4,12 +4,14 @@ const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const importPlugin = require('eslint-plugin-import');
 const unusedImportsPlugin = require('eslint-plugin-unused-imports');
+const pathsPlugin = require('eslint-plugin-paths');
 
 function getImportOrderConfig(internalPatterns = []) {
     return {
         files: ['**/*.ts'],
         plugins: {
             import: importPlugin,
+            paths: pathsPlugin,
         },
         rules: {
             'sort-imports': [
@@ -41,6 +43,7 @@ function getImportOrderConfig(internalPatterns = []) {
                     },
                 },
             ],
+            'paths/alias': 'error',
         },
     };
 }

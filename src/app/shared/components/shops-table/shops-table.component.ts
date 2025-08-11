@@ -29,8 +29,6 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, map, of, switchMap } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
-import { DomainObjectsStoreService } from '../../../../api/domain-config';
-import { PartiesStoreService } from '../../../../api/payment-processing';
 import { createDomainObjectColumn, createPartyColumn } from '../../../../utils';
 import {
     DelegateWithPaymentInstitution,
@@ -39,6 +37,9 @@ import {
 import { RoutingRulesType } from '../../../parties/party/routing-rules/types/routing-rules-type';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
+
+import { DomainObjectsStoreService } from '~/api/domain-config';
+import { PartiesStoreService } from '~/api/payment-processing';
 
 @Component({
     selector: 'cc-shops-table',

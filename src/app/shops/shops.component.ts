@@ -3,7 +3,7 @@ import { DomainObjectType } from '@vality/domain-proto/domain';
 import { DebounceTime, UpdateOptions } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { FetchFullDomainObjectsService } from '../../api/domain-config';
+import { FetchFullDomainObjectsService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-shops',

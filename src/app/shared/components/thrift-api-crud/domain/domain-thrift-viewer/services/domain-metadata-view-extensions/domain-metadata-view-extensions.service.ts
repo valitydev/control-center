@@ -10,10 +10,11 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { DomainObjectsStoreService } from '../../../../../../../../api/domain-config';
-import { PartiesStoreService } from '../../../../../../../../api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { DomainObjectCardComponent } from '../../../../domain';
+
+import { DomainObjectsStoreService } from '~/api/domain-config';
+import { PartiesStoreService } from '~/api/payment-processing';
 
 @Injectable({
     providedIn: 'root',

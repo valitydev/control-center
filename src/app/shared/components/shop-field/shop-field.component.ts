@@ -10,7 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { FetchDomainObjectsService } from '../../../../api/domain-config';
+import { FetchDomainObjectsService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-shop-field',

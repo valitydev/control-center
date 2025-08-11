@@ -8,9 +8,10 @@ import { BehaviorSubject, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { SourceCash } from '../../../../components/source-cash-field';
 import { UserInfoBasedIdGeneratorService } from '../../../../services';
 import { FetchSourcesService } from '../../../sources';
+
+import { SourceCash } from '~/components/source-cash-field';
 
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',

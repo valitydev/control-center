@@ -20,7 +20,6 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 
-import { UploadCsvComponent } from '../../components/upload-csv';
 import { PageLayoutModule, ShopFieldModule } from '../shared';
 import { ChargebacksTableComponent } from '../shared/components/chargebacks-table/chargebacks-table.component';
 import { MerchantFieldModule } from '../shared/components/merchant-field';
@@ -32,6 +31,8 @@ import {
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
+
+import { UploadCsvComponent } from '~/components/upload-csv';
 
 @NgModule({
     declarations: [ChargebacksComponent, CreateChargebacksByFileDialogComponent],

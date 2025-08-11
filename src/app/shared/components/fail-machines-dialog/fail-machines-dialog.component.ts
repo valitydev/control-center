@@ -19,7 +19,7 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { FAILS_MACHINE_VALUE, Namespace } from '../../../../api/machinegun';
+import { FAILS_MACHINE_VALUE, Namespace } from '~/api/machinegun';
 
 export enum Type {
     Invoice,

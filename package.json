@@ -72,6 +72,7 @@
     "cspell-check-unused-words": "^1.5.3",
     "eslint": "^9.29.0",
     "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-paths": "^1.1.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",

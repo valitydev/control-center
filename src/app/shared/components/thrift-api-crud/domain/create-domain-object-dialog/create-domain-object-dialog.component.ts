@@ -18,11 +18,12 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
-import { DomainService } from '../../../../../../api/domain-config';
 import { NavigateService } from '../../../../../../services';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
+
+import { DomainService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-create-domain-object-dialog',

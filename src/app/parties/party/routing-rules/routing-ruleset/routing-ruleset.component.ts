@@ -17,7 +17,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { DomainService, RoutingRulesStoreService } from '../../../../../api/domain-config';
 import {
     createDomainObjectColumn,
     createPredicateColumn,
@@ -35,6 +34,8 @@ import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
+
+import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
 
 @Component({
     templateUrl: 'routing-ruleset.component.html',
