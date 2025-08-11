@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TableModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { StatusModule } from '~/shared';
+import { StatusModule } from '~/shared/components/status';
 
 import { RefundsTableComponent } from './refunds-table.component';
 

@@ -8,7 +8,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { NavComponent, TagModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule } from '~/shared';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 import { SubPageLayoutComponent } from '~/shared/components/page-layout/components/sub-page-layout/sub-page-layout.component';
 
 import { PartyRouting } from './party-routing.module';

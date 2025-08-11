@@ -6,7 +6,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { InputFieldModule, TableModule } from '@vality/matez';
 
-import { PageLayoutModule } from '~/shared';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 import { DomainThriftViewerComponent } from '~/shared/components/thrift-api-crud';
 
 import { TerminalsRoutingModule } from './terminals-routing.module';

@@ -19,7 +19,7 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
-import { PageLayoutModule } from '~/shared';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 
 @Component({
     templateUrl: 'parties.component.html',

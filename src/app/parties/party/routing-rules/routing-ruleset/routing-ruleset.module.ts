@@ -19,7 +19,7 @@ import { RouterModule } from '@angular/router';
 import { DialogModule, TableModule } from '@vality/matez';
 import { ThriftViewerModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule } from '~/shared';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 import { DomainThriftViewerComponent } from '~/shared/components/thrift-api-crud';
 
 import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';

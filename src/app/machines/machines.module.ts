@@ -25,7 +25,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule } from '~/shared';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 import { DomainObjectFieldComponent } from '~/shared/components/thrift-api-crud';
 
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';

@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
 
 import { DialogModule } from '@vality/matez';
 
-import { PageLayoutModule } from '~/shared';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 
 import { ChangeTargetDialogModule } from '../components/change-target-dialog';
 import { RoutingRulesListModule } from '../components/routing-rules-list';

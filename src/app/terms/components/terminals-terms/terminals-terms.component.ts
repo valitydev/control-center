@@ -29,8 +29,8 @@ import {
     getValueChanges,
 } from '@vality/matez';
 
-import { PageLayoutModule } from '~/shared';
 import { MerchantFieldModule } from '~/shared/components/merchant-field/merchant-field.module';
+import { PageLayoutModule } from '~/shared/components/page-layout';
 import { SidenavInfoService } from '~/shared/components/sidenav-info';
 import { createDomainObjectColumn } from '~/utils';
 

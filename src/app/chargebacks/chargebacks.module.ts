@@ -22,9 +22,10 @@ import {
 import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 
 import { UploadCsvComponent } from '~/components/upload-csv';
-import { PageLayoutModule, ShopFieldModule } from '~/shared';
 import { ChargebacksTableComponent } from '~/shared/components/chargebacks-table/chargebacks-table.component';
 import { MerchantFieldModule } from '~/shared/components/merchant-field';
+import { PageLayoutModule } from '~/shared/components/page-layout';
+import { ShopFieldModule } from '~/shared/components/shop-field';
 import {
     DomainThriftFormComponent,
     MagistaThriftFormComponent,
