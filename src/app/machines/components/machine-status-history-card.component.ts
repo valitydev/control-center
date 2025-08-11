@@ -5,7 +5,7 @@ import { Component, input } from '@angular/core';
 import { Column, TableModule, getEnumKey } from '@vality/matez';
 import { RepairStatus, StatusHistory } from '@vality/repairer-proto/repairer';
 
-import { SidenavInfoModule } from '~/shared/components/sidenav-info/sidenav-info.module';
+import { SidenavInfoModule } from '~/components/sidenav-info/sidenav-info.module';
 
 @Component({
     template: `<cc-card title="Machine #{{ id() }} Status History"

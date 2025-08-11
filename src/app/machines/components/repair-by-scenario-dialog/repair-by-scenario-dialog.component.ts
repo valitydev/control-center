@@ -21,7 +21,7 @@ import {
     RepairWithdrawalsRequest,
 } from '@vality/repairer-proto/repairer';
 
-import { DomainMetadataFormExtensionsService } from '~/shared/components/thrift-api-crud';
+import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 
 enum Types {
     Same,

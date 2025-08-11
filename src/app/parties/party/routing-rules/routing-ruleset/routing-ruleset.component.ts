@@ -20,13 +20,13 @@ import {
 import { toJson } from '@vality/ng-thrift';
 
 import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
-import { CandidateCardComponent } from '~/shared/components/candidate-card/candidate-card.component';
-import { SidenavInfoService } from '~/shared/components/sidenav-info';
+import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
+import { SidenavInfoService } from '~/components/sidenav-info';
 import {
     DomainThriftFormDialogComponent,
     UpdateThriftDialogComponent,
-} from '~/shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain';
+} from '~/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
 import { createDomainObjectColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
 
 import { RoutingRulesService } from '../services/routing-rules';

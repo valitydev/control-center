@@ -23,7 +23,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 import { DomainService } from '~/api/domain-config';
 import { NavigateService } from '~/services';
 
-import { APP_ROUTES } from '../../../../../app-routes';
+import { APP_ROUTES } from '../../../../app/app-routes';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 
-import { PageLayoutModule } from '~/shared/components/page-layout';
+import { PageLayoutModule } from '~/components/page-layout';
 
 import { PaymentDetailsService } from '../../payment.service';
 import { RefundsTableModule } from '../../refunds-table';

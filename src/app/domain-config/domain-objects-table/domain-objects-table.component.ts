@@ -24,12 +24,12 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { FetchDomainObjectsService } from '~/api/domain-config';
-import { SidenavInfoService } from '~/shared/components/sidenav-info';
-import { getReferenceId } from '~/shared/components/thrift-api-crud';
+import { SidenavInfoService } from '~/components/sidenav-info';
+import { getReferenceId } from '~/components/thrift-api-crud';
 import {
     DomainObjectCardComponent,
     DomainObjectService,
-} from '~/shared/components/thrift-api-crud/domain';
+} from '~/components/thrift-api-crud/domain';
 
 @Component({
     selector: 'cc-domain-objects-table',

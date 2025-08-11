@@ -20,10 +20,10 @@ import {
     TableModule,
 } from '@vality/matez';
 
-import { CurrencyFieldComponent } from '~/shared/components/currency-field';
-import { MerchantFieldModule } from '~/shared/components/merchant-field';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { WalletFieldModule } from '~/shared/components/wallet-field';
+import { CurrencyFieldComponent } from '~/components/currency-field';
+import { MerchantFieldModule } from '~/components/merchant-field';
+import { PageLayoutModule } from '~/components/page-layout';
+import { WalletFieldModule } from '~/components/wallet-field';
 
 import { CreateDepositDialogModule } from './components/create-deposit-dialog/create-deposit-dialog.module';
 import { DepositsRoutingModule } from './deposits-routing.module';

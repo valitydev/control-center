@@ -5,8 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { InputFieldModule, TableModule } from '@vality/matez';
 
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { ShopsTableComponent } from '~/shared/components/shops-table';
+import { PageLayoutModule } from '~/components/page-layout';
+import { ShopsTableComponent } from '~/components/shops-table';
 
 import { ShopsRoutingModule } from './shops-routing.module';
 import { ShopsComponent } from './shops.component';

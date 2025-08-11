@@ -23,10 +23,10 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 
-import { FistfulThriftFormComponent } from '~/shared/components/fistful-thrift-form';
-import { MerchantFieldModule } from '~/shared/components/merchant-field';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { WalletFieldModule } from '~/shared/components/wallet-field';
+import { FistfulThriftFormComponent } from '~/components/fistful-thrift-form';
+import { MerchantFieldModule } from '~/components/merchant-field';
+import { PageLayoutModule } from '~/components/page-layout';
+import { WalletFieldModule } from '~/components/wallet-field';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { WithdrawalsRoutingModule } from './withdrawals-routing.module';

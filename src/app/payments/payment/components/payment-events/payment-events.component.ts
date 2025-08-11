@@ -9,9 +9,9 @@ import { MatIcon } from '@angular/material/icon';
 import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
+import { PageLayoutModule } from '~/components/page-layout';
+import { DomainThriftViewerComponent } from '~/components/thrift-api-crud';
 import { TimelineModule } from '~/components/timeline';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { DomainThriftViewerComponent } from '~/shared/components/thrift-api-crud';
 
 import { PaymentDetailsService } from '../../payment.service';
 

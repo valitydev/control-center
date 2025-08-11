@@ -9,8 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { ActionsModule, DialogModule, TableModule } from '@vality/matez';
 import { ThriftFormModule } from '@vality/ng-thrift';
 
-import { FistfulThriftFormComponent } from '~/shared/components/fistful-thrift-form';
-import { PageLayoutModule } from '~/shared/components/page-layout';
+import { FistfulThriftFormComponent } from '~/components/fistful-thrift-form';
+import { PageLayoutModule } from '~/components/page-layout';
 
 import { CreateSourceComponent } from './create-source/create-source.component';
 import { SourcesRoutingModule } from './sources-routing.module';

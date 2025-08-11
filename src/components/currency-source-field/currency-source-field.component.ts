@@ -13,7 +13,7 @@ import {
     createControlProviders,
 } from '@vality/matez';
 
-import { FetchSourcesService } from '../../../sources';
+import { FetchSourcesService } from '../../app/sources';
 
 @Component({
     selector: 'cc-currency-source-field',

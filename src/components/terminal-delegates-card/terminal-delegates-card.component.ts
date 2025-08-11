@@ -26,11 +26,11 @@ import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
 import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
 
-import { changeCandidatesAllowed } from '../../../parties/party/routing-rules/utils/toggle-candidate-allowed';
+import { changeCandidatesAllowed } from '../../app/parties/party/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,
-} from '../../../terminals/utils/get-terminal-shop-wallet-delegates';
+} from '../../app/terminals/utils/get-terminal-shop-wallet-delegates';
 import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';

@@ -23,10 +23,10 @@ import {
     getUrlPath,
 } from '@vality/matez';
 
+import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info';
+import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
 import { KeycloakUserService, Services } from '~/services';
-import { SidenavInfoModule, SidenavInfoService } from '~/shared/components/sidenav-info';
-import { getLimitedDomainObjectDetails } from '~/shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain';
 import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';

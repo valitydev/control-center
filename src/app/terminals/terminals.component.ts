@@ -7,14 +7,14 @@ import { Column, DialogService, UpdateOptions } from '@vality/matez';
 
 import { FetchFullDomainObjectsService, RoutingRulesStoreService } from '~/api/domain-config';
 import { AccountBalancesStoreService } from '~/api/terminal-balance';
-import { SidenavInfoService } from '~/shared/components/sidenav-info';
-import { TerminalBalancesCardComponent } from '~/shared/components/terminal-balances-card/terminal-balances-card.component';
-import { TerminalDelegatesCardComponent } from '~/shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { getDomainObjectDetails } from '~/shared/components/thrift-api-crud';
+import { SidenavInfoService } from '~/components/sidenav-info';
+import { TerminalBalancesCardComponent } from '~/components/terminal-balances-card/terminal-balances-card.component';
+import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
+import { getDomainObjectDetails } from '~/components/thrift-api-crud';
 import {
     CreateDomainObjectDialogComponent,
     DomainObjectCardComponent,
-} from '~/shared/components/thrift-api-crud/domain';
+} from '~/components/thrift-api-crud/domain';
 import { createCurrencyColumn, createDomainObjectColumn, createPredicateColumn } from '~/utils';
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';

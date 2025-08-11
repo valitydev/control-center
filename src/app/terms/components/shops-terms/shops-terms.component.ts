@@ -29,10 +29,10 @@ import {
     getValueChanges,
 } from '@vality/matez';
 
-import { MerchantFieldModule } from '~/shared/components/merchant-field/merchant-field.module';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { ShopFieldModule } from '~/shared/components/shop-field';
-import { SidenavInfoService } from '~/shared/components/sidenav-info/sidenav-info.service';
+import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
+import { PageLayoutModule } from '~/components/page-layout';
+import { ShopFieldModule } from '~/components/shop-field';
+import { SidenavInfoService } from '~/components/sidenav-info/sidenav-info.service';
 import { createDomainObjectColumn, createPartyColumn, createShopColumn } from '~/utils';
 
 import { DEBOUNCE_TIME_MS } from '../../../tokens';

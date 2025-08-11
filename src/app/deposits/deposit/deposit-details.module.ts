@@ -8,8 +8,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ThriftViewerModule } from '@vality/ng-thrift';
 
 import { HeadlineModule } from '~/components/headline/headline.module';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { StatusModule } from '~/shared/components/status';
+import { PageLayoutModule } from '~/components/page-layout';
+import { StatusModule } from '~/components/status';
 
 import { DepositDetailsRoutingModule } from './deposit-details-routing.module';
 import { DepositDetailsComponent } from './deposit-details.component';

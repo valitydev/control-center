@@ -21,15 +21,15 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 
-import { UploadCsvComponent } from '~/components/upload-csv';
-import { ChargebacksTableComponent } from '~/shared/components/chargebacks-table/chargebacks-table.component';
-import { MerchantFieldModule } from '~/shared/components/merchant-field';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { ShopFieldModule } from '~/shared/components/shop-field';
+import { ChargebacksTableComponent } from '~/components/chargebacks-table/chargebacks-table.component';
+import { MerchantFieldModule } from '~/components/merchant-field';
+import { PageLayoutModule } from '~/components/page-layout';
+import { ShopFieldModule } from '~/components/shop-field';
 import {
     DomainThriftFormComponent,
     MagistaThriftFormComponent,
-} from '~/shared/components/thrift-api-crud';
+} from '~/components/thrift-api-crud';
+import { UploadCsvComponent } from '~/components/upload-csv';
 
 import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';

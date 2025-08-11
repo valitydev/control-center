@@ -26,8 +26,8 @@ import {
 import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
-import { MerchantFieldModule } from '~/shared/components/merchant-field';
-import { PageLayoutModule } from '~/shared/components/page-layout';
+import { MerchantFieldModule } from '~/components/merchant-field';
+import { PageLayoutModule } from '~/components/page-layout';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 import { PartyStoreService } from '../parties/party';

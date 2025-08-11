@@ -8,8 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { DialogResponseStatus, DialogService } from '@vality/matez';
 
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { ChargebacksTableComponent } from '~/shared/components/chargebacks-table/chargebacks-table.component';
+import { ChargebacksTableComponent } from '~/components/chargebacks-table/chargebacks-table.component';
+import { PageLayoutModule } from '~/components/page-layout';
 
 import { FetchChargebacksService } from '../../../../chargebacks/fetch-chargebacks.service';
 import { CreateChargebackDialogComponent } from '../../create-chargeback-dialog/create-chargeback-dialog.component';

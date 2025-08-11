@@ -3,7 +3,7 @@ import { Component, computed, input } from '@angular/core';
 import type { ShopTermSet, TermSetHistory } from '@vality/dominator-proto/dominator';
 import { Column, TableModule } from '@vality/matez';
 
-import { SidenavInfoModule } from '~/shared/components/sidenav-info';
+import { SidenavInfoModule } from '~/components/sidenav-info';
 import { createDomainObjectColumn } from '~/utils';
 
 import { getFlatDecisions } from '../../utils/get-flat-decisions';

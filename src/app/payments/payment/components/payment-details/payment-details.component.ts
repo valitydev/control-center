@@ -9,10 +9,10 @@ import { metadata$ } from '@vality/magista-proto';
 import { formatCurrency } from '@vality/matez';
 import { ThriftViewExtension, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 
+import { PageLayoutModule } from '~/components/page-layout';
+import { MagistaThriftViewerComponent } from '~/components/thrift-api-crud';
+import { DomainMetadataViewExtensionsService } from '~/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { AmountCurrencyService } from '~/services';
-import { PageLayoutModule } from '~/shared/components/page-layout';
-import { MagistaThriftViewerComponent } from '~/shared/components/thrift-api-crud';
-import { DomainMetadataViewExtensionsService } from '~/shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 
 import { PaymentDetailsService } from '../../payment.service';
 

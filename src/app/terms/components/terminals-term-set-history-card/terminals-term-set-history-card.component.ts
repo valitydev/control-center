@@ -3,7 +3,7 @@ import { Component, computed, input } from '@angular/core';
 import type { ProvisionTermSetHistory, TerminalTermSet } from '@vality/dominator-proto/dominator';
 import { Column, TableModule } from '@vality/matez';
 
-import { SidenavInfoModule } from '~/shared/components/sidenav-info';
+import { SidenavInfoModule } from '~/components/sidenav-info';
 
 import {
     TERMINAL_FEES_COLUMNS,
