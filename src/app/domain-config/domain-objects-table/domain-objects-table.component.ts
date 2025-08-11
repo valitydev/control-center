@@ -21,6 +21,8 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
+import { FetchDomainObjectsService } from '~/api/domain-config';
+
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 import { getReferenceId } from '../../shared/components/thrift-api-crud';
 import {
@@ -28,7 +30,6 @@ import {
     DomainObjectService,
 } from '../../shared/components/thrift-api-crud/domain';
 
-import { FetchDomainObjectsService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-domain-objects-table',

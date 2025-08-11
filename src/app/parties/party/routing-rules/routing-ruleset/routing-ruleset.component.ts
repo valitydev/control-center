@@ -17,6 +17,13 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
+import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
+import {
+    createDomainObjectColumn,
+    createPredicateColumn,
+    getPredicateBoolean,
+} from '~/utils';
+
 import { CandidateCardComponent } from '../../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
@@ -30,12 +37,6 @@ import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
 
-import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
-import {
-    createDomainObjectColumn,
-    createPredicateColumn,
-    getPredicateBoolean,
-} from '~/utils';
 
 @Component({
     templateUrl: 'routing-ruleset.component.html',

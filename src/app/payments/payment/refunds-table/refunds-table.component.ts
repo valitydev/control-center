@@ -5,10 +5,11 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 
 
-import { FetchRefundsService } from './services/fetch-refunds.service';
-
 import { Refund } from '~/api/fistful-stat';
 import { createCurrencyColumn } from '~/utils';
+
+import { FetchRefundsService } from './services/fetch-refunds.service';
+
 
 @Component({
     selector: 'cc-refunds-table',

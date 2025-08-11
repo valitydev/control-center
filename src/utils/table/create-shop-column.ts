@@ -3,10 +3,11 @@ import { createColumn } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
+import { PartiesStoreService } from '~/api/payment-processing';
+
 import { SidenavInfoService } from '../../app/shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../app/shared/components/thrift-api-crud/domain';
 
-import { PartiesStoreService } from '~/api/payment-processing';
 
 export const createShopColumn = createColumn(
     ({ shopId, ...params }: { shopId: string; shopName?: string }) => {

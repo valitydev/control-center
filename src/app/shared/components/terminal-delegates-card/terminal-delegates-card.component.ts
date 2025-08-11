@@ -20,6 +20,10 @@ import startCase from 'lodash-es/startCase';
 import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 
+import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
+import { PartiesStoreService } from '~/api/payment-processing';
+import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
+
 import { changeCandidatesAllowed } from '../../../parties/party/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
@@ -29,9 +33,6 @@ import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 
-import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
-import { PartiesStoreService } from '~/api/payment-processing';
-import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
 
 @Component({
     selector: 'cc-terminal-delegates-card',

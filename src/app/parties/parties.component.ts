@@ -16,9 +16,10 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
+import { FetchFullDomainObjectsService } from '~/api/domain-config';
+
 import { PageLayoutModule } from '../shared';
 
-import { FetchFullDomainObjectsService } from '~/api/domain-config';
 
 @Component({
     templateUrl: 'parties.component.html',

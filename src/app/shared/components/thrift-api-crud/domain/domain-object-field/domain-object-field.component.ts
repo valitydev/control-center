@@ -12,9 +12,10 @@ import {
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { FetchDomainObjectsService } from '~/api/domain-config/services/fetch-domain-objects.service';
+
 import { ReferenceId, getReferenceId } from '../utils/get-reference-id';
 
-import { FetchDomainObjectsService } from '~/api/domain-config/services/fetch-domain-objects.service';
 
 @Component({
     selector: 'cc-domain-object-field',

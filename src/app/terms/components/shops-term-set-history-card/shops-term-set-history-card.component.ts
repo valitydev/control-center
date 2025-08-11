@@ -3,6 +3,8 @@ import { Column, TableModule } from '@vality/matez';
 
 import type { ShopTermSet, TermSetHistory } from '@vality/dominator-proto/dominator';
 
+import { createDomainObjectColumn } from '~/utils';
+
 import { SidenavInfoModule } from '../../../shared/components/sidenav-info';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
@@ -11,7 +13,6 @@ import {
     isShopTermSetDecision,
 } from '../shops-terms/utils/shop-fees-columns';
 
-import { createDomainObjectColumn } from '~/utils';
 
 @Component({
     selector: 'cc-shops-term-set-history-card',

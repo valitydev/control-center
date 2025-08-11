@@ -9,6 +9,8 @@ import { RouterOutlet } from '@angular/router';
 import { ActionsModule, DialogModule } from '@vality/matez';
 import { ThriftFormModule, ThriftViewerModule } from '@vality/ng-thrift';
 
+import { HeadlineModule } from '~/components/headline/headline.module';
+
 import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 
@@ -17,7 +19,6 @@ import { PaymentDetailsRoutingModule } from './payment-routing.module';
 import { PaymentDetailsComponent } from './payment.component';
 import { RefundsTableModule } from './refunds-table';
 
-import { HeadlineModule } from '~/components/headline/headline.module';
 
 @NgModule({
     imports: [

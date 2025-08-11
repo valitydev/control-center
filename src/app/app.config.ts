@@ -35,6 +35,8 @@ import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { provideKeycloak } from 'keycloak-angular';
 
 
+import { parseThriftError, provideThriftServices } from '~/utils';
+
 import { routes } from './app.routes';
 import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
 import { SIDENAV_INFO_COMPONENTS } from './shared/components/sidenav-info';
@@ -49,7 +51,6 @@ import {
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
 } from './tokens';
 
-import { parseThriftError, provideThriftServices } from '~/utils';
 
 registerLocaleData(localeRu);
 

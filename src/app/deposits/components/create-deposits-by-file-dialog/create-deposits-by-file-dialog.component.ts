@@ -13,10 +13,11 @@ import {
 import { BehaviorSubject, switchMap } from 'rxjs';
 
 
+import { UploadCsvComponent } from '~/components/upload-csv';
+
 import { CSV_DEPOSIT_PROPS, CsvDeposit } from './types/csv-deposit';
 import { getCreateDepositArgs } from './utils/get-create-deposit-args';
 
-import { UploadCsvComponent } from '~/components/upload-csv';
 
 @Component({
     selector: 'cc-create-deposits-by-file-dialog',

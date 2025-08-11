@@ -7,12 +7,13 @@ import { ThriftViewExtension, getUnionValue, isTypeWithAliases } from '@vality/n
 import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
+import { AmountCurrencyService } from '~/services';
+
 import { PageLayoutModule } from '../../../../shared';
 import { MagistaThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { DomainMetadataViewExtensionsService } from '../../../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { PaymentDetailsService } from '../../payment.service';
 
-import { AmountCurrencyService } from '~/services';
 
 @Component({
     selector: 'cc-payment-details',

@@ -8,7 +8,6 @@ import { map, startWith } from 'rxjs/operators';
 import { CurrenciesStoreService } from '~/api/domain-config';
 import { AmountCurrencyService } from '~/services';
 
-
 interface CurrencyValue {
     amount: number;
     code: string;

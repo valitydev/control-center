@@ -24,9 +24,10 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs';
 
+import { createCurrencyColumn, createPartyColumn, createShopColumn } from '~/utils';
+
 import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
-import { createCurrencyColumn, createPartyColumn, createShopColumn } from '~/utils';
 
 @Component({
     selector: 'cc-chargebacks-table',

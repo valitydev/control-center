@@ -2,11 +2,12 @@ import { CashFlowPosting, PartyID, Predicate, ShopID } from '@vality/domain-prot
 import { TermSetHistory } from '@vality/dominator-proto/dominator';
 import { Column } from '@vality/matez';
 
+import { formatCashVolumes } from '~/utils';
+
 import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
-import { formatCashVolumes } from '~/utils';
 
 export function getShopCashFlowSelectors(d: TermSetHistory['term_set']) {
     return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
