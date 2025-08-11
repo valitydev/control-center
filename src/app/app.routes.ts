@@ -15,7 +15,7 @@ export const routes: Routes = [
     {
         path: 'withdrawals',
         loadChildren: () =>
-            import('./sections/withdrawals/withdrawals.module').then((m) => m.WithdrawalsModule),
+            import('./withdrawals/withdrawals.module').then((m) => m.WithdrawalsModule),
     },
     {
         path: 'machines',
