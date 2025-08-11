@@ -151,7 +151,7 @@ export class WalletsComponent implements OnInit {
             .GetAccountState(
                 wallet.object.wallet_config.data.party_id,
                 wallet.object.wallet_config.data.account.settlement,
-                Number.MAX_SAFE_INTEGER,
+                wallet.info.version,
             )
             .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     }
