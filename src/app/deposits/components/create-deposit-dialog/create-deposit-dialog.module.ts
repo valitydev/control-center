@@ -13,7 +13,7 @@ import { DialogModule } from '@vality/matez';
 import { CurrencySourceFieldComponent } from '~/components/currency-source-field';
 import { FistfulThriftFormComponent } from '~/components/fistful-thrift-form';
 import { SourceCashFieldComponent } from '~/components/source-cash-field';
-import { UserInfoBasedIdGeneratorModule } from '~/services/user-info-based-id-generator/user-info-based-id-generator.module';
+import { UserInfoBasedIdGeneratorModule } from '~/services';
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog.component';
 

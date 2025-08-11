@@ -56,6 +56,23 @@ function getImportOrderConfig(internalPatterns = ['~/**']) {
                 },
             ],
             'paths/alias': 'error',
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: [
+                                '~/utils/**',
+                                '~/services/**',
+                                // TODO:
+                                // '~/styles/**',
+                                //  '~/components/*/**',
+                            ],
+                            message: 'Import from index: ~/utils',
+                        },
+                    ],
+                },
+            ],
         },
     };
 }
