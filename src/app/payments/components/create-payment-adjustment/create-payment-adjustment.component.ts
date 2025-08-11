@@ -15,7 +15,7 @@ import {
     splitResultsErrors,
 } from '@vality/matez';
 
-import { DomainMetadataFormExtensionsService } from '../../../shared/components/thrift-api-crud';
+import { DomainMetadataFormExtensionsService } from '~/shared/components/thrift-api-crud';
 
 @Component({
     selector: 'cc-create-payment-adjustment',

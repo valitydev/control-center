@@ -26,11 +26,11 @@ import {
 import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { PageLayoutModule } from '~/shared';
+import { MerchantFieldModule } from '~/shared/components/merchant-field';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 import { PartyStoreService } from '../parties/party';
-import { PageLayoutModule } from '../shared';
-import { MerchantFieldModule } from '../shared/components/merchant-field';
 
 @Component({
     selector: 'cc-wallets',

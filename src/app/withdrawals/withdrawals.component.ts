@@ -27,9 +27,9 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { WithdrawalParams } from '~/api/fistful-stat';
+import { FailMachinesDialogComponent, Type } from '~/shared/components/fail-machines-dialog';
 import { createCurrencyColumn, createDomainObjectColumn, createFailureColumn } from '~/utils';
 
-import { FailMachinesDialogComponent, Type } from '../shared/components/fail-machines-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';

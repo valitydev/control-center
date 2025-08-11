@@ -29,11 +29,11 @@ import {
     getValueChanges,
 } from '@vality/matez';
 
+import { PageLayoutModule } from '~/shared';
+import { MerchantFieldModule } from '~/shared/components/merchant-field/merchant-field.module';
+import { SidenavInfoService } from '~/shared/components/sidenav-info';
 import { createDomainObjectColumn } from '~/utils';
 
-import { PageLayoutModule } from '../../../shared';
-import { MerchantFieldModule } from '../../../shared/components/merchant-field/merchant-field.module';
-import { SidenavInfoService } from '../../../shared/components/sidenav-info';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';
 import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-history-card';
 

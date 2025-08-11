@@ -16,7 +16,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 
-import { PageLayoutModule } from '../../../../shared';
+import { PageLayoutModule } from '~/shared';
+
 import { ChangeTargetDialogModule } from '../components/change-target-dialog';
 import { RoutingRulesListModule } from '../components/routing-rules-list';
 

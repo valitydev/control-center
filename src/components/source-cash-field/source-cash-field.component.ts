@@ -31,6 +31,7 @@ import {
 
 import { CurrenciesStoreService } from '~/api/domain-config';
 
+// eslint-disable-next-line paths/alias
 import { FetchSourcesService } from '../../app/sources';
 
 export interface SourceCash {

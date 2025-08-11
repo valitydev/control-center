@@ -8,8 +8,8 @@ import { RoutingCandidate } from '@vality/domain-proto/domain';
 import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/matez';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
+import { UpdateThriftDialogComponent } from '~/shared/components/thrift-api-crud';
 
-import { UpdateThriftDialogComponent } from '../../../../shared/components/thrift-api-crud';
 import { RoutingRulesService } from '../services/routing-rules';
 import { CandidateId } from '../services/routing-rules/types/candidate-id';
 import { getUpdateRulesCandidates } from '../services/routing-rules/utils/get-update-rules-candidates';

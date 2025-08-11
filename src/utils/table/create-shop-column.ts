@@ -6,9 +6,8 @@ import { inject } from '@angular/core';
 import { createColumn } from '@vality/matez';
 
 import { PartiesStoreService } from '~/api/payment-processing';
-
-import { SidenavInfoService } from '../../app/shared/components/sidenav-info';
-import { DomainObjectCardComponent } from '../../app/shared/components/thrift-api-crud/domain';
+import { SidenavInfoService } from '~/shared/components/sidenav-info';
+import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain';
 
 export const createShopColumn = createColumn(
     ({ shopId, ...params }: { shopId: string; shopName?: string }) => {

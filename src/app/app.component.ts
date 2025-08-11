@@ -24,15 +24,15 @@ import {
 } from '@vality/matez';
 
 import { KeycloakUserService, Services } from '~/services';
+import { SidenavInfoModule, SidenavInfoService } from '~/shared/components/sidenav-info';
+import { getLimitedDomainObjectDetails } from '~/shared/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain';
 import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './deposits/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './payments/routing-config';
-import { SidenavInfoModule, SidenavInfoService } from './shared/components/sidenav-info';
-import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain';
 import { SHOPS_ROUTING_CONFIG } from './shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sources/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './terminals';

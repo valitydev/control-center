@@ -36,13 +36,13 @@ import { provideMonacoEditor } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
 
+import { CandidateCardComponent } from '~/shared/components/candidate-card/candidate-card.component';
+import { SIDENAV_INFO_COMPONENTS } from '~/shared/components/sidenav-info';
+import { TerminalDelegatesCardComponent } from '~/shared/components/terminal-delegates-card/terminal-delegates-card.component';
+import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
 import { parseThriftError, provideThriftServices } from '~/utils';
 
 import { routes } from './app.routes';
-import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
-import { SIDENAV_INFO_COMPONENTS } from './shared/components/sidenav-info';
-import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
 import {
     DATE_RANGE_DAYS,
     DEBOUNCE_TIME_MS,

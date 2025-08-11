@@ -15,10 +15,10 @@ import {
 } from '@vality/matez';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
+import { SidenavInfoService } from '~/shared/components/sidenav-info';
+import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain';
 import { createShopColumn, createWalletColumn } from '~/utils';
 
-import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
-import { DomainObjectCardComponent } from '../../../../shared/components/thrift-api-crud/domain';
 import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesTypeService } from '../routing-rules-type.service';

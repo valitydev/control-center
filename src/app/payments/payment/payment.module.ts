@@ -11,9 +11,8 @@ import { ActionsModule, DialogModule } from '@vality/matez';
 import { ThriftFormModule, ThriftViewerModule } from '@vality/ng-thrift';
 
 import { HeadlineModule } from '~/components/headline/headline.module';
-
-import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../shared/components';
-import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
+import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '~/shared/components';
+import { MagistaThriftViewerComponent } from '~/shared/components/thrift-api-crud';
 
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsRoutingModule } from './payment-routing.module';

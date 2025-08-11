@@ -29,11 +29,11 @@ import {
     getValueChanges,
 } from '@vality/matez';
 
+import { PageLayoutModule, ShopFieldModule } from '~/shared';
+import { MerchantFieldModule } from '~/shared/components/merchant-field/merchant-field.module';
+import { SidenavInfoService } from '~/shared/components/sidenav-info/sidenav-info.service';
 import { createDomainObjectColumn, createPartyColumn, createShopColumn } from '~/utils';
 
-import { PageLayoutModule, ShopFieldModule } from '../../../shared';
-import { MerchantFieldModule } from '../../../shared/components/merchant-field/merchant-field.module';
-import { SidenavInfoService } from '../../../shared/components/sidenav-info/sidenav-info.service';
 import { DEBOUNCE_TIME_MS } from '../../../tokens';
 import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
 import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';

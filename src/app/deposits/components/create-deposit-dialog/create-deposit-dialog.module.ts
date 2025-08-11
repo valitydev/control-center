@@ -12,9 +12,8 @@ import { DialogModule } from '@vality/matez';
 
 import { SourceCashFieldComponent } from '~/components/source-cash-field';
 import { UserInfoBasedIdGeneratorModule } from '~/services/user-info-based-id-generator/user-info-based-id-generator.module';
-
-import { CurrencySourceFieldComponent } from '../../../shared/components/currency-source-field';
-import { FistfulThriftFormComponent } from '../../../shared/components/fistful-thrift-form';
+import { CurrencySourceFieldComponent } from '~/shared/components/currency-source-field';
+import { FistfulThriftFormComponent } from '~/shared/components/fistful-thrift-form';
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog.component';
 

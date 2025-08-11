@@ -34,9 +34,9 @@ import {
     RepairStatus,
 } from '@vality/repairer-proto/repairer';
 
+import { SidenavInfoService } from '~/shared/components/sidenav-info/sidenav-info.service';
 import { createDomainObjectColumn } from '~/utils';
 
-import { SidenavInfoService } from '../shared/components/sidenav-info/sidenav-info.service';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { MachineStatusHistoryCardComponent } from './components/machine-status-history-card.component';

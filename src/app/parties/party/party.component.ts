@@ -5,7 +5,7 @@ import { Component, inject } from '@angular/core';
 
 import { getUnionKey } from '@vality/ng-thrift';
 
-import { SidenavInfoService } from '../../shared/components/sidenav-info';
+import { SidenavInfoService } from '~/shared/components/sidenav-info';
 
 import { PartyStoreService } from './party-store.service';
 

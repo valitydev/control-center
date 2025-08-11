@@ -10,9 +10,9 @@ import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { TimelineModule } from '~/components/timeline';
+import { PageLayoutModule } from '~/shared';
+import { DomainThriftViewerComponent } from '~/shared/components/thrift-api-crud';
 
-import { PageLayoutModule } from '../../../../shared';
-import { DomainThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 import { PaymentDetailsService } from '../../payment.service';
 
 import { TimelineItemHeaderComponent } from './components/timeline-item-header/timeline-item-header.component';

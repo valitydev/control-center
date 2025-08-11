@@ -15,6 +15,9 @@
             "~/services": ["./src/services"],
             "~/utils": ["./src/utils"],
 
+            "~/shared/*": ["./src/app/shared/*"],
+            "~/shared": ["./src/app/shared"],
+
             "@vality/*": ["./projects/*/src/public-api.ts"]
         },
         "noImplicitReturns": true,

@@ -7,13 +7,9 @@ import { createColumn } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
-
-import { SidenavInfoService } from '../../app/shared/components/sidenav-info';
-import {
-    getDomainObjectDetails,
-    getReferenceId,
-} from '../../app/shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from '../../app/shared/components/thrift-api-crud/domain';
+import { SidenavInfoService } from '~/shared/components/sidenav-info';
+import { getDomainObjectDetails, getReferenceId } from '~/shared/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '~/shared/components/thrift-api-crud/domain';
 
 export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference }) => {
     const sourceObj = {
