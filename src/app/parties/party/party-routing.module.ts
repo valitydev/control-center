@@ -19,7 +19,7 @@ import { ROUTING_CONFIG } from './routing-config';
                     {
                         path: 'shops',
                         loadChildren: () =>
-                            import('../../sections/party-shops').then((m) => m.PartyShopsModule),
+                            import('../party-shops').then((m) => m.PartyShopsModule),
                     },
                     {
                         path: 'routing-rules',
