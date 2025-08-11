@@ -23,9 +23,7 @@ import { ROUTING_CONFIG } from './routing-config';
                     {
                         path: 'routing-rules',
                         loadChildren: () =>
-                            import('../../sections/routing-rules').then(
-                                (m) => m.RoutingRulesModule,
-                            ),
+                            import('../routing-rules').then((m) => m.RoutingRulesModule),
                     },
                     {
                         path: 'wallets',

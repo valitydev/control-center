@@ -23,7 +23,7 @@ import { map, shareReplay, take } from 'rxjs/operators';
 import { DomainService, RoutingRulesStoreService } from '../../../../api/domain-config';
 import { PartiesStoreService } from '../../../../api/payment-processing';
 import { createPartyColumn, createPredicateColumn, getPredicateBoolean } from '../../../../utils';
-import { changeCandidatesAllowed } from '../../../sections/routing-rules/utils/toggle-candidate-allowed';
+import { changeCandidatesAllowed } from '../../../parties/routing-rules/utils/toggle-candidate-allowed';
 import {
     TerminalShopWalletDelegate,
     getTerminalShopWalletDelegates,

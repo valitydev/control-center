@@ -35,8 +35,8 @@ import { createDomainObjectColumn, createPartyColumn } from '../../../../utils';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
-} from '../../../sections/routing-rules/party-delegate-rulesets';
-import { RoutingRulesType } from '../../../sections/routing-rules/types/routing-rules-type';
+} from '../../../parties/routing-rules/party-delegate-rulesets';
+import { RoutingRulesType } from '../../../parties/routing-rules/types/routing-rules-type';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 
