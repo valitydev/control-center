@@ -9,7 +9,7 @@ import {
 } from '@vality/matez';
 import { map } from 'rxjs/operators';
 
-import { FetchSourcesService } from '../../../sections/sources';
+import { FetchSourcesService } from '../../../sources';
 
 @Component({
     selector: 'cc-currency-field',

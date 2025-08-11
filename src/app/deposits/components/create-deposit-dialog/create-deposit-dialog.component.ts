@@ -10,7 +10,7 @@ import { Overwrite } from 'utility-types';
 
 import { SourceCash } from '../../../../components/source-cash-field';
 import { UserInfoBasedIdGeneratorService } from '../../../../services';
-import { FetchSourcesService } from '../../../sections/sources';
+import { FetchSourcesService } from '../../../sources';
 
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',

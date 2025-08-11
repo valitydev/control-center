@@ -32,8 +32,7 @@ export const routes: Routes = [
     },
     {
         path: 'sources',
-        loadChildren: () =>
-            import('./sections/sources/sources.module').then((m) => m.SourcesModule),
+        loadChildren: () => import('./sources/sources.module').then((m) => m.SourcesModule),
     },
     {
         path: 'wallets',

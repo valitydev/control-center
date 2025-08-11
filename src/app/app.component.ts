@@ -26,9 +26,8 @@ import { LOGGING } from '../utils';
 
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './deposits/routing-config';
-import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './payments/routing-config';
-import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
+import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
 import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
@@ -36,6 +35,7 @@ import { SidenavInfoModule, SidenavInfoService } from './shared/components/siden
 import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
 import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain';
 import { SHOPS_ROUTING_CONFIG } from './shops';
+import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sources/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {

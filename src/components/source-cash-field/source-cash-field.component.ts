@@ -28,7 +28,7 @@ import { combineLatest, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
 import { CurrenciesStoreService } from '../../api/domain-config';
-import { FetchSourcesService } from '../../app/sections/sources';
+import { FetchSourcesService } from '../../app/sources';
 
 export interface SourceCash {
     amount: number;
