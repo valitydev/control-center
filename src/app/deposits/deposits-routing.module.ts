@@ -17,8 +17,7 @@ import { ROUTING_CONFIG } from './routing-config';
             },
             {
                 path: ':depositID',
-                loadChildren: () =>
-                    import('../sections/deposit-details').then((m) => m.DepositDetailsModule),
+                loadChildren: () => import('./deposit').then((m) => m.DepositDetailsModule),
             },
         ]),
     ],

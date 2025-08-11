@@ -17,7 +17,7 @@ import { map, take } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '../../../api/domain-config';
 import { AmountCurrencyService } from '../../../services';
-import { FetchSourcesService } from '../sources';
+import { FetchSourcesService } from '../../sections/sources';
 
 import { ReceiveDepositService } from './services/receive-deposit/receive-deposit.service';
 
