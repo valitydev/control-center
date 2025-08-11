@@ -19,12 +19,14 @@ import { ROUTING_CONFIG } from './routing-config';
                     {
                         path: 'shops',
                         loadChildren: () =>
-                            import('../party-shops').then((m) => m.PartyShopsModule),
+                            import('../../sections/party-shops').then((m) => m.PartyShopsModule),
                     },
                     {
                         path: 'routing-rules',
                         loadChildren: () =>
-                            import('../routing-rules').then((m) => m.RoutingRulesModule),
+                            import('../../sections/routing-rules').then(
+                                (m) => m.RoutingRulesModule,
+                            ),
                     },
                     {
                         path: 'wallets',

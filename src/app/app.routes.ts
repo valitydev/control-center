@@ -10,7 +10,7 @@ export const routes: Routes = [
     APP_ROUTES.parties.root.getRoute(),
     {
         path: 'parties',
-        loadChildren: () => import('./sections/party/party.module').then((m) => m.PartyModule),
+        loadChildren: () => import('./parties/party/party.module').then((m) => m.PartyModule),
     },
     {
         path: 'withdrawals',

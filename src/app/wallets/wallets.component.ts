@@ -25,7 +25,7 @@ import { MemoizeExpiring } from 'typescript-memoize';
 
 import { FetchFullDomainObjectsService } from '../../api/domain-config';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '../../utils';
-import { PartyStoreService } from '../sections/party';
+import { PartyStoreService } from '../parties/party';
 import { PageLayoutModule } from '../shared';
 import { MerchantFieldModule } from '../shared/components/merchant-field';
 

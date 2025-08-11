@@ -3,7 +3,7 @@ import { UpdateOptions } from '@vality/matez';
 import { map, switchMap } from 'rxjs/operators';
 
 import { PartiesStoreService } from '../../../api/payment-processing';
-import { PartyStoreService } from '../party/party-store.service';
+import { PartyStoreService } from '../../parties/party/party-store.service';
 
 @Component({
     templateUrl: 'party-shops.component.html',
