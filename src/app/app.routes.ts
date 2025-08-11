@@ -19,8 +19,7 @@ export const routes: Routes = [
     },
     {
         path: 'machines',
-        loadChildren: () =>
-            import('./sections/machines/machines.module').then((m) => m.MachinesModule),
+        loadChildren: () => import('./machines/machines.module').then((m) => m.MachinesModule),
     },
     {
         path: 'payments',

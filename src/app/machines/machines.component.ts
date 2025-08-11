@@ -32,9 +32,9 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { createDomainObjectColumn } from '../../../utils';
-import { SidenavInfoService } from '../../shared/components/sidenav-info/sidenav-info.service';
-import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../../tokens';
+import { createDomainObjectColumn } from '../../utils';
+import { SidenavInfoService } from '../shared/components/sidenav-info/sidenav-info.service';
+import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { MachineStatusHistoryCardComponent } from './components/machine-status-history-card.component';
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
