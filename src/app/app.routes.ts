@@ -28,8 +28,7 @@ export const routes: Routes = [
     },
     {
         path: 'deposits',
-        loadChildren: () =>
-            import('./sections/deposits/deposits.module').then((m) => m.DepositsModule),
+        loadChildren: () => import('./deposits/deposits.module').then((m) => m.DepositsModule),
     },
     {
         path: 'sources',

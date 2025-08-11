@@ -19,9 +19,9 @@ import {
     TableModule,
 } from '@vality/matez';
 
-import { PageLayoutModule, WalletFieldModule } from '../../shared';
-import { CurrencyFieldComponent } from '../../shared/components/currency-field';
-import { MerchantFieldModule } from '../../shared/components/merchant-field';
+import { PageLayoutModule, WalletFieldModule } from '../shared';
+import { CurrencyFieldComponent } from '../shared/components/currency-field';
+import { MerchantFieldModule } from '../shared/components/merchant-field';
 
 import { CreateDepositDialogModule } from './components/create-deposit-dialog/create-deposit-dialog.module';
 import { DepositsRoutingModule } from './deposits-routing.module';

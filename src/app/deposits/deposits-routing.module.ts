@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { canActivateAuthRole } from '../../../services';
+import { canActivateAuthRole } from '../../services';
 
 import { DepositsComponent } from './deposits.component';
 import { ROUTING_CONFIG } from './routing-config';
@@ -18,7 +18,7 @@ import { ROUTING_CONFIG } from './routing-config';
             {
                 path: ':depositID',
                 loadChildren: () =>
-                    import('../deposit-details').then((m) => m.DepositDetailsModule),
+                    import('../sections/deposit-details').then((m) => m.DepositDetailsModule),
             },
         ]),
     ],
