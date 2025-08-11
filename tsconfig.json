@@ -11,9 +11,11 @@
             "~/components/*": ["./src/components/*"],
             "~/services/*": ["./src/services/*"],
             "~/utils/*": ["./src/utils/*"],
+            "~/styles/*": ["./src/styles/*"],
 
             "~/services": ["./src/services"],
             "~/utils": ["./src/utils"],
+            "~/styles": ["./src/styles"],
 
             "@vality/*": ["./projects/*/src/public-api.ts"]
         },

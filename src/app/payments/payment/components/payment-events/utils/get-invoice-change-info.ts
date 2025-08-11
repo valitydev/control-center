@@ -5,7 +5,7 @@ import startCase from 'lodash-es/startCase';
 import { Event, InvoiceChange } from '@vality/domain-proto/payment_processing';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
 
-import { StatusColor } from '../../../../../../styles/consts';
+import { StatusColor } from '~/styles/consts';
 
 function getKeyTitle(v: unknown) {
     return String(v).replaceAll('_', ' ');
