@@ -14,6 +14,12 @@ import { ROUTING_CONFIG } from './routing-config';
                 component: PaymentsComponent,
                 canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,
+                children: [
+                    {
+                        path: ':paymentID',
+                        loadChildren: () => import('./payment').then((m) => m.PaymentDetailsModule),
+                    },
+                ],
             },
         ]),
     ],

@@ -27,11 +27,6 @@ export const routes: Routes = [
         loadChildren: () => import('./payments/payments.module').then((m) => m.PaymentsModule),
     },
     {
-        path: 'payments/:paymentID',
-        loadChildren: () =>
-            import('./sections/payment-details').then((m) => m.PaymentDetailsModule),
-    },
-    {
         path: 'deposits',
         loadChildren: () =>
             import('./sections/deposits/deposits.module').then((m) => m.DepositsModule),
