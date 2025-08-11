@@ -1,7 +1,7 @@
 import { Predicate } from '@vality/domain-proto/domain';
 import { getUnionKey } from '@vality/ng-thrift';
 
-import { getPredicateBoolean } from '../../../../../utils';
+import { getPredicateBoolean } from '~/utils';
 
 /**
  * @param allowedOrToggle - If provided, sets the constant to this value. If not provided, toggles the current constant value (acts as a toggle)

@@ -28,7 +28,6 @@ import type {
     domain,
 } from '@vality/dominator-proto/dominator';
 
-import { createDomainObjectColumn } from '../../../../utils';
 import { PageLayoutModule } from '../../../shared';
 import { MerchantFieldModule } from '../../../shared/components/merchant-field/merchant-field.module';
 import { SidenavInfoService } from '../../../shared/components/sidenav-info';
@@ -37,6 +36,8 @@ import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-hist
 
 import { TerminalsTermsService } from './terminals-terms.service';
 import { TERMINAL_FEES_COLUMNS, getTerminalTreeDataItem } from './utils/terminal-fees-columns';
+
+import { createDomainObjectColumn } from '~/utils';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<

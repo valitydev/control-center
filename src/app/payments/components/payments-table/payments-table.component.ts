@@ -11,7 +11,7 @@ import {
     createFailureColumn,
     createPartyColumn,
     createShopColumn,
-} from '../../../../utils';
+} from '~/utils';
 
 @Component({
     selector: 'cc-payments-table',

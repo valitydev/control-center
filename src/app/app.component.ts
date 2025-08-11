@@ -21,8 +21,6 @@ import {
 import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
-import { KeycloakUserService, Services } from '../services';
-import { LOGGING } from '../utils';
 
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './deposits/routing-config';
@@ -37,6 +35,9 @@ import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './terminals';
 import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './terms/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './withdrawals/routing-config';
+
+import { KeycloakUserService, Services } from '~/services';
+import { LOGGING } from '~/utils';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);

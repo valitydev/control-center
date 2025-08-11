@@ -23,7 +23,6 @@ import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { filter, map, shareReplay } from 'rxjs/operators';
 
-import { createCurrencyColumn } from '../../utils';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { CreateDepositDialogComponent } from './components/create-deposit-dialog/create-deposit-dialog.component';
@@ -31,6 +30,7 @@ import { CreateDepositsByFileDialogComponent } from './components/create-deposit
 import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.service';
 
 import { QueryDsl } from '~/api/fistful-stat';
+import { createCurrencyColumn } from '~/utils';
 
 @Component({
     templateUrl: 'deposits.component.html',

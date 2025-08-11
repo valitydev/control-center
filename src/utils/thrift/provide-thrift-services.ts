@@ -12,9 +12,10 @@ import Keycloak from 'keycloak-js';
 import { isObject } from 'lodash-es';
 import { combineLatest, map } from 'rxjs';
 
-import { ConfigService, KeycloakUserService } from '../../services';
-
 import { createRequestWachterHeaders, createWachterHeaders } from './create-wachter-headers';
+
+import { ConfigService, KeycloakUserService } from '~/services';
+
 
 export const LOGGING = {
     fullLogging: isDevMode(),

@@ -1,7 +1,6 @@
 import { CashFlowPosting } from '@vality/domain-proto/domain';
 import { Column } from '@vality/matez';
 
-import { formatCashVolumes, getCashVolumeParts } from '../../../utils';
 
 import {
     FlatDecision,
@@ -9,6 +8,8 @@ import {
     formatLevelPredicate,
 } from './get-flat-decisions';
 import { isOneHundredPercentCashFlowPosting } from './is-one-hundred-percent-cash-flow-posting';
+
+import { formatCashVolumes, getCashVolumeParts } from '~/utils';
 
 export function createFeesColumns<T extends object>({
     selectFlatDecision = (d) => d as never,

@@ -9,8 +9,12 @@
         "paths": {
             "~/api/*": ["./src/api/*"],
             "~/components/*": ["./src/components/*"],
+            "~/services/*": ["./src/services/*"],
+            "~/utils/*": ["./src/utils/*"],
+
             "~/services": ["./src/services"],
             "~/utils": ["./src/utils"],
+
             "@vality/*": ["./projects/*/src/public-api.ts"]
         },
         "noImplicitReturns": true,

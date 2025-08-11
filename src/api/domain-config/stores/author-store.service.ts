@@ -3,7 +3,7 @@ import { AuthorManagement } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, observableResource } from '@vality/matez';
 import { catchError } from 'rxjs';
 
-import { KeycloakUserService } from '../../../services/app-auth-guard/keycloak-user.service';
+import { KeycloakUserService } from '~/services/app-auth-guard/keycloak-user.service';
 
 @Injectable({
     providedIn: 'root',

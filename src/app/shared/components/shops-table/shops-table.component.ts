@@ -29,7 +29,6 @@ import startCase from 'lodash-es/startCase';
 import { combineLatest, map, of, switchMap } from 'rxjs';
 import { filter, startWith } from 'rxjs/operators';
 
-import { createDomainObjectColumn, createPartyColumn } from '../../../../utils';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
@@ -40,6 +39,7 @@ import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
+import { createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 @Component({
     selector: 'cc-shops-table',

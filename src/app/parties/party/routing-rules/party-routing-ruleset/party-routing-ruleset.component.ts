@@ -12,7 +12,6 @@ import {
 import { combineLatest } from 'rxjs';
 import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { createShopColumn, createWalletColumn } from '../../../../../utils';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import { DomainObjectCardComponent } from '../../../../shared/components/thrift-api-crud/domain';
 import { RoutingRulesListItem } from '../components/routing-rules-list';
@@ -24,6 +23,7 @@ import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rule
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
+import { createShopColumn, createWalletColumn } from '~/utils';
 
 @Component({
     selector: 'cc-party-routing-ruleset',

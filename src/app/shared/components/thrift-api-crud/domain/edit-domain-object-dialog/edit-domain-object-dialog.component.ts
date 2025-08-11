@@ -31,7 +31,6 @@ import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
-import { NavigateService } from '../../../../../../services';
 import { APP_ROUTES } from '../../../../../app-routes';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
@@ -41,6 +40,7 @@ import {
     DomainServiceObsoleteCommitVersionError,
     getDomainObjectReference,
 } from '~/api/domain-config';
+import { NavigateService } from '~/services';
 
 enum Step {
     Edit,
