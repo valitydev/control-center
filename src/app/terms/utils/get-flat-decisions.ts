@@ -2,7 +2,7 @@ import { getUnionKey } from '@vality/ng-thrift';
 
 import type { domain } from '@vality/dominator-proto/dominator';
 
-import { compareCashVolumes, formatPredicate } from '../../../../utils';
+import { compareCashVolumes, formatPredicate } from '../../../utils';
 
 // TODO: use enums
 function formatCashFlowAccount(acc: domain.CashFlowAccount) {

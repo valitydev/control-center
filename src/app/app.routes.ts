@@ -53,7 +53,7 @@ export const routes: Routes = [
     },
     {
         path: 'terms',
-        loadChildren: () => import('./sections/terms').then((m) => m.Terms),
+        loadChildren: () => import('./terms').then((m) => m.Terms),
     },
     {
         path: '404',

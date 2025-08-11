@@ -3,8 +3,8 @@ import { Column, TableModule } from '@vality/matez';
 
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/dominator';
 
-import { createDomainObjectColumn } from '../../../../../utils';
-import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
+import { createDomainObjectColumn } from '../../../../utils';
+import { SidenavInfoModule } from '../../../shared/components/sidenav-info';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     WALLET_FEES_COLUMNS,

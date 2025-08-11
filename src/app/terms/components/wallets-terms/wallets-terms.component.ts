@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { TermSetHierarchyRef } from '@vality/domain-proto/domain';
 import {
-    CommonSearchQueryParams,
-    ShopSearchQuery,
-    ShopTermSet,
+    type CommonSearchQueryParams,
+    type WalletSearchQuery,
+    type WalletTermSet,
 } from '@vality/dominator-proto/dominator';
 import {
     Column,
@@ -27,33 +26,32 @@ import {
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import {
-    createDomainObjectColumn,
-    createPartyColumn,
-    createShopColumn,
-} from '../../../../../utils';
-import { PageLayoutModule, ShopFieldModule } from '../../../../shared';
-import { MerchantFieldModule } from '../../../../shared/components/merchant-field/merchant-field.module';
-import { SidenavInfoService } from '../../../../shared/components/sidenav-info/sidenav-info.service';
-import { DEBOUNCE_TIME_MS } from '../../../../tokens';
+import { createDomainObjectColumn, createPartyColumn, createWalletColumn } from '../../../../utils';
+import { PageLayoutModule, WalletFieldModule } from '../../../shared';
+import { MerchantFieldModule } from '../../../shared/components/merchant-field/merchant-field.module';
+import { SidenavInfoService } from '../../../shared/components/sidenav-info/sidenav-info.service';
+import { DEBOUNCE_TIME_MS } from '../../../tokens';
 import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
-import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
+import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
 
-import { ShopsTermsService } from './shops-terms.service';
 import {
-    SHOP_FEES_COLUMNS,
-    getShopCashFlowSelectors,
-    isShopTermSetDecision,
-} from './utils/shop-fees-columns';
+    WALLET_FEES_COLUMNS,
+    getWalletCashFlowSelectors,
+    isWalletTermSetDecision,
+} from './utils/wallet-fees-columns';
+import { WalletsTermsService } from './wallets-terms.service';
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
-        Omit<ShopSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][] }
+        Omit<WalletSearchQuery, 'common_search_query_params'>,
+        {
+            term_sets_ids?: WalletSearchQuery['term_sets_ids'][number]['id'][];
+            identity_ids?: WalletSearchQuery['identity_ids'][number]['id'][];
+        }
     >;
 
 @Component({
-    selector: 'cc-shops-terms',
+    selector: 'cc-wallets-terms',
     imports: [
         CommonModule,
         PageLayoutModule,
@@ -62,13 +60,13 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
         FiltersModule,
         ReactiveFormsModule,
         MerchantFieldModule,
-        ShopFieldModule,
         ListFieldModule,
+        WalletFieldModule,
     ],
-    templateUrl: './shops-terms.component.html',
+    templateUrl: './wallets-terms.component.html',
 })
-export class ShopsTermsComponent implements OnInit {
-    private shopsTermsService = inject(ShopsTermsService);
+export class WalletsTermsComponent implements OnInit {
+    private walletsTermsService = inject(WalletsTermsService);
     private fb = inject(NonNullableFormBuilder);
     private qp = inject<QueryParamsService<Params>>(QueryParamsService<Params>);
     private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
@@ -79,47 +77,45 @@ export class ShopsTermsComponent implements OnInit {
         createControls<Params>({
             currencies: null,
             party_id: null,
-            shop_ids: null,
+            wallet_ids: null,
             term_sets_names: null,
             term_sets_ids: null,
+            identity_ids: null,
         }),
     );
-    terms$ = this.shopsTermsService.result$.pipe(
+    terms$ = this.walletsTermsService.result$.pipe(
         cachedHeadMap((t) => ({
             value: t,
-            children: getFlatDecisions(getShopCashFlowSelectors(t.current_term_set)).filter((v) =>
-                isShopTermSetDecision(v, {
+            children: getFlatDecisions(getWalletCashFlowSelectors(t.current_term_set)).filter((v) =>
+                isWalletTermSetDecision(v, {
                     partyId: t.owner_id,
-                    shopId: t.shop_id,
+                    walletId: t.wallet_id,
                     currency: t.currency,
                 }),
             ),
         })),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    hasMore$ = this.shopsTermsService.hasMore$;
-    isLoading$ = this.shopsTermsService.isLoading$;
-    columns: Column<ShopTermSet, FlatDecision>[] = [
-        createShopColumn(
-            (d) => ({
-                shopId: d.shop_id,
-                partyId: d.owner_id,
-                shopName: d.shop_name,
-            }),
-            { sticky: 'start' },
-        ),
+    hasMore$ = this.walletsTermsService.hasMore$;
+    isLoading$ = this.walletsTermsService.isLoading$;
+    columns: Column<WalletTermSet, FlatDecision>[] = [
+        createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
+            sticky: 'start',
+        }),
         createPartyColumn((d) => ({ id: d.owner_id })),
+        { field: 'contract_id', header: 'Contract' },
+        { field: 'identity_id.id', header: 'Identity' },
         { field: 'currency' },
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
             header: 'Term Set',
         }),
-        ...SHOP_FEES_COLUMNS,
+        ...WALLET_FEES_COLUMNS,
         {
             field: 'term_set_history',
             cell: (d) => ({
                 value: d.term_set_history?.length || '',
                 click: () =>
-                    this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
+                    this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, { data: d }),
             }),
         },
     ];
@@ -141,11 +137,12 @@ export class ShopsTermsComponent implements OnInit {
     }
 
     load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, ...otherParams } = params;
-        this.shopsTermsService.load(
+        const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
+        this.walletsTermsService.load(
             clean({
                 common_search_query_params: { currencies },
                 term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
+                identity_ids: identity_ids?.map?.((id) => ({ id })),
                 ...otherParams,
             }),
             options,
@@ -153,10 +150,10 @@ export class ShopsTermsComponent implements OnInit {
     }
 
     update(options?: UpdateOptions) {
-        this.shopsTermsService.reload(options);
+        this.walletsTermsService.reload(options);
     }
 
     more() {
-        this.shopsTermsService.more();
+        this.walletsTermsService.more();
     }
 }

@@ -1,7 +1,7 @@
 import { CashFlowPosting } from '@vality/domain-proto/domain';
 import { Column } from '@vality/matez';
 
-import { formatCashVolumes, getCashVolumeParts } from '../../../../utils';
+import { formatCashVolumes, getCashVolumeParts } from '../../../utils';
 
 import {
     FlatDecision,

@@ -3,8 +3,8 @@ import { Column, TableModule } from '@vality/matez';
 
 import type { ShopTermSet, TermSetHistory } from '@vality/dominator-proto/dominator';
 
-import { createDomainObjectColumn } from '../../../../../utils';
-import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
+import { createDomainObjectColumn } from '../../../../utils';
+import { SidenavInfoModule } from '../../../shared/components/sidenav-info';
 import { getFlatDecisions } from '../../utils/get-flat-decisions';
 import {
     SHOP_FEES_COLUMNS,

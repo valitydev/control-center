@@ -3,7 +3,7 @@ import { Column, TableModule } from '@vality/matez';
 
 import type { ProvisionTermSetHistory, TerminalTermSet } from '@vality/dominator-proto/dominator';
 
-import { SidenavInfoModule } from '../../../../shared/components/sidenav-info';
+import { SidenavInfoModule } from '../../../shared/components/sidenav-info';
 import {
     TERMINAL_FEES_COLUMNS,
     getTerminalTreeDataItem,
