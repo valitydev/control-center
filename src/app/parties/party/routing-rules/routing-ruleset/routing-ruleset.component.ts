@@ -17,19 +17,19 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { DomainService, RoutingRulesStoreService } from '../../../../api/domain-config';
+import { DomainService, RoutingRulesStoreService } from '../../../../../api/domain-config';
 import {
     createDomainObjectColumn,
     createPredicateColumn,
     getPredicateBoolean,
-} from '../../../../utils';
-import { CandidateCardComponent } from '../../../shared/components/candidate-card/candidate-card.component';
-import { SidenavInfoService } from '../../../shared/components/sidenav-info';
+} from '../../../../../utils';
+import { CandidateCardComponent } from '../../../../shared/components/candidate-card/candidate-card.component';
+import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
 import {
     DomainThriftFormDialogComponent,
     UpdateThriftDialogComponent,
-} from '../../../shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from '../../../shared/components/thrift-api-crud/domain';
+} from '../../../../shared/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '../../../../shared/components/thrift-api-crud/domain';
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';

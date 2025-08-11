@@ -6,7 +6,7 @@ import isNil from 'lodash-es/isNil';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
-import { PartiesStoreService } from '../../../../api/payment-processing';
+import { PartiesStoreService } from '../../../../../api/payment-processing';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesService } from '../services/routing-rules';
 

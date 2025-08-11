@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -11,23 +12,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import { DialogModule, TableModule } from '@vality/matez';
+import { ThriftViewerModule } from '@vality/ng-thrift';
 
-import { PageLayoutModule } from '../../../shared';
-import { ChangeTargetDialogModule } from '../components/change-target-dialog';
-import { RoutingRulesListModule } from '../components/routing-rules-list';
+import { PageLayoutModule } from '../../../../shared';
+import { DomainThriftViewerComponent } from '../../../../shared/components/thrift-api-crud';
 
-import { AddPartyRoutingRuleDialogModule } from './add-party-routing-rule-dialog';
-import { InitializeRoutingRulesDialogModule } from './initialize-routing-rules-dialog';
-import { PartyRoutingRulesetRoutingModule } from './party-routing-ruleset-routing.module';
-import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component';
+import { RoutingRulesetRoutingModule } from './routing-ruleset-routing.module';
+import { RoutingRulesetComponent } from './routing-ruleset.component';
 
 @NgModule({
     imports: [
-        PartyRoutingRulesetRoutingModule,
+        RoutingRulesetRoutingModule,
         CommonModule,
         MatButtonModule,
         MatDialogModule,
@@ -43,13 +42,13 @@ import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component'
         MatSelectModule,
         MatRadioModule,
         MatExpansionModule,
-        AddPartyRoutingRuleDialogModule,
-        InitializeRoutingRulesDialogModule,
-        MatProgressBarModule,
-        ChangeTargetDialogModule,
-        RoutingRulesListModule,
+        MatAutocompleteModule,
+        TableModule,
+        DomainThriftViewerComponent,
+        ThriftViewerModule,
+        DialogModule,
         PageLayoutModule,
     ],
-    declarations: [PartyRoutingRulesetComponent],
+    declarations: [RoutingRulesetComponent],
 })
-export class PartyRoutingRulesetModule {}
+export class RoutingRulesetModule {}

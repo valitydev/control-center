@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -13,43 +15,41 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
-import { DialogModule } from '@vality/matez';
 
-import { PageLayoutModule } from '../../../shared';
+import { PageLayoutModule } from '../../../../shared';
 import { ChangeTargetDialogModule } from '../components/change-target-dialog';
 import { RoutingRulesListModule } from '../components/routing-rules-list';
-import { TargetRulesetFormModule } from '../components/target-ruleset-form';
 
-import { AttachNewRulesetDialogComponent } from './attach-new-ruleset-dialog';
-import { PartyDelegateRulesetsRoutingModule } from './party-delegate-rulesets-routing.module';
-import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.component';
-
-const EXPORTED_DECLARATIONS = [PartyDelegateRulesetsComponent, AttachNewRulesetDialogComponent];
+import { AddPartyRoutingRuleDialogModule } from './add-party-routing-rule-dialog';
+import { InitializeRoutingRulesDialogModule } from './initialize-routing-rules-dialog';
+import { PartyRoutingRulesetRoutingModule } from './party-routing-ruleset-routing.module';
+import { PartyRoutingRulesetComponent } from './party-routing-ruleset.component';
 
 @NgModule({
     imports: [
-        PartyDelegateRulesetsRoutingModule,
-        MatButtonModule,
+        PartyRoutingRulesetRoutingModule,
         CommonModule,
-        RouterModule,
-        MatCardModule,
-        MatIconModule,
-        MatPaginatorModule,
-        MatMenuModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatDividerModule,
         ReactiveFormsModule,
         MatFormFieldModule,
-        MatDividerModule,
+        MatInputModule,
+        RouterModule,
+        MatIconModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatCardModule,
         MatSelectModule,
         MatRadioModule,
-        MatInputModule,
+        MatExpansionModule,
+        AddPartyRoutingRuleDialogModule,
+        InitializeRoutingRulesDialogModule,
         MatProgressBarModule,
         ChangeTargetDialogModule,
-        TargetRulesetFormModule,
         RoutingRulesListModule,
-        DialogModule,
         PageLayoutModule,
     ],
-    declarations: EXPORTED_DECLARATIONS,
-    exports: EXPORTED_DECLARATIONS,
+    declarations: [PartyRoutingRulesetComponent],
 })
-export class PartyDelegateRulesetsModule {}
+export class PartyRoutingRulesetModule {}
