@@ -5,10 +5,10 @@ import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
-import { PaymentDetailsService } from './payment-details.service';
+import { PaymentDetailsService } from './payment.service';
 
 @Component({
-    templateUrl: 'payment-details.component.html',
+    templateUrl: 'payment.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [PaymentDetailsService],
     standalone: false,

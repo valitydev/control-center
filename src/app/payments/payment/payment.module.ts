@@ -14,8 +14,8 @@ import { PageLayoutModule, StatusModule, SubPageLayoutComponent } from '../../sh
 import { MagistaThriftViewerComponent } from '../../shared/components/thrift-api-crud';
 
 import { CreateChargebackDialogComponent } from './create-chargeback-dialog/create-chargeback-dialog.component';
-import { PaymentDetailsRoutingModule } from './payment-details-routing.module';
-import { PaymentDetailsComponent } from './payment-details.component';
+import { PaymentDetailsRoutingModule } from './payment-routing.module';
+import { PaymentDetailsComponent } from './payment.component';
 import { RefundsTableModule } from './refunds-table';
 
 @NgModule({

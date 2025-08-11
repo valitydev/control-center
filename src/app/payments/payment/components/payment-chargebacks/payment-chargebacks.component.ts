@@ -10,7 +10,7 @@ import { PageLayoutModule } from '../../../../shared';
 import { ChargebacksTableComponent } from '../../../../shared/components/chargebacks-table/chargebacks-table.component';
 import { FetchChargebacksService } from '../../../../sections/chargebacks/fetch-chargebacks.service';
 import { CreateChargebackDialogComponent } from '../../create-chargeback-dialog/create-chargeback-dialog.component';
-import { PaymentDetailsService } from '../../payment-details.service';
+import { PaymentDetailsService } from '../../payment.service';
 
 @Component({
     selector: 'cc-payment-chargebacks',

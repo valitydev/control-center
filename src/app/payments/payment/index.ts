@@ -1,2 +1,2 @@
-export * from './payment-details.module';
-export * from './payment-details.component';
+export * from './payment.module';
+export * from './payment.component';
