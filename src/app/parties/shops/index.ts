@@ -1,1 +1,1 @@
-export * from './party-shops.module';
+export * from './shops.module';

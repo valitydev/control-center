@@ -6,14 +6,13 @@ import { InputFieldModule } from '@vality/matez';
 import { PageLayoutModule } from '../../shared';
 import { ShopsTableComponent } from '../../shared/components/shops-table';
 
-import { PartyShopsRoutingModule } from './party-shops-routing.module';
-import { PartyShopsComponent } from './party-shops.component';
+import { PartyShopsRoutingModule } from './shops-routing.module';
+import { PartyShopsComponent } from './shops.component';
 
 @NgModule({
     imports: [
         PartyShopsRoutingModule,
         CommonModule,
-
         ReactiveFormsModule,
         InputFieldModule,
         ShopsTableComponent,

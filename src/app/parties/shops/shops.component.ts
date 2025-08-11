@@ -6,7 +6,7 @@ import { PartiesStoreService } from '../../../api/payment-processing';
 import { PartyStoreService } from '../party/party-store.service';
 
 @Component({
-    templateUrl: 'party-shops.component.html',
+    templateUrl: 'shops.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false,
 })

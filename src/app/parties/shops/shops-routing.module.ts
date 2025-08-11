@@ -3,8 +3,8 @@ import { RouterModule } from '@angular/router';
 
 import { canActivateAuthRole } from '../../../services';
 
-import { PartyShopsComponent } from './party-shops.component';
 import { ROUTING_CONFIG } from './routing-config';
+import { PartyShopsComponent } from './shops.component';
 
 @NgModule({
     imports: [
