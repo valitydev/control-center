@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, booleanAttribute, inject, model } from '@angular/core';
+
 import { metadata$ } from '@vality/domain-proto';
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';

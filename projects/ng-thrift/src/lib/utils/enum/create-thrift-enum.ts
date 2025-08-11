@@ -1,5 +1,6 @@
-import { Enums } from '@vality/thrift-ts';
 import { ValuesType } from 'utility-types';
+
+import { Enums } from '@vality/thrift-ts';
 
 import { ThriftData } from '../../models';
 

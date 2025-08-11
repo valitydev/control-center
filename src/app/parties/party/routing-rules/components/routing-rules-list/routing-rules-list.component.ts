@@ -1,3 +1,5 @@
+import { catchError, filter, switchMap } from 'rxjs/operators';
+
 import {
     ChangeDetectionStrategy,
     Component,
@@ -14,6 +16,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+
 import {
     Column,
     ConfirmDialogComponent,
@@ -22,7 +25,6 @@ import {
     NotifyLogService,
     createMenuColumn,
 } from '@vality/matez';
-import { catchError, filter, switchMap } from 'rxjs/operators';
 
 import { RoutingRulesService } from '../../services/routing-rules';
 import { ChangeDelegateRulesetDialogComponent } from '../change-delegate-ruleset-dialog';

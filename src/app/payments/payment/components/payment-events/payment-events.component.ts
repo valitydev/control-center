@@ -1,11 +1,13 @@
+import { switchMap } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
+
 import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { ThriftPipesModule } from '@vality/ng-thrift';
-import { switchMap } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 
 import { TimelineModule } from '~/components/timeline';
 

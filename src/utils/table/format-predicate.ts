@@ -1,7 +1,8 @@
+import startCase from 'lodash-es/startCase';
+
 import { Predicate } from '@vality/domain-proto/domain';
 import { formatCurrency, inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue, toJson } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
 
 const TRUE_PREDICATE_VALUE = formatPredicate({ constant: true });
 const FALSE_PREDICATE_VALUE = formatPredicate({ constant: false });

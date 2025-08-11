@@ -1,6 +1,7 @@
+import { Observable, from } from 'rxjs';
+
 import { isSignal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { Observable, from } from 'rxjs';
 
 import { Async } from './is-async';
 

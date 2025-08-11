@@ -1,3 +1,6 @@
+import Keycloak from 'keycloak-js';
+import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -8,6 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterOutlet } from '@angular/router';
+
 import { Repository } from '@vality/domain-proto/domain_config_v2';
 import {
     BaseLink,
@@ -18,9 +22,6 @@ import {
     ThemeService,
     getUrlPath,
 } from '@vality/matez';
-import Keycloak from 'keycloak-js';
-import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
-
 
 import { KeycloakUserService, Services } from '~/services';
 import { LOGGING } from '~/utils';
@@ -38,7 +39,6 @@ import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './terminals';
 import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './terms/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './withdrawals/routing-config';
-
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);

@@ -1,4 +1,5 @@
 import { Router } from '@angular/router';
+
 import { Color } from '@vality/matez';
 
 export interface ThriftViewExtensionResult {

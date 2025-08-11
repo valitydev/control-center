@@ -1,6 +1,11 @@
+import { endOfDay } from 'date-fns';
+import startCase from 'lodash-es/startCase';
+import { map, shareReplay } from 'rxjs/operators';
+
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
+
 import { PartyID } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
@@ -20,9 +25,6 @@ import {
     isEqualDateRange,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { endOfDay } from 'date-fns';
-import startCase from 'lodash-es/startCase';
-import { map, shareReplay } from 'rxjs/operators';
 
 import { WithdrawalParams } from '~/api/fistful-stat';
 import { createCurrencyColumn, createDomainObjectColumn, createFailureColumn } from '~/utils';

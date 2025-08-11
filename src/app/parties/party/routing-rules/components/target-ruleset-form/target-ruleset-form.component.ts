@@ -1,3 +1,6 @@
+import sortBy from 'lodash-es/sortBy';
+import { map, startWith } from 'rxjs/operators';
+
 import {
     ChangeDetectionStrategy,
     Component,
@@ -10,10 +13,9 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
+
 import { PaymentInstitutionObject } from '@vality/domain-proto/domain';
 import { ComponentChanges } from '@vality/matez';
-import sortBy from 'lodash-es/sortBy';
-import { map, startWith } from 'rxjs/operators';
 
 import { PaymentInstitutionsStoreService } from '~/api/domain-config';
 

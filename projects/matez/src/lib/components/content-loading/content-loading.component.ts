@@ -1,6 +1,7 @@
+import { random } from 'lodash-es';
+
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, numberAttribute } from '@angular/core';
-import { random } from 'lodash-es';
 
 @Component({
     selector: 'v-content-loading',

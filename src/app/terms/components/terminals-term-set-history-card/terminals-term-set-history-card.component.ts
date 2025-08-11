@@ -1,7 +1,8 @@
 import { Component, computed, input } from '@angular/core';
-import { Column, TableModule } from '@vality/matez';
 
 import type { ProvisionTermSetHistory, TerminalTermSet } from '@vality/dominator-proto/dominator';
+import { Column, TableModule } from '@vality/matez';
+
 
 import { SidenavInfoModule } from '../../../shared/components/sidenav-info';
 import {

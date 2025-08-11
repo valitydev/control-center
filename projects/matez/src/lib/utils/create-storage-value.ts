@@ -1,5 +1,3 @@
-import { DestroyRef, Injector, Signal, inject } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
     Observable,
     distinctUntilChanged,
@@ -9,6 +7,9 @@ import {
     shareReplay,
     startWith,
 } from 'rxjs';
+
+import { DestroyRef, Injector, Signal, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 
 interface StorageValueOptions<T> {
     serialize?: (v: T) => string | null;

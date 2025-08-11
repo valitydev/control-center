@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+
 import { TableModule } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 

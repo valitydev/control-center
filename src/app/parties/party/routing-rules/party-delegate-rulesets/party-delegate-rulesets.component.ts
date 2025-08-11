@@ -1,8 +1,10 @@
+import { catchError, first, map } from 'rxjs/operators';
+
 import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Column, DialogService, NotifyLogService } from '@vality/matez';
-import { catchError, first, map } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
 import { createDomainObjectColumn } from '~/utils';

@@ -1,3 +1,7 @@
+import { startCase } from 'lodash-es';
+import { map, shareReplay } from 'rxjs/operators';
+import { MemoizeExpiring } from 'typescript-memoize';
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -6,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PartyManagement } from '@vality/domain-proto/payment_processing';
@@ -19,9 +24,6 @@ import {
     UpdateOptions,
 } from '@vality/matez';
 import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
-import { startCase } from 'lodash-es';
-import { map, shareReplay } from 'rxjs/operators';
-import { MemoizeExpiring } from 'typescript-memoize';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';

@@ -1,6 +1,7 @@
-import { WritableSignal, isSignal } from '@angular/core';
 import { BehaviorSubject, MonoTypeOperatorFunction, defer, isObservable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+
+import { WritableSignal, isSignal } from '@angular/core';
 
 export function progressTo<T>(
     subjectSignal:

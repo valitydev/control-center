@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges } from '@angular/core';
 import { lowerFirst } from 'lodash-es';
 import isNil from 'lodash-es/isNil';
+
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { ComponentChanges, FormControlSuperclass, createControlProviders } from '../../utils';
 

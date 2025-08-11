@@ -1,10 +1,12 @@
+import { combineLatest } from 'rxjs';
+import { shareReplay, switchMap } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+
 import { Column, TableModule } from '@vality/matez';
 import { AccountBalance } from '@vality/scrooge-proto/account_balance';
-import { combineLatest } from 'rxjs';
-import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { AccountBalancesStoreService } from '~/api/terminal-balance';
 import { createCurrencyColumn } from '~/utils';

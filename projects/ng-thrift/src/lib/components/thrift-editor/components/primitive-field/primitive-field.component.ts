@@ -1,3 +1,6 @@
+import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges, OnInit, inject, model } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -6,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
+
 import {
     AutocompleteFieldModule,
     ComponentChanges,
@@ -15,8 +19,6 @@ import {
     getValueChanges,
 } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
-import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData, getAliases } from '../../../../models';
 import { getValueTypeTitle } from '../../../../utils';

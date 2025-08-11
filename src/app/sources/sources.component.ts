@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+
 import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import { Column, DialogService } from '@vality/matez';
 

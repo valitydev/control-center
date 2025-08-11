@@ -1,7 +1,8 @@
-import { TemplateRef } from '@angular/core';
-import { ThemePalette } from '@angular/material/core';
 import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { TemplateRef } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
 
 import { ThriftData } from '../../../models';
 

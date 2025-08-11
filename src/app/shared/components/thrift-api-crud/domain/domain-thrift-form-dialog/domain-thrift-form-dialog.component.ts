@@ -1,11 +1,13 @@
+import { Observable } from 'rxjs';
+import { DeepPartial } from 'utility-types';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+
 import { DEFAULT_DIALOG_CONFIG, DialogModule, DialogSuperclass } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
-import { Observable } from 'rxjs';
-import { DeepPartial } from 'utility-types';
 
 import { DomainThriftFormComponent } from '../domain-thrift-editor';
 

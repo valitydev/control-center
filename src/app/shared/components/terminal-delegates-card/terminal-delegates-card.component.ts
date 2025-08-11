@@ -1,3 +1,7 @@
+import startCase from 'lodash-es/startCase';
+import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
+import { map, shareReplay, take } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -13,12 +17,10 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { TerminalRef } from '@vality/domain-proto/domain';
 import { Column, ComponentChanges, TableModule } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
-import { ReplaySubject, combineLatest, defer, of, switchMap } from 'rxjs';
-import { map, shareReplay, take } from 'rxjs/operators';
 
 import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';

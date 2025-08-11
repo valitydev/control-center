@@ -1,4 +1,9 @@
+import { of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { DeepPartial } from 'utility-types';
+
 import { Injectable, inject } from '@angular/core';
+
 import {
     MerchantStatisticsService,
     RefundSearchQuery,
@@ -10,9 +15,6 @@ import {
     NotifyLogService,
     cleanPrimitiveProps,
 } from '@vality/matez';
-import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { DeepPartial } from 'utility-types';
 
 @Injectable()
 export class FetchRefundsService extends FetchSuperclass<

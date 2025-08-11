@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+
 import { ReflessDomainObject } from '@vality/domain-proto/domain';
 import { DialogResponseStatus } from '@vality/matez';
 

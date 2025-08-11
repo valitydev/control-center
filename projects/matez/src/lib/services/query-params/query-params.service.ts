@@ -1,9 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 import isEqual from 'lodash-es/isEqual';
 import negate from 'lodash-es/negate';
 import { Observable, concat, defer, skipWhile, take } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
+
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { isEmpty } from '../../utils';
 

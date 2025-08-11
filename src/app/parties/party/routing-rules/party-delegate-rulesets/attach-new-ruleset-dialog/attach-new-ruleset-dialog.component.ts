@@ -1,8 +1,10 @@
+import { BehaviorSubject } from 'rxjs';
+
 import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
+
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
-import { BehaviorSubject } from 'rxjs';
 
 import { TargetRuleset } from '../../components/target-ruleset-form';
 import { RoutingRulesService } from '../../services/routing-rules';

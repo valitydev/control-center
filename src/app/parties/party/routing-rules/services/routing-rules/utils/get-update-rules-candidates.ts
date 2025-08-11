@@ -1,6 +1,7 @@
+import { cloneDeep } from 'lodash-es';
+
 import { RoutingCandidate, RoutingRulesObject } from '@vality/domain-proto/domain';
 import { UpdateOp } from '@vality/domain-proto/domain_config_v2';
-import { cloneDeep } from 'lodash-es';
 
 import { CandidateId } from '../types/candidate-id';
 

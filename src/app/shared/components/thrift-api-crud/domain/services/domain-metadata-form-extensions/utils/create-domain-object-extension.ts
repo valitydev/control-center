@@ -1,10 +1,11 @@
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import {
     ThriftFormExtension,
     ThriftFormExtensionOption,
     isTypeWithAliases,
 } from '@vality/ng-thrift';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { createNextId } from '~/utils';
 

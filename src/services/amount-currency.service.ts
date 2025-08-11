@@ -1,6 +1,8 @@
-import { Injectable, inject } from '@angular/core';
-import { toMajorByExponent, toMinorByExponent } from '@vality/matez';
 import { first, map, shareReplay } from 'rxjs/operators';
+
+import { Injectable, inject } from '@angular/core';
+
+import { toMajorByExponent, toMinorByExponent } from '@vality/matez';
 
 import { CurrenciesStoreService } from '~/api/domain-config';
 

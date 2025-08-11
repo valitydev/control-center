@@ -1,11 +1,13 @@
+import short from 'short-uuid';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
+
 import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { InvoicePaymentChargebackParams, Invoicing } from '@vality/domain-proto/payment_processing';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
-import short from 'short-uuid';
 
 import { DomainMetadataFormExtensionsService } from '../../../shared/components/thrift-api-crud';
 

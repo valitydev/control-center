@@ -1,6 +1,7 @@
+import { fromEvent, map } from 'rxjs';
+
 import { Injectable, computed, effect, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { fromEvent, map } from 'rxjs';
 
 export type Theme = 'light' | 'dark' | 'system';
 

@@ -1,6 +1,12 @@
+import { endOfDay } from 'date-fns';
+import { filter } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { Overwrite } from 'utility-types';
+
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
+
 import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
 import {
     DateRange,
@@ -18,10 +24,6 @@ import {
     isEqualDateRange,
 } from '@vality/matez';
 import { createUnion } from '@vality/ng-thrift';
-import { endOfDay } from 'date-fns';
-import { filter } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
 
 import {
     CHARGEBACK_CATEGORIES,

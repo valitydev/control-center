@@ -1,4 +1,8 @@
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Component, Input, booleanAttribute, inject, input } from '@angular/core';
+
 import { DomainObjectType, PartyID } from '@vality/domain-proto/domain';
 import { ShopID } from '@vality/domain-proto/payment_processing';
 import {
@@ -7,8 +11,6 @@ import {
     SelectFieldComponent,
     createControlProviders,
 } from '@vality/matez';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { FetchDomainObjectsService } from '~/api/domain-config';
 

@@ -1,9 +1,11 @@
-import { DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RoutingCandidate } from '@vality/domain-proto/domain';
-import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/matez';
 import { uniq } from 'lodash-es';
 import { combineLatest, switchMap, take } from 'rxjs';
+
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+import { RoutingCandidate } from '@vality/domain-proto/domain';
+import { DialogResponseStatus, DialogService, NotifyLogService } from '@vality/matez';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
 

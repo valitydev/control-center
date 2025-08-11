@@ -1,11 +1,13 @@
+import { Observable, of } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import short from 'short-uuid';
+
 import { Injectable, inject } from '@angular/core';
+
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
-import { Observable, of } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
-import short from 'short-uuid';
 
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';

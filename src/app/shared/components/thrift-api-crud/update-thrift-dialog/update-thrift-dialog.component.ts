@@ -1,7 +1,10 @@
+import { BehaviorSubject, Observable } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
+
 import {
     DEFAULT_DIALOG_CONFIG,
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
@@ -11,7 +14,6 @@ import {
     progressTo,
 } from '@vality/matez';
 import { ThriftViewerModule } from '@vality/ng-thrift';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
     templateUrl: './update-thrift-dialog.component.html',

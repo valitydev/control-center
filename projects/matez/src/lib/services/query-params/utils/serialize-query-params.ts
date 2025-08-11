@@ -1,5 +1,6 @@
-import { Params } from '@angular/router';
 import { isEmpty, negate } from 'lodash-es';
+
+import { Params } from '@angular/router';
 
 import { Serializer } from '../types/serializer';
 

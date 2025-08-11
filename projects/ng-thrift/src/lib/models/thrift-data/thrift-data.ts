@@ -1,6 +1,7 @@
+import { ValuesType } from 'utility-types';
+
 import { Field, JsonAST, ValueType } from '@vality/thrift-ts';
 import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
-import { ValuesType } from 'utility-types';
 
 import { StructureType, ThriftAstMetadata } from '../../types';
 import {

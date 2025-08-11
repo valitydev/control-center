@@ -1,6 +1,5 @@
-import { getUnionKey } from '@vality/ng-thrift';
-
 import type { domain } from '@vality/dominator-proto/dominator';
+import { getUnionKey } from '@vality/ng-thrift';
 
 import { compareCashVolumes, formatPredicate } from '~/utils';
 

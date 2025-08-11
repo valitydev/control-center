@@ -1,10 +1,11 @@
+import isNil from 'lodash-es/isNil';
+import startCase from 'lodash-es/startCase';
+import { PickByValue, ValuesType } from 'utility-types';
+
 import { DomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
-import isNil from 'lodash-es/isNil';
-import startCase from 'lodash-es/startCase';
-import { PickByValue, ValuesType } from 'utility-types';
 
 import { getReferenceId } from './get-reference-id';
 

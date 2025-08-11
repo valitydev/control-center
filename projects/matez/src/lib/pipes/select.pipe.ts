@@ -1,6 +1,7 @@
+import { Observable, isObservable } from 'rxjs';
+
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, OnDestroy, Pipe, PipeTransform, inject } from '@angular/core';
-import { Observable, isObservable } from 'rxjs';
 
 import { SelectFn, select } from '../utils';
 

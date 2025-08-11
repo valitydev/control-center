@@ -1,7 +1,7 @@
 import { Component, computed, input } from '@angular/core';
-import { Column, TableModule } from '@vality/matez';
 
 import type { ShopTermSet, TermSetHistory } from '@vality/dominator-proto/dominator';
+import { Column, TableModule } from '@vality/matez';
 
 import { createDomainObjectColumn } from '~/utils';
 
@@ -12,7 +12,6 @@ import {
     getShopCashFlowSelectors,
     isShopTermSetDecision,
 } from '../shops-terms/utils/shop-fees-columns';
-
 
 @Component({
     selector: 'cc-shops-term-set-history-card',

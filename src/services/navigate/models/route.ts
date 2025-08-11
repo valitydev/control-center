@@ -1,6 +1,7 @@
-import { Route as NgRoute } from '@angular/router';
 import { Overwrite } from 'utility-types';
 import { ZodObject, ZodRawShape } from 'zod';
+
+import { Route as NgRoute } from '@angular/router';
 
 import { RoutingConfig, Services, canActivateAuthRole } from '../../app-auth-guard';
 

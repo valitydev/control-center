@@ -1,8 +1,10 @@
+import { map, startWith } from 'rxjs/operators';
+
 import { inject } from '@angular/core';
+
 import { Reference } from '@vality/domain-proto/domain';
 import { createColumn } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
-import { map, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 

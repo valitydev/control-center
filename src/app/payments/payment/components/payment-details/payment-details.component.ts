@@ -1,11 +1,13 @@
+import { Observable, of } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
 import { AsyncPipe } from '@angular/common';
 import { Component, LOCALE_ID, inject } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
+
 import { metadata$ } from '@vality/magista-proto';
 import { formatCurrency } from '@vality/matez';
 import { ThriftViewExtension, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
-import { Observable, of } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 
 import { AmountCurrencyService } from '~/services';
 

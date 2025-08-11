@@ -1,8 +1,10 @@
+import startCase from 'lodash-es/startCase';
+
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
+
 import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domain';
 import { Column, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
 
 
 import { Refund } from '~/api/fistful-stat';

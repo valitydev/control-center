@@ -1,7 +1,9 @@
-import { inject } from '@angular/core';
-import { createColumn } from '@vality/matez';
 import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+
+import { inject } from '@angular/core';
+
+import { createColumn } from '@vality/matez';
 
 import { PartiesStoreService } from '~/api/payment-processing';
 

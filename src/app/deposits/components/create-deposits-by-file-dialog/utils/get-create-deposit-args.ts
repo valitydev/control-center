@@ -1,7 +1,9 @@
+import { map } from 'rxjs/operators';
+
 import { inject } from '@angular/core';
+
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { clean } from '@vality/matez';
-import { map } from 'rxjs/operators';
 
 import { AmountCurrencyService, UserInfoBasedIdGeneratorService } from '~/services';
 

@@ -1,6 +1,7 @@
 import { Component, ContentChild, Input, inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+
 import { ContentLoadingComponent } from '@vality/matez';
 
 import { SidenavInfoService } from '../../sidenav-info.service';

@@ -1,4 +1,10 @@
+import { uniq } from 'lodash-es';
+import cloneDeep from 'lodash-es/cloneDeep';
+import { Observable, combineLatest, concat } from 'rxjs';
+import { map, shareReplay, switchMap, take } from 'rxjs/operators';
+
 import { Injectable, inject } from '@angular/core';
+
 import {
     PartyConditionDefinition,
     RoutingCandidate,
@@ -6,10 +12,6 @@ import {
     RoutingRulesObject,
     RoutingRuleset,
 } from '@vality/domain-proto/domain';
-import { uniq } from 'lodash-es';
-import cloneDeep from 'lodash-es/cloneDeep';
-import { Observable, combineLatest, concat } from 'rxjs';
-import { map, shareReplay, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
 import { createNextId } from '~/utils';

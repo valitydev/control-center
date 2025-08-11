@@ -1,5 +1,8 @@
+import { BehaviorSubject } from 'rxjs';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
 import { Invoicing } from '@vality/domain-proto/payment_processing';
 import {
@@ -8,7 +11,6 @@ import {
     NotifyLogService,
     forkJoinToResult,
 } from '@vality/matez';
-import { BehaviorSubject } from 'rxjs';
 
 import { CSV_CHARGEBACK_PROPS, CsvChargeback } from './types/csv-chargeback';
 import { getCreateChargebackArgs } from './utils/get-create-chargeback-args';

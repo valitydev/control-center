@@ -1,5 +1,8 @@
+import { filter, first, switchMap } from 'rxjs/operators';
+
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { Reference } from '@vality/domain-proto/domain';
 import {
     ConfirmDialogComponent,
@@ -8,13 +11,11 @@ import {
     NotifyLogService,
     subscribeReturn,
 } from '@vality/matez';
-import { filter, first, switchMap } from 'rxjs/operators';
 
 import { DomainService } from '~/api/domain-config';
 
 import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
-
 
 @Injectable({
     providedIn: 'root',

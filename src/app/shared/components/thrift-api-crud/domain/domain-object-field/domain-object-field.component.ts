@@ -1,6 +1,10 @@
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, Input, booleanAttribute, inject, input } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
 import {
     FormControlSuperclass,
@@ -9,8 +13,6 @@ import {
     SelectFieldModule,
     createControlProviders,
 } from '@vality/matez';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { FetchDomainObjectsService } from '~/api/domain-config/services/fetch-domain-objects.service';
 

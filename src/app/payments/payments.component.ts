@@ -1,6 +1,13 @@
+import { endOfDay } from 'date-fns';
+import { uniq } from 'lodash-es';
+import isEqual from 'lodash-es/isEqual';
+import { BehaviorSubject, merge, of } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
+
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
+
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DateRange,
@@ -17,11 +24,6 @@ import {
     isEqualDateRange,
 } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
-import { endOfDay } from 'date-fns';
-import { uniq } from 'lodash-es';
-import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, merge, of } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { FailMachinesDialogComponent, Type } from '../shared/components/fail-machines-dialog';
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';

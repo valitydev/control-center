@@ -1,7 +1,8 @@
 import { Component, computed, input } from '@angular/core';
-import { Column, TableModule } from '@vality/matez';
 
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/dominator';
+import { Column, TableModule } from '@vality/matez';
+
 
 import { createDomainObjectColumn } from '~/utils';
 

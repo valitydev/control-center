@@ -1,10 +1,12 @@
+import { first } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
+
 import { DialogResponseStatus, DialogService } from '@vality/matez';
-import { first } from 'rxjs';
 
 import { FetchChargebacksService } from '../../../../chargebacks/fetch-chargebacks.service';
 import { PageLayoutModule } from '../../../../shared';

@@ -1,6 +1,7 @@
+import { Observable, map } from 'rxjs';
+
 import { Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable, map } from 'rxjs';
 
 import {
     ObservableResource,

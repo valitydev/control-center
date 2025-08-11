@@ -1,4 +1,7 @@
+import { catchError, map, of } from 'rxjs';
+
 import { Injectable, inject } from '@angular/core';
+
 import {
     LimitedVersionedObject,
     Repository,
@@ -10,7 +13,6 @@ import {
     PagedObservableResourceSuperclass,
     clean,
 } from '@vality/matez';
-import { catchError, map, of } from 'rxjs';
 
 type FetchParams = Partial<Omit<SearchRequestParams, 'continuation_token' | 'limit'>>;
 

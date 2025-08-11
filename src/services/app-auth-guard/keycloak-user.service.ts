@@ -1,7 +1,9 @@
-import { Injectable, computed, inject, isDevMode } from '@angular/core';
-import { observableResource } from '@vality/matez';
 import Keycloak, { KeycloakProfile } from 'keycloak-js';
 import { from, map } from 'rxjs';
+
+import { Injectable, computed, inject, isDevMode } from '@angular/core';
+
+import { observableResource } from '@vality/matez';
 
 export type KeycloakUserProfile = KeycloakProfile &
     Required<Pick<KeycloakProfile, 'id' | 'email' | 'username'>>;

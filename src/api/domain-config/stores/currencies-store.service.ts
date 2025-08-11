@@ -1,8 +1,10 @@
+import { catchError, map, of } from 'rxjs';
+
 import { Injectable, inject } from '@angular/core';
+
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { Repository, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, fetchAll, observableResource } from '@vality/matez';
-import { catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CurrenciesStoreService {

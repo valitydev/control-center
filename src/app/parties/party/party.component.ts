@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { getUnionKey } from '@vality/ng-thrift';
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
+
+import { Component, inject } from '@angular/core';
+
+import { getUnionKey } from '@vality/ng-thrift';
 
 import { SidenavInfoService } from '../../shared/components/sidenav-info';
 

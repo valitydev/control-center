@@ -1,9 +1,11 @@
-import { getCurrencySymbol } from '@angular/common';
-import { LOCALE_ID, inject } from '@angular/core';
-import { createColumn, formatCurrency } from '@vality/matez';
 import { groupBy, uniq } from 'lodash-es';
 import { combineLatest, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+
+import { getCurrencySymbol } from '@angular/common';
+import { LOCALE_ID, inject } from '@angular/core';
+
+import { createColumn, formatCurrency } from '@vality/matez';
 
 import { CurrenciesStoreService } from '~/api/domain-config';
 import { AmountCurrencyService } from '~/services';

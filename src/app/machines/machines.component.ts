@@ -1,6 +1,13 @@
+import { endOfDay } from 'date-fns';
+import isNil from 'lodash-es/isNil';
+import startCase from 'lodash-es/startCase';
+import { BehaviorSubject } from 'rxjs';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
+
 import {
     Column,
     ConfirmDialogComponent,
@@ -26,11 +33,6 @@ import {
     RepairManagement,
     RepairStatus,
 } from '@vality/repairer-proto/repairer';
-import { endOfDay } from 'date-fns';
-import isNil from 'lodash-es/isNil';
-import startCase from 'lodash-es/startCase';
-import { BehaviorSubject } from 'rxjs';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { createDomainObjectColumn } from '~/utils';
 

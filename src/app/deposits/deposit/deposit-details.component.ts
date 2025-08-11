@@ -1,6 +1,11 @@
+import startCase from 'lodash-es/startCase';
+import { Observable, of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+
 import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import { metadata$ } from '@vality/fistful-proto';
 import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
 import { formatCurrency } from '@vality/matez';
@@ -11,9 +16,6 @@ import {
     getUnionValue,
     isTypeWithAliases,
 } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
-import { Observable, of } from 'rxjs';
-import { map, take } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { AmountCurrencyService } from '~/services';

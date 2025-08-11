@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
 import { Management } from '@vality/fistful-proto/source';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 

@@ -1,12 +1,14 @@
-import { Component, DestroyRef, TemplateRef, ViewChild, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, Validators } from '@angular/forms';
-import { DepositParams, Management } from '@vality/fistful-proto/deposit';
-import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
-import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import { BehaviorSubject, of } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
+
+import { Component, DestroyRef, TemplateRef, ViewChild, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, Validators } from '@angular/forms';
+
+import { DepositParams, Management } from '@vality/fistful-proto/deposit';
+import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
+import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { SourceCash } from '~/components/source-cash-field';
 import { UserInfoBasedIdGeneratorService } from '~/services';

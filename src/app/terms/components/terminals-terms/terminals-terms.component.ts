@@ -1,7 +1,17 @@
+import { map, shareReplay } from 'rxjs/operators';
+import { Overwrite } from 'utility-types';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+
+import type {
+    CommonSearchQueryParams,
+    TerminalSearchQuery,
+    TerminalTermSet,
+    domain,
+} from '@vality/dominator-proto/dominator';
 import {
     Column,
     FiltersModule,
@@ -18,15 +28,6 @@ import {
     debounceTimeWithFirst,
     getValueChanges,
 } from '@vality/matez';
-import { map, shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
-
-import type {
-    CommonSearchQueryParams,
-    TerminalSearchQuery,
-    TerminalTermSet,
-    domain,
-} from '@vality/dominator-proto/dominator';
 
 import { createDomainObjectColumn } from '~/utils';
 
@@ -38,7 +39,6 @@ import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-hist
 
 import { TerminalsTermsService } from './terminals-terms.service';
 import { TERMINAL_FEES_COLUMNS, getTerminalTreeDataItem } from './utils/terminal-fees-columns';
-
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<

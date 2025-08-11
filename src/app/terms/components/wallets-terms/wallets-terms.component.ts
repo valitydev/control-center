@@ -1,7 +1,11 @@
+import { map, shareReplay } from 'rxjs/operators';
+import { Overwrite } from 'utility-types';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+
 import {
     type CommonSearchQueryParams,
     type WalletSearchQuery,
@@ -23,8 +27,6 @@ import {
     debounceTimeWithFirst,
     getValueChanges,
 } from '@vality/matez';
-import { map, shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
 
 import { createDomainObjectColumn, createPartyColumn, createWalletColumn } from '~/utils';
 
@@ -41,7 +43,6 @@ import {
     isWalletTermSetDecision,
 } from './utils/wallet-fees-columns';
 import { WalletsTermsService } from './wallets-terms.service';
-
 
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<

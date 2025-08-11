@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
+
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 
 import { RoutingRulesService } from '../../services/routing-rules';

@@ -1,9 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
-import { RoutingRulesetRef, TerminalRef } from '@vality/domain-proto/domain';
-import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, inject } from '@angular/core';
+
+import { RoutingRulesetRef, TerminalRef } from '@vality/domain-proto/domain';
+import { ComponentChanges } from '@vality/matez';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
 

@@ -1,8 +1,13 @@
+import startCase from 'lodash-es/startCase';
+import { BehaviorSubject, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+
 import { Automaton, type base } from '@vality/machinegun-proto/state_processing';
 import {
     DialogModule,
@@ -15,9 +20,6 @@ import {
     getEnumKey,
     splitResultsErrors,
 } from '@vality/matez';
-import startCase from 'lodash-es/startCase';
-import { BehaviorSubject, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { FAILS_MACHINE_VALUE, Namespace } from '~/api/machinegun';
 

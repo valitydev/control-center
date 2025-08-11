@@ -1,9 +1,11 @@
+import startCase from 'lodash-es/startCase';
+
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { StatPayment } from '@vality/magista-proto/magista';
 import { Column, LoadOptions, createMenuColumn } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
 
 import {
     createCurrencyColumn,

@@ -1,8 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { FistfulStatistics, StatSource } from '@vality/fistful-proto/fistful_stat';
-import { NotifyLogService, compareDifferentTypes, progressTo } from '@vality/matez';
 import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
+
+import { Injectable, inject } from '@angular/core';
+
+import { FistfulStatistics, StatSource } from '@vality/fistful-proto/fistful_stat';
+import { NotifyLogService, compareDifferentTypes, progressTo } from '@vality/matez';
 
 import { createDsl } from '~/api/fistful-stat';
 

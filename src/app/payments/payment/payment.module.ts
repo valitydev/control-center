@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
+
 import { ActionsModule, DialogModule } from '@vality/matez';
 import { ThriftFormModule, ThriftViewerModule } from '@vality/ng-thrift';
 

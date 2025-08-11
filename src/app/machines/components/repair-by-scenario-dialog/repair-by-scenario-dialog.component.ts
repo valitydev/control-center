@@ -1,6 +1,11 @@
+import isNil from 'lodash-es/isNil';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
+
 import {
     DialogResponseStatus,
     DialogSuperclass,
@@ -15,9 +20,6 @@ import {
     RepairManagement,
     RepairWithdrawalsRequest,
 } from '@vality/repairer-proto/repairer';
-import isNil from 'lodash-es/isNil';
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { DomainMetadataFormExtensionsService } from '../../../shared/components/thrift-api-crud';
 

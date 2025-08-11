@@ -1,3 +1,7 @@
+import { ReplaySubject, defer, merge } from 'rxjs';
+import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { ValuesType } from 'utility-types';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -6,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+
 import {
     ComponentChanges,
     FormComponentSuperclass,
@@ -13,9 +18,6 @@ import {
     getErrorsTree,
 } from '@vality/matez';
 import { Field, Unions } from '@vality/thrift-ts';
-import { ReplaySubject, defer, merge } from 'rxjs';
-import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { ValuesType } from 'utility-types';
 
 import { ThriftData } from '../../../../models';
 import { getFieldLabel } from '../../../../utils';

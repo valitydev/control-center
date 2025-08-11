@@ -1,7 +1,12 @@
+import cloneDeep from 'lodash-es/cloneDeep';
+import { Observable, combineLatest, filter } from 'rxjs';
+import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
+
 import { RoutingCandidate } from '@vality/domain-proto/domain';
 import {
     Column,
@@ -13,9 +18,6 @@ import {
     createMenuColumn,
 } from '@vality/matez';
 import { toJson } from '@vality/ng-thrift';
-import cloneDeep from 'lodash-es/cloneDeep';
-import { Observable, combineLatest, filter } from 'rxjs';
-import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
 import {

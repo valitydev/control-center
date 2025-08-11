@@ -1,14 +1,16 @@
-import { formatDate } from '@angular/common';
-import { DestroyRef, Injectable, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
-import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { PartyID, Reference, ShopID, base } from '@vality/domain-proto/domain';
-import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
 import round from 'lodash-es/round';
 import { Observable, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
+
+import { formatDate } from '@angular/common';
+import { DestroyRef, Injectable, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+
+import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
+import { PartyID, Reference, ShopID, base } from '@vality/domain-proto/domain';
+import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';

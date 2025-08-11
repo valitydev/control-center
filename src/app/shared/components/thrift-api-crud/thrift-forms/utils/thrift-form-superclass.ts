@@ -1,11 +1,13 @@
+import { Observable, combineLatest, defer, of } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
 import { Directive, Input, OnChanges, booleanAttribute, input, model } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+
 import { ThriftAstMetadata } from '@vality/fistful-proto';
 import { FormControlSuperclass, UnionEnum } from '@vality/matez';
 import { EditorKind, ThriftFormExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
-import { Observable, combineLatest, defer, of } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 
 @Directive()
 export abstract class BaseThriftFormSuperclass<T = unknown>

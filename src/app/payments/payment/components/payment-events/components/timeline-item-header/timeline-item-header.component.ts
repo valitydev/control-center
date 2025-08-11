@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
+
 import { HumanizedDurationPipe } from '@vality/matez';
 
 @Component({

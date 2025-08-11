@@ -1,7 +1,9 @@
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+
 import { Component, booleanAttribute, computed, inject, input, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
 import { ThemeService } from '@vality/matez';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { toJson } from '../../utils';
 

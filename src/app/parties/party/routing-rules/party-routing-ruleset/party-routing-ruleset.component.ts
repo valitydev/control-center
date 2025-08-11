@@ -1,6 +1,10 @@
+import { combineLatest } from 'rxjs';
+import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { RoutingDelegate } from '@vality/domain-proto/domain';
 import {
     Column,
@@ -9,8 +13,6 @@ import {
     NotifyLogService,
     compareDifferentTypes,
 } from '@vality/matez';
-import { combineLatest } from 'rxjs';
-import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
 import { RoutingRulesStoreService } from '~/api/domain-config';
 import { createShopColumn, createWalletColumn } from '~/utils';

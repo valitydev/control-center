@@ -1,10 +1,12 @@
+import { catchError } from 'rxjs';
+
 import { Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+
 import { Reference } from '@vality/domain-proto/domain';
 import { NotifyLogService, UnionEnum, createStorageValue, enumHasValue } from '@vality/matez';
 import { ThriftPipesModule, ViewerKind } from '@vality/ng-thrift';
-import { catchError } from 'rxjs';
 
 import { DomainService } from '~/api/domain-config';
 

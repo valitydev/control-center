@@ -1,4 +1,9 @@
+import isEqual from 'lodash-es/isEqual';
+import { BehaviorSubject } from 'rxjs';
+import { filter, first, map } from 'rxjs/operators';
+
 import { Injectable, InputSignal, Type, inject } from '@angular/core';
+
 import {
     PossiblyAsync,
     QueryParamsNamespace,
@@ -6,9 +11,6 @@ import {
     UrlService,
     getPossiblyAsyncObservable,
 } from '@vality/matez';
-import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
 
 import { SIDENAV_INFO_COMPONENTS, SidenavInfoComponents } from './tokens';
 

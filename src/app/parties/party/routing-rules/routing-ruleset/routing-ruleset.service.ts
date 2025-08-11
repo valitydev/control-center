@@ -1,14 +1,16 @@
+import { Observable, filter } from 'rxjs';
+import { map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
+
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+
 import {
     ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
     NotifyLogService,
 } from '@vality/matez';
-import { Observable, filter } from 'rxjs';
-import { map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 

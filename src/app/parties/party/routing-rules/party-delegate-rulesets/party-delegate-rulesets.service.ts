@@ -1,14 +1,16 @@
+import isNil from 'lodash-es/isNil';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
+
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import {
     PartyID,
     PaymentInstitutionObject,
     RoutingDelegate,
     RoutingRulesObject,
 } from '@vality/domain-proto/domain';
-import isNil from 'lodash-es/isNil';
-import { Observable, combineLatest, of } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
 
 import { PaymentInstitutionsStoreService } from '~/api/domain-config';
 

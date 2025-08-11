@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { UpdateOptions } from '@vality/matez';
 import { map, switchMap } from 'rxjs/operators';
+
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+import { UpdateOptions } from '@vality/matez';
 
 import { PartiesStoreService } from '~/api/payment-processing';
 

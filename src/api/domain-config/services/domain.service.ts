@@ -1,4 +1,7 @@
+import { Observable, catchError, combineLatest, iif, map, of, switchMap, tap } from 'rxjs';
+
 import { Injectable, inject } from '@angular/core';
+
 import { Reference } from '@vality/domain-proto/domain';
 import {
     CommitResponse,
@@ -10,7 +13,6 @@ import {
 } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, observableResource, switchCombineWith } from '@vality/matez';
 import { getUnionKey, isEqualThrift } from '@vality/ng-thrift';
-import { Observable, catchError, combineLatest, iif, map, of, switchMap, tap } from 'rxjs';
 
 import { AuthorStoreService } from '../stores/author-store.service';
 import { getDomainObjectReference } from '../utils/get-domain-object-reference';

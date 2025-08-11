@@ -1,3 +1,5 @@
+import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
+
 import { inject } from '@angular/core';
 import {
     ActivatedRouteSnapshot,
@@ -6,7 +8,6 @@ import {
     RouterStateSnapshot,
     UrlTree,
 } from '@angular/router';
-import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
 
 import { KeycloakUserService } from './keycloak-user.service';
 import { RoutingConfig } from './types/routing-config';

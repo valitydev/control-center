@@ -1,8 +1,9 @@
+import startCase from 'lodash-es/startCase';
+import { PickByValue, ValuesType } from 'utility-types';
+
 import { Reference } from '@vality/domain-proto/domain';
 import { inlineJson } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
-import { PickByValue, ValuesType } from 'utility-types';
 
 export type ReferenceId = number | string | null;
 

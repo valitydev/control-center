@@ -1,7 +1,8 @@
-import { Invoicing } from '@vality/domain-proto/payment_processing';
-import { clean } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import short from 'short-uuid';
+
+import { Invoicing } from '@vality/domain-proto/payment_processing';
+import { clean } from '@vality/matez';
 
 import { CsvChargeback } from '../types/csv-chargeback';
 

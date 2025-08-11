@@ -1,3 +1,8 @@
+import { isNil } from 'lodash-es';
+import startCase from 'lodash-es/startCase';
+import { combineLatest, map, of, switchMap } from 'rxjs';
+import { filter, startWith } from 'rxjs/operators';
+
 import {
     Component,
     EventEmitter,
@@ -11,6 +16,7 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+
 import { RoutingRulesetRef, ShopConfigObject } from '@vality/domain-proto/domain';
 import {
     Column,
@@ -24,10 +30,6 @@ import {
     createMenuColumn,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import { isNil } from 'lodash-es';
-import startCase from 'lodash-es/startCase';
-import { combineLatest, map, of, switchMap } from 'rxjs';
-import { filter, startWith } from 'rxjs/operators';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';

@@ -1,6 +1,9 @@
+import { BehaviorSubject } from 'rxjs';
+
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
+
 import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentAdjustmentParams, Invoicing } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
@@ -11,7 +14,6 @@ import {
     forkJoinToResult,
     splitResultsErrors,
 } from '@vality/matez';
-import { BehaviorSubject } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '../../../shared/components/thrift-api-crud';
 

@@ -1,7 +1,9 @@
+import { map } from 'rxjs/operators';
+
 import { Component, OnInit, inject } from '@angular/core';
+
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { DebounceTime, UpdateOptions } from '@vality/matez';
-import { map } from 'rxjs/operators';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
 

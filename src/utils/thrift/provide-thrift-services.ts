@@ -1,3 +1,7 @@
+import Keycloak from 'keycloak-js';
+import { isObject } from 'lodash-es';
+import { combineLatest, map } from 'rxjs';
+
 import {
     EnvironmentProviders,
     FactoryProvider,
@@ -6,11 +10,9 @@ import {
     isDevMode,
     makeEnvironmentProviders,
 } from '@angular/core';
+
 import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
-import Keycloak from 'keycloak-js';
-import { isObject } from 'lodash-es';
-import { combineLatest, map } from 'rxjs';
 
 import { ConfigService, KeycloakUserService } from '~/services';
 

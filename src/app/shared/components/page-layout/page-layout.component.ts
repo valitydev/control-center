@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+
 import { Location } from '@angular/common';
 import {
     ChangeDetectionStrategy,
@@ -11,8 +13,8 @@ import {
     input,
 } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Color, UrlService } from '@vality/matez';
-import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'cc-page-layout',

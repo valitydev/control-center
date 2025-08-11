@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+
 import { DialogModule, TableModule } from '@vality/matez';
 import { ThriftViewerModule } from '@vality/ng-thrift';
 

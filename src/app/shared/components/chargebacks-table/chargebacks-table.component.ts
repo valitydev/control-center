@@ -1,3 +1,6 @@
+import startCase from 'lodash-es/startCase';
+import { filter } from 'rxjs';
+
 import {
     Component,
     DestroyRef,
@@ -11,6 +14,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+
 import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     Column,
@@ -21,8 +25,6 @@ import {
     createMenuColumn,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
-import { filter } from 'rxjs';
 
 import { createCurrencyColumn, createPartyColumn, createShopColumn } from '~/utils';
 

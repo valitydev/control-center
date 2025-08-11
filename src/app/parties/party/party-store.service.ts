@@ -1,6 +1,3 @@
-import { Injectable, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NotifyLogService } from '@vality/matez';
 import { EMPTY, of } from 'rxjs';
 import {
     catchError,
@@ -9,6 +6,11 @@ import {
     startWith,
     switchMap,
 } from 'rxjs/operators';
+
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { NotifyLogService } from '@vality/matez';
 
 import { PartiesStoreService } from '~/api/payment-processing';
 

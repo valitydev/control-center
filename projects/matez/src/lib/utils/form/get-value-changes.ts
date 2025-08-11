@@ -1,6 +1,7 @@
-import { AbstractControl, FormControlState } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+
+import { AbstractControl, FormControlState } from '@angular/forms';
 
 import { getValue } from './get-value';
 

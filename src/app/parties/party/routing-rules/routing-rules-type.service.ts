@@ -1,8 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { getEnumValues } from '@vality/matez';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { getEnumValues } from '@vality/matez';
 
 import { RoutingRulesType } from './types/routing-rules-type';
 

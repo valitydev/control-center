@@ -1,10 +1,12 @@
-import { DestroyRef, Injectable, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
-import { NotifyLogService } from '@vality/matez';
 import isNil from 'lodash-es/isNil';
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
+
+import { DestroyRef, Injectable, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
+
+import { NotifyLogService } from '@vality/matez';
 
 import { PartiesStoreService } from '~/api/payment-processing';
 

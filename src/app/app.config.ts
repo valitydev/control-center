@@ -1,3 +1,5 @@
+import { provideKeycloak } from 'keycloak-angular';
+
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
@@ -15,6 +17,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
+
 import {
     AuthorManagement,
     Repository,
@@ -32,8 +35,6 @@ import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez'
 import { provideMonacoEditor } from '@vality/ng-thrift';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
-import { provideKeycloak } from 'keycloak-angular';
-
 
 import { parseThriftError, provideThriftServices } from '~/utils';
 
@@ -50,7 +51,6 @@ import {
     DEFAULT_MAT_DATE_FORMATS,
     DEFAULT_QUERY_PARAMS_SERIALIZERS,
 } from './tokens';
-
 
 registerLocaleData(localeRu);
 

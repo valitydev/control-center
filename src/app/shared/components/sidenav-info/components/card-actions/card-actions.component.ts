@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { ActionsModule } from '@vality/matez';
 
 @Component({

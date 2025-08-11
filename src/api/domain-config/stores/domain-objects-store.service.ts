@@ -1,4 +1,7 @@
+import { map } from 'rxjs';
+
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
+
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
 import {
     LimitedVersionedObject,
@@ -7,7 +10,6 @@ import {
 } from '@vality/domain-proto/domain_config_v2';
 import { ObservableResource, fetchAll, observableResource } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
-import { map } from 'rxjs';
 
 import { createObjectHash } from '../utils/create-object-hash';
 

@@ -31,10 +31,22 @@ function getImportOrderConfig(internalPatterns = ['~/**']) {
                         ['index', 'sibling'],
                         'object',
                     ],
-                    pathGroups: internalPatterns.map((pattern) => ({
-                        pattern,
-                        group: 'internal',
-                    })),
+                    pathGroups: [
+                        {
+                            pattern: '@vality/**',
+                            group: 'type',
+                            position: 'before',
+                        },
+                        {
+                            pattern: '@*/**',
+                            group: 'external',
+                            position: 'after',
+                        },
+                        ...internalPatterns.map((pattern) => ({
+                            pattern,
+                            group: 'internal',
+                        })),
+                    ],
                     pathGroupsExcludedImportTypes: ['builtin'],
                     'newlines-between': 'always',
                     alphabetize: {

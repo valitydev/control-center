@@ -1,7 +1,8 @@
-import { Pipe, PipeTransform } from '@angular/core';
 import { formatDistanceToNow } from 'date-fns';
 import { combineLatest, throttleTime, timer } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+
+import { Pipe, PipeTransform } from '@angular/core';
 
 import { AsyncTransform, AsyncTransformParameters } from '../utils';
 

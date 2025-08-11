@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
+
 import { ActionsModule, Color, TagModule } from '@vality/matez';
 
 import { SidenavInfoService } from '../../../sidenav-info';

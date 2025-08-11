@@ -1,8 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
-import { ComponentChanges } from '@vality/matez';
 import { ReplaySubject, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges } from '@angular/core';
+
+import { ComponentChanges } from '@vality/matez';
 
 import { ThriftPipesModule } from '../../../../pipes';
 import { ThriftViewData } from '../../models/thrift-view-data';

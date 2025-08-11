@@ -1,4 +1,8 @@
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Component, Input, booleanAttribute, inject } from '@angular/core';
+
 import { DomainObjectType, WalletID } from '@vality/domain-proto/domain';
 import {
     FormControlSuperclass,
@@ -6,8 +10,6 @@ import {
     SelectFieldComponent,
     createControlProviders,
 } from '@vality/matez';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { FetchDomainObjectsService } from '~/api/domain-config';
 

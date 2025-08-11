@@ -1,3 +1,15 @@
+import { isNil } from 'lodash-es';
+import {
+    Observable,
+    combineLatest,
+    combineLatestWith,
+    map,
+    of,
+    shareReplay,
+    switchMap,
+} from 'rxjs';
+import { Overwrite } from 'utility-types';
+
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -12,17 +24,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { isNil } from 'lodash-es';
-import {
-    Observable,
-    combineLatest,
-    combineLatestWith,
-    map,
-    of,
-    shareReplay,
-    switchMap,
-} from 'rxjs';
-import { Overwrite } from 'utility-types';
 
 import { UrlService } from '../../services';
 import { PossiblyAsyncValue, getPossiblyAsyncValue } from '../../utils';

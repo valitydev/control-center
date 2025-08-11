@@ -1,3 +1,5 @@
+import { BehaviorSubject } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -5,6 +7,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+
 import { metadata$ } from '@vality/domain-proto';
 import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { StatChargeback } from '@vality/magista-proto/magista';
@@ -17,7 +20,6 @@ import {
     forkJoinToResult,
 } from '@vality/matez';
 import { ThriftFormModule } from '@vality/ng-thrift';
-import { BehaviorSubject } from 'rxjs';
 
 import { DomainMetadataFormExtensionsService } from '../thrift-api-crud';
 
