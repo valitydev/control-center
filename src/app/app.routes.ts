@@ -42,7 +42,7 @@ export const routes: Routes = [
     },
     {
         path: 'chargebacks',
-        loadChildren: () => import('./sections/chargebacks').then((m) => m.ChargebacksModule),
+        loadChildren: () => import('./chargebacks').then((m) => m.ChargebacksModule),
     },
     {
         path: 'terminals',

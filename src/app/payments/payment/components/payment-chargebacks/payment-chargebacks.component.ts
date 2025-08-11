@@ -6,9 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { DialogResponseStatus, DialogService } from '@vality/matez';
 import { first } from 'rxjs';
 
+import { FetchChargebacksService } from '../../../../chargebacks/fetch-chargebacks.service';
 import { PageLayoutModule } from '../../../../shared';
 import { ChargebacksTableComponent } from '../../../../shared/components/chargebacks-table/chargebacks-table.component';
-import { FetchChargebacksService } from '../../../../sections/chargebacks/fetch-chargebacks.service';
 import { CreateChargebackDialogComponent } from '../../create-chargeback-dialog/create-chargeback-dialog.component';
 import { PaymentDetailsService } from '../../payment.service';
 
