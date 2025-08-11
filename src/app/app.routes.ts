@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { canActivateAuthRole } from '../services';
 
 import { APP_ROUTES } from './app-routes';
-import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
+import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
 
 export const routes: Routes = [
     APP_ROUTES.domain.root.getRoute(),
@@ -44,8 +44,7 @@ export const routes: Routes = [
     },
     {
         path: 'wallets',
-        loadComponent: () =>
-            import('./sections/wallets/wallets.component').then((m) => m.WalletsComponent),
+        loadComponent: () => import('./wallets/wallets.component').then((m) => m.WalletsComponent),
         canActivate: [canActivateAuthRole],
         data: WALLETS_ROUTING_CONFIG,
     },

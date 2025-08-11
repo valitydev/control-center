@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { canActivateAuthRole } from '../../../services';
-import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../wallets/routing-config';
+import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../../wallets/routing-config';
 
 import { PartyComponent } from './party.component';
 import { ROUTING_CONFIG } from './routing-config';
@@ -29,7 +29,9 @@ import { ROUTING_CONFIG } from './routing-config';
                     {
                         path: 'wallets',
                         loadComponent: () =>
-                            import('../wallets/wallets.component').then((m) => m.WalletsComponent),
+                            import('../../wallets/wallets.component').then(
+                                (m) => m.WalletsComponent,
+                            ),
                         canActivate: [canActivateAuthRole],
                         data: WALLETS_ROUTING_CONFIG,
                     },
