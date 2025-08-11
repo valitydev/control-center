@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
 
-
 import { canActivateAuthRole } from '~/services';
 
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
-
 
 export const routes: Routes = [
     APP_ROUTES.domain.root.getRoute(),

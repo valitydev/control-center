@@ -16,7 +16,6 @@ import { getUpdateRulesCandidates } from '../services/routing-rules/utils/get-up
 
 import { getChangedPredicate } from './get-changed-predicate';
 
-
 function getCandidateIdLabel({ refId, candidateIdx }: CandidateId) {
     return `#${refId}/${candidateIdx}`;
 }

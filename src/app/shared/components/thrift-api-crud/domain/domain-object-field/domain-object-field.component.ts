@@ -18,7 +18,6 @@ import { FetchDomainObjectsService } from '~/api/domain-config/services/fetch-do
 
 import { ReferenceId, getReferenceId } from '../utils/get-reference-id';
 
-
 @Component({
     selector: 'cc-domain-object-field',
     templateUrl: './domain-object-field.component.html',

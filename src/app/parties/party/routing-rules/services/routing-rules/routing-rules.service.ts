@@ -20,7 +20,6 @@ import { CandidateId } from './types/candidate-id';
 import { getDelegate } from './utils/get-delegate';
 import { getUpdateRulesCandidates } from './utils/get-update-rules-candidates';
 
-
 @Injectable({
     providedIn: 'root',
 })

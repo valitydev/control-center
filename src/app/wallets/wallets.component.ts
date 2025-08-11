@@ -32,7 +32,6 @@ import { PartyStoreService } from '../parties/party';
 import { PageLayoutModule } from '../shared';
 import { MerchantFieldModule } from '../shared/components/merchant-field';
 
-
 @Component({
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',

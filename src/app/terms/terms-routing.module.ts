@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-
 import { canActivateAuthRole } from '~/services';
 
 import { ShopsTermsComponent } from './components/shops-terms/shops-terms.component';
@@ -9,7 +8,6 @@ import { TerminalsTermsComponent } from './components/terminals-terms/terminals-
 import { WalletsTermsComponent } from './components/wallets-terms/wallets-terms.component';
 import { ROUTING_CONFIG } from './routing-config';
 import { TermsComponent } from './terms.component';
-
 
 @NgModule({
     imports: [

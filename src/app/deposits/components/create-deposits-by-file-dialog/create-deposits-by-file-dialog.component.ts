@@ -14,12 +14,10 @@ import {
     forkJoinToResult,
 } from '@vality/matez';
 
-
 import { UploadCsvComponent } from '~/components/upload-csv';
 
 import { CSV_DEPOSIT_PROPS, CsvDeposit } from './types/csv-deposit';
 import { getCreateDepositArgs } from './utils/get-create-deposit-args';
-
 
 @Component({
     selector: 'cc-create-deposits-by-file-dialog',

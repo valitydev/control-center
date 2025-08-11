@@ -20,11 +20,7 @@ import {
 import { toJson } from '@vality/ng-thrift';
 
 import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
-import {
-    createDomainObjectColumn,
-    createPredicateColumn,
-    getPredicateBoolean,
-} from '~/utils';
+import { createDomainObjectColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
 
 import { CandidateCardComponent } from '../../../../shared/components/candidate-card/candidate-card.component';
 import { SidenavInfoService } from '../../../../shared/components/sidenav-info';
@@ -38,7 +34,6 @@ import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { RoutingRulesetService } from './routing-ruleset.service';
-
 
 @Component({
     templateUrl: 'routing-ruleset.component.html',

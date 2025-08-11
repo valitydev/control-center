@@ -12,7 +12,6 @@ import { RoutingRulesStoreService } from '~/api/domain-config';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../thrift-api-crud';
 
-
 @Component({
     selector: 'cc-candidate-card',
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent],

@@ -3,7 +3,6 @@ import { Component, computed, input } from '@angular/core';
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/dominator';
 import { Column, TableModule } from '@vality/matez';
 
-
 import { createDomainObjectColumn } from '~/utils';
 
 import { SidenavInfoModule } from '../../../shared/components/sidenav-info';
@@ -13,7 +12,6 @@ import {
     getWalletCashFlowSelectors,
     isWalletTermSetDecision,
 } from '../wallets-terms/utils/wallet-fees-columns';
-
 
 @Component({
     selector: 'cc-wallets-term-set-history-card',

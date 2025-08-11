@@ -9,12 +9,10 @@ import { DomainObject } from '@vality/domain-proto/domain';
 import { getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
-
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 
 import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
 import { getDomainObjectOption } from './utils/get-domain-object-option';
-
 
 @Injectable({
     providedIn: 'root',

@@ -15,12 +15,10 @@ import {
     forkJoinToResult,
 } from '@vality/matez';
 
-
 import { UploadCsvComponent } from '~/components/upload-csv';
 
 import { CSV_PAYMENT_ADJUSTMENT_PROPS, CsvPaymentAdjustment } from './types/csv-payment-adjustment';
 import { getCreatePaymentAdjustmentsArgs } from './utils/get-create-payment-adjustments-args';
-
 
 @Component({
     selector: 'cc-create-payment-adjustments-by-file-dialog',

@@ -14,7 +14,6 @@ import { PageLayoutModule, StatusModule } from '../../shared/components';
 import { DepositDetailsRoutingModule } from './deposit-details-routing.module';
 import { DepositDetailsComponent } from './deposit-details.component';
 
-
 @NgModule({
     imports: [
         CommonModule,

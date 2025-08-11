@@ -15,7 +15,6 @@ import { UserInfoBasedIdGeneratorService } from '~/services';
 
 import { FetchSourcesService } from '../../../sources';
 
-
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',
     standalone: false,

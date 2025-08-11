@@ -25,17 +25,12 @@ import {
 } from '@vality/matez';
 import { createUnion } from '@vality/ng-thrift';
 
-import {
-    CHARGEBACK_CATEGORIES,
-    CHARGEBACK_STAGES,
-    CHARGEBACK_STATUSES,
-} from '~/api/fistful-stat';
+import { CHARGEBACK_CATEGORIES, CHARGEBACK_STAGES, CHARGEBACK_STATUSES } from '~/api/fistful-stat';
 
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 import { FetchChargebacksService } from './fetch-chargebacks.service';
-
 
 type FormValue = {
     dateRange: DateRange;

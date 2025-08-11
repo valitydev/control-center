@@ -13,7 +13,6 @@ import { createCurrencyColumn } from '~/utils';
 
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 
-
 @Component({
     selector: 'cc-terminal-balances-card',
     imports: [CommonModule, CardComponent, TableModule],

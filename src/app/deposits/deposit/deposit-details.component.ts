@@ -24,7 +24,6 @@ import { FetchSourcesService } from '../../sources';
 
 import { ReceiveDepositService } from './services/receive-deposit/receive-deposit.service';
 
-
 @Component({
     templateUrl: 'deposit-details.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

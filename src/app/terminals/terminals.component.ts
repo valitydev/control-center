@@ -20,7 +20,6 @@ import {
 
 import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet-delegates';
 
-
 @Component({
     selector: 'cc-terminals',
     templateUrl: './terminals.component.html',

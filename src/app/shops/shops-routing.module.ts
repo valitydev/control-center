@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-
 import { canActivateAuthRole } from '~/services';
 
 import { SHOPS_ROUTING_CONFIG } from './shops-routing-config';
 import { ShopsComponent } from './shops.component';
-
 
 const ROUTES: Routes = [
     {

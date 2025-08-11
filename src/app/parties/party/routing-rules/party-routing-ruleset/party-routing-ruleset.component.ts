@@ -27,7 +27,6 @@ import { AddPartyRoutingRuleDialogComponent } from './add-party-routing-rule-dia
 import { InitializeRoutingRulesDialogComponent } from './initialize-routing-rules-dialog';
 import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
 
-
 @Component({
     selector: 'cc-party-routing-ruleset',
     templateUrl: 'party-routing-ruleset.component.html',

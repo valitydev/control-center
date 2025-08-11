@@ -13,7 +13,6 @@ import { PartiesStoreService } from '~/api/payment-processing';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
 import { RoutingRulesService } from '../services/routing-rules';
 
-
 export const MAIN_REF = 'main';
 
 @Injectable()

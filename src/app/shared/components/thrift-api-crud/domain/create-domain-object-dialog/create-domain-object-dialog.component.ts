@@ -27,7 +27,6 @@ import { APP_ROUTES } from '../../../../../app-routes';
 import { DomainThriftFormComponent } from '../../domain/domain-thrift-editor';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 
-
 @Component({
     selector: 'cc-create-domain-object-dialog',
     imports: [

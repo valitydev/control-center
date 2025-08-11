@@ -34,7 +34,6 @@ import { CreateDepositDialogComponent } from './components/create-deposit-dialog
 import { CreateDepositsByFileDialogComponent } from './components/create-deposits-by-file-dialog/create-deposits-by-file-dialog.component';
 import { FetchDepositsService } from './services/fetch-deposits/fetch-deposits.service';
 
-
 @Component({
     templateUrl: 'deposits.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,

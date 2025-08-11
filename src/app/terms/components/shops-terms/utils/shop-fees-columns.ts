@@ -8,7 +8,6 @@ import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
-
 export function getShopCashFlowSelectors(d: TermSetHistory['term_set']) {
     return d?.data?.term_sets?.map?.((t) => t?.terms?.payments?.fees)?.filter?.(Boolean) ?? [];
 }

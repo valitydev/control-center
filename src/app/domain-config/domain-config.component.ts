@@ -11,7 +11,6 @@ import { DomainObjectService } from '../shared/components/thrift-api-crud/domain
 
 import { DomainObjectsTableComponent } from './domain-objects-table';
 
-
 @Component({
     templateUrl: './domain-config.component.html',
     styleUrls: ['./domain-config.component.scss'],

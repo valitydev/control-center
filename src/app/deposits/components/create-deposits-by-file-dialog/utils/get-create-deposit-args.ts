@@ -9,7 +9,6 @@ import { AmountCurrencyService, UserInfoBasedIdGeneratorService } from '~/servic
 
 import { CsvDeposit } from '../types/csv-deposit';
 
-
 export function getCreateDepositArgs(c: CsvDeposit) {
     const userInfoBasedIdGeneratorService = inject(UserInfoBasedIdGeneratorService);
     const amountCurrencyService = inject(AmountCurrencyService);

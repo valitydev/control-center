@@ -45,7 +45,6 @@ import {
     isShopTermSetDecision,
 } from './utils/shop-fees-columns';
 
-
 type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     Overwrite<
         Omit<ShopSearchQuery, 'common_search_query_params'>,

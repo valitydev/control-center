@@ -8,7 +8,6 @@ import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../../wallets/routing-
 import { PartyComponent } from './party.component';
 import { ROUTING_CONFIG } from './routing-config';
 
-
 @NgModule({
     imports: [
         RouterModule.forChild([

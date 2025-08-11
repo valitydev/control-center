@@ -16,7 +16,6 @@ import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 import { getDomainObjectDetails } from '../../domain/utils';
 import { DomainObjectService } from '../services/domain-object.service';
 
-
 @Component({
     selector: 'cc-domain-object-card',
     imports: [

@@ -18,7 +18,6 @@ import { PartiesStoreService } from '~/api/payment-processing';
 import { SidenavInfoService } from '../../../../../sidenav-info';
 import { DomainObjectCardComponent } from '../../../../domain';
 
-
 @Injectable({
     providedIn: 'root',
 })

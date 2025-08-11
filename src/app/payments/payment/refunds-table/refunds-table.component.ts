@@ -6,12 +6,10 @@ import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domai
 import { Column, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
-
 import { Refund } from '~/api/fistful-stat';
 import { createCurrencyColumn } from '~/utils';
 
 import { FetchRefundsService } from './services/fetch-refunds.service';
-
 
 @Component({
     selector: 'cc-refunds-table',

@@ -18,7 +18,6 @@ import { PaymentDetailsService } from '../../payment.service';
 import { TimelineItemHeaderComponent } from './components/timeline-item-header/timeline-item-header.component';
 import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
 
-
 @Component({
     selector: 'cc-payment-events',
     imports: [

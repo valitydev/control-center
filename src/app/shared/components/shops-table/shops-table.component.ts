@@ -43,7 +43,6 @@ import { RoutingRulesType } from '../../../parties/party/routing-rules/types/rou
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 
-
 @Component({
     selector: 'cc-shops-table',
     imports: [InputFieldModule, MatCardModule, TableModule],

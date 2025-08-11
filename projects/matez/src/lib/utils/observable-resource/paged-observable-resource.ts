@@ -69,7 +69,7 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
         size,
         ...options
     }: PagedObservableResourceOptions<TItem, TParams>) {
-        // TODO: fix any
+        // TODO: fix types
         super.init({
             ...options,
             loader: (params, acc, action) => {
@@ -88,7 +88,7 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
             },
             map: (value) => value.result,
             noInitParams: true,
-        } as any);
+        } as never);
         this.pagedOptions = { size: size || 20 };
         this.hasMore$ = this.accValue$.pipe(map((value) => !!value.continuationToken));
         this.hasMore = toSignal(this.hasMore$, { initialValue: false });
@@ -129,10 +129,11 @@ export abstract class PagedObservableResourceSuperclass<
 
     constructor() {
         super();
-        // TODO: fix any
+        // TODO: fix types
         this.initPaged({
             ...this.options,
-            loader: (params, options) => (this.loader as any)(params, options),
-        } as any);
+            loader: (params, options) =>
+                (this.loader as never as (...args: unknown[]) => unknown)(params, options),
+        } as never);
     }
 }

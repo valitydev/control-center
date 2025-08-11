@@ -20,7 +20,6 @@ import { PaymentDetailsRoutingModule } from './payment-routing.module';
 import { PaymentDetailsComponent } from './payment.component';
 import { RefundsTableModule } from './refunds-table';
 
-
 @NgModule({
     imports: [
         CommonModule,

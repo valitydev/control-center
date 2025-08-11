@@ -20,7 +20,6 @@ import {
     PartyDelegateRulesetsService,
 } from './party-delegate-rulesets.service';
 
-
 @Component({
     selector: 'cc-party-delegate-rulesets',
     templateUrl: 'party-delegate-rulesets.component.html',

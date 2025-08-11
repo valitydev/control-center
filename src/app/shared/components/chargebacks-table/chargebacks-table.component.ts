@@ -30,7 +30,6 @@ import { createCurrencyColumn, createPartyColumn, createShopColumn } from '~/uti
 
 import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-status-dialog';
 
-
 @Component({
     selector: 'cc-chargebacks-table',
     templateUrl: './chargebacks-table.component.html',

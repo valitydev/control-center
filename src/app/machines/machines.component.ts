@@ -43,7 +43,6 @@ import { MachineStatusHistoryCardComponent } from './components/machine-status-h
 import { RepairByScenarioDialogComponent } from './components/repair-by-scenario-dialog/repair-by-scenario-dialog.component';
 import { MachinesService } from './services/machines.service';
 
-
 interface Filters {
     ids: string[];
     ns: Namespace;

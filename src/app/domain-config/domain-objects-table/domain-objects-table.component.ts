@@ -32,7 +32,6 @@ import {
     DomainObjectService,
 } from '../../shared/components/thrift-api-crud/domain';
 
-
 @Component({
     selector: 'cc-domain-objects-table',
     templateUrl: './domain-objects-table.component.html',

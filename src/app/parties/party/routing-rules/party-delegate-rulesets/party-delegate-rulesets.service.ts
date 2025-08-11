@@ -18,7 +18,6 @@ import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { getPoliciesIdByType } from '../utils/get-policies-id-by-type';
 
-
 export interface DelegateWithPaymentInstitution {
     partyDelegate: RoutingDelegate;
     paymentInstitution: PaymentInstitutionObject;

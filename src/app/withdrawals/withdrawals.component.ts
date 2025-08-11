@@ -35,7 +35,6 @@ import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
 import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
 
-
 interface WithdrawalsForm {
     dateRange: DateRange;
     merchant: PartyID;

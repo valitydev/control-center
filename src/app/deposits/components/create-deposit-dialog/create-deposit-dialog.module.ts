@@ -18,7 +18,6 @@ import { FistfulThriftFormComponent } from '../../../shared/components/fistful-t
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog.component';
 
-
 @NgModule({
     imports: [
         CommonModule,

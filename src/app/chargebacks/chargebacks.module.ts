@@ -35,7 +35,6 @@ import { ChargebacksRoutingModule } from './chargebacks-routing.module';
 import { ChargebacksComponent } from './chargebacks.component';
 import { CreateChargebacksByFileDialogComponent } from './components/create-chargebacks-by-file-dialog/create-chargebacks-by-file-dialog.component';
 
-
 @NgModule({
     declarations: [ChargebacksComponent, CreateChargebacksByFileDialogComponent],
     imports: [

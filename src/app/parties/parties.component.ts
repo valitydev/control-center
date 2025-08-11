@@ -22,7 +22,6 @@ import { FetchFullDomainObjectsService } from '~/api/domain-config';
 
 import { PageLayoutModule } from '../shared';
 
-
 @Component({
     templateUrl: 'parties.component.html',
     styleUrls: ['parties.component.scss'],

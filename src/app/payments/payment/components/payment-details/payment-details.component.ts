@@ -16,7 +16,6 @@ import { MagistaThriftViewerComponent } from '../../../../shared/components/thri
 import { DomainMetadataViewExtensionsService } from '../../../../shared/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { PaymentDetailsService } from '../../payment.service';
 
-
 @Component({
     selector: 'cc-payment-details',
     imports: [AsyncPipe, MagistaThriftViewerComponent, MatCard, MatCardContent, PageLayoutModule],

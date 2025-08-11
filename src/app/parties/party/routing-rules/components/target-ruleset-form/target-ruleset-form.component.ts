@@ -26,7 +26,6 @@ import { getPoliciesIdByType } from '../../utils/get-policies-id-by-type';
 import { Target } from './types/target';
 import { TargetRuleset } from './types/target-ruleset';
 
-
 @Component({
     selector: 'cc-target-ruleset-form',
     templateUrl: 'target-ruleset-form.component.html',

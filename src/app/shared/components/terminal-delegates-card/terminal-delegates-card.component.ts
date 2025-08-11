@@ -35,7 +35,6 @@ import { SidenavInfoService } from '../sidenav-info';
 import { CardComponent } from '../sidenav-info/components/card/card.component';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 
-
 @Component({
     selector: 'cc-terminal-delegates-card',
     imports: [

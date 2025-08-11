@@ -2,7 +2,6 @@ import isNil from 'lodash-es/isNil';
 import { combineLatest, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
-
 import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
     Component,
@@ -33,7 +32,6 @@ import {
 import { CurrenciesStoreService } from '~/api/domain-config';
 
 import { FetchSourcesService } from '../../app/sources';
-
 
 export interface SourceCash {
     amount: number;
