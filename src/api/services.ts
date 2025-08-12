@@ -76,8 +76,8 @@ export const {
         Invoicing: ThriftInvoicingService,
         PartyManagement: ThriftPartyManagementService,
         DepositManagement: ThriftDepositManagementService,
-
         FistfulStatistics: ThriftFistfulStatisticsService,
+
         WithdrawalManagement: ThriftWithdrawalManagementService,
         SourceManagement: ThriftSourceManagementService,
     },

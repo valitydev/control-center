@@ -3,18 +3,15 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import {
-    FistfulStatistics,
-    StatResponse,
-    StatWithdrawal,
-} from '@vality/fistful-proto/fistful_stat';
+import { StatResponse, StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService } from '@vality/matez';
 
 import { WithdrawalParams, createDsl } from '~/api/fistful-stat';
+import { ThriftFistfulStatisticsService } from '~/api/services';
 
 @Injectable()
 export class FetchWithdrawalsService extends FetchSuperclass<StatWithdrawal, WithdrawalParams> {
-    private fistfulStatisticsService = inject(FistfulStatistics);
+    private fistfulStatisticsService = inject(ThriftFistfulStatisticsService);
     private log = inject(NotifyLogService);
 
     protected fetch(

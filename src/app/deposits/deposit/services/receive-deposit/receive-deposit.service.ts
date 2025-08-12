@@ -3,14 +3,14 @@ import { catchError, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import { FistfulStatistics } from '@vality/fistful-proto/fistful_stat';
 import { NotifyLogService, inProgressFrom, progressTo } from '@vality/matez';
 
 import { createDsl } from '~/api/fistful-stat';
+import { ThriftFistfulStatisticsService } from '~/api/services';
 
 @Injectable()
 export class ReceiveDepositService {
-    private fistfulStatisticsService = inject(FistfulStatistics);
+    private fistfulStatisticsService = inject(ThriftFistfulStatisticsService);
     private log = inject(NotifyLogService);
 
     deposit$ = defer(() => this.receiveDeposit$).pipe(

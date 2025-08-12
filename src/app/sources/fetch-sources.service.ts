@@ -3,16 +3,17 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import { FistfulStatistics, StatSource } from '@vality/fistful-proto/fistful_stat';
+import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import { NotifyLogService, compareDifferentTypes, progressTo } from '@vality/matez';
 
 import { createDsl } from '~/api/fistful-stat';
+import { ThriftFistfulStatisticsService } from '~/api/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FetchSourcesService {
-    private fistfulStatisticsService = inject(FistfulStatistics);
+    private fistfulStatisticsService = inject(ThriftFistfulStatisticsService);
     private log = inject(NotifyLogService);
 
     sources$: Observable<StatSource[]> = this.fetch().pipe(
