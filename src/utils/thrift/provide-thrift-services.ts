@@ -141,16 +141,17 @@ export interface ThriftService<T = unknown> {
 }
 
 export function createThriftService<T>(serviceParams: ThriftService<T>) {
-    const options$ = createConnectOptions(serviceParams.name);
     const service = Symbol(serviceParams.name) as never as Type<T>;
 
     return {
         provider: {
-            provide: serviceParams,
-            useFactory: () =>
-                createProxyObject(() =>
+            provide: service,
+            useFactory: () => {
+                const options$ = createConnectOptions(serviceParams.name);
+                return createProxyObject(() =>
                     serviceParams.loader().then((mod) => new mod(options$) as object),
-                ),
+                );
+            },
         },
         service,
     };
