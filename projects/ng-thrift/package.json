@@ -15,9 +15,9 @@
         "@angular/material": "^20.1.0",
         "@angular/router": "^20.1.0",
         "@vality/matez": "*",
+        "@vality/ng-monaco-editor": "^20.0.0",
         "@vality/thrift-ts": "*",
         "lodash-es": "^4.0.0",
-        "ngx-monaco-editor-v2": "^20.0.0",
         "monaco-editor": "^0.52.0",
         "rxjs": "^7.0.0",
         "utility-types": "^3.0.0"
