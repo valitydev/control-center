@@ -1,20 +1,16 @@
 import Keycloak from 'keycloak-js';
 import { isObject } from 'lodash-es';
 import { combineLatest, map } from 'rxjs';
+import { UnionToIntersection } from 'utility-types';
 
-import {
-    EnvironmentProviders,
-    FactoryProvider,
-    Type,
-    inject,
-    isDevMode,
-    makeEnvironmentProviders,
-} from '@angular/core';
+import { Type, inject, isDevMode, makeEnvironmentProviders } from '@angular/core';
 
 import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
 
 import { ConfigService, KeycloakUserService } from '~/services';
+
+import { createProxyObject } from '../create-proxy-object';
 
 import { createRequestWachterHeaders, createWachterHeaders } from './create-wachter-headers';
 
@@ -113,46 +109,72 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
     }
 };
 
-function provideThriftService<T extends Type<unknown>>(
-    service: T,
-    serviceName: string,
-): FactoryProvider {
-    return {
-        provide: service,
-        useFactory: () => {
-            const configService = inject(ConfigService);
-            const keycloak = inject(Keycloak);
-            const keycloakUserService = inject(KeycloakUserService);
+function createConnectOptions(serviceName: string) {
+    const configService = inject(ConfigService);
+    const keycloak = inject(Keycloak);
+    const keycloakUserService = inject(KeycloakUserService);
 
-            return new service(
-                combineLatest([keycloakUserService.user.value$, configService.config.value$]).pipe(
-                    map(
-                        ([user, config]): ConnectOptions => ({
-                            headers: createWachterHeaders(serviceName, {
-                                id: user.id,
-                                email: user.email,
-                                username: user.username,
-                                token: keycloak.token ?? '',
-                            }),
-                            logging: true,
-                            loggingFn: logger,
-                            createCallOptions: () => ({
-                                headers: createRequestWachterHeaders(),
-                            }),
-                            timeout: isDevMode() ? 10_000 : 60_000,
-                            ...config.api.wachter,
-                        }),
-                    ),
+    return combineLatest([keycloakUserService.user.value$, configService.config.value$]).pipe(
+        map(
+            ([user, config]): ConnectOptions => ({
+                headers: createWachterHeaders(serviceName, {
+                    id: user.id,
+                    email: user.email,
+                    username: user.username,
+                    token: keycloak.token ?? '',
+                }),
+                logging: true,
+                loggingFn: logger,
+                createCallOptions: () => ({
+                    headers: createRequestWachterHeaders(),
+                }),
+                timeout: isDevMode() ? 10_000 : 60_000,
+                ...config.api.wachter,
+            }),
+        ),
+    );
+}
+
+export interface ThriftService<T = unknown> {
+    name: string;
+    loader: () => Promise<Type<T>>;
+}
+
+export function createThriftService<T>(serviceParams: ThriftService<T>) {
+    const options$ = createConnectOptions(serviceParams.name);
+    const service = Symbol(serviceParams.name) as never as Type<T>;
+
+    return {
+        provider: {
+            provide: serviceParams,
+            useFactory: () =>
+                createProxyObject(() =>
+                    serviceParams.loader().then((mod) => new mod(options$) as object),
                 ),
-            );
         },
+        service,
     };
 }
 
-export function provideThriftServices(
-    services: { service: Type<unknown>; name: string }[],
-): EnvironmentProviders {
-    return makeEnvironmentProviders(
-        services.map((service) => provideThriftService(service.service, service.name)),
-    );
+export function createThriftServices<T extends readonly ThriftService[]>(
+    servicesParams: T,
+): {
+    provideThriftServices: () => ReturnType<typeof makeEnvironmentProviders>;
+    services: UnionToIntersection<
+        {
+            [K in keyof T]: Record<
+                T[K]['name'],
+                T[K] extends ThriftService<infer U> ? Type<U> : never
+            >;
+        }[number]
+    >;
+} {
+    const services = servicesParams.map((service) => createThriftService(service));
+
+    return {
+        provideThriftServices: () => makeEnvironmentProviders(services.map((s) => s.provider)),
+        services: Object.fromEntries(
+            services.map((s, idx) => [servicesParams[idx].name, s.service]),
+        ) as never,
+    };
 }

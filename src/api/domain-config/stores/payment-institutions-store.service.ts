@@ -3,12 +3,14 @@ import { catchError, map, of, shareReplay } from 'rxjs';
 import { Injectable, inject } from '@angular/core';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
-import { Repository, VersionedObject } from '@vality/domain-proto/domain_config_v2';
+import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, fetchAll, observableResource } from '@vality/matez';
+
+import { ThriftRepositoryService } from '~/api/services';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentInstitutionsStoreService {
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(ThriftRepositoryService);
     private log = inject(NotifyLogService);
 
     resource = observableResource({

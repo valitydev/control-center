@@ -3,19 +3,17 @@ import { map } from 'rxjs';
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
-import {
-    LimitedVersionedObject,
-    Repository,
-    VersionedObject,
-} from '@vality/domain-proto/domain_config_v2';
+import { LimitedVersionedObject, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { ObservableResource, fetchAll, observableResource } from '@vality/matez';
 import { getUnionKey, getUnionValue } from '@vality/ng-thrift';
+
+import { ThriftRepositoryService } from '~/api/services';
 
 import { createObjectHash } from '../utils/create-object-hash';
 
 @Injectable({ providedIn: 'root' })
 export class DomainObjectsStoreService {
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(ThriftRepositoryService);
     private injector = inject(Injector);
 
     private limitedObjects = new Map<

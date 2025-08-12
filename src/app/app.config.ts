@@ -18,29 +18,15 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
 
-import {
-    AuthorManagement,
-    Repository,
-    RepositoryClient,
-} from '@vality/domain-proto/domain_config_v2';
-import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
-import { DominatorService } from '@vality/dominator-proto/dominator';
-import { Management as DepositManagement } from '@vality/fistful-proto/deposit';
-import { FistfulStatistics } from '@vality/fistful-proto/fistful_stat';
-import { Management as SourceManagement } from '@vality/fistful-proto/source';
-import { Management as WithdrawalManagement } from '@vality/fistful-proto/withdrawal';
-import { Automaton } from '@vality/machinegun-proto/state_processing';
-import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { provideMonacoEditor } from '@vality/ng-monaco-editor';
-import { RepairManagement } from '@vality/repairer-proto/repairer';
-import { AccountService } from '@vality/scrooge-proto/account_balance';
 
+import { provideThriftServices } from '~/api/services';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
 import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
-import { parseThriftError, provideThriftServices } from '~/utils';
+import { parseThriftError } from '~/utils';
 
 import { routes } from './app.routes';
 import {
@@ -88,22 +74,7 @@ export const appConfig: ApplicationConfig = {
         },
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
         MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
-        provideThriftServices([
-            { service: RepairManagement, name: 'RepairManagement' },
-            { service: AccountService, name: 'Scrooge' },
-            { service: MerchantStatisticsService, name: 'MerchantStatistics' },
-            { service: DominatorService, name: 'Dominator' },
-            { service: Automaton, name: 'Automaton' },
-            { service: Invoicing, name: 'Invoicing' },
-            { service: PartyManagement, name: 'PartyManagement' },
-            { service: Repository, name: 'DMT' },
-            { service: RepositoryClient, name: 'DMTClient' },
-            { service: AuthorManagement, name: 'DMTAuthor' },
-            { service: DepositManagement, name: 'DepositManagement' },
-            { service: FistfulStatistics, name: 'FistfulStatistics' },
-            { service: WithdrawalManagement, name: 'WithdrawalManagement' },
-            { service: SourceManagement, name: 'SourceManagement' },
-        ]),
+        provideThriftServices(),
         provideMonacoEditor(),
         provideAppInitializer(() => {
             const iconRegistry = inject(MatIconRegistry);
