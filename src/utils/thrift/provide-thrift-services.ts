@@ -1,3 +1,7 @@
+import Keycloak from 'keycloak-js';
+import { isObject } from 'lodash-es';
+import { combineLatest, map } from 'rxjs';
+
 import {
     EnvironmentProviders,
     FactoryProvider,
@@ -6,18 +10,13 @@ import {
     isDevMode,
     makeEnvironmentProviders,
 } from '@angular/core';
+
 import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
-import Keycloak from 'keycloak-js';
-import { isObject } from 'lodash-es';
-import { combineLatest, map } from 'rxjs';
 
-import {
-    KeycloakUserService,
-    createRequestWachterHeaders,
-    createWachterHeaders,
-} from '../../app/shared/services';
-import { ConfigService } from '../../services';
+import { ConfigService, KeycloakUserService } from '~/services';
+
+import { createRequestWachterHeaders, createWachterHeaders } from './create-wachter-headers';
 
 export const LOGGING = {
     fullLogging: isDevMode(),

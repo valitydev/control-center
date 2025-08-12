@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash-es';
 import { Observable, combineLatest, of, scan, switchMap, timer } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { Value } from '../../value';
@@ -34,6 +34,7 @@ function getValue<T extends object>(
 
 function toScannedValue(src$: Observable<Value>) {
     return src$.pipe(
+        catchError((error) => of({ error })),
         shareReplay({
             bufferSize: 1,
             refCount: true,

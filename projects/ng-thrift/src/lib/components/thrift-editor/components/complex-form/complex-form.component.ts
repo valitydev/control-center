@@ -1,3 +1,5 @@
+import { merge } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, DestroyRef, Input, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -12,6 +14,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+
 import {
     FormComponentSuperclass,
     PipesModule,
@@ -20,7 +23,6 @@ import {
     getValueChanges,
 } from '@vality/matez';
 import { ListType, MapType, SetType } from '@vality/thrift-ts';
-import { merge } from 'rxjs';
 
 import { ThriftData } from '../../../../models';
 import { ThriftPipesModule } from '../../../../pipes';

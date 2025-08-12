@@ -1,3 +1,27 @@
+import {
+    BehaviorSubject,
+    Observable,
+    Subject,
+    combineLatest,
+    debounceTime,
+    defer,
+    first,
+    forkJoin,
+    merge,
+    switchMap,
+    take,
+    tap,
+} from 'rxjs';
+import {
+    delay,
+    distinctUntilChanged,
+    filter,
+    map,
+    share,
+    shareReplay,
+    startWith,
+} from 'rxjs/operators';
+
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
     ChangeDetectionStrategy,
@@ -22,29 +46,6 @@ import {
 import { outputFromObservable, takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatRow, MatTable } from '@angular/material/table';
-import {
-    BehaviorSubject,
-    Observable,
-    Subject,
-    combineLatest,
-    debounceTime,
-    defer,
-    first,
-    forkJoin,
-    merge,
-    switchMap,
-    take,
-    tap,
-} from 'rxjs';
-import {
-    delay,
-    distinctUntilChanged,
-    filter,
-    map,
-    share,
-    shareReplay,
-    startWith,
-} from 'rxjs/operators';
 
 import { ArrayAttributeTransform, arrayAttribute, createCsv, downloadFile } from '../../utils';
 

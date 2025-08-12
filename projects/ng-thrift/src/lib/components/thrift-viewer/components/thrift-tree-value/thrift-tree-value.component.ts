@@ -1,6 +1,8 @@
-import { Component, computed, input } from '@angular/core';
-import { Value, ValueComponent } from '@vality/matez';
 import yaml from 'yaml';
+
+import { Component, computed, input } from '@angular/core';
+
+import { Value, ValueComponent } from '@vality/matez';
 
 import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-result';
 

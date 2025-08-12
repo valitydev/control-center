@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+
 import { observableResource } from '@vality/matez';
 
 import { AppConfig } from './types/app-config';

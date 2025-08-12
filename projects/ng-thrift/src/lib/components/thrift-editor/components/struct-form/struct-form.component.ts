@@ -1,3 +1,8 @@
+import isNil from 'lodash-es/isNil';
+import omitBy from 'lodash-es/omitBy';
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -10,6 +15,7 @@ import {
     ValidatorFn,
 } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import {
     ComponentChanges,
     FormComponentSuperclass,
@@ -18,10 +24,6 @@ import {
     getValueChanges,
 } from '@vality/matez';
 import { Field } from '@vality/thrift-ts';
-import isNil from 'lodash-es/isNil';
-import omitBy from 'lodash-es/omitBy';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { ThriftData } from '../../../../models';
 import { isRequiredField } from '../../../../utils';

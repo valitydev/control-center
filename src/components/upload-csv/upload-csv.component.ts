@@ -1,3 +1,7 @@
+import startCase from 'lodash-es/startCase';
+import { BehaviorSubject, combineLatest, merge } from 'rxjs';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -15,6 +19,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+
 import {
     Column,
     FileUploadModule,
@@ -27,9 +32,6 @@ import {
     parseCsv,
     unifyCsvItems,
 } from '@vality/matez';
-import startCase from 'lodash-es/startCase';
-import { BehaviorSubject, combineLatest, merge } from 'rxjs';
-import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 const DEFAULT_DELIMITER = ';';
 

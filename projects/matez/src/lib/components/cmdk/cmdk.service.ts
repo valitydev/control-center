@@ -1,7 +1,8 @@
+import { Subject, distinctUntilChanged, of, shareReplay, switchMap } from 'rxjs';
+
 import { DestroyRef, Injectable, Injector, OnDestroy, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject, distinctUntilChanged, of, shareReplay, switchMap } from 'rxjs';
 
 import { CmdkComponent } from './cmdk.component';
 import { CmdkOptions } from './types/cmdk-options';

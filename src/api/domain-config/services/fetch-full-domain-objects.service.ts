@@ -1,11 +1,13 @@
+import { catchError, map, of } from 'rxjs';
+
 import { Injectable, inject } from '@angular/core';
+
 import {
     Repository,
     SearchRequestParams,
     VersionedObject,
 } from '@vality/domain-proto/domain_config_v2';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
-import { catchError, map, of } from 'rxjs';
 
 type FetchParams = Partial<Omit<SearchRequestParams, 'continuation_token' | 'limit'>>;
 

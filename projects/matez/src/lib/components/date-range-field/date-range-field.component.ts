@@ -1,8 +1,9 @@
+import { enGB } from 'date-fns/locale';
+
 import { Component, Input, booleanAttribute, inject } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DateFnsAdapter, MAT_DATE_FNS_FORMATS } from '@angular/material-date-fns-adapter';
-import { enGB } from 'date-fns/locale';
 
 import { FormGroupSuperclass, createControlProviders } from '../../utils';
 

@@ -1,3 +1,6 @@
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
+
 import {
     DestroyRef,
     Directive,
@@ -9,8 +12,6 @@ import {
     input,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { SPACES } from '../components/table/utils/normalize-string';
 

@@ -1,5 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
 
 import { ThriftData } from '../../../../models';

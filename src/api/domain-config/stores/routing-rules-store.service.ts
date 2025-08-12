@@ -1,8 +1,10 @@
+import { catchError, first, map, of, shareReplay, switchMap } from 'rxjs';
+
 import { Injectable, inject } from '@angular/core';
+
 import { DomainObjectType, RoutingRulesetRef } from '@vality/domain-proto/domain';
 import { Operation, Repository, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, fetchAll, observableResource } from '@vality/matez';
-import { catchError, first, map, of, shareReplay, switchMap } from 'rxjs';
 
 import { DomainService } from '../services';
 

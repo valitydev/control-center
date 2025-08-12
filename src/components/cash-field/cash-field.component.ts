@@ -1,3 +1,7 @@
+import isNil from 'lodash-es/isNil';
+import { combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
+
 import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
     Component,
@@ -13,6 +17,7 @@ import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@
 import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { InputMaskModule, createMask } from '@ngneat/input-mask';
+
 import { CurrencyObject } from '@vality/domain-proto/domain';
 import {
     FormComponentSuperclass,
@@ -24,11 +29,8 @@ import {
     toMajorByExponent,
     toMinorByExponent,
 } from '@vality/matez';
-import isNil from 'lodash-es/isNil';
-import { combineLatest } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
 
-import { CurrenciesStoreService } from '../../api/domain-config';
+import { CurrenciesStoreService } from '~/api/domain-config';
 
 export interface Cash {
     amount: number;

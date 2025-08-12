@@ -7,8 +7,17 @@
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "paths": {
-            "@vality/matez": ["./projects/matez/src/public-api.ts"],
-            "@vality/ng-thrift": ["./projects/ng-thrift/src/public-api.ts"]
+            "~/api/*": ["./src/api/*"],
+            "~/components/*": ["./src/components/*"],
+            "~/services/*": ["./src/services/*"],
+            "~/utils/*": ["./src/utils/*"],
+            "~/styles/*": ["./src/styles/*"],
+
+            "~/services": ["./src/services"],
+            "~/utils": ["./src/utils"],
+            "~/styles": ["./src/styles"],
+
+            "@vality/*": ["./projects/*/src/public-api.ts"]
         },
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,

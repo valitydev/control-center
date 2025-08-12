@@ -1,23 +1,30 @@
+import { catchError, map, of } from 'rxjs';
+
 import { Injectable, inject } from '@angular/core';
+
 import {
     LimitedVersionedObject,
     Repository,
     SearchRequestParams,
 } from '@vality/domain-proto/domain_config_v2';
-import { FetchOptions, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
-import { catchError, map, of } from 'rxjs';
+import {
+    NotifyLogService,
+    PagedObservableResourceLoaderOptions,
+    PagedObservableResourceSuperclass,
+    clean,
+} from '@vality/matez';
 
 type FetchParams = Partial<Omit<SearchRequestParams, 'continuation_token' | 'limit'>>;
 
 @Injectable()
-export class FetchDomainObjectsService extends FetchSuperclass<
+export class FetchDomainObjectsService extends PagedObservableResourceSuperclass<
     LimitedVersionedObject,
     FetchParams
 > {
     private repositoryService = inject(Repository);
     private log = inject(NotifyLogService);
 
-    fetch(params: FetchParams, options: FetchOptions) {
+    loader(params: FetchParams, options: PagedObservableResourceLoaderOptions) {
         return this.repositoryService
             .SearchObjects(
                 clean({

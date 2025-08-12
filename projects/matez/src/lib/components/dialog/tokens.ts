@@ -1,6 +1,7 @@
+import { ValuesType } from 'utility-types';
+
 import { InjectionToken } from '@angular/core';
 import { MatDialogConfig } from '@angular/material/dialog';
-import { ValuesType } from 'utility-types';
 
 export type DialogConfig = Record<'small' | 'medium' | 'large', MatDialogConfig<undefined>>;
 

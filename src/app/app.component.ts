@@ -1,3 +1,6 @@
+import Keycloak from 'keycloak-js';
+import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -8,6 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterOutlet } from '@angular/router';
+
 import { Repository } from '@vality/domain-proto/domain_config_v2';
 import {
     BaseLink,
@@ -18,25 +22,23 @@ import {
     ThemeService,
     getUrlPath,
 } from '@vality/matez';
-import Keycloak from 'keycloak-js';
-import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
-import { LOGGING } from '../utils';
+import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info';
+import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
+import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
+import { KeycloakUserService, Services } from '~/services';
+import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';
-import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './sections/deposits/routing-config';
-import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './sections/machines/routing-config';
-import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './sections/payments/routing-config';
-import { SHOPS_ROUTING_CONFIG } from './sections/shops';
-import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sections/sources/routing-config';
-import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './sections/terminals';
-import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing-config';
-import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
-import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
-import { SidenavInfoModule, SidenavInfoService } from './shared/components/sidenav-info';
-import { getLimitedDomainObjectDetails } from './shared/components/thrift-api-crud';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2';
-import { KeycloakUserService, Services } from './shared/services';
+import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './deposits/routing-config';
+import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './machines/routing-config';
+import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './payments/routing-config';
+import { SHOPS_ROUTING_CONFIG } from './shops';
+import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sources/routing-config';
+import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './terminals';
+import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './terms/routing-config';
+import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
+import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './withdrawals/routing-config';
 
 function isHidden(services: Services[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);

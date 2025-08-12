@@ -1,6 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
 import isNil from 'lodash-es/isNil';
 import { ValuesType } from 'utility-types';
+
+import { Pipe, PipeTransform } from '@angular/core';
 
 import { getEnumKey } from '../utils/enum';
 

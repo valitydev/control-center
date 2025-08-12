@@ -61,6 +61,8 @@
                                         [vHighlightText]="valueText"
                                         vHighlight
                                     ></span>
+                                } @else if (v.error) {
+                                    <mat-icon [matTooltip]="v.error | json">error</mat-icon>
                                 } @else if (emptySymbol) {
                                     <span class="text-[var(--mat-sys-outline)]">{{
                                         emptySymbol

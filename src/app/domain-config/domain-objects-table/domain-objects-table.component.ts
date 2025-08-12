@@ -1,8 +1,13 @@
+import startCase from 'lodash-es/startCase';
+import { combineLatest, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Injector, OnInit, inject, model, output } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+
 import { DomainObject, DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
@@ -17,17 +22,14 @@ import {
     getValueChanges,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
-import { combineLatest, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
-import { FetchDomainObjectsService } from '../../../api/domain-config';
-import { SidenavInfoService } from '../../shared/components/sidenav-info';
-import { getReferenceId } from '../../shared/components/thrift-api-crud';
+import { FetchDomainObjectsService } from '~/api/domain-config';
+import { SidenavInfoService } from '~/components/sidenav-info';
+import { getReferenceId } from '~/components/thrift-api-crud';
 import {
     DomainObjectCardComponent,
     DomainObjectService,
-} from '../../shared/components/thrift-api-crud/domain2';
+} from '~/components/thrift-api-crud/domain';
 
 @Component({
     selector: 'cc-domain-objects-table',

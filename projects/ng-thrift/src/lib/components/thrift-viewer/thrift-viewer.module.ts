@@ -4,8 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
+
 import { ContentLoadingComponent } from '@vality/matez';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { MonacoEditorModule } from '@vality/ng-monaco-editor';
 
 import { ThriftMonacoComponent } from '../thrift-monaco';
 

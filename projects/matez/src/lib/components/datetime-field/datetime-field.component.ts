@@ -1,11 +1,12 @@
+import { format, isValid } from 'date-fns';
+import { enGB } from 'date-fns/locale';
+
 import { Component, Input, booleanAttribute } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateFnsAdapter, MAT_DATE_FNS_FORMATS } from '@angular/material-date-fns-adapter';
 import { FormComponentSuperclass } from '@s-libs/ng-core';
-import { format, isValid } from 'date-fns';
-import { enGB } from 'date-fns/locale';
 
 import {
     createControlProviders,

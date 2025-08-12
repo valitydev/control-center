@@ -1,3 +1,5 @@
+import { filter } from 'rxjs/operators';
+
 import {
     DestroyRef,
     Directive,
@@ -9,7 +11,6 @@ import {
     output,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter } from 'rxjs/operators';
 
 import { createIntersectionObserver } from '../utils/create-intersection-observer';
 

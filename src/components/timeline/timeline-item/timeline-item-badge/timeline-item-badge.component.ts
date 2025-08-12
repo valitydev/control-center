@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
+
 import { UnionEnum } from '@vality/matez';
 
-import { Color, StatusColor } from '../../../../styles/consts';
+import { Color, StatusColor } from '~/styles/consts';
 
 @Component({
     selector: 'cc-timeline-item-badge',

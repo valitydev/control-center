@@ -1,3 +1,5 @@
+import { provideKeycloak } from 'keycloak-angular';
+
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
@@ -15,6 +17,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
+
 import {
     AuthorManagement,
     Repository,
@@ -29,18 +32,17 @@ import { Management as WithdrawalManagement } from '@vality/fistful-proto/withdr
 import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
-import { provideMonacoEditor } from '@vality/ng-thrift';
+import { provideMonacoEditor } from '@vality/ng-monaco-editor';
 import { RepairManagement } from '@vality/repairer-proto/repairer';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
-import { provideKeycloak } from 'keycloak-angular';
 
-import { parseThriftError, provideThriftServices } from '../utils';
+import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
+import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
+import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
+import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
+import { parseThriftError, provideThriftServices } from '~/utils';
 
 import { routes } from './app.routes';
-import { CandidateCardComponent } from './shared/components/candidate-card/candidate-card.component';
-import { SIDENAV_INFO_COMPONENTS } from './shared/components/sidenav-info';
-import { TerminalDelegatesCardComponent } from './shared/components/terminal-delegates-card/terminal-delegates-card.component';
-import { DomainObjectCardComponent } from './shared/components/thrift-api-crud/domain2/domain-object-card/domain-object-card.component';
 import {
     DATE_RANGE_DAYS,
     DEBOUNCE_TIME_MS,
@@ -102,14 +104,7 @@ export const appConfig: ApplicationConfig = {
             { service: WithdrawalManagement, name: 'WithdrawalManagement' },
             { service: SourceManagement, name: 'SourceManagement' },
         ]),
-        provideMonacoEditor({
-            requireConfig: {
-                paths: {
-                    // TODO: https://github.com/microsoft/monaco-editor/issues/4778
-                    vs: window.location.origin + '/assets/monaco/min/vs',
-                },
-            },
-        }),
+        provideMonacoEditor(),
         provideAppInitializer(() => {
             const iconRegistry = inject(MatIconRegistry);
             iconRegistry.setDefaultFontSetClass('material-symbols-outlined');

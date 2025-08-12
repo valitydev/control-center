@@ -1,5 +1,6 @@
-import { JsonAST, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 import { isObject } from 'lodash-es';
+
+import { JsonAST, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 
 import { ThriftData } from '../../../../models';
 import { getThriftEntries } from '../../../../utils';

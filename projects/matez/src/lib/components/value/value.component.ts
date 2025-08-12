@@ -1,3 +1,6 @@
+import { Observable, combineLatest, isObservable, of, switchMap } from 'rxjs';
+import { filter, first, map, shareReplay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
@@ -15,8 +18,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { Observable, combineLatest, isObservable, of, switchMap } from 'rxjs';
-import { filter, first, map, shareReplay } from 'rxjs/operators';
 
 import { HighlightDirective } from '../../directives';
 import { Nil } from '../../utils';

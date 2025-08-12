@@ -1,7 +1,8 @@
-import { Injector, inject, runInInjectionContext } from '@angular/core';
-import { Sort } from '@angular/material/sort';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { Injector, inject, runInInjectionContext } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 
 import { compareDifferentTypes } from '../../../utils';
 import { valueToString } from '../../value/utils/value-to-string';

@@ -1,9 +1,10 @@
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+
 import { DestroyRef, EventEmitter, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
 
 import {
     TreeData,

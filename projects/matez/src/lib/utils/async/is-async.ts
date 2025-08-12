@@ -1,6 +1,7 @@
-import { Signal, isSignal } from '@angular/core';
 import { Observable, isObservable } from 'rxjs';
 import { isPromise } from 'rxjs/internal/util/isPromise';
+
+import { Signal, isSignal } from '@angular/core';
 
 export type Async<T> = Observable<T> | Promise<T> | Signal<T>;
 export type PossiblyAsync<T> = Async<T> | T;

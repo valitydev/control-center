@@ -1,3 +1,6 @@
+import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
+import { first, map, shareReplay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -10,6 +13,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+
 import {
     ComponentChanges,
     DatetimeFieldModule,
@@ -17,8 +21,6 @@ import {
     createControlProviders,
 } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
-import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
-import { first, map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData, getAliases } from '../../../../models';
 import { getValueTypeTitle } from '../../../../utils';

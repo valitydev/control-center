@@ -1,7 +1,8 @@
-import { Injectable, InjectionToken, inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { capitalize, isObject } from 'lodash-es';
 import { Observer, first, timeout } from 'rxjs';
+
+import { Injectable, InjectionToken, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from '../../utils';
 

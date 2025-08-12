@@ -1,7 +1,8 @@
+import { distinctUntilChanged, filter, map, shareReplay, startWith } from 'rxjs/operators';
+
 import { Injectable, computed, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { distinctUntilChanged, filter, map, shareReplay, startWith } from 'rxjs/operators';
 
 export function getUrlPath(url: string): string[] {
     return url?.split('/')?.slice(1) ?? [];

@@ -1,7 +1,9 @@
-import { Injectable, inject } from '@angular/core';
-import { PartyID, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
 import { cloneDeep } from 'lodash-es';
 import { MemoizeExpiring } from 'typescript-memoize';
+
+import { Injectable, inject } from '@angular/core';
+
+import { PartyID, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
 
 import { DomainObjectsStoreService, DomainService } from '../../domain-config';
 

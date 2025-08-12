@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
 import { map, shareReplay } from 'rxjs/operators';
+
+import { Component, Input } from '@angular/core';
 
 import {
     FormControlSuperclass,

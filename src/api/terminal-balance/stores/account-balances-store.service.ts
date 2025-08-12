@@ -1,8 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { AccountBalance, AccountService } from '@vality/scrooge-proto/account_balance';
 import isNil from 'lodash-es/isNil';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
+
+import { Injectable, inject } from '@angular/core';
+
+import { AccountBalance, AccountService } from '@vality/scrooge-proto/account_balance';
 
 @Injectable({
     providedIn: 'root',

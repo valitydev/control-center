@@ -1,6 +1,7 @@
-import { Injector, inject, runInInjectionContext } from '@angular/core';
 import { combineLatest, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { Injector, inject, runInInjectionContext } from '@angular/core';
 
 import { PossiblyAsync, getPossiblyAsyncObservable } from '../../../utils';
 import { Value } from '../../value';

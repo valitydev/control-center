@@ -1,8 +1,12 @@
+import startCase from 'lodash-es/startCase';
+import { map } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
+
 import { DomainObjectType, PartyConfigObject } from '@vality/domain-proto/domain';
 import {
     Column,
@@ -13,11 +17,9 @@ import {
     createMenuColumn,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
-import startCase from 'lodash-es/startCase';
-import { map } from 'rxjs/operators';
 
-import { FetchFullDomainObjectsService } from '../../api/domain-config';
-import { PageLayoutModule } from '../shared';
+import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { PageLayoutModule } from '~/components/page-layout';
 
 @Component({
     templateUrl: 'parties.component.html',

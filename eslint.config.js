@@ -4,12 +4,14 @@ const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
 const importPlugin = require('eslint-plugin-import');
 const unusedImportsPlugin = require('eslint-plugin-unused-imports');
+const pathsPlugin = require('eslint-plugin-paths');
 
-function getImportOrderConfig(internalPatterns = []) {
+function getImportOrderConfig(internalPatterns = ['~/**']) {
     return {
         files: ['**/*.ts'],
         plugins: {
             import: importPlugin,
+            paths: pathsPlugin,
         },
         rules: {
             'sort-imports': [
@@ -29,16 +31,46 @@ function getImportOrderConfig(internalPatterns = []) {
                         ['index', 'sibling'],
                         'object',
                     ],
-                    pathGroups: internalPatterns.map((pattern) => ({
-                        pattern,
-                        group: 'internal',
-                    })),
+                    pathGroups: [
+                        {
+                            pattern: '@vality/**',
+                            group: 'type',
+                            position: 'before',
+                        },
+                        {
+                            pattern: '@*/**',
+                            group: 'external',
+                            position: 'after',
+                        },
+                        ...internalPatterns.map((pattern) => ({
+                            pattern,
+                            group: 'internal',
+                        })),
+                    ],
                     pathGroupsExcludedImportTypes: ['builtin'],
                     'newlines-between': 'always',
                     alphabetize: {
                         order: 'asc',
                         caseInsensitive: true,
                     },
+                },
+            ],
+            'paths/alias': 'error',
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: [
+                                '~/utils/**',
+                                '~/services/**',
+                                // TODO:
+                                // '~/styles/**',
+                                //  '~/components/*/**',
+                            ],
+                            message: 'Import from index: ~/utils',
+                        },
+                    ],
                 },
             ],
         },

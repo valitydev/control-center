@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, booleanAttribute } from '@angular/core';
 import { BehaviorSubject, merge } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+
+import { Component, Input, OnChanges, booleanAttribute } from '@angular/core';
 
 import { ComponentChanges, FormControlSuperclass, createControlProviders } from '../../../utils';
 import { Option } from '../types';

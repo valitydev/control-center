@@ -1,3 +1,6 @@
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
     Component,
@@ -13,8 +16,6 @@ import {
     signal,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { DialogService } from '../dialog';
 

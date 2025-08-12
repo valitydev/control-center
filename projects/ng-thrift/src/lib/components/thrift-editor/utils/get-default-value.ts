@@ -1,6 +1,7 @@
+import { ValuesType } from 'utility-types';
+
 import { ValueType } from '@vality/thrift-ts';
 import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
-import { ValuesType } from 'utility-types';
 
 import { ThriftData, TypeGroup } from '../../../models';
 import { ThriftAstMetadata } from '../../../types';

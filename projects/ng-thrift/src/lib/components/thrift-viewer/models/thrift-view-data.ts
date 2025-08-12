@@ -1,9 +1,10 @@
-import { isEmpty } from '@vality/matez';
-import { Enum, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 import isNil from 'lodash-es/isNil';
 import isObject from 'lodash-es/isObject';
 import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
+
+import { isEmpty } from '@vality/matez';
+import { Enum, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
 
 import { ThriftData } from '../../../models';
 import { getThriftEntries } from '../../../utils';

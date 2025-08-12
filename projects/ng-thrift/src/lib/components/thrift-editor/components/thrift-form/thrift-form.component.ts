@@ -1,3 +1,6 @@
+import { BehaviorSubject, Observable, defer, switchMap } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -11,10 +14,9 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validator } from '@angular/forms';
+
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
 import { Field, ValueType } from '@vality/thrift-ts';
-import { BehaviorSubject, Observable, defer, switchMap } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 
 import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';

@@ -1,3 +1,6 @@
+import { combineLatest } from 'rxjs';
+import { map, shareReplay, startWith } from 'rxjs/operators';
+
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
 import {
@@ -14,8 +17,6 @@ import {
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
-import { combineLatest } from 'rxjs';
-import { map, shareReplay, startWith } from 'rxjs/operators';
 
 import { ArrayAttributeTransform, ComponentChanges, arrayAttribute } from '../../../utils';
 
