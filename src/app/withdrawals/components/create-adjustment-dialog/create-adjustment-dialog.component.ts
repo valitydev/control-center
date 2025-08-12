@@ -6,10 +6,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
-import { Management } from '@vality/fistful-proto/withdrawal';
 import { AdjustmentParams } from '@vality/fistful-proto/withdrawal_adjustment';
 import { DialogSuperclass, NotifyLogService, forkJoinToResult } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+
+import { ThriftWithdrawalManagementService } from '~/api/services';
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',
@@ -19,7 +20,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     CreateAdjustmentDialogComponent,
     { withdrawals: StatWithdrawal[] }
 > {
-    private managementService = inject(Management);
+    private withdrawalManagementService = inject(ThriftWithdrawalManagementService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     control = new FormControl<Partial<AdjustmentParams>>(
@@ -44,7 +45,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     createAdjustment() {
         forkJoinToResult(
             this.dialogData.withdrawals.map((w) =>
-                this.managementService.CreateAdjustment(w.id, {
+                this.withdrawalManagementService.CreateAdjustment(w.id, {
                     ...this.control.value,
                     id: short().uuid(),
                 } as AdjustmentParams),

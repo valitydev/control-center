@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { Management } from '@vality/fistful-proto/source';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
+
+import { ThriftSourceManagementService } from '~/api/services';
 
 @Component({
     selector: 'cc-create-source',
@@ -10,7 +11,7 @@ import { DialogSuperclass, NotifyLogService } from '@vality/matez';
     standalone: false,
 })
 export class CreateSourceComponent extends DialogSuperclass<void> {
-    private sourceManagementService = inject(Management);
+    private sourceManagementService = inject(ThriftSourceManagementService);
     private log = inject(NotifyLogService);
     control = new FormControl();
 
