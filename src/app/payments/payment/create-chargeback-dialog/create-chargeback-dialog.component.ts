@@ -6,9 +6,10 @@ import { FormControl } from '@angular/forms';
 
 import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
-import { InvoicePaymentChargebackParams, Invoicing } from '@vality/domain-proto/payment_processing';
+import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 
+import { ThriftInvoicingService } from '~/api/services';
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 
 @Component({
@@ -21,7 +22,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     { invoiceID: string; paymentID: string },
     InvoicePaymentChargeback
 > {
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(ThriftInvoicingService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);

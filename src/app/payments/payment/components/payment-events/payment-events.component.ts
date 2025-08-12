@@ -6,9 +6,9 @@ import { Component, inject } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 
-import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
+import { ThriftInvoicingService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 import { DomainThriftViewerComponent } from '~/components/thrift-api-crud';
 import { TimelineModule } from '~/components/timeline';
@@ -35,7 +35,7 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
 })
 export class PaymentEventsComponent {
     private paymentDetailsService = inject(PaymentDetailsService);
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(ThriftInvoicingService);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     events$ = this.payment$.pipe(

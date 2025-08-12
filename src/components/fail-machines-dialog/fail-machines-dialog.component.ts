@@ -8,7 +8,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { Automaton, type base } from '@vality/machinegun-proto/state_processing';
+import { type base } from '@vality/machinegun-proto/state_processing';
 import {
     DialogModule,
     DialogSuperclass,
@@ -22,6 +22,7 @@ import {
 } from '@vality/matez';
 
 import { FAILS_MACHINE_VALUE, Namespace } from '~/api/machinegun';
+import { ThriftAutomatonService } from '~/api/services';
 
 export enum Type {
     Invoice,
@@ -42,7 +43,7 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
     { ids: base.ID[]; type: Type },
     { errors?: ForkJoinErrorResult<base.ID>[] }
 > {
-    private automatonService = inject(Automaton);
+    private automatonService = inject(ThriftAutomatonService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     progress$ = new BehaviorSubject(0);

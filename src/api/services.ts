@@ -72,9 +72,9 @@ export const {
         Scrooge: ThriftAccountService,
         MerchantStatistics: ThriftMerchantStatisticsService,
         Dominator: ThriftDominatorService,
-
         Automaton: ThriftAutomatonService,
         Invoicing: ThriftInvoicingService,
+
         PartyManagement: ThriftPartyManagementService,
         DepositManagement: ThriftDepositManagementService,
         FistfulStatistics: ThriftFistfulStatisticsService,

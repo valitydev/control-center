@@ -4,13 +4,14 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
-import { Invoicing } from '@vality/domain-proto/payment_processing';
 import {
     DEFAULT_DIALOG_CONFIG,
     DialogSuperclass,
     NotifyLogService,
     forkJoinToResult,
 } from '@vality/matez';
+
+import { ThriftInvoicingService } from '~/api/services';
 
 import { CSV_CHARGEBACK_PROPS, CsvChargeback } from './types/csv-chargeback';
 import { getCreateChargebackArgs } from './utils/get-create-chargeback-args';
@@ -25,7 +26,7 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
     void,
     InvoicePaymentChargeback[]
 > {
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(ThriftInvoicingService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     static override defaultDialogConfig = DEFAULT_DIALOG_CONFIG.large;

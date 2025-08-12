@@ -5,7 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 
 import { metadata$ } from '@vality/domain-proto';
-import { InvoicePaymentAdjustmentParams, Invoicing } from '@vality/domain-proto/payment_processing';
+import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogSuperclass,
@@ -15,6 +15,7 @@ import {
     splitResultsErrors,
 } from '@vality/matez';
 
+import { ThriftInvoicingService } from '~/api/services';
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 
 @Component({
@@ -27,7 +28,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     { payments: StatPayment[] },
     { errors?: ForkJoinErrorResult<StatPayment>[] }
 > {
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(ThriftInvoicingService);
     private log = inject(NotifyLogService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);
