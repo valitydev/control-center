@@ -5,7 +5,7 @@ import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 
-import { DepositState, Management } from '@vality/fistful-proto/deposit';
+import { DepositState } from '@vality/fistful-proto/deposit';
 import {
     DEFAULT_DIALOG_CONFIG,
     DialogModule,
@@ -14,6 +14,7 @@ import {
     forkJoinToResult,
 } from '@vality/matez';
 
+import { ThriftDepositManagementService } from '~/api/services';
 import { UploadCsvComponent } from '~/components/upload-csv';
 
 import { CSV_DEPOSIT_PROPS, CsvDeposit } from './types/csv-deposit';
@@ -29,7 +30,7 @@ export class CreateDepositsByFileDialogComponent extends DialogSuperclass<
     void,
     DepositState[]
 > {
-    private depositManagementService = inject(Management);
+    private depositManagementService = inject(ThriftDepositManagementService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     private injector = inject(Injector);
