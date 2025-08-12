@@ -68,6 +68,10 @@ export const {
         DMT: ThriftRepositoryService,
         DMTClient: ThriftRepositoryClientService,
         DMTAuthor: ThriftAuthorManagementService,
+        RepairManagement: ThriftRepairManagementService,
+        Scrooge: ThriftAccountService,
+        MerchantStatistics: ThriftMerchantStatisticsService,
+        Dominator: ThriftDominatorService,
     },
     provideThriftServices,
 } = createThriftServices(SERVICES);

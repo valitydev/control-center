@@ -26,14 +26,9 @@ import {
     getValueChanges,
     isEqualDateRange,
 } from '@vality/matez';
-import {
-    Machine,
-    Namespace,
-    ProviderID,
-    RepairManagement,
-    RepairStatus,
-} from '@vality/repairer-proto/repairer';
+import { Machine, Namespace, ProviderID, RepairStatus } from '@vality/repairer-proto/repairer';
 
+import { ThriftRepairManagementService } from '~/api/services';
 import { SidenavInfoService } from '~/components/sidenav-info/sidenav-info.service';
 import { createDomainObjectColumn } from '~/utils';
 
@@ -63,7 +58,7 @@ export class MachinesComponent implements OnInit {
     private fb = inject(NonNullableFormBuilder);
     private qp = inject<QueryParamsService<Filters>>(QueryParamsService<Filters>);
     private dialogService = inject(DialogService);
-    private repairManagementService = inject(RepairManagement);
+    private repairManagementService = inject(ThriftRepairManagementService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     private dateRangeDays = inject<number>(DATE_RANGE_DAYS);

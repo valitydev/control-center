@@ -4,12 +4,10 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import {
-    MerchantStatisticsService,
-    PaymentSearchQuery,
-    StatPayment,
-} from '@vality/magista-proto/magista';
+import { PaymentSearchQuery, StatPayment } from '@vality/magista-proto/magista';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService, clean } from '@vality/matez';
+
+import { ThriftMerchantStatisticsService } from '~/api/services';
 
 function splitInvoicePaymentId(invoicePaymentId: string) {
     const [invoiceId, paymentId] = invoicePaymentId.split('.');
@@ -20,7 +18,7 @@ function splitInvoicePaymentId(invoicePaymentId: string) {
     providedIn: 'root',
 })
 export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSearchQuery> {
-    private merchantStatisticsService = inject(MerchantStatisticsService);
+    private merchantStatisticsService = inject(ThriftMerchantStatisticsService);
     private log = inject(NotifyLogService);
 
     protected fetch(

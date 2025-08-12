@@ -2,18 +2,16 @@ import { map } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import {
-    DominatorService,
-    type TerminalSearchQuery,
-    type TerminalTermSet,
-} from '@vality/dominator-proto/dominator';
+import { type TerminalSearchQuery, type TerminalTermSet } from '@vality/dominator-proto/dominator';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean, handleError } from '@vality/matez';
+
+import { ThriftDominatorService } from '~/api/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class TerminalsTermsService extends FetchSuperclass<TerminalTermSet, TerminalSearchQuery> {
-    private dominatorService = inject(DominatorService);
+    private dominatorService = inject(ThriftDominatorService);
     private log = inject(NotifyLogService);
 
     protected fetch(params: TerminalSearchQuery, options: FetchOptions) {

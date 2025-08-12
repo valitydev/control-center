@@ -17,10 +17,10 @@ import { metadata$ } from '@vality/repairer-proto';
 import {
     Machine,
     RepairInvoicesRequest,
-    RepairManagement,
     RepairWithdrawalsRequest,
 } from '@vality/repairer-proto/repairer';
 
+import { ThriftRepairManagementService } from '~/api/services';
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 
 enum Types {
@@ -41,7 +41,7 @@ export class RepairByScenarioDialogComponent
     extends DialogSuperclass<RepairByScenarioDialogComponent, { machines: Machine[] }>
     implements OnInit
 {
-    private repairManagementService = inject(RepairManagement);
+    private repairManagementService = inject(ThriftRepairManagementService);
     private log = inject(NotifyLogService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);
