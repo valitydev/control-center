@@ -184,6 +184,14 @@ const createNavLinks = (): Link[] => [
             },
         ],
     },
+    {
+        children: [
+            {
+                label: 'Studio',
+                url: '/studio',
+            },
+        ],
+    },
 ];
 
 @Component({

@@ -56,6 +56,10 @@ export const routes: Routes = [
         loadChildren: () => import('./terms').then((m) => m.Terms),
     },
     {
+        path: 'studio',
+        loadComponent: () => import('./studio').then((m) => m.StudioComponent),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },
