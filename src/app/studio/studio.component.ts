@@ -17,6 +17,8 @@ import { FormArray, NonNullableFormBuilder, ReactiveFormsModule } from '@angular
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import {
@@ -51,6 +53,8 @@ import { inProgressFrom } from '../../../projects/matez/src/lib/utils/operators/
         MatProgressBarModule,
         MatDividerModule,
         MatCardModule,
+        MatListModule,
+        MatIconModule,
     ],
     templateUrl: './studio.component.html',
 })

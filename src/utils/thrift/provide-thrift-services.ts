@@ -19,6 +19,8 @@ export const LOGGING = {
 };
 
 export function parseThriftError<T extends object>(error: unknown) {
+    const traceId = error?.['info']?.headers?.['x-woody-trace-id'];
+
     switch (error?.['name']) {
         case 'ThriftServiceError':
             return {
@@ -32,6 +34,7 @@ export function parseThriftError<T extends object>(error: unknown) {
                 ) as T,
                 error: error?.['error'],
                 wrapper: error,
+                traceId,
             } as const;
         case 'ThriftServiceNotFoundError':
             return {
@@ -39,6 +42,7 @@ export function parseThriftError<T extends object>(error: unknown) {
                 name: String(error?.['name']),
                 message: String(error?.['message']),
                 error,
+                traceId,
             } as const;
         case 'ThriftServiceTimeoutError':
             return {
@@ -46,6 +50,7 @@ export function parseThriftError<T extends object>(error: unknown) {
                 name: String(error?.['name']),
                 message: String(error?.['message']),
                 error,
+                traceId,
             } as const;
         default: {
             if (isObject(error))
@@ -54,12 +59,14 @@ export function parseThriftError<T extends object>(error: unknown) {
                     name: String(error?.['name']),
                     message: String(error?.['message']),
                     error,
+                    traceId,
                 } as const;
             return {
                 type: 'UnknownError',
                 name: String(error),
                 message: String(error),
                 error,
+                traceId,
             } as const;
         }
     }

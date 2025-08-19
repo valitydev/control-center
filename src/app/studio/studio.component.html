@@ -44,7 +44,10 @@
                 matButton="filled"
                 (click)="submit()"
             >
-                Call
+                {{
+                    (studioGroup.get('method').value?.name | ngtValueTypeTitle | titlecase) ||
+                        'Call'
+                }}
             </button>
         </mat-card-actions>
     </mat-card>
@@ -67,7 +70,13 @@
                         [value]="result.data"
                     ></v-thrift-viewer>
                 } @else {
-                    <v-thrift-viewer [value]="(error$ | async).error"></v-thrift-viewer>
+                    @let error = error$ | async;
+                    <div class="flex flex-col gap-4">
+                        <div>Name: {{ error.name }}</div>
+                        <div>Trace ID: {{ error.traceId ?? '-' }}</div>
+                        <mat-divider></mat-divider>
+                        <v-thrift-viewer [value]="(error$ | async).error"></v-thrift-viewer>
+                    </div>
                 }
             </mat-card-content>
         </mat-card>
