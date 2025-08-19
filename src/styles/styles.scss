@@ -12,39 +12,43 @@ $config: (
 
 html,
 body {
-    height: 100%;
     font-family: 'Roboto', sans-serif;
 }
 
 html {
-    color-scheme: light;
     @include mat.theme($config);
     @include mat.form-field-density(-3);
     @include mat.table-density(-2);
+
+    min-height: 100vh;
+    background: linear-gradient(67deg, #eeefff, #fbfbff);
+
+    &:has(body.dark-mode) {
+        background: linear-gradient(67deg, #2a2b3d, #3a3b4d);
+    }
 }
 
 body {
+    color-scheme: light;
     margin: 0;
     color: var(--mat-sys-on-surface);
-    background: linear-gradient(67deg, #eeefff, #fbfbff);
 
     --v-color-success-bg: #16a34a;
     --v-color-pending-bg: #d97706;
     --v-color-success-text: #ffffff;
     --v-color-pending-text: #ffffff;
-}
 
-body.dark-mode {
-    color-scheme: dark;
-    background: linear-gradient(67deg, #2a2b3d, #3a3b4d);
+    &.dark-mode {
+        color-scheme: dark;
 
-    --mat-sys-surface: #242538;
-    --mat-sys-surface-container-low: #202135;
+        --mat-sys-surface: #242538;
+        --mat-sys-surface-container-low: #202135;
 
-    --v-color-success-bg: #2e7d32;
-    --v-color-pending-bg: #f57c00;
-    --v-color-success-text: #e8f5e8;
-    --v-color-pending-text: #fff3e0;
+        --v-color-success-bg: #2e7d32;
+        --v-color-pending-bg: #f57c00;
+        --v-color-success-text: #e8f5e8;
+        --v-color-pending-text: #fff3e0;
+    }
 }
 
 :root {
