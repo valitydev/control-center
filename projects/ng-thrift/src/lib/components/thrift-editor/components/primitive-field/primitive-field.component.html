@@ -55,7 +55,7 @@
 }
 @if (selectedExtensionOption$ | async) {
     <div [class.details_hidden]="!detailsShown()" class="details">
-        <mat-card class="details-card">
+        <mat-card appearance="outlined" class="details-card">
             <mat-card-content>
                 <v-thrift-viewer
                     [value]="(selectedExtensionOption$ | async)?.details"

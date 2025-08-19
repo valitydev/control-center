@@ -1,19 +1,23 @@
 import { BehaviorSubject } from 'rxjs';
 
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
+    DialogModule,
     DialogSuperclass,
     ForkJoinErrorResult,
     NotifyLogService,
     forkJoinToResult,
     splitResultsErrors,
 } from '@vality/matez';
+import { ThriftFormModule } from '@vality/ng-thrift';
 
 import { ThriftInvoicingService } from '~/api/services';
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
@@ -21,7 +25,7 @@ import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-cru
 @Component({
     selector: 'cc-create-payment-adjustment',
     templateUrl: './create-payment-adjustment.component.html',
-    standalone: false,
+    imports: [DialogModule, ThriftFormModule, ReactiveFormsModule, CommonModule, MatButtonModule],
 })
 export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     CreatePaymentAdjustmentComponent,

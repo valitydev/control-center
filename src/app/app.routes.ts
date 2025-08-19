@@ -23,7 +23,13 @@ export const routes: Routes = [
     },
     {
         path: 'payments',
-        loadChildren: () => import('./payments/payments.module').then((m) => m.PaymentsModule),
+        loadComponent: () =>
+            import('./payments/payments.component').then((m) => m.PaymentsComponent),
+    },
+    {
+        path: 'payments',
+        loadChildren: () =>
+            import('./payments/payment/payment.module').then((m) => m.PaymentDetailsModule),
     },
     {
         path: 'deposits',

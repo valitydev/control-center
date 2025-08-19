@@ -23,10 +23,6 @@ html {
     @include mat.table-density(-2);
 }
 
-body.dark-mode {
-    color-scheme: dark;
-}
-
 body {
     margin: 0;
     color: var(--mat-sys-on-surface);
