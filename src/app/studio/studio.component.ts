@@ -15,6 +15,7 @@ import { Component, DestroyRef, Injector, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -24,6 +25,7 @@ import {
     compareDifferentTypes,
     getValueChanges,
     progressTo,
+    setDisabled,
     switchCombineWith,
 } from '@vality/matez';
 import { ThriftEditorModule, ThriftViewerModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
@@ -48,6 +50,7 @@ import { inProgressFrom } from '../../../projects/matez/src/lib/utils/operators/
         ThriftViewerModule,
         MatProgressBarModule,
         MatDividerModule,
+        MatCardModule,
     ],
     templateUrl: './studio.component.html',
 })
@@ -120,12 +123,14 @@ export class StudioComponent implements OnInit {
     );
 
     ngOnInit() {
+        this.studioGroup.get('method').disable();
         this.studioGroup
             .get('service')
             .valueChanges.pipe(takeUntilDestroyed(this.dr))
-            .subscribe(() => {
+            .subscribe((service) => {
                 this.studioGroup.get('method').reset();
                 this.submit$.next(null);
+                setDisabled(this.studioGroup.get('method'), !service);
             });
         this.studioGroup
             .get('method')
