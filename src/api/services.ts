@@ -129,22 +129,22 @@ export const services = [
     },
 ] as const;
 
+export const { services: injectableServices, provideThriftServices } =
+    createThriftServices(services);
+
 export const {
-    services: {
-        DMT: ThriftRepositoryService,
-        DMTClient: ThriftRepositoryClientService,
-        DMTAuthor: ThriftAuthorManagementService,
-        RepairManagement: ThriftRepairManagementService,
-        Scrooge: ThriftAccountService,
-        MerchantStatistics: ThriftMerchantStatisticsService,
-        Dominator: ThriftDominatorService,
-        Automaton: ThriftAutomatonService,
-        Invoicing: ThriftInvoicingService,
-        PartyManagement: ThriftPartyManagementService,
-        DepositManagement: ThriftDepositManagementService,
-        FistfulStatistics: ThriftFistfulStatisticsService,
-        WithdrawalManagement: ThriftWithdrawalManagementService,
-        SourceManagement: ThriftSourceManagementService,
-    },
-    provideThriftServices,
-} = createThriftServices(services);
+    DMT: ThriftRepositoryService,
+    DMTClient: ThriftRepositoryClientService,
+    DMTAuthor: ThriftAuthorManagementService,
+    RepairManagement: ThriftRepairManagementService,
+    Scrooge: ThriftAccountService,
+    MerchantStatistics: ThriftMerchantStatisticsService,
+    Dominator: ThriftDominatorService,
+    Automaton: ThriftAutomatonService,
+    Invoicing: ThriftInvoicingService,
+    PartyManagement: ThriftPartyManagementService,
+    DepositManagement: ThriftDepositManagementService,
+    FistfulStatistics: ThriftFistfulStatisticsService,
+    WithdrawalManagement: ThriftWithdrawalManagementService,
+    SourceManagement: ThriftSourceManagementService,
+} = injectableServices;
