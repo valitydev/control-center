@@ -32,8 +32,8 @@ import {
 } from '@vality/matez';
 import {
     ThriftEditorModule,
+    ThriftPipesModule,
     ThriftViewerModule,
-    ValueTypeTitlePipe,
     getValueTypeTitle,
 } from '@vality/ng-thrift';
 import { Method } from '@vality/thrift-ts';
@@ -52,7 +52,6 @@ import { inProgressFrom } from '../../../projects/matez/src/lib/utils/operators/
         ThriftEditorModule,
         ReactiveFormsModule,
         CommonModule,
-        ValueTypeTitlePipe,
         MatButtonModule,
         ThriftViewerModule,
         MatProgressBarModule,
@@ -60,6 +59,7 @@ import { inProgressFrom } from '../../../projects/matez/src/lib/utils/operators/
         MatCardModule,
         MatListModule,
         MatIconModule,
+        ThriftPipesModule,
     ],
     templateUrl: './studio.component.html',
 })
@@ -123,7 +123,7 @@ export class StudioComponent implements OnInit {
         map((metadata) =>
             Object.entries(metadata.functions)
                 .map(([name, method]) => ({
-                    label: name,
+                    label: getValueTypeTitle(name),
                     value: method,
                 }))
                 .sort((a, b) => compareDifferentTypes(a.label, b.label)),
