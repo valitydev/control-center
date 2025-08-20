@@ -30,7 +30,12 @@ import {
     setDisabled,
     switchCombineWith,
 } from '@vality/matez';
-import { ThriftEditorModule, ThriftViewerModule, ValueTypeTitlePipe } from '@vality/ng-thrift';
+import {
+    ThriftEditorModule,
+    ThriftViewerModule,
+    ValueTypeTitlePipe,
+    getValueTypeTitle,
+} from '@vality/ng-thrift';
 import { Method } from '@vality/thrift-ts';
 
 import { MetadataThriftService, injectableServices, services } from '~/api/services';
@@ -98,7 +103,7 @@ export class StudioComponent implements OnInit {
 
     serviceOptions: Option<MetadataThriftService>[] = services
         .map((s) => ({
-            label: s.service,
+            label: getValueTypeTitle(s.public),
             value: s,
         }))
         .sort((a, b) => compareDifferentTypes(a.label, b.label));

@@ -25,6 +25,7 @@ export const services = [
         metadata$: domainMetadata$,
         namespace: 'domain_config_v2',
         service: 'Repository',
+        public: 'Repository',
     },
     {
         name: 'DMTClient',
@@ -33,6 +34,7 @@ export const services = [
         metadata$: domainMetadata$,
         namespace: 'domain_config_v2',
         service: 'RepositoryClient',
+        public: 'RepositoryClient',
     },
     {
         name: 'DMTAuthor',
@@ -41,6 +43,7 @@ export const services = [
         metadata$: domainMetadata$,
         namespace: 'domain_config_v2',
         service: 'AuthorManagement',
+        public: 'AuthorManagement',
     },
     {
         name: 'Invoicing',
@@ -48,6 +51,7 @@ export const services = [
         metadata$: domainMetadata$,
         namespace: 'payment_processing',
         service: 'Invoicing',
+        public: 'Invoicing',
     },
     {
         name: 'PartyManagement',
@@ -56,6 +60,7 @@ export const services = [
         metadata$: domainMetadata$,
         namespace: 'payment_processing',
         service: 'PartyManagement',
+        public: 'PartyManagement',
     },
     // Repairer
     {
@@ -64,6 +69,7 @@ export const services = [
         metadata$: repairerMetadata$,
         namespace: 'repairer',
         service: 'RepairManagement',
+        public: 'RepairManagement',
     },
     // Scrooge
     {
@@ -72,6 +78,7 @@ export const services = [
         metadata$: scroogeMetadata$,
         namespace: 'account_balance',
         service: 'AccountService',
+        public: 'Account',
     },
     // Magista
     {
@@ -81,6 +88,7 @@ export const services = [
         metadata$: magistaMetadata$,
         namespace: 'magista',
         service: 'MerchantStatisticsService',
+        public: 'MerchantStatistics',
     },
     // Dominator
     {
@@ -89,6 +97,7 @@ export const services = [
         metadata$: dominatorMetadata$,
         namespace: 'dominator',
         service: 'DominatorService',
+        public: 'Dominator',
     },
     // Machinegun
     {
@@ -97,6 +106,7 @@ export const services = [
         metadata$: machinegunMetadata$,
         namespace: 'state_processing',
         service: 'Automaton',
+        public: 'Automaton',
     },
     // Fistful
     {
@@ -105,6 +115,7 @@ export const services = [
         metadata$: fistfulMetadata$,
         namespace: 'deposit',
         service: 'Management',
+        public: 'DepositManagement',
     },
     {
         name: 'FistfulStatistics',
@@ -112,6 +123,7 @@ export const services = [
         metadata$: fistfulMetadata$,
         namespace: 'fistful_stat',
         service: 'FistfulStatistics',
+        public: 'FistfulStatistics',
     },
     {
         name: 'WithdrawalManagement',
@@ -119,6 +131,7 @@ export const services = [
         metadata$: fistfulMetadata$,
         namespace: 'withdrawal',
         service: 'Management',
+        public: 'WithdrawalManagement',
     },
     {
         name: 'SourceManagement',
@@ -126,6 +139,7 @@ export const services = [
         metadata$: fistfulMetadata$,
         namespace: 'source',
         service: 'Management',
+        public: 'SourceManagement',
     },
 ] as const;
 
