@@ -2,14 +2,16 @@ import { map } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import { DominatorService, ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/dominator';
+import { ShopSearchQuery, ShopTermSet } from '@vality/dominator-proto/dominator';
 import { FetchOptions, FetchSuperclass, NotifyLogService, clean, handleError } from '@vality/matez';
+
+import { ThriftDominatorService } from '~/api/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ShopsTermsService extends FetchSuperclass<ShopTermSet, ShopSearchQuery> {
-    private dominatorService = inject(DominatorService);
+    private dominatorService = inject(ThriftDominatorService);
     private log = inject(NotifyLogService);
 
     protected fetch(params: ShopSearchQuery, options: FetchOptions<string>) {

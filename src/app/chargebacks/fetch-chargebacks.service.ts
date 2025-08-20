@@ -3,19 +3,17 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import {
-    ChargebackSearchQuery,
-    MerchantStatisticsService,
-    StatChargeback,
-} from '@vality/magista-proto/magista';
+import { ChargebackSearchQuery, StatChargeback } from '@vality/magista-proto/magista';
 import { FetchOptions, FetchSuperclass, NotifyLogService } from '@vality/matez';
+
+import { ThriftMerchantStatisticsService } from '~/api/services';
 
 @Injectable()
 export class FetchChargebacksService extends FetchSuperclass<
     StatChargeback,
     ChargebackSearchQuery
 > {
-    private merchantStatisticsService = inject(MerchantStatisticsService);
+    private merchantStatisticsService = inject(ThriftMerchantStatisticsService);
     private log = inject(NotifyLogService);
 
     protected fetch(params: ChargebackSearchQuery, options: FetchOptions) {

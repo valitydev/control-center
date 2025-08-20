@@ -6,10 +6,11 @@ import { Component, DestroyRef, TemplateRef, ViewChild, inject } from '@angular/
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
-import { DepositParams, Management } from '@vality/fistful-proto/deposit';
+import { DepositParams } from '@vality/fistful-proto/deposit';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
+import { ThriftDepositManagementService } from '~/api/services';
 import { SourceCash } from '~/components/source-cash-field';
 import { UserInfoBasedIdGeneratorService } from '~/services';
 
@@ -21,7 +22,7 @@ import { FetchSourcesService } from '../../../sources';
 })
 export class CreateDepositDialogComponent extends DialogSuperclass<CreateDepositDialogComponent> {
     private destroyRef = inject(DestroyRef);
-    private depositManagementService = inject(Management);
+    private depositManagementService = inject(ThriftDepositManagementService);
     private log = inject(NotifyLogService);
     private userInfoBasedIdGeneratorService = inject(UserInfoBasedIdGeneratorService);
     private fetchSourcesService = inject(FetchSourcesService);

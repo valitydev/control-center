@@ -25,7 +25,7 @@
         <ng-content select="v-table-actions"></ng-content>
         <v-table-inputs><ng-content select="v-table-inputs"></ng-content></v-table-inputs>
     </v-table-info-bar>
-    <mat-card #scrollViewport class="card">
+    <mat-card #scrollViewport appearance="outlined" class="card">
         <v-no-records
             [noRecords]="!(displayedCount$ | async)"
             [progress]="progress()"

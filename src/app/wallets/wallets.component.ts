@@ -13,7 +13,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
-import { PartyManagement } from '@vality/domain-proto/payment_processing';
 import {
     Column,
     DebounceTime,
@@ -26,6 +25,7 @@ import {
 import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { ThriftPartyManagementService } from '~/api/services';
 import { MerchantFieldModule } from '~/components/merchant-field';
 import { PageLayoutModule } from '~/components/page-layout';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
@@ -56,7 +56,7 @@ import { PartyStoreService } from '../parties/party';
 export class WalletsComponent implements OnInit {
     private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
     private partyStoreService = inject(PartyStoreService);
-    private partyManagementService = inject(PartyManagement);
+    private partyManagementService = inject(ThriftPartyManagementService);
 
     wallets$ = this.fetchFullDomainObjectsService.result$;
     isLoading$ = this.fetchFullDomainObjectsService.isLoading$;

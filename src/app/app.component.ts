@@ -12,7 +12,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterOutlet } from '@angular/router';
 
-import { Repository } from '@vality/domain-proto/domain_config_v2';
 import {
     BaseLink,
     CmdkModule,
@@ -23,6 +22,7 @@ import {
     getUrlPath,
 } from '@vality/matez';
 
+import { ThriftRepositoryService } from '~/api/services';
 import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
@@ -184,6 +184,14 @@ const createNavLinks = (): Link[] => [
             },
         ],
     },
+    {
+        children: [
+            {
+                label: 'Studio',
+                url: '/studio',
+            },
+        ],
+    },
 ];
 
 @Component({
@@ -206,7 +214,7 @@ const createNavLinks = (): Link[] => [
 export class AppComponent {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(ThriftRepositoryService);
     private router = inject(Router);
     private dr = inject(DestroyRef);
 

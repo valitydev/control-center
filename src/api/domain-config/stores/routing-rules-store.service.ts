@@ -3,14 +3,16 @@ import { catchError, first, map, of, shareReplay, switchMap } from 'rxjs';
 import { Injectable, inject } from '@angular/core';
 
 import { DomainObjectType, RoutingRulesetRef } from '@vality/domain-proto/domain';
-import { Operation, Repository, VersionedObject } from '@vality/domain-proto/domain_config_v2';
+import { Operation, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, fetchAll, observableResource } from '@vality/matez';
+
+import { ThriftRepositoryService } from '~/api/services';
 
 import { DomainService } from '../services';
 
 @Injectable({ providedIn: 'root' })
 export class RoutingRulesStoreService {
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(ThriftRepositoryService);
     private domainService = inject(DomainService);
     private log = inject(NotifyLogService);
 

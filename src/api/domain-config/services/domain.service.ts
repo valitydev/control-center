@@ -6,13 +6,13 @@ import { Reference } from '@vality/domain-proto/domain';
 import {
     CommitResponse,
     Operation,
-    Repository,
-    RepositoryClient,
     Version,
     VersionedObject,
 } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, observableResource, switchCombineWith } from '@vality/matez';
 import { getUnionKey, isEqualThrift } from '@vality/ng-thrift';
+
+import { ThriftRepositoryClientService, ThriftRepositoryService } from '~/api/services';
 
 import { AuthorStoreService } from '../stores/author-store.service';
 import { getDomainObjectReference } from '../utils/get-domain-object-reference';
@@ -28,10 +28,10 @@ export class DomainServiceObsoleteCommitVersionError {
     providedIn: 'root',
 })
 export class DomainService {
-    private repositoryService = inject(Repository);
+    private repositoryService = inject(ThriftRepositoryService);
     private authorStoreService = inject(AuthorStoreService);
     private log = inject(NotifyLogService);
-    private repositoryClientService = inject(RepositoryClient);
+    private repositoryClientService = inject(ThriftRepositoryClientService);
 
     version = observableResource({
         loader: () => this.repositoryService.GetLatestVersion(),

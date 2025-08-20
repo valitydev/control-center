@@ -4,17 +4,25 @@ import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, merge, of } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder } from '@angular/forms';
+import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DateRange,
+    DateRangeFieldModule,
+    DialogModule,
     DialogResponseStatus,
     DialogService,
+    FiltersModule,
+    InputFieldModule,
+    ListFieldModule,
     LoadOptions,
     QueryParamsService,
+    TableModule,
     clean,
     countChanged,
     createDateRangeToToday,
@@ -23,14 +31,19 @@ import {
     getValueChanges,
     isEqualDateRange,
 } from '@vality/matez';
-import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import { ThriftFormExtension, ThriftFormModule, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { FailMachinesDialogComponent, Type } from '~/components/fail-machines-dialog';
+import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
+import { PageLayoutModule } from '~/components/page-layout';
+import { ShopFieldModule } from '~/components/shop-field';
+import { MagistaThriftFormComponent } from '~/components/thrift-api-crud';
 
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
 import { CreatePaymentAdjustmentComponent } from './components/create-payment-adjustment/create-payment-adjustment.component';
 import { CreatePaymentAdjustmentsByFileDialogComponent } from './components/create-payment-adjustments-by-file-dialog/create-payment-adjustments-by-file-dialog.component';
+import { PaymentsTableComponent } from './components/payments-table/payments-table.component';
 import { FetchPaymentsService } from './services/fetch-payments.service';
 
 interface Filters {
@@ -41,7 +54,24 @@ interface Filters {
 
 @Component({
     templateUrl: 'payments.component.html',
-    standalone: false,
+    imports: [
+        CommonModule,
+        PageLayoutModule,
+        FiltersModule,
+        DateRangeFieldModule,
+        ListFieldModule,
+        MerchantFieldModule,
+        ReactiveFormsModule,
+        TableModule,
+        DialogModule,
+        ThriftFormModule,
+        MatButtonModule,
+        ShopFieldModule,
+        InputFieldModule,
+        FormsModule,
+        MagistaThriftFormComponent,
+        PaymentsTableComponent,
+    ],
 })
 export class PaymentsComponent implements OnInit {
     private qp = inject<QueryParamsService<Filters>>(QueryParamsService<Filters>);

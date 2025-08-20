@@ -1,0 +1,84 @@
+<cc-page-layout [formGroup]="studioGroup" title="Studio">
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <mat-card-title class="py-8">Service method</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="flex flex-col gap-4">
+                <v-select-field
+                    [options]="serviceOptions"
+                    formControlName="service"
+                    label="Service"
+                ></v-select-field>
+                <v-select-field
+                    [options]="methodOptions$ | async"
+                    formControlName="method"
+                    label="Method"
+                ></v-select-field>
+                @if (studioGroup.get('method')?.value) {
+                    @for (
+                        arg of studioGroup.get('method').value.args;
+                        track arg;
+                        let idx = $index
+                    ) {
+                        <mat-divider></mat-divider>
+                        <div class="flex flex-col gap-2">
+                            <div class="text-md">
+                                {{ arg.name | ngtKeyTitle | titlecase }}
+                            </div>
+                            <v-thrift-editor
+                                [formControl]="$any(studioGroup.controls.params.controls[idx])"
+                                [metadata]="studioGroup.get('service').value.metadata$ | async"
+                                [namespace]="(namespaceMetadata$ | async)?.name"
+                                [type]="arg.type"
+                            ></v-thrift-editor>
+                        </div>
+                    }
+                }
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button
+                [disabled]="(inProgress$ | async) || !studioGroup.get('method').value"
+                class="w-full"
+                matButton="filled"
+                (click)="submit()"
+            >
+                {{
+                    (studioGroup.get('method').value?.name | ngtValueTypeTitle | titlecase) ||
+                        'Call'
+                }}
+            </button>
+        </mat-card-actions>
+    </mat-card>
+
+    @let result = result$ | async;
+    @if ((inProgress$ | async) || result) {
+        <mat-card appearance="outlined">
+            <mat-card-header>
+                <mat-card-title class="py-8">{{
+                    (inProgress$ | async) || 'data' in result ? 'Result' : 'Error'
+                }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                @if (inProgress$ | async) {
+                    <mat-progress-bar class="w-full" mode="indeterminate"></mat-progress-bar>
+                } @else if ('data' in result) {
+                    <v-thrift-viewer
+                        [namespace]="(namespaceMetadata$ | async)?.name"
+                        [type]="studioGroup.get('method').value.type"
+                        [value]="result.data"
+                    ></v-thrift-viewer>
+                } @else {
+                    @let error = error$ | async;
+                    <div class="flex flex-col gap-4">
+                        <div>Name: {{ error.name }}</div>
+                        <div>Trace ID: {{ error.traceId ?? '-' }}</div>
+                        <mat-divider></mat-divider>
+                        <v-thrift-viewer [value]="(error$ | async).error"></v-thrift-viewer>
+                    </div>
+                }
+            </mat-card-content>
+        </mat-card>
+    }
+</cc-page-layout>

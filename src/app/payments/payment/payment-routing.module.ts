@@ -10,7 +10,7 @@ import { ROUTING_CONFIG } from './routing-config';
     imports: [
         RouterModule.forChild([
             {
-                path: '',
+                path: ':paymentID',
                 component: PaymentDetailsComponent,
                 canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,

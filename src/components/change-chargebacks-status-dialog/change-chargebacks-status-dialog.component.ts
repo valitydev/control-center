@@ -9,7 +9,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { metadata$ } from '@vality/domain-proto';
-import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     DialogModule,
@@ -20,6 +19,8 @@ import {
     forkJoinToResult,
 } from '@vality/matez';
 import { ThriftFormModule } from '@vality/ng-thrift';
+
+import { ThriftInvoicingService } from '~/api/services';
 
 import { DomainMetadataFormExtensionsService } from '../thrift-api-crud';
 
@@ -58,7 +59,7 @@ export class ChangeChargebacksStatusDialogComponent
     >
     implements OnInit
 {
-    private invoicingService = inject(Invoicing);
+    private invoicingService = inject(ThriftInvoicingService);
     private log = inject(NotifyLogService);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);

@@ -1,6 +1,6 @@
 <cc-page-layout [progress]="isLoading$ | async" title="Deposit details">
     @if (deposit$ | async) {
-        <mat-card>
+        <mat-card appearance="outlined">
             <mat-card-content>
                 <v-thrift-viewer
                     [extensions]="extensions$ | async"

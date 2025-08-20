@@ -2,16 +2,16 @@ import { catchError } from 'rxjs';
 
 import { Injectable, inject } from '@angular/core';
 
-import { AuthorManagement } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, observableResource } from '@vality/matez';
 
+import { ThriftAuthorManagementService } from '~/api/services';
 import { KeycloakUserService } from '~/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthorStoreService {
-    private authorManagementService = inject(AuthorManagement);
+    private authorManagementService = inject(ThriftAuthorManagementService);
     private keycloakUserService = inject(KeycloakUserService);
     private log = inject(NotifyLogService);
 

@@ -1,10 +1,11 @@
 import startCase from 'lodash-es/startCase';
 
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { StatPayment } from '@vality/magista-proto/magista';
-import { Column, LoadOptions, createMenuColumn } from '@vality/matez';
+import { Column, LoadOptions, TableModule, createMenuColumn } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
 import {
@@ -18,7 +19,7 @@ import {
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
-    standalone: false,
+    imports: [TableModule, CommonModule],
 })
 export class PaymentsTableComponent {
     private router = inject(Router);

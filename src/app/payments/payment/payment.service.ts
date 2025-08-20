@@ -4,12 +4,13 @@ import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { MerchantStatisticsService } from '@vality/magista-proto/magista';
 import { NotifyLogService, cleanPrimitiveProps, inProgressFrom, progressTo } from '@vality/matez';
+
+import { ThriftMerchantStatisticsService } from '~/api/services';
 
 @Injectable()
 export class PaymentDetailsService {
-    private merchantStatisticsService = inject(MerchantStatisticsService);
+    private merchantStatisticsService = inject(ThriftMerchantStatisticsService);
     private route = inject(ActivatedRoute);
     private log = inject(NotifyLogService);
     payment$ = this.route.params.pipe(

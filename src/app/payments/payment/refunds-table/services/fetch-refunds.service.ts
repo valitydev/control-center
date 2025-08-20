@@ -4,11 +4,7 @@ import { DeepPartial } from 'utility-types';
 
 import { Injectable, inject } from '@angular/core';
 
-import {
-    MerchantStatisticsService,
-    RefundSearchQuery,
-    StatRefund,
-} from '@vality/magista-proto/magista';
+import { RefundSearchQuery, StatRefund } from '@vality/magista-proto/magista';
 import {
     FetchOptions,
     FetchSuperclass,
@@ -16,12 +12,14 @@ import {
     cleanPrimitiveProps,
 } from '@vality/matez';
 
+import { ThriftMerchantStatisticsService } from '~/api/services';
+
 @Injectable()
 export class FetchRefundsService extends FetchSuperclass<
     StatRefund,
     DeepPartial<RefundSearchQuery>
 > {
-    private merchantStatisticsService = inject(MerchantStatisticsService);
+    private merchantStatisticsService = inject(ThriftMerchantStatisticsService);
     private log = inject(NotifyLogService);
 
     protected fetch(params: DeepPartial<RefundSearchQuery>, options: FetchOptions) {

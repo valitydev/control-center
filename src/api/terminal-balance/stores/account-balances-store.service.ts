@@ -4,13 +4,15 @@ import { catchError, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import { AccountBalance, AccountService } from '@vality/scrooge-proto/account_balance';
+import { AccountBalance } from '@vality/scrooge-proto/account_balance';
+
+import { ThriftAccountService } from '~/api/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AccountBalancesStoreService {
-    private terminalBalanceService = inject(AccountService);
+    private terminalBalanceService = inject(ThriftAccountService);
     balances$: Observable<AccountBalance[]> = this.terminalBalanceService.GetAccountBalances().pipe(
         map((b) => b.balances),
         startWith([]),

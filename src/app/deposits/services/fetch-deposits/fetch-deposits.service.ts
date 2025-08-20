@@ -3,17 +3,18 @@ import { catchError, map } from 'rxjs/operators';
 
 import { Injectable, inject } from '@angular/core';
 
-import { FistfulStatistics, StatDeposit } from '@vality/fistful-proto/fistful_stat';
+import { StatDeposit } from '@vality/fistful-proto/fistful_stat';
 import { FetchOptions, FetchResult, FetchSuperclass, NotifyLogService } from '@vality/matez';
 
 import { QueryDsl, createDsl } from '~/api/fistful-stat';
+import { ThriftFistfulStatisticsService } from '~/api/services';
 
 @Injectable()
 export class FetchDepositsService extends FetchSuperclass<
     StatDeposit,
     QueryDsl['query']['deposits']
 > {
-    private fistfulStatisticsService = inject(FistfulStatistics);
+    private fistfulStatisticsService = inject(ThriftFistfulStatisticsService);
     private log = inject(NotifyLogService);
 
     protected fetch(
