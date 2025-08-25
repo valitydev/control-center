@@ -17,7 +17,8 @@ import { Column, PagedObservableResource } from '@vality/matez';
             (more)="resource().more()"
             (update)="resource().setOptions($event)"
         >
-            <ng-content></ng-content>
+            <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
+            <v-table-inputs><ng-content select="v-table-inputs"></ng-content></v-table-inputs>
         </v-table>
     `,
     imports: [TableModule],

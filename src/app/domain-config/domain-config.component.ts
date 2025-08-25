@@ -6,7 +6,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DomainObject, DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
+import { DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
 import {
     DialogResponseStatus,
     QueryParamsService,
@@ -41,13 +41,14 @@ export class DomainConfigComponent implements OnInit {
     private dr = inject(DestroyRef);
     private injector = inject(Injector);
     protected fetchDomainObjectsService = inject(FetchDomainObjectsService);
-    private qp = inject(QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>);
+    private qp =
+        inject<QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>>(
+            QueryParamsService,
+        );
 
     selectedType = signal<keyof ReflessDomainObject>(null);
     version = this.domainService.version.value;
-    typeControl = new FormControl<keyof ReflessDomainObject>(
-        this.qp.params.type as keyof DomainObject,
-    );
+    typeControl = new FormControl(this.qp.params.type);
     filter = model<string>(this.qp.params.filter);
 
     create() {

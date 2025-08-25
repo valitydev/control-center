@@ -6,6 +6,7 @@ import { Reference } from '@vality/domain-proto/domain';
 import {
     CommitResponse,
     Operation,
+    RequestParams,
     Version,
     VersionedObject,
 } from '@vality/domain-proto/domain_config_v2';
@@ -111,5 +112,9 @@ export class DomainService {
                 this.version.set(res.version);
             }),
         );
+    }
+
+    getHistory(ref: Reference, params: RequestParams) {
+        return this.repositoryService.GetObjectHistory(ref, params);
     }
 }

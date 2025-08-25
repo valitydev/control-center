@@ -13,6 +13,7 @@ import {
     DialogResponseStatus,
     PagedObservableResource,
     SelectFieldModule,
+    TableModule,
     TableResourceComponent,
     createMenuColumn,
 } from '@vality/matez';
@@ -35,6 +36,7 @@ import {
         ActionsModule,
         MatButtonModule,
         TableResourceComponent,
+        TableModule,
     ],
 })
 export class DomainObjectsTableComponent {
