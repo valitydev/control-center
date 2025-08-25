@@ -79,6 +79,7 @@ export class TableComponent<T extends object, C extends object> implements OnIni
     private dr = inject(DestroyRef);
     private injector = inject(Injector);
     private cdr = inject(ChangeDetectorRef);
+
     data = input<T[], ArrayAttributeTransform<T>>([], { transform: arrayAttribute });
     treeData = input<TreeData<T, C>>();
     columns = input<Column<T, C>[], ArrayAttributeTransform<Column<T, C>>>([], {

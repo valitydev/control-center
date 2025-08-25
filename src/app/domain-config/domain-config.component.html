@@ -7,6 +7,16 @@
         <button mat-flat-button (click)="create()">Create</button>
     </cc-page-layout-actions>
     <cc-domain-objects-table
+        [(filter)]="filter"
+        [resource]="fetchDomainObjectsService"
         (selectedTypeChange)="selectedType.set($event)"
-    ></cc-domain-objects-table>
+    >
+        <v-table-inputs>
+            <v-select-field
+                [formControl]="typeControl"
+                [options]="options"
+                label="Object type"
+            ></v-select-field>
+        </v-table-inputs>
+    </cc-domain-objects-table>
 </cc-page-layout>
