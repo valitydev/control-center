@@ -48,7 +48,7 @@ export class DomainObjectsTableComponent {
     filter = model<string>('');
 
     columns: Column<LimitedVersionedObject>[] = [
-        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }), sticky: 'start' },
+        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }) },
         {
             field: 'name',
             cell: (d) => ({

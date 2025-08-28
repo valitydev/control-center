@@ -1,4 +1,4 @@
-import { Observable, map } from 'rxjs';
+import { EMPTY, Observable, map } from 'rxjs';
 
 import { Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -71,6 +71,7 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
     }: PagedObservableResourceOptions<TItem, TParams>) {
         // TODO: fix types
         super.init({
+            params: EMPTY,
             ...options,
             loader: (params, acc, action) => {
                 return loader(
@@ -87,7 +88,6 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
                 );
             },
             map: (value) => value.result,
-            noInitParams: true,
         } as never);
         this.pagedOptions = { size: size || 20 };
         this.hasMore$ = this.accValue$.pipe(map((value) => !!value.continuationToken));

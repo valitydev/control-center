@@ -8,3 +8,4 @@ export * from './edit-domain-object-dialog';
 export * from './domain-object-card';
 export * from './services/domain-object.service';
 export * from './services/domain-metadata-form-extensions';
+export * from './domain-object-history-card';

@@ -1,5 +1,5 @@
 import autoBind from 'auto-bind';
-import { BehaviorSubject, Observable, Subject, combineLatest, merge } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, combineLatest, merge, of } from 'rxjs';
 import { map, mergeScan, mergeWith, shareReplay, skipWhile, switchMap, take } from 'rxjs/operators';
 
 import { DestroyRef, Injector, Signal, inject } from '@angular/core';
@@ -23,8 +23,6 @@ export type ObservableResourceOptions<
     loader: (params: TParams, acc: TAccResult, action: TAction) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
-    // no undefined init params and ignore options params
-    noInitParams?: boolean;
 } & (TParams extends undefined | void
     ? {
           params?: PossiblyAsync<TParams>;
@@ -77,12 +75,10 @@ export class ObservableResource<
     }
 
     protected createParams() {
-        return this.internalOptions.noInitParams
-            ? this.mergedParams$
-            : merge(
-                  getPossiblyAsyncObservable<TParams>(this.internalOptions.params as never),
-                  this.mergedParams$,
-              );
+        return merge(
+            getPossiblyAsyncObservable<TParams>(this.internalOptions.params),
+            this.mergedParams$,
+        );
     }
 
     protected createAccValue() {

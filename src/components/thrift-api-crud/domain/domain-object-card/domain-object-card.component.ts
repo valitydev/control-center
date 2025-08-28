@@ -50,6 +50,10 @@ export class DomainObjectCardComponent {
         deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
     });
 
+    history() {
+        this.domainObjectService.history(this.ref());
+    }
+
     edit() {
         this.domainObjectService.edit(this.ref());
     }
