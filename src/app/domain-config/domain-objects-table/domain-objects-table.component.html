@@ -2,10 +2,10 @@
     [(filter)]="filter"
     [columns]="columns"
     [resource]="resource()"
+    [tableInputsContent]="tableInputsContent()"
     externalFilter
     noDownload
     standaloneFilter
 >
     <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
-    <v-table-inputs><ng-content select="v-table-inputs"></ng-content></v-table-inputs>
 </v-table-resource>

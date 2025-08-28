@@ -1,7 +1,7 @@
 import startCase from 'lodash-es/startCase';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, model, output } from '@angular/core';
+import { Component, TemplateRef, inject, input, model, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -46,6 +46,7 @@ export class DomainObjectsTableComponent {
     selectedTypeChange = output<keyof ReflessDomainObject>();
     resource = input<PagedObservableResource<LimitedVersionedObject, unknown>>();
     filter = model<string>('');
+    tableInputsContent = input<TemplateRef<unknown>>();
 
     columns: Column<LimitedVersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }) },

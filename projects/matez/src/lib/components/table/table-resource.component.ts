@@ -1,5 +1,5 @@
 import { TableModule } from './table.module';
-import { booleanAttribute, Component, input, model } from '@angular/core';
+import { booleanAttribute, Component, input, model, TemplateRef } from '@angular/core';
 import { Column, PagedObservableResource } from '@vality/matez';
 
 @Component({
@@ -14,11 +14,11 @@ import { Column, PagedObservableResource } from '@vality/matez';
             [noDownload]="noDownload()"
             [progress]="resource().isLoading()"
             [standaloneFilter]="standaloneFilter()"
+            [tableInputsContent]="tableInputsContent()"
             (more)="resource().more()"
             (update)="resource().setOptions($event)"
         >
             <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
-            <v-table-inputs><ng-content select="v-table-inputs"></ng-content></v-table-inputs>
         </v-table>
     `,
     imports: [TableModule],
@@ -30,4 +30,5 @@ export class TableResourceComponent<T extends object, C extends object> {
     externalFilter = input(false, { transform: booleanAttribute });
     noDownload = input(false, { transform: booleanAttribute });
     standaloneFilter = input(false, { transform: booleanAttribute });
+    tableInputsContent = input<TemplateRef<unknown>>();
 }

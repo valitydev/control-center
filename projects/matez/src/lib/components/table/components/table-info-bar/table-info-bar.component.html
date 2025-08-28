@@ -1,9 +1,7 @@
 <div class="wrapper">
     @if (standaloneFilter()) {
         <div class="header-wrapper">
-            @if (hasInputs()) {
-                <ng-content select="v-table-inputs"></ng-content>
-            }
+            <ng-content *ngTemplateOutlet="tableInputsContent()"></ng-content>
             <v-input-field [formControl]="filterControl" cleanButton label="Search"></v-input-field>
         </div>
     }
@@ -83,7 +81,7 @@
             </div>
         </v-actions>
         <v-actions>
-            <ng-content></ng-content>
+            <ng-content select="vTableActions"></ng-content>
         </v-actions>
     </v-actions>
 </div>

@@ -25,6 +25,7 @@ import { provideThriftServices } from '~/api/services';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
 import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
+import { DomainObjectHistoryCardComponent } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
 import { parseThriftError } from '~/utils';
 
@@ -68,6 +69,7 @@ export const appConfig: ApplicationConfig = {
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {
                 domainObject: DomainObjectCardComponent,
+                domainObjectHistory: DomainObjectHistoryCardComponent,
                 terminalDelegates: TerminalDelegatesCardComponent,
                 candidate: CandidateCardComponent,
             },

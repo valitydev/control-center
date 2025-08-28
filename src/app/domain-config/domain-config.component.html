@@ -9,14 +9,15 @@
     <cc-domain-objects-table
         [(filter)]="filter"
         [resource]="fetchDomainObjectsService"
+        [tableInputsContent]="tableInputsContent"
         (selectedTypeChange)="selectedType.set($event)"
     >
-        <v-table-inputs>
+        <ng-template #tableInputsContent>
             <v-select-field
                 [formControl]="typeControl"
                 [options]="options"
                 label="Object type"
             ></v-select-field>
-        </v-table-inputs>
+        </ng-template>
     </cc-domain-objects-table>
 </cc-page-layout>

@@ -32,6 +32,7 @@ import {
     ElementRef,
     Injector,
     OnInit,
+    TemplateRef,
     ViewChild,
     booleanAttribute,
     computed,
@@ -140,6 +141,9 @@ export class TableComponent<T extends object, C extends object> implements OnIni
     rowDropped = output<DragDrop<DisplayedDataItem<T, C>>>();
     dragDisabled = true;
 
+    // Contents
+    tableInputsContent = input<TemplateRef<unknown>>();
+
     update$ = new Subject<UpdateOptions>();
     update = outputFromObservable(this.update$);
     more = output<UpdateOptions>();
@@ -215,7 +219,6 @@ export class TableComponent<T extends object, C extends object> implements OnIni
 
     @ViewChild('scrollViewport', { read: ElementRef }) scrollViewport!: ElementRef;
     @ViewChild('matTable', { static: false }) table!: MatTable<T>;
-    @ContentChild(TableInputsComponent, { read: ElementRef }) tableInputsContent!: ElementRef;
     @ViewChild(MatRow, { static: false }) tableRow!: ElementRef;
 
     ngOnInit() {
