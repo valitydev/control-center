@@ -1,9 +1,9 @@
 <v-table-resource
     [(filter)]="filter"
     [columns]="columns"
+    [externalFilter]="externalFilter()"
     [resource]="resource()"
     [tableInputsContent]="tableInputsContent()"
-    externalFilter
     noDownload
     standaloneFilter
 >
