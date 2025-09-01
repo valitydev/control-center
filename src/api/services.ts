@@ -1,63 +1,76 @@
 import { Observable } from 'rxjs';
 
+import { inject } from '@angular/core';
+
 import { metadata$ as domainMetadata$ } from '@vality/domain-proto';
 import { metadata$ as dominatorMetadata$ } from '@vality/dominator-proto';
 import { metadata$ as fistfulMetadata$ } from '@vality/fistful-proto';
 import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
-import { ThriftAstMetadata } from '@vality/ng-thrift';
+import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
 import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
 import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
 
+import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
+import { DomainMetadataViewExtensionsService } from '~/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { ThriftService, createThriftServices } from '~/utils';
 
 export interface MetadataThriftService extends ThriftService {
     metadata$: Observable<ThriftAstMetadata[]>;
     namespace: string;
     service: string;
+    getFormExtensions?: () => Observable<ThriftFormExtension[]>;
+    getViewExtensions?: () => Observable<ThriftViewExtension[]>;
 }
+
+// TODO
+const domainData = {
+    metadata$: domainMetadata$,
+    getFormExtensions: () => inject(DomainMetadataFormExtensionsService).extensions$,
+    getViewExtensions: () => inject(DomainMetadataViewExtensionsService).extensions$,
+} as const;
 
 export const services = [
     // Domain
     {
+        ...domainData,
         name: 'DMT',
         loader: () => import('@vality/domain-proto/domain_config_v2').then((m) => m.Repository),
-        metadata$: domainMetadata$,
         namespace: 'domain_config_v2',
         service: 'Repository',
         public: 'Repository',
     },
     {
+        ...domainData,
         name: 'DMTClient',
         loader: () =>
             import('@vality/domain-proto/domain_config_v2').then((m) => m.RepositoryClient),
-        metadata$: domainMetadata$,
         namespace: 'domain_config_v2',
         service: 'RepositoryClient',
         public: 'RepositoryClient',
     },
     {
+        ...domainData,
         name: 'DMTAuthor',
         loader: () =>
             import('@vality/domain-proto/domain_config_v2').then((m) => m.AuthorManagement),
-        metadata$: domainMetadata$,
         namespace: 'domain_config_v2',
         service: 'AuthorManagement',
         public: 'AuthorManagement',
     },
     {
+        ...domainData,
         name: 'Invoicing',
         loader: () => import('@vality/domain-proto/payment_processing').then((m) => m.Invoicing),
-        metadata$: domainMetadata$,
         namespace: 'payment_processing',
         service: 'Invoicing',
         public: 'Invoicing',
     },
     {
+        ...domainData,
         name: 'PartyManagement',
         loader: () =>
             import('@vality/domain-proto/payment_processing').then((m) => m.PartyManagement),
-        metadata$: domainMetadata$,
         namespace: 'payment_processing',
         service: 'PartyManagement',
         public: 'PartyManagement',
