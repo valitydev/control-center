@@ -98,6 +98,12 @@ export class DomainObjectsTableComponent {
                     },
                 },
                 {
+                    label: 'History',
+                    click: () => {
+                        this.domainObjectService.history(d.ref);
+                    },
+                },
+                {
                     label: 'Edit',
                     click: () => {
                         this.domainObjectService.edit(d.ref).next((res) => {
