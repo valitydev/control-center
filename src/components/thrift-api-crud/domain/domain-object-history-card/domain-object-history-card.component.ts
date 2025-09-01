@@ -1,18 +1,19 @@
 import { map } from 'rxjs';
 
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Reference } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
-import { pagedObservableResource } from '@vality/matez';
+import { DialogResponseStatus, pagedObservableResource } from '@vality/matez';
 import { ThriftPipesModule } from '@vality/ng-thrift';
 
 import { DomainService } from '~/api/domain-config';
 
 import { DomainObjectsTableComponent } from '../../../../app/domain-config/domain-objects-table';
-import { SidenavInfoModule } from '../../../sidenav-info';
+import { SidenavInfoModule, SidenavInfoService } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';
+import { DomainObjectService } from '../services/domain-object.service';
 
 @Component({
     selector: 'cc-domain-object-history-card',
@@ -27,6 +28,8 @@ import { CardComponent } from '../../../sidenav-info/components/card/card.compon
 })
 export class DomainObjectHistoryCardComponent {
     private domainService = inject(DomainService);
+    private domainObjectService = inject(DomainObjectService);
+    private sidenavInfoService = inject(SidenavInfoService);
 
     ref = input<Reference>();
 
@@ -45,4 +48,25 @@ export class DomainObjectHistoryCardComponent {
                     })),
                 ),
     });
+    version = computed(() =>
+        Math.max(0, ...(this.resource.value() || []).map((r) => r.info.version)),
+    );
+
+    latest() {
+        this.domainObjectService.view(this.ref());
+    }
+
+    edit() {
+        this.domainObjectService.edit(this.ref()).next((res) => {
+            if (res.status === DialogResponseStatus.Success) {
+                this.resource.reload();
+            }
+        });
+    }
+
+    delete() {
+        this.domainObjectService.delete(this.ref()).next(() => {
+            this.sidenavInfoService.close();
+        });
+    }
 }

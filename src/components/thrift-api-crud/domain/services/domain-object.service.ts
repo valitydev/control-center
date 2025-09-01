@@ -16,6 +16,7 @@ import { DomainService } from '~/api/domain-config';
 import { SidenavInfoService } from '~/components/sidenav-info';
 
 import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
+import { DomainObjectCardComponent } from '../domain-object-card';
 import { DomainObjectHistoryCardComponent } from '../domain-object-history-card';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 
@@ -46,6 +47,10 @@ export class DomainObjectService {
                 error: this.log.error,
             },
         );
+    }
+
+    view(ref: Reference, version?: number) {
+        return this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref, version });
     }
 
     edit(ref: Reference) {

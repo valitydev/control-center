@@ -1,4 +1,10 @@
-<cc-card [title]="details()?.label">
+<cc-card
+    [title]="
+        details()?.label +
+        ' #' +
+        (this.domainObject.value()?.info?.version ?? this.version() ?? '0')
+    "
+>
     <cc-domain-thrift-viewer
         [kind]="kind.value()"
         [progress]="domainObject.isLoading()"
