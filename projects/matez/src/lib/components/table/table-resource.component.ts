@@ -1,0 +1,36 @@
+import { Component, TemplateRef, booleanAttribute, input, model } from '@angular/core';
+
+import { Column, PagedObservableResource } from '@vality/matez';
+
+import { TableModule } from './table.module';
+
+@Component({
+    selector: 'v-table-resource',
+    template: `
+        <v-table
+            [(filter)]="filter"
+            [columns]="columns()"
+            [data]="resource().value()"
+            [externalFilter]="externalFilter()"
+            [hasMore]="resource().hasMore()"
+            [noDownload]="noDownload()"
+            [progress]="resource().isLoading()"
+            [standaloneFilter]="standaloneFilter()"
+            [tableInputsContent]="tableInputsContent()"
+            (more)="resource().more()"
+            (update)="resource().setOptions($event)"
+        >
+            <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
+        </v-table>
+    `,
+    imports: [TableModule],
+})
+export class TableResourceComponent<T extends object, C extends object> {
+    resource = input<PagedObservableResource<T, unknown>>();
+    columns = input<Column<T, C>[]>([]);
+    filter = model('');
+    externalFilter = input(false, { transform: booleanAttribute });
+    noDownload = input(false, { transform: booleanAttribute });
+    standaloneFilter = input(false, { transform: booleanAttribute });
+    tableInputsContent = input<TemplateRef<unknown>>();
+}

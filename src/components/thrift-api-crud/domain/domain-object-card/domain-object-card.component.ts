@@ -5,12 +5,18 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Reference } from '@vality/domain-proto/domain';
-import { NotifyLogService, UnionEnum, createStorageValue, enumHasValue } from '@vality/matez';
+import {
+    DialogResponseStatus,
+    NotifyLogService,
+    UnionEnum,
+    createStorageValue,
+    enumHasValue,
+} from '@vality/matez';
 import { ThriftPipesModule, ViewerKind } from '@vality/ng-thrift';
 
 import { DomainService } from '~/api/domain-config';
 
-import { SidenavInfoModule } from '../../../sidenav-info';
+import { SidenavInfoModule, SidenavInfoService } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../../domain/domain-thrift-viewer';
 import { getDomainObjectDetails } from '../../domain/utils';
@@ -31,6 +37,7 @@ export class DomainObjectCardComponent {
     private domainObjectService = inject(DomainObjectService);
     private domainService = inject(DomainService);
     private log = inject(NotifyLogService);
+    private sidenavInfoService = inject(SidenavInfoService);
 
     ref = input<Reference>();
     version = input<number>();
@@ -50,11 +57,21 @@ export class DomainObjectCardComponent {
         deserialize: (v) => (enumHasValue(ViewerKind, v) ? v : ViewerKind.Component),
     });
 
+    history() {
+        this.domainObjectService.history(this.ref());
+    }
+
     edit() {
-        this.domainObjectService.edit(this.ref());
+        this.domainObjectService.edit(this.ref()).next((res) => {
+            if (res.status === DialogResponseStatus.Success && !this.version()) {
+                this.domainObject.reload();
+            }
+        });
     }
 
     delete() {
-        this.domainObjectService.delete(this.ref());
+        this.domainObjectService.delete(this.ref()).next(() => {
+            this.sidenavInfoService.close();
+        });
     }
 }

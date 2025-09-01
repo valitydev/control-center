@@ -1,20 +1,11 @@
-<v-table
+<v-table-resource
     [(filter)]="filter"
     [columns]="columns"
-    [data]="objects$ | async"
-    [hasMore]="hasMore$ | async"
-    [progress]="isLoading$ | async"
-    externalFilter
+    [externalFilter]="externalFilter()"
+    [resource]="resource()"
+    [tableInputsContent]="tableInputsContent()"
     noDownload
     standaloneFilter
-    (more)="more()"
-    (update)="update()"
 >
-    <v-table-inputs>
-        <v-select-field
-            [formControl]="typeControl"
-            [options]="options"
-            label="Object type"
-        ></v-select-field>
-    </v-table-inputs>
-</v-table>
+    <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
+</v-table-resource>

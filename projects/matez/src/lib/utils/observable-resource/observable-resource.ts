@@ -10,9 +10,9 @@ import { filterOperator, progressTo } from '../operators';
 
 export type ObservableResourceActionType = string;
 
-const INIT_ACTION = 'init' satisfies ObservableResourceActionType;
+const PARAMS_ACTION = 'params' satisfies ObservableResourceActionType;
 
-export type ObservableResourceActions = typeof INIT_ACTION;
+export type ObservableResourceActions = typeof PARAMS_ACTION;
 
 export type ObservableResourceOptions<
     TAccResult,
@@ -23,8 +23,6 @@ export type ObservableResourceOptions<
     loader: (params: TParams, acc: TAccResult, action: TAction) => Observable<TAccResult>;
     map?: (value: TAccResult) => PossiblyAsync<TResult>;
     seed?: TAccResult;
-    // no undefined init params and ignore options params
-    noInitParams?: boolean;
 } & (TParams extends undefined | void
     ? {
           params?: PossiblyAsync<TParams>;
@@ -48,7 +46,7 @@ export class ObservableResource<
     isLoading$ = this.progress$.pipe(map(Boolean));
     isLoading = toSignal(this.isLoading$, { initialValue: false });
 
-    protected action$ = new BehaviorSubject<TAction>(INIT_ACTION as TAction);
+    protected action$ = new Subject<TAction>();
     protected mergedParams$ = new Subject<TParams>();
     params$!: Observable<TParams>;
     params!: Signal<TParams | undefined>;
@@ -77,24 +75,35 @@ export class ObservableResource<
     }
 
     protected createParams() {
-        return this.internalOptions.noInitParams
-            ? this.mergedParams$
-            : merge(
-                  getPossiblyAsyncObservable<TParams>(this.internalOptions.params as never),
-                  this.mergedParams$,
-              );
+        return merge(
+            getPossiblyAsyncObservable<TParams>(this.internalOptions.params),
+            this.mergedParams$,
+        );
     }
 
     protected createAccValue() {
-        return combineLatest([this.params$, this.action$]).pipe(
-            mergeScan(
-                (acc, [params, action]) =>
-                    this.internalOptions
-                        .loader(params as TParams, acc, action as TAction)
-                        .pipe(progressTo(this.progress$)),
-                this.internalOptions.seed as TAccResult,
+        return merge(
+            this.params$.pipe(map((params) => ({ action: PARAMS_ACTION, params }))),
+            this.action$.pipe(map((action) => ({ action }))),
+        ).pipe(
+            mergeScan<
+                { action: TAction; params?: TParams },
+                { accResult: TAccResult; params?: TParams }
+            >(
+                (acc, actionParams) => {
+                    const params =
+                        actionParams.action === PARAMS_ACTION ? actionParams.params : acc.params;
+                    return this.internalOptions
+                        .loader(params, acc.accResult, actionParams.action)
+                        .pipe(
+                            map((accResult) => ({ accResult, params })),
+                            progressTo(this.progress$),
+                        );
+                },
+                { accResult: this.internalOptions.seed },
                 1,
             ),
+            map(({ accResult }) => accResult),
         );
     }
 

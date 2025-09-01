@@ -8,3 +8,4 @@ export * from './components/table-inputs.component';
 export * from './types';
 export * from './presets';
 export * from './tree-data';
+export * from './table-resource.component';

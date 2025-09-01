@@ -10,6 +10,7 @@ import { getNoTimeZoneIsoString } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
+import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
 
 import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
 import { getDomainObjectOption } from './utils/get-domain-object-option';
@@ -20,10 +21,31 @@ import { getDomainObjectOption } from './utils/get-domain-object-option';
 export class DomainMetadataFormExtensionsService {
     private domainStoreService = inject(DomainObjectsStoreService);
     private domainService = inject(DomainService);
+    private authorStoreService = inject(AuthorStoreService);
 
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
+            {
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'Version', 'domain_config_v2') ||
+                            isTypeWithAliases(data, 'DataRevision', 'domain'),
+                    ),
+                extension: () =>
+                    of({
+                        generate: () => this.domainService.version.getFirstValue(),
+                        isIdentifier: true,
+                    }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'AuthorID', 'domain_config_v2')),
+                extension: () =>
+                    of({
+                        generate: () => of(this.authorStoreService.author.value().id),
+                        isIdentifier: true,
+                    }),
+            },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
                 extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
@@ -73,13 +95,6 @@ export class DomainMetadataFormExtensionsService {
                             .sort()
                             .map((value) => ({ value })),
                         generate: () => of('authorization_failed:unknown'),
-                    }),
-            },
-            {
-                determinant: (data) => of(isTypeWithAliases(data, 'DataRevision', 'domain')),
-                extension: () =>
-                    of({
-                        generate: () => of(this.domainService.version.value()),
                     }),
             },
         ]),

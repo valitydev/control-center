@@ -27,11 +27,11 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ContentChild,
     DestroyRef,
     ElementRef,
     Injector,
     OnInit,
+    TemplateRef,
     ViewChild,
     booleanAttribute,
     computed,
@@ -49,7 +49,6 @@ import { MatRow, MatTable } from '@angular/material/table';
 
 import { ArrayAttributeTransform, arrayAttribute, createCsv, downloadFile } from '../../utils';
 
-import { TableInputsComponent } from './components/table-inputs.component';
 import {
     COLUMN_DEFS,
     DEBOUNCE_TIME_MS,
@@ -79,6 +78,7 @@ export class TableComponent<T extends object, C extends object> implements OnIni
     private dr = inject(DestroyRef);
     private injector = inject(Injector);
     private cdr = inject(ChangeDetectorRef);
+
     data = input<T[], ArrayAttributeTransform<T>>([], { transform: arrayAttribute });
     treeData = input<TreeData<T, C>>();
     columns = input<Column<T, C>[], ArrayAttributeTransform<Column<T, C>>>([], {
@@ -138,6 +138,9 @@ export class TableComponent<T extends object, C extends object> implements OnIni
     });
     rowDropped = output<DragDrop<DisplayedDataItem<T, C>>>();
     dragDisabled = true;
+
+    // Contents
+    tableInputsContent = input<TemplateRef<unknown>>();
 
     update$ = new Subject<UpdateOptions>();
     update = outputFromObservable(this.update$);
@@ -214,7 +217,6 @@ export class TableComponent<T extends object, C extends object> implements OnIni
 
     @ViewChild('scrollViewport', { read: ElementRef }) scrollViewport!: ElementRef;
     @ViewChild('matTable', { static: false }) table!: MatTable<T>;
-    @ContentChild(TableInputsComponent, { read: ElementRef }) tableInputsContent!: ElementRef;
     @ViewChild(MatRow, { static: false }) tableRow!: ElementRef;
 
     ngOnInit() {

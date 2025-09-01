@@ -2,6 +2,7 @@ import {
     Component,
     DestroyRef,
     OnInit,
+    TemplateRef,
     booleanAttribute,
     computed,
     inject,
@@ -30,6 +31,7 @@ export class TableInfoBarComponent<T extends object, C extends object> implement
     noToolbar = input(false, { transform: booleanAttribute });
     dataProgress = input(false, { transform: booleanAttribute });
     columns = input<NormColumn<T, C>[]>([]);
+    tableInputsContent = input<TemplateRef<unknown>>();
 
     size = input(0, { transform: numberAttribute });
     preloadSize = input(0, { transform: numberAttribute });
@@ -43,7 +45,6 @@ export class TableInfoBarComponent<T extends object, C extends object> implement
     filterControl = new FormControl('', { nonNullable: true });
 
     standaloneFilter = input(false, { transform: booleanAttribute });
-    hasInputs = input(false, { transform: booleanAttribute });
 
     downloadCsv = output();
     // eslint-disable-next-line @angular-eslint/no-output-native

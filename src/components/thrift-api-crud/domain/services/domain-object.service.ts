@@ -13,8 +13,11 @@ import {
 } from '@vality/matez';
 
 import { DomainService } from '~/api/domain-config';
+import { SidenavInfoService } from '~/components/sidenav-info';
 
 import { CreateDomainObjectDialogComponent } from '../create-domain-object-dialog';
+import { DomainObjectCardComponent } from '../domain-object-card';
+import { DomainObjectHistoryCardComponent } from '../domain-object-history-card';
 import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 
 @Injectable({
@@ -23,6 +26,7 @@ import { EditDomainObjectDialogComponent } from '../edit-domain-object-dialog';
 export class DomainObjectService {
     private dialogService = inject(DialogService);
     private domainService = inject(DomainService);
+    private sidenavInfoService = inject(SidenavInfoService);
     private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);
 
@@ -45,6 +49,10 @@ export class DomainObjectService {
         );
     }
 
+    view(ref: Reference, version?: number) {
+        return this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref, version });
+    }
+
     edit(ref: Reference) {
         return subscribeReturn(
             this.domainService.get(ref).pipe(
@@ -57,6 +65,10 @@ export class DomainObjectService {
                 takeUntilDestroyed(this.dr),
             ),
         );
+    }
+
+    history(ref: Reference) {
+        return this.sidenavInfoService.toggle(DomainObjectHistoryCardComponent, { ref });
     }
 
     create(objectType?: keyof Reference) {

@@ -1,29 +1,32 @@
 import startCase from 'lodash-es/startCase';
-import { combineLatest, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, OnInit, inject, model, output } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+    Component,
+    TemplateRef,
+    booleanAttribute,
+    inject,
+    input,
+    model,
+    output,
+} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { DomainObject, DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
+import { ReflessDomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     ActionsModule,
     Column,
     DialogResponseStatus,
-    QueryParamsService,
+    PagedObservableResource,
     SelectFieldModule,
     TableModule,
+    TableResourceComponent,
     createMenuColumn,
-    getEnumKeys,
-    getValueChanges,
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
-import { FetchDomainObjectsService } from '~/api/domain-config';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import { getReferenceId } from '~/components/thrift-api-crud';
 import {
@@ -37,29 +40,25 @@ import {
     imports: [
         CommonModule,
         SelectFieldModule,
-        TableModule,
         ReactiveFormsModule,
         ActionsModule,
         MatButtonModule,
+        TableResourceComponent,
+        TableModule,
     ],
 })
-export class DomainObjectsTableComponent implements OnInit {
-    private fetchDomainObjectsService = inject(FetchDomainObjectsService);
-    private qp = inject<QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>>(
-        QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>,
-    );
+export class DomainObjectsTableComponent {
     private sidenavInfoService = inject(SidenavInfoService);
     private domainObjectService = inject(DomainObjectService);
-    private dr = inject(DestroyRef);
-    private injector = inject(Injector);
-    selectedTypeChange = output<keyof ReflessDomainObject>();
 
-    typeControl = new FormControl<keyof ReflessDomainObject>(
-        this.qp.params.type as keyof DomainObject,
-    );
-    objects$ = this.fetchDomainObjectsService.result$;
+    selectedTypeChange = output<keyof ReflessDomainObject>();
+    resource = input<PagedObservableResource<LimitedVersionedObject, unknown>>();
+    filter = model<string>('');
+    tableInputsContent = input<TemplateRef<unknown>>();
+    externalFilter = input(false, { transform: booleanAttribute });
+
     columns: Column<LimitedVersionedObject>[] = [
-        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }), sticky: 'start' },
+        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }) },
         {
             field: 'name',
             cell: (d) => ({
@@ -99,11 +98,17 @@ export class DomainObjectsTableComponent implements OnInit {
                     },
                 },
                 {
+                    label: 'History',
+                    click: () => {
+                        this.domainObjectService.history(d.ref);
+                    },
+                },
+                {
                     label: 'Edit',
                     click: () => {
                         this.domainObjectService.edit(d.ref).next((res) => {
                             if (res.status === DialogResponseStatus.Success) {
-                                this.fetchDomainObjectsService.reload();
+                                this.resource().reload();
                             }
                         });
                     },
@@ -112,55 +117,11 @@ export class DomainObjectsTableComponent implements OnInit {
                     label: 'Delete',
                     click: () => {
                         this.domainObjectService.delete(d.ref).next(() => {
-                            this.fetchDomainObjectsService.reload();
+                            this.resource().reload();
                         });
                     },
                 },
             ],
         })),
     ];
-    options = getEnumKeys(DomainObjectType)
-        .sort()
-        .map((type) => ({
-            label: startCase(String(type)),
-            value: type,
-        }));
-    isLoading$ = this.fetchDomainObjectsService.isLoading$;
-    hasMore$ = this.fetchDomainObjectsService.hasMore$;
-    filter = model<string>(this.qp.params.filter);
-
-    ngOnInit() {
-        merge(this.typeControl.valueChanges, this.qp.params$.pipe(map((params) => params.type)))
-            .pipe(distinctUntilChanged(), takeUntilDestroyed(this.dr))
-            .subscribe((type) => {
-                this.selectedTypeChange.emit(type);
-                this.typeControl.setValue(type, { emitEvent: false });
-                void this.qp.patch({ type });
-            });
-        toObservable(this.filter, { injector: this.injector })
-            .pipe(takeUntilDestroyed(this.dr))
-            .subscribe((filter) => {
-                void this.qp.patch({ filter });
-            });
-        combineLatest([
-            getValueChanges(this.typeControl),
-            toObservable(this.filter, { injector: this.injector }).pipe(debounceTime(300)),
-        ])
-            .pipe(takeUntilDestroyed(this.dr))
-            .subscribe(([type, query]) => {
-                if (type) {
-                    this.fetchDomainObjectsService.load({ type: DomainObjectType[type], query });
-                } else {
-                    this.fetchDomainObjectsService.load({ query });
-                }
-            });
-    }
-
-    update() {
-        this.fetchDomainObjectsService.reload();
-    }
-
-    more() {
-        this.fetchDomainObjectsService.more();
-    }
 }

@@ -11,7 +11,14 @@ import {
 } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, OnInit, inject } from '@angular/core';
+import {
+    Component,
+    DestroyRef,
+    Injector,
+    OnInit,
+    inject,
+    runInInjectionContext,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -100,6 +107,26 @@ export class StudioComponent implements OnInit {
         method: null,
         params: this.fb.array([]),
     });
+    service$ = getValueChanges(this.studioGroup.controls.service).pipe(
+        skipWhile((service) => !service),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    formExtensions$ = this.service$.pipe(
+        switchMap((service) =>
+            service?.getFormExtensions
+                ? runInInjectionContext(this.injector, () => service.getFormExtensions())
+                : of(undefined),
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    viewExtensions$ = this.service$.pipe(
+        switchMap((service) =>
+            service?.getViewExtensions
+                ? runInInjectionContext(this.injector, () => service.getViewExtensions())
+                : of(undefined),
+        ),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     serviceOptions: Option<MetadataThriftService>[] = services
         .map((s) => ({
@@ -107,17 +134,19 @@ export class StudioComponent implements OnInit {
             value: s,
         }))
         .sort((a, b) => compareDifferentTypes(a.label, b.label));
-    namespaceMetadata$ = getValueChanges(this.studioGroup.controls.service).pipe(
-        skipWhile((service) => !service),
+
+    namespaceMetadata$ = this.service$.pipe(
         switchCombineWith((service) => [service?.metadata$]),
         map(([service, metadata]) => metadata.find((m) => m.name === service.namespace)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+
     serviceMetadata$ = this.namespaceMetadata$.pipe(
         skipWhile((metadata) => !metadata),
         map((metadata) => metadata.ast.service[this.studioGroup.value.service.service]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+
     methodOptions$: Observable<Option<Method>[]> = this.serviceMetadata$.pipe(
         skipWhile((metadata) => !metadata),
         map((metadata) =>
