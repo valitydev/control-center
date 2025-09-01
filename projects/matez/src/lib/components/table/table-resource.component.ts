@@ -1,6 +1,8 @@
-import { TableModule } from './table.module';
-import { booleanAttribute, Component, input, model, TemplateRef } from '@angular/core';
+import { Component, TemplateRef, booleanAttribute, input, model } from '@angular/core';
+
 import { Column, PagedObservableResource } from '@vality/matez';
+
+import { TableModule } from './table.module';
 
 @Component({
     selector: 'v-table-resource',

@@ -27,7 +27,6 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
-    ContentChild,
     DestroyRef,
     ElementRef,
     Injector,
@@ -50,7 +49,6 @@ import { MatRow, MatTable } from '@angular/material/table';
 
 import { ArrayAttributeTransform, arrayAttribute, createCsv, downloadFile } from '../../utils';
 
-import { TableInputsComponent } from './components/table-inputs.component';
 import {
     COLUMN_DEFS,
     DEBOUNCE_TIME_MS,
