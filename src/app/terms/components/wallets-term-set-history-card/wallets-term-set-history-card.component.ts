@@ -1,5 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
+import { TermSetHierarchyObject } from '@vality/domain-proto/domain';
 import type { TermSetHistory, WalletTermSet } from '@vality/dominator-proto/dominator';
 import { Column, TableModule } from '@vality/matez';
 
@@ -24,7 +25,10 @@ export class WalletsTermSetHistoryCardComponent {
     historyData = computed(() =>
         (this.data()?.term_set_history?.reverse?.() || []).map((t) => ({
             value: t,
-            children: getFlatDecisions(getWalletCashFlowSelectors(t.term_set)).filter((v) =>
+            children: getFlatDecisions(
+                // TODO: remove after bump dominator
+                getWalletCashFlowSelectors(t.term_set as never as TermSetHierarchyObject),
+            ).filter((v) =>
                 isWalletTermSetDecision(v, {
                     partyId: this.data().owner_id,
                     walletId: this.data().wallet_id,

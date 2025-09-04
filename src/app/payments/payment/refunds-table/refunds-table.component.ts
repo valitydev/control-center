@@ -2,7 +2,7 @@ import startCase from 'lodash-es/startCase';
 
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 
-import { InvoiceID, InvoicePaymentID, PartyID } from '@vality/domain-proto/domain';
+import { InvoiceID, InvoicePaymentID, PartyConfigRef } from '@vality/domain-proto/domain';
 import { Column, UpdateOptions } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
@@ -23,7 +23,7 @@ export class RefundsTableComponent implements OnInit {
     private fetchRefundsService = inject(FetchRefundsService);
     @Input() paymentID: InvoicePaymentID;
     @Input() invoiceID: InvoiceID;
-    @Input() partyID: PartyID;
+    @Input() partyID: PartyConfigRef['id'];
 
     isLoading$ = this.fetchRefundsService.isLoading$;
     hasMore$ = this.fetchRefundsService.hasMore$;

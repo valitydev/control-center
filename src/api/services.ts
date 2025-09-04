@@ -182,5 +182,5 @@ export const {
     FistfulStatistics: ThriftFistfulStatisticsService,
     WithdrawalManagement: ThriftWithdrawalManagementService,
     SourceManagement: ThriftSourceManagementService,
-    WebhookManager: ThriftWebhookManagerService,
+    WebhookManager: ThriftWebhooksManagementService,
 } = injectableServices;

@@ -76,13 +76,6 @@ export class PartiesComponent implements OnInit {
                 )[getUnionKey(party.data.suspension)],
             }),
         },
-        {
-            field: 'shops',
-            cell: (party) => ({
-                value: party.data.shops.length,
-                link: () => `/parties/${party.ref.id}/shops`,
-            }),
-        },
         createMenuColumn((party) => ({
             items: [
                 {

@@ -6,7 +6,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
-import { TermSetHierarchyRef } from '@vality/domain-proto/domain';
+import { TermSetHierarchyObject, TermSetHierarchyRef } from '@vality/domain-proto/domain';
 import {
     CommonSearchQueryParams,
     ShopSearchQuery,
@@ -87,7 +87,10 @@ export class ShopsTermsComponent implements OnInit {
     terms$ = this.shopsTermsService.result$.pipe(
         cachedHeadMap((t) => ({
             value: t,
-            children: getFlatDecisions(getShopCashFlowSelectors(t.current_term_set)).filter((v) =>
+            children: getFlatDecisions(
+                // TODO: clean after bump dominator
+                getShopCashFlowSelectors(t.current_term_set as never as TermSetHierarchyObject),
+            ).filter((v) =>
                 isShopTermSetDecision(v, {
                     partyId: t.owner_id,
                     shopId: t.shop_id,

@@ -1,5 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
+import { ProvisionTermSet } from '@vality/domain-proto/domain';
 import type { ProvisionTermSetHistory, TerminalTermSet } from '@vality/dominator-proto/dominator';
 import { Column, TableModule } from '@vality/matez';
 
@@ -20,7 +21,8 @@ export class TerminalsTermSetHistoryCardComponent {
     data = input<TerminalTermSet>();
     historyData = computed(() =>
         (this.data()?.term_set_history?.reverse?.() || []).map(
-            getTerminalTreeDataItem((d) => d.term_set),
+            // TODO: remove after bump dominator
+            getTerminalTreeDataItem((d) => d.term_set as never as ProvisionTermSet),
         ),
     );
 
