@@ -35,7 +35,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@vality/domain-proto": "^2.0.1-8cab698.0",
     "@vality/dominator-proto": "^1.0.1-67ea35c.0",
-    "@vality/fistful-proto": "^2.0.1-fe195c5.0",
+    "@vality/fistful-proto": "^2.0.1-2e1e01f.0",
     "@vality/machinegun-proto": "^1.0.1-cc2c27c.0",
     "@vality/magista-proto": "^2.0.2-0e0b068.0",
     "@vality/ng-monaco-editor": "^20.0.0",
