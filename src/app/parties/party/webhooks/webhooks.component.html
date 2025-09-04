@@ -1,0 +1,8 @@
+<cc-page-layout fullHeight title="Webhooks">
+    <v-table-resource
+        [columns]="columns"
+        [resource]="webhooks"
+        standaloneFilter
+        (reload)="webhooks.reload()"
+    ></v-table-resource>
+</cc-page-layout>
