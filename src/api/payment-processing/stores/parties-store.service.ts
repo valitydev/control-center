@@ -3,7 +3,7 @@ import { MemoizeExpiring } from 'typescript-memoize';
 
 import { Injectable, inject } from '@angular/core';
 
-import { PartyID, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
+import { PartyConfigRef, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
 
 import { DomainObjectsStoreService, DomainService } from '../../domain-config';
 
@@ -25,20 +25,22 @@ export class PartiesStoreService {
         .map((objs) => objs.map((obj) => obj.object.wallet_config));
 
     @MemoizeExpiring(5_000)
-    getParty(partyId: PartyID) {
+    getParty(partyId: PartyConfigRef['id']) {
         return this.domainObjectsStoreService
             .getObject({ party_config: { id: partyId } })
             .map((obj) => obj.object.party_config);
     }
 
     @MemoizeExpiring(5_000)
-    getPartyShops(partyId: PartyID) {
-        return this.shops.map((shops) => shops.filter((s) => s.data.party_id === partyId));
+    getPartyShops(partyId: PartyConfigRef['id']) {
+        return this.shops.map((shops) => shops.filter((s) => s.data.party_ref.id === partyId));
     }
 
     @MemoizeExpiring(5_000)
-    getPartyWallets(partyId: PartyID) {
-        return this.wallets.map((wallets) => wallets.filter((w) => w.data.party_id === partyId));
+    getPartyWallets(partyId: PartyConfigRef['id']) {
+        return this.wallets.map((wallets) =>
+            wallets.filter((w) => w.data.party_ref.id === partyId),
+        );
     }
 
     @MemoizeExpiring(5_000)

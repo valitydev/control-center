@@ -9,7 +9,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { PartyID, Reference, ShopID, base } from '@vality/domain-proto/domain';
+import { PartyConfigRef, Reference, ShopID, base } from '@vality/domain-proto/domain';
 import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
@@ -31,8 +31,12 @@ export class DomainMetadataViewExtensionsService {
         map((metadata): ThriftViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
             {
-                determinant: (data) => of(isTypeWithAliases(data, 'PartyID', 'domain')),
-                extension: (_, partyId: PartyID) =>
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(data, 'ID', 'domain') &&
+                            isTypeWithAliases(data.parent, 'PartyConfigRef', 'domain'),
+                    ),
+                extension: (_, partyId: PartyConfigRef['id']) =>
                     this.partiesStoreService.getParty(partyId).value$.pipe(
                         map((p) => ({
                             value: p.data.contact_info.registration_email,

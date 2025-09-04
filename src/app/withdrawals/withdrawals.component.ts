@@ -6,7 +6,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 
-import { PartyID } from '@vality/domain-proto/domain';
+import { PartyConfigRef } from '@vality/domain-proto/domain';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
     Column,
@@ -37,7 +37,7 @@ import { FetchWithdrawalsService } from './services/fetch-withdrawals.service';
 
 interface WithdrawalsForm {
     dateRange: DateRange;
-    merchant: PartyID;
+    merchant: PartyConfigRef['id'];
     status: WithdrawalParams['status'];
     amount: NumberRange;
     withdrawalIds: WithdrawalParams['withdrawal_ids'];

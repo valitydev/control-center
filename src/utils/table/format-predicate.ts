@@ -78,7 +78,7 @@ export function formatPredicate(predicate: Predicate, level = 0, not = false): s
                         condition.cost_is_multiple_of.currency.symbolic_code,
                     )}`;
                 case 'party':
-                    return `party ${equalSymbol} (#${condition.party.id}${
+                    return `party ${equalSymbol} (#${condition.party.party_ref.id}${
                         condition.party?.definition
                             ? ' & ' + inlineJson(toJson(condition.party?.definition), Infinity)
                             : ''
