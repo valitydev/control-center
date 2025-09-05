@@ -1,10 +1,12 @@
-import { catchError, of } from 'rxjs';
+import { catchError, first, of, switchMap } from 'rxjs';
 
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 import { Webhook } from '@vality/fistful-proto/webhooker';
 import {
     Column,
+    DialogService,
     NotifyLogService,
     TableModule,
     TableResourceComponent,
@@ -18,15 +20,18 @@ import { createWalletColumn } from '~/utils';
 import { getUnionKey } from '../../../../../projects/ng-thrift/src/lib/utils/union/get-union-key';
 import { PartyStoreService } from '../party-store.service';
 
+import { CreateWebhookDialogComponent } from './create-webhook-dialog/create-webhook-dialog.component';
+
 @Component({
     selector: 'cc-webhooks',
-    imports: [PageLayoutModule, TableModule, TableResourceComponent],
+    imports: [PageLayoutModule, TableModule, TableResourceComponent, MatButtonModule],
     templateUrl: './webhooks.component.html',
 })
 export class WebhooksComponent {
     private webhooksManagementService = inject(ThriftWebhooksManagementService);
     private partyStoreService = inject(PartyStoreService);
     private log = inject(NotifyLogService);
+    private dialogService = inject(DialogService);
 
     webhooks = observableResource({
         params: this.partyStoreService.party$,
@@ -64,4 +69,21 @@ export class WebhooksComponent {
         },
         { field: 'url' },
     ];
+
+    create() {
+        this.partyStoreService.party$
+            .pipe(
+                first(),
+                switchMap((party) =>
+                    this.dialogService
+                        .open(CreateWebhookDialogComponent, { partyId: party.ref.id })
+                        .afterClosed(),
+                ),
+            )
+            .subscribe((result) => {
+                if (result.status === 'success') {
+                    this.webhooks.reload();
+                }
+            });
+    }
 }

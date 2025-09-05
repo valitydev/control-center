@@ -1,4 +1,7 @@
 <cc-page-layout fullHeight title="Webhooks">
+    <cc-page-layout-actions>
+        <button color="primary" mat-flat-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
     <v-table-resource
         [columns]="columns"
         [resource]="webhooks"
