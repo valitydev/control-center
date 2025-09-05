@@ -3,8 +3,7 @@ import { map } from 'rxjs/operators';
 
 import { Component, Input, booleanAttribute, inject, input } from '@angular/core';
 
-import { DomainObjectType, PartyID } from '@vality/domain-proto/domain';
-import { ShopID } from '@vality/domain-proto/payment_processing';
+import { DomainObjectType, PartyConfigRef, ShopID } from '@vality/domain-proto/domain';
 import {
     FormControlSuperclass,
     Option,
@@ -30,15 +29,16 @@ export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]>
     @Input() hint?: string;
     multiple = input(false, { transform: booleanAttribute });
 
-    options$: Observable<Option<PartyID>[]> = this.fetchDomainObjectsService.result$.pipe(
-        map((objs) =>
-            objs.map((obj) => ({
-                value: obj.ref.shop_config.id,
-                label: obj.name || `#${obj.ref.shop_config.id}`,
-                description: obj.description,
-            })),
-        ),
-    );
+    options$: Observable<Option<PartyConfigRef['id']>[]> =
+        this.fetchDomainObjectsService.result$.pipe(
+            map((objs) =>
+                objs.map((obj) => ({
+                    value: obj.ref.shop_config.id,
+                    label: obj.name || `#${obj.ref.shop_config.id}`,
+                    description: obj.description,
+                })),
+            ),
+        );
     progress$ = this.fetchDomainObjectsService.isLoading$;
 
     search(search: string) {

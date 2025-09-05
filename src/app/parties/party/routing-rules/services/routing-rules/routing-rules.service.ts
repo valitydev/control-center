@@ -76,7 +76,7 @@ export class RoutingRulesService {
                     allowed: {
                         condition: {
                             party: {
-                                id: partyID,
+                                party_ref: { id: partyID },
                             },
                         },
                     },
@@ -122,7 +122,7 @@ export class RoutingRulesService {
                     allowed: {
                         condition: {
                             party: {
-                                id: partyID,
+                                party_ref: { id: partyID },
                                 definition,
                             },
                         },
@@ -187,7 +187,7 @@ export class RoutingRulesService {
                     description: mainDelegateDescription,
                     allowed: {
                         condition: {
-                            party: { id: partyID },
+                            party: { party_ref: { id: partyID } },
                         },
                     },
                     ruleset: { id },

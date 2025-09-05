@@ -81,7 +81,7 @@ export class ShopsTableComponent {
                 },
             }),
         },
-        createPartyColumn((d) => ({ id: d.data.party_id }), {
+        createPartyColumn((d) => ({ id: d.data.party_ref.id }), {
             hidden: toObservable(this.noPartyColumn),
         }),
         createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.data.terms } }), {
@@ -125,13 +125,13 @@ export class ShopsTableComponent {
                         ...delegatesByParty.rulesetIds.map((id) => {
                             const rulesetId =
                                 delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                    ?.get?.(d.data.party_id)
+                                    ?.get?.(d.data.party_ref.id)
                                     ?.find?.((v) => v?.partyDelegate?.ruleset?.id === id)
                                     ?.partyDelegate?.ruleset?.id;
                             return {
                                 label: `Routing rules #${id}`,
                                 click: () =>
-                                    this.openRoutingRules(rulesetId, d.ref.id, d.data.party_id),
+                                    this.openRoutingRules(rulesetId, d.ref.id, d.data.party_ref.id),
                                 disabled: isNil(rulesetId),
                             };
                         }),
@@ -222,7 +222,7 @@ export class ShopsTableComponent {
                 const delegates =
                     ruleset?.object?.routing_rules?.data?.decisions?.delegates?.filter?.(
                         (delegate) =>
-                            delegate?.allowed?.condition?.party?.id === partyId &&
+                            delegate?.allowed?.condition?.party?.party_ref?.id === partyId &&
                             delegate?.allowed?.condition?.party?.definition?.shop_is === shopId,
                     ) || [];
                 const paymentRulesCommands = [
@@ -260,7 +260,7 @@ export class ShopsTableComponent {
         return toObservable(this.shops, { injector: this.injector }).pipe(
             startWith(null),
             map((shops) =>
-                shops?.length ? Array.from(new Set(shops.map((s) => s.data.party_id))) : [],
+                shops?.length ? Array.from(new Set(shops.map((s) => s.data.party_ref.id))) : [],
             ),
             switchMap((parties) =>
                 parties?.length

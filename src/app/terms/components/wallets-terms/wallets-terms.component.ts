@@ -6,6 +6,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
+import { TermSetHierarchyObject } from '@vality/domain-proto/domain';
 import {
     type CommonSearchQueryParams,
     type WalletSearchQuery,
@@ -90,7 +91,10 @@ export class WalletsTermsComponent implements OnInit {
     terms$ = this.walletsTermsService.result$.pipe(
         cachedHeadMap((t) => ({
             value: t,
-            children: getFlatDecisions(getWalletCashFlowSelectors(t.current_term_set)).filter((v) =>
+            children: getFlatDecisions(
+                // TODO: remove after bump dominator
+                getWalletCashFlowSelectors(t.current_term_set as never as TermSetHierarchyObject),
+            ).filter((v) =>
                 isWalletTermSetDecision(v, {
                     partyId: t.owner_id,
                     walletId: t.wallet_id,

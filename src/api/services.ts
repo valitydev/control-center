@@ -154,6 +154,14 @@ export const services = [
         service: 'Management',
         public: 'SourceManagement',
     },
+    {
+        name: 'WebhookManager',
+        loader: () => import('@vality/fistful-proto/webhooker').then((m) => m.WebhookManager),
+        metadata$: fistfulMetadata$,
+        namespace: 'webhooker',
+        service: 'WebhookManager',
+        public: 'WebhookManager',
+    },
 ] as const;
 
 export const { services: injectableServices, provideThriftServices } =
@@ -174,4 +182,5 @@ export const {
     FistfulStatistics: ThriftFistfulStatisticsService,
     WithdrawalManagement: ThriftWithdrawalManagementService,
     SourceManagement: ThriftSourceManagementService,
+    WebhookManager: ThriftWebhooksManagementService,
 } = injectableServices;

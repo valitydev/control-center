@@ -64,7 +64,7 @@ export class WalletsComponent implements OnInit {
     columns: Column<VersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: d.object.wallet_config.ref.id }) },
         { field: 'name', cell: (d) => ({ value: d.object.wallet_config.data.name }) },
-        createPartyColumn((d) => ({ id: d.object.wallet_config.data.party_id })),
+        createPartyColumn((d) => ({ id: d.object.wallet_config.data.party_ref.id })),
         {
             field: 'blocking',
             cell: (d) => ({
@@ -152,7 +152,7 @@ export class WalletsComponent implements OnInit {
     getAccountState(wallet: VersionedObject) {
         return this.partyManagementService
             .GetAccountState(
-                wallet.object.wallet_config.data.party_id,
+                wallet.object.wallet_config.data.party_ref,
                 wallet.object.wallet_config.data.account.settlement,
                 wallet.info.version,
             )

@@ -3,7 +3,7 @@ import { map } from 'rxjs/operators';
 
 import { Component, Input, booleanAttribute, inject } from '@angular/core';
 
-import { DomainObjectType, PartyID } from '@vality/domain-proto/domain';
+import { DomainObjectType, PartyConfigRef } from '@vality/domain-proto/domain';
 import {
     FormControlSuperclass,
     Option,
@@ -19,7 +19,7 @@ import { FetchDomainObjectsService } from '~/api/domain-config';
     providers: [...createControlProviders(() => MerchantFieldComponent), FetchDomainObjectsService],
     standalone: false,
 })
-export class MerchantFieldComponent extends FormControlSuperclass<PartyID> {
+export class MerchantFieldComponent extends FormControlSuperclass<PartyConfigRef['id']> {
     private fetchDomainObjectsService = inject(FetchDomainObjectsService);
 
     @Input() label: string;
@@ -28,15 +28,16 @@ export class MerchantFieldComponent extends FormControlSuperclass<PartyID> {
     @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;
 
-    options$: Observable<Option<PartyID>[]> = this.fetchDomainObjectsService.result$.pipe(
-        map((objs) =>
-            objs.map((obj) => ({
-                value: obj.ref.party_config.id,
-                label: obj.name || `#${obj.ref.party_config.id}`,
-                description: obj.description,
-            })),
-        ),
-    );
+    options$: Observable<Option<PartyConfigRef['id']>[]> =
+        this.fetchDomainObjectsService.result$.pipe(
+            map((objs) =>
+                objs.map((obj) => ({
+                    value: obj.ref.party_config.id,
+                    label: obj.name || `#${obj.ref.party_config.id}`,
+                    description: obj.description,
+                })),
+            ),
+        );
     progress$ = this.fetchDomainObjectsService.isLoading$;
 
     search(search: string) {

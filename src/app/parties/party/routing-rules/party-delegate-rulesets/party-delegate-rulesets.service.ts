@@ -6,7 +6,7 @@ import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import {
-    PartyID,
+    PartyConfigRef,
     PaymentInstitutionObject,
     RoutingDelegate,
     RoutingRulesObject,
@@ -33,7 +33,7 @@ export class PartyDelegateRulesetsService {
     private partyID$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         map((p) => p['partyID']),
-    ) as Observable<PartyID>;
+    ) as Observable<PartyConfigRef['id']>;
     private routingRulesType$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
         map((p) => p['type']),
@@ -41,7 +41,7 @@ export class PartyDelegateRulesetsService {
 
     getDelegatesWithPaymentInstitution(
         type?: RoutingRulesType,
-        partyId?: PartyID,
+        partyId?: PartyConfigRef['id'],
     ): Observable<DelegateWithPaymentInstitution[]> {
         return combineLatest([
             this.getPaymentInstitutionsWithRoutingRule(type),
@@ -54,7 +54,9 @@ export class PartyDelegateRulesetsService {
                         paymentInstitution,
                         delegates: mainRoutingRule?.data?.decisions?.delegates
                             ?.map((d) =>
-                                d?.allowed?.condition?.party?.id === partyID ? d : undefined,
+                                d?.allowed?.condition?.party?.party_ref?.id === partyID
+                                    ? d
+                                    : undefined,
                             )
                             ?.filter((d) => d),
                     }))

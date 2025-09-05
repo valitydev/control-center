@@ -1,6 +1,6 @@
-import { Component, TemplateRef, booleanAttribute, input, model } from '@angular/core';
+import { Component, TemplateRef, booleanAttribute, computed, input, model } from '@angular/core';
 
-import { Column, PagedObservableResource } from '@vality/matez';
+import { Column, ObservableResource, PagedObservableResource, UpdateOptions } from '@vality/matez';
 
 import { TableModule } from './table.module';
 
@@ -12,13 +12,14 @@ import { TableModule } from './table.module';
             [columns]="columns()"
             [data]="resource().value()"
             [externalFilter]="externalFilter()"
-            [hasMore]="resource().hasMore()"
+            [hasMore]="hasMore()"
             [noDownload]="noDownload()"
             [progress]="resource().isLoading()"
             [standaloneFilter]="standaloneFilter()"
             [tableInputsContent]="tableInputsContent()"
-            (more)="resource().more()"
-            (update)="resource().setOptions($event)"
+            (more)="more()"
+            (reload)="resource().reload()"
+            (update)="update($event)"
         >
             <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
         </v-table>
@@ -26,11 +27,26 @@ import { TableModule } from './table.module';
     imports: [TableModule],
 })
 export class TableResourceComponent<T extends object, C extends object> {
-    resource = input<PagedObservableResource<T, unknown>>();
+    resource = input<PagedObservableResource<T, unknown> | ObservableResource<T[], unknown>>();
     columns = input<Column<T, C>[]>([]);
     filter = model('');
     externalFilter = input(false, { transform: booleanAttribute });
     noDownload = input(false, { transform: booleanAttribute });
     standaloneFilter = input(false, { transform: booleanAttribute });
     tableInputsContent = input<TemplateRef<unknown>>();
+
+    hasMore = computed(() => {
+        const res = this.resource();
+        return 'hasMore' in res ? res.hasMore() : false;
+    });
+
+    more() {
+        const res = this.resource();
+        if ('more' in res) res.more();
+    }
+
+    update(options: UpdateOptions) {
+        const res = this.resource();
+        if ('setOptions' in res) res.setOptions(options);
+    }
 }

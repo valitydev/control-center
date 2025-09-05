@@ -7,6 +7,7 @@ import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../../wallets/routing-
 
 import { PartyComponent } from './party.component';
 import { ROUTING_CONFIG } from './routing-config';
+import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-config';
 
 @NgModule({
     imports: [
@@ -34,6 +35,12 @@ import { ROUTING_CONFIG } from './routing-config';
                             ),
                         canActivate: [canActivateAuthRole],
                         data: WALLETS_ROUTING_CONFIG,
+                    },
+                    {
+                        path: 'webhooks',
+                        loadComponent: () => import('./webhooks').then((m) => m.WebhooksComponent),
+                        canActivate: [canActivateAuthRole],
+                        data: WEBHOOKS_ROUTING_CONFIG,
                     },
                     {
                         path: '',

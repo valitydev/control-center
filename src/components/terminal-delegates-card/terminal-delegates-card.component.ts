@@ -99,7 +99,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                 header: 'Allowed',
             },
         ),
-        createPartyColumn((d) => ({ id: d.delegate.allowed.condition?.party?.id })),
+        createPartyColumn((d) => ({ id: d.delegate.allowed.condition?.party?.party_ref?.id })),
         {
             field: 'type',
             cell: (d) => ({
@@ -121,7 +121,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                                     value: shop.data.name,
                                     description: shop.ref.id,
                                     link: () =>
-                                        `/parties/${party.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                        `/parties/${party.party_ref.id}/routing-rules/payment/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
                                 })),
                             );
                     case 'wallet_is':
@@ -132,7 +132,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                                     value: wallet.data.name,
                                     description: wallet.ref.id,
                                     link: () =>
-                                        `/parties/${party.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
+                                        `/parties/${party.party_ref.id}/routing-rules/withdrawal/${d.rule.ref.id}/delegate/${d.delegate.ruleset.id}`,
                                 })),
                             );
                 }

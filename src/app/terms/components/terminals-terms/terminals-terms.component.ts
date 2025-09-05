@@ -6,6 +6,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
+import { ProvisionTermSet } from '@vality/domain-proto/domain';
 import type {
     CommonSearchQueryParams,
     TerminalSearchQuery,
@@ -75,7 +76,10 @@ export class TerminalsTermsComponent implements OnInit {
         }),
     );
     terms$ = this.terminalsTermsService.result$.pipe(
-        cachedHeadMap(getTerminalTreeDataItem((d) => d.current_term_set)),
+        // TODO: remove after bump dominator
+        cachedHeadMap(
+            getTerminalTreeDataItem((d) => d.current_term_set as never as ProvisionTermSet),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     hasMore$ = this.terminalsTermsService.hasMore$;
