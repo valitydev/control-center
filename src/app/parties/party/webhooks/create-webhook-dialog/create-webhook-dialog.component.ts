@@ -2,15 +2,15 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { WebhookParams } from '@vality/fistful-proto/webhooker';
+import { WebhookParams } from '@vality/domain-proto/webhooker';
 import { DialogModule, DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 
 import { ThriftWebhooksManagementService } from '~/api/services';
-import { FistfulThriftFormComponent } from '~/components/fistful-thrift-form';
+import { DomainThriftFormComponent } from '~/components/thrift-api-crud';
 
 @Component({
     selector: 'cc-create-webhook-dialog',
-    imports: [DialogModule, FistfulThriftFormComponent, ReactiveFormsModule, MatButtonModule],
+    imports: [DialogModule, DomainThriftFormComponent, ReactiveFormsModule, MatButtonModule],
     templateUrl: './create-webhook-dialog.component.html',
 })
 export class CreateWebhookDialogComponent extends DialogSuperclass<
@@ -21,7 +21,7 @@ export class CreateWebhookDialogComponent extends DialogSuperclass<
     private log = inject(NotifyLogService);
 
     control = new FormControl<Partial<WebhookParams>>(
-        { party_id: this.dialogData.partyId },
+        { party_ref: { id: this.dialogData.partyId } },
         { nonNullable: true },
     );
     progress = signal(0);

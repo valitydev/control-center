@@ -1,21 +1,25 @@
-import { catchError, first, of, switchMap } from 'rxjs';
+import { catchError, filter, first, of, switchMap } from 'rxjs';
 
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
-import { Webhook } from '@vality/fistful-proto/webhooker';
+import { Webhook } from '@vality/domain-proto/webhooker';
 import {
     Column,
+    ConfirmDialogComponent,
+    DialogResponseStatus,
     DialogService,
     NotifyLogService,
     TableModule,
     TableResourceComponent,
+    createMenuColumn,
     observableResource,
 } from '@vality/matez';
 
 import { ThriftWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
-import { createWalletColumn } from '~/utils';
+import { createShopColumn } from '~/utils';
 
 import { getUnionKey } from '../../../../../projects/ng-thrift/src/lib/utils/union/get-union-key';
 import { PartyStoreService } from '../party-store.service';
@@ -32,11 +36,12 @@ export class WebhooksComponent {
     private partyStoreService = inject(PartyStoreService);
     private log = inject(NotifyLogService);
     private dialogService = inject(DialogService);
+    private router = inject(Router);
 
     webhooks = observableResource({
         params: this.partyStoreService.party$,
         loader: (party) =>
-            this.webhooksManagementService.GetList(party.ref.id).pipe(
+            this.webhooksManagementService.GetList(party.ref).pipe(
                 catchError((err) => {
                     this.log.error(err);
                     return of([] as Webhook[]);
@@ -45,7 +50,13 @@ export class WebhooksComponent {
     });
 
     columns: Column<Webhook>[] = [
-        { field: 'id' },
+        {
+            field: 'id',
+            cell: (d) => ({
+                value: String(d.id),
+                link: ['./details', d.id],
+            }),
+        },
         {
             field: 'enabled',
             cell: (d) => ({
@@ -54,20 +65,30 @@ export class WebhooksComponent {
                 color: d.enabled ? 'success' : 'warn',
             }),
         },
-        createWalletColumn((d) => ({ id: d.wallet_id })),
+        createShopColumn((d) => ({ shopId: d.event_filter.invoice.shop_ref.id }), {
+            field: 'event_filter_invoice_shop',
+        }),
         {
-            field: 'event_filter',
+            field: 'event_filter_invoice_types',
             cell: (d) => ({
-                value: Array.from(d.event_filter.types)
-                    .map((type) =>
-                        getUnionKey(type) === 'withdrawal'
-                            ? getUnionKey(type.withdrawal)
-                            : getUnionKey(type.destination),
-                    )
+                value: Array.from(d.event_filter.invoice.types)
+                    .map((type) => getUnionKey(type))
                     .join(', '),
             }),
         },
         { field: 'url' },
+        createMenuColumn((d) => ({
+            items: [
+                {
+                    label: 'Details',
+                    click: () => this.router.navigate(['./details', d.id]),
+                },
+                {
+                    label: 'Delete',
+                    click: () => this.delete(d.id),
+                },
+            ],
+        })),
     ];
 
     create() {
@@ -84,6 +105,25 @@ export class WebhooksComponent {
                 if (result.status === 'success') {
                     this.webhooks.reload();
                 }
+            });
+    }
+
+    delete(id: number) {
+        this.dialogService
+            .open(ConfirmDialogComponent)
+            .afterClosed()
+            .pipe(
+                filter((r) => r.status === DialogResponseStatus.Success),
+                switchMap(() => this.webhooksManagementService.Delete(id)),
+            )
+            .subscribe({
+                next: () => {
+                    this.log.successOperation('delete', 'Webhook');
+                    this.webhooks.reload();
+                },
+                error: (err) => {
+                    this.log.errorOperation(err, 'delete', 'Webhook');
+                },
             });
     }
 }

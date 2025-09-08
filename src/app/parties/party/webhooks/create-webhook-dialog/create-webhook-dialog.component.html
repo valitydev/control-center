@@ -1,10 +1,10 @@
 <v-dialog [progress]="progress()" title="Create webhook">
-    <cc-fistful-thrift-form
+    <cc-domain-thrift-editor
         [formControl]="control"
         namespace="webhooker"
         noToolbar
         type="WebhookParams"
-    ></cc-fistful-thrift-form>
+    ></cc-domain-thrift-editor>
     <v-dialog-actions>
         <button [disabled]="progress() || control.invalid" mat-button (click)="create()">
             Create

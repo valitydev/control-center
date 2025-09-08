@@ -75,6 +75,14 @@ export const services = [
         service: 'PartyManagement',
         public: 'PartyManagement',
     },
+    {
+        ...domainData,
+        name: 'WebhookManager',
+        loader: () => import('@vality/domain-proto/webhooker').then((m) => m.WebhookManager),
+        namespace: 'webhooker',
+        service: 'WebhookManager',
+        public: 'WebhookManager',
+    },
     // Repairer
     {
         name: 'RepairManagement',
@@ -153,14 +161,6 @@ export const services = [
         namespace: 'source',
         service: 'Management',
         public: 'SourceManagement',
-    },
-    {
-        name: 'WebhookManager',
-        loader: () => import('@vality/fistful-proto/webhooker').then((m) => m.WebhookManager),
-        metadata$: fistfulMetadata$,
-        namespace: 'webhooker',
-        service: 'WebhookManager',
-        public: 'WebhookManager',
     },
 ] as const;
 
