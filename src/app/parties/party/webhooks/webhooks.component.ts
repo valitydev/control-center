@@ -54,9 +54,10 @@ export class WebhooksComponent {
             field: 'id',
             cell: (d) => ({
                 value: String(d.id),
-                link: ['./details', d.id],
+                click: () => this.router.navigate(['/parties', d.party_ref.id, 'webhooks', d.id]),
             }),
         },
+        { field: 'url' },
         {
             field: 'enabled',
             cell: (d) => ({
@@ -66,7 +67,7 @@ export class WebhooksComponent {
             }),
         },
         createShopColumn((d) => ({ shopId: d.event_filter.invoice.shop_ref.id }), {
-            field: 'event_filter_invoice_shop',
+            header: 'Event Filter Invoice Shop',
         }),
         {
             field: 'event_filter_invoice_types',
@@ -76,12 +77,12 @@ export class WebhooksComponent {
                     .join(', '),
             }),
         },
-        { field: 'url' },
         createMenuColumn((d) => ({
             items: [
                 {
                     label: 'Details',
-                    click: () => this.router.navigate(['./details', d.id]),
+                    click: () =>
+                        this.router.navigate(['/parties', d.party_ref.id, 'webhooks', d.id]),
                 },
                 {
                     label: 'Delete',
