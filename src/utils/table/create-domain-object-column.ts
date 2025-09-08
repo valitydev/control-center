@@ -1,3 +1,4 @@
+import { of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 import { inject } from '@angular/core';
@@ -19,6 +20,10 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
     const click = () => {
         sidenavInfoService.toggle(DomainObjectCardComponent, { ref });
     };
+    console.log(ref);
+    if (!ref || !getUnionValue(ref)) {
+        return of({ value: '' });
+    }
     return inject(DomainObjectsStoreService)
         .getLimitedObject(ref)
         .value$.pipe(

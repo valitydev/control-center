@@ -4,8 +4,13 @@ import { MemoizeExpiring } from 'typescript-memoize';
 import { Injectable, inject } from '@angular/core';
 
 import { PartyConfigRef, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
+import { VersionedObjectInfo } from '@vality/domain-proto/domain_config_v2';
 
 import { DomainObjectsStoreService, DomainService } from '../../domain-config';
+
+export interface ShopWithInfo extends ShopConfigObject {
+    info: VersionedObjectInfo;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -33,7 +38,11 @@ export class PartiesStoreService {
 
     @MemoizeExpiring(5_000)
     getPartyShops(partyId: PartyConfigRef['id']) {
-        return this.shops.map((shops) => shops.filter((s) => s.data.party_ref.id === partyId));
+        return this.domainObjectsStoreService
+            .getObjects('shop_config')
+            .map<
+                ShopWithInfo[]
+            >((shops) => shops.filter((s) => s.object.shop_config.data.party_ref.id === partyId).map((s) => ({ info: s.info, ...s.object.shop_config })));
     }
 
     @MemoizeExpiring(5_000)

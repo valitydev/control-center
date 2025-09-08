@@ -1,4 +1,4 @@
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 import { Component, OnInit, inject } from '@angular/core';
 
@@ -17,7 +17,7 @@ export class ShopsComponent implements OnInit {
     private fetchDomainObjectsService = inject(FetchFullDomainObjectsService);
 
     shops$ = this.fetchDomainObjectsService.result$.pipe(
-        map((objs) => objs.map((obj) => obj.object.shop_config)),
+        map((res) => res.map((r) => ({ ...r.object.shop_config, info: r.info }))),
     );
     progress$ = this.fetchDomainObjectsService.isLoading$;
 
