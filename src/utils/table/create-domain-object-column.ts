@@ -20,7 +20,6 @@ export const createDomainObjectColumn = createColumn(({ ref }: { ref: Reference 
     const click = () => {
         sidenavInfoService.toggle(DomainObjectCardComponent, { ref });
     };
-    console.log(ref);
     if (!ref || !getUnionValue(ref)) {
         return of({ value: '' });
     }
