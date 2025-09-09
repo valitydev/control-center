@@ -43,6 +43,15 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                         data: WEBHOOKS_ROUTING_CONFIG,
                     },
                     {
+                        path: 'webhooks/:webhookID',
+                        loadComponent: () =>
+                            import('./webhooks/webhook/webhook.component').then(
+                                (m) => m.WebhookComponent,
+                            ),
+                        canActivate: [canActivateAuthRole],
+                        data: WEBHOOKS_ROUTING_CONFIG,
+                    },
+                    {
                         path: '',
                         redirectTo: 'shops',
                         pathMatch: 'full',

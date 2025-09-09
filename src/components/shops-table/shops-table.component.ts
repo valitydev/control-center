@@ -1,7 +1,8 @@
 import { isNil } from 'lodash-es';
 import startCase from 'lodash-es/startCase';
 import { combineLatest, map, of, switchMap } from 'rxjs';
-import { filter, startWith } from 'rxjs/operators';
+import { filter, shareReplay, startWith } from 'rxjs/operators';
+import { MemoizeExpiring } from 'typescript-memoize';
 
 import {
     Component,
@@ -32,8 +33,9 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
-import { PartiesStoreService } from '~/api/payment-processing';
-import { createDomainObjectColumn, createPartyColumn } from '~/utils';
+import { PartiesStoreService, ShopWithInfo } from '~/api/payment-processing';
+import { ThriftPartyManagementService } from '~/api/services';
+import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 import {
     DelegateWithPaymentInstitution,
@@ -58,15 +60,16 @@ export class ShopsTableComponent {
     private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
     private domainStoreService = inject(DomainObjectsStoreService);
     private injector = inject(Injector);
+    private partyManagementService = inject(ThriftPartyManagementService);
 
-    shops = input<ShopConfigObject[]>([]);
+    shops = input<ShopWithInfo[]>([]);
     @Input() progress: number | boolean = false;
     @Output() update = new EventEmitter<UpdateOptions>();
     @Output() filterChange = new EventEmitter<string>();
 
     noPartyColumn = input(false, { transform: booleanAttribute });
 
-    columns: Column<ShopConfigObject>[] = [
+    columns: Column<ShopWithInfo>[] = [
         {
             field: 'ref.id',
         },
@@ -118,6 +121,54 @@ export class ShopsTableComponent {
                 )[getUnionKey(d.data.suspension)],
             }),
         },
+        createCurrencyColumn(
+            (d) =>
+                this.getSettlementAccountState(d).pipe(
+                    map((b) => ({ amount: b.own_amount, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Own', isLazyCell: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.getSettlementAccountState(d).pipe(
+                    map((b) => ({
+                        amount: b.own_amount - b.available_amount,
+                        code: b.currency.symbolic_code,
+                    })),
+                ),
+            { header: 'Hold', isLazyCell: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.getSettlementAccountState(d).pipe(
+                    map((b) => ({ amount: b.available_amount, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Available', isLazyCell: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.getGuaranteeAccountState(d).pipe(
+                    map((b) => ({ amount: b.own_amount, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Guarantee Own', isLazyCell: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.getGuaranteeAccountState(d).pipe(
+                    map((b) => ({
+                        amount: b.own_amount - b.available_amount,
+                        code: b.currency.symbolic_code,
+                    })),
+                ),
+            { header: 'Guarantee Hold', isLazyCell: true },
+        ),
+        createCurrencyColumn(
+            (d) =>
+                this.getGuaranteeAccountState(d).pipe(
+                    map((b) => ({ amount: b.available_amount, code: b.currency.symbolic_code })),
+                ),
+            { header: 'Guarantee Available', isLazyCell: true },
+        ),
         createMenuColumn((d) =>
             this.getDelegatesByParty().pipe(
                 map((delegatesByParty) => ({
@@ -284,5 +335,19 @@ export class ShopsTableComponent {
                 ),
             })),
         );
+    }
+
+    @MemoizeExpiring(5 * 60_000)
+    getSettlementAccountState(shop: ShopWithInfo) {
+        return this.partyManagementService
+            .GetAccountState(shop.data.party_ref, shop.data.account.settlement, shop.info.version)
+            .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    }
+
+    @MemoizeExpiring(5 * 60_000)
+    getGuaranteeAccountState(shop: ShopWithInfo) {
+        return this.partyManagementService
+            .GetAccountState(shop.data.party_ref, shop.data.account.guarantee, shop.info.version)
+            .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     }
 }
