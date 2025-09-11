@@ -24,6 +24,10 @@
     text-decoration-style: dotted;
 }
 
+::ng-deep .tooltip-content {
+    white-space: pre-line;
+}
+
 .wrapper {
     &__action {
         cursor: pointer;

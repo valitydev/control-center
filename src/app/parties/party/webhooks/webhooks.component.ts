@@ -1,4 +1,5 @@
 import { catchError, filter, first, of, switchMap } from 'rxjs';
+import yaml from 'yaml';
 
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +22,7 @@ import { ThriftShopWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 import { createShopColumn } from '~/utils';
 
+import { toJson } from '../../../../../projects/ng-thrift/src/lib/utils/thrift-type/to-json';
 import { getUnionKey } from '../../../../../projects/ng-thrift/src/lib/utils/union/get-union-key';
 import { PartyStoreService } from '../party-store.service';
 
@@ -62,20 +64,21 @@ export class WebhooksComponent {
         {
             field: 'enabled',
             cell: (d) => ({
-                type: 'boolean',
                 value: d.enabled ? 'Enabled' : 'Disabled',
                 color: d.enabled ? 'success' : 'warn',
             }),
         },
         createShopColumn((d) => ({ shopId: d.event_filter.invoice.shop_ref.id }), {
-            header: 'Event Filter Invoice Shop',
+            header: 'Shop',
         }),
         {
             field: 'event_filter_invoice_types',
+            header: 'Event Filters',
             cell: (d) => ({
                 value: Array.from(d.event_filter.invoice.types)
                     .map((type) => getUnionKey(type))
                     .join(', '),
+                tooltip: yaml.stringify(toJson(d.event_filter.invoice.types)),
             }),
         },
         createMenuColumn((d) => ({

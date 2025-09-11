@@ -1,4 +1,5 @@
 import { catchError, filter, first, of, switchMap } from 'rxjs';
+import yaml from 'yaml';
 
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +17,7 @@ import {
     createMenuColumn,
     observableResource,
 } from '@vality/matez';
+import { toJson } from '@vality/ng-thrift';
 
 import { ThriftWalletWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -61,7 +63,6 @@ export class WalletWebhooksComponent {
         {
             field: 'enabled',
             cell: (d) => ({
-                type: 'boolean',
                 value: d.enabled ? 'Enabled' : 'Disabled',
                 color: d.enabled ? 'success' : 'warn',
             }),
@@ -69,10 +70,12 @@ export class WalletWebhooksComponent {
         createWalletColumn((d) => ({ id: d.wallet_id })),
         {
             field: 'event_filter_types',
+            header: 'Event Filters',
             cell: (d) => ({
                 value: Array.from(d.event_filter.types)
                     .map((type) => getUnionKey(type))
                     .join(', '),
+                tooltip: yaml.stringify(toJson(d.event_filter.types)),
             }),
         },
         createMenuColumn((d) => ({
