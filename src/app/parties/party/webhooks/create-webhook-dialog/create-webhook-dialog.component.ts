@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { WebhookParams } from '@vality/domain-proto/webhooker';
 import { DialogModule, DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 
-import { ThriftWebhooksManagementService } from '~/api/services';
+import { ThriftShopWebhooksManagementService } from '~/api/services';
 import { DomainThriftFormComponent } from '~/components/thrift-api-crud';
 
 @Component({
@@ -17,7 +17,7 @@ export class CreateWebhookDialogComponent extends DialogSuperclass<
     CreateWebhookDialogComponent,
     { partyId: string }
 > {
-    private webhooksManagementService = inject(ThriftWebhooksManagementService);
+    private webhooksManagementService = inject(ThriftShopWebhooksManagementService);
     private log = inject(NotifyLogService);
 
     control = new FormControl<Partial<WebhookParams>>(

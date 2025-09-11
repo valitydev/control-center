@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { observableResource } from '@vality/matez';
 
-import { ThriftWebhooksManagementService } from '~/api/services';
+import { ThriftShopWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 import { DomainThriftViewerComponent } from '~/components/thrift-api-crud';
 
@@ -17,7 +17,7 @@ import { DomainThriftViewerComponent } from '~/components/thrift-api-crud';
 })
 export class WebhookComponent {
     private route = inject(ActivatedRoute);
-    private webhooksManagementService = inject(ThriftWebhooksManagementService);
+    private webhooksManagementService = inject(ThriftShopWebhooksManagementService);
 
     webhook = observableResource({
         params: this.route.params.pipe(map((p) => Number(p['webhookID']))),

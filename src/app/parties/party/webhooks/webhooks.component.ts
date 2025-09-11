@@ -17,7 +17,7 @@ import {
     observableResource,
 } from '@vality/matez';
 
-import { ThriftWebhooksManagementService } from '~/api/services';
+import { ThriftShopWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 import { createShopColumn } from '~/utils';
 
@@ -32,7 +32,7 @@ import { CreateWebhookDialogComponent } from './create-webhook-dialog/create-web
     templateUrl: './webhooks.component.html',
 })
 export class WebhooksComponent {
-    private webhooksManagementService = inject(ThriftWebhooksManagementService);
+    private webhooksManagementService = inject(ThriftShopWebhooksManagementService);
     private partyStoreService = inject(PartyStoreService);
     private log = inject(NotifyLogService);
     private dialogService = inject(DialogService);
