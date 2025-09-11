@@ -1,9 +1,9 @@
 <v-dialog [progress]="progress()" title="Create wallet webhook">
-    <cc-domain-thrift-editor
+    <cc-fistful-thrift-form
         [formControl]="control"
         namespace="webhooker"
         type="WebhookParams"
-    ></cc-domain-thrift-editor>
+    ></cc-fistful-thrift-form>
     <v-dialog-actions>
         <button [disabled]="progress() || control.invalid" mat-button (click)="create()">
             Create

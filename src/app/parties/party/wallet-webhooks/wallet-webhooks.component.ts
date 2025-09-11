@@ -4,7 +4,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
-import { Webhook } from '@vality/domain-proto/webhooker';
+import { Webhook } from '@vality/fistful-proto/webhooker';
 import {
     Column,
     ConfirmDialogComponent,
@@ -17,9 +17,9 @@ import {
     observableResource,
 } from '@vality/matez';
 
-import { ThriftShopWebhooksManagementService } from '~/api/services';
+import { ThriftWalletWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
-import { createShopColumn } from '~/utils';
+import { createWalletColumn } from '~/utils';
 
 import { getUnionKey } from '../../../../../projects/ng-thrift/src/lib/utils/union/get-union-key';
 import { PartyStoreService } from '../party-store.service';
@@ -32,7 +32,7 @@ import { CreateWalletWebhookDialogComponent } from './create-wallet-webhook-dial
     templateUrl: './wallet-webhooks.component.html',
 })
 export class WalletWebhooksComponent {
-    private webhooksManagementService = inject(ThriftShopWebhooksManagementService);
+    private walletWebhooksManagementService = inject(ThriftWalletWebhooksManagementService);
     private partyStoreService = inject(PartyStoreService);
     private log = inject(NotifyLogService);
     private dialogService = inject(DialogService);
@@ -41,7 +41,7 @@ export class WalletWebhooksComponent {
     webhooks = observableResource({
         params: this.partyStoreService.party$,
         loader: (party) =>
-            this.webhooksManagementService.GetList(party.ref).pipe(
+            this.walletWebhooksManagementService.GetList(party.ref.id).pipe(
                 catchError((err) => {
                     this.log.error(err);
                     return of([] as Webhook[]);
@@ -54,8 +54,7 @@ export class WalletWebhooksComponent {
             field: 'id',
             cell: (d) => ({
                 value: String(d.id),
-                click: () =>
-                    this.router.navigate(['/parties', d.party_ref.id, 'wallet-webhooks', d.id]),
+                click: () => this.router.navigate(['/parties', d.id, 'wallet-webhooks', d.id]),
             }),
         },
         { field: 'url' },
@@ -67,13 +66,11 @@ export class WalletWebhooksComponent {
                 color: d.enabled ? 'success' : 'warn',
             }),
         },
-        createShopColumn((d) => ({ shopId: d.event_filter.invoice.shop_ref.id }), {
-            header: 'Event Filter Invoice Shop',
-        }),
+        createWalletColumn((d) => ({ id: d.wallet_id })),
         {
-            field: 'event_filter_invoice_types',
+            field: 'event_filter_types',
             cell: (d) => ({
-                value: Array.from(d.event_filter.invoice.types)
+                value: Array.from(d.event_filter.types)
                     .map((type) => getUnionKey(type))
                     .join(', '),
             }),
@@ -83,7 +80,7 @@ export class WalletWebhooksComponent {
                 {
                     label: 'Details',
                     click: () =>
-                        this.router.navigate(['/parties', d.party_ref.id, 'wallet-webhooks', d.id]),
+                        this.router.navigate(['/parties', d.party_id, 'wallet-webhooks', d.id]),
                 },
                 {
                     label: 'Delete',
@@ -116,7 +113,7 @@ export class WalletWebhooksComponent {
             .afterClosed()
             .pipe(
                 filter((r) => r.status === DialogResponseStatus.Success),
-                switchMap(() => this.webhooksManagementService.Delete(id)),
+                switchMap(() => this.walletWebhooksManagementService.Delete(id)),
             )
             .subscribe({
                 next: () => {

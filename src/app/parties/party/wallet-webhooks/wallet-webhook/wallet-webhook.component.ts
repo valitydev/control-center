@@ -6,18 +6,18 @@ import { ActivatedRoute } from '@angular/router';
 
 import { observableResource } from '@vality/matez';
 
-import { ThriftShopWebhooksManagementService } from '~/api/services';
+import { ThriftWalletWebhooksManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
-import { DomainThriftViewerComponent } from '~/components/thrift-api-crud';
+import { FistfulThriftViewerComponent } from '~/components/thrift-api-crud/fistful';
 
 @Component({
     selector: 'cc-wallet-webhook',
-    imports: [DomainThriftViewerComponent, PageLayoutModule, MatCardModule],
+    imports: [FistfulThriftViewerComponent, PageLayoutModule, MatCardModule],
     templateUrl: './wallet-webhook.component.html',
 })
 export class WalletWebhookComponent {
     private route = inject(ActivatedRoute);
-    private webhooksManagementService = inject(ThriftShopWebhooksManagementService);
+    private webhooksManagementService = inject(ThriftWalletWebhooksManagementService);
 
     webhook = observableResource({
         params: this.route.params.pipe(map((p) => Number(p['webhookID']))),
