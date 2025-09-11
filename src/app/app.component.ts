@@ -109,8 +109,12 @@ const createNavLinks = (): Link[] => [
                                   url: `${partyPath}/wallets`,
                               },
                               {
-                                  label: 'Webhooks',
-                                  url: `${partyPath}/webhooks`,
+                                  label: 'Shop webhooks',
+                                  url: `${partyPath}/shop-webhooks`,
+                              },
+                              {
+                                  label: 'Wallet webhooks',
+                                  url: `${partyPath}/wallet-webhooks`,
                               },
                               {
                                   label: 'Payment RR',

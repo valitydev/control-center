@@ -1,0 +1,11 @@
+<cc-page-layout fullHeight title="Wallet webhooks">
+    <cc-page-layout-actions>
+        <button color="primary" mat-flat-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
+    <v-table-resource
+        [columns]="columns"
+        [resource]="webhooks"
+        standaloneFilter
+        (reload)="webhooks.reload()"
+    ></v-table-resource>
+</cc-page-layout>

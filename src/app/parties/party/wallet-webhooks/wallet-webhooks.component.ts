@@ -24,14 +24,14 @@ import { createShopColumn } from '~/utils';
 import { getUnionKey } from '../../../../../projects/ng-thrift/src/lib/utils/union/get-union-key';
 import { PartyStoreService } from '../party-store.service';
 
-import { CreateWebhookDialogComponent } from './create-webhook-dialog/create-webhook-dialog.component';
+import { CreateWalletWebhookDialogComponent } from './create-wallet-webhook-dialog/create-wallet-webhook-dialog.component';
 
 @Component({
-    selector: 'cc-webhooks',
+    selector: 'cc-wallet-webhooks',
     imports: [PageLayoutModule, TableModule, TableResourceComponent, MatButtonModule],
-    templateUrl: './webhooks.component.html',
+    templateUrl: './wallet-webhooks.component.html',
 })
-export class WebhooksComponent {
+export class WalletWebhooksComponent {
     private webhooksManagementService = inject(ThriftWebhooksManagementService);
     private partyStoreService = inject(PartyStoreService);
     private log = inject(NotifyLogService);
@@ -55,7 +55,7 @@ export class WebhooksComponent {
             cell: (d) => ({
                 value: String(d.id),
                 click: () =>
-                    this.router.navigate(['/parties', d.party_ref.id, 'shop-webhooks', d.id]),
+                    this.router.navigate(['/parties', d.party_ref.id, 'wallet-webhooks', d.id]),
             }),
         },
         { field: 'url' },
@@ -83,7 +83,7 @@ export class WebhooksComponent {
                 {
                     label: 'Details',
                     click: () =>
-                        this.router.navigate(['/parties', d.party_ref.id, 'shop-webhooks', d.id]),
+                        this.router.navigate(['/parties', d.party_ref.id, 'wallet-webhooks', d.id]),
                 },
                 {
                     label: 'Delete',
@@ -99,7 +99,7 @@ export class WebhooksComponent {
                 first(),
                 switchMap((party) =>
                     this.dialogService
-                        .open(CreateWebhookDialogComponent, { partyId: party.ref.id })
+                        .open(CreateWalletWebhookDialogComponent, { partyId: party.ref.id })
                         .afterClosed(),
                 ),
             )

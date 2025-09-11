@@ -1,0 +1,13 @@
+<cc-page-layout fullHeight title="Webhook">
+    <div>
+        <mat-card appearance="outlined">
+            <mat-card-content>
+                <cc-domain-thrift-viewer
+                    [value]="webhook.value()"
+                    namespace="webhooker"
+                    type="Webhook"
+                ></cc-domain-thrift-viewer>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</cc-page-layout>
