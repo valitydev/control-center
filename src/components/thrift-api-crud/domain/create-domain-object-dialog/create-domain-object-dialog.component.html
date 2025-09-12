@@ -2,18 +2,30 @@
     [progress]="!!(progress$ | async)"
     title="{{ isReview ? 'Review' : 'Create' }} domain object"
 >
-    @if (isReview) {
-        <cc-domain-thrift-viewer
-            [value]="control.value"
-            kind="editor"
-            type="ReflessDomainObject"
-        ></cc-domain-thrift-viewer>
-    } @else {
-        <cc-domain-thrift-editor
-            [formControl]="control"
-            type="ReflessDomainObject"
-        ></cc-domain-thrift-editor>
-    }
+    <div>
+        @if (!isReview) {
+            <v-select-field
+                [formControl]="typeControl"
+                [options]="options"
+                label="Object type"
+            ></v-select-field>
+        }
+
+        @if (type$ | async) {
+            @if (isReview) {
+                <cc-domain-thrift-viewer
+                    [type]="type$ | async"
+                    [value]="control.value"
+                    kind="editor"
+                ></cc-domain-thrift-viewer>
+            } @else {
+                <cc-domain-thrift-editor
+                    [formControl]="control"
+                    [type]="type$ | async"
+                ></cc-domain-thrift-editor>
+            }
+        }
+    </div>
 
     <v-dialog-actions>
         @if (isReview) {
