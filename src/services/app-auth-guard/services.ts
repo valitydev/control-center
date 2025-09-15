@@ -7,4 +7,5 @@ export enum Services {
     RepairManagement = 'RepairManagement',
     Dominator = 'Dominator',
     WebhookManager = 'WebhookManager',
+    WalletsWebhookManager = 'WalletsWebhookManager',
 }

@@ -13,6 +13,7 @@ import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
 
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 import { DomainMetadataViewExtensionsService } from '~/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
+import { Services as WachterServices } from '~/services';
 import { ThriftService, createThriftServices } from '~/utils';
 
 export interface MetadataThriftService extends ThriftService {
@@ -162,6 +163,14 @@ export const services = [
         service: 'Management',
         public: 'SourceManagement',
     },
+    {
+        name: WachterServices.WalletsWebhookManager,
+        loader: () => import('@vality/fistful-proto/webhooker').then((m) => m.WebhookManager),
+        metadata$: fistfulMetadata$,
+        namespace: 'webhooker',
+        service: 'WebhookManager',
+        public: 'WalletsWebhookManager',
+    },
 ] as const;
 
 export const { services: injectableServices, provideThriftServices } =
@@ -182,5 +191,6 @@ export const {
     FistfulStatistics: ThriftFistfulStatisticsService,
     WithdrawalManagement: ThriftWithdrawalManagementService,
     SourceManagement: ThriftSourceManagementService,
-    WebhookManager: ThriftWebhooksManagementService,
+    WebhookManager: ThriftShopWebhooksManagementService,
+    WalletsWebhookManager: ThriftWalletWebhooksManagementService,
 } = injectableServices;

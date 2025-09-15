@@ -7,6 +7,7 @@ import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../../wallets/routing-
 
 import { PartyComponent } from './party.component';
 import { ROUTING_CONFIG } from './routing-config';
+import { ROUTING_CONFIG as WALLET_WEBHOOKS_ROUTING_CONFIG } from './wallet-webhooks/routing-config';
 import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-config';
 
 @NgModule({
@@ -37,19 +38,35 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                         data: WALLETS_ROUTING_CONFIG,
                     },
                     {
-                        path: 'webhooks',
+                        path: 'shop-webhooks',
                         loadComponent: () => import('./webhooks').then((m) => m.WebhooksComponent),
                         canActivate: [canActivateAuthRole],
                         data: WEBHOOKS_ROUTING_CONFIG,
                     },
                     {
-                        path: 'webhooks/:webhookID',
+                        path: 'shop-webhooks/:webhookID',
                         loadComponent: () =>
                             import('./webhooks/webhook/webhook.component').then(
                                 (m) => m.WebhookComponent,
                             ),
                         canActivate: [canActivateAuthRole],
                         data: WEBHOOKS_ROUTING_CONFIG,
+                    },
+                    {
+                        path: 'wallet-webhooks',
+                        loadComponent: () =>
+                            import('./wallet-webhooks').then((m) => m.WalletWebhooksComponent),
+                        canActivate: [canActivateAuthRole],
+                        data: WALLET_WEBHOOKS_ROUTING_CONFIG,
+                    },
+                    {
+                        path: 'wallet-webhooks/:webhookID',
+                        loadComponent: () =>
+                            import(
+                                './wallet-webhooks/wallet-webhook/wallet-webhook.component'
+                            ).then((m) => m.WalletWebhookComponent),
+                        canActivate: [canActivateAuthRole],
+                        data: WALLET_WEBHOOKS_ROUTING_CONFIG,
                     },
                     {
                         path: '',
