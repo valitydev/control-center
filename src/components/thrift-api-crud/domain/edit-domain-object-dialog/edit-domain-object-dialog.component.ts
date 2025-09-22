@@ -65,7 +65,7 @@ enum Step {
 })
 export class EditDomainObjectDialogComponent extends DialogSuperclass<
     EditDomainObjectDialogComponent,
-    { domainObject: VersionedObject }
+    { domainObject: VersionedObject; newDomainObjectData?: ValuesType<DomainObject>['data'] }
 > {
     private dr = inject(DestroyRef);
     private log = inject(NotifyLogService);
@@ -78,10 +78,10 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     };
 
     control = new FormControl<ValuesType<DomainObject>['data']>(
-        getUnionValue(this.sourceObject).data,
+        this.dialogData.newDomainObjectData ?? getUnionValue(this.sourceObject).data,
         [Validators.required],
     );
-    step: Step = Step.Edit;
+    step: Step = this.dialogData.newDomainObjectData ? Step.Review : Step.Edit;
     stepEnum = Step;
 
     get sourceObject(): DomainObject {

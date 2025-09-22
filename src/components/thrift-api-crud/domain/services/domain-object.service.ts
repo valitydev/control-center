@@ -1,9 +1,10 @@
 import { filter, first, switchMap } from 'rxjs/operators';
+import { ValuesType } from 'utility-types';
 
 import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { Reference } from '@vality/domain-proto/domain';
+import { DomainObject, Reference } from '@vality/domain-proto/domain';
 import {
     ConfirmDialogComponent,
     DialogResponseStatus,
@@ -53,13 +54,16 @@ export class DomainObjectService {
         return this.sidenavInfoService.toggle(DomainObjectCardComponent, { ref, version });
     }
 
-    edit(ref: Reference) {
+    edit(ref: Reference, newDomainObjectData?: ValuesType<DomainObject>['data']) {
         return subscribeReturn(
             this.domainService.get(ref).pipe(
                 first(),
                 switchMap((domainObject) =>
                     this.dialogService
-                        .open(EditDomainObjectDialogComponent, { domainObject })
+                        .open(EditDomainObjectDialogComponent, {
+                            domainObject,
+                            newDomainObjectData,
+                        })
                         .afterClosed(),
                 ),
                 takeUntilDestroyed(this.dr),

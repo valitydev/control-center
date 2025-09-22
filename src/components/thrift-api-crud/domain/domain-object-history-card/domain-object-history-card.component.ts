@@ -1,12 +1,12 @@
-import { map } from 'rxjs';
+import { first, map } from 'rxjs';
 
 import { Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Reference } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
-import { DialogResponseStatus, pagedObservableResource } from '@vality/matez';
-import { ThriftPipesModule } from '@vality/ng-thrift';
+import { DialogResponseStatus, createMenuColumn, pagedObservableResource } from '@vality/matez';
+import { ThriftPipesModule, getUnionValue } from '@vality/ng-thrift';
 
 import { DomainService } from '~/api/domain-config';
 
@@ -51,6 +51,28 @@ export class DomainObjectHistoryCardComponent {
     version = computed(() =>
         Math.max(0, ...(this.resource.value() || []).map((r) => r.info.version)),
     );
+    menuColumn = createMenuColumn<LimitedVersionedObject>((d) => ({
+        items: [
+            {
+                label: 'Revert to this version',
+                disabled: d.info.version === this.version(),
+                click: () => {
+                    this.domainService
+                        .get(d.ref, d.info.version)
+                        .pipe(first())
+                        .subscribe((obj) => {
+                            this.domainObjectService
+                                .edit(d.ref, getUnionValue(obj.object).data)
+                                .next((res) => {
+                                    if (res.status === DialogResponseStatus.Success) {
+                                        this.resource.reload();
+                                    }
+                                });
+                        });
+                },
+            },
+        ],
+    }));
 
     latest() {
         this.domainObjectService.view(this.ref());
