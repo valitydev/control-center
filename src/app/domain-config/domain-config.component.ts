@@ -1,13 +1,23 @@
 import { startCase } from 'lodash-es';
 import { combineLatest, debounceTime, distinctUntilChanged, map, merge } from 'rxjs';
 
-import { Component, DestroyRef, Injector, OnInit, inject, model, signal } from '@angular/core';
+import {
+    Component,
+    DestroyRef,
+    Injector,
+    OnInit,
+    computed,
+    inject,
+    model,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
 import { DomainObjectType, ReflessDomainObject } from '@vality/domain-proto/domain';
 import {
+    AutocompleteFieldModule,
     DialogResponseStatus,
     QueryParamsService,
     SelectFieldModule,
@@ -32,6 +42,7 @@ import { DomainObjectsTableComponent } from './domain-objects-table';
         TableModule,
         SelectFieldModule,
         ReactiveFormsModule,
+        AutocompleteFieldModule,
     ],
     providers: [FetchDomainObjectsService],
 })
@@ -41,14 +52,18 @@ export class DomainConfigComponent implements OnInit {
     private dr = inject(DestroyRef);
     private injector = inject(Injector);
     protected fetchDomainObjectsService = inject(FetchDomainObjectsService);
-    private qp =
-        inject<QueryParamsService<{ type?: keyof ReflessDomainObject; filter?: string }>>(
-            QueryParamsService,
-        );
+    private qp = inject<
+        QueryParamsService<{
+            type?: keyof ReflessDomainObject;
+            filter?: string;
+            version?: number;
+        }>
+    >(QueryParamsService);
 
     selectedType = signal<keyof ReflessDomainObject>(null);
     version = this.domainService.version.value;
     typeControl = new FormControl(this.qp.params.type);
+    versionControl = new FormControl(this.qp.params.version ?? -1, { nonNullable: true });
     filter = model<string>(this.qp.params.filter);
 
     create() {
@@ -59,12 +74,18 @@ export class DomainConfigComponent implements OnInit {
         });
     }
 
-    options = getEnumKeys(DomainObjectType)
+    typeOptions = getEnumKeys(DomainObjectType)
         .sort()
         .map((type) => ({
             label: startCase(String(type)),
             value: type,
         }));
+    versionOptions = computed(() => {
+        return Array.from({ length: this.version() - 1 }, (_, i) => ({
+            label: `#${i + 1}`,
+            value: i + 1,
+        })).concat([{ label: `#${this.version() || 0} (latest)`, value: -1 }]);
+    });
 
     ngOnInit() {
         merge(this.typeControl.valueChanges, this.qp.params$.pipe(map((params) => params.type)))
@@ -74,6 +95,19 @@ export class DomainConfigComponent implements OnInit {
                 this.typeControl.setValue(type, { emitEvent: false });
                 void this.qp.patch({ type });
             });
+        merge(
+            getValueChanges(this.versionControl),
+            this.qp.params$.pipe(map((params) => params.version)),
+        )
+            .pipe(
+                map((version) => version ?? -1),
+                distinctUntilChanged(),
+                takeUntilDestroyed(this.dr),
+            )
+            .subscribe((version) => {
+                this.versionControl.setValue(version, { emitEvent: false });
+                void this.qp.patch({ version });
+            });
         toObservable(this.filter, { injector: this.injector })
             .pipe(takeUntilDestroyed(this.dr))
             .subscribe((filter) => {
@@ -81,17 +115,19 @@ export class DomainConfigComponent implements OnInit {
             });
         combineLatest([
             getValueChanges(this.typeControl),
+            getValueChanges(this.versionControl),
             toObservable(this.filter, { injector: this.injector }).pipe(debounceTime(300)),
         ])
             .pipe(takeUntilDestroyed(this.dr))
-            .subscribe(([type, query]) => {
+            .subscribe(([type, version, query]) => {
                 if (type) {
                     this.fetchDomainObjectsService.setParams({
                         type: DomainObjectType[type],
+                        version,
                         query,
                     });
                 } else {
-                    this.fetchDomainObjectsService.setParams({ query });
+                    this.fetchDomainObjectsService.setParams({ version, query });
                 }
             });
     }

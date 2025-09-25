@@ -1,5 +1,7 @@
+@let ver = versionControl.value === -1 || !versionControl.value ? version() : versionControl.value;
+
 <cc-page-layout
-    description="{{ version() ? '#' + version() : '' }}"
+    [description]="'#' + ver + (version() === ver ? ' (latest)' : '')"
     fullHeight
     title="Domain config"
 >
@@ -15,8 +17,13 @@
     >
         <ng-template #tableInputsContent>
             <v-select-field
+                [formControl]="versionControl"
+                [options]="versionOptions()"
+                label="Version"
+            ></v-select-field>
+            <v-select-field
                 [formControl]="typeControl"
-                [options]="options"
+                [options]="typeOptions"
                 label="Object type"
             ></v-select-field>
         </ng-template>

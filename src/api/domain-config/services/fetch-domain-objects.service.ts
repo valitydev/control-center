@@ -30,6 +30,7 @@ export class FetchDomainObjectsService extends PagedObservableResourceSuperclass
                     query: params.query || '*',
                     limit: options.size,
                     continuation_token: options.continuationToken,
+                    version: params.version === -1 ? undefined : params.version,
                 }),
             )
             .pipe(
