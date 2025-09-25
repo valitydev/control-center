@@ -5,6 +5,7 @@ import {
     Component,
     TemplateRef,
     booleanAttribute,
+    computed,
     inject,
     input,
     model,
@@ -56,36 +57,7 @@ export class DomainObjectsTableComponent {
     filter = model<string>('');
     tableInputsContent = input<TemplateRef<unknown>>();
     externalFilter = input(false, { transform: booleanAttribute });
-
-    columns: Column<LimitedVersionedObject>[] = [
-        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }) },
-        {
-            field: 'name',
-            cell: (d) => ({
-                value: d.name,
-                click: () => {
-                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                        ref: d.ref,
-                        version: d.info.version,
-                    });
-                },
-            }),
-            style: { width: 0 },
-        },
-        { field: 'description', cell: (d) => ({ value: d.description }) },
-        {
-            field: 'type',
-            cell: (d) => ({ value: startCase(String(getUnionKey(d.ref))) }),
-        },
-        { field: 'version', cell: (d) => ({ value: d.info.version }) },
-        { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
-        {
-            field: 'changed_by',
-            cell: (d) => ({
-                value: d.info.changed_by?.name,
-                description: d.info.changed_by?.email,
-            }),
-        },
+    menu = input<Column<LimitedVersionedObject>>(
         createMenuColumn((d) => ({
             items: [
                 {
@@ -123,5 +95,37 @@ export class DomainObjectsTableComponent {
                 },
             ],
         })),
-    ];
+    );
+
+    columns = computed<Column<LimitedVersionedObject>[]>(() => [
+        { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }) },
+        {
+            field: 'name',
+            cell: (d) => ({
+                value: d.name,
+                click: () => {
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: d.ref,
+                        version: d.info.version,
+                    });
+                },
+            }),
+            style: { width: 0 },
+        },
+        { field: 'description', cell: (d) => ({ value: d.description }) },
+        {
+            field: 'type',
+            cell: (d) => ({ value: startCase(String(getUnionKey(d.ref))) }),
+        },
+        { field: 'version', cell: (d) => ({ value: d.info.version }) },
+        { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
+        {
+            field: 'changed_by',
+            cell: (d) => ({
+                value: d.info.changed_by?.name,
+                description: d.info.changed_by?.email,
+            }),
+        },
+        this.menu(),
+    ]);
 }
