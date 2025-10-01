@@ -143,7 +143,7 @@ export class PrimitiveFieldComponent<T>
     generate(event: MouseEvent) {
         this.generate$
             .pipe(
-                switchMap((generate) => generate()),
+                switchMap((generate) => generate(this.control.value)),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => this.control.setValue(value as T));

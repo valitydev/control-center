@@ -84,6 +84,14 @@ export const services = [
         service: 'WebhookManager',
         public: 'WebhookManager',
     },
+    {
+        ...domainData,
+        name: 'Accounter',
+        loader: () => import('@vality/domain-proto/accounter').then((m) => m.Accounter),
+        namespace: 'accounter',
+        service: 'Accounter',
+        public: 'Accounter',
+    },
     // Repairer
     {
         name: 'RepairManagement',
@@ -100,7 +108,7 @@ export const services = [
         metadata$: scroogeMetadata$,
         namespace: 'account_balance',
         service: 'AccountService',
-        public: 'Account',
+        public: 'AccountManagement',
     },
     // Magista
     {
@@ -193,4 +201,5 @@ export const {
     SourceManagement: ThriftSourceManagementService,
     WebhookManager: ThriftShopWebhooksManagementService,
     WalletsWebhookManager: ThriftWalletWebhooksManagementService,
+    Accounter: ThriftAccountManagementService,
 } = injectableServices;
