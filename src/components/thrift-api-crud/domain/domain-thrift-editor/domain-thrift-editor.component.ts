@@ -5,7 +5,7 @@ import { Component, TemplateRef, inject, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { metadata$ } from '@vality/domain-proto';
-import { ShopAccount } from '@vality/domain-proto/domain';
+import { AccountID, ShopAccount, WalletAccount } from '@vality/domain-proto/domain';
 import { createControlProviders } from '@vality/matez';
 import {
     ThriftEditorModule,
@@ -50,8 +50,8 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                             internalToOutput: ({
                                 currency,
                                 accounts,
-                            }: Partial<CurrencyAccount> = {}) => ({
-                                currency,
+                            }: Partial<CurrencyAccount> = {}): ShopAccount => ({
+                                currency: { symbolic_code: currency || '' },
                                 settlement: accounts?.[0],
                                 guarantee: accounts?.[1],
                             }),
@@ -59,9 +59,49 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                                 currency,
                                 settlement,
                                 guarantee,
-                            }: Partial<ShopAccount> = {}) => ({
-                                currency,
+                            }: Partial<ShopAccount> = {}): CurrencyAccount => ({
+                                currency: currency?.symbolic_code,
                                 accounts: [settlement, guarantee].filter(Boolean),
+                            }),
+                        },
+                    }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'WalletAccount', 'domain')),
+                extension: () =>
+                    of({
+                        template: this.oneAccountFieldTemplate(),
+                        converter: {
+                            internalToOutput: ({
+                                currency,
+                                accounts,
+                            }: Partial<CurrencyAccount> = {}): WalletAccount => ({
+                                currency: { symbolic_code: currency || '' },
+                                settlement: accounts?.[0],
+                            }),
+                            outputToInternal: ({
+                                currency,
+                                settlement,
+                            }: Partial<WalletAccount> = {}): CurrencyAccount => ({
+                                currency: currency?.symbolic_code,
+                                accounts: [settlement].filter(Boolean),
+                            }),
+                        },
+                    }),
+            },
+            // TODO:
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'AccountID', 'domain')),
+                extension: () =>
+                    of({
+                        template: this.oneAccountFieldTemplate(),
+                        converter: {
+                            internalToOutput: ({
+                                accounts,
+                            }: Partial<CurrencyAccount> = {}): AccountID => accounts?.[0],
+                            outputToInternal: (accountId: AccountID): CurrencyAccount => ({
+                                currency: null,
+                                accounts: [accountId].filter(Boolean),
                             }),
                         },
                     }),
