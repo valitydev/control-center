@@ -3,3 +3,4 @@ export * from './utils/create-control-providers';
 export * from './utils/get-errors-tree';
 export * from './form-control-superclass.directive';
 export * from './form-component-superclass.directive';
+export * from './abstract-control-superclass';

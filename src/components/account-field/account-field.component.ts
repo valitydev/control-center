@@ -1,24 +1,26 @@
-import { combineLatest } from 'rxjs';
-import { catchError, distinctUntilChanged, map, skipWhile, switchMap } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
+import { catchError, distinctUntilChanged, map, tap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 import {
     AutocompleteFieldModule,
-    FormControlSuperclass,
+    FormComponentSuperclass,
     NotifyLogService,
     Option,
     compareDifferentTypes,
     createControlProviders,
+    getValueChanges,
+    switchCombineWith,
 } from '@vality/matez';
 
 import { CurrenciesStoreService } from '~/api/domain-config';
 import { ThriftAccountManagementService } from '~/api/services';
-
-import { getValueChanges } from '../../../projects/matez/src/lib/utils/form/get-value-changes';
 
 export interface CurrencyAccount {
     currency: string;
@@ -27,12 +29,18 @@ export interface CurrencyAccount {
 
 @Component({
     selector: 'cc-account-field',
-    imports: [CommonModule, ReactiveFormsModule, AutocompleteFieldModule],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        AutocompleteFieldModule,
+        MatIconModule,
+        MatButtonModule,
+    ],
     templateUrl: './account-field.component.html',
     providers: createControlProviders(() => AccountFieldComponent),
 })
 export class AccountFieldComponent
-    extends FormControlSuperclass<CurrencyAccount | null>
+    extends FormComponentSuperclass<CurrencyAccount>
     implements OnInit
 {
     private currenciesStoreService = inject(CurrenciesStoreService);
@@ -40,9 +48,11 @@ export class AccountFieldComponent
     private dr = inject(DestroyRef);
     private log = inject(NotifyLogService);
 
-    accountsNumber = input(1);
+    control = new FormControl<string>(null, { nonNullable: true });
 
-    currencyControl = new FormControl<string | null>(null, { nonNullable: true });
+    label = input('Account currency');
+    accountsNumber = input(1);
+    currencyAccounts = new Map<string, number[]>();
 
     options$ = this.currenciesStoreService.currencies$.pipe(
         map((currencies): Option<string>[] =>
@@ -58,28 +68,42 @@ export class AccountFieldComponent
 
     override ngOnInit() {
         super.ngOnInit();
-        this.currencyControl.valueChanges
+        getValueChanges(this.control)
             .pipe(
-                skipWhile((currency) => currency?.length !== 3),
                 distinctUntilChanged(),
-                switchMap((currency) => this.createAccounts(currency)),
+                tap((currency) => {
+                    this.emitOutgoingValue({ currency, accounts: [] });
+                }),
+                switchCombineWith((currency) => [this.createAccounts(currency)]),
                 takeUntilDestroyed(this.dr),
             )
-            .subscribe((accounts) => {
-                this.control.setValue({
-                    currency: this.currencyControl.value,
-                    accounts,
-                });
-            });
-        getValueChanges(this.control)
-            .pipe(takeUntilDestroyed(this.dr))
-            .subscribe((value) => {
-                if (value?.currency && this.currencyControl.value !== value?.currency)
-                    this.currencyControl.setValue(value?.currency ?? null, { emitEvent: false });
+            .subscribe(([currency, accounts]) => {
+                this.setAccounts(currency, accounts);
             });
     }
 
-    createAccounts(currency: string) {
+    override handleIncomingValue(value: CurrencyAccount) {
+        this.control.setValue(value?.currency);
+    }
+
+    generate(currency = this.control.value) {
+        this.createAccounts(currency)
+            .pipe(takeUntilDestroyed(this.dr))
+            .subscribe((accounts) => {
+                this.setAccounts(currency, accounts);
+            });
+    }
+
+    private setAccounts(currency: string, accounts: number[]) {
+        this.currencyAccounts.set(currency, accounts);
+        this.emitOutgoingValue({ currency, accounts });
+    }
+
+    private createAccounts(currency: string) {
+        if (!currency || currency.length !== 3) {
+            return of([] as number[]);
+        }
+
         return combineLatest(
             new Array(this.accountsNumber()).fill(null).map((_, idx) =>
                 this.accountManagementService
@@ -90,7 +114,9 @@ export class AccountFieldComponent
                         catchError((err) => {
                             this.log.error(
                                 err,
-                                `Failed to create account #${idx + 1} with ${currency} currency`,
+                                this.accountsNumber() > 1
+                                    ? `Failed to create account #${idx + 1} with ${currency} currency`
+                                    : `Failed to create account with ${currency} currency`,
                             );
                             throw err;
                         }),

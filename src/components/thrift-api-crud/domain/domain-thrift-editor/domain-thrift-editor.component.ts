@@ -5,7 +5,12 @@ import { Component, TemplateRef, inject, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { metadata$ } from '@vality/domain-proto';
-import { AccountID, ShopAccount, WalletAccount } from '@vality/domain-proto/domain';
+import {
+    CurrencyRef,
+    ShopAccount,
+    SystemAccount,
+    WalletAccount,
+} from '@vality/domain-proto/domain';
 import { createControlProviders } from '@vality/matez';
 import {
     ThriftEditorModule,
@@ -15,6 +20,7 @@ import {
 } from '@vality/ng-thrift';
 
 import { AccountFieldComponent, CurrencyAccount } from '~/components/account-field';
+import { SystemAccountsFieldComponent } from '~/components/system-accounts-field';
 
 import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-superclass';
 import { DomainMetadataFormExtensionsService } from '../services/domain-metadata-form-extensions';
@@ -29,6 +35,7 @@ import { DomainMetadataFormExtensionsService } from '../services/domain-metadata
         ThriftFormModule,
         ThriftEditorModule,
         AccountFieldComponent,
+        SystemAccountsFieldComponent,
     ],
 })
 export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
@@ -36,6 +43,9 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
 
     private oneAccountFieldTemplate = viewChild<TemplateRef<unknown>>('oneAccountFieldTemplate');
     private twoAccountFieldTemplate = viewChild<TemplateRef<unknown>>('twoAccountFieldTemplate');
+    private systemAccountsFieldTemplate = viewChild<TemplateRef<unknown>>(
+        'systemAccountsFieldTemplate',
+    );
 
     metadata$ = metadata$;
     override internalExtensions$ = this.domainMetadataFormExtensionsService.extensions$.pipe(
@@ -89,20 +99,40 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                         },
                     }),
             },
-            // TODO:
             {
-                determinant: (data) => of(isTypeWithAliases(data, 'AccountID', 'domain')),
+                determinant: (data) =>
+                    of(
+                        isTypeWithAliases(
+                            data,
+                            { name: 'map', keyType: 'CurrencyRef', valueType: 'SystemAccount' },
+                            'domain',
+                        ),
+                    ),
                 extension: () =>
                     of({
-                        template: this.oneAccountFieldTemplate(),
+                        template: this.systemAccountsFieldTemplate(),
                         converter: {
-                            internalToOutput: ({
-                                accounts,
-                            }: Partial<CurrencyAccount> = {}): AccountID => accounts?.[0],
-                            outputToInternal: (accountId: AccountID): CurrencyAccount => ({
-                                currency: null,
-                                accounts: [accountId].filter(Boolean),
-                            }),
+                            internalToOutput: (
+                                currencyAccounts: CurrencyAccount[],
+                            ): Map<CurrencyRef, SystemAccount> =>
+                                new Map(
+                                    (currencyAccounts || []).map((ca) => [
+                                        { symbolic_code: ca?.currency },
+                                        {
+                                            settlement: ca?.accounts?.[0],
+                                            subagent: ca?.accounts?.[1],
+                                        },
+                                    ]),
+                                ),
+                            outputToInternal: (
+                                accounts: Map<CurrencyRef, SystemAccount>,
+                            ): CurrencyAccount[] =>
+                                Array.from(accounts?.entries?.() || []).map(
+                                    ([currency, { settlement, subagent }]) => ({
+                                        currency: currency.symbolic_code,
+                                        accounts: [settlement, subagent].filter(Boolean),
+                                    }),
+                                ),
                         },
                     }),
             },

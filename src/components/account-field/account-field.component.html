@@ -1,5 +1,11 @@
-<v-autocomplete-field
-    [formControl]="currencyControl"
-    [options]="options$ | async"
-    label="Account currency"
-></v-autocomplete-field>
+<div class="flex gap-1">
+    <v-autocomplete-field
+        [formControl]="control"
+        [label]="label()"
+        [options]="options$ | async"
+        class="flex-1"
+    ></v-autocomplete-field>
+    <button mat-icon-button (click)="generate()">
+        <mat-icon>bolt</mat-icon>
+    </button>
+</div>
