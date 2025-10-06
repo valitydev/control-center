@@ -57,21 +57,14 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                     of({
                         template: this.twoAccountFieldTemplate(),
                         converter: {
-                            internalToOutput: ({
-                                currency,
-                                accounts,
-                            }: Partial<CurrencyAccount> = {}): ShopAccount => ({
-                                currency: { symbolic_code: currency || '' },
-                                settlement: accounts?.[0],
-                                guarantee: accounts?.[1],
+                            internalToOutput: (ca: Partial<CurrencyAccount>): ShopAccount => ({
+                                currency: { symbolic_code: ca?.currency || '' },
+                                settlement: ca?.accounts?.[0],
+                                guarantee: ca?.accounts?.[1],
                             }),
-                            outputToInternal: ({
-                                currency,
-                                settlement,
-                                guarantee,
-                            }: Partial<ShopAccount> = {}): CurrencyAccount => ({
-                                currency: currency?.symbolic_code,
-                                accounts: [settlement, guarantee].filter(Boolean),
+                            outputToInternal: (ca: Partial<ShopAccount> = {}): CurrencyAccount => ({
+                                currency: ca?.currency?.symbolic_code,
+                                accounts: [ca?.settlement, ca?.guarantee].filter(Boolean),
                             }),
                         },
                     }),
@@ -82,19 +75,17 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                     of({
                         template: this.oneAccountFieldTemplate(),
                         converter: {
-                            internalToOutput: ({
-                                currency,
-                                accounts,
-                            }: Partial<CurrencyAccount> = {}): WalletAccount => ({
-                                currency: { symbolic_code: currency || '' },
-                                settlement: accounts?.[0],
+                            internalToOutput: (
+                                ca: Partial<CurrencyAccount> = {},
+                            ): WalletAccount => ({
+                                currency: { symbolic_code: ca?.currency || '' },
+                                settlement: ca?.accounts?.[0],
                             }),
-                            outputToInternal: ({
-                                currency,
-                                settlement,
-                            }: Partial<WalletAccount> = {}): CurrencyAccount => ({
-                                currency: currency?.symbolic_code,
-                                accounts: [settlement].filter(Boolean),
+                            outputToInternal: (
+                                ca: Partial<WalletAccount> = {},
+                            ): CurrencyAccount => ({
+                                currency: ca?.currency?.symbolic_code,
+                                accounts: [ca?.settlement].filter(Boolean),
                             }),
                         },
                     }),
