@@ -7,6 +7,7 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
     AutocompleteFieldModule,
@@ -36,6 +37,7 @@ export interface CurrencyAccount {
         AutocompleteFieldModule,
         MatIconModule,
         MatButtonModule,
+        MatTooltipModule,
     ],
     templateUrl: './account-field.component.html',
     providers: createControlProviders(() => AccountFieldComponent),
@@ -53,6 +55,8 @@ export class AccountFieldComponent
 
     label = input('Account currency');
     accountsNumber = input(1);
+    optionalAccountsNumber = input(0);
+
     currencyAccounts = signal<number[]>([]);
     progress$ = new BehaviorSubject<number>(0);
     hint = computed(() =>
@@ -78,8 +82,12 @@ export class AccountFieldComponent
     noCurrencyAccount$ = combineLatest([
         toObservable(this.currencyAccounts),
         toObservable(this.accountsNumber),
+        toObservable(this.optionalAccountsNumber),
     ]).pipe(
-        map(([accounts, accountsNumber]) => accounts.length !== accountsNumber),
+        map(
+            ([accounts, accountsNumber, optionalAccountsNumber]) =>
+                accounts.length < accountsNumber + optionalAccountsNumber,
+        ),
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -124,24 +132,30 @@ export class AccountFieldComponent
         }
 
         return combineLatest(
-            new Array(this.accountsNumber()).fill(null).map((_, idx) =>
-                this.accountManagementService
-                    .CreateAccount({
-                        currency_sym_code: currency,
-                    })
-                    .pipe(
-                        progressTo(this.progress$),
-                        catchError((err) => {
-                            this.log.error(
-                                err,
-                                this.accountsNumber() > 1
-                                    ? `Failed to create account #${idx + 1} with ${currency} currency`
-                                    : `Failed to create account with ${currency} currency`,
-                            );
-                            throw err;
-                        }),
-                    ),
-            ),
+            new Array(
+                this.currencyAccounts().length === this.accountsNumber()
+                    ? this.accountsNumber() + this.optionalAccountsNumber()
+                    : this.accountsNumber(),
+            )
+                .fill(null)
+                .map((_, idx) =>
+                    this.accountManagementService
+                        .CreateAccount({
+                            currency_sym_code: currency,
+                        })
+                        .pipe(
+                            progressTo(this.progress$),
+                            catchError((err) => {
+                                this.log.error(
+                                    err,
+                                    this.accountsNumber() > 1
+                                        ? `Failed to create account #${idx + 1} with ${currency} currency`
+                                        : `Failed to create account with ${currency} currency`,
+                                );
+                                throw err;
+                            }),
+                        ),
+                ),
         );
     }
 }

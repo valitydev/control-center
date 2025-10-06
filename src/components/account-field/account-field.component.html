@@ -12,6 +12,13 @@
     ></v-autocomplete-field>
     <button
         [disabled]="generateDisabled"
+        [matTooltip]="
+            noCurrencyAccount
+                ? currencyAccounts().length === accountsNumber()
+                    ? 'Generate optional accounts'
+                    : 'Generate missing accounts'
+                : 'All accounts are set'
+        "
         mat-icon-button
         (click)="noCurrencyAccount ? generate() : undefined"
     >

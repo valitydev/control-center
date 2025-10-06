@@ -6,6 +6,7 @@
                     [accountsNumber]="accountsNumber()"
                     [formControl]="c"
                     [label]="'Account currency #' + ($index + 1)"
+                    [optionalAccountsNumber]="optionalAccountsNumber()"
                 ></cc-account-field>
             </div>
             <button mat-icon-button (click)="remove($index)">
@@ -15,6 +16,6 @@
     }
     <button mat-stroked-button (click)="add()">
         <mat-icon>add</mat-icon>
-        Add currency
+        Add currency account
     </button>
 </div>
