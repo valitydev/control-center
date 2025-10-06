@@ -11,7 +11,7 @@ import {
     SystemAccount,
     WalletAccount,
 } from '@vality/domain-proto/domain';
-import { createControlProviders } from '@vality/matez';
+import { clean, createControlProviders } from '@vality/matez';
 import {
     ThriftEditorModule,
     ThriftFormExtension,
@@ -118,10 +118,10 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                                 new Map(
                                     (currencyAccounts || []).map((ca) => [
                                         { symbolic_code: ca?.currency },
-                                        {
+                                        clean({
                                             settlement: ca?.accounts?.[0],
                                             subagent: ca?.accounts?.[1],
-                                        },
+                                        }),
                                     ]),
                                 ),
                             outputToInternal: (

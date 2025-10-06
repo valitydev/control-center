@@ -1,11 +1,20 @@
+@let noCurrencyAccount = noCurrencyAccount$ | async;
+@let inProgress = !!(progress$ | async);
+@let generateDisabled = !noCurrencyAccount || inProgress || control.value?.length !== 3;
+
 <div class="flex gap-1">
     <v-autocomplete-field
         [formControl]="control"
+        [hint]="hint()"
         [label]="label()"
         [options]="options$ | async"
         class="flex-1"
     ></v-autocomplete-field>
-    <button mat-icon-button (click)="generate()">
-        <mat-icon>bolt</mat-icon>
+    <button
+        [disabled]="generateDisabled"
+        mat-icon-button
+        (click)="noCurrencyAccount ? generate() : undefined"
+    >
+        <mat-icon>{{ inProgress ? 'pending' : 'bolt' }}</mat-icon>
     </button>
 </div>

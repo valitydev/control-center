@@ -1,9 +1,9 @@
-import { combineLatest, of } from 'rxjs';
-import { catchError, distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { catchError, distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, OnInit, computed, inject, input, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import {
     compareDifferentTypes,
     createControlProviders,
     getValueChanges,
+    progressTo,
     switchCombineWith,
 } from '@vality/matez';
 
@@ -52,7 +53,15 @@ export class AccountFieldComponent
 
     label = input('Account currency');
     accountsNumber = input(1);
-    currencyAccounts = new Map<string, number[]>();
+    currencyAccounts = signal<number[]>([]);
+    progress$ = new BehaviorSubject<number>(0);
+    hint = computed(() =>
+        this.currencyAccounts().length
+            ? `Accounts: ${this.currencyAccounts()
+                  .map((a) => `#${a}`)
+                  .join(', ')}`
+            : 'No accounts',
+    );
 
     options$ = this.currenciesStoreService.currencies$.pipe(
         map((currencies): Option<string>[] =>
@@ -66,13 +75,22 @@ export class AccountFieldComponent
         ),
     );
 
+    noCurrencyAccount$ = combineLatest([
+        toObservable(this.currencyAccounts),
+        toObservable(this.accountsNumber),
+    ]).pipe(
+        map(([accounts, accountsNumber]) => accounts.length !== accountsNumber),
+        distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+
     override ngOnInit() {
         super.ngOnInit();
         getValueChanges(this.control)
             .pipe(
                 distinctUntilChanged(),
                 tap((currency) => {
-                    this.emitOutgoingValue({ currency, accounts: [] });
+                    this.setAccounts(currency);
                 }),
                 switchCombineWith((currency) => [this.createAccounts(currency)]),
                 takeUntilDestroyed(this.dr),
@@ -83,6 +101,7 @@ export class AccountFieldComponent
     }
 
     override handleIncomingValue(value: CurrencyAccount) {
+        this.currencyAccounts.set(value?.accounts || []);
         this.control.setValue(value?.currency);
     }
 
@@ -94,8 +113,8 @@ export class AccountFieldComponent
             });
     }
 
-    private setAccounts(currency: string, accounts: number[]) {
-        this.currencyAccounts.set(currency, accounts);
+    private setAccounts(currency: string, accounts: number[] = []) {
+        this.currencyAccounts.set(accounts);
         this.emitOutgoingValue({ currency, accounts });
     }
 
@@ -111,6 +130,7 @@ export class AccountFieldComponent
                         currency_sym_code: currency,
                     })
                     .pipe(
+                        progressTo(this.progress$),
                         catchError((err) => {
                             this.log.error(
                                 err,
