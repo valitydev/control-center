@@ -130,32 +130,39 @@ export class AccountFieldComponent
         if (!currency || currency.length !== 3) {
             return of([] as number[]);
         }
+        const currentAccounts = this.currencyAccounts();
+        const currentAccountsCount = currentAccounts.length;
+
+        const isReplace =
+            currentAccountsCount === this.accountsNumber() + this.optionalAccountsNumber();
+        const newAccountsCount = isReplace
+            ? this.accountsNumber()
+            : currentAccountsCount === this.accountsNumber()
+              ? this.optionalAccountsNumber()
+              : this.accountsNumber() - currentAccountsCount;
 
         return combineLatest(
-            new Array(
-                this.currencyAccounts().length === this.accountsNumber()
-                    ? this.accountsNumber() + this.optionalAccountsNumber()
-                    : this.accountsNumber(),
-            )
-                .fill(null)
-                .map((_, idx) =>
-                    this.accountManagementService
-                        .CreateAccount({
-                            currency_sym_code: currency,
-                        })
-                        .pipe(
-                            progressTo(this.progress$),
-                            catchError((err) => {
-                                this.log.error(
-                                    err,
-                                    this.accountsNumber() > 1
-                                        ? `Failed to create account #${idx + 1} with ${currency} currency`
-                                        : `Failed to create account with ${currency} currency`,
-                                );
-                                throw err;
-                            }),
-                        ),
-                ),
+            new Array(newAccountsCount).fill(null).map((_, idx) =>
+                this.accountManagementService
+                    .CreateAccount({
+                        currency_sym_code: currency,
+                    })
+                    .pipe(
+                        progressTo(this.progress$),
+                        catchError((err) => {
+                            this.log.error(
+                                err,
+                                this.accountsNumber() > 1
+                                    ? `Failed to create account #${idx + 1} with ${currency} currency`
+                                    : `Failed to create account with ${currency} currency`,
+                            );
+                            return of(null);
+                        }),
+                    ),
+            ),
+        ).pipe(
+            map((accounts) => accounts.filter(Boolean)),
+            map((accounts) => (isReplace ? accounts : [...currentAccounts, ...accounts])),
         );
     }
 }
