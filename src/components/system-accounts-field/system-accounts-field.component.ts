@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, input } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import {
     AutocompleteFieldModule,
-    FormComponentSuperclass,
+    FormArraySuperclass,
     createControlProviders,
 } from '@vality/matez';
 
@@ -26,7 +25,7 @@ import { AccountFieldComponent, CurrencyAccount } from '../account-field';
     templateUrl: './system-accounts-field.component.html',
     providers: createControlProviders(() => SystemAccountsFieldComponent),
 })
-export class SystemAccountsFieldComponent extends FormComponentSuperclass<CurrencyAccount[]> {
+export class SystemAccountsFieldComponent extends FormArraySuperclass<CurrencyAccount[]> {
     private dr = inject(DestroyRef);
 
     accountsNumber = input(1);
@@ -40,18 +39,5 @@ export class SystemAccountsFieldComponent extends FormComponentSuperclass<Curren
 
     remove(index: number) {
         this.control.removeAt(index);
-    }
-
-    override ngOnInit(): void {
-        super.ngOnInit();
-        this.control.valueChanges.pipe(takeUntilDestroyed(this.dr)).subscribe((value) => {
-            this.emitOutgoingValue(value);
-        });
-    }
-
-    override handleIncomingValue(value: CurrencyAccount[]): void {
-        this.control.clear({ emitEvent: false });
-        if (value?.length)
-            value.forEach((v) => this.control.push(new FormControl<CurrencyAccount>(v)));
     }
 }
