@@ -110,7 +110,7 @@ export class AccountFieldComponent
 
     override handleIncomingValue(value: CurrencyAccount) {
         this.currencyAccounts.set(value?.accounts || []);
-        this.control.setValue(value?.currency);
+        this.control.setValue(value?.currency, { emitEvent: false });
     }
 
     generate(currency = this.control.value) {
