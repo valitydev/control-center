@@ -7,7 +7,7 @@ import { FormGroupSuperclass } from './form-group-superclass.directive';
 
 @Directive()
 export abstract class FormArraySuperclass<
-    OuterType extends any[],
+    OuterType extends unknown[],
     InnerType = OuterType,
 > extends FormGroupSuperclass<OuterType, InnerType> {
     protected override outerToInnerValue(outer: OuterType): InnerType {
