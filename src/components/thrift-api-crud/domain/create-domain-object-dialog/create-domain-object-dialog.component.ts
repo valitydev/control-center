@@ -117,7 +117,7 @@ export class CreateDomainObjectDialogComponent
 
     ngOnInit() {
         if (this.dialogData && this.dialogData.objectType) {
-            this.control.setValue({ [this.dialogData.objectType]: {} });
+            this.typeControl.setValue(this.dialogData.objectType);
         }
     }
 

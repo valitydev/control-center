@@ -16,9 +16,9 @@ export interface Converter<O = unknown, I = O> {
     internalToOutput: (inputValue: I) => O;
 }
 
-export interface ThriftFormExtensionResult {
+export interface ThriftFormExtensionResult<T = unknown> {
     options?: ThriftFormExtensionOption[];
-    generate?: () => Observable<unknown>;
+    generate?: (value: T) => Observable<T>;
     isIdentifier?: boolean;
     label?: string;
     type?: 'datetime';

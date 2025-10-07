@@ -1,0 +1,27 @@
+@let noCurrencyAccount = noCurrencyAccount$ | async;
+@let inProgress = !!(progress$ | async);
+@let generateDisabled = !noCurrencyAccount || inProgress || control.value?.length !== 3;
+
+<div class="flex gap-1">
+    <v-autocomplete-field
+        [formControl]="control"
+        [hint]="hint()"
+        [label]="label()"
+        [options]="options$ | async"
+        class="flex-1"
+    ></v-autocomplete-field>
+    <button
+        [disabled]="generateDisabled"
+        [matTooltip]="
+            noCurrencyAccount
+                ? currencyAccounts().length === accountsNumber()
+                    ? 'Generate optional accounts'
+                    : 'Generate missing accounts'
+                : 'All accounts are set'
+        "
+        mat-icon-button
+        (click)="noCurrencyAccount ? generate() : undefined"
+    >
+        <mat-icon>{{ inProgress ? 'pending' : 'bolt' }}</mat-icon>
+    </button>
+</div>

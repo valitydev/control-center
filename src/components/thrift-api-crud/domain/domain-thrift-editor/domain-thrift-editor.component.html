@@ -8,3 +8,16 @@
     [noToolbar]="noToolbar"
     [type]="type"
 ></v-thrift-editor>
+
+<ng-template #oneAccountFieldTemplate let-accountControl="control">
+    <cc-account-field [formControl]="accountControl"></cc-account-field>
+</ng-template>
+<ng-template #twoAccountFieldTemplate let-accountControl="control">
+    <cc-account-field [accountsNumber]="2" [formControl]="accountControl"></cc-account-field>
+</ng-template>
+<ng-template #systemAccountsFieldTemplate let-accountControl="control">
+    <cc-system-accounts-field
+        [formControl]="accountControl"
+        [optionalAccountsNumber]="1"
+    ></cc-system-accounts-field>
+</ng-template>
