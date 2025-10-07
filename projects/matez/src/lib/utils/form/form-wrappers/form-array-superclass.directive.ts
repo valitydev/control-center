@@ -1,8 +1,9 @@
 import { Directive } from '@angular/core';
+import { FormArray, FormControl } from '@angular/forms';
+
+import { hasControls } from '../has-controls';
 
 import { FormGroupSuperclass } from './form-group-superclass.directive';
-import { hasControls } from '../has-controls';
-import { FormArray, FormControl } from '@angular/forms';
 
 @Directive()
 export abstract class FormArraySuperclass<

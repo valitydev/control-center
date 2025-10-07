@@ -1,4 +1,5 @@
 import { ValueType } from '@vality/thrift-ts';
+
 import { ThriftData } from '../thrift-data';
 
 import { getByType } from './get-by-type';
