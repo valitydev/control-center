@@ -1,5 +1,5 @@
 import { startCase } from 'lodash-es';
-import { BehaviorSubject, combineLatest, first, map, shareReplay, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, shareReplay } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
@@ -65,6 +66,7 @@ const FORCE_REF_OBJECTS: (keyof DomainObject)[] = [
         DomainThriftViewerComponent,
         MatDividerModule,
         SelectFieldModule,
+        MatCheckboxModule,
     ],
     templateUrl: './create-domain-object-dialog.component.html',
 })
@@ -84,8 +86,12 @@ export class CreateDomainObjectDialogComponent
         minHeight: DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     };
 
-    typeControl = new FormControl<keyof Reference | null>(null);
-    control = new FormControl<unknown>(null, [Validators.required]);
+    typeControl = new FormControl<keyof Reference | null>(null, { nonNullable: true });
+    forceRefControl = new FormControl<boolean>(false, { nonNullable: true });
+    control = new FormControl<unknown>(null, {
+        validators: [Validators.required],
+        nonNullable: true,
+    });
 
     options = getEnumKeys(DomainObjectType)
         .sort()
@@ -93,21 +99,18 @@ export class CreateDomainObjectDialogComponent
             label: startCase(String(type)),
             value: type,
         }));
-    isForceRefObject$ = getValueChanges(this.typeControl).pipe(
+    isForceRefRequired$ = getValueChanges(this.typeControl).pipe(
         map((type) => type && FORCE_REF_OBJECTS.includes(type)),
+        distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     type$ = combineLatest([
         getValueChanges(this.typeControl),
         metadata$,
-        this.isForceRefObject$,
+        getValueChanges(this.forceRefControl),
     ]).pipe(
-        map(([fieldName, metadata, isForceRefObject]) =>
-            this.getType(
-                metadata,
-                fieldName,
-                isForceRefObject ? 'DomainObject' : 'ReflessDomainObject',
-            ),
+        map(([fieldName, metadata, isForceRef]) =>
+            this.getType(metadata, fieldName, isForceRef ? 'DomainObject' : 'ReflessDomainObject'),
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
@@ -119,33 +122,32 @@ export class CreateDomainObjectDialogComponent
         if (this.dialogData && this.dialogData.objectType) {
             this.typeControl.setValue(this.dialogData.objectType);
         }
+        this.isForceRefRequired$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((isForceRefRequired) => {
+                this.forceRefControl.setValue(isForceRefRequired);
+            });
     }
 
     create() {
-        this.isForceRefObject$
-            .pipe(
-                first(),
-                switchMap((isForceRefObject) => {
-                    const fieldName = this.typeControl.value;
-                    let insert: InsertOp;
-                    if (isForceRefObject) {
-                        const domainObject = this.control.value as ValuesType<DomainObject>;
-                        insert = {
-                            object: { [fieldName]: domainObject.data },
-                            force_ref: { [fieldName]: domainObject.ref },
-                        };
-                    } else {
-                        insert = {
-                            object: {
-                                [fieldName]: this.control.value as ValuesType<ReflessDomainObject>,
-                            },
-                        };
-                    }
-                    return this.domainService.commit([{ insert }]);
-                }),
-                progressTo(this.progress$),
-                takeUntilDestroyed(this.destroyRef),
-            )
+        const fieldName = this.typeControl.value;
+        let insert: InsertOp;
+        if (this.forceRefControl.value) {
+            const domainObject = this.control.value as ValuesType<DomainObject>;
+            insert = {
+                object: { [fieldName]: domainObject.data },
+                force_ref: { [fieldName]: domainObject.ref },
+            };
+        } else {
+            insert = {
+                object: {
+                    [fieldName]: this.control.value as ValuesType<ReflessDomainObject>,
+                },
+            };
+        }
+        this.domainService
+            .commit([{ insert }])
+            .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => {
                 this.log.successOperation('create', 'domain object');
                 void this.navigateService.navigate(APP_ROUTES.domain.root, {

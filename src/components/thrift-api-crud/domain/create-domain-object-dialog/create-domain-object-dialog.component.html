@@ -19,6 +19,11 @@
                     kind="editor"
                 ></cc-domain-thrift-viewer>
             } @else {
+                <mat-checkbox
+                    [disabled]="isForceRefRequired$ | async"
+                    [formControl]="forceRefControl"
+                    >Force Ref</mat-checkbox
+                >
                 <cc-domain-thrift-editor
                     [formControl]="control"
                     [type]="type$ | async"
