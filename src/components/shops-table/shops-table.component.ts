@@ -74,8 +74,9 @@ export class ShopsTableComponent {
             field: 'ref.id',
         },
         {
-            field: 'details.name',
+            field: 'name',
             cell: (d) => ({
+                value: d.data.name,
                 description: d.data.description,
                 click: () => {
                     this.sidenavInfoService.toggle(DomainObjectCardComponent, {
@@ -92,10 +93,11 @@ export class ShopsTableComponent {
         }),
         {
             field: 'location.url',
+            cell: (d) => ({ value: d.data.location.url }),
         },
         {
-            field: 'account.currency.symbolic_code',
-            header: 'Currency',
+            field: 'currency',
+            cell: (d) => ({ value: d.data.account.currency.symbolic_code }),
         },
         {
             field: 'blocking',
