@@ -6,9 +6,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { metadata$ } from '@vality/domain-proto';
 import {
-    CurrencyRef,
+    ProviderAccountSet,
     ShopAccount,
-    SystemAccount,
+    SystemAccountSet,
     WalletAccount,
 } from '@vality/domain-proto/domain';
 import { clean, createControlProviders } from '@vality/matez';
@@ -45,6 +45,9 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
     private twoAccountFieldTemplate = viewChild<TemplateRef<unknown>>('twoAccountFieldTemplate');
     private systemAccountsFieldTemplate = viewChild<TemplateRef<unknown>>(
         'systemAccountsFieldTemplate',
+    );
+    private providerAccountsFieldTemplate = viewChild<TemplateRef<unknown>>(
+        'providerAccountsFieldTemplate',
     );
 
     metadata$ = metadata$;
@@ -105,7 +108,7 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                         converter: {
                             internalToOutput: (
                                 currencyAccounts: CurrencyAccount[],
-                            ): Map<CurrencyRef, SystemAccount> =>
+                            ): SystemAccountSet['accounts'] =>
                                 new Map(
                                     (currencyAccounts || []).map((ca) => [
                                         { symbolic_code: ca?.currency },
@@ -116,12 +119,39 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
                                     ]),
                                 ),
                             outputToInternal: (
-                                accounts: Map<CurrencyRef, SystemAccount>,
+                                accounts: SystemAccountSet['accounts'],
                             ): CurrencyAccount[] =>
                                 Array.from(accounts?.entries?.() || []).map(
                                     ([currency, { settlement, subagent }]) => ({
                                         currency: currency.symbolic_code,
                                         accounts: [settlement, subagent].filter(Boolean),
+                                    }),
+                                ),
+                        },
+                    }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'ProviderAccountSet', 'domain')),
+                extension: () =>
+                    of({
+                        template: this.providerAccountsFieldTemplate(),
+                        converter: {
+                            internalToOutput: (
+                                currencyAccounts: CurrencyAccount[],
+                            ): ProviderAccountSet =>
+                                new Map(
+                                    (currencyAccounts || []).map((ca) => [
+                                        { symbolic_code: ca?.currency },
+                                        clean({
+                                            settlement: ca?.accounts?.[0],
+                                        }),
+                                    ]),
+                                ),
+                            outputToInternal: (accounts: ProviderAccountSet): CurrencyAccount[] =>
+                                Array.from(accounts?.entries?.() || []).map(
+                                    ([currency, { settlement }]) => ({
+                                        currency: currency.symbolic_code,
+                                        accounts: [settlement].filter(Boolean),
                                     }),
                                 ),
                         },

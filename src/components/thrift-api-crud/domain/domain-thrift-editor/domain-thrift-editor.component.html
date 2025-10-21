@@ -21,3 +21,6 @@
         [optionalAccountsNumber]="1"
     ></cc-system-accounts-field>
 </ng-template>
+<ng-template #providerAccountsFieldTemplate let-accountControl="control">
+    <cc-system-accounts-field [formControl]="accountControl"></cc-system-accounts-field>
+</ng-template>
