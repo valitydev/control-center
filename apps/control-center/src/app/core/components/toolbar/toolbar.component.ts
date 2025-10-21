@@ -13,7 +13,7 @@ import { UrlService } from '@vality/matez';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { MerchantFieldModule } from '../../../shared/components/merchant-field';
-import { KeycloakUserService } from '../../../shared/services';
+import { KeycloakUserService, ManagerUiService } from '../../../shared/services';
 
 @Component({
     selector: 'cc-toolbar',
@@ -38,9 +38,12 @@ export class ToolbarComponent implements OnInit {
     private urlService = inject(UrlService);
     private destroyRef = inject(DestroyRef);
     private snackBar = inject(MatSnackBar);
+    private managerUiService = inject(ManagerUiService);
+
     user = this.keycloakUserService.user.value;
     partyIdControl = new FormControl<string>(this.getPartyId());
     hasMenu$ = this.urlService.path$.pipe(map((p) => p.length <= 3));
+    isManagerUi = this.managerUiService.isManagerUi;
 
     ngOnInit() {
         this.partyIdControl.valueChanges

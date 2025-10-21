@@ -5,14 +5,16 @@
     </div>
     <div class="search">
         <div></div>
-        <cc-merchant-field
-            [formControl]="partyIdControl"
-            appearance="outline"
-            class="input"
-            hint=""
-            label="Search merchant"
-            size="small"
-        ></cc-merchant-field>
+        @if (isManagerUi() === false) {
+            <cc-merchant-field
+                [formControl]="partyIdControl"
+                appearance="outline"
+                class="input"
+                hint=""
+                label="Search merchant"
+                size="small"
+            ></cc-merchant-field>
+        }
         <div>
             @if (partyIdControl.value) {
                 <button

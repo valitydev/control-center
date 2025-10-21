@@ -20,7 +20,7 @@ import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './sections/terms/routing
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './sections/wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './sections/withdrawals/routing-config';
 import { SidenavInfoService } from './shared/components/sidenav-info';
-import { AppAuthGuardService, Services } from './shared/services';
+import { AppAuthGuardService, ManagerUiService, Services } from './shared/services';
 
 @Component({
     selector: 'cc-root',
@@ -32,6 +32,8 @@ export class AppComponent {
     private keycloakService = inject(KeycloakService);
     private appAuthGuardService = inject(AppAuthGuardService);
     public sidenavInfoService = inject(SidenavInfoService);
+    public managerUiService = inject(ManagerUiService);
+
     links$: Observable<Link[][]> = from(this.keycloakService.loadUserProfile()).pipe(
         startWith(null),
         map(() => this.getMenuItemsGroups()),
