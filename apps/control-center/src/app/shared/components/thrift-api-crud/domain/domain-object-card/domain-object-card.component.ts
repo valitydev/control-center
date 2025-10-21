@@ -15,6 +15,7 @@ import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { DomainStoreService } from '../../../../../api/domain-config/stores/domain-store.service';
+import { ManagerUiService } from '../../../../services';
 import { SidenavInfoModule } from '../../../sidenav-info';
 import { CardComponent } from '../../../sidenav-info/components/card/card.component';
 import { DomainThriftViewerComponent } from '../domain-thrift-viewer';
@@ -38,6 +39,8 @@ export class DomainObjectCardComponent implements OnChanges {
     private domainStoreService = inject(DomainStoreService);
     private destroyRef = inject(DestroyRef);
     private dialogService = inject(DialogService);
+    managerUiService = inject(ManagerUiService);
+
     @Input() ref!: Reference;
 
     ref$ = new ReplaySubject<Reference>(1);

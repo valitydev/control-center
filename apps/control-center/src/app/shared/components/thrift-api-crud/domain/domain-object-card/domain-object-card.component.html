@@ -6,8 +6,10 @@
         type="DomainObject"
         (kindChange)="kind.set($event)"
     ></cc-domain-thrift-viewer>
-    <cc-card-actions>
-        <button mat-button (click)="delete()">Delete</button>
-        <button mat-flat-button (click)="edit()">Edit</button>
-    </cc-card-actions>
+    @if (!managerUiService.isManagerUi()) {
+        <cc-card-actions>
+            <button mat-button (click)="delete()">Delete</button>
+            <button mat-flat-button (click)="edit()">Edit</button>
+        </cc-card-actions>
+    }
 </cc-card>
