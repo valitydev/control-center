@@ -1,11 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
 import { environment } from '../../../../environments/environment';
 
+import { ManagerUiService } from './manager-ui.service';
+
 @Injectable({ providedIn: 'root' })
 export class AppAuthGuardService extends KeycloakAuthGuard {
+    private managerUiService = inject(ManagerUiService);
+
     constructor(
         // eslint-disable-next-line @angular-eslint/prefer-inject
         protected override router: Router,
@@ -17,8 +21,14 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
 
     async isAccessAllowed(
         route: ActivatedRouteSnapshot,
-        _state: RouterStateSnapshot,
+        state: RouterStateSnapshot,
     ): Promise<boolean | UrlTree> {
+        if (this.managerUiService.isManagerUi() === true) {
+            const partyId = this.managerUiService.partyId();
+            if (partyId && !state.url.startsWith(`/party/${partyId}`)) {
+                return this.router.createUrlTree(['/party', partyId]);
+            }
+        }
         return (
             this.userHasSomeServiceMethods(route.data['services']) ||
             this.router.createUrlTree(['404'])

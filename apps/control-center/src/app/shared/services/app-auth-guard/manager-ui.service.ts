@@ -11,8 +11,8 @@ export class ManagerUiService {
     private keycloakUserService = inject(KeycloakUserService);
     private keycloakService = inject(KeycloakService);
 
-    isManagerUi = computed(() => (this.keycloakUserService.user.value() ? !!this.getRole() : null));
-    partyId = computed(() => (this.keycloakUserService.user.value() ? this.getParty() : null));
+    isManagerUi = computed(() => (this.keycloakUserService.user.value(), !!this.getRole()));
+    partyId = computed(() => (this.keycloakUserService.user.value(), this.getParty()));
 
     private getRole() {
         return this.keycloakService
