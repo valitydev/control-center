@@ -23,12 +23,6 @@ export class AppAuthGuardService extends KeycloakAuthGuard {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,
     ): Promise<boolean | UrlTree> {
-        console.log(
-            this.managerUiService.partyId(),
-            this.managerUiService.isManagerUi(),
-            route.data['services'],
-            this.userHasSomeServiceMethods(route.data['services']),
-        );
         if (this.managerUiService.isManagerUi() === true) {
             const partyId = this.managerUiService.partyId();
             if (partyId && !state.url.startsWith(`/party/${partyId}`)) {
