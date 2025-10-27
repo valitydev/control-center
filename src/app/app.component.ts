@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, isDevMode, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,6 +36,7 @@ import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './payments/routing-co
 import { SHOPS_ROUTING_CONFIG } from './shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sources/routing-config';
 import { ROUTING_CONFIG as TERMINALS_ROUTING_CONFIG } from './terminals';
+import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './terms/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './withdrawals/routing-config';
 
@@ -67,25 +68,25 @@ const createNavLinks = (): Link[] => [
                 url: '/sources',
                 isHidden: isHidden(SOURCES_ROUTING_CONFIG.services),
             },
-            // {
-            //     label: 'Terms',
-            //     url: '/terms',
-            //     isHidden: isHidden(TERMS_ROUTING_CONFIG.services),
-            //     children: [
-            //         {
-            //             label: 'Shops',
-            //             url: '/terms/shops',
-            //         },
-            //         {
-            //             label: 'Wallets',
-            //             url: '/terms/wallets',
-            //         },
-            //         {
-            //             label: 'Terminals',
-            //             url: '/terms/terminals',
-            //         },
-            //     ],
-            // },
+            {
+                label: 'Terms',
+                url: '/terms',
+                isHidden: isHidden(TERMS_ROUTING_CONFIG.services) || !isDevMode(),
+                children: [
+                    {
+                        label: 'Shops',
+                        url: '/terms/shops',
+                    },
+                    {
+                        label: 'Wallets',
+                        url: '/terms/wallets',
+                    },
+                    {
+                        label: 'Terminals',
+                        url: '/terms/terminals',
+                    },
+                ],
+            },
         ],
     },
     {
