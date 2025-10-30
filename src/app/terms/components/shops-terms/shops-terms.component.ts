@@ -1,45 +1,35 @@
-import { map, shareReplay } from 'rxjs/operators';
+import { shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { TermSetHierarchyObject, TermSetHierarchyRef } from '@vality/domain-proto/domain';
 import {
-    CommonSearchQueryParams,
-    ShopSearchQuery,
-    ShopTermSet,
-} from '@vality/dominator-proto/dominator';
+    DomainObjectType,
+    ShopConfig,
+    TermSetHierarchy,
+    TermSetHierarchyRef,
+} from '@vality/domain-proto/domain';
+import { CommonSearchQueryParams, ShopSearchQuery } from '@vality/dominator-proto/dominator';
 import {
     Column,
     FiltersModule,
     InputFieldModule,
     ListFieldModule,
-    LoadOptions,
-    QueryParamsService,
     TableModule,
-    UpdateOptions,
     cachedHeadMap,
-    clean,
-    countChanged,
-    createControls,
-    debounceTimeWithFirst,
-    getValueChanges,
 } from '@vality/matez';
 
 import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
 import { PageLayoutModule } from '~/components/page-layout';
 import { ShopFieldModule } from '~/components/shop-field';
-import { SidenavInfoService } from '~/components/sidenav-info/sidenav-info.service';
+import { SidenavInfoService } from '~/components/sidenav-info';
 import { createDomainObjectColumn, createPartyColumn, createShopColumn } from '~/utils';
 
-import { DEBOUNCE_TIME_MS } from '../../../tokens';
+import { getDomainObjectsTerms } from '../../utils/get-domain-objects-terms';
 import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
-import { ShopsTermSetHistoryCardComponent } from '../shops-term-set-history-card';
 
-import { ShopsTermsService } from './shops-terms.service';
 import {
     SHOP_FEES_COLUMNS,
     getShopCashFlowSelectors,
@@ -67,99 +57,53 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     ],
     templateUrl: './shops-terms.component.html',
 })
-export class ShopsTermsComponent implements OnInit {
-    private shopsTermsService = inject(ShopsTermsService);
-    private fb = inject(NonNullableFormBuilder);
-    private qp = inject<QueryParamsService<Params>>(QueryParamsService<Params>);
-    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
-    private dr = inject(DestroyRef);
+export class ShopsTermsComponent {
     private sidenavInfoService = inject(SidenavInfoService);
 
-    filtersForm = this.fb.group(
-        createControls<Params>({
-            currencies: null,
-            party_id: null,
-            shop_ids: null,
-            term_sets_names: null,
-            term_sets_ids: null,
-        }),
-    );
-    terms$ = this.shopsTermsService.result$.pipe(
+    shopTerms = getDomainObjectsTerms(DomainObjectType.shop_config);
+
+    terms$ = this.shopTerms.value$.pipe(
         cachedHeadMap((t) => ({
-            value: t,
+            value: {
+                id: t.object.object.shop_config.ref.id,
+                shop: t.object.object.shop_config.data,
+                terms: t.terms?.object?.term_set_hierarchy?.data,
+            },
             children: getFlatDecisions(
-                // TODO: clean after bump dominator
-                getShopCashFlowSelectors(t.current_term_set as never as TermSetHierarchyObject),
+                getShopCashFlowSelectors(t.terms?.object?.term_set_hierarchy),
             ).filter((v) =>
                 isShopTermSetDecision(v, {
-                    partyId: t.owner_id,
-                    shopId: t.shop_id,
-                    currency: t.currency,
+                    partyId: t.object.object.shop_config.data.party_ref.id,
+                    shopId: t.object.object.shop_config.ref.id,
+                    currency: t.object.object.shop_config.data.account.currency.symbolic_code,
                 }),
             ),
         })),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    hasMore$ = this.shopsTermsService.hasMore$;
-    isLoading$ = this.shopsTermsService.isLoading$;
-    columns: Column<ShopTermSet, FlatDecision>[] = [
+    columns: Column<{ id: string; shop: ShopConfig; terms: TermSetHierarchy }, FlatDecision>[] = [
         createShopColumn(
             (d) => ({
-                shopId: d.shop_id,
-                partyId: d.owner_id,
-                shopName: d.shop_name,
+                shopId: d.id,
+                partyId: d.shop?.party_ref?.id,
+                shopName: d.shop?.name,
             }),
             { sticky: 'start' },
         ),
-        createPartyColumn((d) => ({ id: d.owner_id })),
-        { field: 'currency' },
-        createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
-            header: 'Term Set',
-        }),
+        createPartyColumn((d) => ({ id: d.shop?.party_ref?.id })),
+        { field: 'currency', cell: (d) => ({ value: d.shop?.account?.currency?.symbolic_code }) },
+        createDomainObjectColumn(
+            (d) => ({ ref: { term_set_hierarchy: { id: d.shop?.terms?.id } } }),
+            { header: 'Term Set' },
+        ),
         ...SHOP_FEES_COLUMNS,
-        {
-            field: 'term_set_history',
-            cell: (d) => ({
-                value: d.term_set_history?.length || '',
-                click: () =>
-                    this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
-            }),
-        },
+        // {
+        //     field: 'term_set_history',
+        //     cell: (d) => ({
+        //         value: d.term_set_history?.length || '',
+        //         click: () =>
+        //             this.sidenavInfoService.open(ShopsTermSetHistoryCardComponent, { data: d }),
+        //     }),
+        // },
     ];
-    active$ = getValueChanges(this.filtersForm).pipe(
-        map((filters) => countChanged(this.initFiltersValue, filters)),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-
-    private initFiltersValue = this.filtersForm.value;
-
-    ngOnInit() {
-        this.filtersForm.patchValue(this.qp.params);
-        getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.dr))
-            .subscribe((filters) => {
-                void this.qp.set(filters);
-                this.load(filters);
-            });
-    }
-
-    load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, ...otherParams } = params;
-        this.shopsTermsService.load(
-            clean({
-                common_search_query_params: { currencies },
-                term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
-                ...otherParams,
-            }),
-            options,
-        );
-    }
-
-    update(options?: UpdateOptions) {
-        this.shopsTermsService.reload(options);
-    }
-
-    more() {
-        this.shopsTermsService.more();
-    }
 }

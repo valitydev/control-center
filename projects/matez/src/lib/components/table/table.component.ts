@@ -162,7 +162,11 @@ export class TableComponent<T extends object, C extends object> implements OnIni
         isTree: this.dataSource.isTreeData$,
         data: this.dataSource.data$,
         cols: toObservable(this.normColumns),
-    }).pipe(toObservableColumnsData, shareReplay({ refCount: true, bufferSize: 1 }));
+    }).pipe(
+        debounceTime(100),
+        toObservableColumnsData,
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
     columnsDataProgress$ = new BehaviorSubject(false);
     columnsData$ = this.columnsData$$.pipe(
         tap(() => {

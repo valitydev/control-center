@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash-es';
-import { map } from 'rxjs';
+import { map, of } from 'rxjs';
 
 import { inject } from '@angular/core';
 
@@ -22,7 +22,6 @@ export function getDomainObjectsTerms(
     const repositoryClientService = inject(ThriftRepositoryClientService);
 
     return pagedObservableResource<DomainObjectTerms, void>({
-        size: 5,
         params: null,
         loader: (_, { continuationToken, size }) =>
             repositoryService
@@ -33,45 +32,43 @@ export function getDomainObjectsTerms(
                     limit: size,
                 })
                 .pipe(
-                    switchCombineWith(({ result }) => [
-                        repositoryClientService
-                            .CheckoutObjects(
-                                { head: {} },
-                                uniqBy(
-                                    result.map(
-                                        (obj) =>
-                                            (
-                                                getUnionValue(obj.object).data as
-                                                    | ShopConfig
-                                                    | WalletConfig
-                                            ).terms,
-                                    ),
-                                    'id',
-                                ).map((ref) => ({ term_set_hierarchy: ref })),
-                            )
-                            .pipe(
-                                map((termsObjs) =>
-                                    result.map((obj) => {
-                                        const termsId = (
+                    switchCombineWith(({ result }) => {
+                        const termsObjectRefs = uniqBy(
+                            result
+                                .map(
+                                    (obj) =>
+                                        (
                                             getUnionValue(obj.object).data as
                                                 | ShopConfig
                                                 | WalletConfig
-                                        ).terms.id;
-                                        return {
-                                            object: obj,
-                                            terms: termsObjs.find(
-                                                (termsObj) =>
-                                                    termsObj.object.term_set_hierarchy.ref.id ===
-                                                    termsId,
-                                            ),
-                                        };
-                                    }),
+                                        ).terms,
+                                )
+                                .filter(Boolean),
+                            'id',
+                        ).map((ref) => ({ term_set_hierarchy: ref }));
+                        return [
+                            termsObjectRefs.length
+                                ? repositoryClientService.CheckoutObjects(
+                                      { head: {} },
+                                      termsObjectRefs,
+                                  )
+                                : of([] as VersionedObject[]),
+                        ];
+                    }),
+                    map(([result, termsObjs]) => ({
+                        result: result.result.map((obj) => {
+                            const termsId = (
+                                getUnionValue(obj.object).data as ShopConfig | WalletConfig
+                            ).terms?.id;
+                            return {
+                                object: obj,
+                                terms: termsObjs.find(
+                                    (termsObj) =>
+                                        termsObj.object.term_set_hierarchy.ref.id === termsId,
                                 ),
-                            ),
-                    ]),
-                    map(([objects, result]) => ({
-                        result,
-                        continuationToken: objects.continuation_token,
+                            };
+                        }),
+                        continuationToken: result.continuation_token,
                     })),
                 ),
     });
