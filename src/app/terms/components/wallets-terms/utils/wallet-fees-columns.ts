@@ -12,7 +12,7 @@ import { isThatCurrency } from '../../../utils/is-that-currency';
 
 // TODO
 export function getWalletCashFlowSelectors(d: TermSetHierarchyObject) {
-    return [d.data.term_set.wallets?.withdrawals?.cash_flow].filter(Boolean);
+    return [d?.data?.term_set?.wallets?.withdrawals?.cash_flow].filter(Boolean);
 }
 
 export function isWalletFee(v: CashFlowPosting) {
