@@ -1,15 +1,10 @@
 import { shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { DomainObjectType, TermSetHierarchy, WalletConfig } from '@vality/domain-proto/domain';
-import {
-    type CommonSearchQueryParams,
-    type WalletSearchQuery,
-} from '@vality/dominator-proto/dominator';
 import {
     Column,
     FiltersModule,
@@ -33,15 +28,6 @@ import {
     getWalletCashFlowSelectors,
     isWalletTermSetDecision,
 } from './utils/wallet-fees-columns';
-
-type Params = Pick<CommonSearchQueryParams, 'currencies'> &
-    Overwrite<
-        Omit<WalletSearchQuery, 'common_search_query_params'>,
-        {
-            term_sets_ids?: WalletSearchQuery['term_sets_ids'][number]['id'][];
-            identity_ids?: WalletSearchQuery['identity_ids'][number]['id'][];
-        }
-    >;
 
 @Component({
     selector: 'cc-wallets-terms',

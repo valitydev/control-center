@@ -1,17 +1,10 @@
 import { shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import {
-    DomainObjectType,
-    ShopConfig,
-    TermSetHierarchy,
-    TermSetHierarchyRef,
-} from '@vality/domain-proto/domain';
-import { CommonSearchQueryParams, ShopSearchQuery } from '@vality/dominator-proto/dominator';
+import { DomainObjectType, ShopConfig, TermSetHierarchy } from '@vality/domain-proto/domain';
 import {
     Column,
     FiltersModule,
@@ -35,12 +28,6 @@ import {
     getShopCashFlowSelectors,
     isShopTermSetDecision,
 } from './utils/shop-fees-columns';
-
-type Params = Pick<CommonSearchQueryParams, 'currencies'> &
-    Overwrite<
-        Omit<ShopSearchQuery, 'common_search_query_params'>,
-        { term_sets_ids?: TermSetHierarchyRef['id'][] }
-    >;
 
 @Component({
     selector: 'cc-shops-terms',

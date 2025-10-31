@@ -13,7 +13,6 @@ import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
-// TODO
 export function getShopCashFlowSelectors(d: TermSetHierarchyObject) {
     return [d?.data?.term_set?.payments?.fees].filter(Boolean);
 }
