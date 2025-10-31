@@ -1,21 +1,11 @@
 <cc-page-layout fullHeight title="Terminals terms">
-    <cc-page-layout-actions>
-        <v-more-filters-button [filters]="filters"></v-more-filters-button>
-    </cc-page-layout-actions>
-    <v-filters #filters [active]="active$ | async" (clear)="filtersForm.reset()">
-        <ng-template [formGroup]="filtersForm">
-            <v-list-field formControlName="terminal_ids" label="Terminal IDs"></v-list-field>
-            <v-list-field formControlName="provider_ids" label="Provider IDs"></v-list-field>
-            <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
-        </ng-template>
-    </v-filters>
-
     <v-table
         [columns]="columns"
-        [hasMore]="hasMore$ | async"
-        [progress]="isLoading$ | async"
+        [hasMore]="terminalTerms.hasMore()"
+        [progress]="terminalTerms.isLoading()"
         [treeData]="terms$ | async"
-        (more)="more()"
-        (update)="update($event)"
+        standaloneFilter
+        (more)="terminalTerms.more()"
+        (update)="terminalTerms.setOptions($event)"
     ></v-table>
 </cc-page-layout>
