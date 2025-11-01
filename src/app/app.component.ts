@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, isDevMode, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -71,7 +71,7 @@ const createNavLinks = (): Link[] => [
             {
                 label: 'Terms',
                 url: '/terms',
-                isHidden: isHidden(TERMS_ROUTING_CONFIG.services) || !isDevMode(),
+                isHidden: isHidden(TERMS_ROUTING_CONFIG.services),
                 children: [
                     {
                         label: 'Shops',
