@@ -1,51 +1,32 @@
 import { map, shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { ProvisionTermSet } from '@vality/domain-proto/domain';
-import type {
-    CommonSearchQueryParams,
-    TerminalSearchQuery,
-    TerminalTermSet,
-    domain,
-} from '@vality/dominator-proto/dominator';
+import { DomainObjectType } from '@vality/domain-proto/domain';
+import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     Column,
     FiltersModule,
     InputFieldModule,
     ListFieldModule,
-    LoadOptions,
-    QueryParamsService,
     TableModule,
-    UpdateOptions,
     cachedHeadMap,
-    clean,
-    countChanged,
-    createControls,
-    debounceTimeWithFirst,
-    getValueChanges,
+    pagedObservableResource,
 } from '@vality/matez';
 
+import { ThriftRepositoryService } from '~/api/services';
 import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
 import { PageLayoutModule } from '~/components/page-layout';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import { createDomainObjectColumn } from '~/utils';
 
-import { DEBOUNCE_TIME_MS } from '../../../tokens';
-import { TerminalsTermSetHistoryCardComponent } from '../terminals-term-set-history-card';
-
-import { TerminalsTermsService } from './terminals-terms.service';
-import { TERMINAL_FEES_COLUMNS, getTerminalTreeDataItem } from './utils/terminal-fees-columns';
-
-type Params = Pick<CommonSearchQueryParams, 'currencies'> &
-    Overwrite<
-        Omit<TerminalSearchQuery, 'common_search_query_params'>,
-        { provider_ids?: domain.ProviderRef['id'][]; terminal_ids?: domain.TerminalRef['id'][] }
-    >;
+import {
+    TERMINAL_FEES_COLUMNS,
+    TerminalChild,
+    getTerminalTreeDataItem,
+} from './utils/terminal-fees-columns';
 
 @Component({
     selector: 'cc-terminals-terms',
@@ -61,83 +42,51 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     ],
     templateUrl: './terminals-terms.component.html',
 })
-export class TerminalsTermsComponent implements OnInit {
-    private terminalsTermsService = inject(TerminalsTermsService);
-    private fb = inject(NonNullableFormBuilder);
-    private qp = inject<QueryParamsService<Params>>(QueryParamsService<Params>);
-    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
-    private dr = inject(DestroyRef);
+export class TerminalsTermsComponent {
     private sidenavInfoService = inject(SidenavInfoService);
-    filtersForm = this.fb.group(
-        createControls<Params>({
-            currencies: null,
-            provider_ids: null,
-            terminal_ids: null,
-        }),
-    );
-    terms$ = this.terminalsTermsService.result$.pipe(
-        // TODO: remove after bump dominator
-        cachedHeadMap(
-            getTerminalTreeDataItem((d) => d.current_term_set as never as ProvisionTermSet),
-        ),
+    private repositoryService = inject(ThriftRepositoryService);
+
+    terminalTerms = pagedObservableResource<VersionedObject, void>({
+        params: null,
+        loader: (_, { continuationToken, size }) =>
+            this.repositoryService
+                .SearchFullObjects({
+                    query: '*',
+                    type: DomainObjectType.terminal,
+                    continuation_token: continuationToken,
+                    limit: size,
+                })
+                .pipe(
+                    map((result) => ({
+                        result: result.result,
+                        continuationToken: result.continuation_token,
+                    })),
+                ),
+    });
+
+    terms$ = this.terminalTerms.result$.pipe(
+        cachedHeadMap(getTerminalTreeDataItem((d) => d.object.terminal.data.terms)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    hasMore$ = this.terminalsTermsService.hasMore$;
-    isLoading$ = this.terminalsTermsService.isLoading$;
-    columns: Column<TerminalTermSet>[] = [
-        createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal_id } }), {
+    columns: Column<VersionedObject, TerminalChild>[] = [
+        createDomainObjectColumn((d) => ({ ref: { terminal: d.object.terminal.ref } }), {
             header: 'Terminal',
             sticky: 'start',
         }),
-        createDomainObjectColumn((d) => ({ ref: { provider: d.provider_id } }), {
-            header: 'Provider',
-        }),
-        { field: 'currencies', cell: (d) => ({ value: d.currencies.join(', ') }) },
+        createDomainObjectColumn(
+            (d) => ({ ref: { provider: d.object.terminal.data.provider_ref } }),
+            {
+                header: 'Provider',
+            },
+        ),
         ...TERMINAL_FEES_COLUMNS,
-        {
-            field: 'term_set_history',
-            cell: (d) => ({
-                value: d.term_set_history?.length || '',
-                click: () =>
-                    this.sidenavInfoService.open(TerminalsTermSetHistoryCardComponent, { data: d }),
-            }),
-        },
+        // {
+        //     field: 'term_set_history',
+        //     cell: (d) => ({
+        //         value: d.term_set_history?.length || '',
+        //         click: () =>
+        //             this.sidenavInfoService.open(TerminalsTermSetHistoryCardComponent, { data: d }),
+        //     }),
+        // },
     ];
-    active$ = getValueChanges(this.filtersForm).pipe(
-        map((filters) => countChanged(this.initFiltersValue, filters)),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-
-    private initFiltersValue = this.filtersForm.value;
-
-    ngOnInit() {
-        this.filtersForm.patchValue(this.qp.params);
-        getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.dr))
-            .subscribe((filters) => {
-                void this.qp.set(filters);
-                this.load(filters);
-            });
-    }
-
-    load(params: Params, options?: LoadOptions) {
-        const { currencies, provider_ids, terminal_ids, ...otherParams } = params;
-        this.terminalsTermsService.load(
-            clean({
-                common_search_query_params: { currencies },
-                provider_ids: provider_ids?.map?.((id) => ({ id })),
-                terminal_ids: terminal_ids?.map?.((id) => ({ id })),
-                ...otherParams,
-            }),
-            options,
-        );
-    }
-
-    update(options?: UpdateOptions) {
-        this.terminalsTermsService.reload(options);
-    }
-
-    more() {
-        this.terminalsTermsService.more();
-    }
 }

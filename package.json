@@ -34,7 +34,6 @@
     "@ngneat/input-mask": "^6.1.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@vality/domain-proto": "^2.0.1-f831d3a.0",
-    "@vality/dominator-proto": "^1.0.1-67ea35c.0",
     "@vality/fistful-proto": "^2.0.1-7c61ac5.0",
     "@vality/machinegun-proto": "^1.0.1-cc2c27c.0",
     "@vality/magista-proto": "^2.0.2-f3b4b14.0",

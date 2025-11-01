@@ -1,25 +1,11 @@
 <cc-page-layout fullHeight title="Wallets terms">
-    <cc-page-layout-actions>
-        <v-more-filters-button [filters]="filters"></v-more-filters-button>
-    </cc-page-layout-actions>
-    <v-filters #filters [active]="active$ | async" (clear)="filtersForm.reset()">
-        <ng-template [formGroup]="filtersForm">
-            <cc-merchant-field formControlName="party_id"></cc-merchant-field>
-            <cc-wallet-field formControlName="wallet_ids" multiple></cc-wallet-field>
-            <v-list-field formControlName="identity_ids" label="Identity IDs"></v-list-field>
-            <v-list-field formControlName="currencies" label="Currencies"></v-list-field>
-            <v-list-field formControlName="term_sets_names" label="Term sets names"></v-list-field>
-            <v-list-field formControlName="term_sets_ids" label="Term sets IDs"></v-list-field>
-        </ng-template>
-    </v-filters>
-
     <v-table
         [columns]="columns"
-        [hasMore]="hasMore$ | async"
-        [maxSize]="250"
-        [progress]="isLoading$ | async"
+        [hasMore]="walletTerms.hasMore()"
+        [progress]="walletTerms.isLoading()"
         [treeData]="terms$ | async"
-        (more)="more()"
-        (update)="update($event)"
+        standaloneFilter
+        (more)="walletTerms.more()"
+        (update)="walletTerms.setOptions($event)"
     ></v-table>
 </cc-page-layout>

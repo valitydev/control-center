@@ -10,9 +10,8 @@ import { createFeesColumns } from '../../../utils/create-fees-columns';
 import { FlatDecision } from '../../../utils/get-flat-decisions';
 import { isThatCurrency } from '../../../utils/is-that-currency';
 
-// TODO
 export function getWalletCashFlowSelectors(d: TermSetHierarchyObject) {
-    return [d.data.term_set.wallets?.withdrawals?.cash_flow].filter(Boolean);
+    return [d?.data?.term_set?.wallets?.withdrawals?.cash_flow].filter(Boolean);
 }
 
 export function isWalletFee(v: CashFlowPosting) {

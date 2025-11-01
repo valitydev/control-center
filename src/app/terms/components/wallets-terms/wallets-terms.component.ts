@@ -1,32 +1,17 @@
-import { map, shareReplay } from 'rxjs/operators';
-import { Overwrite } from 'utility-types';
+import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { TermSetHierarchyObject } from '@vality/domain-proto/domain';
-import {
-    type CommonSearchQueryParams,
-    type WalletSearchQuery,
-    type WalletTermSet,
-} from '@vality/dominator-proto/dominator';
+import { DomainObjectType, TermSetHierarchy, WalletConfig } from '@vality/domain-proto/domain';
 import {
     Column,
     FiltersModule,
     InputFieldModule,
     ListFieldModule,
-    LoadOptions,
-    QueryParamsService,
     TableModule,
-    UpdateOptions,
     cachedHeadMap,
-    clean,
-    countChanged,
-    createControls,
-    debounceTimeWithFirst,
-    getValueChanges,
 } from '@vality/matez';
 
 import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
@@ -35,25 +20,14 @@ import { SidenavInfoService } from '~/components/sidenav-info/sidenav-info.servi
 import { WalletFieldModule } from '~/components/wallet-field';
 import { createDomainObjectColumn, createPartyColumn, createWalletColumn } from '~/utils';
 
-import { DEBOUNCE_TIME_MS } from '../../../tokens';
+import { getDomainObjectsTerms } from '../../utils/get-domain-objects-terms';
 import { FlatDecision, getFlatDecisions } from '../../utils/get-flat-decisions';
-import { WalletsTermSetHistoryCardComponent } from '../wallets-term-set-history-card';
 
 import {
     WALLET_FEES_COLUMNS,
     getWalletCashFlowSelectors,
     isWalletTermSetDecision,
 } from './utils/wallet-fees-columns';
-import { WalletsTermsService } from './wallets-terms.service';
-
-type Params = Pick<CommonSearchQueryParams, 'currencies'> &
-    Overwrite<
-        Omit<WalletSearchQuery, 'common_search_query_params'>,
-        {
-            term_sets_ids?: WalletSearchQuery['term_sets_ids'][number]['id'][];
-            identity_ids?: WalletSearchQuery['identity_ids'][number]['id'][];
-        }
-    >;
 
 @Component({
     selector: 'cc-wallets-terms',
@@ -70,98 +44,57 @@ type Params = Pick<CommonSearchQueryParams, 'currencies'> &
     ],
     templateUrl: './wallets-terms.component.html',
 })
-export class WalletsTermsComponent implements OnInit {
-    private walletsTermsService = inject(WalletsTermsService);
-    private fb = inject(NonNullableFormBuilder);
-    private qp = inject<QueryParamsService<Params>>(QueryParamsService<Params>);
-    private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
-    private dr = inject(DestroyRef);
+export class WalletsTermsComponent {
     private sidenavInfoService = inject(SidenavInfoService);
 
-    filtersForm = this.fb.group(
-        createControls<Params>({
-            currencies: null,
-            party_id: null,
-            wallet_ids: null,
-            term_sets_names: null,
-            term_sets_ids: null,
-            identity_ids: null,
-        }),
-    );
-    terms$ = this.walletsTermsService.result$.pipe(
+    walletTerms = getDomainObjectsTerms(DomainObjectType.wallet_config);
+
+    terms$ = this.walletTerms.value$.pipe(
         cachedHeadMap((t) => ({
-            value: t,
+            value: {
+                id: t.object.object.wallet_config.ref.id,
+                wallet: t.object.object.wallet_config.data,
+                terms: t.terms?.object?.term_set_hierarchy?.data,
+            },
             children: getFlatDecisions(
-                // TODO: remove after bump dominator
-                getWalletCashFlowSelectors(t.current_term_set as never as TermSetHierarchyObject),
+                getWalletCashFlowSelectors(t.terms?.object?.term_set_hierarchy),
             ).filter((v) =>
                 isWalletTermSetDecision(v, {
-                    partyId: t.owner_id,
-                    walletId: t.wallet_id,
-                    currency: t.currency,
+                    partyId: t.object.object.wallet_config.data.party_ref.id,
+                    walletId: t.object.object.wallet_config.ref.id,
+                    currency: t.object.object.wallet_config.data.account.currency.symbolic_code,
                 }),
             ),
         })),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    hasMore$ = this.walletsTermsService.hasMore$;
-    isLoading$ = this.walletsTermsService.isLoading$;
-    columns: Column<WalletTermSet, FlatDecision>[] = [
-        createWalletColumn((d) => ({ id: d.wallet_id, name: d.wallet_name, partyId: d.owner_id }), {
-            sticky: 'start',
-        }),
-        createPartyColumn((d) => ({ id: d.owner_id })),
-        { field: 'contract_id', header: 'Contract' },
-        { field: 'identity_id.id', header: 'Identity' },
-        { field: 'currency' },
-        createDomainObjectColumn((d) => ({ ref: { term_set_hierarchy: d.current_term_set.ref } }), {
-            header: 'Term Set',
-        }),
-        ...WALLET_FEES_COLUMNS,
-        {
-            field: 'term_set_history',
-            cell: (d) => ({
-                value: d.term_set_history?.length || '',
-                click: () =>
-                    this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, { data: d }),
-            }),
-        },
-    ];
-    active$ = getValueChanges(this.filtersForm).pipe(
-        map((filters) => countChanged(this.initFiltersValue, filters)),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-
-    private initFiltersValue = this.filtersForm.value;
-
-    ngOnInit() {
-        this.filtersForm.patchValue(this.qp.params);
-        getValueChanges(this.filtersForm)
-            .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.dr))
-            .subscribe((filters) => {
-                void this.qp.set(filters);
-                this.load(filters);
-            });
-    }
-
-    load(params: Params, options?: LoadOptions) {
-        const { currencies, term_sets_ids, identity_ids, ...otherParams } = params;
-        this.walletsTermsService.load(
-            clean({
-                common_search_query_params: { currencies },
-                term_sets_ids: term_sets_ids?.map?.((id) => ({ id })),
-                identity_ids: identity_ids?.map?.((id) => ({ id })),
-                ...otherParams,
-            }),
-            options,
-        );
-    }
-
-    update(options?: UpdateOptions) {
-        this.walletsTermsService.reload(options);
-    }
-
-    more() {
-        this.walletsTermsService.more();
-    }
+    columns: Column<{ id: string; wallet: WalletConfig; terms: TermSetHierarchy }, FlatDecision>[] =
+        [
+            createWalletColumn(
+                (d) => ({
+                    id: d.id,
+                    partyId: d.wallet?.party_ref?.id,
+                    name: d.wallet?.name,
+                }),
+                { sticky: 'start' },
+            ),
+            createPartyColumn((d) => ({ id: d.wallet?.party_ref?.id })),
+            {
+                field: 'currency',
+                cell: (d) => ({ value: d.wallet?.account?.currency?.symbolic_code }),
+            },
+            createDomainObjectColumn(
+                (d) => ({ ref: { term_set_hierarchy: { id: d.wallet?.terms?.id } } }),
+                { header: 'Term Set' },
+            ),
+            ...WALLET_FEES_COLUMNS,
+            // {
+            //     field: 'term_set_history',
+            //     cell: (d) => ({
+            //         value: d.term_set_history?.length || '',
+            //         click: () =>
+            //             this.sidenavInfoService.open(WalletsTermSetHistoryCardComponent, { data: d }),
+            //     }),
+            // },
+        ];
 }

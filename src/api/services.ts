@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { inject } from '@angular/core';
 
 import { metadata$ as domainMetadata$ } from '@vality/domain-proto';
-import { metadata$ as dominatorMetadata$ } from '@vality/dominator-proto';
 import { metadata$ as fistfulMetadata$ } from '@vality/fistful-proto';
 import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
@@ -120,15 +119,6 @@ export const services = [
         service: 'MerchantStatisticsService',
         public: 'MerchantStatistics',
     },
-    // Dominator
-    {
-        name: 'Dominator',
-        loader: () => import('@vality/dominator-proto/dominator').then((m) => m.DominatorService),
-        metadata$: dominatorMetadata$,
-        namespace: 'dominator',
-        service: 'DominatorService',
-        public: 'Dominator',
-    },
     // Machinegun
     {
         name: 'Automaton',
@@ -191,7 +181,6 @@ export const {
     RepairManagement: ThriftRepairManagementService,
     Scrooge: ThriftAccountService,
     MerchantStatistics: ThriftMerchantStatisticsService,
-    Dominator: ThriftDominatorService,
     Automaton: ThriftAutomatonService,
     Invoicing: ThriftInvoicingService,
     PartyManagement: ThriftPartyManagementService,
