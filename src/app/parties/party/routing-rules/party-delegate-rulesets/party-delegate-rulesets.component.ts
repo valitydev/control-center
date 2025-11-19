@@ -102,7 +102,7 @@ export class PartyDelegateRulesetsComponent {
                 void this.router.navigate([
                     'parties',
                     this.partyID,
-                    'routing-rules',
+                    'rr',
                     this.route.snapshot.params['type'] as RoutingRulesType,
                     parent.data.decisions.delegates[delegateIdx].ruleset.id,
                 ]);

@@ -49,10 +49,7 @@ export class PartyRoutingRulesetComponent {
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.routingRulesStoreService.isLoading$;
     upLink$ = combineLatest([this.partyID$, this.routingRulesTypeService.routingRulesType$]).pipe(
-        map(
-            ([partyID, routingRulesType]) =>
-                `/parties/${partyID}/routing-rules/${routingRulesType}`,
-        ),
+        map(([partyID, routingRulesType]) => `/parties/${partyID}/rr/${routingRulesType}`),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
@@ -153,7 +150,7 @@ export class PartyRoutingRulesetComponent {
                 this.router.navigate([
                     'parties',
                     this.route.snapshot.params['partyID'],
-                    'routing-rules',
+                    'rr',
                     this.route.snapshot.params['type'],
                     parentRefId,
                     'delegate',
