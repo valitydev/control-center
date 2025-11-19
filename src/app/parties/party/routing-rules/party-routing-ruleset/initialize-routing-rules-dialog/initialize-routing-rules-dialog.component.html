@@ -1,0 +1,29 @@
+<v-dialog title="Routing rules init params">
+    <div [formGroup]="form" style="display: flex; flex-direction: column; gap: 24px">
+        <mat-form-field>
+            <input
+                formControlName="delegateDescription"
+                matInput
+                placeholder="Main delegate description"
+            />
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <div class="text-2xl font-normal m-0">Routing ruleset</div>
+        <div style="display: flex; flex-direction: column; gap: 16px">
+            <mat-form-field>
+                <input formControlName="name" matInput placeholder="Name" required />
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    formControlName="description"
+                    matInput
+                    placeholder="Description (optional)"
+                />
+            </mat-form-field>
+        </div>
+    </div>
+
+    <v-dialog-actions>
+        <button [disabled]="form.invalid" mat-button (click)="init()">Init</button>
+    </v-dialog-actions>
+</v-dialog>

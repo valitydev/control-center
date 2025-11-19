@@ -29,6 +29,11 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                             import('./routing-rules-old').then((m) => m.RoutingRulesModule),
                     },
                     {
+                        path: 'rr',
+                        loadComponent: () =>
+                            import('./routing-rules').then((m) => m.RoutingRulesModule),
+                    },
+                    {
                         path: 'wallets',
                         loadComponent: () =>
                             import('../../wallets/wallets.component').then(
