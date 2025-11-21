@@ -65,6 +65,15 @@ export class PartyRoutingRulesetComponent {
                 }),
             },
         ),
+        {
+            field: 'currency',
+            cell: (d) =>
+                this.getShopByDelegate(d.item).pipe(
+                    map((shop) => ({
+                        value: shop.data.account.currency.symbolic_code,
+                    })),
+                ),
+        },
         createDomainObjectColumn(
             (d) =>
                 this.getShopByDelegate(d.item).pipe(
