@@ -61,7 +61,26 @@ export class RoutingRulesetComponent {
     isLoading$ = this.routingRulesStoreService.isLoading$;
 
     columns: Column<RoutingCandidate>[] = [
+        createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal } }), {
+            header: 'Terminal',
+            cell: (d) =>
+                this.getCandidateIdx(d).pipe(
+                    map((idx) => ({
+                        click: () => {
+                            this.routingRulesetService.ruleset$
+                                .pipe(first())
+                                .subscribe((ruleset) => {
+                                    this.sidenavInfoService.toggle(CandidateCardComponent, {
+                                        idx,
+                                        ref: ruleset.ref,
+                                    });
+                                });
+                        },
+                    })),
+                ),
+        }),
         { field: 'priority' },
+        { field: 'weight' },
         {
             field: 'candidate',
             cell: (d) =>
@@ -81,10 +100,8 @@ export class RoutingRulesetComponent {
                         },
                     })),
                 ),
+            hidden: true,
         },
-        createDomainObjectColumn((d) => ({ ref: { terminal: d.terminal } }), {
-            header: 'Terminal',
-        }),
         createPredicateColumn(
             (d) =>
                 combineLatest([
@@ -118,7 +135,6 @@ export class RoutingRulesetComponent {
                 header: 'Allowed',
             },
         ),
-        { field: 'weight' },
         {
             field: 'pin',
             cell: (d) => ({
