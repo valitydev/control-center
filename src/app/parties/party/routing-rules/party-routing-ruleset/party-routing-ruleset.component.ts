@@ -17,7 +17,7 @@ import {
 import { RoutingRulesStoreService } from '~/api/domain-config';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { createShopColumn, createWalletColumn } from '~/utils';
+import { createDomainObjectColumn, createShopColumn, createWalletColumn } from '~/utils';
 
 import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
@@ -56,16 +56,22 @@ export class PartyRoutingRulesetComponent {
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         createShopColumn(
             (d) =>
-                this.partyRoutingRulesetService.partyID$.pipe(
-                    map((partyId) => ({
-                        shopId: d.item?.allowed?.condition?.party?.definition?.shop_is,
-                        partyId,
-                    })),
+                this.getShopByDelegate(d.item).pipe(
+                    map((shop) => ({ shopId: shop?.ref.id, partyId: shop?.data.party_ref.id })),
                 ),
             {
                 cell: (d) => ({
                     click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
                 }),
+            },
+        ),
+        createDomainObjectColumn(
+            (d) =>
+                this.getShopByDelegate(d.item).pipe(
+                    map((shop) => ({ ref: { term_set_hierarchy: shop.data.terms } })),
+                ),
+            {
+                field: 'terms',
             },
         ),
         {
@@ -249,5 +255,15 @@ export class PartyRoutingRulesetComponent {
                     }
                 },
             });
+    }
+
+    private getShopByDelegate(delegate: RoutingDelegate) {
+        return this.partyRoutingRulesetService.shops$.pipe(
+            map((shops) =>
+                shops.find(
+                    (s) => s.ref.id === delegate?.allowed?.condition?.party?.definition?.shop_is,
+                ),
+            ),
+        );
     }
 }
