@@ -118,14 +118,24 @@ const createNavLinks = (): Link[] => [
                                   url: `${partyPath}/wallet-webhooks`,
                               },
                               {
-                                  label: 'Payment RR',
+                                  label: 'Payment RR (old)',
                                   url: `${partyPath}/routing-rules/payment/main`,
                                   checkUrl: `${partyPath}/routing-rules/payment`,
                               },
                               {
-                                  label: 'Withdrawal RR',
+                                  label: 'Withdrawal RR (old)',
                                   url: `${partyPath}/routing-rules/withdrawal/main`,
                                   checkUrl: `${partyPath}/routing-rules/withdrawal`,
+                              },
+                              {
+                                  label: 'Payment RR',
+                                  url: `${partyPath}/rr/payment/main`,
+                                  checkUrl: `${partyPath}/rr/payment`,
+                              },
+                              {
+                                  label: 'Withdrawal RR',
+                                  url: `${partyPath}/rr/withdrawal/main`,
+                                  checkUrl: `${partyPath}/rr/withdrawal`,
                               },
                           ]
                         : [],
