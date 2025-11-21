@@ -1,3 +1,4 @@
+import { round } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -80,7 +81,22 @@ export class RoutingRulesetComponent {
                 ),
         }),
         { field: 'priority' },
-        { field: 'weight' },
+        {
+            field: 'weight',
+            cell: (d) =>
+                this.candidates$.pipe(
+                    map((candidates) => ({
+                        value: `${round(
+                            ((d.weight || 0) /
+                                candidates
+                                    .filter((c) => c.priority === d.priority)
+                                    .reduce((sum, c) => sum + (c.weight || 0), 0)) *
+                                100,
+                            2,
+                        )}%`,
+                    })),
+                ),
+        },
         {
             field: 'candidate',
             cell: (d) =>
