@@ -33,15 +33,8 @@
             ></cc-magista-thrift-form>
         </ng-template>
     </v-filters>
-    <cc-payments-table
-        [data]="(payments$ | async) || []"
-        [hasMore]="hasMore$ | async"
-        [isLoading]="isLoading$ | async"
-        [selected]="selected$ | async"
-        (more)="more()"
-        (selectedChange)="selected$.next($event)"
-        (update)="reload($event ?? {})"
-    >
+
+    <div class="flex gap-2">
         <button [disabled]="!(selected$ | async)?.length" mat-button (click)="failMachines()">
             Fail machines
         </button>
@@ -53,5 +46,29 @@
         >
             Create adjustments
         </button>
+    </div>
+
+    <cc-payments-table
+        [data]="(payments$ | async) || []"
+        [hasMore]="hasMore$ | async"
+        [isLoading]="isLoading$ | async"
+        [selected]="selected$ | async"
+        (more)="more()"
+        (selectedChange)="selected$.next($event)"
+        (update)="reload($event ?? {})"
+    >
+        <!--
+        BG-596: Actions are not displayed in the table info bar
+        <button [disabled]="!(selected$ | async)?.length" mat-button (click)="failMachines()">
+            Fail machines
+        </button>
+        <button mat-button (click)="createPaymentAdjustments()">Create adjustments by file</button>
+        <button
+            [disabled]="!(selected$ | async)?.length"
+            mat-flat-button
+            (click)="createPaymentAdjustment()"
+        >
+            Create adjustments
+        </button> -->
     </cc-payments-table>
 </cc-page-layout>

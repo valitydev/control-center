@@ -26,6 +26,15 @@
         </ng-template>
     </v-filters>
 
+    <div class="flex gap-2">
+        <button [disabled]="!selected?.length" mat-flat-button (click)="adjustment()">
+            Create adjustments
+        </button>
+        <button [disabled]="!selected?.length" mat-button (click)="failMachines()">
+            Fail machines
+        </button>
+    </div>
+
     <v-table
         [(rowSelected)]="selected"
         [columns]="columns"
@@ -36,6 +45,7 @@
         (more)="more()"
         (update)="reload($event)"
     >
+        <!-- BG-596: v-table-actions is not displayed in the table info bar
         <v-table-actions>
             <button [disabled]="!selected?.length" mat-button (click)="failMachines()">
                 Fail machines
@@ -43,6 +53,6 @@
             <button [disabled]="!selected?.length" mat-flat-button (click)="adjustment()">
                 Create adjustments
             </button>
-        </v-table-actions>
+        </v-table-actions> -->
     </v-table>
 </cc-page-layout>
