@@ -34,20 +34,6 @@
         </ng-template>
     </v-filters>
 
-    <div class="flex gap-2">
-        <button [disabled]="!(selected$ | async)?.length" mat-button (click)="failMachines()">
-            Fail machines
-        </button>
-        <button mat-button (click)="createPaymentAdjustments()">Create adjustments by file</button>
-        <button
-            [disabled]="!(selected$ | async)?.length"
-            mat-flat-button
-            (click)="createPaymentAdjustment()"
-        >
-            Create adjustments
-        </button>
-    </div>
-
     <cc-payments-table
         [data]="(payments$ | async) || []"
         [hasMore]="hasMore$ | async"
@@ -57,8 +43,7 @@
         (selectedChange)="selected$.next($event)"
         (update)="reload($event ?? {})"
     >
-        <!--
-        BG-596: Actions are not displayed in the table info bar
+
         <button [disabled]="!(selected$ | async)?.length" mat-button (click)="failMachines()">
             Fail machines
         </button>
@@ -69,6 +54,6 @@
             (click)="createPaymentAdjustment()"
         >
             Create adjustments
-        </button> -->
+        </button>
     </cc-payments-table>
 </cc-page-layout>
