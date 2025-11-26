@@ -22,7 +22,9 @@
         (load)="load()"
         (preload)="preload()"
     >
-        <ng-content select="v-table-actions"></ng-content>
+        <v-table-actions>
+            <ng-content select="v-table-actions"></ng-content>
+        </v-table-actions>
     </v-table-info-bar>
     <mat-card #scrollViewport appearance="outlined" class="card">
         <v-no-records
