@@ -50,7 +50,7 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                     map((sources) => ({
                         options: sources.map((source) => ({
                             label: source.name,
-                            value: source.id,
+                            value: source.currency_symbolic_code,
                             details: source,
                         })),
                         isIdentifier: true,
