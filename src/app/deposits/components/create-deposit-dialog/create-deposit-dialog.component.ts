@@ -83,8 +83,9 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                     ([sources, wallet]): DepositParams => ({
                         ...value,
                         party_id: wallet.object.wallet_config.data.party_ref.id,
-                        source_id: sources.find((s) => s.id === value.body.currency.symbolic_code)
-                            ?.id,
+                        source_id: sources.find(
+                            (s) => s.currency_symbolic_code === value.body.currency.symbolic_code,
+                        )?.id,
                     }),
                 ),
                 tapLog(),
