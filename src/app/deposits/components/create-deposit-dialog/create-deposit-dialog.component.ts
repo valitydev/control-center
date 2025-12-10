@@ -5,7 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
 import { DepositParams } from '@vality/fistful-proto/deposit';
-import { DialogSuperclass, NotifyLogService, progressTo, tapLog } from '@vality/matez';
+import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
@@ -88,7 +88,6 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                         )?.id,
                     }),
                 ),
-                tapLog(),
                 switchMap((params) => this.depositManagementService.Create(params, new Map())),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.dr),
