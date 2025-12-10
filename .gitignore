@@ -42,5 +42,5 @@ testem.log
 Thumbs.db
 
 # Config
-appConfig.json
-authConfig.json
+appConfig*.json
+authConfig*.json
