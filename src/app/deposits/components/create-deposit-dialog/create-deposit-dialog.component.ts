@@ -52,12 +52,12 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                     template: this.sourceCashTemplate(),
                     converter: {
                         outputToInternal: (outputValue: Cash): Partial<SourceCash> => ({
-                            amount: outputValue.amount,
-                            currencySymbolicCode: outputValue.currency.symbolic_code,
+                            amount: outputValue?.amount,
+                            currencySymbolicCode: outputValue?.currency?.symbolic_code,
                         }),
                         internalToOutput: (inputValue: SourceCash): Cash => ({
-                            amount: inputValue.amount,
-                            currency: { symbolic_code: inputValue.currencySymbolicCode },
+                            amount: inputValue?.amount,
+                            currency: { symbolic_code: inputValue?.currencySymbolicCode },
                         }),
                     },
                 }),
