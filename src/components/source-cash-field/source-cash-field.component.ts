@@ -1,6 +1,6 @@
 import isNil from 'lodash-es/isNil';
 import { combineLatest, of, switchMap } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, take } from 'rxjs/operators';
 
 import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
@@ -72,7 +72,6 @@ export class SourceCashFieldComponent
     sourceControl = new FormControl<StatSource>(null);
 
     options$ = this.fetchSourcesService.sources$.pipe(
-        startWith([] as StatSource[]),
         map((sources): Option<StatSource>[] =>
             sources.map((s) => ({
                 label: s.currency_symbolic_code,
