@@ -10,8 +10,8 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { DialogModule } from '@vality/matez';
 
-import { CurrencySourceFieldComponent } from '~/components/currency-source-field';
 import { FistfulThriftFormComponent } from '~/components/fistful-thrift-form';
+import { SourceCashFieldComponent } from '~/components/source-cash-field';
 import { UserInfoBasedIdGeneratorModule } from '~/services';
 
 import { CreateDepositDialogComponent } from './create-deposit-dialog.component';
@@ -28,8 +28,8 @@ import { CreateDepositDialogComponent } from './create-deposit-dialog.component'
         MatProgressBarModule,
         UserInfoBasedIdGeneratorModule,
         DialogModule,
-        CurrencySourceFieldComponent,
         FistfulThriftFormComponent,
+        SourceCashFieldComponent,
     ],
     declarations: [CreateDepositDialogComponent],
 })

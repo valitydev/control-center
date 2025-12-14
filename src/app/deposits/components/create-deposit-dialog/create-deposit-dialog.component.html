@@ -4,6 +4,7 @@
         [extensions]="extensions"
         [formControl]="control"
         namespace="deposit"
+        noToolbar
         type="DepositParams"
     ></cc-fistful-thrift-form>
     <v-dialog-actions>
@@ -12,3 +13,7 @@
         </button>
     </v-dialog-actions>
 </v-dialog>
+
+<ng-template #sourceCashTemplate let-cashControl="control">
+    <cc-source-cash-field [formControl]="cashControl"></cc-source-cash-field>
+</ng-template>
