@@ -1,6 +1,6 @@
 import isNil from 'lodash-es/isNil';
 import { combineLatest, of, switchMap } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay, startWith, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, take } from 'rxjs/operators';
 
 import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
@@ -36,6 +36,7 @@ import { FetchSourcesService } from '../../app/sources';
 export interface SourceCash {
     amount: number;
     sourceId: StatSource['id'];
+    currencySymbolicCode: string;
 }
 
 const GROUP_SEPARATOR = ' ';
@@ -71,7 +72,6 @@ export class SourceCashFieldComponent
     sourceControl = new FormControl<StatSource>(null);
 
     options$ = this.fetchSourcesService.sources$.pipe(
-        startWith([] as StatSource[]),
         map((sources): Option<StatSource>[] =>
             sources.map((s) => ({
                 label: s.currency_symbolic_code,
@@ -123,14 +123,17 @@ export class SourceCashFieldComponent
                 }),
                 distinctUntilChanged(),
             ),
-            getValueChanges(this.sourceControl).pipe(
-                map((s) => s?.id),
-                distinctUntilChanged(),
-            ),
+            getValueChanges(this.sourceControl).pipe(distinctUntilChanged()),
         ])
             .pipe(
-                map(([amount, sourceId]) =>
-                    !isNil(amount) && sourceId ? { amount, sourceId } : null,
+                map(([amount, source]) =>
+                    !isNil(amount) && source
+                        ? {
+                              amount,
+                              sourceId: source.id,
+                              currencySymbolicCode: source.currency_symbolic_code,
+                          }
+                        : null,
                 ),
                 distinctUntilChanged(),
                 takeUntilDestroyed(this.destroyRef),
@@ -147,14 +150,21 @@ export class SourceCashFieldComponent
     }
 
     handleIncomingValue(value: SourceCash) {
-        const { sourceId, amount } = value || {};
-        if (!sourceId) {
+        const { sourceId, currencySymbolicCode, amount } = value || {};
+        if (!sourceId && !currencySymbolicCode) {
             this.setValues(amount, null);
             return;
         }
         this.options$
             .pipe(
-                map((options) => options.find((o) => o.value.id === value.sourceId)?.value ?? null),
+                map(
+                    (options) =>
+                        options.find((o) =>
+                            sourceId
+                                ? o.value.id === sourceId
+                                : o.value.currency_symbolic_code === currencySymbolicCode,
+                        )?.value ?? null,
+                ),
                 switchMap((s) =>
                     combineLatest([of(s), this.getCurrencyExponent(s?.currency_symbolic_code)]),
                 ),

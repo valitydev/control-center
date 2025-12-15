@@ -1,15 +1,17 @@
 import { BehaviorSubject, combineLatest, first, map, of, switchMap } from 'rxjs';
 
-import { Component, DestroyRef, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, DestroyRef, TemplateRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
+import { Cash } from '@vality/domain-proto/domain';
 import { DepositParams } from '@vality/fistful-proto/deposit';
 import { DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { ThriftDepositManagementService, ThriftRepositoryClientService } from '~/api/services';
+import { SourceCash, SourceCashFieldComponent } from '~/components/source-cash-field';
 import { getDomainObjectOption } from '~/components/thrift-api-crud/domain/services/domain-metadata-form-extensions/utils/get-domain-object-option';
 import { UserInfoBasedIdGeneratorService } from '~/services';
 
@@ -27,8 +29,8 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
     private domainStoreService = inject(DomainObjectsStoreService);
     private fetchSourcesService = inject(FetchSourcesService);
     private thriftRepositoryClientService = inject(ThriftRepositoryClientService);
-
-    @ViewChild('currencyTemplate') currencyTemplate: TemplateRef<unknown>;
+    private sourceCashTemplate =
+        viewChild<TemplateRef<SourceCashFieldComponent>>('sourceCashTemplate');
 
     control = new FormControl(this.getDefaultValue(), [Validators.required]);
     progress$ = new BehaviorSubject(0);
@@ -44,18 +46,21 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
             extension: () => of({ hidden: true }),
         },
         {
-            determinant: (data) => of(isTypeWithAliases(data, 'CurrencySymbolicCode', 'base')),
+            determinant: (data) => of(isTypeWithAliases(data, 'Cash', 'base')),
             extension: () =>
-                this.fetchSourcesService.sources$.pipe(
-                    map((sources) => ({
-                        options: sources.map((source) => ({
-                            label: source.name,
-                            value: source.currency_symbolic_code,
-                            details: source,
-                        })),
-                        isIdentifier: true,
-                    })),
-                ),
+                of({
+                    template: this.sourceCashTemplate(),
+                    converter: {
+                        outputToInternal: (outputValue: Cash): Partial<SourceCash> => ({
+                            amount: outputValue?.amount,
+                            currencySymbolicCode: outputValue?.currency?.symbolic_code,
+                        }),
+                        internalToOutput: (inputValue: SourceCash): Cash => ({
+                            amount: inputValue?.amount,
+                            currency: { symbolic_code: inputValue?.currencySymbolicCode },
+                        }),
+                    },
+                }),
         },
         {
             determinant: (data) => of(isTypeWithAliases(data, 'WalletID', 'deposit')),
