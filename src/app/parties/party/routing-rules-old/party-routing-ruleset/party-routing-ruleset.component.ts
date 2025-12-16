@@ -208,7 +208,7 @@ export class PartyRoutingRulesetComponent {
                             refID,
                             shops: shops
                                 .filter((s) =>
-                                    ruleset.data.decisions.delegates.every(
+                                    (ruleset.data.decisions.delegates || []).every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.shop_is !==
                                             s.ref.id,
@@ -217,7 +217,7 @@ export class PartyRoutingRulesetComponent {
                                 .sort((a, b) => compareDifferentTypes(a.data.name, b.data.name)),
                             wallets: wallets
                                 .filter((w) =>
-                                    ruleset.data.decisions.delegates.every(
+                                    (ruleset.data.decisions.delegates || []).every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.wallet_is !==
                                             w.ref.id,
