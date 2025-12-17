@@ -3,7 +3,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -11,11 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { DomainObjectType } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     Column,
-    DebounceTime,
     FiltersModule,
     ListFieldModule,
     SwitchButtonModule,
@@ -24,7 +22,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
 
-import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { DomainObjectsStoreService, FetchFullDomainObjectsService } from '~/api/domain-config';
 import { ThriftPartyManagementService } from '~/api/services';
 import { MerchantFieldModule } from '~/components/merchant-field';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -53,13 +51,22 @@ import { PartyStoreService } from '../parties/party';
         SwitchButtonModule,
     ],
 })
-export class WalletsComponent implements OnInit {
-    private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
+export class WalletsComponent {
+    private domainObjectsStoreService = inject(DomainObjectsStoreService);
     private partyStoreService = inject(PartyStoreService);
     private partyManagementService = inject(ThriftPartyManagementService);
 
-    wallets$ = this.fetchFullDomainObjectsService.result$;
-    isLoading$ = this.fetchFullDomainObjectsService.isLoading$;
+    wallets = this.domainObjectsStoreService
+        .getObjects('wallet_config')
+        .map((wallets) =>
+            this.partyStoreService.id$.pipe(
+                map((id) =>
+                    id
+                        ? wallets.filter((w) => w.object.wallet_config.data.party_ref.id === id)
+                        : wallets,
+                ),
+            ),
+        );
 
     columns: Column<VersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: d.object.wallet_config.ref.id }) },
@@ -128,24 +135,8 @@ export class WalletsComponent implements OnInit {
     ];
     party$ = this.partyStoreService.party$;
 
-    ngOnInit() {
-        this.fetchFullDomainObjectsService.load({
-            type: DomainObjectType.wallet_config,
-            query: '',
-        });
-    }
-
-    @DebounceTime()
-    search(query: string) {
-        this.fetchFullDomainObjectsService.load({ query, type: DomainObjectType.wallet_config });
-    }
-
-    reload(options: UpdateOptions) {
-        this.fetchFullDomainObjectsService.reload(options);
-    }
-
-    more() {
-        this.fetchFullDomainObjectsService.more();
+    reload(_options: UpdateOptions) {
+        this.wallets.reload();
     }
 
     @MemoizeExpiring(5 * 60_000)
