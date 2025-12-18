@@ -2,6 +2,7 @@ import { EMPTY, of } from 'rxjs';
 import {
     catchError,
     distinctUntilChanged,
+    map,
     shareReplay,
     startWith,
     switchMap,
@@ -19,9 +20,15 @@ export class PartyStoreService {
     private route = inject(ActivatedRoute);
     private partiesStoreService = inject(PartiesStoreService);
     private log = inject(NotifyLogService);
-    party$ = this.route.params.pipe(
+
+    id$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        switchMap(({ partyID }) =>
+        map(({ partyID }) => partyID),
+        distinctUntilChanged(),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    party$ = this.id$.pipe(
+        switchMap((partyID) =>
             partyID
                 ? this.partiesStoreService.getParty(partyID).value$.pipe(
                       catchError((err) => {
@@ -34,8 +41,4 @@ export class PartyStoreService {
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    private get partyId() {
-        return this.route.snapshot.params['partyID'] as string;
-    }
 }

@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, isDevMode, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -118,24 +118,26 @@ const createNavLinks = (): Link[] => [
                                   url: `${partyPath}/wallet-webhooks`,
                               },
                               {
-                                  label: 'Payment RR (old)',
+                                  label: 'Payment RR',
                                   url: `${partyPath}/routing-rules/payment/main`,
                                   checkUrl: `${partyPath}/routing-rules/payment`,
                               },
                               {
-                                  label: 'Withdrawal RR (old)',
+                                  label: 'Withdrawal RR',
                                   url: `${partyPath}/routing-rules/withdrawal/main`,
                                   checkUrl: `${partyPath}/routing-rules/withdrawal`,
                               },
                               {
-                                  label: 'Payment RR',
+                                  label: 'Payment RR (in dev)',
                                   url: `${partyPath}/rr/payment/main`,
                                   checkUrl: `${partyPath}/rr/payment`,
+                                  isHidden: !isDevMode,
                               },
                               {
-                                  label: 'Withdrawal RR',
+                                  label: 'Withdrawal RR (in dev)',
                                   url: `${partyPath}/rr/withdrawal/main`,
                                   checkUrl: `${partyPath}/rr/withdrawal`,
+                                  isHidden: !isDevMode,
                               },
                           ]
                         : [],
