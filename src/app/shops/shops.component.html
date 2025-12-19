@@ -1,5 +1,6 @@
 <cc-page-layout fullHeight title="Shops">
     <cc-shops-table
+        [hasMore]="hasMore$ | async"
         [progress]="progress$ | async"
         [shops]="shops$ | async"
         (filterChange)="searchParamsUpdated($event)"

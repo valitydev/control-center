@@ -20,6 +20,7 @@ export class ShopsComponent implements OnInit {
         map((res) => res.map((r) => ({ ...r.object.shop_config, info: r.info }))),
     );
     progress$ = this.fetchDomainObjectsService.isLoading$;
+    hasMore$ = this.fetchDomainObjectsService.hasMore$;
 
     ngOnInit() {
         this.searchParamsUpdated('');

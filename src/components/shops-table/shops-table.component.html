@@ -2,9 +2,11 @@
     [columns]="columns"
     [data]="shops()"
     [externalFilter]="filterChange.observed"
+    [hasMore]="hasMore"
     [progress]="progress"
     name="shops"
     standaloneFilter
     (filterChange)="filterChange.emit($event)"
+    (more)="more.emit()"
     (update)="update.emit($event)"
 ></v-table>
