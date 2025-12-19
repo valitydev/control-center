@@ -237,6 +237,7 @@ export class ShopsTableComponent {
                                         partyId,
                                         'routing-rules',
                                         'payment',
+                                        rr.ref.id,
                                     ]),
                             },
                             ...(delegates[idx].length
@@ -250,6 +251,8 @@ export class ShopsTableComponent {
                                               partyId,
                                               'routing-rules',
                                               'payment',
+                                              rr.ref.id,
+                                              'delegate',
                                               delegate.ruleset.id,
                                           ]),
                                   }))
