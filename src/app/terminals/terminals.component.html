@@ -9,6 +9,7 @@
         [progress]="progress$ | async"
         name="terminals"
         standaloneFilter
+        (filterChange)="filter($event)"
         (more)="more()"
         (update)="update($event)"
     ></v-table>
