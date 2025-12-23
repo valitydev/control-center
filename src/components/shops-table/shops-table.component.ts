@@ -64,8 +64,10 @@ export class ShopsTableComponent {
 
     shops = input<ShopWithInfo[]>([]);
     @Input() progress: number | boolean = false;
+    @Input() hasMore: boolean = false;
     @Output() update = new EventEmitter<UpdateOptions>();
     @Output() filterChange = new EventEmitter<string>();
+    @Output() more = new EventEmitter<void>();
 
     noPartyColumn = input(false, { transform: booleanAttribute });
 
@@ -235,6 +237,7 @@ export class ShopsTableComponent {
                                         partyId,
                                         'routing-rules',
                                         'payment',
+                                        rr.ref.id,
                                     ]),
                             },
                             ...(delegates[idx].length
@@ -248,6 +251,8 @@ export class ShopsTableComponent {
                                               partyId,
                                               'routing-rules',
                                               'payment',
+                                              rr.ref.id,
+                                              'delegate',
                                               delegate.ruleset.id,
                                           ]),
                                   }))

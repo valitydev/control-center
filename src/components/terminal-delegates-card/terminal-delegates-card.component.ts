@@ -126,7 +126,7 @@ export class TerminalDelegatesCardComponent implements OnChanges {
                             );
                     case 'wallet_is':
                         return this.partiesStoreService
-                            .getShop(party?.definition?.wallet_is)
+                            .getWallet(party?.definition?.wallet_is)
                             .value$.pipe(
                                 map((wallet) => ({
                                     value: wallet.data.name,

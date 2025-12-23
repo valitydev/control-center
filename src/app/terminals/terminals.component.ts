@@ -139,6 +139,13 @@ export class TerminalsComponent implements OnInit {
         this.dialogService.open(CreateDomainObjectDialogComponent, { objectType: 'terminal' });
     }
 
+    filter(search: string) {
+        this.fetchFullDomainObjectsService.load({
+            type: DomainObjectType.terminal,
+            query: search,
+        });
+    }
+
     private getTerminalShopWalletDelegates(terminalObj: TerminalObject) {
         return this.routingRulesStoreService.routingRules$.pipe(
             map((rules) => getTerminalShopWalletDelegates(rules, terminalObj)),
