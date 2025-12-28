@@ -16,7 +16,6 @@ import {
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
-import { Router } from '@angular/router';
 
 import { ShopConfigObject } from '@vality/domain-proto/domain';
 import {
@@ -32,7 +31,6 @@ import {
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
-import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService, ShopWithInfo } from '~/api/payment-processing';
 import { ThriftPartyManagementService } from '~/api/services';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
@@ -55,9 +53,6 @@ export class ShopsTableComponent {
     private partiesStoreService = inject(PartiesStoreService);
     private dialogService = inject(DialogService);
     private log = inject(NotifyLogService);
-    private router = inject(Router);
-    private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
-    private domainStoreService = inject(DomainObjectsStoreService);
     private injector = inject(Injector);
     private partyManagementService = inject(ThriftPartyManagementService);
 
