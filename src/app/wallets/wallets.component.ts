@@ -36,8 +36,8 @@ import { getDelegatesByPartyItem } from '~/components/shops-table/utils/get-rr-b
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 import { PartyStoreService } from '../parties/party';
-import { PartyDelegateRulesetsService } from '../parties/party/routing-rules-old/party-delegate-rulesets';
-import { RoutingRulesType } from '../parties/party/routing-rules-old/types/routing-rules-type';
+import { PartyDelegateRulesetsService } from '../parties/party/routing-rules/party-delegate-rulesets';
+import { RoutingRulesType } from '../parties/party/routing-rules/types/routing-rules-type';
 
 @Component({
     selector: 'cc-wallets',

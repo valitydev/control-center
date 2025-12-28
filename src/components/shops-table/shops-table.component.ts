@@ -35,8 +35,8 @@ import { PartiesStoreService, ShopWithInfo } from '~/api/payment-processing';
 import { ThriftPartyManagementService } from '~/api/services';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
-import { PartyDelegateRulesetsService } from '../../app/parties/party/routing-rules-old/party-delegate-rulesets';
-import { RoutingRulesType } from '../../app/parties/party/routing-rules-old/types/routing-rules-type';
+import { PartyDelegateRulesetsService } from '../../app/parties/party/routing-rules/party-delegate-rulesets';
+import { RoutingRulesType } from '../../app/parties/party/routing-rules/types/routing-rules-type';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
 

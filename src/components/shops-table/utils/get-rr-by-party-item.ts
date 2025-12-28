@@ -8,7 +8,7 @@ import { MenuItem } from '@vality/matez';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 
-import { RoutingRulesType } from '../../../app/parties/party/routing-rules-old/types/routing-rules-type';
+import { RoutingRulesType } from '../../../app/parties/party/routing-rules/types/routing-rules-type';
 
 import { getDelegatesByParty } from './get-delegates-by-party';
 

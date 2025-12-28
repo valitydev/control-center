@@ -5,8 +5,8 @@ import { inject } from '@angular/core';
 import {
     DelegateWithPaymentInstitution,
     PartyDelegateRulesetsService,
-} from '../../../app/parties/party/routing-rules-old/party-delegate-rulesets';
-import { RoutingRulesType } from '../../../app/parties/party/routing-rules-old/types/routing-rules-type';
+} from '../../../app/parties/party/routing-rules/party-delegate-rulesets';
+import { RoutingRulesType } from '../../../app/parties/party/routing-rules/types/routing-rules-type';
 
 export function getDelegatesByParty(
     parties: string[],
