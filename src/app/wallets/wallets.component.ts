@@ -1,9 +1,9 @@
 import { startCase } from 'lodash-es';
-import { map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, Injector, inject, runInInjectionContext } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,26 +14,35 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     Column,
+    ConfirmDialogComponent,
+    DialogResponseStatus,
+    DialogService,
     FiltersModule,
     ListFieldModule,
+    NotifyLogService,
     SwitchButtonModule,
     TableModule,
     UpdateOptions,
+    createMenuColumn,
 } from '@vality/matez';
 import { ThriftFormModule, getUnionKey } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService, FetchFullDomainObjectsService } from '~/api/domain-config';
+import { PartiesStoreService } from '~/api/payment-processing';
 import { ThriftPartyManagementService } from '~/api/services';
 import { MerchantFieldModule } from '~/components/merchant-field';
 import { PageLayoutModule } from '~/components/page-layout';
+import { getDelegatesByPartyItem } from '~/components/shops-table/utils/get-rr-by-party-item';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 import { PartyStoreService } from '../parties/party';
+import { PartyDelegateRulesetsService } from '../parties/party/routing-rules/party-delegate-rulesets';
+import { RoutingRulesType } from '../parties/party/routing-rules/types/routing-rules-type';
 
 @Component({
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
-    providers: [PartyStoreService, FetchFullDomainObjectsService],
+    providers: [PartyStoreService, FetchFullDomainObjectsService, PartyDelegateRulesetsService],
     imports: [
         CommonModule,
         MatCardModule,
@@ -55,6 +64,10 @@ export class WalletsComponent {
     private domainObjectsStoreService = inject(DomainObjectsStoreService);
     private partyStoreService = inject(PartyStoreService);
     private partyManagementService = inject(ThriftPartyManagementService);
+    private injector = inject(Injector);
+    private log = inject(NotifyLogService);
+    private dialogService = inject(DialogService);
+    private partiesStoreService = inject(PartiesStoreService);
 
     wallets = this.domainObjectsStoreService
         .getObjects('wallet_config')
@@ -132,6 +145,46 @@ export class WalletsComponent {
                 ),
             { header: 'Available', isLazyCell: true },
         ),
+        createMenuColumn((d) =>
+            this.wallets.value$.pipe(
+                switchMap((wallets) =>
+                    runInInjectionContext(this.injector, () =>
+                        getDelegatesByPartyItem(
+                            wallets?.length
+                                ? wallets.map((w) => w.object.wallet_config.data.party_ref.id)
+                                : [],
+                            RoutingRulesType.Withdrawal,
+                            d.object.wallet_config.data.party_ref.id,
+                            d.object.wallet_config.ref.id,
+                        ),
+                    ),
+                ),
+                map((rr) => ({
+                    items: [
+                        ...rr.partyRr,
+                        ...rr.itemRr,
+                        {
+                            label:
+                                getUnionKey(d.object.wallet_config.data.suspension) === 'suspended'
+                                    ? 'Activate'
+                                    : 'Suspend',
+                            click: () => {
+                                this.toggleSuspension(d);
+                            },
+                        },
+                        {
+                            label:
+                                getUnionKey(d.object.wallet_config.data.block) === 'blocked'
+                                    ? 'Unblock'
+                                    : 'Block',
+                            click: () => {
+                                this.toggleBlocking(d);
+                            },
+                        },
+                    ],
+                })),
+            ),
+        ),
     ];
     party$ = this.partyStoreService.party$;
 
@@ -148,5 +201,64 @@ export class WalletsComponent {
                 wallet.info.version,
             )
             .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
+    }
+
+    toggleBlocking(obj: VersionedObject) {
+        const wallet = obj.object.wallet_config;
+        this.dialogService
+            .open(ConfirmDialogComponent, {
+                title:
+                    getUnionKey(wallet.data.block) === 'unblocked'
+                        ? 'Block wallet'
+                        : 'Unblock wallet',
+                hasReason: true,
+            })
+            .afterClosed()
+            .pipe(
+                filter((r) => r.status === DialogResponseStatus.Success),
+                switchMap((r) =>
+                    getUnionKey(wallet.data.block) === 'unblocked'
+                        ? this.partiesStoreService.blockWallet(wallet, r.data.reason)
+                        : this.partiesStoreService.unblockWallet(wallet, r.data.reason),
+                ),
+            )
+            .subscribe({
+                next: () => {
+                    this.wallets.reload();
+                    this.log.success();
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
+    }
+
+    toggleSuspension(obj: VersionedObject) {
+        const wallet = obj.object.wallet_config;
+        this.dialogService
+            .open(ConfirmDialogComponent, {
+                title:
+                    getUnionKey(wallet.data.suspension) === 'active'
+                        ? 'Suspend wallet'
+                        : 'Activate wallet',
+            })
+            .afterClosed()
+            .pipe(
+                filter((r) => r.status === DialogResponseStatus.Success),
+                switchMap(() =>
+                    getUnionKey(wallet.data.suspension) === 'active'
+                        ? this.partiesStoreService.suspendWallet(wallet)
+                        : this.partiesStoreService.activateWallet(wallet),
+                ),
+            )
+            .subscribe({
+                next: () => {
+                    this.wallets.reload();
+                    this.log.success();
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
     }
 }

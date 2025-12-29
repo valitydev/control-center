@@ -19,5 +19,6 @@ export const createMenuColumn = createColumn(
             padding: 0,
             width: '0',
         },
+        sort: false,
     },
 );

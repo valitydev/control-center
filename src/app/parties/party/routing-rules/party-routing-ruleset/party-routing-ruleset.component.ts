@@ -17,7 +17,7 @@ import {
 import { RoutingRulesStoreService } from '~/api/domain-config';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { createDomainObjectColumn, createShopColumn, createWalletColumn } from '~/utils';
+import { createShopColumn, createWalletColumn } from '~/utils';
 
 import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
@@ -49,40 +49,14 @@ export class PartyRoutingRulesetComponent {
     partyID$ = this.partyRoutingRulesetService.partyID$;
     isLoading$ = this.routingRulesStoreService.isLoading$;
     upLink$ = combineLatest([this.partyID$, this.routingRulesTypeService.routingRulesType$]).pipe(
-        map(([partyID, routingRulesType]) => `/parties/${partyID}/rr/${routingRulesType}`),
+        map(
+            ([partyID, routingRulesType]) =>
+                `/parties/${partyID}/routing-rules/${routingRulesType}`,
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
-        createShopColumn(
-            (d) =>
-                this.getShopByDelegate(d.item).pipe(
-                    map((shop) => ({ shopId: shop?.ref.id, partyId: shop?.data.party_ref.id })),
-                ),
-            {
-                cell: (d) => ({
-                    click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
-                }),
-            },
-        ),
-        {
-            field: 'currency',
-            cell: (d) =>
-                this.getShopByDelegate(d.item).pipe(
-                    map((shop) => ({
-                        value: shop.data.account.currency.symbolic_code,
-                    })),
-                ),
-        },
-        createDomainObjectColumn(
-            (d) =>
-                this.getShopByDelegate(d.item).pipe(
-                    map((shop) => ({ ref: { term_set_hierarchy: shop.data.terms } })),
-                ),
-            {
-                field: 'terms',
-            },
-        ),
         {
             field: 'id',
             header: 'Delegate (Ruleset Ref ID)',
@@ -91,24 +65,17 @@ export class PartyRoutingRulesetComponent {
                 description: d.item?.ruleset?.id,
                 click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
             }),
-            hidden: true,
         },
+        createShopColumn((d) =>
+            this.partyRoutingRulesetService.partyID$.pipe(
+                map((partyId) => ({
+                    shopId: d.item?.allowed?.condition?.party?.definition?.shop_is,
+                    partyId,
+                })),
+            ),
+        ),
     ];
     walletsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
-        createWalletColumn(
-            (d) =>
-                this.partyRoutingRulesetService.partyID$.pipe(
-                    map((partyId) => ({
-                        id: d.item?.allowed?.condition?.party?.definition?.wallet_is,
-                        partyId,
-                    })),
-                ),
-            {
-                cell: (d) => ({
-                    click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
-                }),
-            },
-        ),
         {
             field: 'id',
             header: 'Delegate (Ruleset Ref ID)',
@@ -117,8 +84,15 @@ export class PartyRoutingRulesetComponent {
                 description: d.item?.ruleset?.id,
                 click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
             }),
-            hidden: true,
         },
+        createWalletColumn((d) =>
+            this.partyRoutingRulesetService.partyID$.pipe(
+                map((partyId) => ({
+                    id: d.item?.allowed?.condition?.party?.definition?.wallet_is,
+                    partyId,
+                })),
+            ),
+        ),
     ];
     shopsData$ = this.partyRuleset$.pipe(
         filter(Boolean),
@@ -179,7 +153,7 @@ export class PartyRoutingRulesetComponent {
                 this.router.navigate([
                     'parties',
                     this.route.snapshot.params['partyID'],
-                    'rr',
+                    'routing-rules',
                     this.route.snapshot.params['type'],
                     parentRefId,
                     'delegate',
@@ -234,7 +208,7 @@ export class PartyRoutingRulesetComponent {
                             refID,
                             shops: shops
                                 .filter((s) =>
-                                    ruleset.data.decisions.delegates.every(
+                                    (ruleset.data.decisions.delegates || []).every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.shop_is !==
                                             s.ref.id,
@@ -243,7 +217,7 @@ export class PartyRoutingRulesetComponent {
                                 .sort((a, b) => compareDifferentTypes(a.data.name, b.data.name)),
                             wallets: wallets
                                 .filter((w) =>
-                                    ruleset.data.decisions.delegates.every(
+                                    (ruleset.data.decisions.delegates || []).every(
                                         (d) =>
                                             d?.allowed?.condition?.party?.definition?.wallet_is !==
                                             w.ref.id,
@@ -264,15 +238,5 @@ export class PartyRoutingRulesetComponent {
                     }
                 },
             });
-    }
-
-    private getShopByDelegate(delegate: RoutingDelegate) {
-        return this.partyRoutingRulesetService.shops$.pipe(
-            map((shops) =>
-                shops.find(
-                    (s) => s.ref.id === delegate?.allowed?.condition?.party?.definition?.shop_is,
-                ),
-            ),
-        );
     }
 }

@@ -3,7 +3,13 @@ import { MemoizeExpiring } from 'typescript-memoize';
 
 import { Injectable, inject } from '@angular/core';
 
-import { PartyConfigRef, ShopConfigObject, ShopID, WalletID } from '@vality/domain-proto/domain';
+import {
+    PartyConfigRef,
+    ShopConfigObject,
+    ShopID,
+    WalletConfigObject,
+    WalletID,
+} from '@vality/domain-proto/domain';
 import { VersionedObjectInfo } from '@vality/domain-proto/domain_config_v2';
 
 import { DomainObjectsStoreService, DomainService } from '../../domain-config';
@@ -132,6 +138,66 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         shop_config: newShopConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    blockWallet(wallet: WalletConfigObject, reason: string) {
+        const newWalletConfig = cloneDeep(wallet);
+        newWalletConfig.data.block = { blocked: { reason, since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        wallet_config: newWalletConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    unblockWallet(wallet: WalletConfigObject, reason: string) {
+        const newWalletConfig = cloneDeep(wallet);
+        newWalletConfig.data.block = { unblocked: { reason, since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        wallet_config: newWalletConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    suspendWallet(wallet: WalletConfigObject) {
+        const newWalletConfig = cloneDeep(wallet);
+        newWalletConfig.data.suspension = { suspended: { since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        wallet_config: newWalletConfig,
+                    },
+                },
+            },
+        ]);
+    }
+
+    activateWallet(wallet: WalletConfigObject) {
+        const newWalletConfig = cloneDeep(wallet);
+        newWalletConfig.data.suspension = { active: { since: new Date().toISOString() } };
+
+        return this.domainService.commit([
+            {
+                update: {
+                    object: {
+                        wallet_config: newWalletConfig,
                     },
                 },
             },

@@ -24,14 +24,9 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                         loadChildren: () => import('./shops').then((m) => m.PartyShopsModule),
                     },
                     {
-                        path: 'rr',
-                        loadChildren: () =>
-                            import('./routing-rules').then((m) => m.RoutingRulesModule),
-                    },
-                    {
                         path: 'routing-rules',
                         loadChildren: () =>
-                            import('./routing-rules-old').then((m) => m.RoutingRulesModule),
+                            import('./routing-rules').then((m) => m.RoutingRulesModule),
                     },
                     {
                         path: 'wallets',

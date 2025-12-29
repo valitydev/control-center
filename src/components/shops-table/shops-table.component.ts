@@ -1,6 +1,6 @@
 import startCase from 'lodash-es/startCase';
-import { combineLatest, map, of, switchMap } from 'rxjs';
-import { filter, shareReplay, startWith } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs';
+import { filter, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import {
@@ -12,13 +12,12 @@ import {
     booleanAttribute,
     inject,
     input,
+    runInInjectionContext,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
-import { Router } from '@angular/router';
 
 import { ShopConfigObject } from '@vality/domain-proto/domain';
-import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     Column,
     ConfirmDialogComponent,
@@ -32,18 +31,16 @@ import {
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
-import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService, ShopWithInfo } from '~/api/payment-processing';
 import { ThriftPartyManagementService } from '~/api/services';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
-import {
-    DelegateWithPaymentInstitution,
-    PartyDelegateRulesetsService,
-} from '../../app/parties/party/routing-rules-old/party-delegate-rulesets';
-import { RoutingRulesType } from '../../app/parties/party/routing-rules-old/types/routing-rules-type';
+import { PartyDelegateRulesetsService } from '../../app/parties/party/routing-rules/party-delegate-rulesets';
+import { RoutingRulesType } from '../../app/parties/party/routing-rules/types/routing-rules-type';
 import { SidenavInfoService } from '../sidenav-info';
 import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
+
+import { getDelegatesByPartyItem } from './utils/get-rr-by-party-item';
 
 @Component({
     selector: 'cc-shops-table',
@@ -56,9 +53,6 @@ export class ShopsTableComponent {
     private partiesStoreService = inject(PartiesStoreService);
     private dialogService = inject(DialogService);
     private log = inject(NotifyLogService);
-    private router = inject(Router);
-    private partyDelegateRulesetsService = inject(PartyDelegateRulesetsService);
-    private domainStoreService = inject(DomainObjectsStoreService);
     private injector = inject(Injector);
     private partyManagementService = inject(ThriftPartyManagementService);
 
@@ -174,101 +168,21 @@ export class ShopsTableComponent {
             { header: 'Guarantee Available', isLazyCell: true },
         ),
         createMenuColumn((d) =>
-            this.getDelegatesByParty().pipe(
-                map((delegatesByParty) =>
-                    delegatesByParty.rulesetIds
-                        .map(
-                            (id) =>
-                                delegatesByParty.delegatesWithPaymentInstitutionByParty
-                                    ?.get?.(d.data.party_ref.id)
-                                    ?.find?.((v) => v?.partyDelegate?.ruleset?.id === id)
-                                    ?.partyDelegate?.ruleset,
-                        )
-                        .filter(Boolean),
+            toObservable(this.shops, { injector: this.injector }).pipe(
+                switchMap((shops) =>
+                    runInInjectionContext(this.injector, () =>
+                        getDelegatesByPartyItem(
+                            shops?.length ? shops.map((s) => s.data.party_ref.id) : [],
+                            RoutingRulesType.Payment,
+                            d.data.party_ref.id,
+                            d.ref.id,
+                        ),
+                    ),
                 ),
-                switchMap((rulesets) =>
-                    rulesets?.length
-                        ? combineLatest(
-                              rulesets.map(
-                                  (ruleset) =>
-                                      this.domainStoreService.getObject({
-                                          routing_rules: { id: ruleset.id },
-                                      }).value$,
-                              ),
-                          )
-                        : of([] as VersionedObject[]),
-                ),
-                map((rulesetObjects) => {
-                    const partyId = d.data.party_ref.id;
-                    const shopId = d.ref.id;
-                    const delegates = rulesetObjects.map(
-                        (ruleset) =>
-                            ruleset?.object?.routing_rules?.data?.decisions?.delegates?.filter?.(
-                                (delegate) =>
-                                    delegate?.allowed?.condition?.party?.party_ref?.id ===
-                                        partyId &&
-                                    delegate?.allowed?.condition?.party?.definition?.shop_is ===
-                                        shopId,
-                            ) || [],
-                    );
-                    const noShopRuleset = {
-                        label: 'No routing rule',
-                        disabled: true,
-                    };
-                    if (rulesetObjects.length === 0) {
-                        return [
-                            {
-                                label: 'No party RR',
-                                disabled: true,
-                            },
-                            noShopRuleset,
-                        ];
-                    }
-                    return rulesetObjects.flatMap((ruleset, idx) => {
-                        const rr = ruleset.object.routing_rules;
-                        return [
-                            {
-                                label:
-                                    'Party RR' +
-                                    (rulesetObjects.length > 1 ? ` #${rr.ref.id}` : ''),
-                                click: () =>
-                                    this.router.navigate([
-                                        '/parties',
-                                        partyId,
-                                        'routing-rules',
-                                        'payment',
-                                        rr.ref.id,
-                                    ]),
-                            },
-                            ...(delegates[idx].length
-                                ? delegates[idx].map((delegate) => ({
-                                      label:
-                                          'Routing rule' +
-                                          (delegates.length > 1 ? ` #${delegate.ruleset.id}` : ''),
-                                      click: () =>
-                                          this.router.navigate([
-                                              '/parties',
-                                              partyId,
-                                              'routing-rules',
-                                              'payment',
-                                              rr.ref.id,
-                                              'delegate',
-                                              delegate.ruleset.id,
-                                          ]),
-                                  }))
-                                : [noShopRuleset]),
-                        ];
-                    });
-                }),
-                startWith([
-                    {
-                        label: 'Routing rule loading...',
-                        disabled: true,
-                    },
-                ]),
-                map((rrItems) => ({
+                map((rr) => ({
                     items: [
-                        ...rrItems,
+                        ...rr.partyRr,
+                        ...rr.itemRr,
                         {
                             label:
                                 getUnionKey(d.data.suspension) === 'suspended'
@@ -342,35 +256,6 @@ export class ShopsTableComponent {
                     this.log.error(err);
                 },
             });
-    }
-
-    private getDelegatesByParty() {
-        return toObservable(this.shops, { injector: this.injector }).pipe(
-            map((shops) =>
-                shops?.length ? Array.from(new Set(shops.map((s) => s.data.party_ref.id))) : [],
-            ),
-            switchMap((parties) =>
-                parties?.length
-                    ? combineLatest(
-                          parties.map((id) =>
-                              this.partyDelegateRulesetsService.getDelegatesWithPaymentInstitution(
-                                  RoutingRulesType.Payment,
-                                  id,
-                              ),
-                          ),
-                      ).pipe(map((rules) => new Map(rules.map((r, idx) => [parties[idx], r]))))
-                    : of(new Map<string, DelegateWithPaymentInstitution[]>()),
-            ),
-            map((delegatesWithPaymentInstitutionByParty) => ({
-                delegatesWithPaymentInstitutionByParty,
-                rulesetIds: Array.from(
-                    Array.from(delegatesWithPaymentInstitutionByParty.values()).reduce((acc, d) => {
-                        d?.map((v) => v?.partyDelegate?.ruleset?.id).forEach((v) => acc.add(v));
-                        return acc;
-                    }, new Set<number>([])),
-                ),
-            })),
-        );
     }
 
     @MemoizeExpiring(5 * 60_000)
