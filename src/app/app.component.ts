@@ -26,7 +26,7 @@ import { ThriftRepositoryService } from '~/api/services';
 import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { KeycloakUserService, Services } from '~/services';
+import { KeycloakUserService, Service } from '~/services';
 import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';
@@ -40,7 +40,7 @@ import { ROUTING_CONFIG as TERMS_ROUTING_CONFIG } from './terms/routing-config';
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from './wallets/routing-config';
 import { ROUTING_CONFIG as WITHDRAWALS_ROUTING_CONFIG } from './withdrawals/routing-config';
 
-function isHidden(services: Services[]): BaseLink['isHidden'] {
+function isHidden(services: Service[]): BaseLink['isHidden'] {
     const keycloakUserService = inject(KeycloakUserService);
     return !keycloakUserService.hasServiceRole(...services);
 }
