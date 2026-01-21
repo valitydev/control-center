@@ -91,6 +91,15 @@ export const services = [
         service: 'Accounter',
         public: 'Accounter',
     },
+    {
+        ...domainData,
+        name: 'InvoiceTemplating',
+        loader: () =>
+            import('@vality/domain-proto/api_extensions').then((m) => m.InvoiceTemplating),
+        namespace: 'api_extensions',
+        service: 'InvoiceTemplating',
+        public: 'InvoiceTemplating',
+    },
     // Repairer
     {
         name: 'RepairManagement',
@@ -191,4 +200,5 @@ export const {
     WebhookManager: ThriftShopWebhooksManagementService,
     WalletsWebhookManager: ThriftWalletWebhooksManagementService,
     Accounter: ThriftAccountManagementService,
+    InvoiceTemplating: ThriftInvoiceTemplatingService,
 } = injectableServices;
