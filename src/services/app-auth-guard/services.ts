@@ -1,11 +1,24 @@
-import { services } from '~/api/services';
+export enum Service {
+    DMT = 'DMT',
+    DMTClient = 'DMTClient',
+    DMTAuthor = 'DMTAuthor',
+    Invoicing = 'Invoicing',
+    PartyManagement = 'PartyManagement',
+    WebhookManager = 'WebhookManager',
+    Accounter = 'Accounter',
+    InvoiceTemplating = 'InvoiceTemplating',
 
-export const Services = services.reduce(
-    (acc, service) => {
-        acc[service.name] = service.name;
-        return acc;
-    },
-    {} as Record<(typeof services)[number]['name'], (typeof services)[number]['name']>,
-);
+    RepairManagement = 'RepairManagement',
 
-export type Service = (typeof services)[number]['name'];
+    Scrooge = 'Scrooge',
+
+    MerchantStatistics = 'MerchantStatistics',
+
+    Automaton = 'Automaton',
+
+    DepositManagement = 'DepositManagement',
+    FistfulStatistics = 'FistfulStatistics',
+    WithdrawalManagement = 'WithdrawalManagement',
+    SourceManagement = 'SourceManagement',
+    WalletsWebhookManager = 'WalletsWebhookManager',
+}
