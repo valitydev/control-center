@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 import { InvoiceTemplateCreateParams } from '@vality/domain-proto/api_extensions';
 import { DialogModule, DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
@@ -11,7 +12,7 @@ import { DomainThriftFormComponent } from '../thrift-api-crud';
 
 @Component({
     templateUrl: './create-invoice-template-dialog.component.html',
-    imports: [DialogModule, DomainThriftFormComponent, ReactiveFormsModule],
+    imports: [DialogModule, DomainThriftFormComponent, ReactiveFormsModule, MatButtonModule],
 })
 export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<CreateInvoiceTemplateDialogComponent> {
     private invoiceTemplatingService = inject(ThriftInvoiceTemplatingService);

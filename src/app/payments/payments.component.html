@@ -43,17 +43,28 @@
         (selectedChange)="selected$.next($event)"
         (update)="reload($event ?? {})"
     >
-        <button [disabled]="!(selected$ | async)?.length" mat-button (click)="failMachines()">
-            Fail machines
-        </button>
-        <button mat-button (click)="createPaymentAdjustments()">Create adjustments by file</button>
         <button
             [disabled]="!(selected$ | async)?.length"
-            mat-flat-button
-            (click)="createPaymentAdjustment()"
+            [matBadge]="(selected$ | async)?.length || ''"
+            mat-button
+            (click)="failMachines()"
         >
-            Create adjustments
+            Fail machines
         </button>
-        <button mat-flat-button (click)="createInvoiceTemplate()">Create invoice template</button>
+        <button mat-button (click)="createInvoiceTemplate()">Create invoice template</button>
+        @if ((selected$ | async)?.length) {
+            <button
+                [disabled]="!(selected$ | async)?.length"
+                [matBadge]="(selected$ | async)?.length"
+                mat-flat-button
+                (click)="createPaymentAdjustment()"
+            >
+                Create adjustments
+            </button>
+        } @else {
+            <button mat-flat-button matBadge="CSV" (click)="createPaymentAdjustments()">
+                Create adjustments
+            </button>
+        }
     </cc-payments-table>
 </cc-page-layout>
