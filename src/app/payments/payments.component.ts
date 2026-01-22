@@ -222,4 +222,23 @@ export class PaymentsComponent implements OnInit {
                 }
             });
     }
+
+    createInvoiceTemplate() {
+        this.dialogService
+            .open(FailMachinesDialogComponent, {
+                ids: uniq(this.selected$.value.map((s) => s.invoice_id)),
+                type: Type.Invoice,
+            })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res.status === DialogResponseStatus.Success) {
+                    this.reload();
+                    this.selected$.next([]);
+                } else if (res.data?.errors?.length) {
+                    this.selected$.next(
+                        res.data.errors.map(({ index }) => this.selected$.value[index]),
+                    );
+                }
+            });
+    }
 }

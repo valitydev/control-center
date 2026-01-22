@@ -1,0 +1,10 @@
+<v-dialog [progress]="progress()" title="Create Invoice Template">
+    <cc-domain-thrift-editor
+        [formControl]="control"
+        namespace="api_extensions"
+        type="InvoiceTemplateCreateParams"
+    ></cc-domain-thrift-editor>
+    <v-dialog-actions>
+        <button [disabled]="progress()" mat-flat-button (click)="create()">Create</button>
+    </v-dialog-actions>
+</v-dialog>
