@@ -1,11 +1,27 @@
+@let template = template$ | async;
+
 <v-dialog [progress]="!!progress()" title="Create Invoice Template">
-    <cc-domain-thrift-editor
-        [formControl]="control"
-        namespace="api_extensions"
-        noToolbar
-        type="InvoiceTemplateCreateParams"
-    ></cc-domain-thrift-editor>
+    @if (template) {
+        <div class="flex gap-1">
+            <mat-form-field>
+                <mat-label>Link</mat-label>
+                <input [value]="link$ | async" matInput />
+            </mat-form-field>
+            <button mat-icon-button (click)="copyLink()"><mat-icon>content_copy</mat-icon></button>
+        </div>
+    } @else {
+        <cc-domain-thrift-editor
+            [formControl]="control"
+            namespace="api_extensions"
+            noToolbar
+            type="InvoiceTemplateCreateParams"
+        ></cc-domain-thrift-editor>
+    }
     <v-dialog-actions>
-        <button [disabled]="!!progress()" mat-flat-button (click)="create()">Create</button>
+        @if (template) {
+            <button [disabled]="!!progress()" mat-flat-button (click)="confirm()">Done</button>
+        } @else {
+            <button [disabled]="!!progress()" mat-flat-button (click)="create()">Create</button>
+        }
     </v-dialog-actions>
 </v-dialog>
