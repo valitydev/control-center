@@ -84,7 +84,10 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
         takeUntilDestroyed(this.dr),
         shareReplay(1),
     );
-    control = new FormControl<InvoiceTemplateCreateParams>(null, { nonNullable: true });
+    control = new FormControl<InvoiceTemplateCreateParams>(
+        { context: { type: '', data: '' } } as InvoiceTemplateCreateParams,
+        { nonNullable: true },
+    );
     progress = signal(0);
     link$ = combineLatest([
         this.template$,
