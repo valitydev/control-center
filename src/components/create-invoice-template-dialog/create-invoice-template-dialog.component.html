@@ -2,10 +2,19 @@
 
 <v-dialog [progress]="!!progress()" title="Create Invoice Template">
     @if (template) {
+        <div [formGroup]="linkForm">
+            <v-input-field formControlName="name" label="Name"></v-input-field>
+            <v-input-field formControlName="description" label="Description"></v-input-field>
+            <v-input-field formControlName="email" label="Email"></v-input-field>
+            <v-input-field formControlName="redirectUrl" label="Redirect URL"></v-input-field>
+            <v-input-field formControlName="cancelUrl" label="Cancel URL"></v-input-field>
+            <v-input-field formControlName="locale" label="Locale"></v-input-field>
+        </div>
+        <mat-divider class="!mb-4"></mat-divider>
         <div class="flex gap-1">
             <mat-form-field>
                 <mat-label>Link</mat-label>
-                <input [value]="link$ | async" matInput />
+                <input [value]="link$ | async" matInput readonly />
             </mat-form-field>
             <button mat-icon-button (click)="copyLink()"><mat-icon>content_copy</mat-icon></button>
         </div>

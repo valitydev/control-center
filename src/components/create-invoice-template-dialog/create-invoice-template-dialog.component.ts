@@ -1,17 +1,35 @@
-import { Subject, catchError, combineLatest, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import {
+    Subject,
+    catchError,
+    combineLatest,
+    debounceTime,
+    map,
+    of,
+    shareReplay,
+    switchMap,
+    tap,
+} from 'rxjs';
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { InvoiceTemplateCreateParams } from '@vality/domain-proto/api_extensions';
-import { DialogModule, DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
+import {
+    DialogModule,
+    DialogSuperclass,
+    InputFieldModule,
+    NotifyLogService,
+    getValueChanges,
+    progressTo,
+} from '@vality/matez';
 
 import { ThriftInvoiceTemplatingService } from '~/api/services';
 import { ConfigService } from '~/services';
@@ -29,6 +47,8 @@ import { DomainThriftFormComponent } from '../thrift-api-crud';
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
+        InputFieldModule,
+        MatDividerModule,
     ],
 })
 export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<CreateInvoiceTemplateDialogComponent> {
@@ -38,7 +58,16 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
     private createTemplate$ = new Subject<null>();
     private configService = inject(ConfigService);
     private clipboard = inject(Clipboard);
+    private fb = inject(FormBuilder);
 
+    linkForm = this.fb.group({
+        name: null,
+        description: null,
+        email: null,
+        redirectUrl: null,
+        cancelUrl: null,
+        locale: null,
+    });
     template$ = this.createTemplate$.pipe(
         switchMap(() =>
             this.invoiceTemplatingService.Create(this.control.value).pipe(
@@ -57,8 +86,12 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
     );
     control = new FormControl<InvoiceTemplateCreateParams>(null, { nonNullable: true });
     progress = signal(0);
-    link$ = combineLatest([this.template$, this.configService.config.value$]).pipe(
-        map(([template, config]) => {
+    link$ = combineLatest([
+        this.template$,
+        this.configService.config.value$,
+        getValueChanges(this.linkForm).pipe(debounceTime(1000)),
+    ]).pipe(
+        map(([template, config, linkValues]) => {
             const url = new URL(
                 `http${(config.checkout.https ?? true) ? 's' : ''}://${config.checkout.hostname}${config.checkout.path ?? '/v1/checkout'}`,
             );
@@ -67,6 +100,10 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
                 'invoiceTemplateAccessToken',
                 template.invoice_template_access_token.payload,
             );
+            const nonEmptyLinkValues = Object.entries(linkValues).filter(([, v]) => !!v);
+            for (const [key, value] of nonEmptyLinkValues) {
+                url.searchParams.set(key, value as string);
+            }
             return url.toString();
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
