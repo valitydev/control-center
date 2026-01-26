@@ -3,7 +3,7 @@ import { ZodObject, ZodRawShape } from 'zod';
 
 import { Route as NgRoute } from '@angular/router';
 
-import { RoutingConfig, Services, canActivateAuthRole } from '../../app-auth-guard';
+import { RoutingConfig, Service, canActivateAuthRole } from '../../app-auth-guard';
 
 export class Route<
     const TPath extends string = string,
@@ -12,7 +12,7 @@ export class Route<
     constructor(
         public readonly path: TPath,
         public readonly config: {
-            services?: Services[];
+            services?: Service[];
             queryParams?: TQpSchema;
         } & NgRoute = {},
     ) {}

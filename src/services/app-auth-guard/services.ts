@@ -1,11 +1,24 @@
-export enum Services {
+export enum Service {
     DMT = 'DMT',
-    FistfulStatistics = 'FistfulStatistics',
-    MerchantStatistics = 'MerchantStatistics',
-    ClaimManagement = 'ClaimManagement',
+    DMTClient = 'DMTClient',
+    DMTAuthor = 'DMTAuthor',
     Invoicing = 'Invoicing',
-    RepairManagement = 'RepairManagement',
-    Dominator = 'Dominator',
+    PartyManagement = 'PartyManagement',
     WebhookManager = 'WebhookManager',
+    Accounter = 'Accounter',
+    InvoiceTemplating = 'InvoiceTemplating',
+
+    RepairManagement = 'RepairManagement',
+
+    Scrooge = 'Scrooge',
+
+    MerchantStatistics = 'MerchantStatistics',
+
+    Automaton = 'Automaton',
+
+    DepositManagement = 'DepositManagement',
+    FistfulStatistics = 'FistfulStatistics',
+    WithdrawalManagement = 'WithdrawalManagement',
+    SourceManagement = 'SourceManagement',
     WalletsWebhookManager = 'WalletsWebhookManager',
 }

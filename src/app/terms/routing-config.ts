@@ -1,5 +1,5 @@
-import { RoutingConfig, Services } from '~/services';
+import { RoutingConfig, Service } from '~/services';
 
 export const ROUTING_CONFIG: RoutingConfig = {
-    services: [Services.Dominator],
+    services: [Service.DMT],
 };

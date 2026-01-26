@@ -12,7 +12,7 @@ import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
 
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 import { DomainMetadataViewExtensionsService } from '~/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
-import { Services as WachterServices } from '~/services';
+import { Service } from '~/services';
 import { ThriftService, createThriftServices } from '~/utils';
 
 export interface MetadataThriftService extends ThriftService {
@@ -34,7 +34,7 @@ export const services = [
     // Domain
     {
         ...domainData,
-        name: 'DMT',
+        name: Service.DMT,
         loader: () => import('@vality/domain-proto/domain_config_v2').then((m) => m.Repository),
         namespace: 'domain_config_v2',
         service: 'Repository',
@@ -42,7 +42,7 @@ export const services = [
     },
     {
         ...domainData,
-        name: 'DMTClient',
+        name: Service.DMTClient,
         loader: () =>
             import('@vality/domain-proto/domain_config_v2').then((m) => m.RepositoryClient),
         namespace: 'domain_config_v2',
@@ -51,7 +51,7 @@ export const services = [
     },
     {
         ...domainData,
-        name: 'DMTAuthor',
+        name: Service.DMTAuthor,
         loader: () =>
             import('@vality/domain-proto/domain_config_v2').then((m) => m.AuthorManagement),
         namespace: 'domain_config_v2',
@@ -60,7 +60,7 @@ export const services = [
     },
     {
         ...domainData,
-        name: 'Invoicing',
+        name: Service.Invoicing,
         loader: () => import('@vality/domain-proto/payment_processing').then((m) => m.Invoicing),
         namespace: 'payment_processing',
         service: 'Invoicing',
@@ -68,7 +68,7 @@ export const services = [
     },
     {
         ...domainData,
-        name: 'PartyManagement',
+        name: Service.PartyManagement,
         loader: () =>
             import('@vality/domain-proto/payment_processing').then((m) => m.PartyManagement),
         namespace: 'payment_processing',
@@ -77,7 +77,7 @@ export const services = [
     },
     {
         ...domainData,
-        name: 'WebhookManager',
+        name: Service.WebhookManager,
         loader: () => import('@vality/domain-proto/webhooker').then((m) => m.WebhookManager),
         namespace: 'webhooker',
         service: 'WebhookManager',
@@ -85,15 +85,24 @@ export const services = [
     },
     {
         ...domainData,
-        name: 'Accounter',
+        name: Service.Accounter,
         loader: () => import('@vality/domain-proto/accounter').then((m) => m.Accounter),
         namespace: 'accounter',
         service: 'Accounter',
         public: 'Accounter',
     },
+    {
+        ...domainData,
+        name: Service.InvoiceTemplating,
+        loader: () =>
+            import('@vality/domain-proto/api_extensions').then((m) => m.InvoiceTemplating),
+        namespace: 'api_extensions',
+        service: 'InvoiceTemplating',
+        public: 'InvoiceTemplating',
+    },
     // Repairer
     {
-        name: 'RepairManagement',
+        name: Service.RepairManagement,
         loader: () => import('@vality/repairer-proto/repairer').then((m) => m.RepairManagement),
         metadata$: repairerMetadata$,
         namespace: 'repairer',
@@ -102,7 +111,7 @@ export const services = [
     },
     // Scrooge
     {
-        name: 'Scrooge',
+        name: Service.Scrooge,
         loader: () => import('@vality/scrooge-proto/account_balance').then((m) => m.AccountService),
         metadata$: scroogeMetadata$,
         namespace: 'account_balance',
@@ -111,7 +120,7 @@ export const services = [
     },
     // Magista
     {
-        name: 'MerchantStatistics',
+        name: Service.MerchantStatistics,
         loader: () =>
             import('@vality/magista-proto/magista').then((m) => m.MerchantStatisticsService),
         metadata$: magistaMetadata$,
@@ -121,7 +130,7 @@ export const services = [
     },
     // Machinegun
     {
-        name: 'Automaton',
+        name: Service.Automaton,
         loader: () => import('@vality/machinegun-proto/state_processing').then((m) => m.Automaton),
         metadata$: machinegunMetadata$,
         namespace: 'state_processing',
@@ -130,7 +139,7 @@ export const services = [
     },
     // Fistful
     {
-        name: 'DepositManagement',
+        name: Service.DepositManagement,
         loader: () => import('@vality/fistful-proto/deposit').then((m) => m.Management),
         metadata$: fistfulMetadata$,
         namespace: 'deposit',
@@ -138,7 +147,7 @@ export const services = [
         public: 'DepositManagement',
     },
     {
-        name: 'FistfulStatistics',
+        name: Service.FistfulStatistics,
         loader: () => import('@vality/fistful-proto/fistful_stat').then((m) => m.FistfulStatistics),
         metadata$: fistfulMetadata$,
         namespace: 'fistful_stat',
@@ -146,7 +155,7 @@ export const services = [
         public: 'FistfulStatistics',
     },
     {
-        name: 'WithdrawalManagement',
+        name: Service.WithdrawalManagement,
         loader: () => import('@vality/fistful-proto/withdrawal').then((m) => m.Management),
         metadata$: fistfulMetadata$,
         namespace: 'withdrawal',
@@ -154,7 +163,7 @@ export const services = [
         public: 'WithdrawalManagement',
     },
     {
-        name: 'SourceManagement',
+        name: Service.SourceManagement,
         loader: () => import('@vality/fistful-proto/source').then((m) => m.Management),
         metadata$: fistfulMetadata$,
         namespace: 'source',
@@ -162,7 +171,7 @@ export const services = [
         public: 'SourceManagement',
     },
     {
-        name: WachterServices.WalletsWebhookManager,
+        name: Service.WalletsWebhookManager,
         loader: () => import('@vality/fistful-proto/webhooker').then((m) => m.WebhookManager),
         metadata$: fistfulMetadata$,
         namespace: 'webhooker',
@@ -191,4 +200,5 @@ export const {
     WebhookManager: ThriftShopWebhooksManagementService,
     WalletsWebhookManager: ThriftWalletWebhooksManagementService,
     Accounter: ThriftAccountManagementService,
+    InvoiceTemplating: ThriftInvoiceTemplatingService,
 } = injectableServices;

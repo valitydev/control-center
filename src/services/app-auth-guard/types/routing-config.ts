@@ -1,5 +1,5 @@
-import { Services } from '../services';
+import { Service } from '../services';
 
 export interface RoutingConfig {
-    services?: Services[];
+    services?: Service[];
 }

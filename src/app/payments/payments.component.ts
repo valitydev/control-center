@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 
 import { StatPayment } from '@vality/magista-proto/magista';
@@ -33,6 +34,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormExtension, ThriftFormModule, isTypeWithAliases } from '@vality/ng-thrift';
 
+import { CreateInvoiceTemplateDialogComponent } from '~/components/create-invoice-template-dialog';
 import { FailMachinesDialogComponent, Type } from '~/components/fail-machines-dialog';
 import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -71,6 +73,7 @@ interface Filters {
         FormsModule,
         MagistaThriftFormComponent,
         PaymentsTableComponent,
+        MatBadgeModule,
     ],
 })
 export class PaymentsComponent implements OnInit {
@@ -221,5 +224,9 @@ export class PaymentsComponent implements OnInit {
                     );
                 }
             });
+    }
+
+    createInvoiceTemplate() {
+        this.dialogService.open(CreateInvoiceTemplateDialogComponent);
     }
 }
