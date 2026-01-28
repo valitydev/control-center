@@ -33,6 +33,8 @@ import { ThriftPartyManagementService } from '~/api/services';
 import { MerchantFieldModule } from '~/components/merchant-field';
 import { PageLayoutModule } from '~/components/page-layout';
 import { getDelegatesByPartyItem } from '~/components/shops-table/utils/get-rr-by-party-item';
+import { SidenavInfoService } from '~/components/sidenav-info';
+import { DomainObjectCardComponent } from '~/components/thrift-api-crud';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
 import { PartyStoreService } from '../parties/party';
@@ -68,6 +70,7 @@ export class WalletsComponent {
     private log = inject(NotifyLogService);
     private dialogService = inject(DialogService);
     private partiesStoreService = inject(PartiesStoreService);
+    private sidenavInfoService = inject(SidenavInfoService);
 
     wallets = this.domainObjectsStoreService
         .getObjects('wallet_config')
@@ -83,7 +86,18 @@ export class WalletsComponent {
 
     columns: Column<VersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: d.object.wallet_config.ref.id }) },
-        { field: 'name', cell: (d) => ({ value: d.object.wallet_config.data.name }) },
+        {
+            field: 'name',
+            cell: (d) => ({
+                value: d.object.wallet_config.data.name,
+                description: d.object.wallet_config.data.description,
+                click: () => {
+                    this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                        ref: { wallet_config: { id: d.object.wallet_config.ref.id } },
+                    });
+                },
+            }),
+        },
         createPartyColumn((d) => ({ id: d.object.wallet_config.data.party_ref.id })),
         {
             field: 'blocking',
