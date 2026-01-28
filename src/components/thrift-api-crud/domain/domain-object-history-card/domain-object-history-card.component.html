@@ -4,5 +4,18 @@
         <button mat-button (click)="latest()">Latest</button>
         <button mat-flat-button (click)="edit()">Edit</button>
     </cc-card-actions>
-    <cc-domain-objects-table [menu]="menuColumn" [resource]="resource" />
+    @switch (ref() | ngtUnionKey) {
+        @case ('shop_config') {
+            <cc-shops-table
+                [extendMenu]="menuColumn"
+                [hasMore]="resource.hasMore()"
+                [shops]="shopsResource.value()"
+                (more)="resource.more()"
+                (update)="resource.reload()"
+            />
+        }
+        @default {
+            <cc-domain-objects-table [menu]="menuColumn" [resource]="resource" />
+        }
+    }
 </cc-card>

@@ -1,6 +1,6 @@
 import startCase from 'lodash-es/startCase';
 import { map, switchMap } from 'rxjs';
-import { filter, shareReplay } from 'rxjs/operators';
+import { combineLatestWith, filter, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import {
@@ -18,12 +18,14 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 
 import { ShopConfigObject } from '@vality/domain-proto/domain';
+import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     Column,
     ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
     InputFieldModule,
+    MenuItem,
     NotifyLogService,
     TableModule,
     UpdateOptions,
@@ -63,6 +65,7 @@ export class ShopsTableComponent {
     @Output() filterChange = new EventEmitter<string>();
     @Output() more = new EventEmitter<void>();
 
+    extendMenu = input<(d: LimitedVersionedObject) => MenuItem[]>();
     noPartyColumn = input(false, { transform: booleanAttribute });
 
     columns: Column<ShopWithInfo>[] = [
@@ -167,6 +170,15 @@ export class ShopsTableComponent {
                 ),
             { header: 'Guarantee Available', isLazyCell: true },
         ),
+        { field: 'version', cell: (d) => ({ value: d.info.version }) },
+        { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
+        {
+            field: 'changed_by',
+            cell: (d) => ({
+                value: d.info.changed_by?.name,
+                description: d.info.changed_by?.email,
+            }),
+        },
         createMenuColumn((d) =>
             toObservable(this.shops, { injector: this.injector }).pipe(
                 switchMap((shops) =>
@@ -199,6 +211,21 @@ export class ShopsTableComponent {
                             },
                         },
                     ],
+                })),
+                combineLatestWith(toObservable(this.extendMenu, { injector: this.injector })),
+                map(([menu, extendMenu]) => ({
+                    ...menu,
+                    items: extendMenu
+                        ? [
+                              ...menu.items,
+                              ...extendMenu({
+                                  name: d.data.name,
+                                  description: d.data.description,
+                                  ref: { shop_config: d.ref },
+                                  info: d.info,
+                              }),
+                          ]
+                        : menu.items,
                 })),
             ),
         ),
