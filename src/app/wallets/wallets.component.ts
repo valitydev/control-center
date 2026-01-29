@@ -4,11 +4,10 @@ import { Component, inject } from '@angular/core';
 
 import { DomainObjectsStoreService, FetchFullDomainObjectsService } from '~/api/domain-config';
 import { PageLayoutModule } from '~/components/page-layout';
+import { WalletsTableComponent } from '~/components/wallets-table';
 
 import { PartyStoreService } from '../parties/party';
 import { PartyDelegateRulesetsService } from '../parties/party/routing-rules/party-delegate-rulesets';
-
-import { WalletsTableComponent } from './components/wallets-table.component';
 
 @Component({
     selector: 'cc-wallets',

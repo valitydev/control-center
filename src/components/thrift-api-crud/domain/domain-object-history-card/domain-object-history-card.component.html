@@ -14,6 +14,9 @@
                 (update)="resource.reload()"
             />
         }
+        <!-- @case ('wallet_config') {
+            <cc-wallets-table [resource]="fullObjectsResource" />
+        } -->
         @default {
             <cc-domain-objects-table [menu]="menuColumn" [resource]="resource" />
         }

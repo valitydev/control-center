@@ -53,23 +53,15 @@ export class DomainObjectHistoryCardComponent {
                     })),
                 ),
     });
-    shopsResource = this.resource.map((objs) =>
+    fullObjectsResource = this.resource.map((objs) =>
         combineLatest(
             objs.map((obj) =>
                 this.repositoryClientService.CheckoutObject({ version: obj.info.version }, obj.ref),
-            ),
-        ).pipe(
-            map((results): ShopWithInfo[] =>
-                results.map((r) => ({ ...r.object.shop_config, info: r.info })),
             ),
         ),
     );
-    walletsResource = this.resource.map((objs) =>
-        combineLatest(
-            objs.map((obj) =>
-                this.repositoryClientService.CheckoutObject({ version: obj.info.version }, obj.ref),
-            ),
-        ),
+    shopsResource = this.fullObjectsResource.map((objs) =>
+        objs.map((r): ShopWithInfo => ({ ...r.object.shop_config, info: r.info })),
     );
 
     version = computed(() =>
