@@ -2,17 +2,16 @@ import { map } from 'rxjs/operators';
 
 import { Component, inject } from '@angular/core';
 
-import { DomainObjectsStoreService, FetchFullDomainObjectsService } from '~/api/domain-config';
+import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PageLayoutModule } from '~/components/page-layout';
 import { WalletsTableComponent } from '~/components/wallets-table';
 
 import { PartyStoreService } from '../parties/party';
-import { PartyDelegateRulesetsService } from '../parties/party/routing-rules/party-delegate-rulesets';
 
 @Component({
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
-    providers: [PartyStoreService, FetchFullDomainObjectsService, PartyDelegateRulesetsService],
+    providers: [PartyStoreService],
     imports: [PageLayoutModule, WalletsTableComponent],
 })
 export class WalletsComponent {

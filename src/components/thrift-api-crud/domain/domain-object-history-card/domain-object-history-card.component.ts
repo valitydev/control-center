@@ -12,6 +12,7 @@ import { DomainService } from '~/api/domain-config';
 import { ShopWithInfo } from '~/api/payment-processing';
 import { ThriftRepositoryClientService } from '~/api/services';
 import { ShopsTableComponent } from '~/components/shops-table';
+import { WalletsTableComponent } from '~/components/wallets-table';
 
 import { DomainObjectsTableComponent } from '../../../../app/domain-config/domain-objects-table';
 import { SidenavInfoModule, SidenavInfoService } from '../../../sidenav-info';
@@ -27,6 +28,7 @@ import { DomainObjectService } from '../services/domain-object.service';
         ThriftPipesModule,
         DomainObjectsTableComponent,
         ShopsTableComponent,
+        WalletsTableComponent,
     ],
     templateUrl: './domain-object-history-card.component.html',
 })

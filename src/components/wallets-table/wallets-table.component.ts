@@ -17,7 +17,6 @@ import {
 } from '@vality/matez';
 import { getUnionKey } from '@vality/ng-thrift';
 
-import { FetchFullDomainObjectsService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
 import { ThriftPartyManagementService } from '~/api/services';
 import { getDelegatesByPartyItem } from '~/components/shops-table/utils/get-rr-by-party-item';
@@ -25,14 +24,11 @@ import { SidenavInfoService } from '~/components/sidenav-info';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
-import { PartyStoreService } from '../../app/parties/party';
-import { PartyDelegateRulesetsService } from '../../app/parties/party/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../app/parties/party/routing-rules/types/routing-rules-type';
 
 @Component({
     selector: 'cc-wallets-table',
     templateUrl: './wallets-table.component.html',
-    providers: [PartyStoreService, FetchFullDomainObjectsService, PartyDelegateRulesetsService],
     imports: [TableResourceComponent],
 })
 export class WalletsTableComponent {

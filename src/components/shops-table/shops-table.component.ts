@@ -15,7 +15,6 @@ import {
     runInInjectionContext,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { MatCardModule } from '@angular/material/card';
 
 import { ShopConfigObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
@@ -24,7 +23,6 @@ import {
     ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
-    InputFieldModule,
     MenuItem,
     NotifyLogService,
     TableModule,
@@ -46,7 +44,7 @@ import { getDelegatesByPartyItem } from './utils/get-rr-by-party-item';
 
 @Component({
     selector: 'cc-shops-table',
-    imports: [InputFieldModule, MatCardModule, TableModule],
+    imports: [TableModule],
     templateUrl: './shops-table.component.html',
     providers: [PartyDelegateRulesetsService],
 })
