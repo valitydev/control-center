@@ -15,7 +15,7 @@
             />
         }
         @case ('wallet_config') {
-            <cc-wallets-table [resource]="fullObjectsResource" />
+            <cc-wallets-table [extendMenu]="menuColumn" [resource]="fullObjectsResource" />
         }
         @default {
             <cc-domain-objects-table [menu]="menuColumn" [resource]="resource" />

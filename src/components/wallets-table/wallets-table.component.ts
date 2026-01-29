@@ -1,15 +1,17 @@
 import { startCase } from 'lodash-es';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { combineLatestWith, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { Component, Injector, inject, input, runInInjectionContext } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 
-import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
+import { LimitedVersionedObject, VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     Column,
     ConfirmDialogComponent,
     DialogResponseStatus,
     DialogService,
+    MenuItem,
     NotifyLogService,
     ObservableResource,
     TableResourceComponent,
@@ -24,12 +26,14 @@ import { SidenavInfoService } from '~/components/sidenav-info';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud';
 import { createCurrencyColumn, createDomainObjectColumn, createPartyColumn } from '~/utils';
 
+import { PartyDelegateRulesetsService } from '../../app/parties/party/routing-rules/party-delegate-rulesets';
 import { RoutingRulesType } from '../../app/parties/party/routing-rules/types/routing-rules-type';
 
 @Component({
     selector: 'cc-wallets-table',
     templateUrl: './wallets-table.component.html',
     imports: [TableResourceComponent],
+    providers: [PartyDelegateRulesetsService],
 })
 export class WalletsTableComponent {
     private partyManagementService = inject(ThriftPartyManagementService);
@@ -40,6 +44,7 @@ export class WalletsTableComponent {
     private sidenavInfoService = inject(SidenavInfoService);
 
     resource = input<ObservableResource<unknown, unknown, VersionedObject[]>>();
+    extendMenu = input<(d: LimitedVersionedObject) => MenuItem[]>(() => []);
 
     columns: Column<VersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: d.object.wallet_config.ref.id }) },
@@ -139,30 +144,43 @@ export class WalletsTableComponent {
                         ),
                     ),
                 ),
-                map((rr) => ({
-                    items: [
-                        ...rr.partyRr,
-                        ...rr.itemRr,
-                        {
-                            label:
-                                getUnionKey(d.object.wallet_config.data.suspension) === 'suspended'
-                                    ? 'Activate'
-                                    : 'Suspend',
-                            click: () => {
-                                this.toggleSuspension(d);
-                            },
+                map((rr) => [
+                    ...rr.partyRr,
+                    ...rr.itemRr,
+                    {
+                        label:
+                            getUnionKey(d.object.wallet_config.data.suspension) === 'suspended'
+                                ? 'Activate'
+                                : 'Suspend',
+                        click: () => {
+                            this.toggleSuspension(d);
                         },
-                        {
-                            label:
-                                getUnionKey(d.object.wallet_config.data.block) === 'blocked'
-                                    ? 'Unblock'
-                                    : 'Block',
-                            click: () => {
-                                this.toggleBlocking(d);
-                            },
+                    },
+                    {
+                        label:
+                            getUnionKey(d.object.wallet_config.data.block) === 'blocked'
+                                ? 'Unblock'
+                                : 'Block',
+                        click: () => {
+                            this.toggleBlocking(d);
                         },
-                    ],
-                })),
+                    },
+                ]),
+                combineLatestWith(
+                    toObservable(this.extendMenu, { injector: this.injector }).pipe(
+                        map((extendMenu) =>
+                            extendMenu
+                                ? extendMenu({
+                                      name: d.object.wallet_config.data.name,
+                                      description: d.object.wallet_config.data.description,
+                                      ref: { wallet_config: d.object.wallet_config.ref },
+                                      info: d.info,
+                                  })
+                                : [],
+                        ),
+                    ),
+                ),
+                map(([items, extendItems]) => ({ items: [...items, ...extendItems] })),
             ),
         ),
     ];
