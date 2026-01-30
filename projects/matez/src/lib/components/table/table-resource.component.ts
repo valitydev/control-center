@@ -27,7 +27,9 @@ import { TableModule } from './table.module';
     imports: [TableModule],
 })
 export class TableResourceComponent<T extends object, C extends object> {
-    resource = input<PagedObservableResource<T, unknown> | ObservableResource<T[], unknown>>();
+    resource = input<
+        PagedObservableResource<T, unknown> | ObservableResource<unknown, unknown, T[]>
+    >();
     columns = input<Column<T, C>[]>([]);
     filter = model('');
     externalFilter = input(false, { transform: booleanAttribute });

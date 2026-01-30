@@ -85,7 +85,7 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
         shareReplay(1),
     );
     control = new FormControl<InvoiceTemplateCreateParams>(
-        { context: { type: '', data: '' } } as InvoiceTemplateCreateParams,
+        { context: { type: 'application/json', data: '{}' } } as InvoiceTemplateCreateParams,
         { nonNullable: true },
     );
     progress = signal(0);
@@ -96,7 +96,7 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
     ]).pipe(
         map(([template, config, linkValues]) => {
             const url = new URL(
-                `http${(config.checkout.https ?? true) ? 's' : ''}://${config.checkout.hostname}${config.checkout.path ?? '/v1/checkout'}`,
+                `http${(config.checkout.https ?? true) ? 's' : ''}://${config.checkout.hostname}${config.checkout.path ?? '/v1/checkout.html'}`,
             );
             url.searchParams.set('invoiceTemplateID', template.invoice_template.id);
             url.searchParams.set(

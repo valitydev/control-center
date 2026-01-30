@@ -97,10 +97,6 @@ export class DomainMetadataFormExtensionsService {
                         generate: () => of('authorization_failed:unknown'),
                     }),
             },
-            {
-                determinant: (data) => of(isTypeWithAliases(data, 'InvoiceContext', 'domain')),
-                extension: () => of({ hidden: true }),
-            },
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

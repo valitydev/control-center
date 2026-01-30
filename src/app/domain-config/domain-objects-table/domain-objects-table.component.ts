@@ -3,6 +3,7 @@ import startCase from 'lodash-es/startCase';
 import { CommonModule } from '@angular/common';
 import {
     Component,
+    Injector,
     TemplateRef,
     booleanAttribute,
     computed,
@@ -10,6 +11,7 @@ import {
     input,
     model,
     output,
+    runInInjectionContext,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +22,7 @@ import {
     ActionsModule,
     Column,
     DialogResponseStatus,
+    MenuItem,
     PagedObservableResource,
     SelectFieldModule,
     TableModule,
@@ -51,52 +54,14 @@ import {
 export class DomainObjectsTableComponent {
     private sidenavInfoService = inject(SidenavInfoService);
     private domainObjectService = inject(DomainObjectService);
+    private injector = inject(Injector);
 
     selectedTypeChange = output<keyof ReflessDomainObject>();
     resource = input<PagedObservableResource<LimitedVersionedObject, unknown>>();
     filter = model<string>('');
     tableInputsContent = input<TemplateRef<unknown>>();
     externalFilter = input(false, { transform: booleanAttribute });
-    menu = input<Column<LimitedVersionedObject>>(
-        createMenuColumn((d) => ({
-            items: [
-                {
-                    label: 'Details',
-                    click: () => {
-                        this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                            ref: d.ref,
-                            version: d.info.version,
-                        });
-                    },
-                },
-                {
-                    label: 'History',
-                    click: () => {
-                        this.domainObjectService.history(d.ref);
-                    },
-                },
-                {
-                    label: 'Edit',
-                    click: () => {
-                        this.domainObjectService.edit(d.ref).next((res) => {
-                            if (res.status === DialogResponseStatus.Success) {
-                                this.resource().reload();
-                            }
-                        });
-                    },
-                },
-                {
-                    label: 'Delete',
-                    click: () => {
-                        this.domainObjectService.delete(d.ref).next(() => {
-                            this.resource().reload();
-                        });
-                    },
-                },
-            ],
-        })),
-    );
-
+    menu = input<(d: LimitedVersionedObject) => MenuItem[]>();
     columns = computed<Column<LimitedVersionedObject>[]>(() => [
         { field: 'id', cell: (d) => ({ value: getReferenceId(d.ref) }) },
         {
@@ -126,6 +91,46 @@ export class DomainObjectsTableComponent {
                 description: d.info.changed_by?.email,
             }),
         },
-        this.menu(),
+        runInInjectionContext(this.injector, () =>
+            createMenuColumn((d) => ({
+                items: this.menu()
+                    ? this.menu()(d)
+                    : [
+                          {
+                              label: 'Details',
+                              click: () => {
+                                  this.sidenavInfoService.toggle(DomainObjectCardComponent, {
+                                      ref: d.ref,
+                                      version: d.info.version,
+                                  });
+                              },
+                          },
+                          {
+                              label: 'History',
+                              click: () => {
+                                  this.domainObjectService.history(d.ref);
+                              },
+                          },
+                          {
+                              label: 'Edit',
+                              click: () => {
+                                  this.domainObjectService.edit(d.ref).next((res) => {
+                                      if (res.status === DialogResponseStatus.Success) {
+                                          this.resource().reload();
+                                      }
+                                  });
+                              },
+                          },
+                          {
+                              label: 'Delete',
+                              click: () => {
+                                  this.domainObjectService.delete(d.ref).next(() => {
+                                      this.resource().reload();
+                                  });
+                              },
+                          },
+                      ],
+            })),
+        ),
     ]);
 }
