@@ -2,7 +2,14 @@ import { startCase } from 'lodash-es';
 import { combineLatestWith, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
-import { Component, Injector, inject, input, runInInjectionContext } from '@angular/core';
+import {
+    Component,
+    Injector,
+    booleanAttribute,
+    inject,
+    input,
+    runInInjectionContext,
+} from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 import { LimitedVersionedObject, VersionedObject } from '@vality/domain-proto/domain_config_v2';
@@ -45,6 +52,7 @@ export class WalletsTableComponent {
 
     resource = input<ObservableResource<unknown, unknown, VersionedObject[]>>();
     extendMenu = input<(d: LimitedVersionedObject) => MenuItem[]>(() => []);
+    isHistoryView = input(false, { transform: booleanAttribute });
 
     columns: Column<VersionedObject>[] = [
         { field: 'id', cell: (d) => ({ value: d.object.wallet_config.ref.id }) },
@@ -59,6 +67,10 @@ export class WalletsTableComponent {
                     });
                 },
             }),
+        },
+        {
+            field: 'currency',
+            cell: (d) => ({ value: d.object.wallet_config.data.account.currency.symbolic_code }),
         },
         createPartyColumn((d) => ({ id: d.object.wallet_config.data.party_ref.id })),
         {
@@ -97,12 +109,20 @@ export class WalletsTableComponent {
             }),
             { field: 'terms' },
         ),
+        {
+            field: 'account',
+            cell: (d) => ({ value: d.object.wallet_config.data.account.settlement }),
+        },
         createCurrencyColumn(
             (d) =>
                 this.getAccountState(d).pipe(
                     map((b) => ({ amount: b.own_amount, code: b.currency.symbolic_code })),
                 ),
-            { header: 'Own', isLazyCell: true },
+            {
+                header: 'Own',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
@@ -112,14 +132,22 @@ export class WalletsTableComponent {
                         code: b.currency.symbolic_code,
                     })),
                 ),
-            { header: 'Hold', isLazyCell: true },
+            {
+                header: 'Hold',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
                 this.getAccountState(d).pipe(
                     map((b) => ({ amount: b.available_amount, code: b.currency.symbolic_code })),
                 ),
-            { header: 'Available', isLazyCell: true },
+            {
+                header: 'Available',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         { field: 'version', cell: (d) => ({ value: d.info.version }) },
         { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },
