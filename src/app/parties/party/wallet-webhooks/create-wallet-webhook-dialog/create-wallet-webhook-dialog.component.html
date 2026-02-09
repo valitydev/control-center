@@ -1,5 +1,6 @@
 <v-dialog [progress]="progress()" title="Create wallet webhook">
     <cc-fistful-thrift-form
+        [extensions]="extensions$ | async"
         [formControl]="control"
         namespace="webhooker"
         type="WebhookParams"

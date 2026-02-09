@@ -12,16 +12,25 @@ import { createNextId } from '~/utils';
 export function createDomainObjectExtensions(
     refType: string,
     options: () => Observable<ThriftFormExtensionOption[]>,
+    determinant?: ThriftFormExtension['determinant'],
 ): ThriftFormExtension[] {
     return [
         {
-            determinant: (data) =>
-                of(
+            determinant: (data) => {
+                const domainObjDeterminantRes =
                     isTypeWithAliases(data?.trueParent, refType, 'domain') &&
-                        (isTypeWithAliases(data, 'ObjectID', 'domain') ||
-                            // TODO: 'field.name' must be passed as an argument
-                            ['id', 'symbolic_code'].includes(data.field?.name)),
-                ),
+                    (isTypeWithAliases(data, 'ObjectID', 'domain') ||
+                        // TODO: 'field.name' must be passed as an argument
+                        ['id', 'symbolic_code'].includes(data.field?.name));
+                return determinant
+                    ? determinant(data).pipe(
+                          map(
+                              (customDeterminantRes) =>
+                                  domainObjDeterminantRes || customDeterminantRes,
+                          ),
+                      )
+                    : of(domainObjDeterminantRes);
+            },
             extension: (data) =>
                 options().pipe(
                     map((objects) => ({

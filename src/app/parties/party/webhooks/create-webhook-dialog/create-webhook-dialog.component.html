@@ -1,5 +1,6 @@
 <v-dialog [progress]="progress()" title="Create shop webhook">
     <cc-domain-thrift-editor
+        [extensions]="extensions$ | async"
         [formControl]="control"
         namespace="webhooker"
         type="WebhookParams"
