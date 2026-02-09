@@ -3,6 +3,7 @@ import {
     catchError,
     combineLatest,
     debounceTime,
+    distinctUntilChanged,
     map,
     of,
     shareReplay,
@@ -34,7 +35,7 @@ import {
 import { ThriftInvoiceTemplatingService } from '~/api/services';
 import { ConfigService } from '~/services';
 
-import { DomainThriftFormComponent } from '../thrift-api-crud';
+import { DomainMetadataFormExtensionsService, DomainThriftFormComponent } from '../thrift-api-crud';
 
 @Component({
     templateUrl: './create-invoice-template-dialog.component.html',
@@ -59,6 +60,7 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
     private configService = inject(ConfigService);
     private clipboard = inject(Clipboard);
     private fb = inject(FormBuilder);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
 
     linkForm = this.fb.group({
         name: null,
@@ -110,6 +112,19 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
             return url.toString();
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    extensions$ = this.domainMetadataFormExtensionsService.createFullDomainObjectsOptionsByType(
+        'ShopConfigObject',
+        'shop_config',
+        getValueChanges(this.control).pipe(
+            map((value) => value?.party_id?.id),
+            distinctUntilChanged(),
+            map((partyId) =>
+                partyId
+                    ? (obj) => obj.object.shop_config.data.party_ref.id === partyId
+                    : () => true,
+            ),
+        ),
     );
 
     create() {
