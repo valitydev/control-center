@@ -46,7 +46,7 @@
     "keycloak-angular": "^20.0.0",
     "keycloak-js": "^26.2.0",
     "lodash-es": "^4.17.21",
-    "monaco-editor": "^0.52.2",
+    "monaco-editor": "^0.55.0",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
     "short-uuid": "^5.2.0",
@@ -55,7 +55,7 @@
     "typescript-memoize": "^1.1.1",
     "utility-types": "^3.11.0",
     "zod": "^3.25.76",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.16.0"
   },
   "devDependencies": {
     "@angular/build": "^20.1.5",
@@ -73,16 +73,16 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-paths": "^1.1.0",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "jasmine-core": "~5.8.0",
+    "jasmine-core": "~5.13.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "karma-jasmine-html-reporter": "~2.2.0",
     "ng-packagr": "^20.1.0",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-attributes": "^1.0.0",
-    "typescript": "~5.8.2",
+    "typescript": "~5.9.0",
     "typescript-eslint": "^8.34.1"
   }
 }
