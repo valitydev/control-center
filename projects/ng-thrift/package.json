@@ -18,7 +18,7 @@
         "@vality/ng-monaco-editor": "^20.0.0",
         "@vality/thrift-ts": "*",
         "lodash-es": "^4.0.0",
-        "monaco-editor": "^0.52.0",
+        "monaco-editor": "^0.52.0 || ^0.55.0",
         "rxjs": "^7.0.0",
         "utility-types": "^3.0.0"
     }
