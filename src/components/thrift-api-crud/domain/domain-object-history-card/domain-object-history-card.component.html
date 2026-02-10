@@ -10,12 +10,17 @@
                 [extendMenu]="menuColumn"
                 [hasMore]="resource.hasMore()"
                 [shops]="shopsResource.value()"
+                isHistoryView
                 (more)="resource.more()"
                 (update)="resource.reload()"
             />
         }
         @case ('wallet_config') {
-            <cc-wallets-table [extendMenu]="menuColumn" [resource]="fullObjectsResource" />
+            <cc-wallets-table
+                [extendMenu]="menuColumn"
+                [resource]="fullObjectsResource"
+                isHistoryView
+            />
         }
         @default {
             <cc-domain-objects-table [menu]="menuColumn" [resource]="resource" />

@@ -57,6 +57,7 @@ export class ShopsTableComponent {
     private partyManagementService = inject(ThriftPartyManagementService);
 
     shops = input<ShopWithInfo[]>([]);
+    isHistoryView = input(false, { transform: booleanAttribute });
     @Input() progress: number | boolean = false;
     @Input() hasMore: boolean = false;
     @Output() update = new EventEmitter<UpdateOptions>();
@@ -120,12 +121,24 @@ export class ShopsTableComponent {
                 )[getUnionKey(d.data.suspension)],
             }),
         },
+        {
+            field: 'Settlement/Guarantee Accounts',
+            header: { value: 'Accounts', description: 'Settlement/Guarantee' },
+            cell: (d) => ({
+                value: d.data.account.settlement,
+                description: d.data.account.guarantee,
+            }),
+        },
         createCurrencyColumn(
             (d) =>
                 this.getSettlementAccountState(d).pipe(
                     map((b) => ({ amount: b.own_amount, code: b.currency.symbolic_code })),
                 ),
-            { header: 'Own', isLazyCell: true },
+            {
+                header: 'Own',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
@@ -135,21 +148,33 @@ export class ShopsTableComponent {
                         code: b.currency.symbolic_code,
                     })),
                 ),
-            { header: 'Hold', isLazyCell: true },
+            {
+                header: 'Hold',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
                 this.getSettlementAccountState(d).pipe(
                     map((b) => ({ amount: b.available_amount, code: b.currency.symbolic_code })),
                 ),
-            { header: 'Available', isLazyCell: true },
+            {
+                header: 'Available',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
                 this.getGuaranteeAccountState(d).pipe(
                     map((b) => ({ amount: b.own_amount, code: b.currency.symbolic_code })),
                 ),
-            { header: 'Guarantee Own', isLazyCell: true },
+            {
+                header: 'Guarantee Own',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
@@ -159,14 +184,22 @@ export class ShopsTableComponent {
                         code: b.currency.symbolic_code,
                     })),
                 ),
-            { header: 'Guarantee Hold', isLazyCell: true },
+            {
+                header: 'Guarantee Hold',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         createCurrencyColumn(
             (d) =>
                 this.getGuaranteeAccountState(d).pipe(
                     map((b) => ({ amount: b.available_amount, code: b.currency.symbolic_code })),
                 ),
-            { header: 'Guarantee Available', isLazyCell: true },
+            {
+                header: 'Guarantee Available',
+                isLazyCell: true,
+                hidden: toObservable(this.isHistoryView, { injector: this.injector }),
+            },
         ),
         { field: 'version', cell: (d) => ({ value: d.info.version }) },
         { field: 'changed_at', cell: (d) => ({ value: d.info.changed_at, type: 'datetime' }) },

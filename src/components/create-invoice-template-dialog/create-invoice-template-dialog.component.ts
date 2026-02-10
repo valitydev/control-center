@@ -3,6 +3,7 @@ import {
     catchError,
     combineLatest,
     debounceTime,
+    distinctUntilChanged,
     map,
     of,
     shareReplay,
@@ -31,10 +32,11 @@ import {
     progressTo,
 } from '@vality/matez';
 
+import { DomainObjectsStoreService } from '~/api/domain-config';
 import { ThriftInvoiceTemplatingService } from '~/api/services';
 import { ConfigService } from '~/services';
 
-import { DomainThriftFormComponent } from '../thrift-api-crud';
+import { DomainMetadataFormExtensionsService, DomainThriftFormComponent } from '../thrift-api-crud';
 
 @Component({
     templateUrl: './create-invoice-template-dialog.component.html',
@@ -59,6 +61,8 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
     private configService = inject(ConfigService);
     private clipboard = inject(Clipboard);
     private fb = inject(FormBuilder);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
+    private domainStoreService = inject(DomainObjectsStoreService);
 
     linkForm = this.fb.group({
         name: null,
@@ -109,6 +113,46 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
             }
             return url.toString();
         }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    extensions$ = combineLatest([
+        this.domainMetadataFormExtensionsService.createFullDomainObjectsOptionsByType(
+            'ShopConfigObject',
+            'shop_config',
+            getValueChanges(this.control).pipe(
+                map((value) => value?.party_id?.id),
+                distinctUntilChanged(),
+                map((partyId) =>
+                    partyId
+                        ? (obj) => obj.object.shop_config.data.party_ref.id === partyId
+                        : () => true,
+                ),
+            ),
+        ),
+        this.domainMetadataFormExtensionsService.createFullDomainObjectsOptionsByType(
+            'CurrencyObject',
+            'currency',
+            getValueChanges(this.control).pipe(
+                map((value) => value?.shop_id?.id),
+                distinctUntilChanged(),
+                switchMap((shopId) =>
+                    shopId
+                        ? this.domainStoreService.getObject({
+                              shop_config: { id: shopId },
+                          }).value$
+                        : of(null),
+                ),
+                map((shop) =>
+                    shop
+                        ? (obj) =>
+                              obj.object.currency.data.symbolic_code ===
+                              shop.object.shop_config.data.account.currency.symbolic_code
+                        : () => true,
+                ),
+            ),
+        ),
+    ]).pipe(
+        map((extensionGroups) => extensionGroups.flat()),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 

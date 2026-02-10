@@ -20,6 +20,7 @@
         </div>
     } @else {
         <cc-domain-thrift-editor
+            [extensions]="extensions$ | async"
             [formControl]="control"
             namespace="api_extensions"
             noToolbar

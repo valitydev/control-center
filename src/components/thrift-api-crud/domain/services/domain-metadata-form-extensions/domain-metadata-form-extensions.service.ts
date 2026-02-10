@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import short from 'short-uuid';
 
@@ -6,14 +6,15 @@ import { Injectable, inject } from '@angular/core';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
-import { getNoTimeZoneIsoString } from '@vality/matez';
+import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
+import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
 
 import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
-import { getDomainObjectOption } from './utils/get-domain-object-option';
+import { getDomainObjectOption, getFullDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
@@ -100,6 +101,39 @@ export class DomainMetadataFormExtensionsService {
         ]),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+
+    createFullDomainObjectsOptionsByType(
+        objectType: string,
+        objectKey: keyof DomainObject,
+        filterFn$: PossiblyAsync<Parameters<VersionedObject[]['filter']>[0]>,
+        determinant?: ThriftFormExtension['determinant'],
+    ): Observable<ThriftFormExtension[]> {
+        return metadata$.pipe(
+            map((metadata) => {
+                const objectFields = new ThriftData<string, 'struct'>(
+                    metadata,
+                    'domain',
+                    objectType,
+                ).ast;
+                const refType = objectFields.find((n) => n.name === 'ref').type as string;
+                return createDomainObjectExtensions(
+                    refType,
+                    () =>
+                        combineLatest([
+                            this.domainStoreService.getObjects(objectKey).value$,
+                            getPossiblyAsyncObservable(filterFn$),
+                        ]).pipe(
+                            map(([objects, filterFn]) =>
+                                objects
+                                    .filter(filterFn)
+                                    .map((obj) => getFullDomainObjectOption(obj)),
+                            ),
+                        ),
+                    determinant,
+                );
+            }),
+        );
+    }
 
     private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
