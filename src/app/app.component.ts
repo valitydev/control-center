@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterOutlet } from '@angular/router';
 
 import {
+    AppModeService,
     BaseLink,
     CmdkModule,
     CmdkOption,
@@ -228,6 +229,7 @@ export class AppComponent {
 
     sidenavInfoService = inject(SidenavInfoService);
     themeService = inject(ThemeService);
+    protected modeService = inject(AppModeService);
 
     links = createNavLinks();
     username = this.keycloakUserService.username;
@@ -280,6 +282,10 @@ export class AppComponent {
             case 'system':
                 return 'routine';
         }
+    }
+
+    getModeIcon(mode = this.modeService.mode()): string {
+        return mode === 'advanced' ? 'school' : 'wand_stars';
     }
 
     private registerConsoleUtils() {

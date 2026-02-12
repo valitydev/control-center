@@ -5,3 +5,4 @@ export * from './query-params';
 export * from './url.service';
 export * from './toast';
 export * from './theme';
+export * from './app-mode';

@@ -1,12 +1,13 @@
 import { combineLatest } from 'rxjs';
 import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { Component, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, Injector, inject } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { RoutingDelegate } from '@vality/domain-proto/domain';
 import {
+    AppModeService,
     Column,
     DialogResponseStatus,
     DialogService,
@@ -44,6 +45,8 @@ export class PartyRoutingRulesetComponent {
     private sidenavInfoService = inject(SidenavInfoService);
     private log = inject(NotifyLogService);
     protected routingRulesTypeService = inject(RoutingRulesTypeService);
+    private appMode = inject(AppModeService);
+    private injector = inject(Injector);
 
     partyRuleset$ = this.partyRoutingRulesetService.partyRuleset$;
     partyID$ = this.partyRoutingRulesetService.partyID$;
@@ -59,6 +62,7 @@ export class PartyRoutingRulesetComponent {
     private baseColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
         createDomainObjectColumn((d) => ({ ref: { routing_rules: d.item?.ruleset } }), {
             header: 'Delegate',
+            hidden: toObservable(this.appMode.isSimple, { injector: this.injector }),
         }),
     ];
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
