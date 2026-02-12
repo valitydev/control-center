@@ -17,7 +17,7 @@ import {
 import { RoutingRulesStoreService } from '~/api/domain-config';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { createShopColumn, createWalletColumn } from '~/utils';
+import { createDomainObjectColumn, createShopColumn, createWalletColumn } from '~/utils';
 
 import { RoutingRulesListItem } from '../components/routing-rules-list';
 import { PartyDelegateRulesetsService } from '../party-delegate-rulesets';
@@ -56,43 +56,46 @@ export class PartyRoutingRulesetComponent {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
+    private baseColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
+        createDomainObjectColumn((d) => ({ ref: { routing_rules: d.item?.ruleset } }), {
+            header: 'Delegate',
+        }),
+    ];
     shopsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
-        {
-            field: 'id',
-            header: 'Delegate (Ruleset Ref ID)',
-            cell: (d) => ({
-                value: d.item?.description || `#${d.item?.ruleset?.id}`,
-                description: d.item?.ruleset?.id,
-                click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
-            }),
-        },
-        createShopColumn((d) =>
-            this.partyRoutingRulesetService.partyID$.pipe(
-                map((partyId) => ({
-                    shopId: d.item?.allowed?.condition?.party?.definition?.shop_is,
-                    partyId,
-                })),
-            ),
+        createShopColumn(
+            (d) =>
+                this.partyRoutingRulesetService.partyID$.pipe(
+                    map((partyId) => ({
+                        shopId: d.item?.allowed?.condition?.party?.definition?.shop_is,
+                        partyId,
+                    })),
+                ),
+            {
+                field: 'name',
+                cell: (d) => ({
+                    click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
+                }),
+            },
         ),
+        ...this.baseColumns,
     ];
     walletsDisplayedColumns: Column<RoutingRulesListItem<RoutingDelegate>>[] = [
-        {
-            field: 'id',
-            header: 'Delegate (Ruleset Ref ID)',
-            cell: (d) => ({
-                value: d.item?.description || `#${d.item?.ruleset?.id}`,
-                description: d.item?.ruleset?.id,
-                click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
-            }),
-        },
-        createWalletColumn((d) =>
-            this.partyRoutingRulesetService.partyID$.pipe(
-                map((partyId) => ({
-                    id: d.item?.allowed?.condition?.party?.definition?.wallet_is,
-                    partyId,
-                })),
-            ),
+        createWalletColumn(
+            (d) =>
+                this.partyRoutingRulesetService.partyID$.pipe(
+                    map((partyId) => ({
+                        id: d.item?.allowed?.condition?.party?.definition?.wallet_is,
+                        partyId,
+                    })),
+                ),
+            {
+                field: 'name',
+                cell: (d) => ({
+                    click: () => this.navigateToDelegate(d.parentRefId, d.delegateIdx),
+                }),
+            },
         ),
+        ...this.baseColumns,
     ];
     shopsData$ = this.partyRuleset$.pipe(
         filter(Boolean),
