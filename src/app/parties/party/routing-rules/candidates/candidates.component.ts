@@ -24,6 +24,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { RoutingCandidate } from '@vality/domain-proto/domain';
 import {
+    AppModeService,
     Column,
     DialogModule,
     DialogResponseStatus,
@@ -52,6 +53,7 @@ import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { CandidatesService } from './candidates.service';
+import { DndCardsComponent } from './components/dnd-cards.component';
 
 @Component({
     templateUrl: 'candidates.component.html',
@@ -77,6 +79,7 @@ import { CandidatesService } from './candidates.service';
         ThriftViewerModule,
         DialogModule,
         PageLayoutModule,
+        DndCardsComponent,
     ],
 })
 export class CandidatesComponent {
@@ -89,6 +92,7 @@ export class CandidatesComponent {
     private route = inject(ActivatedRoute);
     private sidenavInfoService = inject(SidenavInfoService);
     private destroyRef = inject(DestroyRef);
+    protected appMode = inject(AppModeService);
 
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;

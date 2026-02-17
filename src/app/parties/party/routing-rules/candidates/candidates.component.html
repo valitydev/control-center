@@ -15,13 +15,17 @@
     <cc-page-layout-actions>
         <button mat-flat-button (click)="addRule()">Add</button>
     </cc-page-layout-actions>
-    <v-table
-        [(sort)]="sort"
-        [columns]="columns"
-        [data]="(candidates$ | async) || []"
-        [progress]="isLoading$ | async"
-        [rowDragDrop]="['priority']"
-        standaloneFilter
-        (rowDropped)="drop($any($event))"
-    ></v-table>
+    @if (appMode.isAdvanced()) {
+        <v-table
+            [(sort)]="sort"
+            [columns]="columns"
+            [data]="(candidates$ | async) || []"
+            [progress]="isLoading$ | async"
+            [rowDragDrop]="['priority']"
+            standaloneFilter
+            (rowDropped)="drop($any($event))"
+        ></v-table>
+    } @else {
+        <cc-dnd-cards></cc-dnd-cards>
+    }
 </cc-page-layout>
