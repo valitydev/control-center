@@ -28,7 +28,7 @@ import { ROUTING_CONFIG } from './routing-config';
                     {
                         path: '',
                         loadChildren: () =>
-                            import('../routing-ruleset').then((m) => m.RoutingRulesetModule),
+                            import('../candidates').then((m) => m.RoutingRulesetModule),
                     },
                 ],
             },
