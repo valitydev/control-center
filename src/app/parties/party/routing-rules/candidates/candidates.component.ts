@@ -2,25 +2,43 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
+import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { RoutingCandidate } from '@vality/domain-proto/domain';
 import {
     Column,
+    DialogModule,
     DialogResponseStatus,
     DialogService,
     DragDrop,
     NotifyLogService,
+    TableModule,
     correctPriorities,
     createMenuColumn,
 } from '@vality/matez';
-import { toJson } from '@vality/ng-thrift';
+import { ThriftViewerModule, toJson } from '@vality/ng-thrift';
 
 import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
+import { PageLayoutModule } from '~/components/page-layout';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import {
     DomainThriftFormDialogComponent,
@@ -33,16 +51,37 @@ import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
-import { RoutingRulesetService } from './routing-ruleset.service';
+import { CandidatesService } from './candidates.service';
 
 @Component({
-    templateUrl: 'routing-ruleset.component.html',
-    providers: [RoutingRulesetService],
-    standalone: false,
+    templateUrl: 'candidates.component.html',
+    providers: [CandidatesService],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        RouterModule,
+        MatIconModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatCardModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatExpansionModule,
+        MatAutocompleteModule,
+        TableModule,
+        ThriftViewerModule,
+        DialogModule,
+        PageLayoutModule,
+    ],
 })
-export class RoutingRulesetComponent {
+export class CandidatesComponent {
     private dialog = inject(DialogService);
-    private routingRulesetService = inject(RoutingRulesetService);
+    private routingRulesetService = inject(CandidatesService);
     private routingRulesService = inject(RoutingRulesService);
     private routingRulesStoreService = inject(RoutingRulesStoreService);
     private domainService = inject(DomainService);

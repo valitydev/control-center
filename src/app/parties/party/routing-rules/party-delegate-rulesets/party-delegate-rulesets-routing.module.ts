@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { canActivateAuthRole } from '~/services';
+import { Service, canActivateAuthRole } from '~/services';
+
+import { CandidatesComponent } from '../candidates';
 
 import { PartyDelegateRulesetsComponent } from './party-delegate-rulesets.component';
 import { ROUTING_CONFIG } from './routing-config';
@@ -26,9 +28,10 @@ import { ROUTING_CONFIG } from './routing-config';
                             ),
                     },
                     {
-                        path: '',
-                        loadChildren: () =>
-                            import('../candidates').then((m) => m.RoutingRulesetModule),
+                        path: ':partyRefID/delegate/:refID',
+                        component: CandidatesComponent,
+                        canActivate: [canActivateAuthRole],
+                        data: { services: [Service.DMT] },
                     },
                 ],
             },

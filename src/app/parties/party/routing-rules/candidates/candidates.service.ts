@@ -15,7 +15,7 @@ import {
 import { RoutingRulesService as RoutingRulesDamselService } from '../services/routing-rules';
 
 @Injectable()
-export class RoutingRulesetService {
+export class CandidatesService {
     private routingRulesService = inject(RoutingRulesDamselService);
     private route = inject(ActivatedRoute);
     private log = inject(NotifyLogService);

@@ -1,1 +1,1 @@
-export * from './routing-ruleset.module';
+export * from './candidates.component';
