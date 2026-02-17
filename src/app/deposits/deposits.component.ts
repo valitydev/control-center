@@ -26,7 +26,7 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { QueryDsl } from '~/api/fistful-stat';
-import { createCurrencyColumn } from '~/utils';
+import { createCurrencyColumn, createDomainObjectColumn } from '~/utils';
 
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
@@ -89,9 +89,9 @@ export class DepositsComponent implements OnInit {
             field: 'created_at',
             cell: { type: 'datetime' },
         },
-        {
-            field: 'destination_id',
-        },
+        createDomainObjectColumn((d) => ({ ref: { wallet_config: { id: d.destination_id } } }), {
+            header: 'Destination',
+        }),
         {
             field: 'identity_id',
         },
