@@ -24,11 +24,10 @@
             @for (item of row; track item) {
                 <mat-card
                     [class.disabled]="item.disabled"
-                    [style.flex-basis]="item.width ? item.width + '%' : null"
-                    [style.min-width]="0"
+                    [style.flex-basis]="'max(' + (item.width || 0) + '%, 15%)'"
                     appearance="outlined"
                     cdkDrag
-                    class="cursor-move flex-1"
+                    class="cursor-move flex-1 min-w-[200px]"
                 >
                     <mat-card-content>
                         <div class="content overflow-auto">

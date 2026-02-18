@@ -32,21 +32,46 @@
                     @if (!!item?.terminal) {
                         <div class="flex flex-col gap-2 items-start">
                             <div class="flex gap-2 w-full justify-between">
-                                <div [matTooltip]="item.candidate.terminal.id">
+                                <div
+                                    [matTooltip]="item.candidate.terminal.id"
+                                    class="min-w-0 truncate"
+                                >
                                     {{ item.terminal?.object?.terminal?.data?.name }}
                                 </div>
-                                <div [matTooltip]="item.candidate.weight" class="muted">
+                                <div
+                                    [matTooltip]="item.candidate.weight"
+                                    class="text-foreground-muted"
+                                >
                                     {{ item.weightPercent }}%
                                 </div>
                             </div>
-                            <div>
+                            <div class="flex items-center justify-between w-full gap-2">
                                 <mat-slide-toggle
                                     [checked]="item.allowed"
+                                    [matTooltip]="item.fullAllowedStr"
+                                    class="min-w-0 overflow-hidden"
                                     (change)="toggleAllow(item.idx)"
-                                    ><span class="ml-2">{{
+                                    ><span class="ml-2 truncate">{{
                                         item.fullAllowedStr
                                     }}</span></mat-slide-toggle
                                 >
+                                <button [matMenuTriggerFor]="menu" mat-icon-button>
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="editRule(item.idx)">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button mat-menu-item (click)="duplicateRule(item.idx)">
+                                        <mat-icon>content_copy</mat-icon>
+                                        <span>Duplicate</span>
+                                    </button>
+                                    <button mat-menu-item (click)="removeRule(item.idx)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Remove</span>
+                                    </button>
+                                </mat-menu>
                             </div>
                         </div>
                     } @else {

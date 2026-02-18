@@ -187,11 +187,18 @@ export class CandidatesComponent {
             );
             return Array.from(groups.values())
                 .map((group) => {
-                    const sum = group.reduce((acc, item) => acc + (item.candidate.weight || 0), 0);
+                    const sum = group.reduce(
+                        (acc, item) =>
+                            acc + (item.candidate.allowed ? item.candidate.weight || 0 : 0),
+                        0,
+                    );
+                    const allowedCount = group.filter((item) => item.allowed).length;
                     return group.map((item) => {
                         const weight = item.candidate.weight || 0;
                         let weightPercent = 0;
-                        if (group.length === 1) {
+                        if (item.allowed === false) {
+                            weightPercent = 0;
+                        } else if (allowedCount === 1) {
                             weightPercent = 100;
                         } else if (sum > 0) {
                             weightPercent = Math.round((weight / sum) * 100);
