@@ -5,38 +5,41 @@
     (pointerup)="isDragging = false"
 >
     <div
-        [cdkDropListData]="zoneData[0]"
+        [cdkDropListData]="zoneData"
         [class.active]="isDragging"
         cdkDropList
         cdkDropListSortingDisabled
-        class="insert-zone-col"
+        class="insert-zone"
         (cdkDropListDropped)="dropInZone($event, 0)"
     ></div>
-    @for (row of rows; track $index) {
+    @for (row of rows(); track $index) {
         <div
             [cdkDropListData]="row"
             [class.active]="isDragging"
             cdkDropList
             cdkDropListOrientation="horizontal"
-            class="flex flex-row gap-2"
+            class="card-wrapper flex flex-row"
             (cdkDropListDropped)="dropInRow($event)"
         >
             @for (item of row; track item) {
                 <mat-card appearance="outlined" cdkDrag class="flex-1 cursor-move shrink-0">
                     <mat-card-content>
                         <div class="content">
-                            {{ item }}
+                            <ng-container
+                                [ngTemplateOutlet]="cardTpl()"
+                                [ngTemplateOutletContext]="{ $implicit: item }"
+                            ></ng-container>
                         </div>
                     </mat-card-content>
                 </mat-card>
             }
         </div>
         <div
-            [cdkDropListData]="zoneData[$index + 1]"
+            [cdkDropListData]="zoneData"
             [class.active]="isDragging"
             cdkDropList
             cdkDropListSortingDisabled
-            class="insert-zone-row"
+            class="insert-zone"
             (cdkDropListDropped)="dropInZone($event, $index + 1)"
         ></div>
     }

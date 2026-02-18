@@ -1,6 +1,13 @@
-.insert-zone-row,
-.insert-zone-col {
-    min-height: 24px;
+$v-gap: 22px;
+$h-gap: 12px;
+$insert-card-margin: 2px;
+
+.card-wrapper {
+    gap: $h-gap;
+}
+
+.insert-zone {
+    min-height: $v-gap;
 }
 
 .cdk-drag-preview {
@@ -14,10 +21,11 @@
         visibility: hidden;
     }
 
-    .insert-zone-row & {
-        margin: 6px 0;
-        height: 12px;
-        overflow: hidden;
+    .insert-zone & {
+        $height: $v-gap - ($insert-card-margin * 2);
+
+        margin: $insert-card-margin 0;
+        height: $height;
     }
 }
 

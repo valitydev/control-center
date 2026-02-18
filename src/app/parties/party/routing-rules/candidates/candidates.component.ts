@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
-import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { first, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
@@ -102,6 +102,21 @@ export class CandidatesComponent {
     ) as Observable<RoutingRulesType>;
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.routingRulesStoreService.isLoading$;
+
+    candidateGroups$ = this.candidates$.pipe(
+        map((candidates) =>
+            candidates.reduce((groups, candidate) => {
+                if (groups.has(candidate.priority)) {
+                    groups.get(candidate.priority)?.push(candidate);
+                } else {
+                    groups.set(candidate.priority, [candidate]);
+                }
+                return groups;
+            }, new Map<number, RoutingCandidate[]>()),
+        ),
+        map((groups): RoutingCandidate[][] => Array.from(groups.values())),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     columns: Column<RoutingCandidate>[] = [
         { field: 'priority' },

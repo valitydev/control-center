@@ -6,28 +6,31 @@ import {
     moveItemInArray,
     transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { Component, TemplateRef, contentChild, model } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
     selector: 'cc-dnd-cards',
     templateUrl: 'dnd-cards.component.html',
     styleUrl: 'dnd-cards.component.scss',
-    imports: [CommonModule, CdkDropListGroup, CdkDropList, CdkDrag, MatCardModule],
+    imports: [
+        CommonModule,
+        NgTemplateOutlet,
+        CdkDropListGroup,
+        CdkDropList,
+        CdkDrag,
+        MatCardModule,
+    ],
 })
-export class DndCardsComponent {
-    rows: string[][] = [
-        ['Zero', 'One'],
-        ['Two'],
-        ['Three'],
-        ['Four', 'Five'],
-        ['Six', 'Seven', 'Eight', 'Nine'],
-    ];
-    readonly zoneData: string[][] = Array.from({ length: 30 }, (): string[] => []);
+export class DndCardsComponent<T = unknown> {
+    rows = model.required<T[][]>();
+    cardTpl = contentChild.required<TemplateRef<{ $implicit: T }>>('card');
     isDragging = false;
+    zoneData = [];
 
-    dropInRow(event: CdkDragDrop<string[]>) {
+    dropInRow(event: CdkDragDrop<T[]>) {
+        const rows = this.rows();
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
         } else {
@@ -37,19 +40,21 @@ export class DndCardsComponent {
                 event.previousIndex,
                 event.currentIndex,
             );
-            this.rows = this.rows.filter((r) => r.length > 0);
         }
+        this.rows.set(rows.filter((r) => r.length > 0));
     }
 
-    dropInZone(event: CdkDragDrop<string[]>, insertIndex: number) {
+    dropInZone(event: CdkDragDrop<T[]>, insertIndex: number) {
+        const rows = this.rows();
         const source = event.previousContainer.data;
         const [item] = source.splice(event.previousIndex, 1);
-        const sourceRowIndex = this.rows.indexOf(source);
+        const sourceRowIndex = rows.indexOf(source);
         let adjusted = insertIndex;
         if (source.length === 0 && sourceRowIndex !== -1 && sourceRowIndex < insertIndex) {
             adjusted--;
         }
-        this.rows = this.rows.filter((r) => r.length > 0);
-        this.rows.splice(adjusted, 0, [item]);
+        const filtered = rows.filter((r) => r.length > 0);
+        filtered.splice(adjusted, 0, [item]);
+        this.rows.set(filtered);
     }
 }

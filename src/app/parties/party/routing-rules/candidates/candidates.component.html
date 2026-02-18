@@ -26,6 +26,12 @@
             (rowDropped)="drop($any($event))"
         ></v-table>
     } @else {
-        <cc-dnd-cards></cc-dnd-cards>
+        @if (candidateGroups$ | async; as groups) {
+            <cc-dnd-cards [rows]="groups">
+                <ng-template #card let-candidate>
+                    {{ candidate.terminal?.id }} {{ candidate.description }}
+                </ng-template>
+            </cc-dnd-cards>
+        }
     }
 </cc-page-layout>
