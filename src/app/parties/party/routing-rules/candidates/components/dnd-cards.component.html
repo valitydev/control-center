@@ -29,8 +29,8 @@
                     cdkDrag
                     class="cursor-move flex-1 min-w-[200px]"
                 >
-                    <mat-card-content>
-                        <div class="content overflow-auto">
+                    <mat-card-content class="h-full">
+                        <div class="content overflow-auto h-full">
                             <ng-container
                                 [ngTemplateOutlet]="cardTpl()"
                                 [ngTemplateOutletContext]="{ $implicit: item.value }"

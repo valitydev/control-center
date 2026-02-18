@@ -68,11 +68,10 @@ import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 import { CandidatesService } from './candidates.service';
 import { DndCardsComponent } from './components/dnd-cards.component';
 
-function getAllowStr(predicate: Predicate, defaultStr = 'allowed') {
-    if (isNil(predicate)) return defaultStr;
+function getAllowStr(predicate: Predicate, hasTrueFalse = false): string {
     const allowed = formatPredicate(predicate).toLowerCase();
-    if (allowed === 'true') return 'allowed';
-    if (allowed === 'false') return 'denied';
+    if (isNil(predicate) || allowed === 'true') return hasTrueFalse ? 'allowed' : '';
+    if (allowed === 'false') return hasTrueFalse ? 'denied' : '';
     return allowed;
 }
 
@@ -159,8 +158,10 @@ export class CandidatesComponent {
                         globalAllow: getPredicateBoolean(globalAllowPredicate),
 
                         fullAllowedStr: [
-                            upperFirst(getAllowStr(candidate.allowed)),
-                            getAllowStr(globalAllowPredicate, '') &&
+                            upperFirst(
+                                getAllowStr(candidate.allowed, !!getAllowStr(globalAllowPredicate)),
+                            ),
+                            getAllowStr(globalAllowPredicate) &&
                                 `(Global ${upperFirst(getAllowStr(globalAllowPredicate))})`,
                         ]
                             .filter(Boolean)
