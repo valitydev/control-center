@@ -1,3 +1,4 @@
+import { isNil, upperFirst } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
 import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
@@ -24,7 +25,7 @@ import { Sort } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import { RoutingCandidate } from '@vality/domain-proto/domain';
+import { Predicate, RoutingCandidate } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     AppModeService,
@@ -66,6 +67,14 @@ import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { CandidatesService } from './candidates.service';
 import { DndCardsComponent } from './components/dnd-cards.component';
+
+function getAllowStr(predicate: Predicate, defaultStr = 'allowed') {
+    if (isNil(predicate)) return defaultStr;
+    const allowed = formatPredicate(predicate).toLowerCase();
+    if (allowed === 'true') return 'allowed';
+    if (allowed === 'false') return 'denied';
+    return allowed;
+}
 
 @Component({
     templateUrl: 'candidates.component.html',
@@ -131,46 +140,74 @@ export class CandidatesComponent {
         this.routingRulesType$,
     ]).pipe(
         map(([candidates, terminals, type]) => {
-            const groups = candidates.reduce((groups, candidate, idx) => {
-                const terminal = terminals.find(
-                    (t) => t.object.terminal.ref.id === candidate.terminal.id,
-                );
-                const terms = terminal?.object?.terminal?.data?.terms;
-                const newItem = {
-                    idx,
-                    candidate,
-                    terminal,
-                    globalAllow: formatPredicate(
+            const groups = candidates.reduce(
+                (groups, candidate, idx) => {
+                    const terminal = terminals.find(
+                        (t) => t.object.terminal.ref.id === candidate.terminal.id,
+                    );
+                    const terms = terminal?.object?.terminal?.data?.terms;
+                    const globalAllowPredicate =
                         type === RoutingRulesType.Payment
                             ? terms?.payments?.global_allow
-                            : terms?.wallet?.withdrawals?.global_allow,
-                    ),
-                };
-                if (groups.has(candidate.priority)) {
-                    groups.get(candidate.priority)?.push(newItem);
-                } else {
-                    groups.set(candidate.priority, [newItem]);
-                }
-                return groups;
-            }, new Map<number, { idx: number; candidate: RoutingCandidate; terminal: VersionedObject; globalAllow: string }[]>());
-            return Array.from(groups.values()).map((group) => {
-                const sum = group.reduce((acc, item) => acc + (item.candidate.weight || 0), 0);
-                return group.map((item) => {
-                    const weight = item.candidate.weight || 0;
-                    let weightPercent = 0;
-                    if (group.length === 1) {
-                        weightPercent = 100;
-                    } else if (sum > 0) {
-                        weightPercent = Math.round((weight / sum) * 100);
-                    } else {
-                        weightPercent = 0;
-                    }
-                    return {
-                        value: { ...item, weightPercent },
-                        width: weightPercent,
+                            : terms?.wallet?.withdrawals?.global_allow;
+                    const newItem = {
+                        idx,
+                        candidate,
+                        terminal,
+
+                        allowed: getPredicateBoolean(candidate.allowed),
+                        globalAllow: getPredicateBoolean(globalAllowPredicate),
+
+                        fullAllowedStr: [
+                            upperFirst(getAllowStr(candidate.allowed)),
+                            getAllowStr(globalAllowPredicate, '') &&
+                                `(Global ${upperFirst(getAllowStr(globalAllowPredicate))})`,
+                        ]
+                            .filter(Boolean)
+                            .join(' '),
                     };
-                });
-            });
+                    if (groups.has(candidate.priority)) {
+                        groups.get(candidate.priority)?.push(newItem);
+                    } else {
+                        groups.set(candidate.priority, [newItem]);
+                    }
+                    return groups;
+                },
+                new Map<
+                    number,
+                    {
+                        idx: number;
+                        candidate: RoutingCandidate;
+                        terminal: VersionedObject;
+                        allowed: boolean;
+                        globalAllow: boolean;
+                        fullAllowedStr: string;
+                    }[]
+                >(),
+            );
+            return Array.from(groups.values())
+                .map((group) => {
+                    const sum = group.reduce((acc, item) => acc + (item.candidate.weight || 0), 0);
+                    return group.map((item) => {
+                        const weight = item.candidate.weight || 0;
+                        let weightPercent = 0;
+                        if (group.length === 1) {
+                            weightPercent = 100;
+                        } else if (sum > 0) {
+                            weightPercent = Math.round((weight / sum) * 100);
+                        } else {
+                            weightPercent = 0;
+                        }
+                        return {
+                            value: { ...item, weightPercent },
+                            width: weightPercent,
+                        };
+                    });
+                })
+                .sort(
+                    (a, b) =>
+                        (b[0].value.candidate.priority || 0) - (a[0].value.candidate.priority || 0),
+                );
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

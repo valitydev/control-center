@@ -39,10 +39,10 @@
                             </div>
                             <div>
                                 <mat-slide-toggle
-                                    [checked]="item.candidate.allowed"
+                                    [checked]="item.allowed"
                                     (change)="toggleAllow(item.idx)"
                                     ><span class="ml-2">{{
-                                        item.candidate.allowed ? 'Allowed' : 'Disallowed'
+                                        item.fullAllowedStr
                                     }}</span></mat-slide-toggle
                                 >
                             </div>
