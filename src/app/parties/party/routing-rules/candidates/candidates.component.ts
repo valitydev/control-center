@@ -201,6 +201,7 @@ export class CandidatesComponent {
                         return {
                             value: { ...item, weightPercent },
                             width: weightPercent,
+                            disabled: item.globalAllow === false || item.allowed === false,
                         };
                     });
                 })

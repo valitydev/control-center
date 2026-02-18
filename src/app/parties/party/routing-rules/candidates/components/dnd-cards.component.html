@@ -23,6 +23,7 @@
         >
             @for (item of row; track item) {
                 <mat-card
+                    [class.disabled]="item.disabled"
                     [style.flex-basis]="item.width ? item.width + '%' : null"
                     [style.min-width]="0"
                     appearance="outlined"

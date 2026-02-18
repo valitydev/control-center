@@ -31,11 +31,13 @@
                 <ng-template #card let-item>
                     @if (!!item?.terminal) {
                         <div class="flex flex-col gap-2 items-start">
-                            <div [matTooltip]="item.candidate.terminal.id">
-                                {{ item.terminal?.object?.terminal?.data?.name }}
-                            </div>
-                            <div [matTooltip]="item.candidate.weight" class="text-sm">
-                                {{ item.weightPercent }}%
+                            <div class="flex gap-2 w-full justify-between">
+                                <div [matTooltip]="item.candidate.terminal.id">
+                                    {{ item.terminal?.object?.terminal?.data?.name }}
+                                </div>
+                                <div [matTooltip]="item.candidate.weight" class="muted">
+                                    {{ item.weightPercent }}%
+                                </div>
                             </div>
                             <div>
                                 <mat-slide-toggle

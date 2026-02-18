@@ -7,12 +7,13 @@ import {
     transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { Component, TemplateRef, contentChild, model } from '@angular/core';
+import { Component, TemplateRef, contentChild, effect, model, untracked } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 export interface Item<T> {
     value: T;
-    width: number;
+    width?: number;
+    disabled?: boolean;
 }
 
 @Component({
@@ -34,6 +35,15 @@ export class DndCardsComponent<T = unknown> {
     isDragging = false;
     zoneData: Item<T>[] = [];
 
+    constructor() {
+        effect(() => {
+            const rows = this.rows();
+            const sorted = rows.map((r) => this.sortRow(r));
+            const changed = sorted.some((r, i) => r.some((item, j) => item !== rows[i][j]));
+            if (changed) untracked(() => this.rows.set(sorted));
+        });
+    }
+
     dropInRow(event: CdkDragDrop<Item<T>[]>) {
         const rows = this.rows();
         if (event.previousContainer === event.container) {
@@ -46,7 +56,7 @@ export class DndCardsComponent<T = unknown> {
                 event.currentIndex,
             );
         }
-        this.rows.set(rows.filter((r) => r.length > 0));
+        this.rows.set(rows.filter((r) => r.length > 0).map((r) => this.sortRow(r)));
     }
 
     dropInZone(event: CdkDragDrop<Item<T>[]>, insertIndex: number) {
@@ -60,6 +70,13 @@ export class DndCardsComponent<T = unknown> {
         }
         const filtered = rows.filter((r) => r.length > 0);
         filtered.splice(adjusted, 0, [item]);
-        this.rows.set(filtered);
+        this.rows.set(filtered.map((r) => this.sortRow(r)));
+    }
+
+    private sortRow(row: Item<T>[]): Item<T>[] {
+        return [...row].sort((a, b) => {
+            if (a.disabled !== b.disabled) return a.disabled ? 1 : -1;
+            return (b.width ?? 0) - (a.width ?? 0);
+        });
     }
 }
