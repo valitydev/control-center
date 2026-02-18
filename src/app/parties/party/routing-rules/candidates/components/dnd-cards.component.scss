@@ -1,0 +1,26 @@
+.insert-zone-row,
+.insert-zone-col {
+    min-height: 24px;
+}
+
+.cdk-drag-preview {
+    opacity: 0.8;
+}
+
+.cdk-drag-placeholder {
+    border-style: dashed;
+
+    .content {
+        visibility: hidden;
+    }
+
+    .insert-zone-row & {
+        margin: 6px 0;
+        height: 12px;
+        overflow: hidden;
+    }
+}
+
+.cdk-drag-animating {
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}

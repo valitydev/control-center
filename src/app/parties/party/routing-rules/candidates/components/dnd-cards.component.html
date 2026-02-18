@@ -1,6 +1,6 @@
 <div
     cdkDropListGroup
-    class="flex flex-col p-[15px] border border-[#ccc] rounded"
+    class="flex flex-col"
     (pointerdown)="isDragging = true"
     (pointerup)="isDragging = false"
 >
@@ -9,7 +9,7 @@
         [class.active]="isDragging"
         cdkDropList
         cdkDropListSortingDisabled
-        class="insert-zone"
+        class="insert-zone-col"
         (cdkDropListDropped)="dropInZone($event, 0)"
     ></div>
     @for (row of rows; track $index) {
@@ -18,16 +18,17 @@
             [class.active]="isDragging"
             cdkDropList
             cdkDropListOrientation="horizontal"
-            class="row-zone flex flex-row flex-nowrap gap-[10px] min-h-[50px] overflow-x-auto"
+            class="flex flex-row gap-2"
             (cdkDropListDropped)="dropInRow($event)"
         >
             @for (item of row; track item) {
-                <div
-                    cdkDrag
-                    class="flex-1 border border-[#ccc] rounded text-black/[87%] cursor-move bg-white text-center text-sm min-w-[100px] font-sans shrink-0"
-                >
-                    {{ item }}
-                </div>
+                <mat-card appearance="outlined" cdkDrag class="flex-1 cursor-move shrink-0">
+                    <mat-card-content>
+                        <div class="content">
+                            {{ item }}
+                        </div>
+                    </mat-card-content>
+                </mat-card>
             }
         </div>
         <div
@@ -35,7 +36,7 @@
             [class.active]="isDragging"
             cdkDropList
             cdkDropListSortingDisabled
-            class="insert-zone"
+            class="insert-zone-row"
             (cdkDropListDropped)="dropInZone($event, $index + 1)"
         ></div>
     }

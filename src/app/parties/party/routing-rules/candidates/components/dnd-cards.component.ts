@@ -6,13 +6,15 @@ import {
     moveItemInArray,
     transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
     selector: 'cc-dnd-cards',
     templateUrl: 'dnd-cards.component.html',
-    styleUrl: 'dnd-cards.component.css',
-    imports: [CdkDropListGroup, CdkDropList, CdkDrag],
+    styleUrl: 'dnd-cards.component.scss',
+    imports: [CommonModule, CdkDropListGroup, CdkDropList, CdkDrag, MatCardModule],
 })
 export class DndCardsComponent {
     rows: string[][] = [
