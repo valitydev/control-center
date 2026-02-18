@@ -18,16 +18,21 @@
             [class.active]="isDragging"
             cdkDropList
             cdkDropListOrientation="horizontal"
-            class="card-wrapper flex flex-row"
+            class="flex flex-row overflow-auto gap-2"
             (cdkDropListDropped)="dropInRow($event)"
         >
             @for (item of row; track item) {
-                <mat-card appearance="outlined" cdkDrag class="flex-1 cursor-move shrink-0">
+                <mat-card
+                    [ngStyle]="{ 'flex-basis': item.width + '%' }"
+                    appearance="outlined"
+                    cdkDrag
+                    class="cursor-move flex-1"
+                >
                     <mat-card-content>
                         <div class="content">
                             <ng-container
                                 [ngTemplateOutlet]="cardTpl()"
-                                [ngTemplateOutletContext]="{ $implicit: item }"
+                                [ngTemplateOutletContext]="{ $implicit: item.value }"
                             ></ng-container>
                         </div>
                     </mat-card-content>

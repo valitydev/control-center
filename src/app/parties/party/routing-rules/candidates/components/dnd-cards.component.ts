@@ -10,6 +10,11 @@ import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { Component, TemplateRef, contentChild, model } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
+export interface Item<T> {
+    value: T;
+    width: number;
+}
+
 @Component({
     selector: 'cc-dnd-cards',
     templateUrl: 'dnd-cards.component.html',
@@ -24,12 +29,12 @@ import { MatCardModule } from '@angular/material/card';
     ],
 })
 export class DndCardsComponent<T = unknown> {
-    rows = model.required<T[][]>();
+    rows = model.required<Item<T>[][]>();
     cardTpl = contentChild.required<TemplateRef<{ $implicit: T }>>('card');
     isDragging = false;
-    zoneData = [];
+    zoneData: Item<T>[] = [];
 
-    dropInRow(event: CdkDragDrop<T[]>) {
+    dropInRow(event: CdkDragDrop<Item<T>[]>) {
         const rows = this.rows();
         if (event.previousContainer === event.container) {
             moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -44,7 +49,7 @@ export class DndCardsComponent<T = unknown> {
         this.rows.set(rows.filter((r) => r.length > 0));
     }
 
-    dropInZone(event: CdkDragDrop<T[]>, insertIndex: number) {
+    dropInZone(event: CdkDragDrop<Item<T>[]>, insertIndex: number) {
         const rows = this.rows();
         const source = event.previousContainer.data;
         const [item] = source.splice(event.previousIndex, 1);

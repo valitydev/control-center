@@ -20,9 +20,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { Sort } from '@angular/material/sort';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { RoutingCandidate } from '@vality/domain-proto/domain';
+import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     AppModeService,
     Column,
@@ -37,7 +39,11 @@ import {
 } from '@vality/matez';
 import { ThriftViewerModule, toJson } from '@vality/ng-thrift';
 
-import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
+import {
+    DomainObjectsStoreService,
+    DomainService,
+    RoutingRulesStoreService,
+} from '~/api/domain-config';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
 import { PageLayoutModule } from '~/components/page-layout';
 import { SidenavInfoService } from '~/components/sidenav-info';
@@ -80,6 +86,7 @@ import { DndCardsComponent } from './components/dnd-cards.component';
         DialogModule,
         PageLayoutModule,
         DndCardsComponent,
+        MatTooltipModule,
     ],
 })
 export class CandidatesComponent {
@@ -93,6 +100,7 @@ export class CandidatesComponent {
     private sidenavInfoService = inject(SidenavInfoService);
     private destroyRef = inject(DestroyRef);
     protected appMode = inject(AppModeService);
+    protected domainObjectsStoreService = inject(DomainObjectsStoreService);
 
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
@@ -103,18 +111,42 @@ export class CandidatesComponent {
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.routingRulesStoreService.isLoading$;
 
-    candidateGroups$ = this.candidates$.pipe(
-        map((candidates) =>
-            candidates.reduce((groups, candidate) => {
+    candidateGroups$ = combineLatest([
+        this.candidates$,
+        this.domainObjectsStoreService.getLimitedObjects('terminal').value$,
+    ]).pipe(
+        map(([candidates, terminals]) => {
+            const groups = candidates.reduce((groups, candidate) => {
+                const newItem = {
+                    candidate,
+                    terminal: terminals.find((t) => t.ref.terminal.id === candidate.terminal.id),
+                };
                 if (groups.has(candidate.priority)) {
-                    groups.get(candidate.priority)?.push(candidate);
+                    groups.get(candidate.priority)?.push(newItem);
                 } else {
-                    groups.set(candidate.priority, [candidate]);
+                    groups.set(candidate.priority, [newItem]);
                 }
                 return groups;
-            }, new Map<number, RoutingCandidate[]>()),
-        ),
-        map((groups): RoutingCandidate[][] => Array.from(groups.values())),
+            }, new Map<number, { candidate: RoutingCandidate; terminal: LimitedVersionedObject }[]>());
+            return Array.from(groups.values()).map((group) => {
+                const sum = group.reduce((acc, item) => acc + (item.candidate.weight || 0), 0);
+                return group.map((item) => {
+                    const weight = item.candidate.weight || 0;
+                    let weightPercent = 0;
+                    if (group.length === 1) {
+                        weightPercent = 100;
+                    } else if (sum > 0) {
+                        weightPercent = Math.round((weight / sum) * 100);
+                    } else {
+                        weightPercent = 0;
+                    }
+                    return {
+                        value: { ...item, weightPercent },
+                        width: weightPercent,
+                    };
+                });
+            });
+        }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
