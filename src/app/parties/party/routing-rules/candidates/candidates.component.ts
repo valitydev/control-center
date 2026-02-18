@@ -3,7 +3,7 @@ import { Observable, combineLatest, filter } from 'rxjs';
 import { first, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -19,12 +19,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Sort } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { RoutingCandidate } from '@vality/domain-proto/domain';
-import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
+import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
     AppModeService,
     Column,
@@ -52,7 +53,12 @@ import {
     UpdateThriftDialogComponent,
 } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { createDomainObjectColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
+import {
+    createDomainObjectColumn,
+    createPredicateColumn,
+    formatPredicate,
+    getPredicateBoolean,
+} from '~/utils';
 
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
@@ -87,6 +93,7 @@ import { DndCardsComponent } from './components/dnd-cards.component';
         PageLayoutModule,
         DndCardsComponent,
         MatTooltipModule,
+        MatSlideToggleModule,
     ],
 })
 export class CandidatesComponent {
@@ -101,6 +108,7 @@ export class CandidatesComponent {
     private destroyRef = inject(DestroyRef);
     protected appMode = inject(AppModeService);
     protected domainObjectsStoreService = inject(DomainObjectsStoreService);
+    private injector = inject(Injector);
 
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
@@ -113,13 +121,30 @@ export class CandidatesComponent {
 
     candidateGroups$ = combineLatest([
         this.candidates$,
-        this.domainObjectsStoreService.getLimitedObjects('terminal').value$,
+        this.candidates$.pipe(
+            switchMap((candidates) =>
+                this.domainService.get(
+                    candidates.map((c) => ({ terminal: { id: c.terminal.id } })),
+                ),
+            ),
+        ),
+        this.routingRulesType$,
     ]).pipe(
-        map(([candidates, terminals]) => {
-            const groups = candidates.reduce((groups, candidate) => {
+        map(([candidates, terminals, type]) => {
+            const groups = candidates.reduce((groups, candidate, idx) => {
+                const terminal = terminals.find(
+                    (t) => t.object.terminal.ref.id === candidate.terminal.id,
+                );
+                const terms = terminal?.object?.terminal?.data?.terms;
                 const newItem = {
+                    idx,
                     candidate,
-                    terminal: terminals.find((t) => t.ref.terminal.id === candidate.terminal.id),
+                    terminal,
+                    globalAllow: formatPredicate(
+                        type === RoutingRulesType.Payment
+                            ? terms?.payments?.global_allow
+                            : terms?.wallet?.withdrawals?.global_allow,
+                    ),
                 };
                 if (groups.has(candidate.priority)) {
                     groups.get(candidate.priority)?.push(newItem);
@@ -127,7 +152,7 @@ export class CandidatesComponent {
                     groups.set(candidate.priority, [newItem]);
                 }
                 return groups;
-            }, new Map<number, { candidate: RoutingCandidate; terminal: LimitedVersionedObject }[]>());
+            }, new Map<number, { idx: number; candidate: RoutingCandidate; terminal: VersionedObject; globalAllow: string }[]>());
             return Array.from(groups.values()).map((group) => {
                 const sum = group.reduce((acc, item) => acc + (item.candidate.weight || 0), 0);
                 return group.map((item) => {
@@ -359,11 +384,13 @@ export class CandidatesComponent {
     }
 
     toggleAllow(candidateIdx: number) {
-        this.routingRulesetService.refID$
-            .pipe(first(), takeUntilDestroyed(this.destroyRef))
-            .subscribe((refId) => {
-                changeCandidatesAllowed([{ refId, candidateIdx }]);
-            });
+        runInInjectionContext(this.injector, () =>
+            this.routingRulesetService.refID$
+                .pipe(first(), takeUntilDestroyed(this.destroyRef))
+                .subscribe((refId) => {
+                    changeCandidatesAllowed([{ refId, candidateIdx }]);
+                }),
+        );
     }
 
     removeRule(idx: number) {
