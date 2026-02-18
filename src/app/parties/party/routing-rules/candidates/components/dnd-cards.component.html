@@ -24,13 +24,13 @@
             @for (item of row; track item) {
                 <mat-card
                     [class.disabled]="item.disabled"
-                    [style.flex-basis]="'max(' + (item.width || 0) + '%, 15%)'"
+                    [style.flex-basis]="(item.width || 0) + '%'"
                     appearance="outlined"
                     cdkDrag
-                    class="cursor-move flex-1 min-w-[200px]"
+                    class="cursor-move flex-1 min-w-[225px]"
                 >
                     <mat-card-content class="h-full">
-                        <div class="content overflow-auto h-full">
+                        <div class="content h-full">
                             <ng-container
                                 [ngTemplateOutlet]="cardTpl()"
                                 [ngTemplateOutletContext]="{ $implicit: item.value }"

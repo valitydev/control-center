@@ -35,13 +35,18 @@
                         >
                             <div class="flex gap-2 w-full justify-between">
                                 <div
-                                    [matTooltip]="item.candidate.terminal.id"
+                                    [matTooltip]="
+                                        '#' +
+                                        item.candidate.terminal.id +
+                                        ': ' +
+                                        item.terminal?.object?.terminal?.data?.name
+                                    "
                                     class="min-w-0 truncate"
                                 >
                                     {{ item.terminal?.object?.terminal?.data?.name }}
                                 </div>
                                 <div
-                                    [matTooltip]="item.candidate.weight"
+                                    [matTooltip]="'Weight: ' + item.candidate.weight"
                                     class="text-foreground-muted"
                                 >
                                     {{ item.weightPercent }}%
