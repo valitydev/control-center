@@ -1,6 +1,6 @@
 import { isNil, upperFirst } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { Observable, combineLatest, filter } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, filter, of } from 'rxjs';
 import { first, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
@@ -66,7 +66,7 @@ import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { CandidatesService } from './candidates.service';
-import { DndCardsComponent } from './components/dnd-cards.component';
+import { DndCardsComponent, Item } from './components/dnd-cards.component';
 
 function getAllowStr(predicate: Predicate, hasTrueFalse = false): string {
     const allowed = formatPredicate(predicate).toLowerCase();
@@ -75,6 +75,14 @@ function getAllowStr(predicate: Predicate, hasTrueFalse = false): string {
     return allowed;
 }
 
+interface Row {
+    idx: number;
+    candidate: RoutingCandidate;
+    terminal: VersionedObject;
+    allowed: boolean;
+    globalAllow: boolean;
+    fullAllowedStr: string;
+}
 @Component({
     templateUrl: 'candidates.component.html',
     providers: [CandidatesService],
@@ -118,6 +126,8 @@ export class CandidatesComponent {
     protected domainObjectsStoreService = inject(DomainObjectsStoreService);
     private injector = inject(Injector);
 
+    private updateCandidateGroups$ = new BehaviorSubject<void>(undefined);
+
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
     partyRulesetRefID$ = this.routingRulesetService.partyRulesetRefID$;
@@ -127,7 +137,7 @@ export class CandidatesComponent {
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.routingRulesStoreService.isLoading$;
 
-    candidateGroups$ = combineLatest([
+    candidateGroups$: Observable<Item<Row>[][]> = combineLatest([
         this.candidates$,
         this.candidates$.pipe(
             switchMap((candidates) =>
@@ -137,55 +147,43 @@ export class CandidatesComponent {
             ),
         ),
         this.routingRulesType$,
+        this.updateCandidateGroups$,
     ]).pipe(
         map(([candidates, terminals, type]) => {
-            const groups = candidates.reduce(
-                (groups, candidate, idx) => {
-                    const terminal = terminals.find(
-                        (t) => t.object.terminal.ref.id === candidate.terminal.id,
-                    );
-                    const terms = terminal?.object?.terminal?.data?.terms;
-                    const globalAllowPredicate =
-                        type === RoutingRulesType.Payment
-                            ? terms?.payments?.global_allow
-                            : terms?.wallet?.withdrawals?.global_allow;
-                    const newItem = {
-                        idx,
-                        candidate,
-                        terminal,
+            const groups = candidates.reduce((groups, candidate, idx) => {
+                const terminal = terminals.find(
+                    (t) => t.object.terminal.ref.id === candidate.terminal.id,
+                );
+                const terms = terminal?.object?.terminal?.data?.terms;
+                const globalAllowPredicate =
+                    type === RoutingRulesType.Payment
+                        ? terms?.payments?.global_allow
+                        : terms?.wallet?.withdrawals?.global_allow;
+                const newItem = {
+                    idx,
+                    candidate,
+                    terminal,
 
-                        allowed: getPredicateBoolean(candidate.allowed),
-                        globalAllow: getPredicateBoolean(globalAllowPredicate),
+                    allowed: getPredicateBoolean(candidate.allowed),
+                    globalAllow: getPredicateBoolean(globalAllowPredicate),
 
-                        fullAllowedStr: [
-                            upperFirst(
-                                getAllowStr(candidate.allowed, !!getAllowStr(globalAllowPredicate)),
-                            ),
-                            getAllowStr(globalAllowPredicate) &&
-                                `(Global ${upperFirst(getAllowStr(globalAllowPredicate))})`,
-                        ]
-                            .filter(Boolean)
-                            .join(' '),
-                    };
-                    if (groups.has(candidate.priority)) {
-                        groups.get(candidate.priority)?.push(newItem);
-                    } else {
-                        groups.set(candidate.priority, [newItem]);
-                    }
-                    return groups;
-                },
-                new Map<
-                    number,
-                    {
-                        idx: number;
-                        candidate: RoutingCandidate;
-                        terminal: VersionedObject;
-                        allowed: boolean;
-                        globalAllow: boolean;
-                        fullAllowedStr: string;
-                    }[]
-                >(),
-            );
+                    fullAllowedStr: [
+                        upperFirst(
+                            getAllowStr(candidate.allowed, !!getAllowStr(globalAllowPredicate)),
+                        ),
+                        getAllowStr(globalAllowPredicate) &&
+                            `(Global ${upperFirst(getAllowStr(globalAllowPredicate))})`,
+                    ]
+                        .filter(Boolean)
+                        .join(' '),
+                };
+                if (groups.has(candidate.priority)) {
+                    groups.get(candidate.priority)?.push(newItem);
+                } else {
+                    groups.set(candidate.priority, [newItem]);
+                }
+                return groups;
+            }, new Map<number, Row[]>());
             return Array.from(groups.values())
                 .map((group) => {
                     const sum = group.reduce(
@@ -491,6 +489,57 @@ export class CandidatesComponent {
                 next: () => {
                     this.log.successOperation('update', 'candidates');
                     this.routingRulesStoreService.reload();
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
+    }
+
+    cardDrop(newRows: Item<Row>[][]) {
+        const maxPriority = newRows.length;
+        const newCandidates: RoutingCandidate[] = newRows
+            .map((group, idx) => {
+                const priority = maxPriority - idx;
+                return group.map((item) => ({
+                    ...item.value.candidate,
+                    priority,
+                }));
+            })
+            .flat();
+        this.candidates$
+            .pipe(
+                first(),
+                switchMap((candidates) =>
+                    this.dialog
+                        .open(UpdateThriftDialogComponent, {
+                            object: newCandidates,
+                            prevObject: candidates,
+                        })
+                        .afterClosed(),
+                ),
+                withLatestFrom(this.routingRulesetService.ruleset$),
+                switchMap(([res, ruleset]) => {
+                    if (res.status === DialogResponseStatus.Success) {
+                        const newRuleset = cloneDeep(ruleset);
+                        newRuleset.data.decisions.candidates = res.data
+                            .object as RoutingCandidate[];
+                        return this.routingRulesStoreService.commit([
+                            { update: { object: { routing_rules: newRuleset } } },
+                        ]);
+                    } else {
+                        return of(null);
+                    }
+                }),
+            )
+            .subscribe({
+                next: (res) => {
+                    if (res) {
+                        this.log.successOperation('update', 'candidates');
+                        this.routingRulesStoreService.reload();
+                    } else {
+                        this.updateCandidateGroups$.next();
+                    }
                 },
                 error: (err) => {
                     this.log.error(err);

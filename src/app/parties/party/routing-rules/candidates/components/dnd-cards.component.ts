@@ -7,7 +7,15 @@ import {
     transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { Component, TemplateRef, contentChild, effect, model, untracked } from '@angular/core';
+import {
+    Component,
+    TemplateRef,
+    contentChild,
+    effect,
+    model,
+    output,
+    untracked,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 
 export interface Item<T> {
@@ -34,6 +42,7 @@ export class DndCardsComponent<T = unknown> {
     cardTpl = contentChild.required<TemplateRef<{ $implicit: T }>>('card');
     isDragging = false;
     zoneData: Item<T>[] = [];
+    dropped = output<Item<T>[][]>();
 
     constructor() {
         effect(() => {
@@ -57,6 +66,7 @@ export class DndCardsComponent<T = unknown> {
             );
         }
         this.rows.set(rows.filter((r) => r.length > 0).map((r) => this.sortRow(r)));
+        this.drop();
     }
 
     dropInZone(event: CdkDragDrop<Item<T>[]>, insertIndex: number) {
@@ -71,6 +81,11 @@ export class DndCardsComponent<T = unknown> {
         const filtered = rows.filter((r) => r.length > 0);
         filtered.splice(adjusted, 0, [item]);
         this.rows.set(filtered.map((r) => this.sortRow(r)));
+        this.drop();
+    }
+
+    drop() {
+        this.dropped.emit(this.rows());
     }
 
     private sortRow(row: Item<T>[]): Item<T>[] {

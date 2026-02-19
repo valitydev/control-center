@@ -27,7 +27,7 @@
         ></v-table>
     } @else {
         @if (candidateGroups$ | async; as groups) {
-            <cc-dnd-cards [rows]="groups">
+            <cc-dnd-cards [rows]="groups" (dropped)="cardDrop($event)">
                 <ng-template #card let-item>
                     @if (!!item?.terminal) {
                         <div
