@@ -67,13 +67,18 @@
                                     class="min-w-0"
                                     (change)="toggleAllow(item.idx)"
                                 ></mat-slide-toggle>
-                                <button [matMenuTriggerFor]="menu" mat-icon-button>
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>
+                                <div class="flex">
+                                    <button mat-icon-button (click)="edit(item.idx)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button [matMenuTriggerFor]="menu" mat-icon-button>
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </div>
                                 <mat-menu #menu="matMenu">
                                     <button mat-menu-item (click)="editRule(item.idx)">
                                         <mat-icon>edit</mat-icon>
-                                        <span>Edit</span>
+                                        <span>Advanced edit</span>
                                     </button>
                                     <button mat-menu-item (click)="duplicateRule(item.idx)">
                                         <mat-icon>content_copy</mat-icon>

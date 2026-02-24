@@ -38,6 +38,7 @@ import {
     TableModule,
     correctPriorities,
     createMenuColumn,
+    switchCombineWith,
 } from '@vality/matez';
 import { ThriftViewerModule, toJson } from '@vality/ng-thrift';
 
@@ -66,7 +67,8 @@ import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
 import { CandidatesService } from './candidates.service';
-import { DndCardsComponent, Item } from './components/dnd-cards.component';
+import { DndCardsComponent, Item } from './components/dnd-cards/dnd-cards.component';
+import { EditCandidateDialogComponent } from './components/edit-candidate-dialog/edit-candidate-dialog.component';
 
 function getAllowStr(predicate: Predicate, hasTrueFalse = false): string {
     const allowed = formatPredicate(predicate).toLowerCase();
@@ -419,6 +421,51 @@ export class CandidatesComponent {
                     if (res.status === DialogResponseStatus.Success) {
                         this.routingRulesStoreService.reload();
                         this.log.successOperation('create', 'Routing rule');
+                    }
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
+    }
+
+    edit(idx: number) {
+        this.routingRulesetService.refID$
+            .pipe(
+                switchCombineWith((refId) => [
+                    this.routingRulesService.getCandidate(refId, idx),
+                    this.candidates$,
+                ]),
+                first(),
+                switchCombineWith(([_, candidate, candidates]) => [
+                    this.dialog
+                        .open(EditCandidateDialogComponent, {
+                            candidate,
+                            othersWeight: candidates.reduce(
+                                (acc, c, cIdx) =>
+                                    acc +
+                                    (c.priority === candidate.priority && idx !== cIdx
+                                        ? c.weight || 0
+                                        : 0),
+                                0,
+                            ),
+                        })
+                        .afterClosed(),
+                ]),
+                switchMap(([[refId], res]) =>
+                    res.status === DialogResponseStatus.Success
+                        ? this.routingRulesService.updateRules([
+                              { refId, candidateIdx: idx, newCandidate: res.data },
+                          ])
+                        : of(null),
+                ),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe({
+                next: (res) => {
+                    if (res) {
+                        this.routingRulesStoreService.reload();
+                        this.log.successOperation('update', 'Candidate');
                     }
                 },
                 error: (err) => {
