@@ -1,6 +1,7 @@
+import { first, timer } from 'rxjs';
+
 import { Component, EventEmitter, Input, OnInit, Output, booleanAttribute } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
-import { timer, filter, take, first } from 'rxjs';
 
 import { FormControlSuperclass, createControlProviders } from '../../../utils';
 import { Option } from '../types';
