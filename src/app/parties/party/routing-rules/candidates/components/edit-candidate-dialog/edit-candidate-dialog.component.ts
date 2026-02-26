@@ -16,11 +16,24 @@ import {
     getValueChanges,
 } from '@vality/matez';
 
+import {
+    DomainObjectFieldComponent,
+    DomainThriftFormComponent,
+} from '~/components/thrift-api-crud';
+
 @Component({
     selector: 'cc-edit-candidate-dialog',
     templateUrl: 'edit-candidate-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, DialogModule, ReactiveFormsModule, MatButtonModule, InputFieldModule],
+    imports: [
+        CommonModule,
+        DialogModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        InputFieldModule,
+        DomainObjectFieldComponent,
+        DomainThriftFormComponent,
+    ],
 })
 export class EditCandidateDialogComponent
     extends DialogSuperclass<
@@ -34,9 +47,11 @@ export class EditCandidateDialogComponent
     private dr = inject(DestroyRef);
 
     form = this.fb.nonNullable.group({
+        terminal: this.dialogData.candidate.terminal.id,
         description: this.dialogData.candidate.description,
         weight: this.dialogData.candidate.weight,
         weightPercent: this.calcPercent(this.dialogData.candidate.weight),
+        allowed: this.dialogData.candidate.allowed,
     });
     percent$ = getValueChanges(this.form.controls.weight).pipe(
         distinctUntilChanged(),
@@ -63,8 +78,12 @@ export class EditCandidateDialogComponent
     }
 
     confirm() {
-        const value = getValue(this.form);
-        this.closeWithSuccess({ ...this.dialogData.candidate, ...value });
+        const { terminal, ...value } = getValue(this.form);
+        this.closeWithSuccess({
+            ...this.dialogData.candidate,
+            terminal: { id: terminal },
+            ...value,
+        });
     }
 
     private calcPercent(weight: number): number {

@@ -45,7 +45,9 @@ export class DomainObjectFieldComponent<T extends keyof Reference> extends FormC
             objs.map((obj) => ({
                 value: getReferenceId(obj.ref),
                 label: obj.name || `#${getReferenceId(obj.ref)}`,
-                description: obj.description,
+                description: [`#${getReferenceId(obj.ref)}`, obj.description]
+                    .filter(Boolean)
+                    .join(' - '),
             })),
         ),
     );
