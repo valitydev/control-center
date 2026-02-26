@@ -31,13 +31,22 @@
                 >
                     {{ username().slice(0, 2).toUpperCase() }}
                 </button>
-                <button
-                    [matMenuTriggerFor]="themeMenu"
-                    [matTooltip]="(themeService.theme() | titlecase) + ' theme'"
-                    mat-icon-button
-                >
-                    <mat-icon>{{ getThemeIcon() }}</mat-icon>
-                </button>
+                <div class="flex items-center">
+                    <button
+                        [matMenuTriggerFor]="themeMenu"
+                        [matTooltip]="(themeService.theme() | titlecase) + ' theme'"
+                        mat-icon-button
+                    >
+                        <mat-icon>{{ getThemeIcon() }}</mat-icon>
+                    </button>
+                    <button
+                        [matMenuTriggerFor]="modeMenu"
+                        [matTooltip]="(modeService.mode() | titlecase) + ' mode'"
+                        mat-icon-button
+                    >
+                        <mat-icon>{{ getModeIcon() }}</mat-icon>
+                    </button>
+                </div>
                 <mat-menu #themeMenu="matMenu">
                     <button mat-menu-item (click)="themeService.setTheme('light')">
                         <mat-icon>{{ getThemeIcon('light') }}</mat-icon>
@@ -56,6 +65,16 @@
                     <button mat-menu-item (click)="logout()">
                         <mat-icon>logout</mat-icon>
                         <span>Logout</span>
+                    </button>
+                </mat-menu>
+                <mat-menu #modeMenu="matMenu">
+                    <button mat-menu-item (click)="modeService.setMode('simple')">
+                        <mat-icon>{{ getModeIcon('simple') }}</mat-icon>
+                        <span>Simple</span>
+                    </button>
+                    <button mat-menu-item (click)="modeService.setMode('advanced')">
+                        <mat-icon>{{ getModeIcon('advanced') }}</mat-icon>
+                        <span>Advanced</span>
                     </button>
                 </mat-menu>
             </div>

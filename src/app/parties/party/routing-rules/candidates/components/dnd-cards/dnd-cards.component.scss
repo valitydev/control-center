@@ -1,0 +1,33 @@
+$v-gap: 22px;
+$insert-card-margin: 2px;
+
+.insert-zone {
+    min-height: $v-gap;
+}
+
+.cdk-drag-preview {
+    opacity: 0.8;
+}
+
+.cdk-drag-placeholder {
+    border-style: dashed;
+
+    .content {
+        visibility: hidden;
+    }
+
+    .insert-zone & {
+        $height: $v-gap - ($insert-card-margin * 2);
+
+        margin: $insert-card-margin 0;
+        height: $height;
+    }
+}
+
+.cdk-drag-animating {
+    transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.disabled {
+    background-color: var(--mat-sys-surface-variant);
+}

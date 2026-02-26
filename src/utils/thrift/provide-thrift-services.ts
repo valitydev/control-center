@@ -87,10 +87,8 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
             if (LOGGING.fullLogging) {
                 console.log('Arguments');
                 console.log(JSON.stringify(toJson(params.args), null, 2));
-
-                console.groupCollapsed('Headers');
-                console.table(params.headers);
-                console.groupEnd();
+                console.log('Headers');
+                console.log(params.headers);
             }
             console.groupEnd();
             return;
@@ -102,10 +100,8 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
                 console.log(JSON.stringify(toJson(params.args), null, 2));
                 console.log('Response');
                 console.log(JSON.stringify(toJson(params.response), null, 2));
-
-                console.groupCollapsed('Headers');
-                console.table(params.headers);
-                console.groupEnd();
+                console.log('Headers');
+                console.log(params.headers);
                 console.groupEnd();
             }
             return;

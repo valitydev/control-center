@@ -1,0 +1,101 @@
+<cc-page-layout
+    [id]="(ruleset$ | async)?.ref?.id"
+    [title]="((routingRulesType$ | async) === 'payment' ? 'Shop' : 'Wallet') + ' Routing Rules'"
+    [upLink]="[
+        '/parties/' +
+            (partyID$ | async) +
+            '/routing-rules/' +
+            (routingRulesType$ | async) +
+            '/' +
+            (partyRulesetRefID$ | async),
+    ]"
+    fullHeight
+    (idLinkClick)="openRefId()"
+>
+    <cc-page-layout-actions>
+        <button mat-flat-button (click)="addRule()">Add</button>
+    </cc-page-layout-actions>
+    @if (appMode.isAdvanced()) {
+        <v-table
+            [(sort)]="sort"
+            [columns]="columns"
+            [data]="(candidates$ | async) || []"
+            [progress]="isLoading$ | async"
+            [rowDragDrop]="['priority']"
+            standaloneFilter
+            (rowDropped)="drop($any($event))"
+        ></v-table>
+    } @else {
+        @if (candidateGroups$ | async; as groups) {
+            <cc-dnd-cards [rows]="groups" (dropped)="cardDrop($event)">
+                <ng-template #card let-item>
+                    @if (!!item?.terminal) {
+                        <div
+                            class="flex flex-col gap-2 items-start w-full min-w-0 h-full justify-between"
+                        >
+                            <div class="flex gap-2 w-full justify-between">
+                                <div
+                                    [matTooltip]="
+                                        '#' +
+                                        item.candidate.terminal.id +
+                                        ': ' +
+                                        item.terminal?.object?.terminal?.data?.name
+                                    "
+                                    class="min-w-0 truncate"
+                                >
+                                    {{ item.terminal?.object?.terminal?.data?.name }}
+                                </div>
+                                <div
+                                    [matTooltip]="'Weight: ' + item.candidate.weight"
+                                    class="text-foreground-muted"
+                                >
+                                    {{ item.weightPercent }}%
+                                </div>
+                            </div>
+                            @if (!!item?.fullAllowedStr) {
+                                <div
+                                    [matTooltip]="item.fullAllowedStr"
+                                    class="truncate text-foreground-muted w-full min-w-0"
+                                >
+                                    {{ item.fullAllowedStr }}
+                                </div>
+                            }
+                            <div class="flex items-center justify-between w-full gap-2">
+                                <mat-slide-toggle
+                                    [checked]="item.allowed"
+                                    [matTooltip]="item.fullAllowedStr"
+                                    class="min-w-0"
+                                    (change)="toggleAllow(item.idx)"
+                                ></mat-slide-toggle>
+                                <div class="flex">
+                                    <button mat-icon-button (click)="edit(item.idx)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button [matMenuTriggerFor]="menu" mat-icon-button>
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                </div>
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item (click)="editRule(item.idx)">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Advanced edit</span>
+                                    </button>
+                                    <button mat-menu-item (click)="duplicateRule(item.idx)">
+                                        <mat-icon>content_copy</mat-icon>
+                                        <span>Duplicate</span>
+                                    </button>
+                                    <button mat-menu-item (click)="removeRule(item.idx)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Remove</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                    } @else {
+                        Loading...
+                    }
+                </ng-template>
+            </cc-dnd-cards>
+        }
+    }
+</cc-page-layout>

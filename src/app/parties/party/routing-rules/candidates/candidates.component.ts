@@ -1,48 +1,122 @@
+import { isNil, upperFirst } from 'lodash-es';
 import cloneDeep from 'lodash-es/cloneDeep';
-import { Observable, combineLatest, filter } from 'rxjs';
-import { first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest, filter, of } from 'rxjs';
+import { first, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
-import { Component, DestroyRef, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Sort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import { RoutingCandidate } from '@vality/domain-proto/domain';
+import { Predicate, RoutingCandidate } from '@vality/domain-proto/domain';
+import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
+    AppModeService,
     Column,
+    DialogModule,
     DialogResponseStatus,
     DialogService,
     DragDrop,
     NotifyLogService,
+    TableModule,
     correctPriorities,
     createMenuColumn,
+    switchCombineWith,
 } from '@vality/matez';
-import { toJson } from '@vality/ng-thrift';
+import { ThriftViewerModule, toJson } from '@vality/ng-thrift';
 
-import { DomainService, RoutingRulesStoreService } from '~/api/domain-config';
+import {
+    DomainObjectsStoreService,
+    DomainService,
+    RoutingRulesStoreService,
+} from '~/api/domain-config';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
+import { PageLayoutModule } from '~/components/page-layout';
 import { SidenavInfoService } from '~/components/sidenav-info';
 import {
     DomainThriftFormDialogComponent,
     UpdateThriftDialogComponent,
 } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { createDomainObjectColumn, createPredicateColumn, getPredicateBoolean } from '~/utils';
+import {
+    createDomainObjectColumn,
+    createPredicateColumn,
+    formatPredicate,
+    getPredicateBoolean,
+} from '~/utils';
 
 import { RoutingRulesService } from '../services/routing-rules';
 import { RoutingRulesType } from '../types/routing-rules-type';
 import { changeCandidatesAllowed } from '../utils/toggle-candidate-allowed';
 
-import { RoutingRulesetService } from './routing-ruleset.service';
+import { CandidatesService } from './candidates.service';
+import { DndCardsComponent, Item } from './components/dnd-cards/dnd-cards.component';
+import { EditCandidateDialogComponent } from './components/edit-candidate-dialog/edit-candidate-dialog.component';
 
+function getAllowStr(predicate: Predicate, hasTrueFalse = false): string {
+    const allowed = formatPredicate(predicate).toLowerCase();
+    if (isNil(predicate) || allowed === 'true') return hasTrueFalse ? 'allowed' : '';
+    if (allowed === 'false') return hasTrueFalse ? 'denied' : '';
+    return allowed;
+}
+
+interface Row {
+    idx: number;
+    candidate: RoutingCandidate;
+    terminal: VersionedObject;
+    allowed: boolean;
+    globalAllow: boolean;
+    fullAllowedStr: string;
+}
 @Component({
-    templateUrl: 'routing-ruleset.component.html',
-    providers: [RoutingRulesetService],
-    standalone: false,
+    templateUrl: 'candidates.component.html',
+    providers: [CandidatesService],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatDividerModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        RouterModule,
+        MatIconModule,
+        MatMenuModule,
+        MatPaginatorModule,
+        MatCardModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatExpansionModule,
+        MatAutocompleteModule,
+        TableModule,
+        ThriftViewerModule,
+        DialogModule,
+        PageLayoutModule,
+        DndCardsComponent,
+        MatTooltipModule,
+        MatSlideToggleModule,
+    ],
 })
-export class RoutingRulesetComponent {
+export class CandidatesComponent {
     private dialog = inject(DialogService);
-    private routingRulesetService = inject(RoutingRulesetService);
+    private routingRulesetService = inject(CandidatesService);
     private routingRulesService = inject(RoutingRulesService);
     private routingRulesStoreService = inject(RoutingRulesStoreService);
     private domainService = inject(DomainService);
@@ -50,6 +124,11 @@ export class RoutingRulesetComponent {
     private route = inject(ActivatedRoute);
     private sidenavInfoService = inject(SidenavInfoService);
     private destroyRef = inject(DestroyRef);
+    protected appMode = inject(AppModeService);
+    protected domainObjectsStoreService = inject(DomainObjectsStoreService);
+    private injector = inject(Injector);
+
+    private updateCandidateGroups$ = new BehaviorSubject<void>(undefined);
 
     ruleset$ = this.routingRulesetService.ruleset$;
     partyID$ = this.routingRulesetService.partyID$;
@@ -59,6 +138,88 @@ export class RoutingRulesetComponent {
     ) as Observable<RoutingRulesType>;
     candidates$ = this.routingRulesetService.ruleset$.pipe(map((r) => r.data.decisions.candidates));
     isLoading$ = this.routingRulesStoreService.isLoading$;
+
+    candidateGroups$: Observable<Item<Row>[][]> = combineLatest([
+        this.candidates$,
+        this.candidates$.pipe(
+            switchMap((candidates) =>
+                this.domainService.get(
+                    candidates.map((c) => ({ terminal: { id: c.terminal.id } })),
+                ),
+            ),
+        ),
+        this.routingRulesType$,
+        this.updateCandidateGroups$,
+    ]).pipe(
+        map(([candidates, terminals, type]) => {
+            const groups = candidates.reduce((groups, candidate, idx) => {
+                const terminal = terminals.find(
+                    (t) => t.object.terminal.ref.id === candidate.terminal.id,
+                );
+                const terms = terminal?.object?.terminal?.data?.terms;
+                const globalAllowPredicate =
+                    type === RoutingRulesType.Payment
+                        ? terms?.payments?.global_allow
+                        : terms?.wallet?.withdrawals?.global_allow;
+                const newItem = {
+                    idx,
+                    candidate,
+                    terminal,
+
+                    allowed: getPredicateBoolean(candidate.allowed),
+                    globalAllow: getPredicateBoolean(globalAllowPredicate),
+
+                    fullAllowedStr: [
+                        upperFirst(
+                            getAllowStr(candidate.allowed, !!getAllowStr(globalAllowPredicate)),
+                        ),
+                        getAllowStr(globalAllowPredicate) &&
+                            `(Global ${upperFirst(getAllowStr(globalAllowPredicate))})`,
+                    ]
+                        .filter(Boolean)
+                        .join(' '),
+                };
+                if (groups.has(candidate.priority)) {
+                    groups.get(candidate.priority)?.push(newItem);
+                } else {
+                    groups.set(candidate.priority, [newItem]);
+                }
+                return groups;
+            }, new Map<number, Row[]>());
+            return Array.from(groups.values())
+                .map((group) => {
+                    const sum = group.reduce(
+                        (acc, item) =>
+                            acc + (item.candidate.allowed ? item.candidate.weight || 0 : 0),
+                        0,
+                    );
+                    const allowedCount = group.filter((item) => item.allowed).length;
+                    return group.map((item) => {
+                        const weight = item.candidate.weight || 0;
+                        let weightPercent = 0;
+                        if (item.allowed === false) {
+                            weightPercent = 0;
+                        } else if (allowedCount === 1) {
+                            weightPercent = 100;
+                        } else if (sum > 0) {
+                            weightPercent = Math.round((weight / sum) * 100);
+                        } else {
+                            weightPercent = 0;
+                        }
+                        return {
+                            value: { ...item, weightPercent },
+                            width: weightPercent,
+                            disabled: item.globalAllow === false || item.allowed === false,
+                        };
+                    });
+                })
+                .sort(
+                    (a, b) =>
+                        (b[0].value.candidate.priority || 0) - (a[0].value.candidate.priority || 0),
+                );
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     columns: Column<RoutingCandidate>[] = [
         { field: 'priority' },
@@ -268,12 +429,59 @@ export class RoutingRulesetComponent {
             });
     }
 
-    toggleAllow(candidateIdx: number) {
+    edit(idx: number) {
         this.routingRulesetService.refID$
-            .pipe(first(), takeUntilDestroyed(this.destroyRef))
-            .subscribe((refId) => {
-                changeCandidatesAllowed([{ refId, candidateIdx }]);
+            .pipe(
+                switchCombineWith((refId) => [
+                    this.routingRulesService.getCandidate(refId, idx),
+                    this.candidates$,
+                ]),
+                first(),
+                switchCombineWith(([_, candidate, candidates]) => [
+                    this.dialog
+                        .open(EditCandidateDialogComponent, {
+                            candidate,
+                            othersWeight: candidates.reduce(
+                                (acc, c, cIdx) =>
+                                    acc +
+                                    (c.priority === candidate.priority && idx !== cIdx
+                                        ? c.weight || 0
+                                        : 0),
+                                0,
+                            ),
+                        })
+                        .afterClosed(),
+                ]),
+                switchMap(([[refId], res]) =>
+                    res.status === DialogResponseStatus.Success
+                        ? this.routingRulesService.updateRules([
+                              { refId, candidateIdx: idx, newCandidate: res.data },
+                          ])
+                        : of(null),
+                ),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe({
+                next: (res) => {
+                    if (res) {
+                        this.routingRulesStoreService.reload();
+                        this.log.successOperation('update', 'Candidate');
+                    }
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
             });
+    }
+
+    toggleAllow(candidateIdx: number) {
+        runInInjectionContext(this.injector, () =>
+            this.routingRulesetService.refID$
+                .pipe(first(), takeUntilDestroyed(this.destroyRef))
+                .subscribe((refId) => {
+                    changeCandidatesAllowed([{ refId, candidateIdx }]);
+                }),
+        );
     }
 
     removeRule(idx: number) {
@@ -328,6 +536,57 @@ export class RoutingRulesetComponent {
                 next: () => {
                     this.log.successOperation('update', 'candidates');
                     this.routingRulesStoreService.reload();
+                },
+                error: (err) => {
+                    this.log.error(err);
+                },
+            });
+    }
+
+    cardDrop(newRows: Item<Row>[][]) {
+        const maxPriority = newRows.length;
+        const newCandidates: RoutingCandidate[] = newRows
+            .map((group, idx) => {
+                const priority = maxPriority - idx;
+                return group.map((item) => ({
+                    ...item.value.candidate,
+                    priority,
+                }));
+            })
+            .flat();
+        this.candidates$
+            .pipe(
+                first(),
+                switchMap((candidates) =>
+                    this.dialog
+                        .open(UpdateThriftDialogComponent, {
+                            object: newCandidates,
+                            prevObject: candidates,
+                        })
+                        .afterClosed(),
+                ),
+                withLatestFrom(this.routingRulesetService.ruleset$),
+                switchMap(([res, ruleset]) => {
+                    if (res.status === DialogResponseStatus.Success) {
+                        const newRuleset = cloneDeep(ruleset);
+                        newRuleset.data.decisions.candidates = res.data
+                            .object as RoutingCandidate[];
+                        return this.routingRulesStoreService.commit([
+                            { update: { object: { routing_rules: newRuleset } } },
+                        ]);
+                    } else {
+                        return of(null);
+                    }
+                }),
+            )
+            .subscribe({
+                next: (res) => {
+                    if (res) {
+                        this.log.successOperation('update', 'candidates');
+                        this.routingRulesStoreService.reload();
+                    } else {
+                        this.updateCandidateGroups$.next();
+                    }
                 },
                 error: (err) => {
                     this.log.error(err);

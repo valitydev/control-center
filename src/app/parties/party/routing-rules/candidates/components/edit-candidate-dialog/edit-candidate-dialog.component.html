@@ -1,0 +1,31 @@
+<v-dialog title="Edit Candidate">
+    <div [formGroup]="form" class="flex flex-col gap-4">
+        <cc-domain-object-field formControlName="terminal" name="terminal"></cc-domain-object-field>
+        <v-input-field formControlName="description" label="Description"></v-input-field>
+        <div class="flex gap-2">
+            <v-input-field
+                [hintText]="'' + (weight$ | async)"
+                class="flex-1"
+                formControlName="weight"
+                label="Weight"
+                type="number"
+            ></v-input-field>
+            <v-input-field
+                class="flex-1"
+                formControlName="weightPercent"
+                label="Percent"
+                type="number"
+            ></v-input-field>
+        </div>
+        <cc-domain-thrift-editor
+            formControlName="allowed"
+            label="Allowed"
+            namespace="domain"
+            noToolbar
+            type="Predicate"
+        ></cc-domain-thrift-editor>
+    </div>
+    <v-dialog-actions>
+        <button [disabled]="form.invalid" mat-flat-button (click)="confirm()">Save</button>
+    </v-dialog-actions>
+</v-dialog>

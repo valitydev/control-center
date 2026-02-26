@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
+import { first, timer } from 'rxjs';
+
+import { Component, EventEmitter, Input, OnInit, Output, booleanAttribute } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 import { FormControlSuperclass, createControlProviders } from '../../../utils';
@@ -13,7 +15,10 @@ import { getHintText } from '../utils/get-hint-text';
     providers: createControlProviders(() => SelectFieldComponent),
     standalone: false,
 })
-export class SelectFieldComponent<T = unknown> extends FormControlSuperclass<T[]> {
+export class SelectFieldComponent<T = unknown>
+    extends FormControlSuperclass<T[]>
+    implements OnInit
+{
     @Input() options: Option<T>[] = [];
     @Output() searchChange = new EventEmitter<string>();
 
@@ -31,6 +36,17 @@ export class SelectFieldComponent<T = unknown> extends FormControlSuperclass<T[]
     @Input() size?: 'small' | '';
 
     searchStr: string = '';
+
+    override ngOnInit() {
+        super.ngOnInit();
+        if (this.externalSearch) {
+            timer(0)
+                .pipe(first())
+                .subscribe(() => {
+                    this.searchChange.emit(String(this.control.value));
+                });
+        }
+    }
 
     get hintText() {
         return getHintText(
