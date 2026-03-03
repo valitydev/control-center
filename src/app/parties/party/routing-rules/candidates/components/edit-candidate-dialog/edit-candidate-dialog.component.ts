@@ -78,7 +78,7 @@ export class EditCandidateDialogComponent
     }
 
     confirm() {
-        const { terminal, ...value } = getValue(this.form);
+        const { terminal, weightPercent: _weightPercent, ...value } = getValue(this.form);
         this.closeWithSuccess({
             ...this.dialogData.candidate,
             terminal: { id: terminal },
