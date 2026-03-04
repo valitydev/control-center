@@ -429,33 +429,43 @@ export class CandidatesComponent {
             });
     }
 
-    edit(idx: number) {
+    edit(candidateIdx: number) {
         this.routingRulesetService.refID$
             .pipe(
                 switchCombineWith((refId) => [
-                    this.routingRulesService.getCandidate(refId, idx),
+                    this.routingRulesService.getCandidate(refId, candidateIdx),
                     this.candidates$,
                 ]),
                 first(),
-                switchCombineWith(([_, candidate, candidates]) => [
-                    this.dialog
-                        .open(EditCandidateDialogComponent, {
-                            candidate,
-                            othersWeight: candidates.reduce(
-                                (acc, c, cIdx) =>
-                                    acc +
-                                    (c.priority === candidate.priority && idx !== cIdx
-                                        ? c.weight || 0
-                                        : 0),
-                                0,
-                            ),
-                        })
-                        .afterClosed(),
-                ]),
-                switchMap(([[refId], res]) =>
+                switchCombineWith(([_, candidate, candidates]) => {
+                    const others = candidates.filter(
+                        (c) => c !== candidate && c.priority === candidate.priority && c.allowed,
+                    );
+                    const ids = others.map((c) => candidates.findIndex((cd) => cd === c));
+                    return [
+                        this.dialog
+                            .open(EditCandidateDialogComponent, {
+                                candidate,
+                                others,
+                            })
+                            .afterClosed(),
+                        ids,
+                        others,
+                    ];
+                }),
+                switchMap(([[refId], res, ids]) =>
                     res.status === DialogResponseStatus.Success
                         ? this.routingRulesService.updateRules([
-                              { refId, candidateIdx: idx, newCandidate: res.data },
+                              {
+                                  refId,
+                                  candidateIdx: candidateIdx,
+                                  newCandidate: res.data.candidate,
+                              },
+                              ...res.data.others.map((newCandidate, idx) => ({
+                                  refId,
+                                  candidateIdx: ids[idx],
+                                  newCandidate,
+                              })),
                           ])
                         : of(null),
                 ),

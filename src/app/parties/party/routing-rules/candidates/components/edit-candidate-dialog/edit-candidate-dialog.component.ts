@@ -1,6 +1,3 @@
-import { round } from 'lodash-es';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs';
-
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -38,67 +35,69 @@ import {
 export class EditCandidateDialogComponent
     extends DialogSuperclass<
         EditCandidateDialogComponent,
-        { candidate: RoutingCandidate; othersWeight: number },
-        RoutingCandidate
+        { candidate: RoutingCandidate; others: RoutingCandidate[] },
+        { candidate: RoutingCandidate; others: RoutingCandidate[] }
     >
     implements OnInit
 {
     private fb = inject(FormBuilder);
     private dr = inject(DestroyRef);
+    private othersWeight = this.dialogData.others.reduce((acc, c) => acc + (c.weight || 0), 0);
 
     form = this.fb.nonNullable.group({
         terminal: this.dialogData.candidate.terminal.id,
         description: this.dialogData.candidate.description,
         weight: this.dialogData.candidate.weight,
-        weightPercent: this.calcPercent(this.dialogData.candidate.weight),
         allowed: this.dialogData.candidate.allowed,
     });
-    percent$ = getValueChanges(this.form.controls.weight).pipe(
-        distinctUntilChanged(),
-        map((weight) => this.calcPercent(Number(weight || 0))),
-        shareReplay({ bufferSize: 1, refCount: true }),
-    );
-    weight$ = getValueChanges(this.form.controls.weightPercent).pipe(
-        distinctUntilChanged(),
-        map((weightPercent) => this.calcWeight(Number(weightPercent || 0))),
-        shareReplay({ bufferSize: 1, refCount: true }),
-    );
+    weightPercentControl = this.fb.nonNullable.control<number | null>(null);
 
     ngOnInit() {
-        this.weight$.pipe(takeUntilDestroyed(this.dr)).subscribe((weight) => {
-            this.form.controls.weight.setValue(Math.round(weight), {
-                emitEvent: false,
+        getValueChanges(this.weightPercentControl)
+            .pipe(takeUntilDestroyed(this.dr))
+            .subscribe(() => {
+                this.form.controls.weight.setValue(null, {
+                    emitEvent: false,
+                });
             });
-        });
-        this.percent$.pipe(takeUntilDestroyed(this.dr)).subscribe((weightPercent) => {
-            this.form.controls.weightPercent.setValue(weightPercent, {
-                emitEvent: false,
+        getValueChanges(this.form.controls.weight)
+            .pipe(takeUntilDestroyed(this.dr))
+            .subscribe(() => {
+                this.weightPercentControl.setValue(null, {
+                    emitEvent: false,
+                });
             });
-        });
     }
 
     confirm() {
-        const { terminal, weightPercent: _weightPercent, ...value } = getValue(this.form);
+        const { terminal, weight, ...value } = getValue(this.form);
+        const percent = getValue(this.weightPercentControl);
+        const isPercent = !!percent;
+        const weightNum = isPercent ? Number(percent) : Number(weight || 0);
+
         this.closeWithSuccess({
-            ...this.dialogData.candidate,
-            terminal: { id: terminal },
-            ...value,
+            candidate: {
+                ...this.dialogData.candidate,
+                terminal: { id: terminal },
+                ...value,
+                weight: weightNum,
+            },
+            others: isPercent
+                ? this.dialogData.others.map((c) => ({
+                      ...c,
+                      weight:
+                          c.weight && this.othersWeight
+                              ? Math.round(
+                                    (c.weight / this.othersWeight) *
+                                        (this.othersWeight -
+                                            (weight || 0) +
+                                            (percent
+                                                ? Math.round((percent / 100) * this.othersWeight)
+                                                : 0)),
+                                )
+                              : 0,
+                  }))
+                : this.dialogData.others,
         });
-    }
-
-    private calcPercent(weight: number): number {
-        const res = this.dialogData.othersWeight
-            ? (weight / (this.dialogData.othersWeight + weight)) * 100
-            : 100;
-        return round(Math.max(Math.min(res, 100), 0), 2);
-    }
-
-    private calcWeight(weightPercent: number): number {
-        const res = this.dialogData.othersWeight
-            ? (weightPercent * this.dialogData.othersWeight) / (100 - weightPercent)
-            : weightPercent
-              ? 1
-              : 0;
-        return round(Math.max(Math.min(res, 1_000_000), 0), 2);
     }
 }
