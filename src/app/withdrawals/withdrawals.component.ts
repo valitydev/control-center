@@ -45,6 +45,7 @@ interface WithdrawalsForm {
     errorMessage: WithdrawalParams['error_message'];
     providerId: WithdrawalParams['withdrawal_provider_id'];
     terminalId: WithdrawalParams['withdrawal_terminal_id'];
+    externalIds: WithdrawalParams['external_ids'];
 }
 
 @Component({
@@ -73,6 +74,7 @@ export class WithdrawalsComponent implements OnInit {
         errorMessage: null,
         providerId: null,
         terminalId: null,
+        externalIds: null,
     });
     active$ = getValueChanges(this.filtersForm).pipe(
         map((v) => countChanged(this.initFilters, v, { dateRange: isEqualDateRange })),
@@ -121,13 +123,14 @@ export class WithdrawalsComponent implements OnInit {
     private initFilters = this.filtersForm.value;
 
     ngOnInit() {
-        this.filtersForm.patchValue(Object.assign({}, this.qp.params));
+        this.filtersForm.patchValue(Object.assign({}, this.qp.params as never));
         getValueChanges(this.filtersForm)
             .pipe(debounceTimeWithFirst(this.debounceTimeMs), takeUntilDestroyed(this.destroyRef))
             .subscribe(() => this.update());
     }
 
     update(options?: UpdateOptions) {
+        const value = this.filtersForm.value as never as WithdrawalsForm;
         const {
             dateRange,
             merchant,
@@ -138,8 +141,9 @@ export class WithdrawalsComponent implements OnInit {
             errorMessage,
             providerId,
             terminalId,
-        } = this.filtersForm.value;
-        void this.qp.set(clean(this.filtersForm.value));
+            externalIds,
+        } = value;
+        void this.qp.set(clean(value));
         const params = clean({
             party_id: merchant,
             from_time: dateRange?.start && getNoTimeZoneIsoString(dateRange?.start),
@@ -152,6 +156,7 @@ export class WithdrawalsComponent implements OnInit {
             error_message: errorMessage,
             withdrawal_terminal_id: terminalId,
             withdrawal_provider_id: providerId,
+            external_ids: externalIds,
         });
         this.fetchWithdrawalsService.load(params, options);
     }
