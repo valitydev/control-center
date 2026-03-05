@@ -22,8 +22,16 @@
             <cc-wallet-field formControlName="walletId"></cc-wallet-field>
             <v-number-range-field formControlName="amount" label="Amount"></v-number-range-field>
             <v-input-field formControlName="errorMessage" label="Error message"></v-input-field>
-            <v-input-field formControlName="terminalId" label="Terminal ID"></v-input-field>
-            <v-input-field formControlName="providerId" label="Provider ID"></v-input-field>
+            <cc-domain-object-field
+                formControlName="terminalId"
+                label="Terminal"
+                name="terminal"
+            ></cc-domain-object-field>
+            <cc-domain-object-field
+                formControlName="providerId"
+                label="Provider"
+                name="provider"
+            ></cc-domain-object-field>
         </ng-template>
     </v-filters>
 
