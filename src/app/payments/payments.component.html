@@ -15,7 +15,11 @@
                 formControlName="invoice_ids"
                 label="Invoice and Payment Ids"
             ></v-list-field>
-            <v-input-field formControlName="external_id" label="External Id"></v-input-field>
+            <v-list-field
+                focusedHint="external_1, external_2"
+                formControlName="external_ids"
+                label="External Ids"
+            ></v-list-field>
             <cc-merchant-field formControlName="party_id"></cc-merchant-field>
             <cc-shop-field formControlName="shop_ids" multiple></cc-shop-field>
             <v-input-field formControlName="payment_first6" label="Card BIN"></v-input-field>

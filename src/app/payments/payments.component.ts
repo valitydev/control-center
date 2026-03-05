@@ -98,7 +98,7 @@ export class PaymentsComponent implements OnInit {
         payment_rrn: undefined as string,
         payment_email: undefined as string,
         error_message: undefined as string,
-        external_id: undefined as string,
+        external_ids: [undefined as string[]],
     });
     otherFiltersControl = this.fb.control({
         common_search_query_params: {},
@@ -117,6 +117,7 @@ export class PaymentsComponent implements OnInit {
                             'payment_rrn',
                             'error_message',
                             'external_id',
+                            'external_ids',
                         ].includes(data?.field?.name),
                 ),
             extension: () => of({ hidden: true }),
@@ -163,7 +164,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     load({ filters, otherFilters, dateRange }: Filters, options?: LoadOptions) {
-        const { invoice_ids, party_id, shop_ids, external_id, ...paymentParams } = filters;
+        const { invoice_ids, party_id, shop_ids, external_ids, ...paymentParams } = filters;
         const searchParams = clean({
             ...otherFilters,
             common_search_query_params: {
@@ -174,7 +175,7 @@ export class PaymentsComponent implements OnInit {
                 to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
             },
             payment_params: { ...(otherFilters.payment_params || {}), ...paymentParams },
-            external_id,
+            external_ids,
             invoice_ids,
         });
         this.fetchPaymentsService.load(searchParams, options);
