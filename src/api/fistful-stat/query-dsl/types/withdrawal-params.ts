@@ -7,11 +7,12 @@ export interface WithdrawalParams extends PagedBaseParameters {
     party_id?: string;
     wallet_id?: string;
     withdrawal_id?: string;
-    withdrawal_ids?: string;
+    withdrawal_ids?: string[];
     identity_id?: string;
     destination_id?: string;
     status?: Capitalize<keyof WithdrawalStatus>;
     external_id?: string;
+    external_ids?: string[];
     amount_from?: number;
     amount_to?: number;
     currency_code?: string;

@@ -4,15 +4,14 @@
         <v-input-field formControlName="description" label="Description"></v-input-field>
         <div class="flex gap-2">
             <v-input-field
-                [hintText]="'' + (weight$ | async)"
                 class="flex-1"
                 formControlName="weight"
                 label="Weight"
                 type="number"
             ></v-input-field>
             <v-input-field
+                [formControl]="weightPercentControl"
                 class="flex-1"
-                formControlName="weightPercent"
                 label="Percent"
                 type="number"
             ></v-input-field>

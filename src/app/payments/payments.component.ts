@@ -2,7 +2,7 @@ import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
 import { BehaviorSubject, merge, of } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
@@ -11,6 +11,8 @@ import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angul
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 
+import { metadata$ } from '@vality/domain-proto';
+import { DomainObject } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DateRange,
@@ -39,7 +41,10 @@ import { FailMachinesDialogComponent, Type } from '~/components/fail-machines-di
 import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
 import { PageLayoutModule } from '~/components/page-layout';
 import { ShopFieldModule } from '~/components/shop-field';
-import { MagistaThriftFormComponent } from '~/components/thrift-api-crud';
+import {
+    DomainMetadataFormExtensionsService,
+    MagistaThriftFormComponent,
+} from '~/components/thrift-api-crud';
 
 import { DATE_RANGE_DAYS, DEBOUNCE_TIME_MS } from '../tokens';
 
@@ -84,6 +89,8 @@ export class PaymentsComponent implements OnInit {
     private dateRangeDays = inject<number>(DATE_RANGE_DAYS);
     private dr = inject(DestroyRef);
     private debounceTimeMs = inject<number>(DEBOUNCE_TIME_MS);
+    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
+
     isLoading$ = this.fetchPaymentsService.isLoading$;
     payments$ = this.fetchPaymentsService.result$;
     hasMore$ = this.fetchPaymentsService.hasMore$;
@@ -98,7 +105,7 @@ export class PaymentsComponent implements OnInit {
         payment_rrn: undefined as string,
         payment_email: undefined as string,
         error_message: undefined as string,
-        external_id: undefined as string,
+        external_ids: [undefined as string[]],
     });
     otherFiltersControl = this.fb.control({
         common_search_query_params: {},
@@ -117,10 +124,21 @@ export class PaymentsComponent implements OnInit {
                             'payment_rrn',
                             'error_message',
                             'external_id',
+                            'external_ids',
                         ].includes(data?.field?.name),
                 ),
             extension: () => of({ hidden: true }),
         },
+        this.createDomainObjectsExtension(
+            (data) => of(data.field?.name === 'payment_terminal_id'),
+            'TerminalObject',
+            'terminal',
+        ),
+        this.createDomainObjectsExtension(
+            (data) => of(data.field?.name === 'payment_provider_id'),
+            'ProviderObject',
+            'provider',
+        ),
     ];
     active$ = getValueChanges(this.filtersForm).pipe(
         map((filters) =>
@@ -163,7 +181,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     load({ filters, otherFilters, dateRange }: Filters, options?: LoadOptions) {
-        const { invoice_ids, party_id, shop_ids, external_id, ...paymentParams } = filters;
+        const { invoice_ids, party_id, shop_ids, external_ids, ...paymentParams } = filters;
         const searchParams = clean({
             ...otherFilters,
             common_search_query_params: {
@@ -174,7 +192,7 @@ export class PaymentsComponent implements OnInit {
                 to_time: getNoTimeZoneIsoString(endOfDay(dateRange.end)),
             },
             payment_params: { ...(otherFilters.payment_params || {}), ...paymentParams },
-            external_id,
+            external_ids,
             invoice_ids,
         });
         this.fetchPaymentsService.load(searchParams, options);
@@ -228,5 +246,31 @@ export class PaymentsComponent implements OnInit {
 
     createInvoiceTemplate() {
         this.dialogService.open(CreateInvoiceTemplateDialogComponent);
+    }
+
+    private createDomainObjectsExtension(
+        determinant: ThriftFormExtension['determinant'],
+        objectType: string,
+        objectKey: keyof DomainObject,
+        convert = (v: unknown) => String(v),
+    ): ThriftFormExtension {
+        return {
+            determinant,
+            extension: (...args) =>
+                metadata$.pipe(
+                    switchMap((metadata) =>
+                        this.domainMetadataFormExtensionsService
+                            .createDomainObjectsOptionsByType(metadata, objectType, objectKey)[0]
+                            .extension(...args),
+                    ),
+                    map((extension) => ({
+                        ...extension,
+                        options: extension.options?.map((o) => ({
+                            ...o,
+                            value: convert(o.value),
+                        })),
+                    })),
+                ),
+        };
     }
 }

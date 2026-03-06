@@ -5,6 +5,8 @@
     <v-filters #filters [active]="active$ | async" merge (clear)="filtersForm.reset()">
         <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="dateRange"></v-date-range-field>
+            <v-list-field formControlName="withdrawalIds" label="Withdrawal Ids"></v-list-field>
+            <v-list-field formControlName="externalIds" label="External Ids"></v-list-field>
             <cc-merchant-field formControlName="merchant"></cc-merchant-field>
             <mat-form-field>
                 <mat-label>Status</mat-label>
@@ -17,12 +19,19 @@
                     }
                 </mat-select>
             </mat-form-field>
-            <v-list-field formControlName="withdrawalIds" label="Withdrawal IDs"></v-list-field>
             <cc-wallet-field formControlName="walletId"></cc-wallet-field>
             <v-number-range-field formControlName="amount" label="Amount"></v-number-range-field>
             <v-input-field formControlName="errorMessage" label="Error message"></v-input-field>
-            <v-input-field formControlName="terminalId" label="Terminal ID"></v-input-field>
-            <v-input-field formControlName="providerId" label="Provider ID"></v-input-field>
+            <cc-domain-object-field
+                formControlName="terminalId"
+                label="Terminal"
+                name="terminal"
+            ></cc-domain-object-field>
+            <cc-domain-object-field
+                formControlName="providerId"
+                label="Provider"
+                name="provider"
+            ></cc-domain-object-field>
         </ng-template>
     </v-filters>
 

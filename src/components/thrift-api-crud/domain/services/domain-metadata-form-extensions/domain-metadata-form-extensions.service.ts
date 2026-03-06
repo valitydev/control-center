@@ -147,7 +147,7 @@ export class DomainMetadataFormExtensionsService {
         );
     }
 
-    private createDomainObjectsOptionsByType(
+    createDomainObjectsOptionsByType(
         metadata: ThriftAstMetadata[],
         objectType: string,
         objectKey: keyof DomainObject,
