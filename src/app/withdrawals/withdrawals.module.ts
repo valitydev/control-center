@@ -26,6 +26,7 @@ import { ThriftFormModule, ThriftPipesModule } from '@vality/ng-thrift';
 import { FistfulThriftFormComponent } from '~/components/fistful-thrift-form';
 import { MerchantFieldModule } from '~/components/merchant-field';
 import { PageLayoutModule } from '~/components/page-layout';
+import { DomainObjectFieldComponent } from '~/components/thrift-api-crud';
 import { WalletFieldModule } from '~/components/wallet-field';
 
 import { CreateAdjustmentDialogComponent } from './components/create-adjustment-dialog/create-adjustment-dialog.component';
@@ -61,6 +62,7 @@ import { WithdrawalsComponent } from './withdrawals.component';
         FistfulThriftFormComponent,
         AutocompleteFieldModule,
         WalletFieldModule,
+        DomainObjectFieldComponent,
     ],
     declarations: [WithdrawalsComponent, CreateAdjustmentDialogComponent],
 })
