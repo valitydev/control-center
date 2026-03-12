@@ -439,7 +439,10 @@ export class CandidatesComponent {
                 first(),
                 switchCombineWith(([_, candidate, candidates]) => {
                     const others = candidates.filter(
-                        (c) => c !== candidate && c.priority === candidate.priority && c.allowed,
+                        (c, idx) =>
+                            idx !== candidateIdx &&
+                            c.priority === candidate.priority &&
+                            getPredicateBoolean(c.allowed),
                     );
                     const ids = others.map((c) => candidates.findIndex((cd) => cd === c));
                     return [

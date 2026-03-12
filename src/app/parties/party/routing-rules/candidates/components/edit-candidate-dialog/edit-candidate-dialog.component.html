@@ -9,12 +9,26 @@
                 label="Weight"
                 type="number"
             ></v-input-field>
-            <v-input-field
-                [formControl]="weightPercentControl"
+            <v-select-field
+                [formControl]="weightTypeControl"
+                [options]="weightOptions"
                 class="flex-1"
-                label="Percent"
-                type="number"
-            ></v-input-field>
+                label="Type"
+            ></v-select-field>
+        </div>
+        <div class="flex flex-col gap-1 -mt-6 mb-6">
+            <div class="flex flex-wrap gap-2">
+                @for (item of weightsPreview$ | async; track $index; let isFirst = $first) {
+                    <div
+                        [class.bg-neutral-200]="isFirst"
+                        [class.text-neutral-900]="isFirst"
+                        [title]="item.description"
+                        class="px-2 py-1 border rounded text-sm"
+                    >
+                        {{ item.percent | number: '1.0-2' }}%
+                    </div>
+                }
+            </div>
         </div>
         <cc-domain-thrift-editor
             formControlName="allowed"
