@@ -1,4 +1,4 @@
-import { map, shareReplay } from 'rxjs';
+import { combineLatest, map, shareReplay } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
@@ -71,21 +71,33 @@ export class EditCandidateDialogComponent extends DialogSuperclass<
         { label: 'Percent', value: 'weight_percent' },
     ];
 
-    weightsPreview$ = getValueChanges(this.form).pipe(
-        map(() =>
-            this.getNewCandidates()
-                .sort((a, b) =>
-                    a.idx === this.dialogData.idx
-                        ? -1
-                        : b.idx === this.dialogData.idx
-                          ? 1
-                          : b.candidate.weight - a.candidate.weight,
-                )
-                .map((c) => ({
+    weightsPreview$ = combineLatest([
+        getValueChanges(this.weightTypeControl),
+        getValueChanges(this.form),
+    ]).pipe(
+        map(([weightType]) => {
+            const newCandidates = this.getNewCandidates().sort((a, b) =>
+                a.idx === this.dialogData.idx
+                    ? -1
+                    : b.idx === this.dialogData.idx
+                      ? 1
+                      : b.candidate.weight - a.candidate.weight,
+            );
+            return newCandidates.map((c) => {
+                if (weightType === 'weight_percent')
+                    return {
+                        description: c.candidate.terminal.id,
+                        percent: c.candidate.weight + '%',
+                    };
+                const allWeight = newCandidates.reduce((acc, c) => acc + c.candidate.weight, 0);
+                return {
                     description: c.candidate.terminal.id,
-                    percent: c.candidate.weight,
-                })),
-        ),
+                    percent:
+                        normalizePercent((c.candidate.weight / allWeight) * 100) +
+                        `% (${c.candidate.weight})`,
+                };
+            });
+        }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
@@ -98,10 +110,17 @@ export class EditCandidateDialogComponent extends DialogSuperclass<
 
     private getNewCandidates(): CandidateWithIdx[] {
         if (this.weightTypeControl.value === 'weight') {
-            return this.otherCandidates;
+            const weight = Number(this.form.value.weight) || 0;
+            return this.dialogData.candidates.map((c) => ({
+                ...c,
+                candidate: {
+                    ...c.candidate,
+                    weight: c.idx === this.dialogData.idx ? weight : c.candidate.weight,
+                },
+            }));
         }
-        const weight = normalizePercent(this.form.value.weight);
-        const availableWeight = MAX_PERCENT_WEIGHT - weight;
+        const percentWeight = normalizePercent(this.form.value.weight);
+        const availableWeight = MAX_PERCENT_WEIGHT - percentWeight;
 
         return this.dialogData.candidates.map((c) => ({
             ...c,
@@ -109,7 +128,7 @@ export class EditCandidateDialogComponent extends DialogSuperclass<
                 ...c.candidate,
                 weight:
                     c.idx === this.dialogData.idx
-                        ? weight
+                        ? percentWeight
                         : normalizePercent(
                               this.othersWeight === 0
                                   ? normalizePercent(availableWeight / this.otherCandidates.length)

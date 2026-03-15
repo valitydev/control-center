@@ -4,9 +4,9 @@
         <v-input-field formControlName="description" label="Description"></v-input-field>
         <div class="flex gap-2">
             <v-input-field
+                [label]="weightTypeControl.value === 'weight' ? 'Weight' : 'Percent'"
                 class="flex-1"
                 formControlName="weight"
-                label="Weight"
                 type="number"
             ></v-input-field>
             <v-select-field
@@ -25,7 +25,7 @@
                         [title]="item.description"
                         class="px-2 py-1 border rounded text-sm"
                     >
-                        {{ item.percent | number: '1.0-2' }}%
+                        {{ item.percent }}
                     </div>
                 }
             </div>
