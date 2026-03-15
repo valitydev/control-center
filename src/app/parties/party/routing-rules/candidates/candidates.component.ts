@@ -123,7 +123,7 @@ export class CandidatesComponent {
     private log = inject(NotifyLogService);
     private route = inject(ActivatedRoute);
     private sidenavInfoService = inject(SidenavInfoService);
-    private destroyRef = inject(DestroyRef);
+    private dr = inject(DestroyRef);
     protected appMode = inject(AppModeService);
     protected domainObjectsStoreService = inject(DomainObjectsStoreService);
     private injector = inject(Injector);
@@ -188,24 +188,10 @@ export class CandidatesComponent {
             }, new Map<number, Row[]>());
             return Array.from(groups.values())
                 .map((group) => {
-                    const sum = group.reduce(
-                        (acc, item) =>
-                            acc + (item.candidate.allowed ? item.candidate.weight || 0 : 0),
-                        0,
-                    );
-                    const allowedCount = group.filter((item) => item.allowed).length;
+                    const sum = group.reduce((acc, item) => acc + (item.candidate.weight || 0), 0);
                     return group.map((item) => {
                         const weight = item.candidate.weight || 0;
-                        let weightPercent = 0;
-                        if (item.allowed === false) {
-                            weightPercent = 0;
-                        } else if (allowedCount === 1) {
-                            weightPercent = 100;
-                        } else if (sum > 0) {
-                            weightPercent = Math.round((weight / sum) * 100);
-                        } else {
-                            weightPercent = 0;
-                        }
+                        const weightPercent = sum ? Math.round((weight / sum) * 100) : 0;
                         return {
                             value: { ...item, weightPercent },
                             width: weightPercent,
@@ -269,7 +255,7 @@ export class CandidatesComponent {
                 predicate: d.allowed,
                 toggle: () => {
                     this.getCandidateIdx(d)
-                        .pipe(takeUntilDestroyed(this.destroyRef))
+                        .pipe(takeUntilDestroyed(this.dr))
                         .subscribe((idx) => {
                             void this.toggleAllow(idx);
                         });
@@ -293,9 +279,9 @@ export class CandidatesComponent {
                     label: 'Edit',
                     click: () => {
                         this.getCandidateIdx(d)
-                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .pipe(takeUntilDestroyed(this.dr))
                             .subscribe((idx) => {
-                                this.editRule(idx);
+                                this.advancedEdit(idx);
                             });
                     },
                 },
@@ -303,7 +289,7 @@ export class CandidatesComponent {
                     label: 'Duplicate',
                     click: () => {
                         this.getCandidateIdx(d)
-                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .pipe(takeUntilDestroyed(this.dr))
                             .subscribe((idx) => {
                                 void this.duplicateRule(idx);
                             });
@@ -313,7 +299,7 @@ export class CandidatesComponent {
                     label: getPredicateBoolean(d.allowed) ? 'Deny' : 'Allow',
                     click: () => {
                         this.getCandidateIdx(d)
-                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .pipe(takeUntilDestroyed(this.dr))
                             .subscribe((idx) => {
                                 void this.toggleAllow(idx);
                             });
@@ -323,7 +309,7 @@ export class CandidatesComponent {
                     label: 'Remove',
                     click: () => {
                         this.getCandidateIdx(d)
-                            .pipe(takeUntilDestroyed(this.destroyRef))
+                            .pipe(takeUntilDestroyed(this.dr))
                             .subscribe((idx) => {
                                 void this.removeRule(idx);
                             });
@@ -349,7 +335,7 @@ export class CandidatesComponent {
                         .afterClosed(),
                 ),
             )
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.dr))
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
@@ -363,7 +349,7 @@ export class CandidatesComponent {
             });
     }
 
-    editRule(idx: number) {
+    advancedEdit(idx: number) {
         this.routingRulesetService.refID$
             .pipe(
                 first(),
@@ -383,7 +369,7 @@ export class CandidatesComponent {
                         .afterClosed(),
                 ),
             )
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.dr))
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
@@ -415,7 +401,7 @@ export class CandidatesComponent {
                         .afterClosed(),
                 ),
             )
-            .pipe(takeUntilDestroyed(this.destroyRef))
+            .pipe(takeUntilDestroyed(this.dr))
             .subscribe({
                 next: (res) => {
                     if (res.status === DialogResponseStatus.Success) {
@@ -430,49 +416,34 @@ export class CandidatesComponent {
     }
 
     edit(candidateIdx: number) {
-        this.routingRulesetService.refID$
+        combineLatest([this.routingRulesetService.refID$, this.candidates$])
             .pipe(
-                switchCombineWith((refId) => [
-                    this.routingRulesService.getCandidate(refId, candidateIdx),
-                    this.candidates$,
-                ]),
                 first(),
-                switchCombineWith(([_, candidate, candidates]) => {
-                    const others = candidates.filter(
-                        (c, idx) =>
-                            idx !== candidateIdx &&
-                            c.priority === candidate.priority &&
-                            getPredicateBoolean(c.allowed),
-                    );
-                    const ids = others.map((c) => candidates.findIndex((cd) => cd === c));
-                    return [
-                        this.dialog
-                            .open(EditCandidateDialogComponent, {
-                                candidate,
-                                others,
-                            })
-                            .afterClosed(),
-                        ids,
-                        others,
-                    ];
-                }),
-                switchMap(([[refId], res, ids]) =>
+                switchCombineWith(([_, candidates]) => [
+                    this.dialog
+                        .open(EditCandidateDialogComponent, {
+                            candidates: candidates
+                                .map((candidate, idx) => ({ idx, candidate }))
+                                .filter(
+                                    (c) =>
+                                        c.candidate.priority === candidates[candidateIdx].priority,
+                                ),
+                            idx: candidateIdx,
+                        })
+                        .afterClosed(),
+                ]),
+                switchMap(([[refId], res]) =>
                     res.status === DialogResponseStatus.Success
-                        ? this.routingRulesService.updateRules([
-                              {
+                        ? this.routingRulesService.updateRules(
+                              res.data.candidates.map((c) => ({
                                   refId,
-                                  candidateIdx: candidateIdx,
-                                  newCandidate: res.data.candidate,
-                              },
-                              ...res.data.others.map((newCandidate, idx) => ({
-                                  refId,
-                                  candidateIdx: ids[idx],
-                                  newCandidate,
+                                  candidateIdx: c.idx,
+                                  newCandidate: c.candidate,
                               })),
-                          ])
+                          )
                         : of(null),
                 ),
-                takeUntilDestroyed(this.destroyRef),
+                takeUntilDestroyed(this.dr),
             )
             .subscribe({
                 next: (res) => {
@@ -490,7 +461,7 @@ export class CandidatesComponent {
     toggleAllow(candidateIdx: number) {
         runInInjectionContext(this.injector, () =>
             this.routingRulesetService.refID$
-                .pipe(first(), takeUntilDestroyed(this.destroyRef))
+                .pipe(first(), takeUntilDestroyed(this.dr))
                 .subscribe((refId) => {
                     changeCandidatesAllowed([{ refId, candidateIdx }]);
                 }),

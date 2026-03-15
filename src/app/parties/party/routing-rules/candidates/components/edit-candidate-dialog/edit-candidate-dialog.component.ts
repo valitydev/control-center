@@ -11,7 +11,6 @@ import {
     DialogSuperclass,
     InputFieldModule,
     SelectFieldModule,
-    getValue,
     getValueChanges,
 } from '@vality/matez';
 
@@ -21,6 +20,16 @@ import {
 } from '~/components/thrift-api-crud';
 
 const MAX_PERCENT_WEIGHT = 100;
+
+interface CandidateWithIdx {
+    candidate: RoutingCandidate;
+    idx: number;
+}
+
+function normalizePercent(weight: unknown = 0): number {
+    const parsed = Number(weight);
+    return Math.max(Math.min(Math.round(isNaN(parsed) ? 0 : parsed), 100), 0);
+}
 
 @Component({
     selector: 'cc-edit-candidate-dialog',
@@ -39,17 +48,22 @@ const MAX_PERCENT_WEIGHT = 100;
 })
 export class EditCandidateDialogComponent extends DialogSuperclass<
     EditCandidateDialogComponent,
-    { candidate: RoutingCandidate; others: RoutingCandidate[] },
-    { candidate: RoutingCandidate; others: RoutingCandidate[] }
+    { candidates: CandidateWithIdx[]; idx: number },
+    { candidates: CandidateWithIdx[]; idx: number }
 > {
     private fb = inject(FormBuilder);
-    private othersWeight = this.dialogData.others.reduce((acc, c) => acc + (c.weight || 0), 0);
+    private currentCandidate = this.dialogData.candidates.find((c) => c.idx === this.dialogData.idx)
+        .candidate;
+    private otherCandidates = this.dialogData.candidates.filter(
+        (c) => c.idx !== this.dialogData.idx,
+    );
+    private othersWeight = this.otherCandidates.reduce((acc, c) => acc + c.candidate.weight, 0);
 
     form = this.fb.nonNullable.group({
-        terminal: this.dialogData.candidate.terminal.id,
-        description: this.dialogData.candidate.description,
-        weight: this.dialogData.candidate.weight,
-        allowed: this.dialogData.candidate.allowed,
+        terminal: this.currentCandidate.terminal.id,
+        description: this.currentCandidate.description,
+        weight: this.getPercentWeight(this.currentCandidate.weight),
+        allowed: this.currentCandidate.allowed,
     });
     weightTypeControl = this.fb.nonNullable.control('weight_percent');
     weightOptions = [
@@ -58,58 +72,64 @@ export class EditCandidateDialogComponent extends DialogSuperclass<
     ];
 
     weightsPreview$ = getValueChanges(this.form).pipe(
-        map(() => [
-            {
-                description: 'Current',
-                percent: this.normalizeWeight(),
-            },
-            ...this.getNewOthers().map((c) => ({
-                description: c.terminal.id,
-                percent: c.weight,
-            })),
-        ]),
+        map(() =>
+            this.getNewCandidates()
+                .sort((a, b) =>
+                    a.idx === this.dialogData.idx
+                        ? -1
+                        : b.idx === this.dialogData.idx
+                          ? 1
+                          : b.candidate.weight - a.candidate.weight,
+                )
+                .map((c) => ({
+                    description: c.candidate.terminal.id,
+                    percent: c.candidate.weight,
+                })),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
     confirm() {
-        const { terminal, weight, ...value } = getValue(this.form);
-        const weightNum = this.normalizeWeight(weight);
-
         this.closeWithSuccess({
-            candidate: {
-                ...this.dialogData.candidate,
-                ...value,
-                terminal: { id: terminal },
-                weight: weightNum,
-            },
-            others: this.getNewOthers(),
+            ...this.dialogData,
+            candidates: this.getNewCandidates(),
         });
     }
 
-    private getNewOthers(): RoutingCandidate[] {
+    private getNewCandidates(): CandidateWithIdx[] {
         if (this.weightTypeControl.value === 'weight') {
-            return this.dialogData.others;
+            return this.otherCandidates;
         }
-
-        const weight = this.normalizeWeight();
-        const othersWeight = Math.min(this.othersWeight - weight, 0);
-        const othersCount = this.dialogData.others.length;
+        const weight = normalizePercent(this.form.value.weight);
         const availableWeight = MAX_PERCENT_WEIGHT - weight;
 
-        if (othersWeight === 0) {
-            return this.dialogData.others.map((c) => ({
-                ...c,
-                weight: Math.round(availableWeight / othersCount),
-            }));
-        }
-
-        return this.dialogData.others.map((c) => ({
+        return this.dialogData.candidates.map((c) => ({
             ...c,
-            weight: Math.round((c.weight / othersWeight) * availableWeight),
+            candidate: {
+                ...c.candidate,
+                weight:
+                    c.idx === this.dialogData.idx
+                        ? weight
+                        : normalizePercent(
+                              this.othersWeight === 0
+                                  ? normalizePercent(availableWeight / this.otherCandidates.length)
+                                  : (c.candidate.weight / this.othersWeight) * availableWeight,
+                          ),
+            },
         }));
     }
 
-    private normalizeWeight(weight: unknown = this.form.value.weight): number {
-        return Math.max(Math.min(Number(weight || '0'), 100), 0);
+    private getPercentWeight(
+        weight: number = 0,
+        othersWeight: number = this.othersWeight || 0,
+        count: number = this.otherCandidates.length + 1,
+    ): number {
+        if (othersWeight === 0) {
+            if (weight === 0) return normalizePercent(MAX_PERCENT_WEIGHT / count);
+            return 100;
+        }
+        if (weight === 0) return 0;
+        const allWeight = weight + othersWeight;
+        return normalizePercent((weight / allWeight) * MAX_PERCENT_WEIGHT);
     }
 }
