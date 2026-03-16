@@ -9,11 +9,11 @@
         "yaml": "^2.8.1"
     },
     "peerDependencies": {
-        "@angular/common": "^20.1.0",
-        "@angular/core": "^20.1.0",
-        "@angular/forms": "^20.1.0",
-        "@angular/material": "^20.1.0",
-        "@angular/router": "^20.1.0",
+        "@angular/common": "^20.1.0 || ^21.0.0",
+        "@angular/core": "^20.1.0 || ^21.0.0",
+        "@angular/forms": "^20.1.0 || ^21.0.0",
+        "@angular/material": "^20.1.0 || ^21.0.0",
+        "@angular/router": "^20.1.0 || ^21.0.0",
         "@vality/matez": "*",
         "@vality/ng-monaco-editor": "^20.0.0",
         "@vality/thrift-ts": "*",
