@@ -43,13 +43,20 @@ export class PartiesComponent implements OnInit {
             cell: (party) => ({ value: party.ref.id }),
         },
         {
+            field: 'name',
+            cell: (party) => ({
+                value: party.data.name,
+                description: party.data.description,
+                link: () => `/parties/${party.ref.id}`,
+            }),
+        },
+        {
             field: 'email',
             cell: (party) => ({
                 value: party.data.contact_info.registration_email,
                 description: (party.data.contact_info.manager_contact_emails || [])
                     .filter(Boolean)
                     .join(', '),
-                link: () => `/parties/${party.ref.id}`,
             }),
         },
         {

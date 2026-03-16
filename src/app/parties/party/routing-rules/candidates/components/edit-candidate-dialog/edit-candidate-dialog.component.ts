@@ -1,6 +1,7 @@
+import { combineLatest, map, shareReplay } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -9,7 +10,7 @@ import {
     DialogModule,
     DialogSuperclass,
     InputFieldModule,
-    getValue,
+    SelectFieldModule,
     getValueChanges,
 } from '@vality/matez';
 
@@ -17,6 +18,18 @@ import {
     DomainObjectFieldComponent,
     DomainThriftFormComponent,
 } from '~/components/thrift-api-crud';
+
+const MAX_PERCENT_WEIGHT = 100;
+
+interface CandidateWithIdx {
+    candidate: RoutingCandidate;
+    idx: number;
+}
+
+function normalizePercent(weight: unknown = 0): number {
+    const parsed = Number(weight);
+    return Math.max(Math.min(Math.round(isNaN(parsed) ? 0 : parsed), 100), 0);
+}
 
 @Component({
     selector: 'cc-edit-candidate-dialog',
@@ -28,76 +41,114 @@ import {
         ReactiveFormsModule,
         MatButtonModule,
         InputFieldModule,
+        SelectFieldModule,
         DomainObjectFieldComponent,
         DomainThriftFormComponent,
     ],
 })
-export class EditCandidateDialogComponent
-    extends DialogSuperclass<
-        EditCandidateDialogComponent,
-        { candidate: RoutingCandidate; others: RoutingCandidate[] },
-        { candidate: RoutingCandidate; others: RoutingCandidate[] }
-    >
-    implements OnInit
-{
+export class EditCandidateDialogComponent extends DialogSuperclass<
+    EditCandidateDialogComponent,
+    { candidates: CandidateWithIdx[]; idx: number },
+    { candidates: CandidateWithIdx[]; idx: number }
+> {
     private fb = inject(FormBuilder);
-    private dr = inject(DestroyRef);
-    private othersWeight = this.dialogData.others.reduce((acc, c) => acc + (c.weight || 0), 0);
+    private currentCandidate = this.dialogData.candidates.find((c) => c.idx === this.dialogData.idx)
+        .candidate;
+    private otherCandidates = this.dialogData.candidates.filter(
+        (c) => c.idx !== this.dialogData.idx,
+    );
+    private othersWeight = this.otherCandidates.reduce((acc, c) => acc + c.candidate.weight, 0);
 
     form = this.fb.nonNullable.group({
-        terminal: this.dialogData.candidate.terminal.id,
-        description: this.dialogData.candidate.description,
-        weight: this.dialogData.candidate.weight,
-        allowed: this.dialogData.candidate.allowed,
+        terminal: this.currentCandidate.terminal.id,
+        description: this.currentCandidate.description,
+        weight: this.getPercentWeight(this.currentCandidate.weight),
+        allowed: this.currentCandidate.allowed,
     });
-    weightPercentControl = this.fb.nonNullable.control<number | null>(null);
+    weightTypeControl = this.fb.nonNullable.control('weight_percent');
+    weightOptions = [
+        { label: 'Weight', value: 'weight' },
+        { label: 'Percent', value: 'weight_percent' },
+    ];
 
-    ngOnInit() {
-        getValueChanges(this.weightPercentControl)
-            .pipe(takeUntilDestroyed(this.dr))
-            .subscribe(() => {
-                this.form.controls.weight.setValue(null, {
-                    emitEvent: false,
-                });
+    weightsPreview$ = combineLatest([
+        getValueChanges(this.weightTypeControl),
+        getValueChanges(this.form),
+    ]).pipe(
+        map(([weightType]) => {
+            const newCandidates = this.getNewCandidates().sort((a, b) =>
+                a.idx === this.dialogData.idx
+                    ? -1
+                    : b.idx === this.dialogData.idx
+                      ? 1
+                      : b.candidate.weight - a.candidate.weight,
+            );
+            return newCandidates.map((c) => {
+                if (weightType === 'weight_percent')
+                    return {
+                        description: c.candidate.terminal.id,
+                        percent: c.candidate.weight + '%',
+                    };
+                const allWeight = newCandidates.reduce((acc, c) => acc + c.candidate.weight, 0);
+                return {
+                    description: c.candidate.terminal.id,
+                    percent:
+                        normalizePercent((c.candidate.weight / allWeight) * 100) +
+                        `% (${c.candidate.weight})`,
+                };
             });
-        getValueChanges(this.form.controls.weight)
-            .pipe(takeUntilDestroyed(this.dr))
-            .subscribe(() => {
-                this.weightPercentControl.setValue(null, {
-                    emitEvent: false,
-                });
-            });
-    }
+        }),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 
     confirm() {
-        const { terminal, weight, ...value } = getValue(this.form);
-        const percent = getValue(this.weightPercentControl);
-        const isPercent = !!percent;
-        const weightNum = isPercent ? Number(percent) : Number(weight || 0);
-
         this.closeWithSuccess({
-            candidate: {
-                ...this.dialogData.candidate,
-                terminal: { id: terminal },
-                ...value,
-                weight: weightNum,
-            },
-            others: isPercent
-                ? this.dialogData.others.map((c) => ({
-                      ...c,
-                      weight:
-                          c.weight && this.othersWeight
-                              ? Math.round(
-                                    (c.weight / this.othersWeight) *
-                                        (this.othersWeight -
-                                            (weight || 0) +
-                                            (percent
-                                                ? Math.round((percent / 100) * this.othersWeight)
-                                                : 0)),
-                                )
-                              : 0,
-                  }))
-                : this.dialogData.others,
+            ...this.dialogData,
+            candidates: this.getNewCandidates(),
         });
+    }
+
+    private getNewCandidates(): CandidateWithIdx[] {
+        if (this.weightTypeControl.value === 'weight') {
+            const weight = Number(this.form.value.weight) || 0;
+            return this.dialogData.candidates.map((c) => ({
+                ...c,
+                candidate: {
+                    ...c.candidate,
+                    weight: c.idx === this.dialogData.idx ? weight : c.candidate.weight,
+                },
+            }));
+        }
+        const percentWeight = normalizePercent(this.form.value.weight);
+        const availableWeight = MAX_PERCENT_WEIGHT - percentWeight;
+
+        return this.dialogData.candidates.map((c) => ({
+            ...c,
+            candidate: {
+                ...c.candidate,
+                weight:
+                    c.idx === this.dialogData.idx
+                        ? percentWeight
+                        : normalizePercent(
+                              this.othersWeight === 0
+                                  ? normalizePercent(availableWeight / this.otherCandidates.length)
+                                  : (c.candidate.weight / this.othersWeight) * availableWeight,
+                          ),
+            },
+        }));
+    }
+
+    private getPercentWeight(
+        weight: number = 0,
+        othersWeight: number = this.othersWeight || 0,
+        count: number = this.otherCandidates.length + 1,
+    ): number {
+        if (othersWeight === 0) {
+            if (weight === 0) return normalizePercent(MAX_PERCENT_WEIGHT / count);
+            return 100;
+        }
+        if (weight === 0) return 0;
+        const allWeight = weight + othersWeight;
+        return normalizePercent((weight / allWeight) * MAX_PERCENT_WEIGHT);
     }
 }
