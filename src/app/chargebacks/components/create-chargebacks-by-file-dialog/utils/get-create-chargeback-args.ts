@@ -1,5 +1,5 @@
 import isNil from 'lodash-es/isNil';
-import short from 'short-uuid';
+import { generate } from 'short-uuid';
 
 import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { clean } from '@vality/matez';
@@ -14,7 +14,7 @@ export function getCreateChargebackArgs(
         c.payment_id,
         clean(
             {
-                id: short().generate(),
+                id: generate(),
                 reason: {
                     code: c['reason.code'],
                     category: { [c['reason.category']]: {} },

@@ -1,4 +1,5 @@
 import { provideKeycloak } from 'keycloak-angular';
+import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -12,14 +13,12 @@ import {
     provideBrowserGlobalErrorListeners,
     provideZoneChangeDetection,
 } from '@angular/core';
-import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
 
 import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
-import { provideMonacoEditor } from '@vality/ng-monaco-editor';
 
 import { provideThriftServices } from '~/api/services';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
@@ -75,7 +74,6 @@ export const appConfig: ApplicationConfig = {
             },
         },
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-        MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
         provideThriftServices(),
         provideMonacoEditor(),
         provideAppInitializer(() => {

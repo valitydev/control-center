@@ -2,7 +2,7 @@ import { Component, booleanAttribute, computed, inject, input, model, output } f
 import { FormsModule } from '@angular/forms';
 
 import { ThemeService } from '@vality/matez';
-import { MonacoEditorModule } from '@vality/ng-monaco-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { toJson } from '../../utils';
 

@@ -1,5 +1,5 @@
 import { BehaviorSubject, of } from 'rxjs';
-import short from 'short-uuid';
+import { v4 } from 'uuid';
 
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -47,7 +47,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
             this.dialogData.withdrawals.map((w) =>
                 this.withdrawalManagementService.CreateAdjustment(w.id, {
                     ...this.control.value,
-                    id: short().uuid(),
+                    id: v4(),
                 } as AdjustmentParams),
             ),
             this.progress$,

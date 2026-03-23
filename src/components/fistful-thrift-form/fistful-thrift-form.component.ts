@@ -1,5 +1,5 @@
 import { map, of } from 'rxjs';
-import short from 'short-uuid';
+import { v4 } from 'uuid';
 
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
@@ -29,7 +29,7 @@ export class FistfulThriftFormComponent extends BaseThriftFormSuperclass {
     override internalExtensions$ = of<ThriftFormExtension[]>([
         {
             determinant: (data) => of(isTypeWithAliases(data, 'SourceID', 'fistful')),
-            extension: () => of({ generate: () => of(short().uuid()), isIdentifier: true }),
+            extension: () => of({ generate: () => of(v4()), isIdentifier: true }),
         },
         {
             determinant: (data) =>
