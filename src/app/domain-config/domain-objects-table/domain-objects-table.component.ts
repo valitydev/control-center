@@ -1,6 +1,5 @@
 import startCase from 'lodash-es/startCase';
 
-import { CommonModule } from '@angular/common';
 import {
     Component,
     Injector,
@@ -42,7 +41,6 @@ import {
     selector: 'cc-domain-objects-table',
     templateUrl: './domain-objects-table.component.html',
     imports: [
-        CommonModule,
         SelectFieldModule,
         ReactiveFormsModule,
         ActionsModule,

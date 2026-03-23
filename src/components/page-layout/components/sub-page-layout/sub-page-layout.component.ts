@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 
@@ -8,7 +7,7 @@ import { SidenavInfoService } from '../../../sidenav-info';
 
 @Component({
     selector: 'cc-sub-page-layout',
-    imports: [CommonModule, MatToolbar, TagModule, ActionsModule],
+    imports: [MatToolbar, TagModule, ActionsModule],
     templateUrl: './sub-page-layout.component.html',
     styles: ``,
 })
