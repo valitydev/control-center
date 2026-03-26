@@ -21,35 +21,37 @@
         (search)="searchChange.emit($event.term); searchStr = $event.term"
     >
         <ng-template let-index="index" let-item="item" let-item$="item$" ng-optgroup-tmp>
-            <mat-checkbox
-                *ngIf="multiple; else text"
-                [ngModel]="item$.selected"
-                class="checkbox-option"
-                id="item-{{ index }}"
-            >
+            @if (multiple) {
+                <mat-checkbox
+                    [ngModel]="item$.selected"
+                    class="checkbox-option"
+                    id="item-{{ index }}"
+                >
+                    {{ item.type | uppercase }}
+                </mat-checkbox>
+            } @else {
                 {{ item.type | uppercase }}
-            </mat-checkbox>
-            <ng-template #text>
-                {{ item.type | uppercase }}
-            </ng-template>
+            }
         </ng-template>
         <ng-template let-index="index" let-item="item" let-item$="item$" ng-option-tmp>
-            <mat-checkbox
-                *ngIf="multiple; else text"
-                [ngModel]="item$.selected"
-                class="checkbox-option"
-                id="item-{{ index }}"
-            >
+            @if (multiple) {
+                <mat-checkbox
+                    [ngModel]="item$.selected"
+                    class="checkbox-option"
+                    id="item-{{ index }}"
+                >
+                    <ng-container *ngTemplateOutlet="text"></ng-container>
+                </mat-checkbox>
+            } @else {
                 <ng-container *ngTemplateOutlet="text"></ng-container>
-            </mat-checkbox>
+            }
             <ng-template #text>
                 <div class="label">{{ item.label }}</div>
-                <div
-                    *ngIf="item.description"
-                    class="description mat-label-medium text-[var(--mat-sys-outline)]"
-                >
-                    {{ item.description }}
-                </div>
+                @if (item.description) {
+                    <div class="description mat-label-medium text-[var(--mat-sys-outline)]">
+                        {{ item.description }}
+                    </div>
+                }
             </ng-template>
         </ng-template>
     </mtx-select>
