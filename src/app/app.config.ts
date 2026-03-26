@@ -1,6 +1,7 @@
 import { provideKeycloak } from 'keycloak-angular';
 import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
+import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
@@ -74,6 +75,7 @@ export const appConfig: ApplicationConfig = {
             },
         },
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
+        { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
         provideThriftServices(),
         provideMonacoEditor(),
         provideAppInitializer(() => {
