@@ -1,15 +1,12 @@
 @if (!(extensionResult$ | async)?.hidden) {
     <div [ngSwitch]="data?.typeGroup">
-        <v-extension-field
-            *ngIf="
-                (extensionResult$ | async)?.type || (extensionResult$ | async)?.template;
-                else defaultFields
-            "
-            [data]="$any(data)"
-            [extensions]="extensions"
-            [formControl]="control"
-        ></v-extension-field>
-        <ng-template #defaultFields>
+        @if ((extensionResult$ | async)?.type || (extensionResult$ | async)?.template) {
+            <v-extension-field
+                [data]="$any(data)"
+                [extensions]="extensions"
+                [formControl]="control"
+            ></v-extension-field>
+        } @else {
             <v-primitive-field
                 *ngSwitchCase="'primitive'"
                 [data]="$any(data)"
@@ -47,6 +44,6 @@
                     [formControl]="control"
                 ></v-typedef-form>
             </ng-container>
-        </ng-template>
+        }
     </div>
 }
