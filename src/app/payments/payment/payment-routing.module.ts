@@ -25,9 +25,9 @@ import { ROUTING_CONFIG } from './routing-config';
                     {
                         path: 'chargebacks',
                         loadComponent: () =>
-                            import(
-                                './components/payment-chargebacks/payment-chargebacks.component'
-                            ).then((m) => m.PaymentChargebacksComponent),
+                            import('./components/payment-chargebacks/payment-chargebacks.component').then(
+                                (m) => m.PaymentChargebacksComponent,
+                            ),
                     },
                     {
                         path: 'refunds',

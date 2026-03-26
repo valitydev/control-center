@@ -17,8 +17,7 @@ export abstract class AsyncTransform<
     TValue = unknown,
     TParams extends unknown[] = [],
     TResult = string | null,
-> implements OnDestroy
-{
+> implements OnDestroy {
     protected abstract result$: Observable<TResult>;
 
     protected params$: Observable<[TValue, ...TParams]> = defer(() => this.args$).pipe(
