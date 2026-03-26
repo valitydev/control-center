@@ -1,7 +1,9 @@
 import { SimpleChange } from '@angular/core';
 
-export interface ComponentChange<T, P extends keyof T>
-    extends Omit<SimpleChange, 'previousValue' | 'currentValue'> {
+export interface ComponentChange<T, P extends keyof T> extends Omit<
+    SimpleChange,
+    'previousValue' | 'currentValue'
+> {
     previousValue: T[P];
     currentValue: T[P];
 }

@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, input } from '@angular/core';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +14,6 @@ import { AccountFieldComponent, CurrencyAccount } from '../account-field';
 @Component({
     selector: 'cc-system-accounts-field',
     imports: [
-        CommonModule,
         ReactiveFormsModule,
         AutocompleteFieldModule,
         MatButtonModule,

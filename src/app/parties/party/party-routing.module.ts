@@ -62,9 +62,9 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                     {
                         path: 'wallet-webhooks/:webhookID',
                         loadComponent: () =>
-                            import(
-                                './wallet-webhooks/wallet-webhook/wallet-webhook.component'
-                            ).then((m) => m.WalletWebhookComponent),
+                            import('./wallet-webhooks/wallet-webhook/wallet-webhook.component').then(
+                                (m) => m.WalletWebhookComponent,
+                            ),
                         canActivate: [canActivateAuthRole],
                         data: WALLET_WEBHOOKS_ROUTING_CONFIG,
                     },

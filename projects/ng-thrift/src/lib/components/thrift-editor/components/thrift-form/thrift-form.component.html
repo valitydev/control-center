@@ -1,50 +1,59 @@
-<div *ngIf="!(extensionResult$ | async)?.hidden" [ngSwitch]="data?.typeGroup">
-    <v-extension-field
-        *ngIf="
-            (extensionResult$ | async)?.type || (extensionResult$ | async)?.template;
-            else defaultFields
-        "
-        [data]="$any(data)"
-        [extensions]="extensions"
-        [formControl]="control"
-    ></v-extension-field>
-    <ng-template #defaultFields>
-        <v-primitive-field
-            *ngSwitchCase="'primitive'"
-            [data]="$any(data)"
-            [extensions]="extensions"
-            [formControl]="control"
-        ></v-primitive-field>
-        <v-complex-form
-            *ngSwitchCase="'complex'"
-            [data]="$any(data)"
-            [extensions]="extensions"
-            [formControl]="control"
-        ></v-complex-form>
-        <ng-container *ngSwitchCase="'object'" [ngSwitch]="data.objectType">
-            <v-struct-form
-                *ngSwitchCase="'struct'"
+@if (!(extensionResult$ | async)?.hidden) {
+    <div>
+        @if ((extensionResult$ | async)?.type || (extensionResult$ | async)?.template) {
+            <v-extension-field
                 [data]="$any(data)"
                 [extensions]="extensions"
                 [formControl]="control"
-            ></v-struct-form>
-            <v-union-field
-                *ngSwitchCase="'union'"
-                [data]="$any(data)"
-                [extensions]="extensions"
-                [formControl]="control"
-            ></v-union-field>
-            <v-enum-field
-                *ngSwitchCase="'enum'"
-                [data]="$any(data)"
-                [formControl]="control"
-            ></v-enum-field>
-            <v-typedef-form
-                *ngSwitchCase="'typedef'"
-                [data]="$any(data)"
-                [extensions]="extensions"
-                [formControl]="control"
-            ></v-typedef-form>
-        </ng-container>
-    </ng-template>
-</div>
+            ></v-extension-field>
+        } @else {
+            @switch (data?.typeGroup) {
+                @case ('primitive') {
+                    <v-primitive-field
+                        [data]="$any(data)"
+                        [extensions]="extensions"
+                        [formControl]="control"
+                    ></v-primitive-field>
+                }
+                @case ('complex') {
+                    <v-complex-form
+                        [data]="$any(data)"
+                        [extensions]="extensions"
+                        [formControl]="control"
+                    ></v-complex-form>
+                }
+                @case ('object') {
+                    @switch (data.objectType) {
+                        @case ('struct') {
+                            <v-struct-form
+                                [data]="$any(data)"
+                                [extensions]="extensions"
+                                [formControl]="control"
+                            ></v-struct-form>
+                        }
+                        @case ('union') {
+                            <v-union-field
+                                [data]="$any(data)"
+                                [extensions]="extensions"
+                                [formControl]="control"
+                            ></v-union-field>
+                        }
+                        @case ('enum') {
+                            <v-enum-field
+                                [data]="$any(data)"
+                                [formControl]="control"
+                            ></v-enum-field>
+                        }
+                        @case ('typedef') {
+                            <v-typedef-form
+                                [data]="$any(data)"
+                                [extensions]="extensions"
+                                [formControl]="control"
+                            ></v-typedef-form>
+                        }
+                    }
+                }
+            }
+        }
+    </div>
+}

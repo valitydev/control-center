@@ -72,9 +72,10 @@ function getCsvObjectErrors<R extends string, O extends string>(
     ],
     templateUrl: './upload-csv.component.html',
 })
-export class UploadCsvComponent<R extends string = string, O extends string = string>
-    implements OnInit
-{
+export class UploadCsvComponent<
+    R extends string = string,
+    O extends string = string,
+> implements OnInit {
     private log = inject(NotifyLogService);
     private dr = inject(DestroyRef);
     private injector = inject(Injector);

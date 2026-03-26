@@ -1,6 +1,5 @@
 import startCase from 'lodash-es/startCase';
 
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -19,7 +18,7 @@ import {
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
-    imports: [TableModule, CommonModule],
+    imports: [TableModule],
 })
 export class PaymentsTableComponent {
     private router = inject(Router);

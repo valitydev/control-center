@@ -1,6 +1,7 @@
 import { Observable, combineLatest, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import short from 'short-uuid';
+import { generate } from 'short-uuid';
+import { v4 } from 'uuid';
 
 import { Injectable, inject } from '@angular/core';
 
@@ -49,7 +50,7 @@ export class DomainMetadataFormExtensionsService {
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'ID', 'base')),
-                extension: () => of({ generate: () => of(short().generate()), isIdentifier: true }),
+                extension: () => of({ generate: () => of(generate()), isIdentifier: true }),
             },
             {
                 determinant: (data) =>
@@ -58,7 +59,7 @@ export class DomainMetadataFormExtensionsService {
                             isTypeWithAliases(data, 'WalletConfigID', 'domain') ||
                             isTypeWithAliases(data, 'ShopConfigID', 'domain'),
                     ),
-                extension: () => of({ generate: () => of(short().uuid()), isIdentifier: true }),
+                extension: () => of({ generate: () => of(v4()), isIdentifier: true }),
             },
             {
                 determinant: (data) => of(isTypeWithAliases(data, 'Timestamp', 'base')),

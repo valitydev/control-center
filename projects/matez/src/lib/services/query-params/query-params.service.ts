@@ -39,9 +39,9 @@ export interface QueryParamsNamespace<T extends object> extends BaseQueryParams<
 const NS_PARAM_PREFIX = '__';
 
 @Injectable({ providedIn: 'root' })
-export class QueryParamsService<P extends object = NonNullable<unknown>>
-    implements BaseQueryParams<P>
-{
+export class QueryParamsService<
+    P extends object = NonNullable<unknown>,
+> implements BaseQueryParams<P> {
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     private readonly serializers =

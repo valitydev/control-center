@@ -1,4 +1,4 @@
-import short from 'short-uuid';
+import { generate } from 'short-uuid';
 
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -26,7 +26,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
-    form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: short().generate() });
+    form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: generate() });
     metadata$ = metadata$;
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 

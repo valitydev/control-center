@@ -1,5 +1,5 @@
 import Keycloak from 'keycloak-js';
-import short from 'short-uuid';
+import { generate } from 'short-uuid';
 
 import { Injectable, inject } from '@angular/core';
 
@@ -8,7 +8,7 @@ export class UserInfoBasedIdGeneratorService {
     private keycloakService = inject(Keycloak);
 
     getUsernameBasedId(): string {
-        return `${this.getUsernameForId()}-${short().new()}`;
+        return `${this.getUsernameForId()}-${generate()}`;
     }
 
     private getUsernameForId(): string {
