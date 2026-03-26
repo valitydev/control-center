@@ -1,3 +1,5 @@
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +8,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ContentLoadingComponent } from '@vality/matez';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 import { ThriftMonacoComponent } from '../thrift-monaco';
 
