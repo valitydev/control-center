@@ -16,7 +16,6 @@ jobs:
         with:
           registry-username: ${{ github.actor }}
           registry-access-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build MatEz Library
         run: npm run build -- matez
       - name: Publish MatEz Library
