@@ -20,9 +20,11 @@ jobs:
           npm-install-force: true
       - name: Build
         run: npm run build
+      - name: Build MatEz Library
+        run: npm run build -- matez
       - name: Publish MatEz Library
         uses: valitydev/action-frontend/publish@v2
         with:
-          directory: ./dist/libs/matez
+          directory: ./dist/matez
           npm-token: ${{ secrets.NPM_TOKEN }}
           pr-label: 'matez'

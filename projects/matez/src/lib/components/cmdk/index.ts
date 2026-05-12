@@ -3,3 +3,4 @@ export * from './types/cmdk-option';
 export * from './types/cmdk-options';
 export * from './cmdk.module';
 export * from './cmdk.component';
+export * from './components/cmdk-button.component';
