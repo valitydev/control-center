@@ -1,7 +1,8 @@
 import { Component, TemplateRef, booleanAttribute, computed, input, model } from '@angular/core';
 
-import { TableModule } from './table.module';
 import { ObservableResource, PagedObservableResource } from '../../utils';
+
+import { TableModule } from './table.module';
 import { Column, UpdateOptions } from './types';
 
 @Component({
