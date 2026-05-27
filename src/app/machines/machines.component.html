@@ -6,10 +6,11 @@
         <ng-template [formGroup]="filtersForm">
             <v-date-range-field formControlName="timespan"></v-date-range-field>
             <v-list-field formControlName="ids" label="IDs"></v-list-field>
-            <mat-form-field>
-                <mat-label>Namespace</mat-label>
-                <input formControlName="ns" matInput />
-            </mat-form-field>
+            <v-autocomplete-field
+                [options]="namespaces"
+                formControlName="ns"
+                label="Namespace"
+            ></v-autocomplete-field>
             <cc-domain-object-field
                 formControlName="provider_id"
                 name="provider"
