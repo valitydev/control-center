@@ -87,7 +87,6 @@ export class WithdrawalsComponent implements OnInit {
         { field: 'id', sticky: 'start' },
         { field: 'external_id' },
         { field: 'created_at', cell: { type: 'datetime' } },
-        { field: 'identity_id' },
         createDomainObjectColumn((d) => ({ ref: { wallet_config: { id: d.source_id } } }), {
             header: 'Wallet',
         }),
