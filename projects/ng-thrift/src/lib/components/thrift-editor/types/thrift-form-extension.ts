@@ -2,6 +2,7 @@ import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { TemplateRef } from '@angular/core';
+import { ValidatorFn } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 
 import { ThriftData } from '../../../models';
@@ -22,6 +23,7 @@ export interface ThriftFormExtensionResult<T = unknown> {
     isIdentifier?: boolean;
     label?: string;
     type?: 'datetime';
+    validators?: ValidatorFn[];
     converter?: Converter;
     hidden?: boolean;
     template?: TemplateRef<unknown>;
