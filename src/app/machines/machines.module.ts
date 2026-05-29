@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import {
     ActionsModule,
+    AutocompleteFieldModule,
     DateRangeFieldModule,
     DialogModule,
     EnumKeyPipe,
@@ -60,6 +61,7 @@ import { MachinesComponent } from './machines.component';
         ThriftPipesModule,
         FiltersModule,
         TagModule,
+        AutocompleteFieldModule,
     ],
     declarations: [MachinesComponent, RepairByScenarioDialogComponent],
 })

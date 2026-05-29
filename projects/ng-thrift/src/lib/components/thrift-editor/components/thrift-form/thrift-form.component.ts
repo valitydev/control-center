@@ -1,18 +1,9 @@
-import { BehaviorSubject, Observable, defer, switchMap } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { combineLatest, switchMap } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    DestroyRef,
-    HostBinding,
-    Input,
-    OnChanges,
-    OnInit,
-    SimpleChanges,
-    inject,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, HostBinding, computed, input } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validator } from '@angular/forms';
 
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
@@ -20,11 +11,7 @@ import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';
-import {
-    ThriftFormExtension,
-    ThriftFormExtensionResult,
-    getExtensionsResult,
-} from '../../types/thrift-form-extension';
+import { ThriftFormExtension, getExtensionsResult } from '../../types/thrift-form-extension';
 import { ComplexFormComponent } from '../complex-form/complex-form.component';
 import { EnumFieldComponent } from '../enum-field/enum-field.component';
 import { ExtensionFieldComponent } from '../extension-field/extension-field.component';
@@ -50,57 +37,43 @@ import { UnionFieldComponent } from '../union-field/union-field.component';
         PrimitiveFieldComponent,
     ],
 })
-export class ThriftFormComponent<T>
-    extends FormControlSuperclass<T>
-    implements OnInit, OnChanges, Validator
-{
-    private destroyRef = inject(DestroyRef);
-    @Input() metadata!: ThriftAstMetadata[];
-    @Input() namespace!: string;
-    @Input() type?: ValueType;
-    @Input() field?: Field;
-    @Input() parent?: ThriftData;
-    @Input() extensions?: ThriftFormExtension[];
+export class ThriftFormComponent<T> extends FormControlSuperclass<T> implements Validator {
+    metadata = input.required<ThriftAstMetadata[]>();
+    namespace = input.required<string>();
+    type = input.required<ValueType>();
+    field = input<Field>();
+    parent = input<ThriftData>();
+    extensions = input<ThriftFormExtension[]>();
 
-    @HostBinding('class.v-thrift-form-hidden') hidden = false;
-
-    data!: ThriftData;
-    extensionResult$: Observable<ThriftFormExtensionResult> = defer(() => this.updated$).pipe(
-        switchMap(() => getExtensionsResult(this.extensions, this.data)),
+    data = computed(
+        () =>
+            new ThriftData(
+                this.metadata(),
+                this.namespace(),
+                this.type(),
+                this.field(),
+                this.parent(),
+            ),
+    );
+    private extensionResult$ = combineLatest([
+        toObservable(this.extensions),
+        toObservable(this.data),
+    ]).pipe(
+        switchMap(([extensions, data]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    private updated$ = new BehaviorSubject<void>(undefined);
-
-    override ngOnInit() {
-        this.extensionResult$
-            .pipe(
-                map((res) => !!res?.hidden),
-                distinctUntilChanged(),
-                takeUntilDestroyed(this.destroyRef),
-            )
-            .subscribe((hidden) => {
-                this.hidden = hidden;
-            });
-        return super.ngOnInit();
+    extensionResult = toSignal(this.extensionResult$);
+    @HostBinding('class.v-thrift-form-hidden') get hidden() {
+        return this.extensionResult()?.hidden;
     }
 
-    override ngOnChanges(changes: SimpleChanges) {
-        if (this.metadata && this.namespace && this.type) {
-            try {
-                this.data = new ThriftData(
-                    this.metadata,
-                    this.namespace,
-                    this.type,
-                    this.field,
-                    this.parent,
-                );
-                this.updated$.next(undefined);
-            } catch (err) {
-                this.data = undefined as never;
-                console.warn(err);
-            }
-        }
-        return super.ngOnChanges(changes);
+    override validate(control) {
+        return (
+            super.validate(control) ||
+            (this.extensionResult()?.validators || []).reduce((errors, validator) => {
+                const result = validator(control);
+                return result ? { ...(errors || {}), ...result } : errors;
+            }, null)
+        );
     }
 }

@@ -4,6 +4,7 @@ import { generate } from 'short-uuid';
 import { v4 } from 'uuid';
 
 import { Injectable, inject } from '@angular/core';
+import { Validators } from '@angular/forms';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
@@ -38,6 +39,17 @@ export class DomainMetadataFormExtensionsService {
                     of({
                         generate: () => this.domainService.version.getFirstValue(),
                         isIdentifier: true,
+                    }),
+            },
+            {
+                determinant: (data) => of(isTypeWithAliases(data, 'Url', 'webhooker')),
+                extension: () =>
+                    of({
+                        validators: [
+                            Validators.pattern(
+                                /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/,
+                            ),
+                        ],
                     }),
             },
             {

@@ -86,9 +86,13 @@ export class WithdrawalsComponent implements OnInit {
     columns: Column<StatWithdrawal>[] = [
         { field: 'id', sticky: 'start' },
         { field: 'external_id' },
+        createDomainObjectColumn((d) => ({ ref: { party_config: { id: d.party_id } } }), {
+            header: 'Merchant',
+        }),
         { field: 'created_at', cell: { type: 'datetime' } },
-        { field: 'identity_id' },
-        { field: 'source_id' },
+        createDomainObjectColumn((d) => ({ ref: { wallet_config: { id: d.source_id } } }), {
+            header: 'Wallet',
+        }),
         { field: 'destination_id' },
         createCurrencyColumn((d) => ({ amount: d.amount, code: d.currency_symbolic_code }), {
             field: 'amount',

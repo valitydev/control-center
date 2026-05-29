@@ -1,53 +1,53 @@
-@if (!(extensionResult$ | async)?.hidden) {
+@if (!extensionResult()?.hidden) {
     <div>
-        @if ((extensionResult$ | async)?.type || (extensionResult$ | async)?.template) {
+        @if (extensionResult()?.type || extensionResult()?.template) {
             <v-extension-field
-                [data]="$any(data)"
-                [extensions]="extensions"
+                [data]="$any(data())"
+                [extensions]="extensions()"
                 [formControl]="control"
             ></v-extension-field>
         } @else {
-            @switch (data?.typeGroup) {
+            @switch (data()?.typeGroup) {
                 @case ('primitive') {
                     <v-primitive-field
-                        [data]="$any(data)"
-                        [extensions]="extensions"
+                        [data]="$any(data())"
+                        [extensions]="extensions()"
                         [formControl]="control"
                     ></v-primitive-field>
                 }
                 @case ('complex') {
                     <v-complex-form
-                        [data]="$any(data)"
-                        [extensions]="extensions"
+                        [data]="$any(data())"
+                        [extensions]="extensions()"
                         [formControl]="control"
                     ></v-complex-form>
                 }
                 @case ('object') {
-                    @switch (data.objectType) {
+                    @switch (data()?.objectType) {
                         @case ('struct') {
                             <v-struct-form
-                                [data]="$any(data)"
-                                [extensions]="extensions"
+                                [data]="$any(data())"
+                                [extensions]="extensions()"
                                 [formControl]="control"
                             ></v-struct-form>
                         }
                         @case ('union') {
                             <v-union-field
-                                [data]="$any(data)"
-                                [extensions]="extensions"
+                                [data]="$any(data())"
+                                [extensions]="extensions()"
                                 [formControl]="control"
                             ></v-union-field>
                         }
                         @case ('enum') {
                             <v-enum-field
-                                [data]="$any(data)"
+                                [data]="$any(data())"
                                 [formControl]="control"
                             ></v-enum-field>
                         }
                         @case ('typedef') {
                             <v-typedef-form
-                                [data]="$any(data)"
-                                [extensions]="extensions"
+                                [data]="$any(data())"
+                                [extensions]="extensions()"
                                 [formControl]="control"
                             ></v-typedef-form>
                         }

@@ -16,6 +16,7 @@ import {
     DialogService,
     FetchOptions,
     NotifyLogService,
+    Option,
     QueryParamsService,
     clean,
     countChanged,
@@ -116,6 +117,10 @@ export class MachinesComponent implements OnInit {
         map((v) => countChanged(this.initFilters, v, { timespan: isEqualDateRange })),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+    namespaces: Option<string>[] = [
+        { label: 'invoice', value: 'invoice' },
+        { label: 'ff/withdrawal/session_v2', value: 'ff/withdrawal/session_v2' },
+    ];
 
     private initFilters = this.filtersForm.value;
 
