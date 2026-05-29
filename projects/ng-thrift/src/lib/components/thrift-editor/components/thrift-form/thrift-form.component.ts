@@ -11,10 +11,7 @@ import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';
-import {
-    ThriftFormExtension,
-    getExtensionsResult,
-} from '../../types/thrift-form-extension';
+import { ThriftFormExtension, getExtensionsResult } from '../../types/thrift-form-extension';
 import { ComplexFormComponent } from '../complex-form/complex-form.component';
 import { EnumFieldComponent } from '../enum-field/enum-field.component';
 import { ExtensionFieldComponent } from '../extension-field/extension-field.component';
