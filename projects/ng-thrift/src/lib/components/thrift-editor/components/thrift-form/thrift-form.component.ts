@@ -1,8 +1,9 @@
-import { BehaviorSubject, Observable, combineLatest, defer, switchMap } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { combineLatest, switchMap } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding, computed, input } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validator } from '@angular/forms';
 
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
@@ -12,7 +13,6 @@ import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';
 import {
     ThriftFormExtension,
-    ThriftFormExtensionResult,
     getExtensionsResult,
 } from '../../types/thrift-form-extension';
 import { ComplexFormComponent } from '../complex-form/complex-form.component';
@@ -22,7 +22,6 @@ import { PrimitiveFieldComponent } from '../primitive-field/primitive-field.comp
 import { StructFormComponent } from '../struct-form/struct-form.component';
 import { TypedefFormComponent } from '../typedef-form/typedef-form.component';
 import { UnionFieldComponent } from '../union-field/union-field.component';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'v-thrift-form',
