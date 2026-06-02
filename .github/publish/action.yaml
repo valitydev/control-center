@@ -10,6 +10,10 @@ inputs:
     description: Directory
     default: './'
     required: false
+  npm-token:
+    description: NPM auth token
+    default: ''
+    required: false
   pr-label:
     description: PR label for publish (publish or publish {label})
     default: ''
@@ -44,6 +48,7 @@ runs:
       shell: bash
       env:
         NPM_SKIP_VERSION_UP: ${{ inputs.npm-skip-version-up }}
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
         PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         PR_NUMBER: ${{ github.event.number }}
         PR_VERSION_TAG: ${{ inputs.pr-version-tag }}

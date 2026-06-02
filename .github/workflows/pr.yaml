@@ -24,8 +24,7 @@ jobs:
       - name: Build MatEz Library
         run: npm run build -- matez
       - name: Publish MatEz Library
-        uses: ./.github/publish.yaml
+        uses: ./.github/publish
         with:
           directory: ./dist/matez
-          npm-token: ${{ secrets.NPM_TOKEN }}
           pr-label: 'matez'
