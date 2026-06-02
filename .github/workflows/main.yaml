@@ -23,7 +23,6 @@ jobs:
         with:
           directory: ./dist/matez
           npm-token: ${{ secrets.NPM_TOKEN }}
-          pr-label: 'matez'
   notify:
     name: Notify
     runs-on: ubuntu-latest

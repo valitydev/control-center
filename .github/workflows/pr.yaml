@@ -24,7 +24,7 @@ jobs:
       - name: Build MatEz Library
         run: npm run build -- matez
       - name: Publish MatEz Library
-        uses: valitydev/action-frontend/publish@v2
+        uses: ./.github/publish.yaml
         with:
           directory: ./dist/matez
           npm-token: ${{ secrets.NPM_TOKEN }}
