@@ -33,5 +33,5 @@ jobs:
       - uses: valitydev/action-mattermost-notify@v0
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          channel: 'control-center-new'
+          channel: 'control-center'
           username: 'Frontend'
