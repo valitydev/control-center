@@ -1,8 +1,9 @@
 import { Component, TemplateRef, booleanAttribute, computed, input, model } from '@angular/core';
 
-import { Column, ObservableResource, PagedObservableResource, UpdateOptions } from '@vality/matez';
+import { ObservableResource, PagedObservableResource } from '../../utils';
 
 import { TableModule } from './table.module';
+import { Column, UpdateOptions } from './types';
 
 @Component({
     selector: 'v-table-resource',
