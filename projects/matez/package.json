@@ -3,7 +3,7 @@
   "version": "21.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/valitydev/control-center.git"
+    "url": "git+https://github.com/valitydev/control-center.git"
   },
   "exports": {
     ".": {
