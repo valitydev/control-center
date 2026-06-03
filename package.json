@@ -20,6 +20,9 @@
   "workspaces": [
     "projects/*"
   ],
+  "engines": {
+    "node": ">=26"
+  },
   "private": true,
   "dependencies": {
     "@angular/cdk": "^21.2.3",
