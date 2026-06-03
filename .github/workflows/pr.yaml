@@ -16,12 +16,17 @@ jobs:
   #     - uses: valitydev/action-frontend/setup-install@v2
   #     - name: Check
   #       run: npm run check
-  build:
+  check:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: valitydev/action-frontend/setup-install@v2
+      # - uses: actions/setup-node@v6
+      #   with:
+      #     node-version: 'lts'
+      #     registry-url: 'https://registry.npmjs.org'
+      #     package-manager-cache: false
       # - name: Build
       #   run: npm run build
       - name: Build MatEz Library
