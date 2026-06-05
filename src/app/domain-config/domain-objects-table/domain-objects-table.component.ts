@@ -119,14 +119,14 @@ export class DomainObjectsTableComponent {
                                   });
                               },
                           },
-                          {
-                              label: 'Delete',
-                              click: () => {
-                                  this.domainObjectService.delete(d.ref).next(() => {
-                                      this.resource().reload();
-                                  });
-                              },
-                          },
+                          //   {
+                          //       label: 'Delete',
+                          //       click: () => {
+                          //           this.domainObjectService.delete(d.ref).next(() => {
+                          //               this.resource().reload();
+                          //           });
+                          //       },
+                          //   },
                       ],
             })),
         ),
