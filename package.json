@@ -43,7 +43,6 @@
     "@vality/repairer-proto": "^2.0.2-07b2a51.0",
     "@vality/scrooge-proto": "^0.1.1-eec9e06.0",
     "@vality/thrift-ts": "^2.5.1-2b658f2.0",
-    "auto-bind": "^5.0.1",
     "date-fns": "^4.1.0",
     "keycloak-angular": "^21.0.0",
     "keycloak-js": "^26.2.3",

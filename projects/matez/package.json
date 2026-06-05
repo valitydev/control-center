@@ -33,6 +33,7 @@
     "@s-libs/micro-dash": "^20.0.0",
     "@s-libs/ng-core": "^20.2.0",
     "@s-libs/rxjs-core": "^20.2.0",
+    "auto-bind": "^5.0.1",
     "dinero.js": "^2.0.0",
     "papaparse": "^5.5.3"
   },
