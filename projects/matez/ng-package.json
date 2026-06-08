@@ -11,6 +11,7 @@
         "@s-libs/ng-core",
         "@s-libs/rxjs-core",
         "dinero.js",
-        "papaparse"
+        "papaparse",
+        "auto-bind"
     ]
 }
