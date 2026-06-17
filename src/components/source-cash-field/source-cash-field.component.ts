@@ -4,6 +4,7 @@ import { distinctUntilChanged, map, shareReplay, take } from 'rxjs/operators';
 
 import { CommonModule, getCurrencySymbol } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     Input,
@@ -47,6 +48,7 @@ const RADIX_POINT = '.';
     selector: 'cc-source-cash-field',
     templateUrl: './source-cash-field.component.html',
     providers: createControlProviders(() => SourceCashFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatFormField,
         ReactiveFormsModule,

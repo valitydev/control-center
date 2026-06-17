@@ -1,4 +1,11 @@
-import { Component, booleanAttribute, computed, input, model } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    booleanAttribute,
+    computed,
+    input,
+    model,
+} from '@angular/core';
 
 import { UnionEnum } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
@@ -18,6 +25,7 @@ export enum ViewerKind {
     selector: 'v-thrift-viewer',
     templateUrl: './thrift-viewer.component.html',
     styleUrls: ['./thrift-viewer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ThriftViewerComponent {

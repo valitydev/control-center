@@ -3,7 +3,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,6 +36,7 @@ const TYPE_NS_MAP: Record<Type, Namespace[]> = {
 
 @Component({
     templateUrl: './fail-machines-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, DialogModule, MatButtonModule, ReactiveFormsModule, SelectFieldModule],
 })
 export class FailMachinesDialogComponent extends DialogSuperclass<

@@ -8,6 +8,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     TemplateRef,
     contentChild,
@@ -28,6 +29,7 @@ export interface Item<T> {
     selector: 'cc-dnd-cards',
     templateUrl: 'dnd-cards.component.html',
     styleUrl: 'dnd-cards.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         NgTemplateOutlet,

@@ -1,7 +1,7 @@
 import { catchError, filter, first, of, switchMap } from 'rxjs';
 import yaml from 'yaml';
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
@@ -31,6 +31,7 @@ import { CreateWalletWebhookDialogComponent } from './create-wallet-webhook-dial
 @Component({
     selector: 'cc-wallet-webhooks',
     imports: [PageLayoutModule, TableModule, TableResourceComponent, MatButtonModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './wallet-webhooks.component.html',
 })
 export class WalletWebhooksComponent {

@@ -1,6 +1,13 @@
 import { BehaviorSubject, combineLatest, first, map, of, switchMap } from 'rxjs';
 
-import { Component, DestroyRef, TemplateRef, inject, viewChild } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    TemplateRef,
+    inject,
+    viewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -19,6 +26,7 @@ import { FetchSourcesService } from '../../../sources';
 
 @Component({
     templateUrl: 'create-deposit-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class CreateDepositDialogComponent extends DialogSuperclass<CreateDepositDialogComponent> {

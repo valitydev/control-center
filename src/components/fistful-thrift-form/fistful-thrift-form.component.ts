@@ -2,7 +2,7 @@ import { map, of } from 'rxjs';
 import { v4 } from 'uuid';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { Reference } from '@vality/domain-proto/domain';
@@ -19,6 +19,7 @@ import { BaseThriftFormSuperclass } from '../thrift-api-crud/thrift-forms/utils/
     selector: 'cc-fistful-thrift-form',
     templateUrl: './fistful-thrift-form.component.html',
     providers: createControlProviders(() => FistfulThriftFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, ThriftEditorModule],
 })
 export class FistfulThriftFormComponent extends BaseThriftFormSuperclass {

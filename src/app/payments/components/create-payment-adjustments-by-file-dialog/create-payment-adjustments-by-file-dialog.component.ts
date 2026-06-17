@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 
@@ -23,6 +23,7 @@ import { getCreatePaymentAdjustmentsArgs } from './utils/get-create-payment-adju
 @Component({
     selector: 'cc-create-payment-adjustments-by-file-dialog',
     templateUrl: './create-payment-adjustments-by-file-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, DialogModule, UploadCsvComponent, MatButton],
 })
 export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSuperclass<

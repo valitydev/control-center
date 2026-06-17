@@ -1,6 +1,6 @@
 import { generate } from 'short-uuid';
 
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 
@@ -15,6 +15,7 @@ import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-cru
 @Component({
     selector: 'cc-create-chargeback-dialog',
     templateUrl: './create-chargeback-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class CreateChargebackDialogComponent extends DialogSuperclass<

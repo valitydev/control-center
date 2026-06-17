@@ -1,6 +1,6 @@
 import { combineLatest, first, map } from 'rxjs';
 
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import { Reference } from '@vality/domain-proto/domain';
@@ -30,6 +30,7 @@ import { DomainObjectService } from '../services/domain-object.service';
         ShopsTableComponent,
         WalletsTableComponent,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './domain-object-history-card.component.html',
 })
 export class DomainObjectHistoryCardComponent {

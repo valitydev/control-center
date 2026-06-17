@@ -1,11 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { HumanizedDurationPipe } from '@vality/matez';
 
 @Component({
     selector: 'cc-timeline-item-header',
     templateUrl: 'timeline-item-header.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [HumanizedDurationPipe, DatePipe],
 })
 export class TimelineItemHeaderComponent {

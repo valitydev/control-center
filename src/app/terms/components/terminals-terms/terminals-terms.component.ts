@@ -1,7 +1,7 @@
 import { map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
@@ -40,6 +40,7 @@ import {
         MerchantFieldModule,
         ListFieldModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './terminals-terms.component.html',
 })
 export class TerminalsTermsComponent {

@@ -2,7 +2,16 @@ import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, shareReplay, tap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, computed, inject, input, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    OnInit,
+    computed,
+    inject,
+    input,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,6 +49,7 @@ export interface CurrencyAccount {
         MatTooltipModule,
     ],
     templateUrl: './account-field.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: createControlProviders(() => AccountFieldComponent),
 })
 export class AccountFieldComponent

@@ -1,6 +1,6 @@
 import { map } from 'rxjs';
 
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
 import { DebounceTime, UpdateOptions } from '@vality/matez';
@@ -11,6 +11,7 @@ import { FetchFullDomainObjectsService } from '~/api/domain-config';
     selector: 'cc-shops',
     templateUrl: './shops.component.html',
     providers: [FetchFullDomainObjectsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ShopsComponent implements OnInit {

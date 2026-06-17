@@ -1,6 +1,6 @@
 import yaml from 'yaml';
 
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 import { Value, ValueComponent } from '@vality/matez';
 
@@ -9,6 +9,7 @@ import { ThriftViewExtensionResult } from '../../utils/thrift-view-extension-res
 @Component({
     selector: 'v-thrift-tree-value',
     templateUrl: './thrift-tree-value.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ValueComponent],
 })
 export class ThriftTreeValueComponent {

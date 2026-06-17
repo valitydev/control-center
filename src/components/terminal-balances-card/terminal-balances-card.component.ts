@@ -2,7 +2,7 @@ import { combineLatest } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 import { Column, TableModule } from '@vality/matez';
@@ -16,6 +16,7 @@ import { CardComponent } from '../sidenav-info/components/card/card.component';
 @Component({
     selector: 'cc-terminal-balances-card',
     imports: [CommonModule, CardComponent, TableModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './terminal-balances-card.component.html',
 })
 export class TerminalBalancesCardComponent {

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    inject,
+} from '@angular/core';
 
 import { NotifyLogService } from '../../services';
 
@@ -13,6 +20,7 @@ function hasExtension(fileName: string, extensions: string[]) {
     selector: 'v-file-upload',
     templateUrl: './file-upload.component.html',
     styleUrls: ['./file-upload.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class FileUploadComponent {

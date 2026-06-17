@@ -1,10 +1,11 @@
 import { Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 @Component({
     selector: 'cc-headline',
     templateUrl: 'headline.component.html',
     styleUrls: ['headline.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class HeadlineComponent {

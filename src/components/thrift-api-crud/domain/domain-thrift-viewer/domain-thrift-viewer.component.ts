@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, booleanAttribute, inject, model } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    booleanAttribute,
+    inject,
+    model,
+} from '@angular/core';
 
 import { metadata$ } from '@vality/domain-proto';
 import { UnionEnum } from '@vality/matez';
@@ -11,6 +18,7 @@ import { DomainMetadataViewExtensionsService } from './services/domain-metadata-
 @Component({
     selector: 'cc-domain-thrift-viewer',
     templateUrl: './domain-thrift-viewer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ThriftViewerModule],
 })
 export class DomainThriftViewerComponent<T> {

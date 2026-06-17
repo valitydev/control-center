@@ -3,7 +3,16 @@ import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Input,
+    OnChanges,
+    OnInit,
+    forwardRef,
+    inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,6 +39,7 @@ import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
     selector: 'v-union-field',
     templateUrl: './union-field.component.html',
     providers: createControlProviders(() => UnionFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         ReactiveFormsModule,

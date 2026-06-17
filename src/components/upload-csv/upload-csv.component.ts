@@ -4,6 +4,7 @@ import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     EventEmitter,
@@ -70,6 +71,7 @@ function getCsvObjectErrors<R extends string, O extends string>(
         CommonModule,
         InputFieldModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './upload-csv.component.html',
 })
 export class UploadCsvComponent<

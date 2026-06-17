@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import {
@@ -17,6 +17,7 @@ import { FetchSourcesService } from '../../app/sources';
     selector: 'cc-currency-field',
     imports: [CommonModule, ReactiveFormsModule, AutocompleteFieldModule],
     templateUrl: './currency-field.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: createControlProviders(() => CurrencyFieldComponent),
 })
 export class CurrencyFieldComponent extends FormControlSuperclass<string> {

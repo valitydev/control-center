@@ -1,6 +1,14 @@
 import { first, timer } from 'rxjs';
 
-import { Component, EventEmitter, Input, OnInit, Output, booleanAttribute } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    booleanAttribute,
+} from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 import { FormControlSuperclass, createControlProviders } from '../../../utils';
@@ -13,6 +21,7 @@ import { getHintText } from '../utils/get-hint-text';
     templateUrl: './select-field.component.html',
     styleUrls: ['./select-field.component.scss'],
     providers: createControlProviders(() => SelectFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class SelectFieldComponent<T = unknown>

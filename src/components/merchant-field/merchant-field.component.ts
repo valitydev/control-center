@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, Input, booleanAttribute, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, inject } from '@angular/core';
 
 import { DomainObjectType, PartyConfigRef } from '@vality/domain-proto/domain';
 import {
@@ -17,6 +17,7 @@ import { FetchDomainObjectsService } from '~/api/domain-config';
     selector: 'cc-merchant-field',
     templateUrl: 'merchant-field.component.html',
     providers: [...createControlProviders(() => MerchantFieldComponent), FetchDomainObjectsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class MerchantFieldComponent extends FormControlSuperclass<PartyConfigRef['id']> {

@@ -3,7 +3,14 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    computed,
+    inject,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,6 +68,7 @@ enum Step {
         DomainThriftViewerComponent,
         ThriftPipesModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './edit-domain-object-dialog.component.html',
 })
 export class EditDomainObjectDialogComponent extends DialogSuperclass<

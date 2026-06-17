@@ -1,7 +1,7 @@
 import { distinctUntilChanged, map, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -28,6 +28,7 @@ import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-cru
         ReactiveFormsModule,
         MatButtonModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-wallet-webhook-dialog.component.html',
 })
 export class CreateWalletWebhookDialogComponent extends DialogSuperclass<

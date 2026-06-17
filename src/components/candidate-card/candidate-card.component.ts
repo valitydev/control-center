@@ -2,7 +2,7 @@ import { ReplaySubject, defer, switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, inject } from '@angular/core';
 
 import { RoutingRulesetRef, TerminalRef } from '@vality/domain-proto/domain';
 import { ComponentChanges } from '@vality/matez';
@@ -15,6 +15,7 @@ import { DomainThriftViewerComponent } from '../thrift-api-crud';
 @Component({
     selector: 'cc-candidate-card',
     imports: [CommonModule, CardComponent, DomainThriftViewerComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './candidate-card.component.html',
 })
 export class CandidateCardComponent implements OnChanges {

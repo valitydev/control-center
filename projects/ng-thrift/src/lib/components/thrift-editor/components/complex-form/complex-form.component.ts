@@ -1,7 +1,15 @@
 import { merge } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, DestroyRef, Input, forwardRef, inject } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Input,
+    forwardRef,
+    inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
@@ -45,6 +53,7 @@ type ComplexType<T, K = never> = T[] | Map<K, T> | Set<T>;
     templateUrl: './complex-form.component.html',
     styleUrls: ['complex-form.component.scss'],
     providers: createControlProviders(() => ComplexFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         ThriftPipesModule,

@@ -12,6 +12,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     Injector,
@@ -68,6 +69,7 @@ import { inProgressFrom } from '../../../projects/matez/src/lib/utils/operators/
         MatIconModule,
         ThriftPipesModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './studio.component.html',
 })
 export class StudioComponent implements OnInit {

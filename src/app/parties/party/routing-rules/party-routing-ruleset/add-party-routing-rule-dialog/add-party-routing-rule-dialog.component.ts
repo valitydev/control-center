@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder } from '@angular/forms';
 
@@ -15,6 +15,7 @@ import { RoutingRulesType } from '../../types/routing-rules-type';
 
 @Component({
     templateUrl: 'add-party-routing-rule-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class AddPartyRoutingRuleDialogComponent extends DialogSuperclass<

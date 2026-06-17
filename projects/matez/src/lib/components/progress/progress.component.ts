@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Progressable } from '../../types/progressable';
 
 @Component({
     selector: 'v-progress',
     templateUrl: './progress.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ProgressComponent implements Progressable {

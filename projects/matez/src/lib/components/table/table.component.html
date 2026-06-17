@@ -4,7 +4,7 @@
     <v-table-info-bar
         [(filter)]="filter"
         [columns]="normColumns()"
-        [count]="(dataSource.data$ | async)?.length"
+        [count]="$safeNavigationMigration((dataSource.data$ | async)?.length)"
         [dataProgress]="!!(columnsDataProgress$ | async) && !hasMore()"
         [filteredCount]="displayedCount$ | async"
         [hasLoad]="update$.observed"
@@ -14,7 +14,7 @@
         [noToolbar]="noToolbar()"
         [preloadSize]="maxSize()"
         [progress]="progress()"
-        [selectedCount]="rowSelected()?.length"
+        [selectedCount]="$safeNavigationMigration(rowSelected()?.length)"
         [size]="size()"
         [standaloneFilter]="standaloneFilter()"
         [tableInputsContent]="tableInputsContent()"
@@ -81,23 +81,27 @@
                         [ngClass]="columnClasses"
                         mat-header-cell
                     >
-                        <v-value [value]="col?.header | async" emptySymbol="" inline></v-value>
+                        <v-value
+                            [value]="$safeNavigationMigration(col?.header) | async"
+                            emptySymbol=""
+                            inline
+                        ></v-value>
                     </th>
 
                     <ng-template let-element let-rowIndex="index" matCellDef>
-                        @let cell = columnsData?.get?.(element)?.get(col);
+                        @let cell = $safeNavigationMigration(columnsData?.get?.(element)?.get(col));
                         <td
                             [ngClass]="columnClasses"
-                            [ngStyle]="col?.params?.style"
+                            [ngStyle]="$safeNavigationMigration(col?.params?.style)"
                             [style.border-bottom]="cell?.isNextChild && !col.child ? 'none' : ''"
                             mat-cell
                         >
                             <v-value
                                 [emptySymbol]="!(cell?.isChild && !col?.child)"
                                 [highlight]="filter$ | async"
-                                [lazyValue]="cell?.lazyValue"
+                                [lazyValue]="$safeNavigationMigration(cell?.lazyValue)"
                                 [lazyVisible]="loadedLazyItems.has(element)"
-                                [value]="cell?.value | async"
+                                [value]="$safeNavigationMigration(cell?.value) | async"
                                 inline
                                 (lazyVisibleChange)="loadedLazyItems.set(element, true)"
                             ></v-value>

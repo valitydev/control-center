@@ -1,7 +1,7 @@
 import { lowerFirst } from 'lodash-es';
 import isNil from 'lodash-es/isNil';
 
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ComponentChanges, FormControlSuperclass, createControlProviders } from '../../utils';
 
@@ -16,6 +16,7 @@ export interface State<T = unknown> {
     templateUrl: './switch-button.component.html',
     styles: [],
     providers: createControlProviders(() => SwitchButtonComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class SwitchButtonComponent<T = number>

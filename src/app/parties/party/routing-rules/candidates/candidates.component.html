@@ -1,5 +1,5 @@
 <cc-page-layout
-    [id]="(ruleset$ | async)?.ref?.id"
+    [id]="$safeNavigationMigration((ruleset$ | async)?.ref?.id)"
     [title]="((routingRulesType$ | async) === 'payment' ? 'Shop' : 'Wallet') + ' Routing Rules'"
     [upLink]="[
         '/parties/' +
@@ -39,7 +39,9 @@
                                         '#' +
                                         item.candidate.terminal.id +
                                         ': ' +
-                                        item.terminal?.object?.terminal?.data?.name
+                                        $safeNavigationMigration(
+                                            item.terminal?.object?.terminal?.data?.name
+                                        )
                                     "
                                     class="min-w-0 truncate"
                                 >

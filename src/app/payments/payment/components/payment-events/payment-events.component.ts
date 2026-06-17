@@ -2,7 +2,7 @@ import { switchMap } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 
@@ -31,6 +31,7 @@ import { getInvoiceChangeInfo } from './utils/get-invoice-change-info';
         TimelineItemHeaderComponent,
     ],
     templateUrl: './payment-events.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: ``,
 })
 export class PaymentEventsComponent {

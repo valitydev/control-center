@@ -1,7 +1,7 @@
 import { Observable, combineLatest, map, of, shareReplay } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
@@ -28,6 +28,7 @@ export interface ToastData {
     selector: 'v-toast',
     templateUrl: './toast.component.html',
     styleUrls: ['./toast.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatProgressSpinnerModule, MatButtonModule],
 })
 export class ToastComponent {

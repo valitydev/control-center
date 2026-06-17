@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -9,6 +9,7 @@ import { CmdkOption } from '../types/cmdk-option';
 @Component({
     selector: 'v-cmdk-button',
     imports: [MatIconModule, NgClass, MatButtonModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `
         <button
             class="!text-[var(--mat-sys-outline)] !shadow-[inset_0_2px_4px_0_rgba(0,0,0,0.1),inset_0_2px_2px_0_rgba(0,0,0,0.06)]"

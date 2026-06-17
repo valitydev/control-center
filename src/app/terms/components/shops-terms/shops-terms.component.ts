@@ -1,7 +1,7 @@
 import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { DomainObjectType, ShopConfig, TermSetHierarchy } from '@vality/domain-proto/domain';
@@ -42,6 +42,7 @@ import {
         ShopFieldModule,
         ListFieldModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './shops-terms.component.html',
 })
 export class ShopsTermsComponent {

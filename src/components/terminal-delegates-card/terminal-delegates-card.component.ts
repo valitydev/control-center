@@ -4,6 +4,7 @@ import { map, shareReplay, take } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     Injector,
@@ -45,6 +46,7 @@ import { DomainObjectCardComponent } from '../thrift-api-crud/domain';
         MatTooltipModule,
         MatBadgeModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './terminal-delegates-card.component.html',
 })
 export class TerminalDelegatesCardComponent implements OnChanges {

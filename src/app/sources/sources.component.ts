@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { StatSource } from '@vality/fistful-proto/fistful_stat';
 import { Column, DialogService } from '@vality/matez';
@@ -8,6 +8,7 @@ import { FetchSourcesService } from './fetch-sources.service';
 
 @Component({
     templateUrl: './sources.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class SourcesComponent {

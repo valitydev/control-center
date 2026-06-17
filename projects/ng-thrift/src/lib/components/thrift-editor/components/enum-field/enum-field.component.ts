@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +14,7 @@ import { FieldLabelPipe } from '../../pipes/field-label.pipe';
     selector: 'v-enum-field',
     templateUrl: './enum-field.component.html',
     providers: createControlProviders(() => EnumFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatIconModule,
         MatFormFieldModule,

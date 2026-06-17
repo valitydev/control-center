@@ -1,4 +1,4 @@
-import { Component, booleanAttribute, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, booleanAttribute, input } from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
@@ -9,6 +9,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
             <mat-progress-bar class="progress-bar" mode="indeterminate"></mat-progress-bar>
         }
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: `
         .progress-bar {
             position: absolute;

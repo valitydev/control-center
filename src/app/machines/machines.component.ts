@@ -4,7 +4,7 @@ import startCase from 'lodash-es/startCase';
 import { BehaviorSubject } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 
@@ -52,6 +52,7 @@ interface Filters {
     selector: 'cc-machines',
     templateUrl: './machines.component.html',
     providers: [MachinesService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class MachinesComponent implements OnInit {

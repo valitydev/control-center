@@ -1,4 +1,12 @@
-import { Component, TemplateRef, booleanAttribute, computed, input, model } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    TemplateRef,
+    booleanAttribute,
+    computed,
+    input,
+    model,
+} from '@angular/core';
 
 import { ObservableResource, PagedObservableResource } from '../../utils';
 
@@ -25,6 +33,7 @@ import { Column, UpdateOptions } from './types';
             <v-table-actions><ng-content select="v-table-actions"></ng-content></v-table-actions>
         </v-table>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TableModule],
 })
 export class TableResourceComponent<T extends object, C extends object> {

@@ -1,6 +1,6 @@
 import { startCase } from 'lodash-es';
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { Column, TableModule, getEnumKey } from '@vality/matez';
 import { RepairStatus, StatusHistory } from '@vality/repairer-proto/repairer';
@@ -11,6 +11,7 @@ import { SidenavInfoModule } from '~/components/sidenav-info/sidenav-info.module
     template: `<cc-card title="Machine #{{ id() }} Status History"
         ><v-table [columns]="columns" [data]="history()"></v-table
     ></cc-card>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TableModule, SidenavInfoModule],
 })
 export class MachineStatusHistoryCardComponent {

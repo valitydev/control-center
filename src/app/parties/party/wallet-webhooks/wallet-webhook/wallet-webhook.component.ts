@@ -1,6 +1,6 @@
 import { map } from 'rxjs';
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,6 +13,7 @@ import { FistfulThriftViewerComponent } from '~/components/thrift-api-crud/fistf
 @Component({
     selector: 'cc-wallet-webhook',
     imports: [FistfulThriftViewerComponent, PageLayoutModule, MatCardModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './wallet-webhook.component.html',
 })
 export class WalletWebhookComponent {

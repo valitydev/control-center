@@ -1,6 +1,15 @@
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
-import { Component, booleanAttribute, computed, inject, input, model, output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    booleanAttribute,
+    computed,
+    inject,
+    input,
+    model,
+    output,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ThemeService } from '@vality/matez';
@@ -11,6 +20,7 @@ import { toJson } from '../../utils';
     selector: 'v-thrift-monaco',
     imports: [MonacoEditorModule, FormsModule],
     templateUrl: 'thrift-monaco.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './thrift-monaco.component.scss',
 })
 export class ThriftMonacoComponent<T> {

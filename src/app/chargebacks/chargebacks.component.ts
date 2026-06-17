@@ -3,7 +3,7 @@ import { filter } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Overwrite } from 'utility-types';
 
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 
@@ -44,6 +44,7 @@ type FormValue = {
     selector: 'cc-chargebacks',
     templateUrl: './chargebacks.component.html',
     providers: [FetchChargebacksService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ChargebacksComponent implements OnInit {

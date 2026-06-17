@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { PageLayoutModule } from '~/components/page-layout';
 
@@ -10,6 +10,7 @@ import { RefundsTableModule } from '../../refunds-table';
     selector: 'cc-payment-refunds',
     imports: [CommonModule, PageLayoutModule, RefundsTableModule],
     templateUrl: './payment-refunds.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: ``,
 })
 export class PaymentRefundsComponent {

@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
@@ -19,6 +19,7 @@ import { getCreateChargebackArgs } from './utils/get-create-chargeback-args';
 @Component({
     selector: 'cc-create-chargebacks-by-file-dialog',
     templateUrl: './create-chargebacks-by-file-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<

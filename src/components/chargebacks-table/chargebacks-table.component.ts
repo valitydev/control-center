@@ -2,6 +2,7 @@ import startCase from 'lodash-es/startCase';
 import { filter } from 'rxjs';
 
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     EventEmitter,
@@ -10,7 +11,7 @@ import {
     booleanAttribute,
     inject,
     input,
-    model,
+    linkedSignal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,6 +34,7 @@ import { ChangeChargebacksStatusDialogComponent } from '../change-chargebacks-st
 @Component({
     selector: 'cc-chargebacks-table',
     templateUrl: './chargebacks-table.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TableModule, MatButtonModule],
 })
 export class ChargebacksTableComponent {
@@ -41,7 +43,8 @@ export class ChargebacksTableComponent {
     @Input() data!: StatChargeback[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;
-    selected = model<StatChargeback[]>([]);
+    selectedInput = input<StatChargeback[]>([], { alias: 'selected' });
+    selected = linkedSignal(this.selectedInput);
     onePayment = input(false, { transform: booleanAttribute });
 
     @Output() selectedChange = new EventEmitter<StatChargeback[]>();

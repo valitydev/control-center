@@ -2,7 +2,14 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, booleanAttribute, inject, input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    booleanAttribute,
+    inject,
+    input,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DomainObjectType, Reference } from '@vality/domain-proto/domain';
@@ -25,6 +32,7 @@ import { ReferenceId, getReferenceId } from '../utils/get-reference-id';
         ...createControlProviders(() => DomainObjectFieldComponent),
         FetchDomainObjectsService,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [SelectFieldModule, CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class DomainObjectFieldComponent<T extends keyof Reference> extends FormControlSuperclass<

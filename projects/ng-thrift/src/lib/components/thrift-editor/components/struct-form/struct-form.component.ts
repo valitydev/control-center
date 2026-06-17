@@ -4,7 +4,16 @@ import { combineLatest } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, forwardRef, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Input,
+    OnChanges,
+    OnInit,
+    forwardRef,
+    inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     AbstractControl,
@@ -39,6 +48,7 @@ const nilValidator: ValidatorFn = (control) => {
     selector: 'v-struct-form',
     templateUrl: './struct-form.component.html',
     providers: createControlProviders(() => StructFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatCheckboxModule,

@@ -2,7 +2,15 @@ import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs
 import { first, map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Input,
+    OnChanges,
+    OnInit,
+    inject,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
     FormControl,
@@ -36,6 +44,7 @@ import {
     selector: 'v-extension-field',
     templateUrl: './extension-field.component.html',
     providers: createControlProviders(() => ExtensionFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         DatetimeFieldModule,

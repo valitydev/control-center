@@ -12,6 +12,7 @@ import { Overwrite } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
 import {
+    ChangeDetectionStrategy,
     Component,
     Injector,
     ViewEncapsulation,
@@ -60,6 +61,7 @@ function getActiveLinks(links: BaseLink[], url: string): BaseLink[] {
     styleUrls: ['./nav.component.scss'],
     templateUrl: './nav.component.html',
     imports: [RouterLink, MatButtonModule, MatDividerModule, CommonModule, MatIconModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent {

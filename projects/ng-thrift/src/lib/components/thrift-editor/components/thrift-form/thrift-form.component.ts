@@ -2,7 +2,7 @@ import { combineLatest, switchMap } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, computed, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validator } from '@angular/forms';
 
@@ -25,6 +25,7 @@ import { UnionFieldComponent } from '../union-field/union-field.component';
     templateUrl: './thrift-form.component.html',
     styleUrl: `./thrift-form.component.scss`,
     providers: createControlProviders(() => ThriftFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         ReactiveFormsModule,

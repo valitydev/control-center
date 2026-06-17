@@ -1,7 +1,7 @@
 import { format, isValid } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 
-import { Component, Input, booleanAttribute } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -24,6 +24,7 @@ import {
         { provide: DateAdapter, useClass: DateFnsAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_FNS_FORMATS },
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class DatetimeFieldComponent extends FormComponentSuperclass<string> {

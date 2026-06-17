@@ -32,7 +32,9 @@
                                 [extensions]="formExtensions$ | async"
                                 [formControl]="$any(studioGroup.controls.params.controls[idx])"
                                 [metadata]="service.metadata$ | async"
-                                [namespace]="(namespaceMetadata$ | async)?.name"
+                                [namespace]="
+                                    $safeNavigationMigration((namespaceMetadata$ | async)?.name)
+                                "
                                 [type]="arg.type"
                             ></v-thrift-editor>
                         </div>
@@ -48,8 +50,9 @@
                 (click)="submit()"
             >
                 {{
-                    (studioGroup.get('method').value?.name | ngtValueTypeTitle | titlecase) ||
-                        'Call'
+                    ($safeNavigationMigration(studioGroup.get('method').value?.name)
+                        | ngtValueTypeTitle
+                        | titlecase) || 'Call'
                 }}
             </button>
         </mat-card-actions>
@@ -69,7 +72,7 @@
                 } @else if ('data' in result) {
                     <v-thrift-viewer
                         [extensions]="viewExtensions$ | async"
-                        [namespace]="(namespaceMetadata$ | async)?.name"
+                        [namespace]="$safeNavigationMigration((namespaceMetadata$ | async)?.name)"
                         [type]="studioGroup.get('method').value.type"
                         [value]="result.data"
                     ></v-thrift-viewer>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ActionsModule } from '@vality/matez';
 
@@ -6,6 +6,7 @@ import { ActionsModule } from '@vality/matez';
     selector: 'cc-card-actions',
     imports: [ActionsModule],
     templateUrl: './card-actions.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: [],
 })
 export class CardActionsComponent {}

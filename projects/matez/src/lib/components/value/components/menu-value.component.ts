@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
@@ -28,6 +28,7 @@ export type MenuValue = TypedParamsValue<'menu', { items: MenuItem[] }>;
             }
         </mat-menu>
     }`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: ``,
 })
 export class MenuValueComponent {

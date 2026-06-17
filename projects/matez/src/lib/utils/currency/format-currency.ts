@@ -1,6 +1,7 @@
+import { isNil } from 'lodash-es';
+
 import { getCurrencyExponent } from './get-currency-exponent';
 import { toMajorByExponent } from './to-major';
-import { isNil } from 'lodash-es';
 
 const DEFAULT_EXPONENT = 2;
 

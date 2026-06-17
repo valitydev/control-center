@@ -1,7 +1,7 @@
 import { map, of, shareReplay } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, inject, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, inject, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { metadata$ } from '@vality/domain-proto';
@@ -29,6 +29,7 @@ import { DomainMetadataFormExtensionsService } from '../services/domain-metadata
     selector: 'cc-domain-thrift-editor',
     templateUrl: './domain-thrift-editor.component.html',
     providers: createControlProviders(() => DomainThriftFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         ReactiveFormsModule,

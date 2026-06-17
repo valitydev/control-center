@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, Input, booleanAttribute, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, inject } from '@angular/core';
 
 import { DomainObjectType, WalletID } from '@vality/domain-proto/domain';
 import {
@@ -17,6 +17,7 @@ import { FetchDomainObjectsService } from '~/api/domain-config';
     selector: 'cc-wallet-field',
     templateUrl: 'wallet-field.component.html',
     providers: [...createControlProviders(() => WalletFieldComponent), FetchDomainObjectsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class WalletFieldComponent extends FormControlSuperclass<WalletID | WalletID[]> {

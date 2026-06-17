@@ -1,6 +1,6 @@
 import { enGB } from 'date-fns/locale';
 
-import { Component, Input, booleanAttribute, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, inject } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DateFnsAdapter, MAT_DATE_FNS_FORMATS } from '@angular/material-date-fns-adapter';
@@ -19,6 +19,7 @@ import { DateRange } from './types/date-range';
         { provide: DateAdapter, useClass: DateFnsAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_DATE_FNS_FORMATS },
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class DateRangeFieldComponent extends FormGroupSuperclass<Partial<DateRange>> {

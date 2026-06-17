@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,6 +19,7 @@ import { ThriftTreeValueComponent } from '../thrift-tree-value/thrift-tree-value
     selector: 'v-thrift-tree-viewer',
     templateUrl: './thrift-tree-viewer.component.html',
     styleUrls: ['./thrift-tree-viewer.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatDividerModule,
