@@ -1,25 +1,25 @@
 {
     "name": "@vality/ng-thrift",
-    "version": "21.0.0",
+    "version": "22.0.0",
     "publishConfig": {
         "access": "public"
     },
     "sideEffects": false,
     "dependencies": {
-        "yaml": "^2.8.1"
+        "yaml": "^2.9.0"
     },
     "peerDependencies": {
-        "@angular/common": "^21.2.0",
-        "@angular/core": "^21.2.5",
-        "@angular/forms": "^21.2.0",
+        "@angular/common": "^22.0.1",
+        "@angular/core": "^22.0.1",
+        "@angular/forms": "^22.0.1",
         "@angular/material": "^21.2.0",
-        "@angular/router": "^21.2.0",
+        "@angular/router": "^22.0.1",
         "@vality/matez": "*",
         "@vality/thrift-ts": "*",
         "lodash-es": "^4.18.1",
         "monaco-editor": "^0.55.1",
-        "ngx-monaco-editor-v2": "^21.1.0",
-        "rxjs": "^7.8.0",
+        "ngx-monaco-editor-v2": "^21.1.4",
+        "rxjs": "^7.8.2",
         "utility-types": "^3.11.0"
     }
 }
