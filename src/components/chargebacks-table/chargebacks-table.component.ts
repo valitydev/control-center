@@ -11,7 +11,7 @@ import {
     booleanAttribute,
     inject,
     input,
-    linkedSignal,
+    model,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,11 +43,9 @@ export class ChargebacksTableComponent {
     @Input() data!: StatChargeback[];
     @Input() isLoading?: boolean | null;
     @Input() hasMore?: boolean | null;
-    selectedInput = input<StatChargeback[]>([], { alias: 'selected' });
-    selected = linkedSignal(this.selectedInput);
+    selected = model<StatChargeback[]>([]);
     onePayment = input(false, { transform: booleanAttribute });
 
-    @Output() selectedChange = new EventEmitter<StatChargeback[]>();
     @Output() update = new EventEmitter<LoadOptions>();
     @Output() more = new EventEmitter<void>();
 

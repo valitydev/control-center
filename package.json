@@ -65,6 +65,7 @@
     "@angular/cli": "^22.0.2",
     "@angular/compiler-cli": "^22.0.1",
     "@cspell/dict-ru_ru": "^2.3.2",
+    "@eslint/js": "^10.0.1",
     "@types/jasmine": "~6.0.0",
     "@types/lodash-es": "^4.17.12",
     "angular-eslint": "^22.0.0",
