@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { NonNullableFormBuilder } from '@angular/forms';
 
 import { FormGroupSuperclass, createControlProviders } from '../../utils';
@@ -13,6 +13,7 @@ export interface NumberRange {
     templateUrl: './number-range-field.component.html',
     styleUrls: ['./number-range-field.component.scss'],
     providers: createControlProviders(() => NumberRangeFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class NumberRangeFieldComponent extends FormGroupSuperclass<NumberRange> {

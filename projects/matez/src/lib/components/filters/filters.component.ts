@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
+    ChangeDetectionStrategy,
     Component,
     ContentChild,
     ElementRef,
@@ -27,6 +28,7 @@ import { OtherFiltersDirective } from './components/other-filters/other-filters.
     selector: 'v-filters',
     templateUrl: './filters.component.html',
     styleUrls: ['./filters.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class FiltersComponent {

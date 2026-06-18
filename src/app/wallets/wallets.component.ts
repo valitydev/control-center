@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -12,6 +12,7 @@ import { PartyStoreService } from '../parties/party';
     selector: 'cc-wallets',
     templateUrl: './wallets.component.html',
     providers: [PartyStoreService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PageLayoutModule, WalletsTableComponent],
 })
 export class WalletsComponent {

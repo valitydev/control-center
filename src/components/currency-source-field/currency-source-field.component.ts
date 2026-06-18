@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, booleanAttribute, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { StatSource } from '@vality/fistful-proto/fistful_stat';
@@ -19,6 +19,7 @@ import { FetchSourcesService } from '../../app/sources';
     selector: 'cc-currency-source-field',
     imports: [CommonModule, SelectFieldModule, ReactiveFormsModule],
     templateUrl: './currency-source-field.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: createControlProviders(() => CurrencySourceFieldComponent),
 })
 export class CurrencySourceFieldComponent extends FormControlSuperclass<StatSource> {

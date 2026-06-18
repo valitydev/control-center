@@ -4,7 +4,14 @@ import { BehaviorSubject, Observable, combineLatest, filter, of } from 'rxjs';
 import { first, map, shareReplay, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Injector,
+    inject,
+    runInInjectionContext,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -88,6 +95,7 @@ interface Row {
 @Component({
     templateUrl: 'candidates.component.html',
     providers: [CandidatesService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatButtonModule,

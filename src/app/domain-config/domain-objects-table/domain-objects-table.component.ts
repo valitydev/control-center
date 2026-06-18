@@ -1,6 +1,7 @@
 import startCase from 'lodash-es/startCase';
 
 import {
+    ChangeDetectionStrategy,
     Component,
     Injector,
     TemplateRef,
@@ -40,6 +41,7 @@ import {
 @Component({
     selector: 'cc-domain-objects-table',
     templateUrl: './domain-objects-table.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         SelectFieldModule,
         ReactiveFormsModule,

@@ -2,7 +2,16 @@ import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs
 import { map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Input, OnChanges, OnInit, inject, model } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Input,
+    OnChanges,
+    OnInit,
+    inject,
+    model,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +44,7 @@ import {
     templateUrl: './primitive-field.component.html',
     providers: createControlProviders(() => PrimitiveFieldComponent),
     styleUrl: './primitive-field.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         MatRadioModule,

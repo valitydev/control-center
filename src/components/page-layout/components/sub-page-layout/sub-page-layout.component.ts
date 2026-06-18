@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
 
 import { ActionsModule, Color, TagModule } from '@vality/matez';
@@ -9,6 +9,7 @@ import { SidenavInfoService } from '../../../sidenav-info';
     selector: 'cc-sub-page-layout',
     imports: [MatToolbar, TagModule, ActionsModule],
     templateUrl: './sub-page-layout.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: ``,
 })
 export class SubPageLayoutComponent {

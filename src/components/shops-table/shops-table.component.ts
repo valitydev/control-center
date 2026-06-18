@@ -4,6 +4,7 @@ import { combineLatestWith, filter, shareReplay } from 'rxjs/operators';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import {
+    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     Injector,
@@ -46,6 +47,7 @@ import { getDelegatesByPartyItem } from './utils/get-rr-by-party-item';
     selector: 'cc-shops-table',
     imports: [TableModule],
     templateUrl: './shops-table.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [PartyDelegateRulesetsService],
 })
 export class ShopsTableComponent {

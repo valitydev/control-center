@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, forwardRef } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
@@ -10,6 +10,7 @@ import { ThriftFormComponent } from '../thrift-form/thrift-form.component';
     selector: 'v-typedef-form',
     templateUrl: './typedef-form.component.html',
     providers: createControlProviders(() => TypedefFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [forwardRef(() => ThriftFormComponent), ReactiveFormsModule],
 })
 export class TypedefFormComponent<T> extends FormControlSuperclass<T> {

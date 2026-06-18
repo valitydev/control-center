@@ -1,7 +1,7 @@
 import { Observable, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, booleanAttribute, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, model } from '@angular/core';
 
 import { metadata$ } from '@vality/fistful-proto';
 import { UnionEnum } from '@vality/matez';
@@ -11,6 +11,7 @@ import { ValueType } from '@vality/thrift-ts';
 @Component({
     selector: 'cc-fistful-thrift-viewer',
     templateUrl: './fistful-thrift-viewer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ThriftViewerModule],
 })
 export class FistfulThriftViewerComponent<T> {

@@ -1,4 +1,4 @@
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -6,6 +6,7 @@ import { ChangeDelegateRulesetDialogComponent } from './change-delegate-ruleset-
 
 @Component({
     selector: 'cc-host',
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<dsh-change-delegate-ruleset-dialog></dsh-change-delegate-ruleset-dialog>`,
 })
 class HostComponent {}

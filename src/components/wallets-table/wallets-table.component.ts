@@ -3,6 +3,7 @@ import { combineLatestWith, filter, map, shareReplay, switchMap } from 'rxjs/ope
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import {
+    ChangeDetectionStrategy,
     Component,
     Injector,
     booleanAttribute,
@@ -40,6 +41,7 @@ import { RoutingRulesType } from '../../app/parties/party/routing-rules/types/ro
     selector: 'cc-wallets-table',
     templateUrl: './wallets-table.component.html',
     imports: [TableResourceComponent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [PartyDelegateRulesetsService],
 })
 export class WalletsTableComponent {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DialogSuperclass } from '../../../dialog';
 import { FiltersComponent } from '../../filters.component';
@@ -7,6 +7,7 @@ import { FiltersComponent } from '../../filters.component';
     selector: 'v-filters-dialog',
     templateUrl: './filters-dialog.component.html',
     styleUrls: ['./filters-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class FiltersDialogComponent extends DialogSuperclass<

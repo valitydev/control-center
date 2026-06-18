@@ -1,4 +1,5 @@
 import {
+    ChangeDetectionStrategy,
     Component,
     EventEmitter,
     HostBinding,
@@ -15,6 +16,7 @@ import { DialogResponseStatus } from './types/dialog-response-status';
     selector: 'v-dialog',
     templateUrl: 'dialog.component.html',
     styleUrls: ['dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class DialogComponent implements Progressable {

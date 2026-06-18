@@ -1,6 +1,6 @@
 import { catchError } from 'rxjs';
 
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -31,6 +31,7 @@ import { DomainObjectService } from '../services/domain-object.service';
         MatButtonModule,
         ThriftPipesModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './domain-object-card.component.html',
 })
 export class DomainObjectCardComponent {

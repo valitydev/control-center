@@ -1,6 +1,6 @@
 import { map } from 'rxjs';
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,6 +13,7 @@ import { DomainThriftViewerComponent } from '~/components/thrift-api-crud';
 @Component({
     selector: 'cc-webhook',
     imports: [DomainThriftViewerComponent, PageLayoutModule, MatCardModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './webhook.component.html',
 })
 export class WebhookComponent {

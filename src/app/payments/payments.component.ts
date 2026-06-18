@@ -5,7 +5,7 @@ import { BehaviorSubject, merge, of } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -61,6 +61,7 @@ interface Filters {
 
 @Component({
     templateUrl: 'payments.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         PageLayoutModule,

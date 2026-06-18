@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,6 +40,7 @@ const CHANGE_STATUS_METHODS = {
 
 @Component({
     templateUrl: './change-chargebacks-status-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         DialogModule,

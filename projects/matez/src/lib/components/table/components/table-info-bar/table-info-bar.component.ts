@@ -1,4 +1,5 @@
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     OnInit,
@@ -19,6 +20,7 @@ import { NormColumn } from '../../types';
     selector: 'v-table-info-bar',
     templateUrl: 'table-info-bar.component.html',
     styleUrl: 'table-info-bar.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class TableInfoBarComponent<T extends object, C extends object> implements OnInit {

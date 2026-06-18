@@ -1,6 +1,6 @@
 <cc-card
     [title]="
-        details()?.label +
+        $safeNavigationMigration(details()?.label) +
         ' #' +
         (this.domainObject.value()?.info?.version ?? this.version() ?? '0')
     "
@@ -8,7 +8,7 @@
     <cc-domain-thrift-viewer
         [kind]="kind.value()"
         [progress]="domainObject.isLoading()"
-        [value]="domainObject.value()?.object"
+        [value]="$safeNavigationMigration(domainObject.value()?.object)"
         type="DomainObject"
         (kindChange)="kind.set($event)"
     ></cc-domain-thrift-viewer>

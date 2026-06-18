@@ -2,6 +2,7 @@ import { startCase } from 'lodash-es';
 import { combineLatest, debounceTime, distinctUntilChanged, map, merge } from 'rxjs';
 
 import {
+    ChangeDetectionStrategy,
     Component,
     DestroyRef,
     Injector,
@@ -44,6 +45,7 @@ import { DomainObjectsTableComponent } from './domain-objects-table';
         ReactiveFormsModule,
         AutocompleteFieldModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [FetchDomainObjectsService],
 })
 export class DomainConfigComponent implements OnInit {

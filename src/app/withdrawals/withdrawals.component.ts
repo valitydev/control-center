@@ -2,7 +2,7 @@ import { endOfDay } from 'date-fns';
 import startCase from 'lodash-es/startCase';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 
@@ -52,6 +52,7 @@ interface WithdrawalsForm {
     selector: 'cc-withdrawals',
     templateUrl: './withdrawals.component.html',
     providers: [FetchWithdrawalsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class WithdrawalsComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, ContentChild, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, inject } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -11,6 +11,7 @@ import { CardActionsComponent } from '../card-actions/card-actions.component';
     selector: 'cc-card',
     imports: [MatDividerModule, MatIconModule, ContentLoadingComponent],
     templateUrl: './card.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./card.component.scss'],
 })
 export class CardComponent {

@@ -1,7 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-cru
 @Component({
     selector: 'cc-create-payment-adjustment',
     templateUrl: './create-payment-adjustment.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DialogModule, ThriftFormModule, ReactiveFormsModule, CommonModule, MatButtonModule],
 })
 export class CreatePaymentAdjustmentComponent extends DialogSuperclass<

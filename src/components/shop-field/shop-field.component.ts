@@ -1,7 +1,14 @@
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, Input, booleanAttribute, inject, input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    booleanAttribute,
+    inject,
+    input,
+} from '@angular/core';
 
 import { DomainObjectType, PartyConfigRef, ShopID } from '@vality/domain-proto/domain';
 import {
@@ -17,6 +24,7 @@ import { FetchDomainObjectsService } from '~/api/domain-config';
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
     providers: [...createControlProviders(() => ShopFieldComponent), FetchDomainObjectsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]> {

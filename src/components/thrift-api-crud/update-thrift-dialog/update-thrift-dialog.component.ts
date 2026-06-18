@@ -1,7 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 
@@ -17,6 +17,7 @@ import { ThriftViewerModule } from '@vality/ng-thrift';
 
 @Component({
     templateUrl: './update-thrift-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, DialogModule, ThriftViewerModule, MatButton],
 })
 export class UpdateThriftDialogComponent<T> extends DialogSuperclass<

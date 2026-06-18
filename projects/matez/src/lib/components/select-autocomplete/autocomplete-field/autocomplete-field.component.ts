@@ -1,7 +1,13 @@
 import { BehaviorSubject, merge } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { Component, Input, OnChanges, booleanAttribute } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    OnChanges,
+    booleanAttribute,
+} from '@angular/core';
 
 import { ComponentChanges, FormControlSuperclass, createControlProviders } from '../../../utils';
 import { Option } from '../types';
@@ -13,6 +19,7 @@ import { getHintText } from '../utils/get-hint-text';
     templateUrl: './autocomplete-field.component.html',
     styleUrls: ['./autocomplete-field.component.scss'],
     providers: createControlProviders(() => AutocompleteFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> implements OnChanges {

@@ -332,15 +332,13 @@ export class TableComponent<T extends object, C extends object> implements OnIni
             const { previousIndex, currentIndex } = event;
             const previousData = data;
             const currentData = previousData.slice();
-            let currentDataIndex = 0;
+            const currentDataIndex = previousIndex > currentIndex ? currentIndex : currentIndex - 1;
             if (previousIndex > currentIndex) {
                 currentData.splice(previousIndex, 1);
                 currentData.splice(currentIndex, 0, event.item.data);
-                currentDataIndex = currentIndex;
             } else {
                 currentData.splice(currentIndex, 0, event.item.data);
                 currentData.splice(previousIndex, 1);
-                currentDataIndex = currentIndex - 1;
             }
             this.rowDropped.emit({
                 previousIndex,

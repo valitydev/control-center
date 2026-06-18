@@ -2,7 +2,7 @@ import isNil from 'lodash-es/isNil';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -35,6 +35,7 @@ enum Namespace {
 
 @Component({
     templateUrl: './repair-by-scenario-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class RepairByScenarioDialogComponent

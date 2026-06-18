@@ -1,7 +1,7 @@
 import { combineLatest } from 'rxjs';
 import { filter, first, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
 
-import { Component, DestroyRef, Injector, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, Injector, inject } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -33,6 +33,7 @@ import { PartyRoutingRulesetService } from './party-routing-ruleset.service';
     templateUrl: 'party-routing-ruleset.component.html',
     styleUrls: ['party-routing-ruleset.component.scss'],
     providers: [PartyRoutingRulesetService, RoutingRulesTypeService, PartyDelegateRulesetsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class PartyRoutingRulesetComponent {

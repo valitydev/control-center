@@ -2,7 +2,7 @@ import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
@@ -25,6 +25,7 @@ import { PageLayoutModule } from '~/components/page-layout';
     templateUrl: 'parties.component.html',
     styleUrls: ['parties.component.scss'],
     providers: [FetchFullDomainObjectsService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCardModule, CommonModule, MatProgressBarModule, PageLayoutModule, TableModule],
 })
 export class PartiesComponent implements OnInit {

@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest, distinctUntilChanged, map, shareReplay 
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -68,6 +68,7 @@ const FORCE_REF_OBJECTS: (keyof DomainObject)[] = [
         SelectFieldModule,
         MatCheckboxModule,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-domain-object-dialog.component.html',
 })
 export class CreateDomainObjectDialogComponent

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder } from '@angular/forms';
 
@@ -9,6 +9,7 @@ import { RoutingRulesService } from '../../services/routing-rules';
 @Component({
     selector: 'cc-initialize-routing-rules-dialog',
     templateUrl: 'initialize-routing-rules-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class InitializeRoutingRulesDialogComponent extends DialogSuperclass<

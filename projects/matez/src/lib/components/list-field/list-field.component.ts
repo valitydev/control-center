@@ -1,6 +1,6 @@
 import { map, shareReplay } from 'rxjs/operators';
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import {
     FormControlSuperclass,
@@ -13,6 +13,7 @@ import {
     selector: 'v-list-field',
     templateUrl: './list-field.component.html',
     providers: createControlProviders(() => ListFieldComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ListFieldComponent extends FormControlSuperclass<string[], string> {

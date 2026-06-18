@@ -1,6 +1,13 @@
 import startCase from 'lodash-es/startCase';
 
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    inject,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { StatPayment } from '@vality/magista-proto/magista';
@@ -18,6 +25,7 @@ import {
 @Component({
     selector: 'cc-payments-table',
     templateUrl: './payments-table.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [TableModule],
 })
 export class PaymentsTableComponent {

@@ -1,7 +1,14 @@
 import { BehaviorSubject, switchMap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, Injector, inject, runInInjectionContext } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Injector,
+    inject,
+    runInInjectionContext,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 
@@ -23,6 +30,7 @@ import { getCreateDepositArgs } from './utils/get-create-deposit-args';
 @Component({
     selector: 'cc-create-deposits-by-file-dialog',
     templateUrl: './create-deposits-by-file-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DialogModule, UploadCsvComponent, CommonModule, MatButton],
 })
 export class CreateDepositsByFileDialogComponent extends DialogSuperclass<

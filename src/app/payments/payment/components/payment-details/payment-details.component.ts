@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { AsyncPipe } from '@angular/common';
-import { Component, LOCALE_ID, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, LOCALE_ID, inject } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 
 import { metadata$ } from '@vality/magista-proto';
@@ -20,6 +20,7 @@ import { PaymentDetailsService } from '../../payment.service';
     selector: 'cc-payment-details',
     imports: [AsyncPipe, MagistaThriftViewerComponent, MatCard, MatCardContent, PageLayoutModule],
     templateUrl: './payment-details.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: ``,
 })
 export class PaymentDetailsComponent {

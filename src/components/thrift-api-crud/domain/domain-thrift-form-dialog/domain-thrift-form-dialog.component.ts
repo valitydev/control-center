@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { DeepPartial } from 'utility-types';
 
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +13,7 @@ import { DomainThriftFormComponent } from '../domain-thrift-editor';
 
 @Component({
     templateUrl: 'domain-thrift-form-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [DialogModule, DomainThriftFormComponent, MatButtonModule, ReactiveFormsModule],
 })
 export class DomainThriftFormDialogComponent<T = unknown, R = unknown> extends DialogSuperclass<

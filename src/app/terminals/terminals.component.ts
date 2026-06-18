@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { DomainObjectType, TerminalObject } from '@vality/domain-proto/domain';
 import { Column, DialogService, UpdateOptions } from '@vality/matez';
@@ -23,6 +23,7 @@ import { getTerminalShopWalletDelegates } from './utils/get-terminal-shop-wallet
     selector: 'cc-terminals',
     templateUrl: './terminals.component.html',
     standalone: false,
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [FetchFullDomainObjectsService],
 })
 export class TerminalsComponent implements OnInit {

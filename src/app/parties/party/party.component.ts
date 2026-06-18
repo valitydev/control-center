@@ -1,7 +1,7 @@
 import startCase from 'lodash-es/startCase';
 import { map } from 'rxjs/operators';
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { getUnionKey } from '@vality/ng-thrift';
 
@@ -12,6 +12,7 @@ import { PartyStoreService } from './party-store.service';
 @Component({
     templateUrl: 'party.component.html',
     providers: [PartyStoreService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class PartyComponent {

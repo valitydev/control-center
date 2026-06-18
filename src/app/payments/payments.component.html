@@ -59,7 +59,7 @@
         @if ((selected$ | async)?.length) {
             <button
                 [disabled]="!(selected$ | async)?.length"
-                [matBadge]="(selected$ | async)?.length"
+                [matBadge]="$safeNavigationMigration((selected$ | async)?.length)"
                 mat-flat-button
                 (click)="createPaymentAdjustment()"
             >

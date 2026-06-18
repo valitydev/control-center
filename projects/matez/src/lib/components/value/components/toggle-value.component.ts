@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { TypedParamsValue } from '../types/base-type';
@@ -8,6 +8,7 @@ export type ToggleValue = TypedParamsValue<'toggle'>;
 @Component({
     selector: 'v-toggle-value',
     imports: [MatSlideToggleModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: ` @if (value(); as v) {
         <mat-slide-toggle
             [checked]="value().value"

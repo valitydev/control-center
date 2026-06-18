@@ -1,7 +1,7 @@
 import { BehaviorSubject, of } from 'rxjs';
 import { v4 } from 'uuid';
 
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -14,6 +14,7 @@ import { ThriftWithdrawalManagementService } from '~/api/services';
 
 @Component({
     templateUrl: './create-adjustment-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class CreateAdjustmentDialogComponent extends DialogSuperclass<

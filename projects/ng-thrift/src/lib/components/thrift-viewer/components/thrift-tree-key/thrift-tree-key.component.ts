@@ -2,7 +2,7 @@ import { ReplaySubject, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
 
 import { ComponentChanges } from '@vality/matez';
 
@@ -12,6 +12,7 @@ import { ThriftViewData } from '../../models/thrift-view-data';
 @Component({
     selector: 'v-thrift-tree-key',
     templateUrl: './thrift-tree-key.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ThriftPipesModule],
 })
 export class ThriftTreeKeyComponent implements OnChanges {

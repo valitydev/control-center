@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -206,6 +206,7 @@ const createNavLinks = (): Link[] => [
 @Component({
     selector: 'cc-root',
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         MatSidenavModule,
         MatIconModule,

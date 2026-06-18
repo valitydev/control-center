@@ -58,7 +58,7 @@
         <mat-card appearance="outlined" class="details-card">
             <mat-card-content>
                 <v-thrift-viewer
-                    [value]="(selectedExtensionOption$ | async)?.details"
+                    [value]="$safeNavigationMigration((selectedExtensionOption$ | async)?.details)"
                 ></v-thrift-viewer>
             </mat-card-content>
         </mat-card>

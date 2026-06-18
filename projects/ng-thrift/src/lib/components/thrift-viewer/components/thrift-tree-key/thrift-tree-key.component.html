@@ -11,7 +11,11 @@
                           ? 'font-medium'
                           : 'text-[var(--mat-sys-outline)]'
                 "
-                >{{ (pathItem.key$ | async)?.renderValue$ | async | ngtKeyTitle | titlecase
+                >{{
+                    $safeNavigationMigration((pathItem.key$ | async)?.renderValue$)
+                        | async
+                        | ngtKeyTitle
+                        | titlecase
                 }}{{
                     idx !== (keys?.length || 0) - 1
                         ? (isUnion(pathItem) | async)

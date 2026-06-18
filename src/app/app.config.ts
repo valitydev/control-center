@@ -3,7 +3,7 @@ import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
 import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import localeRu from '@angular/common/locales/ru';
 import {
     ApplicationConfig,
@@ -50,7 +50,7 @@ export const appConfig: ApplicationConfig = {
             config: './assets/authConfig.json' as never,
             initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
         }),
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
         { provide: LOCALE_ID, useValue: 'ru' },

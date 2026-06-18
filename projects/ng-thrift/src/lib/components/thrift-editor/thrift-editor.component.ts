@@ -1,6 +1,13 @@
 import { filter, shareReplay } from 'rxjs/operators';
 
-import { Component, Input, booleanAttribute, inject, model } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    booleanAttribute,
+    inject,
+    model,
+} from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 import {
@@ -28,6 +35,7 @@ export enum EditorKind {
     templateUrl: './thrift-editor.component.html',
     styleUrls: ['./thrift-editor.component.scss'],
     providers: createControlProviders(() => ThriftEditorComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {

@@ -1,7 +1,7 @@
 import { catchError, filter, first, of, switchMap } from 'rxjs';
 import yaml from 'yaml';
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
@@ -31,6 +31,7 @@ import { CreateWebhookDialogComponent } from './create-webhook-dialog/create-web
 @Component({
     selector: 'cc-webhooks',
     imports: [PageLayoutModule, TableModule, TableResourceComponent, MatButtonModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './webhooks.component.html',
 })
 export class WebhooksComponent {

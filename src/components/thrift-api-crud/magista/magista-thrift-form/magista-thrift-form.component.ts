@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { metadata$ } from '@vality/magista-proto';
@@ -12,6 +12,7 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     selector: 'cc-magista-thrift-form',
     templateUrl: './magista-thrift-form.component.html',
     providers: createControlProviders(() => MagistaThriftFormComponent),
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule],
 })
 export class MagistaThriftFormComponent extends BaseThriftFormSuperclass {

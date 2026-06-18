@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { Value } from '../types/value';
 import { ValueComponent } from '../value.component';
@@ -21,6 +21,7 @@ import { ValueComponent } from '../value.component';
             <v-value [progress]="true" inline></v-value>
         }
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     styles: `
         .list {
             display: flex;

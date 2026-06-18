@@ -1,4 +1,4 @@
-import { Component, Input, booleanAttribute, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, input } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 import { FormControlSuperclass, createControlProviders } from '../../utils';
@@ -8,6 +8,7 @@ import { FormControlSuperclass, createControlProviders } from '../../utils';
     templateUrl: './input-field.component.html',
     providers: createControlProviders(() => InputFieldComponent),
     styleUrl: 'input-field.component.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
 export class InputFieldComponent<T> extends FormControlSuperclass<T> {
