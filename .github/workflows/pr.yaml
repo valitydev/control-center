@@ -11,6 +11,8 @@ jobs:
       - uses: valitydev/action-frontend/setup-install@v3
         with:
           force: true
+      - name: Install Playwright
+        run: npx playwright install chromium --with-deps
       - name: Check
         run: npm run check
       - name: Build

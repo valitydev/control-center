@@ -8,6 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "npm run test -- --no-watch --no-progress --headless",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier . --check",
@@ -15,7 +16,7 @@
     "spell": "cspell --no-progress ** && cspell-check-unused-words",
     "spell:fix": "cspell-check-unused-words --fix && cspell --no-progress ** --show-suggestions --show-context",
     "fix": "npm run lint:fix && npm run format:fix && npm run spell:fix",
-    "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\""
+    "check": "concurrently --prefix \"[{command}]\" --prefixColors auto --prefixLength 20 \"npm run format\" \"npm run lint\" \"npm run spell\" \"npm run test:ci\""
   },
   "workspaces": [
     "projects/*"
@@ -61,13 +62,13 @@
     "zone.js": "~0.16.2"
   },
   "devDependencies": {
-    "@angular/build": "^22.0.2",
+    "@angular/build": "^22.0.3",
     "@angular/cli": "^22.0.2",
     "@angular/compiler-cli": "^22.0.1",
     "@cspell/dict-ru_ru": "^2.3.2",
     "@eslint/js": "^10.0.1",
-    "@types/jasmine": "~6.0.0",
     "@types/lodash-es": "^4.17.12",
+    "@vitest/browser-playwright": "^4.1.9",
     "angular-eslint": "^22.0.0",
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
@@ -77,18 +78,13 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-paths": "^1.1.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "istanbul-lib-instrument": "^6.0.3",
-    "jasmine-core": "~6.3.0",
-    "karma": "~6.4.4",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.1",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.2.0",
+    "jsdom": "^29.1.1",
     "ng-packagr": "^22.0.0",
     "postcss": "^8.5.15",
     "prettier": "^3.8.4",
     "prettier-plugin-organize-attributes": "^1.0.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.61.1"
+    "typescript-eslint": "^8.61.1",
+    "vitest": "^4.1.9"
   }
 }
