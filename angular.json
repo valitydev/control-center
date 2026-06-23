@@ -90,7 +90,8 @@
                     "options": {
                         "tsConfig": "tsconfig.spec.json",
                         "buildTarget": ":build:testing",
-                        "runner": "vitest"
+                        "runner": "vitest",
+                        "browsers": ["chromium"]
                     }
                 },
                 "lint": {
@@ -124,7 +125,8 @@
                     "builder": "@angular/build:unit-test",
                     "options": {
                         "tsConfig": "projects/matez/tsconfig.spec.json",
-                        "runner": "vitest"
+                        "runner": "vitest",
+                        "browsers": ["chromium"]
                     }
                 },
                 "lint": {
@@ -158,7 +160,8 @@
                     "builder": "@angular/build:unit-test",
                     "options": {
                         "tsConfig": "projects/ng-thrift/tsconfig.spec.json",
-                        "runner": "vitest"
+                        "runner": "vitest",
+                        "browsers": ["chromium"]
                     }
                 },
                 "lint": {
