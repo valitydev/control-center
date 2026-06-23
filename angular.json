@@ -121,10 +121,10 @@
                     "defaultConfiguration": "production"
                 },
                 "test": {
-                    "builder": "@angular/build:karma",
+                    "builder": "@angular/build:unit-test",
                     "options": {
                         "tsConfig": "projects/matez/tsconfig.spec.json",
-                        "polyfills": ["zone.js", "zone.js/testing"]
+                        "runner": "vitest"
                     }
                 },
                 "lint": {
@@ -155,10 +155,10 @@
                     "defaultConfiguration": "production"
                 },
                 "test": {
-                    "builder": "@angular/build:karma",
+                    "builder": "@angular/build:unit-test",
                     "options": {
                         "tsConfig": "projects/ng-thrift/tsconfig.spec.json",
-                        "polyfills": ["zone.js", "zone.js/testing"]
+                        "runner": "vitest"
                     }
                 },
                 "lint": {
