@@ -16,6 +16,7 @@ import { ThemeService } from '@vality/matez';
 
 import { toJson } from '../../utils';
 
+// TODO: https://tbo47.github.io/angular-monaco-editor.html
 @Component({
     selector: 'v-thrift-monaco',
     imports: [MonacoEditorModule, FormsModule],
