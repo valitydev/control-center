@@ -37,7 +37,7 @@
     "@angular/router": "^22.0.1",
     "@ngneat/input-mask": "^6.1.0",
     "@tailwindcss/postcss": "^4.3.1",
-    "@vality/domain-proto": "^2.0.2-70b59b9.0",
+    "@vality/domain-proto": "^2.0.2-dcd6682.0",
     "@vality/fistful-proto": "^2.0.1-9864622.0",
     "@vality/machinegun-proto": "^1.0.1-273f2f3.0",
     "@vality/magista-proto": "^2.0.2-bd58cea.0",
