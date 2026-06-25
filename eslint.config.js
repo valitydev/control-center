@@ -2,7 +2,7 @@
 const eslint = require('@eslint/js');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
-const importPlugin = require('eslint-plugin-import');
+const importPlugin = require('eslint-plugin-import-x');
 const unusedImportsPlugin = require('eslint-plugin-unused-imports');
 const pathsPlugin = require('eslint-plugin-paths');
 
