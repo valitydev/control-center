@@ -29,7 +29,7 @@ import {
     getEnumKeys,
     progressTo,
 } from '@vality/matez';
-import { ThriftData, getUnionKey } from '@vality/ng-thrift';
+import { ThriftData, getUnionKey, ThriftPipesModule } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 
 import { DomainService } from '~/api/domain-config';
@@ -67,14 +67,21 @@ const FORCE_REF_OBJECTS: (keyof DomainObject)[] = [
         MatDividerModule,
         SelectFieldModule,
         MatCheckboxModule,
+        ThriftPipesModule,
     ],
     changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-domain-object-dialog.component.html',
 })
-export class CreateDomainObjectDialogComponent
+export class CreateDomainObjectDialogComponent<
+    T extends keyof ReflessDomainObject = keyof ReflessDomainObject,
+>
     extends DialogSuperclass<
         CreateDomainObjectDialogComponent,
-        { objectType?: keyof ReflessDomainObject } | void
+        {
+            objectType?: T;
+            noType?: boolean;
+            initValue?: Partial<DomainObject[T]['data']>;
+        } | void
     >
     implements OnInit
 {
@@ -89,7 +96,7 @@ export class CreateDomainObjectDialogComponent
 
     typeControl = new FormControl<keyof Reference | null>(null, { nonNullable: true });
     forceRefControl = new FormControl<boolean>(false, { nonNullable: true });
-    control = new FormControl<unknown>(null, {
+    control = new FormControl<unknown>((this.dialogData && this.dialogData?.initValue) ?? null, {
         validators: [Validators.required],
         nonNullable: true,
     });
@@ -110,8 +117,13 @@ export class CreateDomainObjectDialogComponent
         metadata$,
         getValueChanges(this.forceRefControl),
     ]).pipe(
-        map(([fieldName, metadata, isForceRef]) =>
-            this.getType(metadata, fieldName, isForceRef ? 'DomainObject' : 'ReflessDomainObject'),
+        map(
+            ([fieldName, metadata, isForceRef]) =>
+                this.getType(
+                    metadata,
+                    fieldName,
+                    isForceRef ? 'DomainObject' : 'ReflessDomainObject',
+                ) as string,
         ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

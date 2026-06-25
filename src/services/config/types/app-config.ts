@@ -10,4 +10,8 @@ export interface AppConfig {
         wachter: Endpoint;
     };
     checkout: Endpoint;
+    default: {
+        paymentInstitution: number;
+        category: number;
+    };
 }
