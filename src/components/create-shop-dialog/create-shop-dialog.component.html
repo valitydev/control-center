@@ -11,6 +11,14 @@
     </div>
 
     <v-dialog-actions>
+        <button
+            [disabled]="!!(progress$ | async)"
+            className="matv-secondary"
+            mat-button
+            (click)="full()"
+        >
+            Advanced edit
+        </button>
         <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="create()">
             Create
         </button>

@@ -15,6 +15,7 @@ import {
     DEFAULT_DIALOG_CONFIG_FULL_HEIGHT,
     DialogConfig,
     DialogModule,
+    DialogService,
     DialogSuperclass,
     InputFieldModule,
     NotifyLogService,
@@ -27,7 +28,7 @@ import { ConfigService } from '~/services';
 
 import { AccountFieldComponent, CurrencyAccount } from '../account-field';
 import { MerchantFieldModule } from '../merchant-field';
-import { DomainObjectFieldComponent } from '../thrift-api-crud';
+import { CreateDomainObjectDialogComponent, DomainObjectFieldComponent } from '../thrift-api-crud';
 
 @Component({
     selector: 'cc-create-shop-dialog',
@@ -54,6 +55,7 @@ export class CreateShopDialogComponent extends DialogSuperclass<
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);
     private configService = inject(ConfigService);
+    private dialogService = inject(DialogService);
 
     static override defaultDialogConfig: ValuesType<DialogConfig> = {
         ...DEFAULT_DIALOG_CONFIG.large,
@@ -123,5 +125,14 @@ export class CreateShopDialogComponent extends DialogSuperclass<
             location: { url: 'none' },
             category: { id: defaultConfig.category },
         };
+    }
+
+    full() {
+        this.closeWithCancellation();
+        this.dialogService.open(CreateDomainObjectDialogComponent, {
+            objectType: 'shop_config',
+            noType: true,
+            initValue: this.getShopConfig(),
+        });
     }
 }
