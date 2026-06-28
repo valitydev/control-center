@@ -29,7 +29,7 @@ import {
     getEnumKeys,
     progressTo,
 } from '@vality/matez';
-import { ThriftData, getUnionKey, ThriftPipesModule } from '@vality/ng-thrift';
+import { ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 
 import { DomainService } from '~/api/domain-config';

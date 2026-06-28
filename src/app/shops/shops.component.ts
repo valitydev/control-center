@@ -1,14 +1,12 @@
-import { map, switchMap } from 'rxjs';
+import { map } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
-import { DebounceTime, DialogService, getNoTimeZoneIsoString, UpdateOptions } from '@vality/matez';
+import { DebounceTime, DialogService, UpdateOptions } from '@vality/matez';
 
-import { DomainObjectsStoreService, FetchFullDomainObjectsService } from '~/api/domain-config';
-import { CreateDomainObjectDialogComponent } from '~/components/thrift-api-crud';
-import { Blocking } from '@vality/domain-proto/domain';
-import { ConfigService } from '~/services/config';
+import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { CreateShopDialogComponent } from '~/components/create-shop-dialog';
 
 @Component({
     selector: 'cc-shops',
@@ -20,7 +18,6 @@ import { ConfigService } from '~/services/config';
 export class ShopsComponent implements OnInit {
     private fetchDomainObjectsService = inject(FetchFullDomainObjectsService);
     private dialog = inject(DialogService);
-    private configService = inject(ConfigService);
 
     shops$ = this.fetchDomainObjectsService.result$.pipe(
         map((res) => res.map((r) => ({ ...r.object.shop_config, info: r.info }))),
@@ -49,32 +46,9 @@ export class ShopsComponent implements OnInit {
     }
 
     create() {
-        this.configService.config
-            .getFirstValue()
-            .pipe(
-                switchMap((config) =>
-                    this.dialog
-                        .open(CreateDomainObjectDialogComponent<'shop_config'>, {
-                            objectType: 'shop_config',
-                            noType: true,
-                            initValue: {
-                                block: {
-                                    unblocked: {
-                                        reason: 'prod',
-                                        since: getNoTimeZoneIsoString(new Date()),
-                                    },
-                                },
-                                suspension: {
-                                    active: { since: getNoTimeZoneIsoString(new Date()) },
-                                },
-                                payment_institution: { id: config.default.paymentInstitution },
-                                location: { url: 'none' },
-                                category: { id: config.default.category },
-                            },
-                        })
-                        .afterClosed(),
-                ),
-            )
+        this.dialog
+            .open(CreateShopDialogComponent)
+            .afterClosed()
             .subscribe((res) => {
                 if (res?.status === 'success') {
                     this.reload();
