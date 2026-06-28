@@ -3,7 +3,7 @@ import { map, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
-import { DebounceTime, DialogService, UpdateOptions } from '@vality/matez';
+import { DebounceTime, DialogService, getNoTimeZoneIsoString, UpdateOptions } from '@vality/matez';
 
 import { DomainObjectsStoreService, FetchFullDomainObjectsService } from '~/api/domain-config';
 import { CreateDomainObjectDialogComponent } from '~/components/thrift-api-crud';
@@ -19,7 +19,6 @@ import { ConfigService } from '~/services/config';
 })
 export class ShopsComponent implements OnInit {
     private fetchDomainObjectsService = inject(FetchFullDomainObjectsService);
-    private domainObjectsStoreService = inject(DomainObjectsStoreService);
     private dialog = inject(DialogService);
     private configService = inject(ConfigService);
 
@@ -60,9 +59,14 @@ export class ShopsComponent implements OnInit {
                             noType: true,
                             initValue: {
                                 block: {
-                                    unblocked: { reason: 'prod', since: new Date().toISOString() },
+                                    unblocked: {
+                                        reason: 'prod',
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
                                 },
-                                suspension: { active: { since: new Date().toISOString() } },
+                                suspension: {
+                                    active: { since: getNoTimeZoneIsoString(new Date()) },
+                                },
                                 payment_institution: { id: config.default.paymentInstitution },
                                 location: { url: 'none' },
                                 category: { id: config.default.category },
