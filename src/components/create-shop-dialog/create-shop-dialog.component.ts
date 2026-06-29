@@ -70,12 +70,14 @@ export class CreateShopDialogComponent extends DialogSuperclass<
         partyId: PartyConfigRef['id'] | null;
         termsetId: TermSetHierarchyRef['id'] | null;
         name: ShopConfig['name'] | null;
+        description: ShopConfig['description'] | null;
         account: CurrencyAccount | null;
     }>({
         preset: DEFAULT_PRESET,
         partyId: (this.dialogData && this.dialogData?.partyId) ?? null,
         termsetId: null,
-        name: null,
+        name: '',
+        description: '',
         account: null,
     });
 
@@ -134,6 +136,7 @@ export class CreateShopDialogComponent extends DialogSuperclass<
 
         return {
             name: value.name,
+            description: value.description,
             party_ref: { id: value.partyId },
             terms: { id: value.termsetId },
             account: {

@@ -9,6 +9,7 @@
             <cc-merchant-field [formField]="shopForm.partyId"></cc-merchant-field>
         }
         <v-input-field [formField]="shopForm.name" label="Name"></v-input-field>
+        <v-input-field [formField]="shopForm.description" label="Description"></v-input-field>
         <cc-domain-object-field
             [formField]="$any(shopForm.termsetId)"
             label="Termset"
