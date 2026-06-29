@@ -127,12 +127,13 @@ export class CreateShopDialogComponent extends DialogSuperclass<
         };
     }
 
-    full() {
+    editFull() {
         this.closeWithCancellation();
         this.dialogService.open(CreateDomainObjectDialogComponent, {
             objectType: 'shop_config',
             noType: true,
             initValue: this.getShopConfig(),
+            noNavigate: true,
         });
     }
 }

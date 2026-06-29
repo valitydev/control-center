@@ -1,4 +1,8 @@
 <cc-page-layout fullHeight title="Shops">
+    <cc-page-layout-actions>
+        <button mat-flat-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
+
     <cc-shops-table
         [progress]="progress$ | async"
         [shops]="shops$ | async"

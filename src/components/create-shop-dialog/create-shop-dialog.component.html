@@ -1,7 +1,9 @@
 <v-dialog [progress]="!!(progress$ | async)" title="Create shop">
     <div class="flex flex-col gap-2">
+        @if (!dialogData || !dialogData.partyId) {
+            <cc-merchant-field [formField]="shopForm.partyId"></cc-merchant-field>
+        }
         <v-input-field [formField]="shopForm.name" label="Name"></v-input-field>
-        <cc-merchant-field [formField]="shopForm.partyId"></cc-merchant-field>
         <cc-domain-object-field
             [formField]="$any(shopForm.termsetId)"
             label="Termset"
@@ -15,7 +17,7 @@
             [disabled]="!!(progress$ | async)"
             className="matv-secondary"
             mat-button
-            (click)="full()"
+            (click)="editFull()"
         >
             Advanced edit
         </button>
