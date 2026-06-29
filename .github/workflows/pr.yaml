@@ -11,8 +11,12 @@ jobs:
       - uses: valitydev/action-frontend/setup-install@v3
         with:
           force: true
+      - name: Install Playwright
+        run: npx playwright install chromium --with-deps
       - name: Check
         run: npm run check
+      - name: Test
+        run: npm run test:ci
       - name: Build
         run: npm run build
       - name: Build MatEz Library

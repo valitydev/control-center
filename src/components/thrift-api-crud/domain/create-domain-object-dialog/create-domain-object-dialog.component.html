@@ -1,9 +1,11 @@
 <v-dialog
     [progress]="!!(progress$ | async)"
-    title="{{ isReview ? 'Review' : 'Create' }} domain object"
+    title="{{ isReview ? 'Review' : 'Create' }} {{
+        typeControl.value ? (typeControl.value | ngtKeyTitle | titlecase) : 'domain object'
+    }}"
 >
     <div>
-        @if (!isReview) {
+        @if ((!dialogData || !dialogData?.noType) && !isReview) {
             <v-select-field
                 [formControl]="typeControl"
                 [options]="options"

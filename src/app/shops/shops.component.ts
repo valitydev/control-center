@@ -3,9 +3,10 @@ import { map } from 'rxjs';
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { DomainObjectType } from '@vality/domain-proto/domain';
-import { DebounceTime, UpdateOptions } from '@vality/matez';
+import { DebounceTime, DialogService, UpdateOptions } from '@vality/matez';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { CreateShopDialogComponent } from '~/components/create-shop-dialog';
 
 @Component({
     selector: 'cc-shops',
@@ -16,6 +17,7 @@ import { FetchFullDomainObjectsService } from '~/api/domain-config';
 })
 export class ShopsComponent implements OnInit {
     private fetchDomainObjectsService = inject(FetchFullDomainObjectsService);
+    private dialog = inject(DialogService);
 
     shops$ = this.fetchDomainObjectsService.result$.pipe(
         map((res) => res.map((r) => ({ ...r.object.shop_config, info: r.info }))),
@@ -35,11 +37,22 @@ export class ShopsComponent implements OnInit {
         });
     }
 
-    reload(options: UpdateOptions) {
+    reload(options?: UpdateOptions) {
         this.fetchDomainObjectsService.reload(options);
     }
 
     more() {
         this.fetchDomainObjectsService.more();
+    }
+
+    create() {
+        this.dialog
+            .open(CreateShopDialogComponent)
+            .afterClosed()
+            .subscribe((res) => {
+                if (res?.status === 'success') {
+                    this.reload();
+                }
+            });
     }
 }

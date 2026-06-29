@@ -1,0 +1,34 @@
+<v-dialog [progress]="!!(progress$ | async)" title="Create shop">
+    <div class="flex flex-col gap-2">
+        <v-select-field
+            [formField]="shopForm.preset"
+            [options]="presets"
+            label="Shop type"
+        ></v-select-field>
+        @if (!dialogData || !dialogData.partyId) {
+            <cc-merchant-field [formField]="shopForm.partyId"></cc-merchant-field>
+        }
+        <v-input-field [formField]="shopForm.name" label="Name"></v-input-field>
+        <v-input-field [formField]="shopForm.description" label="Description"></v-input-field>
+        <cc-domain-object-field
+            [formField]="$any(shopForm.termsetId)"
+            label="Termset"
+            name="term_set_hierarchy"
+        ></cc-domain-object-field>
+        <cc-account-field [accountsNumber]="2" [formField]="shopForm.account"></cc-account-field>
+    </div>
+
+    <v-dialog-actions>
+        <button
+            [disabled]="!!(progress$ | async)"
+            className="matv-secondary"
+            mat-button
+            (click)="editFull()"
+        >
+            Advanced edit
+        </button>
+        <button [disabled]="!!(progress$ | async)" mat-flat-button (click)="create()">
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

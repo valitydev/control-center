@@ -1,3 +1,6 @@
 <cc-page-layout fullHeight title="Wallets">
+    <cc-page-layout-actions>
+        <button mat-flat-button (click)="create()">Create</button>
+    </cc-page-layout-actions>
     <cc-wallets-table [resource]="wallets"></cc-wallets-table>
 </cc-page-layout>

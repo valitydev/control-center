@@ -4,5 +4,19 @@
             "hostname": "control-center.vality.dev",
             "path": "/wachter"
         }
+    },
+    "checkout": {
+        "hostname": "checkout.vality.dev"
+    },
+    "default": {
+        "prod": {
+            "paymentInstitution": 1,
+            "category": 1
+        },
+        "test": {
+            "paymentInstitution": 2,
+            "category": 2,
+            "termset": 2
+        }
     }
 }
