@@ -1,5 +1,10 @@
 <v-dialog [progress]="!!(progress$ | async)" title="Create shop">
     <div class="flex flex-col gap-2">
+        <v-select-field
+            [formField]="shopForm.preset"
+            [options]="presets"
+            label="Shop type"
+        ></v-select-field>
         @if (!dialogData || !dialogData.partyId) {
             <cc-merchant-field [formField]="shopForm.partyId"></cc-merchant-field>
         }

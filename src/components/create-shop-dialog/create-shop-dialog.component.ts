@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormField, form, required } from '@angular/forms/signals';
@@ -19,12 +19,14 @@ import {
     DialogSuperclass,
     InputFieldModule,
     NotifyLogService,
+    Option,
+    SelectFieldModule,
     getNoTimeZoneIsoString,
     progressTo,
 } from '@vality/matez';
 
 import { DomainService } from '~/api/domain-config';
-import { ConfigService } from '~/services';
+import { ConfigService, DEFAULT_PRESET, PRESETS, Preset } from '~/services';
 
 import { AccountFieldComponent, CurrencyAccount } from '../account-field';
 import { MerchantFieldModule } from '../merchant-field';
@@ -41,16 +43,20 @@ import { CreateDomainObjectDialogComponent, DomainObjectFieldComponent } from '.
         DomainObjectFieldComponent,
         FormField,
         InputFieldModule,
+        SelectFieldModule,
         AccountFieldComponent,
     ],
     templateUrl: './create-shop-dialog.component.html',
 })
-export class CreateShopDialogComponent extends DialogSuperclass<
-    CreateShopDialogComponent,
-    {
-        partyId?: PartyConfigRef['id'];
-    } | void
-> {
+export class CreateShopDialogComponent
+    extends DialogSuperclass<
+        CreateShopDialogComponent,
+        {
+            partyId?: PartyConfigRef['id'];
+        } | void
+    >
+    implements OnInit
+{
     private domainService = inject(DomainService);
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);
@@ -63,11 +69,13 @@ export class CreateShopDialogComponent extends DialogSuperclass<
     };
 
     shopModel = signal<{
+        preset: Preset;
         partyId: PartyConfigRef['id'] | null;
         termsetId: TermSetHierarchyRef['id'] | null;
         name: ShopConfig['name'] | null;
         account: CurrencyAccount | null;
     }>({
+        preset: DEFAULT_PRESET,
         partyId: (this.dialogData && this.dialogData?.partyId) ?? null,
         termsetId: null,
         name: null,
@@ -80,8 +88,19 @@ export class CreateShopDialogComponent extends DialogSuperclass<
         required(schemaPath.termsetId);
         required(schemaPath.account);
     });
+    presets: Option<Preset>[] = [...PRESETS];
     progress$ = new BehaviorSubject(0);
     isReview = false;
+
+    ngOnInit() {
+        effect(() => {
+            this.shopModel.update((v) => ({
+                ...v,
+                termsetId:
+                    this.configService.config.value().default[this.shopModel().preset].termset,
+            }));
+        });
+    }
 
     create() {
         const insert: InsertOp = {
@@ -101,8 +120,9 @@ export class CreateShopDialogComponent extends DialogSuperclass<
     }
 
     private getShopConfig(): ShopConfig {
-        const defaultConfig = this.configService.config.value().default;
         const value = this.shopModel();
+        const defaultConfig = this.configService.config.value().default;
+        const shopDefaultConfig = defaultConfig[value.preset] || defaultConfig[DEFAULT_PRESET];
 
         return {
             name: value.name,
@@ -116,14 +136,14 @@ export class CreateShopDialogComponent extends DialogSuperclass<
 
             block: {
                 unblocked: {
-                    reason: 'prod',
+                    reason: value.preset,
                     since: getNoTimeZoneIsoString(new Date()),
                 },
             },
             suspension: { active: { since: getNoTimeZoneIsoString(new Date()) } },
-            payment_institution: { id: defaultConfig.paymentInstitution },
+            payment_institution: { id: shopDefaultConfig.paymentInstitution },
             location: { url: 'none' },
-            category: { id: defaultConfig.category },
+            category: { id: shopDefaultConfig.category },
         };
     }
 
