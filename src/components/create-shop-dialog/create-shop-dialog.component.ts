@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormField, form, required } from '@angular/forms/signals';
@@ -48,15 +48,12 @@ import { CreateDomainObjectDialogComponent, DomainObjectFieldComponent } from '.
     ],
     templateUrl: './create-shop-dialog.component.html',
 })
-export class CreateShopDialogComponent
-    extends DialogSuperclass<
-        CreateShopDialogComponent,
-        {
-            partyId?: PartyConfigRef['id'];
-        } | void
-    >
-    implements OnInit
-{
+export class CreateShopDialogComponent extends DialogSuperclass<
+    CreateShopDialogComponent,
+    {
+        partyId?: PartyConfigRef['id'];
+    } | void
+> {
     private domainService = inject(DomainService);
     private destroyRef = inject(DestroyRef);
     private log = inject(NotifyLogService);
@@ -91,14 +88,17 @@ export class CreateShopDialogComponent
     presets: Option<Preset>[] = [...PRESETS];
     progress$ = new BehaviorSubject(0);
     isReview = false;
+    preset = computed(() => {
+        const defaultConfig = this.configService.config.value().default;
+        return defaultConfig[this.shopModel().preset] || defaultConfig[DEFAULT_PRESET];
+    });
 
-    ngOnInit() {
+    constructor() {
+        super();
         effect(() => {
-            this.shopModel.update((v) => ({
-                ...v,
-                termsetId:
-                    this.configService.config.value().default[this.shopModel().preset].termset,
-            }));
+            if (this.configService.config.value()) {
+                this.shopForm.termsetId().value.set(this.preset().termset ?? null);
+            }
         });
     }
 
@@ -119,10 +119,18 @@ export class CreateShopDialogComponent
             });
     }
 
+    editFull() {
+        this.closeWithCancellation();
+        this.dialogService.open(CreateDomainObjectDialogComponent, {
+            objectType: 'shop_config',
+            noType: true,
+            initValue: this.getShopConfig(),
+            noNavigate: true,
+        });
+    }
+
     private getShopConfig(): ShopConfig {
         const value = this.shopModel();
-        const defaultConfig = this.configService.config.value().default;
-        const shopDefaultConfig = defaultConfig[value.preset] || defaultConfig[DEFAULT_PRESET];
 
         return {
             name: value.name,
@@ -141,19 +149,9 @@ export class CreateShopDialogComponent
                 },
             },
             suspension: { active: { since: getNoTimeZoneIsoString(new Date()) } },
-            payment_institution: { id: shopDefaultConfig.paymentInstitution },
+            payment_institution: { id: this.preset().paymentInstitution },
             location: { url: 'none' },
-            category: { id: shopDefaultConfig.category },
+            category: { id: this.preset().category },
         };
-    }
-
-    editFull() {
-        this.closeWithCancellation();
-        this.dialogService.open(CreateDomainObjectDialogComponent, {
-            objectType: 'shop_config',
-            noType: true,
-            initValue: this.getShopConfig(),
-            noNavigate: true,
-        });
     }
 }
