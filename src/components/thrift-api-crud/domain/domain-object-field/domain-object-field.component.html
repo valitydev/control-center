@@ -2,7 +2,7 @@
     [appearance]="appearance"
     [formControl]="control"
     [hint]="hint"
-    [label]="label || (name | titlecase)"
+    [label]="label || (type | titlecase)"
     [multiple]="multiple()"
     [options]="options$ | async"
     [progress]="!!(progress$ | async)"

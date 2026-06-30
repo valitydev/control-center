@@ -40,7 +40,7 @@ export class DomainObjectFieldComponent<T extends keyof Reference> extends FormC
 > {
     private fetchDomainObjectsService = inject(FetchDomainObjectsService);
 
-    @Input() name: T;
+    @Input() type: T;
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
     @Input() size?: SelectFieldComponent['size'];
@@ -63,7 +63,7 @@ export class DomainObjectFieldComponent<T extends keyof Reference> extends FormC
 
     search(search: string) {
         this.fetchDomainObjectsService.load(
-            { type: DomainObjectType[this.name], query: search },
+            { type: DomainObjectType[this.type], query: search },
             { size: 1000 },
         );
     }
