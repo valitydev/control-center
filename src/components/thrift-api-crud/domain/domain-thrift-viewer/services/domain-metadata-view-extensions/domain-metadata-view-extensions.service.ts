@@ -9,14 +9,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { PartyConfigRef, Reference, ShopID, base } from '@vality/domain-proto/domain';
+import { PartyConfigRef, Reference, base } from '@vality/domain-proto/domain';
 import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
 
 import { SidenavInfoService } from '../../../../../sidenav-info';
-import { DomainObjectCardComponent } from '../../../../domain';
+
+const DOMAIN_OBJECT_ID_TYPE_MAP = { ShopConfigObject: 'ShopID', WalletConfigObject: 'WalletID' };
 
 @Injectable({
     providedIn: 'root',
@@ -46,29 +47,6 @@ export class DomainMetadataViewExtensionsService {
                         startWith({
                             value: String(partyId),
                             link: [[`/parties/${partyId}`]] as Parameters<Router['navigate']>,
-                        }),
-                    ),
-            },
-            {
-                determinant: (data) => of(isTypeWithAliases(data, 'ShopID', 'domain')),
-                extension: (_, shopId: ShopID) =>
-                    this.partiesStoreService.getShop(shopId).value$.pipe(
-                        map((p) => ({
-                            value: p.data.name,
-                            tooltip: shopId,
-                            click: () => {
-                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                                    ref: { shop_config: { id: shopId } },
-                                });
-                            },
-                        })),
-                        startWith({
-                            value: String(shopId),
-                            click: () => {
-                                this.sidenavInfoService.toggle(DomainObjectCardComponent, {
-                                    ref: { shop_config: { id: shopId } },
-                                });
-                            },
                         }),
                     ),
             },
@@ -106,17 +84,21 @@ export class DomainMetadataViewExtensionsService {
                 f.type as string,
             ).ast;
             const refType = objectFields.find((n) => n.name === 'ref').type as string;
+            const idType =
+                DOMAIN_OBJECT_ID_TYPE_MAP[f.type as keyof typeof DOMAIN_OBJECT_ID_TYPE_MAP];
             return {
                 determinant: (data) =>
                     of(
-                        isTypeWithAliases(data, refType, 'domain') &&
+                        (isTypeWithAliases(data, refType, 'domain') &&
                             !isTypeWithAliases(
                                 data?.trueParent?.trueParent,
                                 'DomainObject',
                                 'domain',
-                            ),
+                            )) ||
+                            (!!idType && isTypeWithAliases(data, idType, 'domain')),
                     ),
-                extension: (_, refId) => {
+                extension: (_, refIdOrId) => {
+                    const refId = idType ? { id: refIdOrId } : refIdOrId;
                     const ref = { [f.name]: refId };
                     return this.domainObjectsStoreService.getLimitedObject(ref).value$.pipe(
                         map((obj) => {

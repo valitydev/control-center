@@ -11,9 +11,9 @@
         <v-input-field [formField]="walletForm.name" label="Name"></v-input-field>
         <v-input-field [formField]="walletForm.description" label="Description"></v-input-field>
         <cc-domain-object-field
-            [formField]="$any(walletForm.termsetId)"
+            [formField]="walletForm.termsetId"
             label="Termset"
-            name="term_set_hierarchy"
+            type="term_set_hierarchy"
         ></cc-domain-object-field>
         <cc-account-field [formField]="walletForm.account"></cc-account-field>
     </div>
