@@ -118,6 +118,10 @@ export class ComplexFormComponent<V, K = never>
     }
 
     handleIncomingValue(value: ComplexType<V, K>) {
+        // When toggling between JSON and form representations, the value might arrive as an array instead of Map
+        if (this.isKeyValue && Array.isArray(value)) {
+            value = new Map(value as [K, V][]);
+        }
         if (this.isKeyValue) {
             const keys = Array.from((value as Map<K, V>)?.keys() || []);
             updateFormArray(this.keyControls, keys);
