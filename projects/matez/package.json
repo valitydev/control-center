@@ -28,7 +28,7 @@
     "utility-types": "^3.11.0"
   },
   "dependencies": {
-    "@ng-matero/extensions": "^21.3.1",
+    "@ng-matero/extensions": "^22.0.0",
     "@s-libs/js-core": "^21.0.0",
     "@s-libs/micro-dash": "^21.0.0",
     "@s-libs/ng-core": "^21.0.0",

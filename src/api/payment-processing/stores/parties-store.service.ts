@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash-es';
 import { MemoizeExpiring } from 'typescript-memoize';
 
 import { Injectable, inject } from '@angular/core';
@@ -11,6 +10,7 @@ import {
     WalletID,
 } from '@vality/domain-proto/domain';
 import { VersionedObjectInfo } from '@vality/domain-proto/domain_config_v2';
+import { getNoTimeZoneIsoString } from '@vality/matez';
 
 import { DomainObjectsStoreService, DomainService } from '../../domain-config';
 
@@ -85,14 +85,22 @@ export class PartiesStoreService {
     }
 
     blockShop(shop: ShopConfigObject, reason: string) {
-        const newShopConfig = cloneDeep(shop);
-        newShopConfig.data.block = { blocked: { reason, since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        shop_config: newShopConfig,
+                        shop_config: {
+                            ref: shop.ref,
+                            data: {
+                                ...shop.data,
+                                block: {
+                                    blocked: {
+                                        reason,
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -100,14 +108,22 @@ export class PartiesStoreService {
     }
 
     unblockShop(shop: ShopConfigObject, reason: string) {
-        const newShopConfig = cloneDeep(shop);
-        newShopConfig.data.block = { unblocked: { reason, since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        shop_config: newShopConfig,
+                        shop_config: {
+                            ref: shop.ref,
+                            data: {
+                                ...shop.data,
+                                block: {
+                                    unblocked: {
+                                        reason,
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -115,14 +131,19 @@ export class PartiesStoreService {
     }
 
     suspendShop(shop: ShopConfigObject) {
-        const newShopConfig = cloneDeep(shop);
-        newShopConfig.data.suspension = { suspended: { since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        shop_config: newShopConfig,
+                        shop_config: {
+                            ref: shop.ref,
+                            data: {
+                                ...shop.data,
+                                suspension: {
+                                    suspended: { since: getNoTimeZoneIsoString(new Date()) },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -130,14 +151,19 @@ export class PartiesStoreService {
     }
 
     activateShop(shop: ShopConfigObject) {
-        const newShopConfig = cloneDeep(shop);
-        newShopConfig.data.suspension = { active: { since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        shop_config: newShopConfig,
+                        shop_config: {
+                            ref: shop.ref,
+                            data: {
+                                ...shop.data,
+                                suspension: {
+                                    active: { since: getNoTimeZoneIsoString(new Date()) },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -145,14 +171,22 @@ export class PartiesStoreService {
     }
 
     blockWallet(wallet: WalletConfigObject, reason: string) {
-        const newWalletConfig = cloneDeep(wallet);
-        newWalletConfig.data.block = { blocked: { reason, since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        wallet_config: newWalletConfig,
+                        wallet_config: {
+                            ref: wallet.ref,
+                            data: {
+                                ...wallet.data,
+                                block: {
+                                    blocked: {
+                                        reason,
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -160,14 +194,22 @@ export class PartiesStoreService {
     }
 
     unblockWallet(wallet: WalletConfigObject, reason: string) {
-        const newWalletConfig = cloneDeep(wallet);
-        newWalletConfig.data.block = { unblocked: { reason, since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        wallet_config: newWalletConfig,
+                        wallet_config: {
+                            ref: wallet.ref,
+                            data: {
+                                ...wallet.data,
+                                block: {
+                                    unblocked: {
+                                        reason,
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -175,14 +217,21 @@ export class PartiesStoreService {
     }
 
     suspendWallet(wallet: WalletConfigObject) {
-        const newWalletConfig = cloneDeep(wallet);
-        newWalletConfig.data.suspension = { suspended: { since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        wallet_config: newWalletConfig,
+                        wallet_config: {
+                            ref: wallet.ref,
+                            data: {
+                                ...wallet.data,
+                                suspension: {
+                                    suspended: {
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
@@ -190,14 +239,21 @@ export class PartiesStoreService {
     }
 
     activateWallet(wallet: WalletConfigObject) {
-        const newWalletConfig = cloneDeep(wallet);
-        newWalletConfig.data.suspension = { active: { since: new Date().toISOString() } };
-
         return this.domainService.commit([
             {
                 update: {
                     object: {
-                        wallet_config: newWalletConfig,
+                        wallet_config: {
+                            ref: wallet.ref,
+                            data: {
+                                ...wallet.data,
+                                suspension: {
+                                    active: {
+                                        since: getNoTimeZoneIsoString(new Date()),
+                                    },
+                                },
+                            },
+                        },
                     },
                 },
             },
