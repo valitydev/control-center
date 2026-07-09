@@ -90,7 +90,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         shop_config: {
-                            ...shop,
+                            ref: shop.ref,
                             data: {
                                 ...shop.data,
                                 block: {
@@ -113,7 +113,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         shop_config: {
-                            ...shop,
+                            ref: shop.ref,
                             data: {
                                 ...shop.data,
                                 block: {
@@ -136,7 +136,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         shop_config: {
-                            ...shop,
+                            ref: shop.ref,
                             data: {
                                 ...shop.data,
                                 suspension: {
@@ -156,7 +156,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         shop_config: {
-                            ...shop,
+                            ref: shop.ref,
                             data: {
                                 ...shop.data,
                                 suspension: {
@@ -176,7 +176,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         wallet_config: {
-                            ...wallet,
+                            ref: wallet.ref,
                             data: {
                                 ...wallet.data,
                                 block: {
@@ -199,7 +199,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         wallet_config: {
-                            ...wallet,
+                            ref: wallet.ref,
                             data: {
                                 ...wallet.data,
                                 block: {
@@ -222,7 +222,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         wallet_config: {
-                            ...wallet,
+                            ref: wallet.ref,
                             data: {
                                 ...wallet.data,
                                 suspension: {
@@ -244,7 +244,7 @@ export class PartiesStoreService {
                 update: {
                     object: {
                         wallet_config: {
-                            ...wallet,
+                            ref: wallet.ref,
                             data: {
                                 ...wallet.data,
                                 suspension: {
