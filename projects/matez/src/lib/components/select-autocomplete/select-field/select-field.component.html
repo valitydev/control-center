@@ -2,6 +2,7 @@
     <mat-label>{{ label }}</mat-label>
 
     <mtx-select
+        #select
         [closeOnSelect]="!multiple"
         [formControl]="control"
         [items]="options"
@@ -17,6 +18,7 @@
         bindLabel="label"
         bindValue="value"
         groupBy="type"
+        (change)="close(select)"
         (clear)="searchChange.emit(''); searchStr = ''"
         (search)="searchChange.emit($event.term); searchStr = $event.term"
     >

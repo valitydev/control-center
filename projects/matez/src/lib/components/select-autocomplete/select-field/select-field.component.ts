@@ -10,6 +10,7 @@ import {
     booleanAttribute,
 } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
+import { MtxSelect } from '@ng-matero/extensions/select';
 
 import { FormControlSuperclass, createControlProviders } from '../../../utils';
 import { Option } from '../types';
@@ -71,4 +72,13 @@ export class SelectFieldComponent<T = unknown>
     search = (term: string, item: Option<T>) => {
         return this.externalSearch || isSearchOption(item, term.toLowerCase());
     };
+
+    // TODO: close not working for mouse click
+    close(select: MtxSelect) {
+        if (!this.multiple) {
+            timer(0)
+                .pipe(first())
+                .subscribe(() => select.close());
+        }
+    }
 }
