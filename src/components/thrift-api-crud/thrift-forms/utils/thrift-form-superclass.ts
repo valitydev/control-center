@@ -1,7 +1,7 @@
 import { Observable, combineLatest, defer, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { Directive, Input, OnChanges, booleanAttribute, input, model } from '@angular/core';
+import { Directive, Input, booleanAttribute, input, model } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 
 import { ThriftAstMetadata } from '@vality/fistful-proto';
@@ -10,10 +10,7 @@ import { EditorKind, ThriftFormExtension } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 
 @Directive()
-export abstract class BaseThriftFormSuperclass<T = unknown>
-    extends FormControlSuperclass<T>
-    implements OnChanges
-{
+export abstract class BaseThriftFormSuperclass<T = unknown> extends FormControlSuperclass<T> {
     @Input() type: ValueType;
     @Input() namespace?: string;
     extensions = input<ThriftFormExtension[]>([]);

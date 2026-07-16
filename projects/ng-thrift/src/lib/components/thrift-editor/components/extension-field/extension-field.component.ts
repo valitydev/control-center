@@ -119,7 +119,7 @@ export class ExtensionFieldComponent<T>
         return null;
     }
 
-    override ngOnChanges(changes: ComponentChanges<ExtensionFieldComponent<T>>) {
+    ngOnChanges(changes: ComponentChanges<ExtensionFieldComponent<T>>) {
         if (changes.data) {
             this.data$.next(this.data);
             this.control.setValidators(this.data.isRequired ? Validators.required : []);

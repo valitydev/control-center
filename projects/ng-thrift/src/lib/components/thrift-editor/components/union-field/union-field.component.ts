@@ -94,8 +94,7 @@ export class UnionFieldComponent<T extends Record<string, unknown>>
         });
     }
 
-    override ngOnChanges(changes: ComponentChanges<UnionFieldComponent<T>>) {
-        super.ngOnChanges(changes);
+    ngOnChanges(changes: ComponentChanges<UnionFieldComponent<T>>) {
         if (changes.data) {
             this.data$.next(this.data);
         }

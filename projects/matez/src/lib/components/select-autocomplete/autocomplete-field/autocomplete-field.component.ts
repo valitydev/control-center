@@ -48,8 +48,7 @@ export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> impl
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    override ngOnChanges(changes: ComponentChanges<AutocompleteFieldComponent<T>>) {
-        super.ngOnChanges(changes);
+    ngOnChanges(changes: ComponentChanges<AutocompleteFieldComponent<T>>) {
         if (changes.options) {
             this.options$.next(this.options || []);
         }
