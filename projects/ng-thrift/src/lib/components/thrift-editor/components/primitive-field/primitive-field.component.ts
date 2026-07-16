@@ -1,18 +1,18 @@
 import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
     DestroyRef,
-    Input,
-    OnChanges,
     OnInit,
+    computed,
     inject,
+    input,
     model,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -26,6 +26,8 @@ import {
     Option,
     createControlProviders,
     getValueChanges,
+    SelectFieldModule,
+    tapLog,
 } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
 
@@ -55,19 +57,17 @@ import {
         MatIconModule,
         FieldLabelPipe,
         ThriftViewerModule,
+        SelectFieldModule,
     ],
 })
-export class PrimitiveFieldComponent<T>
-    extends FormControlSuperclass<T>
-    implements OnChanges, OnInit
-{
+export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> implements OnInit {
     private destroyRef = inject(DestroyRef);
-    @Input() data!: ThriftData<ThriftType>;
-    @Input() extensions?: ThriftFormExtension[];
+    data = input.required<ThriftData<ThriftType>>();
+    extensions = input<ThriftFormExtension[]>();
 
     extensionResult$: Observable<ThriftFormExtensionResult> = combineLatest([
-        defer(() => this.data$),
-        defer(() => this.extensions$),
+        toObservable(this.data).pipe(filter(Boolean)),
+        toObservable(this.extensions),
     ]).pipe(
         switchMap(([data, extensions]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -103,18 +103,21 @@ export class PrimitiveFieldComponent<T>
             if (!s) {
                 return '';
             }
-            const aliases = [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
+            const aliases = [
+                ...getAliases(this.data()),
+                ...(this.data().field ? [this.data()] : []),
+            ]
                 .filter((d) => d.typeGroup !== 'primitive')
                 .map((d) => getValueTypeTitle(d.type))
-                .filter((t) => t !== this.data.field?.name)
+                .filter((t) => t !== this.data().field?.name)
                 .join(', ');
             return s.label + (aliases ? ` (${aliases})` : '');
         }),
     );
     detailsShown = model(false);
 
-    get inputType(): string {
-        switch (this.data.type) {
+    inputType = computed(() => {
+        switch (this.data().type) {
             case 'double':
             case 'int':
             case 'i8':
@@ -126,10 +129,7 @@ export class PrimitiveFieldComponent<T>
             default:
                 return 'string';
         }
-    }
-
-    private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
-    private extensions$ = new ReplaySubject<ThriftFormExtension[]>(1);
+    });
 
     override ngOnInit() {
         super.ngOnInit();
@@ -138,16 +138,6 @@ export class PrimitiveFieldComponent<T>
             .subscribe(() => {
                 this.detailsShown.set(false);
             });
-    }
-
-    override ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
-        super.ngOnChanges(changes);
-        if (changes.data) {
-            this.data$.next(this.data);
-        }
-        if (changes.extensions) {
-            this.extensions$.next(this.extensions as ThriftFormExtension[]);
-        }
     }
 
     generate(event: MouseEvent) {

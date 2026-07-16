@@ -6,6 +6,7 @@ import { ValidatorFn } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 
 import { ThriftData } from '../../../models';
+import { Option } from '@vality/matez';
 
 export interface ThriftFormExtension {
     determinant: (data: ThriftData) => Observable<boolean>;
@@ -18,7 +19,9 @@ export interface Converter<O = unknown, I = O> {
 }
 
 export interface ThriftFormExtensionResult<T = unknown> {
+    /** @deprecated use search instead */
     options?: ThriftFormExtensionOption[];
+    search?: (searchStr: string) => Observable<{ result: Option<T>[] }>;
     generate?: (value: T) => Observable<T>;
     isIdentifier?: boolean;
     label?: string;
