@@ -3,24 +3,25 @@
 
     <mtx-select
         #select
+        [addTag]="addTag"
         [closeOnSelect]="!multiple"
         [formControl]="control"
         [items]="options"
         [loading]="progress"
         [markFirst]="true"
         [multiple]="multiple"
-        [notFoundText]="externalSearch && !searchStr ? 'Enter your search term' : 'No items found'"
+        [notFoundText]="externalSearch && !search() ? 'Enter your search term' : 'No items found'"
         [required]="required"
         [searchable]="true"
-        [searchFn]="search"
+        [searchFn]="searchFn"
         [selectableGroup]="true"
         [selectableGroupAsModel]="false"
         bindLabel="label"
         bindValue="value"
         groupBy="type"
         (change)="close(select)"
-        (clear)="searchChange.emit(''); searchStr = ''"
-        (search)="searchChange.emit($event.term); searchStr = $event.term"
+        (clear)="search.set('')"
+        (search)="search.set($event.term)"
     >
         <ng-template let-index="index" let-item="item" let-item$="item$" ng-optgroup-tmp>
             @if (multiple) {

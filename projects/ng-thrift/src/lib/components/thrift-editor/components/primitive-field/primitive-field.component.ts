@@ -1,5 +1,5 @@
-import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
-import { filter, map, shareReplay } from 'rxjs/operators';
+import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
+import { debounceTime, filter, map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import {
@@ -11,6 +11,7 @@ import {
     inject,
     input,
     model,
+    signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +22,6 @@ import { MatRadioModule } from '@angular/material/radio';
 
 import {
     AutocompleteFieldModule,
-    ComponentChanges,
     FormControlSuperclass,
     Option,
     createControlProviders,
@@ -75,16 +75,27 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
     generate$ = this.extensionResult$.pipe(
         map((r) => r?.generate as NonNullable<ThriftFormExtensionResult['generate']>),
     );
-    options$ = this.extensionResult$.pipe(
-        map((extensionResult): Option<T>[] =>
-            extensionResult?.options?.length
-                ? extensionResult.options.map((o) => ({
-                      label: o.label || `#${o.value}`,
-                      value: o.value as never,
-                      description: String(o.value),
-                  }))
-                : [],
-        ),
+    searchChange = signal('');
+    options$ = combineLatest([
+        this.extensionResult$,
+        toObservable(this.searchChange).pipe(debounceTime(500)),
+    ]).pipe(
+        switchMap(([extensionResult, searchChange]) => {
+            if (extensionResult?.search) {
+                return extensionResult
+                    .search(searchChange)
+                    .pipe(map(({ result }) => result as Option<T>[]));
+            }
+            return of(
+                (extensionResult?.options || []).map(
+                    (o): Option<T> => ({
+                        label: o.label || `#${o.value}`,
+                        value: o.value as never,
+                        description: String(o.value),
+                    }),
+                ),
+            );
+        }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedExtensionOption$ = combineLatest([

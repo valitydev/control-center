@@ -45,7 +45,9 @@
                     [label]="extensionResult?.label ?? (data().type | fieldLabel: data().field)"
                     [options]="$any(options$ | async)"
                     [required]="data().isRequired"
+                    externalSearch
                     style="flex: 1"
+                    (searchChange)="searchChange.set($event)"
                 ></v-select-field>
             } @else {
                 <v-autocomplete-field

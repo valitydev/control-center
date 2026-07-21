@@ -7,16 +7,22 @@ import { Injectable, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { DomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, DomainObjectType } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
+import { ThriftRepositoryService } from '~/api/services';
 
-import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
-import { getDomainObjectOption, getFullDomainObjectOption } from './utils/get-domain-object-option';
+import { getReferenceId } from '../../utils';
+
+import {
+    createDomainObjectExtensions,
+    isDomainObject,
+} from './utils/create-domain-object-extension';
+import { getFullDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
@@ -25,6 +31,7 @@ export class DomainMetadataFormExtensionsService {
     private domainStoreService = inject(DomainObjectsStoreService);
     private domainService = inject(DomainService);
     private authorStoreService = inject(AuthorStoreService);
+    private repositoryService = inject(ThriftRepositoryService);
 
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
@@ -167,10 +174,29 @@ export class DomainMetadataFormExtensionsService {
     ): ThriftFormExtension[] {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
-        return createDomainObjectExtensions(refType, () =>
-            this.domainStoreService
-                .getLimitedObjects(objectKey)
-                .value$.pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
-        );
+        return [
+            {
+                determinant: (data) => of(isDomainObject(data, refType)),
+                extension: () =>
+                    of({
+                        search: (searchStr) =>
+                            this.repositoryService
+                                .SearchObjects({
+                                    type: DomainObjectType[objectKey],
+                                    query: searchStr || '*',
+                                    limit: 100,
+                                })
+                                .pipe(
+                                    map(({ result }) => ({
+                                        result: result.map((obj) => ({
+                                            value: getReferenceId(obj.ref),
+                                            label: obj.name,
+                                            description: obj.description,
+                                        })),
+                                    })),
+                                ),
+                    }),
+            },
+        ];
     }
 }
