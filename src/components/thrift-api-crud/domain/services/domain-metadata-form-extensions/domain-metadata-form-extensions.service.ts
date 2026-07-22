@@ -192,6 +192,9 @@ export class DomainMetadataFormExtensionsService {
                                             value: getReferenceId(obj.ref),
                                             label: obj.name,
                                             description: obj.description,
+                                            details: this.domainService
+                                                .get(obj.ref, obj.info.version)
+                                                .pipe(map((o) => o.object)),
                                         })),
                                     })),
                                 ),

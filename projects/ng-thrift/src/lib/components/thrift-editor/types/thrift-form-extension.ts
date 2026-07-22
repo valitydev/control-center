@@ -5,7 +5,7 @@ import { TemplateRef } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 
-import { Option } from '@vality/matez';
+import { Option, PossiblyAsync } from '@vality/matez';
 
 import { ThriftData } from '../../../models';
 
@@ -36,7 +36,7 @@ export interface ThriftFormExtensionResult<T = unknown> {
 export interface ThriftFormExtensionOption {
     value: unknown;
     label?: string;
-    details?: string | object;
+    details?: PossiblyAsync<unknown>;
     color?: ThemePalette;
 }
 

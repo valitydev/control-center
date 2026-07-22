@@ -49,6 +49,8 @@
     <mat-hint>{{ hintText$ | async }}</mat-hint>
     <mat-error>{{
         error ??
-            ((selected$ | async) ? (selected$ | async)?.label + (hint() ? ' | ' + hint() : '') : hint())
+            ((selected$ | async)
+                ? (selected$ | async)?.label + (hint() ? ' | ' + hint() : '')
+                : hint())
     }}</mat-error>
 </mat-form-field>

@@ -26,6 +26,7 @@ import {
     Option,
     SelectFieldModule,
     createControlProviders,
+    getPossiblyAsyncValue,
     getValueChanges,
 } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
@@ -91,21 +92,23 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
                         label: o.label || `#${o.value}`,
                         value: o.value as never,
                         description: String(o.value),
+                        details: o.details,
                     }),
                 ),
             );
         }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    selectedExtensionOption$ = combineLatest([
-        this.extensionResult$,
-        getValueChanges(this.control),
-    ]).pipe(
-        map(([result]) => result?.options?.find?.((o) => o.value === this.control.value)),
+    selectedExtensionOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
+        map(([options, selected]) => options?.find?.((o) => o.value === selected)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
         map(([options]) => options.find((o) => o.value === this.control.value)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedOptionDetails$ = this.selectedOption$.pipe(
+        switchMap((option) => getPossiblyAsyncValue(option.details)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedHint$ = combineLatest([this.selectedOption$, toObservable(this.data)]).pipe(

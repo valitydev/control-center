@@ -68,11 +68,9 @@
         <div [class.details_hidden]="!detailsShown()" class="details">
             <mat-card appearance="outlined" class="details-card">
                 <mat-card-content>
-                    <v-thrift-viewer
-                        [value]="
-                            $safeNavigationMigration((selectedExtensionOption$ | async)?.details)
-                        "
-                    ></v-thrift-viewer>
+                    @if (detailsShown()) {
+                        <v-thrift-viewer [value]="selectedOptionDetails$ | async"></v-thrift-viewer>
+                    }
                 </mat-card-content>
             </mat-card>
         </div>
