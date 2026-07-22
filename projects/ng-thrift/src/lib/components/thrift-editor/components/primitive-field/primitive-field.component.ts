@@ -74,15 +74,15 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
     generate$ = this.extensionResult$.pipe(
         map((r) => r?.generate as NonNullable<ThriftFormExtensionResult['generate']>),
     );
-    searchChange = signal('');
+    search = signal('');
     options$ = combineLatest([
         this.extensionResult$,
-        toObservable(this.searchChange).pipe(debounceTime(500)),
+        toObservable(this.search).pipe(debounceTime(500)),
     ]).pipe(
-        switchMap(([extensionResult, searchChange]) => {
+        switchMap(([extensionResult, searchStr]) => {
             if (extensionResult?.search) {
                 return extensionResult
-                    .search(searchChange)
+                    .search(searchStr)
                     .pipe(map(({ result }) => result as Option<T>[]));
             }
             return of(

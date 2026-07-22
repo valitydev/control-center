@@ -37,29 +37,17 @@
     } @else {
         <div style="display: flex; gap: 4px">
             @let extensionResult = extensionResult$ | async;
-
-            @if (extensionResult?.search) {
-                <v-select-field
-                    [formControl]="control"
-                    [hint]="$any(selectedHint$ | async)"
-                    [label]="extensionResult?.label ?? (data().type | fieldLabel: data().field)"
-                    [options]="$any(options$ | async)"
-                    [required]="data().isRequired"
-                    externalSearch
-                    style="flex: 1"
-                    (searchChange)="searchChange.set($event)"
-                ></v-select-field>
-            } @else {
-                <v-autocomplete-field
-                    [formControl]="control"
-                    [hint]="$any(selectedHint$ | async)"
-                    [label]="extensionResult?.label ?? (data().type | fieldLabel: data().field)"
-                    [options]="$any(options$ | async)"
-                    [required]="data().isRequired"
-                    [type]="inputType()"
-                    style="flex: 1"
-                ></v-autocomplete-field>
-            }
+            <v-autocomplete-field
+                [externalSearch]="!!extensionResult?.search"
+                [formControl]="control"
+                [hint]="$any(selectedHint$ | async)"
+                [label]="extensionResult?.label ?? (data().type | fieldLabel: data().field)"
+                [options]="$any(options$ | async)"
+                [required]="data().isRequired"
+                [type]="inputType()"
+                style="flex: 1"
+                (searchChange)="search.set($event)"
+            ></v-autocomplete-field>
             @if (generate$ | async) {
                 <button mat-icon-button (click)="generate($event)">
                     <mat-icon>loop</mat-icon>

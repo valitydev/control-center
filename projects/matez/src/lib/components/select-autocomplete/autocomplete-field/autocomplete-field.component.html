@@ -7,8 +7,8 @@
         [matAutocomplete]="auto"
         [ngClass]="{ 'mat-mono': mono }"
         [required]="required"
-        [type]="options?.length ? 'text' : type"
         matInput
+        type="text"
     />
 
     <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>

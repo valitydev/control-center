@@ -1,8 +1,17 @@
 import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, Input, booleanAttribute, input } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Input,
+    booleanAttribute,
+    inject,
+    input,
+    output,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 import {
     FormControlSuperclass,
@@ -23,9 +32,12 @@ import { getHintText } from '../utils/get-hint-text';
     standalone: false,
 })
 export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> {
+    private dr = inject(DestroyRef);
+
     options = input<Option<T>[]>([]);
     hint = input<string>(undefined);
     externalSearch = input<boolean>(false, { transform: booleanAttribute });
+    searchChange = output<string>();
 
     @Input() label?: string;
     @Input() error?: string;
@@ -53,4 +65,20 @@ export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> {
         map(([value, options]) => searchOptions(options, value)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
+
+    override ngOnInit(): void {
+        super.ngOnInit();
+        getValueChanges(this.control)
+            .pipe(takeUntilDestroyed(this.dr))
+            .subscribe((value) => {
+                this.searchChange.emit(String(value));
+            });
+    }
+
+    protected override innerToOuterValue(inner: T): T {
+        if (this.type === 'text') return inner;
+        const res = Number(inner);
+        if (isNaN(res)) return undefined;
+        return res as T;
+    }
 }
