@@ -3,12 +3,9 @@ import { first, timer } from 'rxjs';
 import {
     ChangeDetectionStrategy,
     Component,
-    EventEmitter,
     Input,
     OnInit,
-    Output,
     booleanAttribute,
-    input,
     model,
 } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
@@ -33,7 +30,6 @@ export class SelectFieldComponent<T = unknown>
 {
     @Input() options: Option<T>[] = [];
     search = model<string>('');
-    addTag = input<boolean>(false, { transform: booleanAttribute });
 
     @Input() appearance!: MatFormFieldAppearance;
 

@@ -5,8 +5,9 @@ import { TemplateRef } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 
-import { ThriftData } from '../../../models';
 import { Option } from '@vality/matez';
+
+import { ThriftData } from '../../../models';
 
 export interface ThriftFormExtension {
     determinant: (data: ThriftData) => Observable<boolean>;

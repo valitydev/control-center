@@ -2,6 +2,7 @@ import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, Input, booleanAttribute, input } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 import {
     FormControlSuperclass,
@@ -12,7 +13,6 @@ import {
 import { Option } from '../types';
 import { searchOptions } from '../utils';
 import { getHintText } from '../utils/get-hint-text';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'v-autocomplete-field',

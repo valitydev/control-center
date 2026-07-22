@@ -1,4 +1,4 @@
-import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { debounceTime, filter, map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
@@ -24,10 +24,9 @@ import {
     AutocompleteFieldModule,
     FormControlSuperclass,
     Option,
+    SelectFieldModule,
     createControlProviders,
     getValueChanges,
-    SelectFieldModule,
-    tapLog,
 } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
 
