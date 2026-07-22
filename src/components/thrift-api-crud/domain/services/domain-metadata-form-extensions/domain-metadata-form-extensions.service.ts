@@ -7,7 +7,7 @@ import { Injectable, Injector, inject, runInInjectionContext } from '@angular/co
 import { Validators } from '@angular/forms';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { DomainObject, DomainObjectType } from '@vality/domain-proto/domain';
+import { DomainObject, DomainObjectType, ObjectID } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
@@ -204,18 +204,14 @@ export class DomainMetadataFormExtensionsService {
                                       .getLimitedObjects(objectKey)
                                       .getFirstValue()
                                       .pipe(
-                                          map((objects) =>
-                                              objects?.length &&
-                                              typeof getReferenceId(objects[0].ref) === 'number'
-                                                  ? createNextId(
-                                                        objects.map((o) =>
-                                                            typeof getReferenceId(o.ref) ===
-                                                            'number'
-                                                                ? (getReferenceId(o.ref) as number)
-                                                                : 0,
-                                                        ),
-                                                    )
-                                                  : v4(),
+                                          map(
+                                              (objects) =>
+                                                  objects?.length &&
+                                                  createNextId(
+                                                      objects.map(
+                                                          (o) => getReferenceId(o.ref) as ObjectID,
+                                                      ),
+                                                  ),
                                           ),
                                       )
                             : () => of(v4()),

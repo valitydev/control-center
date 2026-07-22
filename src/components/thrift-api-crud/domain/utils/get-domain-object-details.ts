@@ -1,6 +1,6 @@
 import isNil from 'lodash-es/isNil';
 import startCase from 'lodash-es/startCase';
-import { PickByValue, ValuesType } from 'utility-types';
+import { Overwrite, PickByValue, ValuesType } from 'utility-types';
 
 import { DomainObject } from '@vality/domain-proto/domain';
 import { LimitedVersionedObject } from '@vality/domain-proto/domain_config_v2';
@@ -109,36 +109,44 @@ export function getDomainObjectValueDetailsFn(key: keyof DomainObject): GetDomai
     return GET_DOMAIN_OBJECTS_DETAILS[key] ?? defaultGetDomainObjectDetails;
 }
 
-export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
-    if (!o || !getUnionValue(o)?.ref || !getUnionValue(o)?.data) {
-        return { id: null, label: '', description: '', type: '' };
-    }
-    const result = getDomainObjectValueDetailsFn(getUnionKey(o))(getUnionValue(o));
+function getBasicDomainObjectDetails(
+    result: Overwrite<
+        Omit<DomainObjectDetails, 'type'>,
+        Pick<Partial<DomainObjectDetails>, 'id' | 'label'>
+    >,
+    type: string,
+): DomainObjectDetails {
     return {
         id: result.id,
         label:
             result.label ||
             result.description ||
-            `${startCase(getUnionKey(o))}${isNil(result.id) ? '' : ' ' + result.id}`,
+            `${startCase(type)}${isNil(result.id) ? '' : ' ' + result.id}`,
         description: result.label ? result.description : '',
         idDescription:
             String(result.id) +
             (result.label ? (result.description ? ` (${result.description})` : '') : ''),
-        type: startCase(getUnionKey(o)),
+        type: startCase(type),
     };
 }
 
-export function getLimitedDomainObjectDetails(o: LimitedVersionedObject): DomainObjectDetails {
-    const id = getReferenceId(o.ref);
-    const type = startCase(getUnionKey(o.ref));
-    const label = o.name || `#${id}`;
-    const description = o.description;
+export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
+    if (!o || !getUnionValue(o)?.ref || !getUnionValue(o)?.data) {
+        return { id: null, label: '', description: '', type: '' };
+    }
+    return getBasicDomainObjectDetails(
+        getDomainObjectValueDetailsFn(getUnionKey(o))(getUnionValue(o)),
+        getUnionKey(o),
+    );
+}
 
-    return {
-        id,
-        label,
-        description,
-        type,
-        idDescription: String(id) + (description ? ` (${description})` : ''),
-    };
+export function getLimitedDomainObjectDetails(o: LimitedVersionedObject): DomainObjectDetails {
+    return getBasicDomainObjectDetails(
+        {
+            id: getReferenceId(o.ref),
+            label: o.name,
+            description: o.description,
+        },
+        getUnionKey(o.ref),
+    );
 }

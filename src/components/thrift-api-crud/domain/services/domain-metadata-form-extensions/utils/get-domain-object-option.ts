@@ -28,7 +28,7 @@ export function getDomainObjectOption(obj: LimitedVersionedObject): Option {
     return {
         value: getReferenceId(obj.ref),
         label: details.label,
-        description: details.description,
+        description: details.idDescription,
         details: detailsObj,
     };
 }
@@ -38,7 +38,7 @@ export function getFullDomainObjectOption(obj: VersionedObject): Option {
     return {
         value: getReferenceId(getDomainObjectReference(obj.object)),
         label: details.label,
-        description: details.description,
+        description: details.idDescription,
         details: getUnionValue(obj.object).data,
     };
 }

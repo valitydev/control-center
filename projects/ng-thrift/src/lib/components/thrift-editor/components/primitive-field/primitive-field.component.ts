@@ -112,7 +112,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedOptionDetails$ = this.selectedOption$.pipe(
-        switchMap((option) => getPossiblyAsyncValue(option.details)),
+        switchMap((option) => getPossiblyAsyncValue(option?.details)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedHint$ = combineLatest([this.selectedOption$, toObservable(this.data)]).pipe(
