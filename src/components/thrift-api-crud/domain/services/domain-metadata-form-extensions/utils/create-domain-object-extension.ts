@@ -1,12 +1,8 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import {
-    ThriftData,
-    ThriftFormExtension,
-    ThriftFormExtensionOption,
-    isTypeWithAliases,
-} from '@vality/ng-thrift';
+import { Option } from '@vality/matez';
+import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { createNextId } from '~/utils';
 
@@ -21,7 +17,7 @@ export function isDomainObject(data: ThriftData, refType: string) {
 
 export function createDomainObjectExtensions(
     refType: string,
-    options: () => Observable<ThriftFormExtensionOption[]>,
+    options: () => Observable<Option[]>,
     determinant?: ThriftFormExtension['determinant'],
 ): ThriftFormExtension[] {
     return [

@@ -6,11 +6,13 @@ import {
     ChangeDetectionStrategy,
     Component,
     DestroyRef,
+    Injector,
     OnInit,
     computed,
     inject,
     input,
     model,
+    runInInjectionContext,
     signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -62,6 +64,8 @@ import {
 })
 export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> implements OnInit {
     private destroyRef = inject(DestroyRef);
+    private injector = inject(Injector);
+
     data = input.required<ThriftData<ThriftType>>();
     extensions = input<ThriftFormExtension[]>();
 
@@ -153,7 +157,9 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
     generate(event: MouseEvent) {
         this.generate$
             .pipe(
-                switchMap((generate) => generate(this.control.value)),
+                switchMap((generate) =>
+                    runInInjectionContext(this.injector, () => generate(this.control.value)),
+                ),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => this.control.setValue(value as T));

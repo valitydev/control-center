@@ -159,6 +159,12 @@ export class ObservableResource<
             value: toSignal(value$, { injector: this.injector }),
             map: (fn: (value: TResult) => PossiblyAsync<TNewResult>) =>
                 this.map(fn, value$ as never),
+            getFirstValue: () =>
+                combineLatest([value$, this.isLoading$]).pipe(
+                    skipWhile(([_, isLoading]) => isLoading),
+                    map(([value]) => value),
+                    take(1),
+                ),
         }) as never;
     }
 }

@@ -13,6 +13,7 @@ export interface DomainObjectDetails {
     id: number | string;
     label: string;
     description?: string;
+    idDescription?: string;
     type: string;
 }
 
@@ -120,6 +121,9 @@ export function getDomainObjectDetails(o: DomainObject): DomainObjectDetails {
             result.description ||
             `${startCase(getUnionKey(o))}${isNil(result.id) ? '' : ' ' + result.id}`,
         description: result.label ? result.description : '',
+        idDescription:
+            String(result.id) +
+            (result.label ? (result.description ? ` (${result.description})` : '') : ''),
         type: startCase(getUnionKey(o)),
     };
 }
@@ -130,5 +134,11 @@ export function getLimitedDomainObjectDetails(o: LimitedVersionedObject): Domain
     const label = o.name || `#${id}`;
     const description = o.description;
 
-    return { id, label, description, type };
+    return {
+        id,
+        label,
+        description,
+        type,
+        idDescription: String(id) + (description ? ` (${description})` : ''),
+    };
 }

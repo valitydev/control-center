@@ -3,7 +3,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { generate } from 'short-uuid';
 import { v4 } from 'uuid';
 
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
@@ -15,6 +15,7 @@ import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-t
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
 import { ThriftRepositoryService } from '~/api/services';
+import { createNextId } from '~/utils';
 
 import { getReferenceId } from '../../utils';
 
@@ -22,7 +23,7 @@ import {
     createDomainObjectExtensions,
     isDomainObject,
 } from './utils/create-domain-object-extension';
-import { getFullDomainObjectOption } from './utils/get-domain-object-option';
+import { getDomainObjectOption, getFullDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
     providedIn: 'root',
@@ -32,6 +33,7 @@ export class DomainMetadataFormExtensionsService {
     private domainService = inject(DomainService);
     private authorStoreService = inject(AuthorStoreService);
     private repositoryService = inject(ThriftRepositoryService);
+    private injector = inject(Injector);
 
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
@@ -177,7 +179,7 @@ export class DomainMetadataFormExtensionsService {
         return [
             {
                 determinant: (data) => of(isDomainObject(data, refType)),
-                extension: () =>
+                extension: (data) =>
                     of({
                         search: (searchStr) =>
                             this.repositoryService
@@ -188,16 +190,35 @@ export class DomainMetadataFormExtensionsService {
                                 })
                                 .pipe(
                                     map(({ result }) => ({
-                                        result: result.map((obj) => ({
-                                            value: getReferenceId(obj.ref),
-                                            label: obj.name,
-                                            description: obj.description,
-                                            details: this.domainService
-                                                .get(obj.ref, obj.info.version)
-                                                .pipe(map((o) => o.object)),
-                                        })),
+                                        result: result.map((obj) =>
+                                            runInInjectionContext(this.injector, () =>
+                                                getDomainObjectOption(obj),
+                                            ),
+                                        ),
                                     })),
                                 ),
+                        isIdentifier: true,
+                        generate: isTypeWithAliases(data, 'ObjectID', 'domain')
+                            ? () =>
+                                  this.domainStoreService
+                                      .getLimitedObjects(objectKey)
+                                      .getFirstValue()
+                                      .pipe(
+                                          map((objects) =>
+                                              objects?.length &&
+                                              typeof getReferenceId(objects[0].ref) === 'number'
+                                                  ? createNextId(
+                                                        objects.map((o) =>
+                                                            typeof getReferenceId(o.ref) ===
+                                                            'number'
+                                                                ? (getReferenceId(o.ref) as number)
+                                                                : 0,
+                                                        ),
+                                                    )
+                                                  : v4(),
+                                          ),
+                                      )
+                            : () => of(v4()),
                     }),
             },
         ];
