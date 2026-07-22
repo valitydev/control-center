@@ -138,7 +138,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
                 return 'number';
             case 'string':
             default:
-                return 'string';
+                return 'text';
         }
     });
 

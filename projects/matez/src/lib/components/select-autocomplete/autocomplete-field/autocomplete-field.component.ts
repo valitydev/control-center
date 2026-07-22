@@ -1,18 +1,18 @@
-import { BehaviorSubject, merge } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import {
-    ChangeDetectionStrategy,
-    Component,
-    Input,
-    OnChanges,
-    booleanAttribute,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, booleanAttribute, input } from '@angular/core';
 
-import { ComponentChanges, FormControlSuperclass, createControlProviders } from '../../../utils';
+import {
+    FormControlSuperclass,
+    createControlProviders,
+    getValidValueChanges,
+    getValueChanges,
+} from '../../../utils';
 import { Option } from '../types';
 import { searchOptions } from '../utils';
 import { getHintText } from '../utils/get-hint-text';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'v-autocomplete-field',
@@ -22,35 +22,35 @@ import { getHintText } from '../utils/get-hint-text';
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
-export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> implements OnChanges {
-    @Input() options: Option<T>[] = [];
+export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> {
+    options = input<Option<T>[]>([]);
+    hint = input<string>(undefined);
+    externalSearch = input<boolean>(false, { transform: booleanAttribute });
 
     @Input() label?: string;
-    @Input() hint?: string;
     @Input() error?: string;
-    @Input() type = 'text';
+    @Input() type: 'text' | 'number' = 'text';
 
     @Input({ transform: booleanAttribute }) mono = false;
     @Input({ transform: booleanAttribute }) required = false;
 
-    get hintText() {
-        return getHintText(this.options, [this.control.value], this.hint, { showLabel: true });
-    }
-
-    options$ = new BehaviorSubject<Option<T>[]>([]);
-    selected$ = merge(this.control.valueChanges, this.options$).pipe(
-        map(() => (this.options || []).find((o) => o.value === this.control.value)),
+    hintText$ = combineLatest([
+        getValidValueChanges(this.control),
+        toObservable(this.options),
+        toObservable(this.hint),
+    ]).pipe(
+        map(([value, options, hint]) => getHintText(options, [value], hint, { showLabel: true })),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    filteredOptions$ = merge(this.control.valueChanges, this.options$).pipe(
-        map(() => String(this.control.value ?? '').toLowerCase()),
-        map((filter) => searchOptions(this.options, filter)),
+    selected$ = combineLatest([getValueChanges(this.control), toObservable(this.options)]).pipe(
+        map(([value, options]) => (options || []).find((o) => o.value === value)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-
-    ngOnChanges(changes: ComponentChanges<AutocompleteFieldComponent<T>>) {
-        if (changes.options) {
-            this.options$.next(this.options || []);
-        }
-    }
+    filteredOptions$ = combineLatest([
+        getValueChanges(this.control).pipe(map((value) => String(value ?? '').toLowerCase())),
+        toObservable(this.options),
+    ]).pipe(
+        map(([value, options]) => searchOptions(options, value)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
 }
