@@ -1,3 +1,4 @@
+import { isEmpty, isNil } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
@@ -38,6 +39,7 @@ export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> {
     hint = input<string>(undefined);
     externalSearch = input<boolean>(false, { transform: booleanAttribute });
     searchChange = output<string>();
+    requireSelection = input<boolean>(false, { transform: booleanAttribute });
 
     @Input() label?: string;
     @Input() error?: string;
@@ -71,13 +73,35 @@ export class AutocompleteFieldComponent<T> extends FormControlSuperclass<T> {
         getValueChanges(this.control)
             .pipe(takeUntilDestroyed(this.dr))
             .subscribe((value) => {
-                this.searchChange.emit(String(value));
+                this.searchChange.emit(String(value ?? ''));
             });
     }
 
+    onBlur(): void {
+        const value = this.control.value;
+        const validValue = this.getValidValue(value);
+        if (value !== validValue) {
+            this.control.setValue(validValue);
+        }
+    }
+
     protected override innerToOuterValue(inner: T): T {
-        if (this.type === 'text') return inner;
-        const res = Number(inner);
+        return this.getValidValue(inner);
+    }
+
+    private getValidValue(value: T) {
+        if (isNil(value)) {
+            return value;
+        }
+        if (
+            value === '' ||
+            (this.requireSelection() &&
+                !this.options().some((o) => String(o.value) === String(value)))
+        ) {
+            return undefined;
+        }
+        if (this.type === 'text') return value;
+        const res = Number(value);
         if (isNaN(res)) return undefined;
         return res as T;
     }

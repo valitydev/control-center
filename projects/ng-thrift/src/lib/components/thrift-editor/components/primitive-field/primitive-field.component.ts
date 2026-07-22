@@ -108,20 +108,17 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
         map(([options]) => options.find((o) => o.value === this.control.value)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    selectedHint$ = this.selectedOption$.pipe(
-        map((s) => {
-            if (!s) {
+    selectedHint$ = combineLatest([this.selectedOption$, toObservable(this.data)]).pipe(
+        map(([selectedOption, data]) => {
+            if (!selectedOption) {
                 return '';
             }
-            const aliases = [
-                ...getAliases(this.data()),
-                ...(this.data().field ? [this.data()] : []),
-            ]
+            const aliases = [...getAliases(data), ...(data.field ? [data] : [])]
                 .filter((d) => d.typeGroup !== 'primitive')
                 .map((d) => getValueTypeTitle(d.type))
-                .filter((t) => t !== this.data().field?.name)
+                .filter((t) => t !== data.field?.name)
                 .join(', ');
-            return s.label + (aliases ? ` (${aliases})` : '');
+            return selectedOption.label + (aliases ? ` (${aliases})` : '');
         }),
     );
     detailsShown = model(false);

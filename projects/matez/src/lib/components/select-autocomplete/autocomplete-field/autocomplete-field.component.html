@@ -9,6 +9,7 @@
         [required]="required"
         matInput
         type="text"
+        (blur)="onBlur()"
     />
 
     <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
@@ -33,7 +34,7 @@
                 <mat-icon>clear</mat-icon>
             </button>
         }
-        @if (options?.length) {
+        @if (options()?.length) {
             <button
                 mat-icon-button
                 (click)="
@@ -48,6 +49,6 @@
     <mat-hint>{{ hintText$ | async }}</mat-hint>
     <mat-error>{{
         error ??
-            ((selected$ | async) ? (selected$ | async)?.label + (hint ? ' | ' + hint : '') : hint)
+            ((selected$ | async) ? (selected$ | async)?.label + (hint() ? ' | ' + hint() : '') : hint())
     }}</mat-error>
 </mat-form-field>
