@@ -1,18 +1,21 @@
-import { Observable, ReplaySubject, combineLatest, defer, switchMap } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
+import { debounceTime, filter, map, shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
     Component,
     DestroyRef,
-    Input,
-    OnChanges,
+    Injector,
     OnInit,
+    computed,
     inject,
+    input,
     model,
+    runInInjectionContext,
+    signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,10 +24,11 @@ import { MatRadioModule } from '@angular/material/radio';
 
 import {
     AutocompleteFieldModule,
-    ComponentChanges,
     FormControlSuperclass,
     Option,
+    SelectFieldModule,
     createControlProviders,
+    getPossiblyAsyncValue,
     getValueChanges,
 } from '@vality/matez';
 import { ThriftType } from '@vality/thrift-ts';
@@ -55,19 +59,19 @@ import {
         MatIconModule,
         FieldLabelPipe,
         ThriftViewerModule,
+        SelectFieldModule,
     ],
 })
-export class PrimitiveFieldComponent<T>
-    extends FormControlSuperclass<T>
-    implements OnChanges, OnInit
-{
+export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> implements OnInit {
     private destroyRef = inject(DestroyRef);
-    @Input() data!: ThriftData<ThriftType>;
-    @Input() extensions?: ThriftFormExtension[];
+    private injector = inject(Injector);
+
+    data = input.required<ThriftData<ThriftType>>();
+    extensions = input<ThriftFormExtension[]>();
 
     extensionResult$: Observable<ThriftFormExtensionResult> = combineLatest([
-        defer(() => this.data$),
-        defer(() => this.extensions$),
+        toObservable(this.data).pipe(filter(Boolean)),
+        toObservable(this.extensions),
     ]).pipe(
         switchMap(([data, extensions]) => getExtensionsResult(extensions, data)),
         shareReplay({ refCount: true, bufferSize: 1 }),
@@ -75,46 +79,59 @@ export class PrimitiveFieldComponent<T>
     generate$ = this.extensionResult$.pipe(
         map((r) => r?.generate as NonNullable<ThriftFormExtensionResult['generate']>),
     );
-    options$ = this.extensionResult$.pipe(
-        map((extensionResult): Option<T>[] =>
-            extensionResult?.options?.length
-                ? extensionResult.options.map((o) => ({
-                      label: o.label || `#${o.value}`,
-                      value: o.value as never,
-                      description: String(o.value),
-                  }))
-                : [],
-        ),
+    search = signal('');
+    options$ = combineLatest([
+        this.extensionResult$,
+        toObservable(this.search).pipe(debounceTime(500)),
+    ]).pipe(
+        switchMap(([extensionResult, searchStr]) => {
+            if (extensionResult?.search) {
+                return extensionResult
+                    .search(searchStr)
+                    .pipe(map(({ result }) => result as Option<T>[]));
+            }
+            return of(
+                (extensionResult?.options || []).map(
+                    (o): Option<T> => ({
+                        label: o.label || `#${o.value}`,
+                        value: o.value as never,
+                        description: String(o.value),
+                        details: o.details,
+                    }),
+                ),
+            );
+        }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    selectedExtensionOption$ = combineLatest([
-        this.extensionResult$,
-        getValueChanges(this.control),
-    ]).pipe(
-        map(([result]) => result?.options?.find?.((o) => o.value === this.control.value)),
+    selectedExtensionOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
+        map(([options, selected]) => options?.find?.((o) => o.value === selected)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     selectedOption$ = combineLatest([this.options$, getValueChanges(this.control)]).pipe(
         map(([options]) => options.find((o) => o.value === this.control.value)),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
-    selectedHint$ = this.selectedOption$.pipe(
-        map((s) => {
-            if (!s) {
+    selectedOptionDetails$ = this.selectedOption$.pipe(
+        switchMap((option) => getPossiblyAsyncValue(option?.details)),
+        shareReplay({ refCount: true, bufferSize: 1 }),
+    );
+    selectedHint$ = combineLatest([this.selectedOption$, toObservable(this.data)]).pipe(
+        map(([selectedOption, data]) => {
+            if (!selectedOption) {
                 return '';
             }
-            const aliases = [...getAliases(this.data), ...(this.data.field ? [this.data] : [])]
+            const aliases = [...getAliases(data), ...(data.field ? [data] : [])]
                 .filter((d) => d.typeGroup !== 'primitive')
                 .map((d) => getValueTypeTitle(d.type))
-                .filter((t) => t !== this.data.field?.name)
+                .filter((t) => t !== data.field?.name)
                 .join(', ');
-            return s.label + (aliases ? ` (${aliases})` : '');
+            return selectedOption.label + (aliases ? ` (${aliases})` : '');
         }),
     );
     detailsShown = model(false);
 
-    get inputType(): string {
-        switch (this.data.type) {
+    inputType = computed(() => {
+        switch (this.data().type) {
             case 'double':
             case 'int':
             case 'i8':
@@ -124,12 +141,9 @@ export class PrimitiveFieldComponent<T>
                 return 'number';
             case 'string':
             default:
-                return 'string';
+                return 'text';
         }
-    }
-
-    private data$ = new ReplaySubject<ThriftData<ThriftType>>(1);
-    private extensions$ = new ReplaySubject<ThriftFormExtension[]>(1);
+    });
 
     override ngOnInit() {
         super.ngOnInit();
@@ -140,20 +154,12 @@ export class PrimitiveFieldComponent<T>
             });
     }
 
-    override ngOnChanges(changes: ComponentChanges<PrimitiveFieldComponent<T>>) {
-        super.ngOnChanges(changes);
-        if (changes.data) {
-            this.data$.next(this.data);
-        }
-        if (changes.extensions) {
-            this.extensions$.next(this.extensions as ThriftFormExtension[]);
-        }
-    }
-
     generate(event: MouseEvent) {
         this.generate$
             .pipe(
-                switchMap((generate) => generate(this.control.value)),
+                switchMap((generate) =>
+                    runInInjectionContext(this.injector, () => generate(this.control.value)),
+                ),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((value) => this.control.setValue(value as T));

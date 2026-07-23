@@ -1,27 +1,29 @@
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import {
-    ThriftFormExtension,
-    ThriftFormExtensionOption,
-    isTypeWithAliases,
-} from '@vality/ng-thrift';
+import { Option } from '@vality/matez';
+import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { createNextId } from '~/utils';
 
+export function isDomainObject(data: ThriftData, refType: string) {
+    return (
+        isTypeWithAliases(data?.trueParent, refType, 'domain') &&
+        (isTypeWithAliases(data, 'ObjectID', 'domain') ||
+            // TODO: 'field.name' must be passed as an argument
+            ['id', 'symbolic_code'].includes(data.field?.name))
+    );
+}
+
 export function createDomainObjectExtensions(
     refType: string,
-    options: () => Observable<ThriftFormExtensionOption[]>,
+    options: () => Observable<Option[]>,
     determinant?: ThriftFormExtension['determinant'],
 ): ThriftFormExtension[] {
     return [
         {
             determinant: (data) => {
-                const domainObjDeterminantRes =
-                    isTypeWithAliases(data?.trueParent, refType, 'domain') &&
-                    (isTypeWithAliases(data, 'ObjectID', 'domain') ||
-                        // TODO: 'field.name' must be passed as an argument
-                        ['id', 'symbolic_code'].includes(data.field?.name));
+                const domainObjDeterminantRes = isDomainObject(data, refType);
                 return determinant
                     ? determinant(data).pipe(
                           map(

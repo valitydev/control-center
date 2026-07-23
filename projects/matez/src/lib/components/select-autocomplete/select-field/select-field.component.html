@@ -2,23 +2,25 @@
     <mat-label>{{ label }}</mat-label>
 
     <mtx-select
+        #select
         [closeOnSelect]="!multiple"
         [formControl]="control"
         [items]="options"
         [loading]="progress"
         [markFirst]="true"
         [multiple]="multiple"
-        [notFoundText]="externalSearch && !searchStr ? 'Enter your search term' : 'No items found'"
+        [notFoundText]="externalSearch && !search() ? 'Enter your search term' : 'No items found'"
         [required]="required"
         [searchable]="true"
-        [searchFn]="search"
+        [searchFn]="searchFn"
         [selectableGroup]="true"
         [selectableGroupAsModel]="false"
         bindLabel="label"
         bindValue="value"
         groupBy="type"
-        (clear)="searchChange.emit(''); searchStr = ''"
-        (search)="searchChange.emit($event.term); searchStr = $event.term"
+        (change)="close(select)"
+        (clear)="search.set('')"
+        (search)="search.set($event.term)"
     >
         <ng-template let-index="index" let-item="item" let-item$="item$" ng-optgroup-tmp>
             @if (multiple) {

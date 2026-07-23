@@ -17,7 +17,6 @@ jobs:
       - uses: valitydev/action-frontend/setup-install@v3
         with:
           release: true
-          force: true
       - name: Build
         run: npm run build
       - name: Deploy image

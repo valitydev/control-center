@@ -3,13 +3,13 @@ import { first, timer } from 'rxjs';
 import {
     ChangeDetectionStrategy,
     Component,
-    EventEmitter,
     Input,
     OnInit,
-    Output,
     booleanAttribute,
+    model,
 } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
+import { MtxSelect } from '@ng-matero/extensions/select';
 
 import { FormControlSuperclass, createControlProviders } from '../../../utils';
 import { Option } from '../types';
@@ -29,7 +29,7 @@ export class SelectFieldComponent<T = unknown>
     implements OnInit
 {
     @Input() options: Option<T>[] = [];
-    @Output() searchChange = new EventEmitter<string>();
+    search = model<string>('');
 
     @Input() appearance!: MatFormFieldAppearance;
 
@@ -44,15 +44,13 @@ export class SelectFieldComponent<T = unknown>
 
     @Input() size?: 'small' | '';
 
-    searchStr: string = '';
-
     override ngOnInit() {
         super.ngOnInit();
         if (this.externalSearch) {
             timer(0)
                 .pipe(first())
                 .subscribe(() => {
-                    this.searchChange.emit(String(this.control.value));
+                    this.search.set(String(this.control.value));
                 });
         }
     }
@@ -68,7 +66,16 @@ export class SelectFieldComponent<T = unknown>
         );
     }
 
-    search = (term: string, item: Option<T>) => {
+    searchFn = (term: string, item: Option<T>) => {
         return this.externalSearch || isSearchOption(item, term.toLowerCase());
     };
+
+    // TODO: close not working for mouse click
+    close(select: MtxSelect) {
+        if (!this.multiple) {
+            timer(0)
+                .pipe(first())
+                .subscribe(() => select.close());
+        }
+    }
 }

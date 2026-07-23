@@ -92,7 +92,7 @@ export class StructFormComponent<T extends Record<string, unknown>>
         return super.ngOnInit();
     }
 
-    override ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
+    ngOnChanges(changes: ComponentChanges<StructFormComponent<T>>) {
         if (changes.data) {
             const newControlsNames = new Set((this.data.ast || []).map(({ name }: Field) => name));
             Object.keys(this.control.controls).forEach((name) => {
@@ -112,7 +112,6 @@ export class StructFormComponent<T extends Record<string, unknown>>
             );
             this.setLabelControl();
         }
-        super.ngOnChanges(changes);
     }
 
     handleIncomingValue(value: T) {

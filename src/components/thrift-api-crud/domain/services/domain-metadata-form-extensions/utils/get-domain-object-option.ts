@@ -1,22 +1,44 @@
+import { map } from 'rxjs';
+
+import { inject } from '@angular/core';
+
 import { LimitedVersionedObject, VersionedObject } from '@vality/domain-proto/domain_config_v2';
-import { ThriftFormExtensionOption, getUnionValue } from '@vality/ng-thrift';
+import { Option } from '@vality/matez';
+import { getUnionValue } from '@vality/ng-thrift';
 
-import { getDomainObjectReference } from '~/api/domain-config';
+import { DomainService, getDomainObjectReference } from '~/api/domain-config';
 
-import { getDomainObjectDetails, getReferenceId } from '../../../utils';
+import {
+    getDomainObjectDetails,
+    getLimitedDomainObjectDetails,
+    getReferenceId,
+} from '../../../utils';
 
-export function getDomainObjectOption(o: LimitedVersionedObject): ThriftFormExtensionOption {
+export function getDomainObjectOption(obj: LimitedVersionedObject): Option {
+    const details = getLimitedDomainObjectDetails(obj);
+    let detailsObj: Option['details'];
+    try {
+        detailsObj = inject(DomainService)
+            .get(obj.ref, obj.info.version)
+            .pipe(map((o) => o.object));
+    } catch (err) {
+        console.warn(err);
+        detailsObj = obj.ref;
+    }
     return {
-        value: getReferenceId(o.ref),
-        label: o.name,
-        details: o,
+        value: getReferenceId(obj.ref),
+        label: details.label,
+        description: details.idDescription,
+        details: detailsObj,
     };
 }
 
-export function getFullDomainObjectOption(o: VersionedObject): ThriftFormExtensionOption {
+export function getFullDomainObjectOption(obj: VersionedObject): Option {
+    const details = getDomainObjectDetails(obj.object);
     return {
-        value: getReferenceId(getDomainObjectReference(o.object)),
-        label: getDomainObjectDetails(o.object).label,
-        details: getUnionValue(o.object).data,
+        value: getReferenceId(getDomainObjectReference(obj.object)),
+        label: details.label,
+        description: details.idDescription,
+        details: getUnionValue(obj.object).data,
     };
 }

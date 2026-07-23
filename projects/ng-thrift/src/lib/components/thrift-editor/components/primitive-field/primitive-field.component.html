@@ -1,66 +1,78 @@
-@if (data.type === 'bool') {
-    <div class="grid grid-cols-1 gap-4">
-        <span class="mat-body-large">{{ data.type | fieldLabel: data.field }}</span>
-        <div style="display: flex; place-content: center flex-start; align-items: center; gap: 4px">
-            <mat-radio-group
-                [formControl]="control"
-                [required]="data.isRequired"
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1"
+@if (data()) {
+    @if (data().type === 'bool') {
+        <div class="grid grid-cols-1 gap-4">
+            <span class="mat-body-large">{{ data().type | fieldLabel: data().field }}</span>
+            <div
+                style="
+                    display: flex;
+                    place-content: center flex-start;
+                    align-items: center;
+                    gap: 4px;
+                "
             >
-                <mat-radio-button [value]="false">False</mat-radio-button>
-                <mat-radio-button [value]="true">True</mat-radio-button>
-            </mat-radio-group>
-            @if (!data.isRequired) {
-                <button
-                    [disabled]="control.value === null || control.value === undefined"
-                    mat-icon-button
-                    (click)="clear($event)"
+                <mat-radio-group
+                    [formControl]="control"
+                    [required]="data().isRequired"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1"
                 >
-                    <mat-icon>clear</mat-icon>
-                </button>
-            }
+                    <mat-radio-button [value]="false">False</mat-radio-button>
+                    <mat-radio-button [value]="true">True</mat-radio-button>
+                </mat-radio-group>
+                @if (!data().isRequired) {
+                    <button
+                        [disabled]="control.value === null || control.value === undefined"
+                        mat-icon-button
+                        (click)="clear($event)"
+                    >
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                }
+                @if (generate$ | async) {
+                    <button mat-icon-button (click)="generate($event)">
+                        <mat-icon>loop</mat-icon>
+                    </button>
+                }
+            </div>
+        </div>
+    } @else {
+        <div style="display: flex; gap: 4px">
+            @let extensionResult = extensionResult$ | async;
+            <v-autocomplete-field
+                [externalSearch]="!!extensionResult?.search"
+                [formControl]="control"
+                [hint]="$any(selectedHint$ | async)"
+                [label]="extensionResult?.label ?? (data().type | fieldLabel: data().field)"
+                [options]="$any(options$ | async)"
+                [required]="data().isRequired"
+                [type]="inputType()"
+                style="flex: 1"
+                (searchChange)="search.set($event)"
+            ></v-autocomplete-field>
             @if (generate$ | async) {
                 <button mat-icon-button (click)="generate($event)">
                     <mat-icon>loop</mat-icon>
                 </button>
             }
+            @if ((options$ | async)?.length) {
+                <button
+                    [disabled]="!(selectedExtensionOption$ | async)"
+                    mat-icon-button
+                    (click)="toggleDetails()"
+                >
+                    <mat-icon>{{ detailsShown() ? 'visibility_off' : 'wysiwyg' }}</mat-icon>
+                </button>
+            }
         </div>
-    </div>
-} @else {
-    <div style="display: flex; gap: 4px">
-        <v-autocomplete-field
-            [formControl]="control"
-            [hint]="$any(selectedHint$ | async)"
-            [label]="(extensionResult$ | async)?.label ?? (data.type | fieldLabel: data.field)"
-            [options]="$any(options$ | async)"
-            [required]="data.isRequired"
-            [type]="inputType"
-            style="flex: 1"
-        ></v-autocomplete-field>
-        @if (generate$ | async) {
-            <button mat-icon-button (click)="generate($event)">
-                <mat-icon>loop</mat-icon>
-            </button>
-        }
-        @if ((options$ | async)?.length) {
-            <button
-                [disabled]="!(selectedExtensionOption$ | async)"
-                mat-icon-button
-                (click)="toggleDetails()"
-            >
-                <mat-icon>{{ detailsShown() ? 'visibility_off' : 'wysiwyg' }}</mat-icon>
-            </button>
-        }
-    </div>
-}
-@if (selectedExtensionOption$ | async) {
-    <div [class.details_hidden]="!detailsShown()" class="details">
-        <mat-card appearance="outlined" class="details-card">
-            <mat-card-content>
-                <v-thrift-viewer
-                    [value]="$safeNavigationMigration((selectedExtensionOption$ | async)?.details)"
-                ></v-thrift-viewer>
-            </mat-card-content>
-        </mat-card>
-    </div>
+    }
+    @if (selectedExtensionOption$ | async) {
+        <div [class.details_hidden]="!detailsShown()" class="details">
+            <mat-card appearance="outlined" class="details-card">
+                <mat-card-content>
+                    @if (detailsShown()) {
+                        <v-thrift-viewer [value]="selectedOptionDetails$ | async"></v-thrift-viewer>
+                    }
+                </mat-card-content>
+            </mat-card>
+        </div>
+    }
 }

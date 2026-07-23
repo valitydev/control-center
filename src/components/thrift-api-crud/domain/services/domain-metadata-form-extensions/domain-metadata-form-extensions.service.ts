@@ -3,19 +3,26 @@ import { map, shareReplay } from 'rxjs/operators';
 import { generate } from 'short-uuid';
 import { v4 } from 'uuid';
 
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import { Validators } from '@angular/forms';
 
 import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
-import { DomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, DomainObjectType, ObjectID } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
 import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
+import { ThriftRepositoryService } from '~/api/services';
+import { createNextId } from '~/utils';
 
-import { createDomainObjectExtensions } from './utils/create-domain-object-extension';
+import { getReferenceId } from '../../utils';
+
+import {
+    createDomainObjectExtensions,
+    isDomainObject,
+} from './utils/create-domain-object-extension';
 import { getDomainObjectOption, getFullDomainObjectOption } from './utils/get-domain-object-option';
 
 @Injectable({
@@ -25,6 +32,8 @@ export class DomainMetadataFormExtensionsService {
     private domainStoreService = inject(DomainObjectsStoreService);
     private domainService = inject(DomainService);
     private authorStoreService = inject(AuthorStoreService);
+    private repositoryService = inject(ThriftRepositoryService);
+    private injector = inject(Injector);
 
     extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
         map((metadata): ThriftFormExtension[] => [
@@ -167,10 +176,47 @@ export class DomainMetadataFormExtensionsService {
     ): ThriftFormExtension[] {
         const objectFields = new ThriftData<string, 'struct'>(metadata, 'domain', objectType).ast;
         const refType = objectFields.find((n) => n.name === 'ref').type as string;
-        return createDomainObjectExtensions(refType, () =>
-            this.domainStoreService
-                .getLimitedObjects(objectKey)
-                .value$.pipe(map((objects) => objects.map((obj) => getDomainObjectOption(obj)))),
-        );
+        return [
+            {
+                determinant: (data) => of(isDomainObject(data, refType)),
+                extension: (data) =>
+                    of({
+                        search: (searchStr) =>
+                            this.repositoryService
+                                .SearchObjects({
+                                    type: DomainObjectType[objectKey],
+                                    query: searchStr || '*',
+                                    limit: 100,
+                                })
+                                .pipe(
+                                    map(({ result }) => ({
+                                        result: result.map((obj) =>
+                                            runInInjectionContext(this.injector, () =>
+                                                getDomainObjectOption(obj),
+                                            ),
+                                        ),
+                                    })),
+                                ),
+                        isIdentifier: true,
+                        generate: isTypeWithAliases(data, 'ObjectID', 'domain')
+                            ? () =>
+                                  this.domainStoreService
+                                      .getLimitedObjects(objectKey)
+                                      .getFirstValue()
+                                      .pipe(
+                                          map(
+                                              (objects) =>
+                                                  objects?.length &&
+                                                  createNextId(
+                                                      objects.map(
+                                                          (o) => getReferenceId(o.ref) as ObjectID,
+                                                      ),
+                                                  ),
+                                          ),
+                                      )
+                            : () => of(v4()),
+                    }),
+            },
+        ];
     }
 }

@@ -3,7 +3,8 @@ import { map } from 'rxjs/operators';
 
 import { TemplateRef } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
-import { ThemePalette } from '@angular/material/core';
+
+import { Option } from '@vality/matez';
 
 import { ThriftData } from '../../../models';
 
@@ -18,7 +19,9 @@ export interface Converter<O = unknown, I = O> {
 }
 
 export interface ThriftFormExtensionResult<T = unknown> {
-    options?: ThriftFormExtensionOption[];
+    /** @deprecated use search instead */
+    options?: Option<T>[];
+    search?: (searchStr: string) => Observable<{ result: Option<T>[] }>;
     generate?: (value: T) => Observable<T>;
     isIdentifier?: boolean;
     label?: string;
@@ -27,13 +30,6 @@ export interface ThriftFormExtensionResult<T = unknown> {
     converter?: Converter;
     hidden?: boolean;
     template?: TemplateRef<unknown>;
-}
-
-export interface ThriftFormExtensionOption {
-    value: unknown;
-    label?: string;
-    details?: string | object;
-    color?: ThemePalette;
 }
 
 export function getExtensionsResult(

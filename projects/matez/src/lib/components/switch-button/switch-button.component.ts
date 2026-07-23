@@ -57,8 +57,7 @@ export class SwitchButtonComponent<T = number>
         this.control.setValue(this.getValue(this.nextIndex));
     }
 
-    override ngOnChanges(changes: ComponentChanges<SwitchButtonComponent<T>>) {
-        super.ngOnChanges(changes);
+    ngOnChanges(changes: ComponentChanges<SwitchButtonComponent<T>>) {
         if (changes.states && this.states.length) {
             if (!isNil(this.states?.[0]?.value)) {
                 this.hasChangeValue = true;
