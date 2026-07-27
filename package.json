@@ -36,6 +36,7 @@
     "@angular/platform-browser": "^22.0.7",
     "@angular/router": "^22.0.7",
     "@ngneat/input-mask": "^6.1.0",
+    "@sentry/angular": "^10.68.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@vality/domain-proto": "^2.0.2-239638b.0",
     "@vality/fistful-proto": "^2.0.1-9864622.0",
