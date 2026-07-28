@@ -7,6 +7,7 @@ import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/com
 import localeRu from '@angular/common/locales/ru';
 import {
     ApplicationConfig,
+    ErrorHandler,
     LOCALE_ID,
     inject,
     isDevMode,
@@ -18,6 +19,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
+import * as Sentry from '@sentry/angular';
 
 import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 
@@ -43,6 +45,10 @@ registerLocaleData(localeRu);
 
 export const appConfig: ApplicationConfig = {
     providers: [
+        {
+            provide: ErrorHandler,
+            useValue: Sentry.createErrorHandler(),
+        },
         provideBrowserGlobalErrorListeners(),
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),

@@ -1,3 +1,4 @@
+import { isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import * as Sentry from '@sentry/angular';
 
@@ -7,7 +8,15 @@ import { appConfig } from './app/app.config';
 if (SENTRY_DSN) {
     Sentry.init({
         dsn: SENTRY_DSN,
-        integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+        environment: isDevMode() ? 'development' : 'production',
+        integrations: [
+            Sentry.browserTracingIntegration(),
+            Sentry.replayIntegration({
+                maskAllText: true,
+                maskAllInputs: true,
+                blockAllMedia: true,
+            }),
+        ],
         tracesSampleRate: 1,
         replaysSessionSampleRate: 1,
         replaysOnErrorSampleRate: 1,

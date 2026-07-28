@@ -29,7 +29,6 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           sourcemaps: ./dist/control-center/browser
-          environment: ${{ startsWith(github.ref_name, 'epic/') && 'staging' || 'production' }}
           set_commits: skip
       - name: Remove source maps
         run: find dist/control-center/browser -type f -name '*.map' -delete

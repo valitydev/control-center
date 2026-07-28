@@ -2,7 +2,15 @@ import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    OnInit,
+    inject,
+    isDevMode,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +19,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterOutlet } from '@angular/router';
+import * as Sentry from '@sentry/angular';
 
 import {
     AppModeService,
@@ -27,7 +36,7 @@ import { ThriftRepositoryService } from '~/api/services';
 import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { KeycloakUserService, Service } from '~/services';
+import { ConfigService, KeycloakUserService, Service } from '~/services';
 import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';
@@ -221,9 +230,10 @@ const createNavLinks = (): Link[] => [
         MatTooltipModule,
     ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
+    private configService = inject(ConfigService);
     private repositoryService = inject(ThriftRepositoryService);
     private router = inject(Router);
     private dr = inject(DestroyRef);
@@ -268,6 +278,19 @@ export class AppComponent {
 
     constructor() {
         this.registerConsoleUtils();
+    }
+
+    ngOnInit() {
+        if (SENTRY_DSN) {
+            this.configService.config.getFirstValue().subscribe((config) => {
+                if (config?.tier) {
+                    Sentry.setTag('tier', config.tier);
+                }
+            });
+            this.keycloakUserService.user.getFirstValue().subscribe((user) => {
+                Sentry.setUser({ id: user.id, username: user.username, email: user.email });
+            });
+        }
     }
 
     logout() {
