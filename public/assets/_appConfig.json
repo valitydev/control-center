@@ -19,5 +19,5 @@
             "termset": 2
         }
     },
-    "environment": "production"
+    "tier": "production"
 }

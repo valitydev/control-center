@@ -30,5 +30,5 @@ export interface AppConfig {
     };
     checkout: Endpoint;
     default: Record<Preset, PresetConfig>;
-    environment?: 'production' | 'staging';
+    tier?: 'production' | 'staging';
 }

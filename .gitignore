@@ -44,3 +44,6 @@ Thumbs.db
 # Config
 appConfig*.json
 authConfig*.json
+
+# Env
+.env

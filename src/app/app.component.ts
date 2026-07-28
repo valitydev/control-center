@@ -284,8 +284,8 @@ export class AppComponent implements OnInit {
         if (SENTRY_DSN) {
             if (!isDevMode()) {
                 this.configService.config.getFirstValue().subscribe((config) => {
-                    if (config?.environment) {
-                        Sentry.setTag('environment', config.environment);
+                    if (config?.tier) {
+                        Sentry.setTag('tier', config.tier);
                     }
                 });
             }
