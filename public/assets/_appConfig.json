@@ -18,5 +18,6 @@
             "category": 2,
             "termset": 2
         }
-    }
+    },
+    "environment": "production"
 }

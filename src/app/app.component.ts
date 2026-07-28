@@ -8,6 +8,7 @@ import {
     DestroyRef,
     OnInit,
     inject,
+    isDevMode,
     signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -35,7 +36,7 @@ import { ThriftRepositoryService } from '~/api/services';
 import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info';
 import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
-import { KeycloakUserService, Service } from '~/services';
+import { ConfigService, KeycloakUserService, Service } from '~/services';
 import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';
@@ -232,6 +233,7 @@ const createNavLinks = (): Link[] => [
 export class AppComponent implements OnInit {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
+    private configService = inject(ConfigService);
     private repositoryService = inject(ThriftRepositoryService);
     private router = inject(Router);
     private dr = inject(DestroyRef);
@@ -280,6 +282,13 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         if (SENTRY_DSN) {
+            if (!isDevMode()) {
+                this.configService.config.getFirstValue().subscribe((config) => {
+                    if (config?.environment) {
+                        Sentry.setTag('environment', config.environment);
+                    }
+                });
+            }
             this.keycloakUserService.user.getFirstValue().subscribe((user) => {
                 Sentry.setUser({ id: user.id, username: user.username, email: user.email });
             });
