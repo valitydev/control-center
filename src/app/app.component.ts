@@ -282,13 +282,11 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         if (SENTRY_DSN) {
-            if (!isDevMode()) {
-                this.configService.config.getFirstValue().subscribe((config) => {
-                    if (config?.tier) {
-                        Sentry.setTag('tier', config.tier);
-                    }
-                });
-            }
+            this.configService.config.getFirstValue().subscribe((config) => {
+                if (config?.tier) {
+                    Sentry.setTag('tier', config.tier);
+                }
+            });
             this.keycloakUserService.user.getFirstValue().subscribe((user) => {
                 Sentry.setUser({ id: user.id, username: user.username, email: user.email });
             });
