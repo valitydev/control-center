@@ -2,7 +2,14 @@ import Keycloak from 'keycloak-js';
 import { debounceTime, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    OnInit,
+    inject,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +18,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterOutlet } from '@angular/router';
+import * as Sentry from '@sentry/angular';
 
 import {
     AppModeService,
@@ -221,7 +229,7 @@ const createNavLinks = (): Link[] => [
         MatTooltipModule,
     ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     private keycloakService = inject(Keycloak);
     private keycloakUserService = inject(KeycloakUserService);
     private repositoryService = inject(ThriftRepositoryService);
@@ -268,6 +276,14 @@ export class AppComponent {
 
     constructor() {
         this.registerConsoleUtils();
+    }
+
+    ngOnInit() {
+        if (SENTRY_DSN) {
+            this.keycloakUserService.user.getFirstValue().subscribe((user) => {
+                Sentry.setUser({ id: user.id, username: user.username, email: user.email });
+            });
+        }
     }
 
     logout() {
