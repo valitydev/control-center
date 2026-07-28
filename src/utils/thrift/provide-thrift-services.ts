@@ -4,6 +4,7 @@ import { combineLatest, map } from 'rxjs';
 import { UnionToIntersection } from 'utility-types';
 
 import { Type, inject, isDevMode, makeEnvironmentProviders } from '@angular/core';
+import * as Sentry from '@sentry/angular';
 
 import { ConnectOptions } from '@vality/domain-proto';
 import { toJson } from '@vality/ng-thrift';
@@ -17,6 +18,8 @@ import { createRequestWachterHeaders, createWachterHeaders } from './create-wach
 export const LOGGING = {
     fullLogging: isDevMode(),
 };
+
+type ParsedThriftError = ReturnType<typeof parseThriftError>;
 
 export function parseThriftError<T extends object>(error: unknown) {
     const traceId = error?.['info']?.headers?.['x-woody-trace-id'];
@@ -72,12 +75,40 @@ export function parseThriftError<T extends object>(error: unknown) {
     }
 }
 
+function captureThriftError(
+    params: Parameters<NonNullable<ConnectOptions['loggingFn']>>[0],
+    error: ParsedThriftError,
+) {
+    Sentry.withScope((scope) => {
+        scope.setTags({
+            'thrift.error_type': error.type,
+            'thrift.namespace': params.namespace,
+            'thrift.service': params.serviceName,
+            'thrift.method': params.name,
+        });
+        scope.setFingerprint([
+            '{{ default }}',
+            error.type,
+            params.namespace,
+            params.serviceName,
+            params.name,
+        ]);
+
+        if (error.traceId) {
+            scope.setTag('thrift.trace_id', error.traceId);
+        }
+
+        Sentry.captureException(params.error);
+    });
+}
+
 const logger: ConnectOptions['loggingFn'] = (params) => {
     const info = `${params.name} (${params.namespace} ${params.serviceName})`;
 
     switch (params.type) {
         case 'error': {
             const parsedError = parseThriftError(params.error);
+            captureThriftError(params, parsedError);
             console.groupCollapsed(
                 `🔴\u00A0${info}`,
                 `\n⚠️\u00A0${parsedError.message || parsedError.name || 'Unknown error'}`,
@@ -131,7 +162,7 @@ function createConnectOptions(serviceName: string) {
                 createCallOptions: () => ({
                     headers: createRequestWachterHeaders(),
                 }),
-                timeout: isDevMode() ? 10_000 : 60_000,
+                timeout: isDevMode() ? 15_000 : 60_000,
                 ...config.api.wachter,
             }),
         ),
