@@ -10,6 +10,9 @@ if (SENTRY_DSN) {
         dsn: SENTRY_DSN,
         environment: isDevMode() ? 'development' : 'production',
         integrations: [
+            Sentry.breadcrumbsIntegration({
+                console: false,
+            }),
             Sentry.browserTracingIntegration(),
             Sentry.replayIntegration({
                 maskAllText: true,
@@ -20,7 +23,7 @@ if (SENTRY_DSN) {
         tracesSampleRate: 1,
         replaysSessionSampleRate: 1,
         replaysOnErrorSampleRate: 1,
-        enableLogs: true,
+        enableLogs: false,
     });
 }
 
