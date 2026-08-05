@@ -1,37 +1,40 @@
-@let template = template$ | async;
-
-<v-dialog [progress]="!!progress()" title="Create Invoice Template">
-    @if (template) {
-        <div [formGroup]="linkForm">
-            <v-input-field formControlName="name" label="Name"></v-input-field>
-            <v-input-field formControlName="description" label="Description"></v-input-field>
-            <v-input-field formControlName="email" label="Email"></v-input-field>
-            <v-input-field formControlName="redirectUrl" label="Redirect URL"></v-input-field>
-            <v-input-field formControlName="cancelUrl" label="Cancel URL"></v-input-field>
-            <v-input-field formControlName="locale" label="Locale"></v-input-field>
-        </div>
-        <mat-divider class="!mb-4"></mat-divider>
-        <div class="flex gap-1">
-            <mat-form-field>
-                <mat-label>Link</mat-label>
-                <input [value]="link$ | async" matInput readonly />
-            </mat-form-field>
-            <button mat-icon-button (click)="copyLink()"><mat-icon>content_copy</mat-icon></button>
-        </div>
-    } @else {
-        <cc-domain-thrift-editor
-            [extensions]="extensions$ | async"
-            [formControl]="control"
-            namespace="api_extensions"
-            noToolbar
-            type="InvoiceTemplateCreateParams"
-        ></cc-domain-thrift-editor>
-    }
+<v-dialog [progress]="invoiceTemplate.isLoading()" title="Create payment link">
+    <cc-shop-field [formField]="control.shop_id"></cc-shop-field>
+    <cc-merchant-field [formField]="control.party_id"></cc-merchant-field>
+    <v-input-field [formField]="control.name" label="Name"></v-input-field>
+    <v-input-field [formField]="control.description" label="Description"></v-input-field>
+    <v-input-field [formField]="control.email" label="Email"></v-input-field>
+    <v-input-field [formField]="control.redirectUrl" label="Redirect URL"></v-input-field>
+    <v-input-field [formField]="control.cancelUrl" label="Cancel URL"></v-input-field>
+    <v-input-field [formField]="control.locale" label="Locale"></v-input-field>
+    <cc-domain-thrift-editor
+        [formField]="control.details"
+        namespace="domain"
+        noToolbar
+        type="InvoiceTemplateDetails"
+    ></cc-domain-thrift-editor>
+    <div class="flex gap-2">
+        <v-input-field
+            [formField]="control.lifetime"
+            label="Lifetime"
+            type="number"
+        ></v-input-field>
+        <mat-form-field>
+            <mat-label>Unit</mat-label>
+            <mat-select [formField]="control.lifetimeUnit">
+                @for (unit of lifetimeUnits; track unit.value) {
+                    <mat-option [value]="unit.value">{{ unit.label }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
     <v-dialog-actions>
-        @if (template) {
-            <button [disabled]="!!progress()" mat-flat-button (click)="confirm()">Done</button>
-        } @else {
-            <button [disabled]="!!progress()" mat-flat-button (click)="create()">Create</button>
-        }
+        <button
+            [disabled]="invoiceTemplate.isLoading() || control().invalid()"
+            mat-flat-button
+            (click)="createAndCopyLink()"
+        >
+            Create & copy link
+        </button>
     </v-dialog-actions>
 </v-dialog>

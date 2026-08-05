@@ -55,7 +55,7 @@
         >
             Fail machines
         </button>
-        <button mat-button (click)="createInvoiceTemplate()">Create invoice template</button>
+        <button mat-button (click)="createInvoiceTemplate()">Create payment link</button>
         @if ((selected$ | async)?.length) {
             <button
                 [disabled]="!(selected$ | async)?.length"

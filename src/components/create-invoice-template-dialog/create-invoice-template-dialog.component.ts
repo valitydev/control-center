@@ -1,42 +1,48 @@
-import {
-    Subject,
-    catchError,
-    combineLatest,
-    debounceTime,
-    distinctUntilChanged,
-    map,
-    of,
-    shareReplay,
-    switchMap,
-    tap,
-} from 'rxjs';
+import { EMPTY } from 'rxjs';
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormField, form, min } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 import { InvoiceTemplateCreateParams } from '@vality/domain-proto/api_extensions';
+import { LifetimeInterval } from '@vality/domain-proto/domain';
 import {
     DialogModule,
     DialogSuperclass,
     InputFieldModule,
     NotifyLogService,
-    getValueChanges,
-    progressTo,
+    observableResource,
 } from '@vality/matez';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { ThriftInvoiceTemplatingService } from '~/api/services';
-import { ConfigService } from '~/services';
 
+import { MerchantFieldModule } from '../merchant-field';
+import { ShopFieldModule } from '../shop-field';
 import { DomainMetadataFormExtensionsService, DomainThriftFormComponent } from '../thrift-api-crud';
+
+interface PaymentLinkParams extends Pick<
+    InvoiceTemplateCreateParams,
+    'party_id' | 'shop_id' | 'details'
+> {
+    lifetime: number;
+    lifetimeUnit: keyof LifetimeInterval;
+    name: string;
+    description: string;
+    email: string;
+    redirectUrl: string;
+    cancelUrl: string;
+    locale: string;
+}
 
 @Component({
     templateUrl: './create-invoice-template-dialog.component.html',
@@ -50,125 +56,75 @@ import { DomainMetadataFormExtensionsService, DomainThriftFormComponent } from '
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
+        MatSelectModule,
         InputFieldModule,
         MatDividerModule,
+        FormField,
+        ShopFieldModule,
+        MerchantFieldModule,
     ],
 })
 export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<CreateInvoiceTemplateDialogComponent> {
     private invoiceTemplatingService = inject(ThriftInvoiceTemplatingService);
     private log = inject(NotifyLogService);
-    private dr = inject(DestroyRef);
-    private createTemplate$ = new Subject<null>();
-    private configService = inject(ConfigService);
     private clipboard = inject(Clipboard);
-    private fb = inject(FormBuilder);
+    private dr = inject(DestroyRef);
     private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private domainStoreService = inject(DomainObjectsStoreService);
 
-    linkForm = this.fb.group({
-        name: null,
-        description: null,
-        email: null,
-        redirectUrl: null,
-        cancelUrl: null,
-        locale: null,
+    lifetimeUnits: { value: keyof LifetimeInterval; label: string }[] = [
+        { value: 'seconds', label: 'Seconds' },
+        { value: 'minutes', label: 'Minutes' },
+        { value: 'hours', label: 'Hours' },
+        { value: 'days', label: 'Days' },
+        { value: 'months', label: 'Months' },
+        { value: 'years', label: 'Years' },
+    ];
+    controlModel = signal<PaymentLinkParams>({
+        lifetime: 30,
+        lifetimeUnit: 'days',
+        name: '',
+        description: '',
+        email: '',
+        redirectUrl: '',
+        cancelUrl: '',
+        locale: '',
+
+        party_id: null,
+        shop_id: null,
+        details: null,
     });
-    template$ = this.createTemplate$.pipe(
-        switchMap(() =>
-            this.invoiceTemplatingService.Create(this.control.value).pipe(
-                progressTo(this.progress),
-                tap(() => {
-                    this.log.success('Invoice template created successfully');
-                }),
-                catchError((err) => {
-                    this.log.error('Failed to create invoice template', err);
-                    return of(null);
-                }),
-            ),
-        ),
-        takeUntilDestroyed(this.dr),
-        shareReplay(1),
-    );
-    control = new FormControl<InvoiceTemplateCreateParams>(
-        { context: { type: 'application/json', data: '{}' } } as InvoiceTemplateCreateParams,
-        { nonNullable: true },
-    );
-    progress = signal(0);
-    link$ = combineLatest([
-        this.template$,
-        this.configService.config.value$,
-        getValueChanges(this.linkForm).pipe(debounceTime(1000)),
-    ]).pipe(
-        map(([template, config, linkValues]) => {
-            const url = new URL(
-                `http${(config.checkout.https ?? true) ? 's' : ''}://${config.checkout.hostname}${config.checkout.path ?? '/v1/checkout.html'}`,
-            );
-            url.searchParams.set('invoiceTemplateID', template.invoice_template.id);
-            url.searchParams.set(
-                'invoiceTemplateAccessToken',
-                template.invoice_template_access_token.payload,
-            );
-            const nonEmptyLinkValues = Object.entries(linkValues).filter(([, v]) => !!v);
-            for (const [key, value] of nonEmptyLinkValues) {
-                url.searchParams.set(key, value as string);
-            }
-            return url.toString();
-        }),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
-    extensions$ = combineLatest([
-        this.domainMetadataFormExtensionsService.createFullDomainObjectsOptionsByType(
-            'ShopConfigObject',
-            'shop_config',
-            getValueChanges(this.control).pipe(
-                map((value) => value?.party_id?.id),
-                distinctUntilChanged(),
-                map((partyId) =>
-                    partyId
-                        ? (obj) => obj.object.shop_config.data.party_ref.id === partyId
-                        : () => true,
-                ),
-            ),
-        ),
-        this.domainMetadataFormExtensionsService.createFullDomainObjectsOptionsByType(
-            'CurrencyObject',
-            'currency',
-            getValueChanges(this.control).pipe(
-                map((value) => value?.shop_id?.id),
-                distinctUntilChanged(),
-                switchMap((shopId) =>
-                    shopId
-                        ? this.domainStoreService.getObject({
-                              shop_config: { id: shopId },
-                          }).value$
-                        : of(null),
-                ),
-                map((shop) =>
-                    shop
-                        ? (obj) =>
-                              obj.object.currency.data.symbolic_code ===
-                              shop.object.shop_config.data.account.currency.symbolic_code
-                        : () => true,
-                ),
-            ),
-        ),
-    ]).pipe(
-        map((extensionGroups) => extensionGroups.flat()),
-        shareReplay({ refCount: true, bufferSize: 1 }),
-    );
+    control = form(this.controlModel, (path) => {
+        min(path.lifetime, 1, { message: 'Lifetime must be at least 1' });
+    });
+    invoiceTemplate = observableResource({
+        params: EMPTY,
+        loader: ({
+            shop_id,
+            party_id,
+            details,
+            lifetime,
+            lifetimeUnit,
+            ...params
+        }: PaymentLinkParams) =>
+            this.invoiceTemplatingService.Create({
+                shop_id,
+                party_id,
+                details,
+                invoice_lifetime: { [lifetimeUnit]: lifetime },
+                url_params: new Map(Object.entries(params)),
+                context: { type: 'application/json', data: '{}' },
+            }),
+    });
 
-    create() {
-        this.createTemplate$.next(null);
-    }
-
-    confirm() {
-        this.closeWithSuccess();
-    }
-
-    copyLink() {
-        this.link$.pipe(takeUntilDestroyed(this.dr)).subscribe((link) => {
-            this.clipboard.copy(link);
+    onInit() {
+        this.invoiceTemplate.value$.pipe(takeUntilDestroyed(this.dr)).subscribe((result) => {
+            this.clipboard.copy(result.invoice_template_url.url);
             this.log.success('Link copied to clipboard');
         });
+    }
+
+    createAndCopyLink() {
+        this.invoiceTemplate.setParams(this.controlModel());
     }
 }
