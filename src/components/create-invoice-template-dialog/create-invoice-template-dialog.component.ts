@@ -2,19 +2,20 @@ import { EMPTY } from 'rxjs';
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    OnInit,
+    inject,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormField, form, min } from '@angular/forms/signals';
+import { FormField, form } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 
 import { InvoiceTemplateCreateParams } from '@vality/domain-proto/api_extensions';
-import { LifetimeInterval } from '@vality/domain-proto/domain';
 import {
     DialogModule,
     DialogSuperclass,
@@ -26,16 +27,13 @@ import {
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { ThriftInvoiceTemplatingService } from '~/api/services';
 
-import { MerchantFieldModule } from '../merchant-field';
-import { ShopFieldModule } from '../shop-field';
-import { DomainMetadataFormExtensionsService, DomainThriftFormComponent } from '../thrift-api-crud';
+import { Duration, DurationFieldComponent } from '../duration-field';
+import { PartyShop, ShopMerchantFieldComponent } from '../shop-merchant-field';
+import { DomainThriftFormComponent } from '../thrift-api-crud';
 
-interface PaymentLinkParams extends Pick<
-    InvoiceTemplateCreateParams,
-    'party_id' | 'shop_id' | 'details'
-> {
-    lifetime: number;
-    lifetimeUnit: keyof LifetimeInterval;
+interface PaymentLinkParams extends Pick<InvoiceTemplateCreateParams, 'details'> {
+    partyShop: PartyShop;
+    lifetime: Duration;
     name: string;
     description: string;
     email: string;
@@ -52,37 +50,25 @@ interface PaymentLinkParams extends Pick<
         DialogModule,
         DomainThriftFormComponent,
         ReactiveFormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatSelectModule,
         InputFieldModule,
-        MatDividerModule,
         FormField,
-        ShopFieldModule,
-        MerchantFieldModule,
+        DurationFieldComponent,
+        ShopMerchantFieldComponent,
+        MatButtonModule,
     ],
 })
-export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<CreateInvoiceTemplateDialogComponent> {
+export class CreateInvoiceTemplateDialogComponent
+    extends DialogSuperclass<CreateInvoiceTemplateDialogComponent>
+    implements OnInit
+{
     private invoiceTemplatingService = inject(ThriftInvoiceTemplatingService);
     private log = inject(NotifyLogService);
     private clipboard = inject(Clipboard);
     private dr = inject(DestroyRef);
-    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private domainStoreService = inject(DomainObjectsStoreService);
 
-    lifetimeUnits: { value: keyof LifetimeInterval; label: string }[] = [
-        { value: 'seconds', label: 'Seconds' },
-        { value: 'minutes', label: 'Minutes' },
-        { value: 'hours', label: 'Hours' },
-        { value: 'days', label: 'Days' },
-        { value: 'months', label: 'Months' },
-        { value: 'years', label: 'Years' },
-    ];
     controlModel = signal<PaymentLinkParams>({
-        lifetime: 30,
-        lifetimeUnit: 'days',
+        lifetime: { unit: 'days', amount: 30 },
         name: '',
         description: '',
         email: '',
@@ -90,34 +76,27 @@ export class CreateInvoiceTemplateDialogComponent extends DialogSuperclass<Creat
         cancelUrl: '',
         locale: '',
 
-        party_id: null,
-        shop_id: null,
+        partyShop: {
+            party_id: null,
+            shop_id: null,
+        },
         details: null,
     });
-    control = form(this.controlModel, (path) => {
-        min(path.lifetime, 1, { message: 'Lifetime must be at least 1' });
-    });
+    control = form(this.controlModel);
     invoiceTemplate = observableResource({
         params: EMPTY,
-        loader: ({
-            shop_id,
-            party_id,
-            details,
-            lifetime,
-            lifetimeUnit,
-            ...params
-        }: PaymentLinkParams) =>
+        loader: ({ partyShop, details, lifetime, ...params }: PaymentLinkParams) =>
             this.invoiceTemplatingService.Create({
-                shop_id,
-                party_id,
+                shop_id: { id: partyShop.shop_id },
+                party_id: { id: partyShop.party_id },
                 details,
-                invoice_lifetime: { [lifetimeUnit]: lifetime },
+                invoice_lifetime: { [lifetime.unit]: lifetime.amount },
                 url_params: new Map(Object.entries(params)),
                 context: { type: 'application/json', data: '{}' },
             }),
     });
 
-    onInit() {
+    ngOnInit() {
         this.invoiceTemplate.value$.pipe(takeUntilDestroyed(this.dr)).subscribe((result) => {
             this.clipboard.copy(result.invoice_template_url.url);
             this.log.success('Link copied to clipboard');

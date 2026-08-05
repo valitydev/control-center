@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {
@@ -9,6 +9,7 @@ import {
     inject,
     input,
 } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 import { DomainObjectType, PartyConfigRef, ShopID } from '@vality/domain-proto/domain';
 import {
@@ -18,7 +19,7 @@ import {
     createControlProviders,
 } from '@vality/matez';
 
-import { FetchDomainObjectsService } from '~/api/domain-config';
+import { DomainObjectsStoreService, FetchDomainObjectsService } from '~/api/domain-config';
 
 @Component({
     selector: 'cc-shop-field',
@@ -29,6 +30,7 @@ import { FetchDomainObjectsService } from '~/api/domain-config';
 })
 export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]> {
     private fetchDomainObjectsService = inject(FetchDomainObjectsService);
+    private domainObjectsStoreService = inject(DomainObjectsStoreService);
 
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
@@ -36,17 +38,38 @@ export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]>
     @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;
     multiple = input(false, { transform: booleanAttribute });
+    partyId = input<PartyConfigRef['id']>();
 
-    options$: Observable<Option<PartyConfigRef['id']>[]> =
-        this.fetchDomainObjectsService.result$.pipe(
-            map((objs) =>
-                objs.map((obj) => ({
+    options$: Observable<Option<PartyConfigRef['id']>[]> = combineLatest([
+        this.fetchDomainObjectsService.result$,
+        toObservable(this.partyId).pipe(
+            switchMap((partyId) =>
+                partyId
+                    ? this.domainObjectsStoreService.getObjects('shop_config').value$
+                    : of(null),
+            ),
+        ),
+    ]).pipe(
+        map(([objects, partyShops]) => {
+            const partyShopIds = partyShops
+                ? new Set(
+                      partyShops
+                          .filter(
+                              (shop) =>
+                                  shop.object.shop_config.data.party_ref.id === this.partyId(),
+                          )
+                          .map((shop) => shop.object.shop_config.ref.id),
+                  )
+                : null;
+            return objects
+                .filter((object) => !partyShopIds || partyShopIds.has(object.ref.shop_config.id))
+                .map((obj) => ({
                     value: obj.ref.shop_config.id,
                     label: obj.name || `#${obj.ref.shop_config.id}`,
                     description: obj.description,
-                })),
-            ),
-        );
+                }));
+        }),
+    );
     progress$ = this.fetchDomainObjectsService.isLoading$;
 
     search(search: string) {

@@ -5,7 +5,11 @@
         #select
         [closeOnSelect]="!multiple"
         [formControl]="control"
-        [items]="options"
+        [items]="
+            options?.length || !control?.value
+                ? options
+                : [{ value: control.value, label: control.value }]
+        "
         [loading]="progress"
         [markFirst]="true"
         [multiple]="multiple"
