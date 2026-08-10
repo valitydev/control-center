@@ -120,6 +120,6 @@ export class InvoiceTemplateDetailsFieldComponent implements FormValueControl<In
                           : [this.createInvoiceLine()],
                   },
               }
-            : null;
+            : { product: this.createInvoiceLine() };
     }
 }

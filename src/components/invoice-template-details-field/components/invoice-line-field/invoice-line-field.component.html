@@ -6,6 +6,10 @@
             label="Quantity"
             type="number"
         ></v-input-field>
-        <cc-cash-field [formControl]="priceControl" label="Price" required></cc-cash-field>
+        <cc-source-cash-field
+            [formField]="control.price"
+            label="Price"
+            required
+        ></cc-source-cash-field>
     </div>
 </div>
