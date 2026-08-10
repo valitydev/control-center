@@ -5,6 +5,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, ValidationErrors, Validator } from '@angular/forms';
 import { FormComponentSuperclass as BaseFormComponentSuperclass } from '@s-libs/ng-core';
 
+/**
+ * @deprecated Use FormControlValue
+ */
 @Directive()
 export abstract class FormComponentSuperclass<OuterType>
     extends BaseFormComponentSuperclass<OuterType>
