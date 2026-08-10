@@ -115,10 +115,16 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
             );
             console.error(parsedError.error);
             if (LOGGING.fullLogging) {
-                console.log('Arguments');
-                console.dir(params.args);
-                console.log('Headers');
-                console.dir(params.headers);
+                console.dir(
+                    {
+                        Arguments: params.args,
+                        Headers: params.headers,
+                    },
+                    {
+                        depth: 4,
+                        compact: false,
+                    },
+                );
             }
             console.groupEnd();
             return;
@@ -126,12 +132,17 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
         case 'success': {
             if (LOGGING.fullLogging) {
                 console.groupCollapsed(`🟢\u00A0${info}`);
-                console.log('Arguments');
-                console.dir(params.args);
-                console.log('Response');
-                console.dir(params.response);
-                console.log('Headers');
-                console.dir(params.headers);
+                console.dir(
+                    {
+                        Arguments: params.args,
+                        Response: params.response,
+                        Headers: params.headers,
+                    },
+                    {
+                        depth: 4,
+                        compact: false,
+                    },
+                );
                 console.groupEnd();
             }
             return;
