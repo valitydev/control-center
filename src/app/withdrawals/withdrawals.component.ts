@@ -101,6 +101,12 @@ export class WithdrawalsComponent implements OnInit {
         createCurrencyColumn((d) => ({ amount: d.fee, code: d.currency_symbolic_code }), {
             field: 'fee',
         }),
+        createCurrencyColumn(
+            (d) => ({ amount: d.changed_amount, code: d.changed_currency_symbolic_code }),
+            {
+                field: 'changed',
+            },
+        ),
         {
             field: 'status',
             cell: (d) => ({
