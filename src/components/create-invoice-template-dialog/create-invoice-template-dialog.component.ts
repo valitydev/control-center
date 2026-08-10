@@ -1,4 +1,5 @@
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
@@ -10,7 +11,7 @@ import {
     inject,
     signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormField, form } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,8 +29,8 @@ import { DomainObjectsStoreService } from '~/api/domain-config';
 import { ThriftInvoiceTemplatingService } from '~/api/services';
 
 import { Duration, DurationFieldComponent } from '../duration-field';
+import { InvoiceTemplateDetailsFieldComponent } from '../invoice-template-details-field';
 import { PartyShop, ShopMerchantFieldComponent } from '../shop-merchant-field';
-import { DomainThriftFormComponent } from '../thrift-api-crud';
 
 interface PaymentLinkParams extends Pick<InvoiceTemplateCreateParams, 'details'> {
     partyShop: PartyShop;
@@ -48,11 +49,11 @@ interface PaymentLinkParams extends Pick<InvoiceTemplateCreateParams, 'details'>
     imports: [
         CommonModule,
         DialogModule,
-        DomainThriftFormComponent,
         ReactiveFormsModule,
         InputFieldModule,
         FormField,
         DurationFieldComponent,
+        InvoiceTemplateDetailsFieldComponent,
         ShopMerchantFieldComponent,
         MatButtonModule,
     ],
@@ -83,6 +84,20 @@ export class CreateInvoiceTemplateDialogComponent
         details: null,
     });
     control = form(this.controlModel);
+    currency$ = toObservable(this.controlModel).pipe(
+        map(({ partyShop }) => partyShop.shop_id),
+        distinctUntilChanged(),
+        switchMap((shopId) =>
+            shopId
+                ? this.domainStoreService.getObject({ shop_config: { id: shopId } }).value$
+                : of(null),
+        ),
+        map(
+            (shop) =>
+                shop?.object?.shop_config?.data?.account?.currency?.symbolic_code ?? undefined,
+        ),
+        shareReplay({ bufferSize: 1, refCount: true }),
+    );
     invoiceTemplate = observableResource({
         params: EMPTY,
         loader: ({ partyShop, details, lifetime, ...params }: PaymentLinkParams) =>

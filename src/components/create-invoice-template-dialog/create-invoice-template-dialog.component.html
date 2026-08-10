@@ -7,12 +7,10 @@
         <v-input-field [formField]="control.redirectUrl" label="Redirect URL"></v-input-field>
         <v-input-field [formField]="control.cancelUrl" label="Cancel URL"></v-input-field>
         <v-input-field [formField]="control.locale" label="Locale"></v-input-field>
-        <cc-domain-thrift-editor
+        <cc-invoice-template-details-field
+            [currency]="currency$ | async"
             [formField]="control.details"
-            namespace="domain"
-            noToolbar
-            type="InvoiceTemplateDetails"
-        ></cc-domain-thrift-editor>
+        ></cc-invoice-template-details-field>
         <cc-duration-field [formField]="control.lifetime" label="Lifetime"></cc-duration-field>
     </div>
     <v-dialog-actions>
