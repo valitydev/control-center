@@ -7,7 +7,6 @@ import { Type, inject, isDevMode, makeEnvironmentProviders } from '@angular/core
 import * as Sentry from '@sentry/angular';
 
 import { ConnectOptions } from '@vality/domain-proto';
-import { toJson } from '@vality/ng-thrift';
 
 import { ConfigService, KeycloakUserService } from '~/services';
 
@@ -116,10 +115,18 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
             );
             console.error(parsedError.error);
             if (LOGGING.fullLogging) {
-                console.log('Arguments');
-                console.log(JSON.stringify(toJson(params.args), null, 2));
-                console.log('Headers');
-                console.log(params.headers);
+                console.dir(
+                    {
+                        Arguments: params.args,
+                        Headers: params.headers,
+                    },
+                    {
+                        depth: null,
+                        compact: false,
+                        maxArrayLength: null,
+                        maxStringLength: null,
+                    },
+                );
             }
             console.groupEnd();
             return;
@@ -127,12 +134,19 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
         case 'success': {
             if (LOGGING.fullLogging) {
                 console.groupCollapsed(`🟢\u00A0${info}`);
-                console.log('Arguments');
-                console.log(JSON.stringify(toJson(params.args), null, 2));
-                console.log('Response');
-                console.log(JSON.stringify(toJson(params.response), null, 2));
-                console.log('Headers');
-                console.log(params.headers);
+                console.dir(
+                    {
+                        Arguments: params.args,
+                        Response: params.response,
+                        Headers: params.headers,
+                    },
+                    {
+                        depth: null,
+                        compact: false,
+                        maxArrayLength: null,
+                        maxStringLength: null,
+                    },
+                );
                 console.groupEnd();
             }
             return;

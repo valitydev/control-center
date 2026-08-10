@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-2">
+    <v-input-field [formField]="control.product" label="Product"></v-input-field>
+    <div class="grid grid-cols-2 gap-2">
+        <v-input-field
+            [formField]="control.quantity"
+            label="Quantity"
+            type="number"
+        ></v-input-field>
+        <cc-source-cash-field
+            [formField]="control.price"
+            label="Price"
+            required
+        ></cc-source-cash-field>
+    </div>
+</div>

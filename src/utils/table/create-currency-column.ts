@@ -1,4 +1,4 @@
-import { groupBy, uniq } from 'lodash-es';
+import { groupBy, isNil, uniq } from 'lodash-es';
 import { combineLatest, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -38,7 +38,7 @@ export const createCurrencyColumn = createColumn(
     (currencyValue: CurrencyValue | { values: CurrencyValue[]; isSum?: boolean }) => {
         const isSum = 'isSum' in currencyValue ? currencyValue.isSum : false;
         const currencyValues = ('values' in currencyValue ? currencyValue.values : [currencyValue])
-            .filter(Boolean)
+            .filter((v) => !isNil(v?.amount) && !isNil(v?.code))
             .sort((a, b) => b.amount - a.amount);
         if (!currencyValues?.length) {
             return of(undefined);

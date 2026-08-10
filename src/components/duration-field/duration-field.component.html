@@ -1,0 +1,14 @@
+<div class="flex gap-2">
+    <v-input-field
+        [formField]="control.amount"
+        [label]="label"
+        class="flex-1"
+        type="number"
+    ></v-input-field>
+    <v-select-field
+        [formField]="control.unit"
+        [options]="unitOptions"
+        class="flex-1"
+        label="Unit"
+    ></v-select-field>
+</div>

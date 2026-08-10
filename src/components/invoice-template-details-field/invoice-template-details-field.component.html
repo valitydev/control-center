@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-4">
+    <mat-radio-group
+        [value]="detailsType()"
+        class="flex gap-2"
+        (change)="selectDetailsType($event.value)"
+    >
+        <mat-radio-button class="flex-1" value="product">Product</mat-radio-button>
+        <mat-radio-button class="flex-1" value="cart">Cart</mat-radio-button>
+    </mat-radio-group>
+
+    @if (detailsType() === 'cart') {
+        <mat-accordion
+            class="flex flex-col overflow-hidden rounded-xl border border-solid border-[var(--mat-sys-outline-variant)]"
+            multi
+        >
+            @for (line of formValue()?.cart?.lines ?? []; track $index) {
+                <mat-expansion-panel
+                    class="!m-0 !rounded-none !border-0 !shadow-none [&:not(:first-child)]:!border-t [&:not(:first-child)]:!border-solid [&:not(:first-child)]:!border-[var(--mat-sys-outline-variant)]"
+                >
+                    <mat-expansion-panel-header class="flex gap-2">
+                        <mat-panel-title>Product #{{ $index + 1 }}</mat-panel-title>
+                        <button
+                            [disabled]="formValue().cart.lines.length === 1"
+                            aria-label="Delete InvoiceLine"
+                            mat-icon-button
+                            (click)="$event.stopPropagation(); removeInvoiceLine($index)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-expansion-panel-header>
+                    <cc-invoice-line-field
+                        [currency]="currency()"
+                        [formField]="control.cart.lines[$index]"
+                    ></cc-invoice-line-field>
+                </mat-expansion-panel>
+            }
+        </mat-accordion>
+        <button class="mb-4" mat-stroked-button (click)="addInvoiceLine()">
+            <mat-icon>add</mat-icon>
+            Add product
+        </button>
+    } @else {
+        <cc-invoice-line-field
+            [currency]="currency()"
+            [formField]="control.product"
+        ></cc-invoice-line-field>
+    }
+</div>
