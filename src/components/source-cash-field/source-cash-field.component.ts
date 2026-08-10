@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, ValidationErrors, Validator } from '@angular/forms';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { InputMaskModule, createMask } from '@ngneat/input-mask';
 
@@ -50,7 +50,7 @@ const RADIX_POINT = '.';
     providers: createControlProviders(() => SourceCashFieldComponent),
     changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
-        MatFormField,
+        MatFormFieldModule,
         ReactiveFormsModule,
         InputMaskModule,
         SelectFieldModule,

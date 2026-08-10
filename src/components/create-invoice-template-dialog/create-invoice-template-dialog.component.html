@@ -12,6 +12,16 @@
             [formField]="control.details"
         ></cc-invoice-template-details-field>
         <cc-duration-field [formField]="control.lifetime" label="Lifetime"></cc-duration-field>
+        <mat-divider></mat-divider>
+        <mat-form-field>
+            <mat-label>URL</mat-label>
+            <input
+                [value]="invoiceTemplate.value()?.invoice_template_url?.url || ''"
+                matInput
+                readonly
+            />
+            <mat-icon matSuffix (click)="copyLink()">content_copy</mat-icon>
+        </mat-form-field>
     </div>
     <v-dialog-actions>
         <button

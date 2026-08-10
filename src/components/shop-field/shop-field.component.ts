@@ -1,4 +1,4 @@
-import { Observable, combineLatest, of, switchMap } from 'rxjs';
+import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {
@@ -17,9 +17,11 @@ import {
     Option,
     SelectFieldComponent,
     createControlProviders,
+    observableResource,
 } from '@vality/matez';
 
-import { DomainObjectsStoreService, FetchDomainObjectsService } from '~/api/domain-config';
+import { FetchDomainObjectsService } from '~/api/domain-config';
+import { ThriftRepositoryService } from '~/api/services';
 
 @Component({
     selector: 'cc-shop-field',
@@ -29,8 +31,7 @@ import { DomainObjectsStoreService, FetchDomainObjectsService } from '~/api/doma
     standalone: false,
 })
 export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]> {
-    private fetchDomainObjectsService = inject(FetchDomainObjectsService);
-    private domainObjectsStoreService = inject(DomainObjectsStoreService);
+    private repositoryService = inject(ThriftRepositoryService);
 
     @Input() label: string;
     @Input({ transform: booleanAttribute }) required: boolean;
@@ -40,42 +41,33 @@ export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]>
     multiple = input(false, { transform: booleanAttribute });
     partyId = input<PartyConfigRef['id']>();
 
-    options$: Observable<Option<PartyConfigRef['id']>[]> = combineLatest([
-        this.fetchDomainObjectsService.result$,
-        toObservable(this.partyId).pipe(
-            switchMap((partyId) =>
-                partyId
-                    ? this.domainObjectsStoreService.getObjects('shop_config').value$
-                    : of(null),
-            ),
-        ),
-    ]).pipe(
-        map(([objects, partyShops]) => {
-            const partyShopIds = partyShops
-                ? new Set(
-                      partyShops
-                          .filter(
-                              (shop) =>
-                                  shop.object.shop_config.data.party_ref.id === this.partyId(),
-                          )
-                          .map((shop) => shop.object.shop_config.ref.id),
-                  )
-                : null;
-            return objects
-                .filter((object) => !partyShopIds || partyShopIds.has(object.ref.shop_config.id))
-                .map((obj) => ({
-                    value: obj.ref.shop_config.id,
-                    label: obj.name || `#${obj.ref.shop_config.id}`,
-                    description: obj.description,
-                }));
-        }),
-    );
-    progress$ = this.fetchDomainObjectsService.isLoading$;
-
-    search(search: string) {
-        this.fetchDomainObjectsService.load(
-            { type: DomainObjectType.shop_config, query: search },
-            { size: 1000 },
-        );
-    }
+    shops = observableResource({
+        params: toObservable(this.partyId).pipe(map((partyId) => ({ partyId, query: '' }))),
+        loader: ({ partyId, query }) =>
+            !partyId && !query
+                ? of([])
+                : (partyId
+                      ? this.repositoryService
+                            .GetRelatedGraph({
+                                ref: { party_config: { id: partyId } },
+                                type: DomainObjectType.shop_config,
+                            })
+                            .pipe(map(({ nodes }) => Array.from(nodes)))
+                      : this.repositoryService
+                            .SearchObjects({
+                                type: DomainObjectType.shop_config,
+                                query: query || '*',
+                                limit: 1000,
+                            })
+                            .pipe(map((res) => res.result || []))
+                  ).pipe(
+                      map((objs): Option<PartyConfigRef['id']>[] =>
+                          objs.map((obj) => ({
+                              value: obj.ref.shop_config.id,
+                              label: obj.name || `#${obj.ref.shop_config.id}`,
+                              description: obj.description,
+                          })),
+                      ),
+                  ),
+    });
 }

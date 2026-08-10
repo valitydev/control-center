@@ -121,8 +121,10 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
                         Headers: params.headers,
                     },
                     {
-                        depth: 4,
+                        depth: null,
                         compact: false,
+                        maxArrayLength: null,
+                        maxStringLength: null,
                     },
                 );
             }
@@ -139,8 +141,10 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
                         Headers: params.headers,
                     },
                     {
-                        depth: 4,
+                        depth: null,
                         compact: false,
+                        maxArrayLength: null,
+                        maxStringLength: null,
                     },
                 );
                 console.groupEnd();
