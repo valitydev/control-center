@@ -8,6 +8,7 @@ import { appConfig } from './app/app.config';
 if (SENTRY_DSN) {
     Sentry.init({
         dsn: SENTRY_DSN,
+        release: typeof SENTRY_RELEASE === 'undefined' ? undefined : SENTRY_RELEASE,
         environment: isDevMode() ? 'development' : 'production',
         integrations: [
             Sentry.breadcrumbsIntegration({
