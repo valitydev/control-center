@@ -43,7 +43,7 @@
             <v-thrift-monaco
                 [value]="control.value"
                 (parseError)="setError($event)"
-                (valueChange)="control.setValue($event)"
+                (valueChange)="setEditorValue($event)"
             ></v-thrift-monaco>
         }
         @case ('form') {

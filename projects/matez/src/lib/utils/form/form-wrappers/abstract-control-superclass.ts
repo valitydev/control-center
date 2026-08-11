@@ -8,6 +8,9 @@ import { WrappedControlSuperclass } from '@s-libs/ng-core';
 
 import { getErrorsTree } from './utils/get-errors-tree';
 
+/**
+ * @deprecated Use FormControlValue
+ */
 @Directive()
 export abstract class AbstractControlSuperclass<OuterType, InnerType = OuterType>
     extends WrappedControlSuperclass<OuterType, InnerType>

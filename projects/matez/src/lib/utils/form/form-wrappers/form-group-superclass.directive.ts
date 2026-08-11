@@ -6,6 +6,9 @@ import { hasControls } from '../has-controls';
 
 import { AbstractControlSuperclass } from './abstract-control-superclass';
 
+/**
+ * @deprecated Use FormControlValue
+ */
 @Directive()
 export abstract class FormGroupSuperclass<OuterType, InnerType = OuterType>
     extends AbstractControlSuperclass<OuterType, InnerType>

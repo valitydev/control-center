@@ -5,6 +5,9 @@ import { hasControls } from '../has-controls';
 
 import { FormGroupSuperclass } from './form-group-superclass.directive';
 
+/**
+ * @deprecated Use FormControlValue
+ */
 @Directive()
 export abstract class FormArraySuperclass<
     OuterType extends unknown[],

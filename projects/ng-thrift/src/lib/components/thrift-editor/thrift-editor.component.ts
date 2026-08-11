@@ -3,7 +3,9 @@ import { filter, shareReplay } from 'rxjs/operators';
 import {
     ChangeDetectionStrategy,
     Component,
+    Injector,
     Input,
+    afterNextRender,
     booleanAttribute,
     inject,
     model,
@@ -21,7 +23,9 @@ import {
 } from '@vality/matez';
 import { ValueType } from '@vality/thrift-ts';
 
+import { ThriftData } from '../../models';
 import { ThriftAstMetadata } from '../../types';
+import { fromJson } from '../../utils/thrift-type/from-json';
 
 import { ThriftFormExtension } from './types/thrift-form-extension';
 
@@ -40,6 +44,7 @@ export enum EditorKind {
 })
 export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
     private dialogService = inject(DialogService);
+    private injector = inject(Injector);
     readonly kind = model<UnionEnum<EditorKind>>(EditorKind.Form);
 
     @Input() defaultValue?: T;
@@ -71,13 +76,29 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
         this.control.updateValueAndValidity();
     }
 
+    setEditorValue(value: unknown) {
+        this.control.setValue(
+            fromJson(value, new ThriftData(this.metadata, this.namespace, this.type)) as T,
+        );
+    }
+
     toggleKind() {
         this.editorError = null;
         const kind = this.kind();
         switch (kind) {
-            case EditorKind.Editor:
+            case EditorKind.Editor: {
+                const value = this.control.value;
                 this.kind.set(EditorKind.Form);
+                afterNextRender(
+                    () => {
+                        if (this.kind() === EditorKind.Form) {
+                            this.control.setValue(value);
+                        }
+                    },
+                    { injector: this.injector },
+                );
                 break;
+            }
             case EditorKind.Form:
                 this.kind.set(EditorKind.Editor);
                 break;

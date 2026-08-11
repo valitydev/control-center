@@ -111,7 +111,9 @@ export class ExtensionFieldComponent<T>
         this.converter$
             .pipe(first(), takeUntilDestroyed(this.destroyRef))
             .subscribe((converter) => {
-                this.control.setValue(converter.outputToInternal(value) as never);
+                this.control.setValue(converter.outputToInternal(value) as never, {
+                    emitEvent: false,
+                });
             });
     }
 
