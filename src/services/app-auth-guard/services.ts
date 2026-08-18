@@ -21,4 +21,5 @@ export enum Service {
     WithdrawalManagement = 'WithdrawalManagement',
     SourceManagement = 'SourceManagement',
     WalletsWebhookManager = 'WalletsWebhookManager',
+    DestinationManagement = 'DestinationManagement',
 }

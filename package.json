@@ -39,7 +39,7 @@
     "@sentry/angular": "^10.68.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@vality/domain-proto": "^2.0.2-7280b62.0",
-    "@vality/fistful-proto": "^2.0.1-441d9bc.0",
+    "@vality/fistful-proto": "^2.0.1-2e7f4d1.0",
     "@vality/machinegun-proto": "^1.0.1-273f2f3.0",
     "@vality/magista-proto": "^2.0.2-bd58cea.0",
     "@vality/repairer-proto": "^2.0.2-07b2a51.0",
