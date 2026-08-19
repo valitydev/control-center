@@ -27,6 +27,7 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { WithdrawalParams } from '~/api/fistful-stat';
+import { ThriftDestinationManagementService } from '~/api/services';
 import { FailMachinesDialogComponent, Type } from '~/components/fail-machines-dialog';
 import { createCurrencyColumn, createDomainObjectColumn, createFailureColumn } from '~/utils';
 
@@ -57,6 +58,7 @@ interface WithdrawalsForm {
 })
 export class WithdrawalsComponent implements OnInit {
     private fetchWithdrawalsService = inject(FetchWithdrawalsService);
+    private destinationManagementService = inject(ThriftDestinationManagementService);
     private fb = inject(NonNullableFormBuilder);
     private qp = inject<QueryParamsService<Partial<WithdrawalsForm>>>(
         QueryParamsService<Partial<WithdrawalsForm>>,
@@ -95,6 +97,16 @@ export class WithdrawalsComponent implements OnInit {
             header: 'Wallet',
         }),
         { field: 'destination_id' },
+        {
+            field: 'destination',
+            lazyCell: (d) =>
+                this.destinationManagementService.Get(d.destination_id, {}).pipe(
+                    map((d) => ({
+                        value: d.name,
+                        description: d.realm === 0 ? 'test' : 'live',
+                    })),
+                ),
+        },
         createCurrencyColumn((d) => ({ amount: d.amount, code: d.currency_symbolic_code }), {
             field: 'amount',
         }),
