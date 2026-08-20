@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
-import { metadata$ } from '@vality/domain-proto';
+import { Invoicing } from '@vality/domain-proto/payment_processing';
 import { StatChargeback } from '@vality/magista-proto/magista';
 import {
     DialogModule,
@@ -18,11 +18,10 @@ import {
     NotifyLogService,
     forkJoinToResult,
 } from '@vality/matez';
-import { ThriftFormModule } from '@vality/ng-thrift';
 
 import { ThriftInvoicingService } from '~/api/services';
 
-import { DomainMetadataFormExtensionsService } from '../thrift-api-crud';
+import { DomainThriftFormComponent } from '../thrift-api-crud';
 
 enum Action {
     Accept,
@@ -36,7 +35,7 @@ const CHANGE_STATUS_METHODS = {
     [Action.Reject]: 'RejectChargeback',
     [Action.Reopen]: 'ReopenChargeback',
     [Action.Cancel]: 'CancelChargeback',
-} as const;
+} satisfies Record<Action, keyof Invoicing>;
 
 @Component({
     templateUrl: './change-chargebacks-status-dialog.component.html',
@@ -45,12 +44,12 @@ const CHANGE_STATUS_METHODS = {
         CommonModule,
         DialogModule,
         MatButtonModule,
-        ThriftFormModule,
         ReactiveFormsModule,
         MatFormFieldModule,
         MatSelectModule,
         EnumKeysPipe,
         EnumKeyPipe,
+        DomainThriftFormComponent,
     ],
 })
 export class ChangeChargebacksStatusDialogComponent
@@ -62,10 +61,8 @@ export class ChangeChargebacksStatusDialogComponent
 {
     private invoicingService = inject(ThriftInvoicingService);
     private log = inject(NotifyLogService);
-    private domainMetadataFormExtensionsService = inject(DomainMetadataFormExtensionsService);
     private destroyRef = inject(DestroyRef);
-    metadata$ = metadata$;
-    extensions$ = this.domainMetadataFormExtensionsService.extensions$;
+
     control = new FormControl();
     actionControl = new FormControl<Action>(null, Validators.required);
     typeEnum = Action;
