@@ -1,0 +1,56 @@
+<div class="flex flex-col gap-2 rounded-lg border border-neutral-200 dark:border-neutral-700 p-3">
+    <div
+        class="flex items-center justify-between border-b border-neutral-200 dark:border-neutral-700 pb-2"
+    >
+        <span class="text-xs text-neutral-500 font-medium">
+            Selected: {{ selectedLeafIds().size }} / {{ allLeaves().length }}
+        </span>
+        <div class="flex gap-1">
+            <button
+                [disabled]="disabled()"
+                class="!text-xs !h-7 !px-2"
+                mat-button
+                type="button"
+                (click)="selectAll()"
+            >
+                Select All
+            </button>
+            <button
+                [disabled]="disabled() || selectedLeafIds().size === 0"
+                class="!text-xs !h-7 !px-2"
+                mat-button
+                type="button"
+                (click)="clearAll()"
+            >
+                Clear All
+            </button>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-1 pt-1">
+        @for (node of tree(); track node.id) {
+            <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: node }" />
+        }
+    </div>
+</div>
+
+<ng-template #nodeTemplate let-node="node">
+    <div class="flex flex-col">
+        <mat-checkbox
+            [checked]="isChecked(node)"
+            [disabled]="disabled()"
+            [indeterminate]="isIndeterminate(node)"
+            (change)="toggleNode(node, $event.checked)"
+        >
+            {{ node.label }}
+        </mat-checkbox>
+
+        @if (node.children?.length) {
+            <div class="pl-6 flex flex-col gap-0.5">
+                @for (child of node.children; track child.id) {
+                    <ng-container *ngTemplateOutlet="nodeTemplate; context: { node: child }" />
+                }
+            </div>
+        }
+    </div>
+</ng-template>
