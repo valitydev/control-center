@@ -1,13 +1,13 @@
 <v-select-field
     [appearance]="appearance"
+    [externalSearch]="!partyId()"
     [formControl]="control"
     [hint]="hint"
-    [label]="label || 'Wallet'"
-    [multiple]="multiple"
-    [options]="options$ | async"
-    [progress]="!!(progress$ | async)"
+    [label]="label || (multiple() ? 'Wallets' : 'Wallet')"
+    [multiple]="multiple()"
+    [options]="wallets.value()"
+    [progress]="wallets.isLoading()"
     [required]="required"
     [size]="size"
-    externalSearch
-    (searchChange)="search($event)"
+    (searchChange)="wallets.setParams((p) => ({ ...p, query: $event }))"
 ></v-select-field>

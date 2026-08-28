@@ -3,6 +3,7 @@
         [columns]="columns"
         [data]="parties$ | async"
         [filter]="initSearchParams$ | async"
+        [hasMore]="hasMore$ | async"
         [progress]="inProgress$ | async"
         externalFilter
         standaloneFilter

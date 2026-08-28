@@ -38,6 +38,7 @@ export class PartiesComponent implements OnInit {
     parties$ = this.fetchFullDomainObjectsService.result$.pipe(
         map((objs) => objs.map((obj) => obj.object.party_config)),
     );
+    hasMore$ = this.fetchFullDomainObjectsService.hasMore$;
     columns: Column<PartyConfigObject>[] = [
         {
             field: 'id',
