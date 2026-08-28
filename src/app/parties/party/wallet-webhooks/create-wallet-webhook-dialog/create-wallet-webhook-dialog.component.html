@@ -1,12 +1,16 @@
 <v-dialog [progress]="progress()" title="Create wallet webhook">
-    <cc-fistful-thrift-form
-        [extensions]="extensions$ | async"
-        [formControl]="control"
-        namespace="webhooker"
-        type="WebhookParams"
-    ></cc-fistful-thrift-form>
+    <div class="flex flex-col gap-4">
+        <cc-wallet-merchant-field [formField]="control.partyWallet" />
+        <v-input-field [formField]="control.url" label="URL" required />
+        <div class="flex flex-col gap-1.5">
+            <div class="font-medium text-sm text-neutral-600 dark:text-neutral-300">
+                Wallet Event Types
+            </div>
+            <cc-event-types-field [formField]="control.eventTypes" [structure]="walletEventTypes" />
+        </div>
+    </div>
     <v-dialog-actions>
-        <button [disabled]="progress() || control.invalid" mat-button (click)="create()">
+        <button [disabled]="progress() || control().invalid()" mat-button (click)="create()">
             Create
         </button>
     </v-dialog-actions>

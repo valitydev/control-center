@@ -1,0 +1,4 @@
+<div class="flex flex-col gap-2">
+    <cc-merchant-field [formField]="control.party_id" />
+    <cc-wallet-field [formField]="control.wallet_id" [partyId]="value()?.party_id" />
+</div>

@@ -14,7 +14,7 @@ import {
 } from '@vality/matez';
 
 import { ThriftShopWebhooksManagementService } from '~/api/services';
-import { InvoiceEventTypesFieldComponent } from '~/components/invoice-event-types-field';
+import { EventTypesFieldComponent } from '~/components/event-types-field';
 import { PartyShop, ShopMerchantFieldComponent } from '~/components/shop-merchant-field';
 
 import { SHOP_INVOICE_EVENT_TYPES } from './consts/shop-invoice-event-types';
@@ -35,7 +35,7 @@ interface CreateWebhookModel {
         ShopMerchantFieldComponent,
         InputFieldModule,
         FormField,
-        InvoiceEventTypesFieldComponent,
+        EventTypesFieldComponent,
     ],
     changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './create-webhook-dialog.component.html',

@@ -14,33 +14,31 @@ import { FormValueControl } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { InvoiceEventType } from '@vality/domain-proto/webhooker';
-
 import { EventTypeTreeNode } from './types';
 import { createEventTypesTree } from './utils/create-event-types-tree';
 
 @Component({
-    selector: 'cc-invoice-event-types-field',
-    templateUrl: './invoice-event-types-field.component.html',
+    selector: 'cc-event-types-field',
+    templateUrl: './event-types-field.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatCheckboxModule, MatButtonModule],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => InvoiceEventTypesFieldComponent),
+            useExisting: forwardRef(() => EventTypesFieldComponent),
             multi: true,
         },
     ],
 })
-export class InvoiceEventTypesFieldComponent
-    implements FormValueControl<InvoiceEventType[]>, ControlValueAccessor
+export class EventTypesFieldComponent<T = unknown>
+    implements FormValueControl<T[]>, ControlValueAccessor
 {
-    eventTypesStructure = input.required<Record<string, unknown>>();
+    structure = input.required<Record<string, unknown>>();
     disabled = model(false);
-    value = model<InvoiceEventType[]>([]);
+    value = model<T[]>([]);
 
-    tree = computed<EventTypeTreeNode[]>(() => createEventTypesTree(this.eventTypesStructure()));
-    allLeaves = computed<EventTypeTreeNode[]>(() => this.tree().flatMap((node) => node.leaves));
+    tree = computed<EventTypeTreeNode<T>[]>(() => createEventTypesTree<T>(this.structure()));
+    allLeaves = computed<EventTypeTreeNode<T>[]>(() => this.tree().flatMap((node) => node.leaves));
 
     selectedLeafIds = computed<Set<string>>(() => {
         const selected = new Set<string>();
@@ -56,21 +54,21 @@ export class InvoiceEventTypesFieldComponent
         return selected;
     });
 
-    private onChange: (val: InvoiceEventType[]) => void = () => undefined;
+    private onChange: (val: T[]) => void = () => undefined;
     private onTouched: () => void = () => undefined;
 
-    isChecked(node: EventTypeTreeNode): boolean {
+    isChecked(node: EventTypeTreeNode<T>): boolean {
         const selected = this.selectedLeafIds();
         return node.leaves.length > 0 && node.leaves.every((leaf) => selected.has(leaf.id));
     }
 
-    isIndeterminate(node: EventTypeTreeNode): boolean {
+    isIndeterminate(node: EventTypeTreeNode<T>): boolean {
         const selected = this.selectedLeafIds();
         const count = node.leaves.filter((leaf) => selected.has(leaf.id)).length;
         return count > 0 && count < node.leaves.length;
     }
 
-    toggleNode(node: EventTypeTreeNode, checked: boolean): void {
+    toggleNode(node: EventTypeTreeNode<T>, checked: boolean): void {
         const currentSelected = new Set(this.selectedLeafIds());
         for (const leaf of node.leaves) {
             if (checked) {
@@ -94,12 +92,12 @@ export class InvoiceEventTypesFieldComponent
         this.updateValue([]);
     }
 
-    writeValue(value: InvoiceEventType[] | Set<InvoiceEventType> | null): void {
+    writeValue(value: T[] | Set<T> | null): void {
         const array = value ? (Array.isArray(value) ? value : Array.from(value)) : [];
         this.value.set(array);
     }
 
-    registerOnChange(fn: (val: InvoiceEventType[]) => void): void {
+    registerOnChange(fn: (val: T[]) => void): void {
         this.onChange = fn;
     }
 
@@ -111,7 +109,7 @@ export class InvoiceEventTypesFieldComponent
         this.disabled.set(isDisabled);
     }
 
-    private updateValue(val: InvoiceEventType[]): void {
+    private updateValue(val: T[]): void {
         this.value.set(val);
         this.onChange(val);
         this.onTouched();

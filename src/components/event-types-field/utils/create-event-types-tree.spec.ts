@@ -1,4 +1,5 @@
 import { InvoiceEventType } from '@vality/domain-proto/webhooker';
+import { EventType } from '@vality/fistful-proto/webhooker';
 
 import { createEventTypesTree } from './create-event-types-tree';
 
@@ -40,6 +41,17 @@ const TEST_INVOICE_EVENT_TYPES: InvoiceEventType = {
                 completed: {},
             },
         },
+    },
+};
+
+const TEST_WALLET_EVENT_TYPES: EventType = {
+    withdrawal: {
+        started: {},
+        succeeded: {},
+        failed: {},
+    },
+    destination: {
+        created: {},
     },
 };
 
@@ -113,7 +125,9 @@ describe('createEventTypesTree', () => {
     });
 
     it('correctly creates full tree for TEST_INVOICE_EVENT_TYPES', () => {
-        const tree = createEventTypesTree(TEST_INVOICE_EVENT_TYPES as Record<string, unknown>);
+        const tree = createEventTypesTree<InvoiceEventType>(
+            TEST_INVOICE_EVENT_TYPES as Record<string, unknown>,
+        );
 
         expect(tree).toHaveLength(3);
         expect(tree.map((node) => node.label)).toEqual(['Created', 'Status Changed', 'Payment']);
@@ -141,21 +155,29 @@ describe('createEventTypesTree', () => {
                 },
             },
         });
+    });
 
-        const refundStatusPendingLeaf = allLeaves.find(
-            (leaf) =>
-                leaf.id ===
-                'payment.invoice_payment_refund_change.invoice_payment_refund_status_changed.value.pending',
+    it('correctly creates full tree for TEST_WALLET_EVENT_TYPES', () => {
+        const tree = createEventTypesTree<EventType>(
+            TEST_WALLET_EVENT_TYPES as Record<string, unknown>,
         );
-        expect(refundStatusPendingLeaf?.eventType).toEqual({
-            payment: {
-                invoice_payment_refund_change: {
-                    invoice_payment_refund_status_changed: {
-                        value: {
-                            pending: {},
-                        },
-                    },
-                },
+
+        expect(tree).toHaveLength(2);
+        expect(tree.map((node) => node.label)).toEqual(['Withdrawal', 'Destination']);
+
+        const allLeaves = tree.flatMap((node) => node.leaves);
+        expect(allLeaves).toHaveLength(4);
+
+        const withdrawalNode = tree.find((n) => n.id === 'withdrawal');
+        expect(withdrawalNode?.leaves).toHaveLength(3);
+
+        const destinationNode = tree.find((n) => n.id === 'destination');
+        expect(destinationNode?.leaves).toHaveLength(1);
+
+        const startedLeaf = allLeaves.find((leaf) => leaf.id === 'withdrawal.started');
+        expect(startedLeaf?.eventType).toEqual({
+            withdrawal: {
+                started: {},
             },
         });
     });
