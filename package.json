@@ -42,6 +42,7 @@
     "@vality/fistful-proto": "^2.0.1-360c737.0",
     "@vality/machinegun-proto": "^1.0.1-273f2f3.0",
     "@vality/magista-proto": "^2.0.2-bd58cea.0",
+    "@vality/org-management-proto": "^0.1.1-36e49ef.0",
     "@vality/repairer-proto": "^2.0.2-07b2a51.0",
     "@vality/scrooge-proto": "^0.1.1-eec9e06.0",
     "@vality/thrift-ts": "^2.5.1-2b658f2.0",
