@@ -36,6 +36,7 @@ export interface BaseLink {
     icon?: string;
     children?: BaseLink[];
     isHidden?: boolean;
+    divider?: boolean;
 }
 
 export type Link = PossiblyAsyncValue<Overwrite<BaseLink, { children?: Link[] }>, [url: string]>;
@@ -43,7 +44,8 @@ export type Link = PossiblyAsyncValue<Overwrite<BaseLink, { children?: Link[] }>
 function isActiveLink(link: BaseLink, url: string): boolean {
     return (
         !isNil(url) &&
-        (url.startsWith(link.url || '') || (!!link.checkUrl && url.startsWith(link.checkUrl || '')))
+        ((Boolean(link.url) && url.startsWith(link.url)) ||
+            (Boolean(link.checkUrl) && url.startsWith(link.checkUrl)))
     );
 }
 

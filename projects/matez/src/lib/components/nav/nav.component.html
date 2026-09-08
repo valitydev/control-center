@@ -9,7 +9,9 @@
             @for (link of linkGroup.children; track link) {
                 @let isActive = activeLinks.includes(link);
 
-                @if (link.children) {
+                @if (link.divider) {
+                    <mat-divider></mat-divider>
+                } @else if (link.children) {
                     <button
                         [ngClass]="{
                             '!text-[var(--mat-sys-on-surface-variant)]': !isActive,
@@ -43,14 +45,18 @@
                         class="flex flex-col border-l-1 border-[var(--mat-sys-outline-variant)] ml-6 mb-2"
                     >
                         @for (childLink of link.children; track childLink) {
-                            <button
-                                [matButton]="activeLinks.includes(childLink) ? 'tonal' : 'text'"
-                                [routerLink]="childLink.url"
-                                [title]="childLink.label"
-                                class="!justify-start mx-2 !px-4 !text-[var(--mat-sys-on-surface-variant)]"
-                            >
-                                {{ childLink.label }}
-                            </button>
+                            @if (childLink.divider) {
+                                <mat-divider></mat-divider>
+                            } @else {
+                                <button
+                                    [matButton]="activeLinks.includes(childLink) ? 'tonal' : 'text'"
+                                    [routerLink]="childLink.url"
+                                    [title]="childLink.label"
+                                    class="!justify-start mx-2 !px-4 !text-[var(--mat-sys-on-surface-variant)]"
+                                >
+                                    {{ childLink.label }}
+                                </button>
+                            }
                         }
                     </div>
                 }

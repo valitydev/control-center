@@ -120,6 +120,7 @@ const createNavLinks = (): Link[] => [
                                   label: 'Wallets',
                                   url: `${partyPath}/wallets`,
                               },
+                              { divider: true },
                               {
                                   label: 'Members',
                                   url: `${partyPath}/members`,
@@ -128,6 +129,7 @@ const createNavLinks = (): Link[] => [
                                   label: 'Invitations',
                                   url: `${partyPath}/invitations`,
                               },
+                              { divider: true },
                               {
                                   label: 'Shop webhooks',
                                   url: `${partyPath}/shop-webhooks`,
@@ -136,6 +138,7 @@ const createNavLinks = (): Link[] => [
                                   label: 'Wallet webhooks',
                                   url: `${partyPath}/wallet-webhooks`,
                               },
+                              { divider: true },
                               {
                                   label: 'Payment RR',
                                   url: `${partyPath}/routing-rules/payment/main`,
