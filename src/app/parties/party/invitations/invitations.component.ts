@@ -1,10 +1,7 @@
 import { of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { FormField, form, required } from '@angular/forms/signals';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import {
     Column,
@@ -17,46 +14,29 @@ import { ListInvitationsRequest, domain } from '@vality/org-management-proto/adm
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 
-import { OrganizationFieldComponent } from '../organization-field/organization-field.component';
+import { PartyStoreService } from '../party-store.service';
 
 @Component({
     selector: 'cc-invitations',
     templateUrl: './invitations.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageLayoutModule, TableResourceComponent, FormField, OrganizationFieldComponent],
+    imports: [PageLayoutModule, TableResourceComponent],
 })
-export class InvitationsComponent implements OnInit {
+export class InvitationsComponent {
     private thriftOrgManagementService = inject(ThriftOrganizationManagementService);
     private log = inject(NotifyLogService);
-    private route = inject(ActivatedRoute);
-    private router = inject(Router);
-
-    orgId = signal<string>('');
-    control = form(this.orgId, (schemaPath) => {
-        required(schemaPath);
-    });
-
-    private orgId$ = toObservable(this.orgId).pipe(
-        tap((orgId) => {
-            void this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams: { orgId: orgId || null },
-                queryParamsHandling: 'merge',
-                replaceUrl: true,
-            });
-        }),
-    );
+    private partyStoreService = inject(PartyStoreService);
 
     invitations = pagedObservableResource<
         domain.Invitation,
-        { orgId: string } & Omit<ListInvitationsRequest, 'limit' | 'continuation_token'>
+        { partyId: string } & Omit<ListInvitationsRequest, 'limit' | 'continuation_token'>
     >({
-        params: this.orgId$.pipe(map((orgId) => ({ orgId }))),
-        loader: ({ orgId, ...params }, options) =>
-            !orgId
+        params: this.partyStoreService.id$.pipe(map((partyId) => ({ partyId }))),
+        loader: ({ partyId, ...params }, options) =>
+            !partyId
                 ? of({ result: [] })
                 : this.thriftOrgManagementService
-                      .ListInvitations(orgId, {
+                      .ListInvitations(partyId, {
                           limit: options.size,
                           continuation_token: options.continuationToken,
                           ...params,
@@ -110,19 +90,12 @@ export class InvitationsComponent implements OnInit {
         {
             field: 'created_at',
             header: 'Created at',
-            cell: (inv) => ({ value: inv.created_at }),
+            cell: (inv) => ({ value: inv.created_at, type: 'datetime' }),
         },
         {
             field: 'expires_at',
             header: 'Expires at',
-            cell: (inv) => ({ value: inv.expires_at }),
+            cell: (inv) => ({ value: inv.expires_at, type: 'datetime' }),
         },
     ];
-
-    ngOnInit(): void {
-        const initialOrgId = this.route.snapshot.queryParams['orgId'];
-        if (initialOrgId) {
-            this.orgId.set(initialOrgId);
-        }
-    }
 }

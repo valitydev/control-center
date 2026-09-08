@@ -120,6 +120,14 @@ const createNavLinks = (): Link[] => [
                                   url: `${partyPath}/wallets`,
                               },
                               {
+                                  label: 'Members',
+                                  url: `${partyPath}/members`,
+                              },
+                              {
+                                  label: 'Invitations',
+                                  url: `${partyPath}/invitations`,
+                              },
+                              {
                                   label: 'Shop webhooks',
                                   url: `${partyPath}/shop-webhooks`,
                               },
@@ -155,16 +163,6 @@ const createNavLinks = (): Link[] => [
                 label: 'Organizations',
                 url: '/organizations',
                 isHidden: isHidden(ORGANIZATIONS_ROUTING_CONFIG.services),
-                children: [
-                    {
-                        label: 'Invitations',
-                        url: '/organizations/invitations',
-                    },
-                    {
-                        label: 'Members',
-                        url: '/organizations/members',
-                    },
-                ],
             },
         ],
     },

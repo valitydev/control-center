@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { catchError, map, startWith } from 'rxjs/operators';
 
 import { inject } from '@angular/core';
 
@@ -33,6 +33,9 @@ export const createPartyColumn = createColumn(
             startWith({
                 ...partyCell,
                 inProgress: true,
+            }),
+            catchError(() => {
+                return of({ description: id, error: new Error('Party not found') });
             }),
         );
     },

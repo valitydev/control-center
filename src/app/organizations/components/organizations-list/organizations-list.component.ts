@@ -106,7 +106,10 @@ export class OrganizationsListComponent {
         },
         {
             field: 'name',
-            cell: (org) => ({ value: org.name }),
+            cell: (org) => ({
+                value: org.name,
+                link: () => `/parties/${org.party_id}`,
+            }),
         },
         createPartyColumn((org) => ({ id: org.party_id })),
         {
@@ -135,17 +138,11 @@ export class OrganizationsListComponent {
             items: [
                 {
                     label: 'Members',
-                    click: () =>
-                        this.router.navigate(['/organizations/members'], {
-                            queryParams: { orgId: org.id },
-                        }),
+                    click: () => this.router.navigate([`/parties/${org.id}/members`]),
                 },
                 {
                     label: 'Invitations',
-                    click: () =>
-                        this.router.navigate(['/organizations/invitations'], {
-                            queryParams: { orgId: org.id },
-                        }),
+                    click: () => this.router.navigate([`/parties/${org.id}/invitations`]),
                 },
             ],
         })),
