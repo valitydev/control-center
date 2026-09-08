@@ -222,4 +222,5 @@ export const {
     Accounter: ThriftAccountManagementService,
     InvoiceTemplating: ThriftInvoiceTemplatingService,
     DestinationManagement: ThriftDestinationManagementService,
+    OrgManager: ThriftOrganizationManagementService,
 } = injectableServices;

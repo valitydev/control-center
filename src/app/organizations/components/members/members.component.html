@@ -1,0 +1,10 @@
+<cc-page-layout fullHeight title="Members">
+    <div class="flex items-center gap-4 mb-4">
+        <cc-organization-field
+            [formField]="control"
+            class="w-80"
+            label="Select Organization"
+        ></cc-organization-field>
+    </div>
+    <v-table-resource [columns]="columns" [resource]="members" />
+</cc-page-layout>

@@ -41,6 +41,7 @@ import { LOGGING } from '~/utils';
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './deposits/routing-config';
 import { ROUTING_CONFIG as MACHINES_ROUTING_CONFIG } from './machines/routing-config';
+import { ROUTING_CONFIG as ORGANIZATIONS_ROUTING_CONFIG } from './organizations/routing-config';
 import { ROUTING_CONFIG as PAYMENTS_ROUTING_CONFIG } from './payments/routing-config';
 import { SHOPS_ROUTING_CONFIG } from './shops';
 import { ROUTING_CONFIG as SOURCES_ROUTING_CONFIG } from './sources/routing-config';
@@ -149,6 +150,21 @@ const createNavLinks = (): Link[] => [
                 label: 'Wallets',
                 url: '/wallets',
                 isHidden: isHidden(WALLETS_ROUTING_CONFIG.services),
+            },
+            {
+                label: 'Organizations',
+                url: '/organizations',
+                isHidden: isHidden(ORGANIZATIONS_ROUTING_CONFIG.services),
+                children: [
+                    {
+                        label: 'Invitations',
+                        url: '/organizations/invitations',
+                    },
+                    {
+                        label: 'Members',
+                        url: '/organizations/members',
+                    },
+                ],
             },
         ],
     },
