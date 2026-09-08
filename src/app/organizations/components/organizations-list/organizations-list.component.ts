@@ -17,6 +17,7 @@ import {
     SelectFieldModule,
     TableResourceComponent,
     clean,
+    countChanged,
     createMenuColumn,
     debounceTimeWithFirst,
     pagedObservableResource,
@@ -62,14 +63,12 @@ export class OrganizationsListComponent {
     ];
 
     filters = signal<OrganizationsFilters>({
-        status: this.qp.params.status ?? null,
-        owner_id: this.qp.params.owner_id || '',
+        status: this.qp.params.status ?? DEFAULT_FILTERS.status,
+        owner_id: this.qp.params.owner_id || DEFAULT_FILTERS.owner_id,
     });
     filtersControl = form(this.filters);
 
-    active = computed(
-        () => Number(Boolean(this.filters().status)) + Number(Boolean(this.filters().owner_id)),
-    );
+    active = computed(() => countChanged(this.filters(), DEFAULT_FILTERS));
 
     private filters$ = toObservable(this.filters).pipe(
         debounceTimeWithFirst(300),
