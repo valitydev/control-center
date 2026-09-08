@@ -13,7 +13,8 @@
 
 ## 4. Observable Resource (`@vality/matez`)
 
-- Use `observableResource` for async data fetching instead of manual Observable pipelines with `reload$` subjects, `inProgress$`, and `shareReplay`.
+- Use `observableResource` or `pagedObservableResource` for async data fetching instead of manual Observable pipelines with `reload$` subjects, `inProgress$`, and `shareReplay`.
+- Use `pagedObservableResource` for paginated / list data (with `continuationToken` and `size`), mapping result to `{ result, continuationToken }`.
 - Access data and loading state via signals: `resource.value()`, `resource.isLoading()`, and reload using `resource.reload()`.
 - For tables, use `<v-table-resource [columns]="columns" [resource]="resource" />`.
 - For select fields and other controls, bind signals directly: `[options]="resource.value()"` and `[progress]="resource.isLoading()"`.
