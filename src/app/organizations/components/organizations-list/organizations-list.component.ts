@@ -137,12 +137,16 @@ export class OrganizationsListComponent {
         createMenuColumn((org) => ({
             items: [
                 {
+                    label: 'Details',
+                    click: () => this.router.navigate([`/parties/${org.party_id}/details`]),
+                },
+                {
                     label: 'Members',
-                    click: () => this.router.navigate([`/parties/${org.id}/members`]),
+                    click: () => this.router.navigate([`/parties/${org.party_id}/members`]),
                 },
                 {
                     label: 'Invitations',
-                    click: () => this.router.navigate([`/parties/${org.id}/invitations`]),
+                    click: () => this.router.navigate([`/parties/${org.party_id}/invitations`]),
                 },
             ],
         })),

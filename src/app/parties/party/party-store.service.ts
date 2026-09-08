@@ -23,7 +23,7 @@ export class PartyStoreService {
 
     id$ = this.route.params.pipe(
         startWith(this.route.snapshot.params),
-        map(({ partyID }) => partyID),
+        map(({ partyID }) => partyID as string),
         distinctUntilChanged(),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );

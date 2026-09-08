@@ -111,6 +111,7 @@ const createNavLinks = (): Link[] => [
                     isHidden: isHidden(APP_ROUTES.parties.root.config.services),
                     children: isPartyPath
                         ? [
+                              { label: 'Details', url: `${partyPath}/details` },
                               {
                                   label: 'Shops',
                                   url: `${partyPath}/shops`,
@@ -150,6 +151,11 @@ const createNavLinks = (): Link[] => [
                 };
             },
             {
+                label: 'Organizations',
+                url: '/organizations',
+                isHidden: isHidden(ORGANIZATIONS_ROUTING_CONFIG.services),
+            },
+            {
                 label: 'Shops',
                 url: '/shops',
                 isHidden: isHidden(SHOPS_ROUTING_CONFIG.services),
@@ -158,11 +164,6 @@ const createNavLinks = (): Link[] => [
                 label: 'Wallets',
                 url: '/wallets',
                 isHidden: isHidden(WALLETS_ROUTING_CONFIG.services),
-            },
-            {
-                label: 'Organizations',
-                url: '/organizations',
-                isHidden: isHidden(ORGANIZATIONS_ROUTING_CONFIG.services),
             },
         ],
     },

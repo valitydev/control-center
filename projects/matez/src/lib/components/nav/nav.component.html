@@ -39,7 +39,9 @@
                     </button>
                 }
                 @if (isActive && link.children?.length) {
-                    <div class="pl-2 flex flex-col">
+                    <div
+                        class="flex flex-col border-l-1 border-[var(--mat-sys-outline-variant)] ml-6 mb-2"
+                    >
                         @for (childLink of link.children; track childLink) {
                             <button
                                 [matButton]="activeLinks.includes(childLink) ? 'tonal' : 'text'"

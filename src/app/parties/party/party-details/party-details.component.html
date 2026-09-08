@@ -1,0 +1,41 @@
+<cc-page-layout
+    [progress]="party.isLoading() || organization.isLoading()"
+    fullHeight
+    title="Details"
+>
+    <div class="flex flex-col gap-4 overflow-y-auto">
+        <mat-card appearance="outlined">
+            <mat-card-header>
+                <mat-card-title>Party</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="mt-6">
+                @if (party.value(); as partyObj) {
+                    <cc-domain-thrift-viewer
+                        [value]="partyObj?.object?.party_config?.data"
+                        type="PartyConfig"
+                    ></cc-domain-thrift-viewer>
+                } @else {
+                    <p>Not found</p>
+                }
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card appearance="outlined">
+            <mat-card-header>
+                <mat-card-title>Organization</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="mt-6">
+                @if (organization.value(); as org) {
+                    <v-thrift-viewer
+                        [metadata]="orgMetadata$ | async"
+                        [value]="org"
+                        namespace="domain"
+                        type="Organization"
+                    ></v-thrift-viewer>
+                } @else {
+                    <p>Not created</p>
+                }
+            </mat-card-content>
+        </mat-card>
+    </div>
+</cc-page-layout>

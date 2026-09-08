@@ -22,6 +22,11 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                 data: ROUTING_CONFIG,
                 children: [
                     {
+                        path: 'details',
+                        loadComponent: () =>
+                            import('./party-details').then((m) => m.PartyDetailsComponent),
+                    },
+                    {
                         path: 'shops',
                         loadChildren: () => import('./shops').then((m) => m.PartyShopsModule),
                     },
