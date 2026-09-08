@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -10,7 +10,7 @@ import {
     Column,
     NotifyLogService,
     TableResourceComponent,
-    observableResource,
+    pagedObservableResource,
 } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
@@ -47,17 +47,26 @@ export class MembersComponent implements OnInit {
         }),
     );
 
-    members = observableResource({
+    members = pagedObservableResource<domain.Member, string>({
         params: this.orgId$,
-        loader: (orgId) =>
+        loader: (orgId, options) =>
             !orgId
-                ? of<domain.Member[]>([])
-                : this.thriftOrgManagementService.ListMembers(orgId).pipe(
-                      catchError((err) => {
-                          this.log.error(err);
-                          return of<domain.Member[]>([]);
-                      }),
-                  ),
+                ? of({ result: [] })
+                : this.thriftOrgManagementService
+                      .ListMembers(orgId, {
+                          limit: options.size,
+                          continuation_token: options.continuationToken,
+                      })
+                      .pipe(
+                          map((res) => ({
+                              result: res.members,
+                              continuationToken: res.continuation_token,
+                          })),
+                          catchError((err) => {
+                              this.log.error(err);
+                              return of({ result: [] });
+                          }),
+                      ),
     });
 
     columns: Column<domain.Member>[] = [

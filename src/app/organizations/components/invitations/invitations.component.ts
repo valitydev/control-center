@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -10,9 +10,9 @@ import {
     Column,
     NotifyLogService,
     TableResourceComponent,
-    observableResource,
+    pagedObservableResource,
 } from '@vality/matez';
-import { domain } from '@vality/org-management-proto/admin_management';
+import { ListInvitationsRequest, domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -47,17 +47,30 @@ export class InvitationsComponent implements OnInit {
         }),
     );
 
-    invitations = observableResource({
-        params: this.orgId$,
-        loader: (orgId) =>
+    invitations = pagedObservableResource<
+        domain.Invitation,
+        { orgId: string } & Omit<ListInvitationsRequest, 'limit' | 'continuation_token'>
+    >({
+        params: this.orgId$.pipe(map((orgId) => ({ orgId }))),
+        loader: ({ orgId, ...params }, options) =>
             !orgId
-                ? of<domain.Invitation[]>([])
-                : this.thriftOrgManagementService.ListInvitations(orgId, {}).pipe(
-                      catchError((err) => {
-                          this.log.error(err);
-                          return of<domain.Invitation[]>([]);
-                      }),
-                  ),
+                ? of({ result: [] })
+                : this.thriftOrgManagementService
+                      .ListInvitations(orgId, {
+                          limit: options.size,
+                          continuation_token: options.continuationToken,
+                          ...params,
+                      })
+                      .pipe(
+                          map((res) => ({
+                              result: res.invitations,
+                              continuationToken: res.continuation_token,
+                          })),
+                          catchError((err) => {
+                              this.log.error(err);
+                              return of({ result: [] });
+                          }),
+                      ),
     });
 
     columns: Column<domain.Invitation>[] = [
