@@ -70,6 +70,7 @@ export class PartiesComponent implements OnInit {
                     map((org) => ({
                         value: org.name,
                         description: org.id,
+                        link: () => `/parties/${party.ref.id}/members`,
                     })),
                 ),
         },

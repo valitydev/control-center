@@ -108,7 +108,7 @@ export class OrganizationsListComponent {
             field: 'name',
             cell: (org) => ({
                 value: org.name,
-                link: () => `/parties/${org.party_id}`,
+                link: () => `/parties/${org.party_id}/members`,
             }),
         },
         createPartyColumn((org) => ({ id: org.party_id })),
