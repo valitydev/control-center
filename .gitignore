@@ -47,3 +47,9 @@ authConfig*.json
 
 # Env
 .env
+
+# AI Agent Skills (managed via https://skills.sh)
+# Note: Officially, committing skills to VCS is recommended (for security and zero-install setup),
+# but we intentionally do not commit them to keep the repository clean.
+# Track dependencies via `skills-lock.json` and restore via: `npx skills install`
+/.agents/
