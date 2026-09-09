@@ -1,0 +1,15 @@
+<v-dialog [progress]="progress()" title="Create organization">
+    <div class="flex flex-col gap-4">
+        <v-input-field [formField]="control.name" label="Name" required />
+        @if (!partyId) {
+            <cc-merchant-field [formField]="control.party_id" label="Party" required />
+        }
+        <v-input-field [formField]="control.owner_id" label="Owner ID" required />
+    </div>
+
+    <v-dialog-actions>
+        <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="create()">
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>

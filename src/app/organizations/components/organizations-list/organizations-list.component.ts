@@ -5,10 +5,12 @@ import { catchError, distinctUntilChanged, map, shareReplay } from 'rxjs/operato
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormField, form } from '@angular/forms/signals';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
 import {
     Column,
+    DialogService,
     FiltersModule,
     InputFieldModule,
     NotifyLogService,
@@ -28,6 +30,8 @@ import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 import { createPartyColumn } from '~/utils';
 
+import { CreateOrganizationDialogComponent } from '../create-organization-dialog';
+
 export interface OrganizationsFilters {
     status: domain.OrganizationStatus | null;
     owner_id: domain.UserID;
@@ -43,6 +47,7 @@ const DEFAULT_FILTERS: OrganizationsFilters = {
     templateUrl: './organizations-list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
+        MatButtonModule,
         PageLayoutModule,
         TableResourceComponent,
         FiltersModule,
@@ -56,6 +61,7 @@ export class OrganizationsListComponent {
     private log = inject(NotifyLogService);
     private router = inject(Router);
     private qp = inject<QueryParamsService<Partial<OrganizationsFilters>>>(QueryParamsService);
+    private dialogService = inject(DialogService);
 
     statusOptions: Option<domain.OrganizationStatus>[] = [
         { label: 'Active', value: domain.OrganizationStatus.active },
@@ -155,6 +161,17 @@ export class OrganizationsListComponent {
         this.filters$.pipe(takeUntilDestroyed()).subscribe((filters) => {
             void this.qp.set(clean(filters));
         });
+    }
+
+    create(): void {
+        this.dialogService
+            .open(CreateOrganizationDialogComponent)
+            .afterClosed()
+            .subscribe((res) => {
+                if (res?.status === 'success') {
+                    this.organizations.reload();
+                }
+            });
     }
 
     resetFilters(): void {
