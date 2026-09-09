@@ -102,7 +102,7 @@ function createLogger(keycloak: Keycloak): ConnectOptions['loggingFn'] {
                 const parsedError = parseThriftError(params.error);
                 addThriftErrorBreadcrumb(params, parsedError);
                 if (params.error === 401) {
-                    void keycloak.login();
+                    keycloak.updateToken(-1).catch(() => keycloak.login());
                 }
                 console.groupCollapsed(
                     `🔴\u00A0${info}`,

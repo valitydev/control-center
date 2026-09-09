@@ -60,7 +60,12 @@ export const appConfig: ApplicationConfig = {
         provideKeycloak({
             config: './assets/authConfig.json' as never,
             initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
-            features: [withAutoRefreshToken({ onInactivityTimeout: 'login' })],
+            features: [
+                withAutoRefreshToken({
+                    onInactivityTimeout: 'login',
+                    sessionTimeout: 4 * 60 * 60_000,
+                }),
+            ],
             providers: [AutoRefreshTokenService, UserActivityService],
         }),
         provideHttpClient(withXhr(), withInterceptorsFromDi()),
