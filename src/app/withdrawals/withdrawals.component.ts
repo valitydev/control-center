@@ -188,14 +188,19 @@ export class WithdrawalsComponent implements OnInit {
         this.fetchWithdrawalsService.more();
     }
 
-    reload(options: UpdateOptions) {
+    reload(options?: UpdateOptions) {
         this.fetchWithdrawalsService.reload(options);
     }
 
     adjustment() {
-        this.dialogService.open(CreateAdjustmentDialogComponent, {
-            withdrawals: this.selected,
-        });
+        this.dialogService
+            .open(CreateAdjustmentDialogComponent, {
+                withdrawals: this.selected,
+            })
+            .afterClosed()
+            .subscribe(() => {
+                this.reload();
+            });
     }
 
     failMachines() {
@@ -207,7 +212,7 @@ export class WithdrawalsComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res.status === DialogResponseStatus.Success) {
-                    this.fetchWithdrawalsService.reload();
+                    this.reload();
                     this.selected = [];
                 } else if (res.data?.errors?.length) {
                     this.selected = res.data.errors.map(({ index }) => this.selected[index]);
