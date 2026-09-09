@@ -33,7 +33,10 @@
                         type="Organization"
                     ></v-thrift-viewer>
                 } @else {
-                    <p>Not created</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-[var(--mat-sys-on-surface-variant)]">Not created</p>
+                        <button mat-flat-button (click)="createOrganization()">Create</button>
+                    </div>
                 }
             </mat-card-content>
         </mat-card>

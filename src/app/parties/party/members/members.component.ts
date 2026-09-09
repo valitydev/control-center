@@ -1,7 +1,8 @@
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 import {
     Column,
@@ -20,20 +21,22 @@ import { PartyStoreService } from '../party-store.service';
     selector: 'cc-members',
     templateUrl: './members.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageLayoutModule, TableResourceComponent],
+    imports: [MatButtonModule, PageLayoutModule, TableResourceComponent],
 })
 export class MembersComponent {
     private thriftOrgManagementService = inject(ThriftOrganizationManagementService);
     private log = inject(NotifyLogService);
     private partyStoreService = inject(PartyStoreService);
 
+    organization = this.partyStoreService.organization;
+
     members = pagedObservableResource<domain.Member, string>({
-        params: this.partyStoreService.id$,
-        loader: (partyId, options) =>
-            !partyId
+        params: computed(() => this.organization.value()?.id),
+        loader: (orgId, options) =>
+            !orgId
                 ? of({ result: [] })
                 : this.thriftOrgManagementService
-                      .ListMembers(partyId, {
+                      .ListMembers(orgId, {
                           limit: options.size,
                           continuation_token: options.continuationToken,
                       })
@@ -66,4 +69,8 @@ export class MembersComponent {
             }),
         },
     ];
+
+    createOrganization(): void {
+        this.partyStoreService.createOrganization();
+    }
 }

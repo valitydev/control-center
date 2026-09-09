@@ -1,3 +1,16 @@
-<cc-page-layout fullHeight title="Invitations">
-    <v-table-resource [columns]="columns" [resource]="invitations" />
+<cc-page-layout
+    [progress]="organization.isLoading() || invitations.isLoading()"
+    fullHeight
+    title="Invitations"
+>
+    @if (organization.value()) {
+        <v-table-resource [columns]="columns" [resource]="invitations" />
+    } @else if (!organization.isLoading()) {
+        <div class="flex flex-col items-center justify-center gap-4 h-full pb-24">
+            <p class="mat-body-large text-[var(--mat-sys-on-surface-variant)]">
+                Organization not created
+            </p>
+            <button mat-flat-button (click)="createOrganization()">Create organization</button>
+        </div>
+    }
 </cc-page-layout>

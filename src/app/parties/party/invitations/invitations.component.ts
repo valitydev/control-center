@@ -1,7 +1,8 @@
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 import {
     Column,
@@ -9,7 +10,7 @@ import {
     TableResourceComponent,
     pagedObservableResource,
 } from '@vality/matez';
-import { ListInvitationsRequest, domain } from '@vality/org-management-proto/admin_management';
+import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -20,26 +21,24 @@ import { PartyStoreService } from '../party-store.service';
     selector: 'cc-invitations',
     templateUrl: './invitations.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageLayoutModule, TableResourceComponent],
+    imports: [MatButtonModule, PageLayoutModule, TableResourceComponent],
 })
 export class InvitationsComponent {
     private thriftOrgManagementService = inject(ThriftOrganizationManagementService);
     private log = inject(NotifyLogService);
     private partyStoreService = inject(PartyStoreService);
 
-    invitations = pagedObservableResource<
-        domain.Invitation,
-        { partyId: string } & Omit<ListInvitationsRequest, 'limit' | 'continuation_token'>
-    >({
-        params: this.partyStoreService.id$.pipe(map((partyId) => ({ partyId }))),
-        loader: ({ partyId, ...params }, options) =>
-            !partyId
+    organization = this.partyStoreService.organization;
+
+    invitations = pagedObservableResource<domain.Invitation, string>({
+        params: computed(() => this.organization.value()?.id),
+        loader: (orgId, options) =>
+            !orgId
                 ? of({ result: [] })
                 : this.thriftOrgManagementService
-                      .ListInvitations(partyId, {
+                      .ListInvitations(orgId, {
                           limit: options.size,
                           continuation_token: options.continuationToken,
-                          ...params,
                       })
                       .pipe(
                           map((res) => ({
@@ -98,4 +97,8 @@ export class InvitationsComponent {
             cell: (inv) => ({ value: inv.expires_at, type: 'datetime' }),
         },
     ];
+
+    createOrganization(): void {
+        this.partyStoreService.createOrganization();
+    }
 }
