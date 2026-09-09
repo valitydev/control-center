@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 
 import {
     Column,
-    DialogService,
     FiltersModule,
     InputFieldModule,
     NotifyLogService,
@@ -30,7 +29,7 @@ import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 import { createPartyColumn } from '~/utils';
 
-import { CreateOrganizationDialogComponent } from '../create-organization-dialog';
+import { OrganizationActionsService } from '../../services';
 
 export interface OrganizationsFilters {
     status: domain.OrganizationStatus | null;
@@ -61,7 +60,7 @@ export class OrganizationsListComponent {
     private log = inject(NotifyLogService);
     private router = inject(Router);
     private qp = inject<QueryParamsService<Partial<OrganizationsFilters>>>(QueryParamsService);
-    private dialogService = inject(DialogService);
+    private organizationActions = inject(OrganizationActionsService);
 
     statusOptions: Option<domain.OrganizationStatus>[] = [
         { label: 'Active', value: domain.OrganizationStatus.active },
@@ -153,6 +152,19 @@ export class OrganizationsListComponent {
                     label: 'Invitations',
                     click: () => this.router.navigate([`/parties/${org.party_id}/invitations`]),
                 },
+                {
+                    label: 'Edit',
+                    click: () => this.modify(org),
+                },
+                org.status === domain.OrganizationStatus.active
+                    ? {
+                          label: 'Deactivate',
+                          click: () => this.deactivate(org),
+                      }
+                    : {
+                          label: 'Activate',
+                          click: () => this.activate(org),
+                      },
             ],
         })),
     ];
@@ -164,14 +176,27 @@ export class OrganizationsListComponent {
     }
 
     create(): void {
-        this.dialogService
-            .open(CreateOrganizationDialogComponent)
-            .afterClosed()
-            .subscribe((res) => {
-                if (res?.status === 'success') {
-                    this.organizations.reload();
-                }
-            });
+        this.organizationActions.create().subscribe(() => {
+            this.organizations.reload();
+        });
+    }
+
+    modify(org: domain.Organization): void {
+        this.organizationActions.modify(org).subscribe(() => {
+            this.organizations.reload();
+        });
+    }
+
+    deactivate(org: domain.Organization): void {
+        this.organizationActions.deactivate(org).subscribe(() => {
+            this.organizations.reload();
+        });
+    }
+
+    activate(org: domain.Organization): void {
+        this.organizationActions.activate(org).subscribe(() => {
+            this.organizations.reload();
+        });
     }
 
     resetFilters(): void {

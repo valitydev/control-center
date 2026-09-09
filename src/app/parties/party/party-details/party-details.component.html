@@ -23,6 +23,18 @@
         <mat-card appearance="outlined">
             <mat-card-header>
                 <mat-card-title>Organization</mat-card-title>
+                @if (organization.value(); as org) {
+                    <div class="ml-auto flex gap-2">
+                        <button mat-button (click)="modifyOrganization(org)">Edit</button>
+                        @if (org.status === orgStatus.active) {
+                            <button mat-button (click)="deactivateOrganization(org)">
+                                Deactivate
+                            </button>
+                        } @else {
+                            <button mat-button (click)="activateOrganization(org)">Activate</button>
+                        }
+                    </div>
+                }
             </mat-card-header>
             <mat-card-content class="mt-6">
                 @if (organization.value(); as org) {
