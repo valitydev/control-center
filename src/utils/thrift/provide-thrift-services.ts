@@ -172,10 +172,7 @@ function createConnectOptions(serviceName: string) {
                 logging: true,
                 loggingFn,
                 createCallOptions: () => ({
-                    headers: {
-                        ...createRequestWachterHeaders(),
-                        authorization: `Bearer ${keycloak.token ?? ''}`,
-                    },
+                    headers: createRequestWachterHeaders(keycloak.token),
                 }),
                 timeout: isDevMode() ? 15_000 : 60_000,
                 ...config.api.wachter,

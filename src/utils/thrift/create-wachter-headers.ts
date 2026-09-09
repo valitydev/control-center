@@ -13,10 +13,11 @@ export const createWachterHeaders = (
     'x-woody-parent-id': undefined,
 });
 
-export const createRequestWachterHeaders = () => {
+export const createRequestWachterHeaders = (token?: string) => {
     const traceId = generateId();
     return {
         'x-woody-span-id': traceId,
         'x-woody-trace-id': traceId,
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
     };
 };
