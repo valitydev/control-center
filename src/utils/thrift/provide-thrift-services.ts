@@ -93,66 +93,72 @@ function addThriftErrorBreadcrumb(
     });
 }
 
-const logger: ConnectOptions['loggingFn'] = (params) => {
-    const info = `${params.name} (${params.namespace} ${params.serviceName})`;
+function createLogger(keycloak: Keycloak): ConnectOptions['loggingFn'] {
+    return (params) => {
+        const info = `${params.name} (${params.namespace} ${params.serviceName})`;
 
-    switch (params.type) {
-        case 'error': {
-            const parsedError = parseThriftError(params.error);
-            addThriftErrorBreadcrumb(params, parsedError);
-            console.groupCollapsed(
-                `🔴\u00A0${info}`,
-                `\n⚠️\u00A0${parsedError.message || parsedError.name || 'Unknown error'}`,
-                `\n🆔\u00A0Trace:\u00A0${params.headers['x-woody-trace-id']}`,
-            );
-            console.error(parsedError.error);
-            if (LOGGING.fullLogging) {
-                console.dir(
-                    {
-                        Arguments: params.args,
-                        Headers: params.headers,
-                    },
-                    {
-                        depth: null,
-                        compact: false,
-                        maxArrayLength: null,
-                        maxStringLength: null,
-                    },
+        switch (params.type) {
+            case 'error': {
+                const parsedError = parseThriftError(params.error);
+                addThriftErrorBreadcrumb(params, parsedError);
+                if (params.error === 401) {
+                    void keycloak.login();
+                }
+                console.groupCollapsed(
+                    `🔴\u00A0${info}`,
+                    `\n⚠️\u00A0${parsedError.message || parsedError.name || 'Unknown error'}`,
+                    `\n🆔\u00A0Trace:\u00A0${params.headers['x-woody-trace-id']}`,
                 );
-            }
-            console.groupEnd();
-            return;
-        }
-        case 'success': {
-            if (LOGGING.fullLogging) {
-                console.groupCollapsed(`🟢\u00A0${info}`);
-                console.dir(
-                    {
-                        Arguments: params.args,
-                        Response: params.response,
-                        Headers: params.headers,
-                    },
-                    {
-                        depth: null,
-                        compact: false,
-                        maxArrayLength: null,
-                        maxStringLength: null,
-                    },
-                );
+                console.error(parsedError.error);
+                if (LOGGING.fullLogging) {
+                    console.dir(
+                        {
+                            Arguments: params.args,
+                            Headers: params.headers,
+                        },
+                        {
+                            depth: null,
+                            compact: false,
+                            maxArrayLength: null,
+                            maxStringLength: null,
+                        },
+                    );
+                }
                 console.groupEnd();
+                return;
             }
-            return;
+            case 'success': {
+                if (LOGGING.fullLogging) {
+                    console.groupCollapsed(`🟢\u00A0${info}`);
+                    console.dir(
+                        {
+                            Arguments: params.args,
+                            Response: params.response,
+                            Headers: params.headers,
+                        },
+                        {
+                            depth: null,
+                            compact: false,
+                            maxArrayLength: null,
+                            maxStringLength: null,
+                        },
+                    );
+                    console.groupEnd();
+                }
+                return;
+            }
+            case 'call': {
+                return;
+            }
         }
-        case 'call': {
-            return;
-        }
-    }
-};
+    };
+}
 
 function createConnectOptions(serviceName: string) {
     const configService = inject(ConfigService);
     const keycloak = inject(Keycloak);
     const keycloakUserService = inject(KeycloakUserService);
+    const loggingFn = createLogger(keycloak);
 
     return combineLatest([keycloakUserService.user.value$, configService.config.value$]).pipe(
         map(
@@ -164,9 +170,12 @@ function createConnectOptions(serviceName: string) {
                     token: keycloak.token ?? '',
                 }),
                 logging: true,
-                loggingFn: logger,
+                loggingFn,
                 createCallOptions: () => ({
-                    headers: createRequestWachterHeaders(),
+                    headers: {
+                        ...createRequestWachterHeaders(),
+                        authorization: `Bearer ${keycloak.token ?? ''}`,
+                    },
                 }),
                 timeout: isDevMode() ? 15_000 : 60_000,
                 ...config.api.wachter,
