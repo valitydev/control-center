@@ -18,7 +18,7 @@ export const LOGGING = {
     fullLogging: isDevMode(),
 };
 
-type ParsedThriftError = ReturnType<typeof parseThriftError>;
+export type ParsedThriftError = ReturnType<typeof parseThriftError>;
 
 export function parseThriftError<T extends object>(error: unknown) {
     const traceId = error?.['info']?.headers?.['x-woody-trace-id'];
@@ -74,30 +74,22 @@ export function parseThriftError<T extends object>(error: unknown) {
     }
 }
 
-function captureThriftError(
+function addThriftErrorBreadcrumb(
     params: Parameters<NonNullable<ConnectOptions['loggingFn']>>[0],
     error: ParsedThriftError,
 ) {
-    Sentry.withScope((scope) => {
-        scope.setTags({
-            'thrift.error_type': error.type,
-            'thrift.namespace': params.namespace,
-            'thrift.service': params.serviceName,
-            'thrift.method': params.name,
-        });
-        scope.setFingerprint([
-            '{{ default }}',
-            error.type,
-            params.namespace,
-            params.serviceName,
-            params.name,
-        ]);
-
-        if (error.traceId) {
-            scope.setTag('thrift.trace_id', error.traceId);
-        }
-
-        Sentry.captureException(params.error);
+    Sentry.addBreadcrumb({
+        category: 'thrift',
+        type: 'http',
+        level: 'warning',
+        message: `${params.name} (${params.namespace} ${params.serviceName}) failed: ${error.message || error.name || 'Unknown error'}`,
+        data: {
+            errorType: error.type,
+            namespace: params.namespace,
+            service: params.serviceName,
+            method: params.name,
+            ...(error.traceId ? { traceId: error.traceId } : {}),
+        },
     });
 }
 
@@ -107,7 +99,7 @@ const logger: ConnectOptions['loggingFn'] = (params) => {
     switch (params.type) {
         case 'error': {
             const parsedError = parseThriftError(params.error);
-            captureThriftError(params, parsedError);
+            addThriftErrorBreadcrumb(params, parsedError);
             console.groupCollapsed(
                 `🔴\u00A0${info}`,
                 `\n⚠️\u00A0${parsedError.message || parsedError.name || 'Unknown error'}`,
