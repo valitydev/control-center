@@ -198,8 +198,8 @@ export class WithdrawalsComponent implements OnInit {
                 withdrawals: this.selected,
             })
             .afterClosed()
-            .subscribe(() => {
-                this.reload();
+            .subscribe((res) => {
+                if (res.status === DialogResponseStatus.Success) this.reload();
             });
     }
 
