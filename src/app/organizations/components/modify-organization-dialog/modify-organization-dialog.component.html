@@ -1,0 +1,11 @@
+<v-dialog [progress]="progress()" title="Modify organization">
+    <div class="flex flex-col gap-4">
+        <v-input-field [formField]="control.name" label="Name" required />
+    </div>
+
+    <v-dialog-actions>
+        <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="modify()">
+            Save
+        </button>
+    </v-dialog-actions>
+</v-dialog>

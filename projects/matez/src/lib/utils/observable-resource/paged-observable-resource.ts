@@ -69,6 +69,7 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
         size,
         ...options
     }: PagedObservableResourceOptions<TItem, TParams>) {
+        this.pagedOptions = { size: size || 20 };
         // TODO: fix types
         super.init({
             params: EMPTY,
@@ -89,7 +90,6 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
             },
             map: (value) => value.result,
         } as never);
-        this.pagedOptions = { size: size || 20 };
         this.hasMore$ = this.accValue$.pipe(map((value) => !!value.continuationToken));
         this.hasMore = toSignal(this.hasMore$, { initialValue: false });
         this.result$ = this.value$;

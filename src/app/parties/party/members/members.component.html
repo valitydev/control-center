@@ -1,0 +1,16 @@
+<cc-page-layout
+    [progress]="organization.isLoading() || members.isLoading()"
+    fullHeight
+    title="Members"
+>
+    @if (organization.value()) {
+        <v-table-resource [columns]="columns" [resource]="members" />
+    } @else if (!organization.isLoading()) {
+        <div class="flex flex-col items-center justify-center gap-4 h-full pb-24">
+            <p class="mat-body-large text-[var(--mat-sys-on-surface-variant)]">
+                Organization not created
+            </p>
+            <button mat-flat-button (click)="createOrganization()">Create organization</button>
+        </div>
+    }
+</cc-page-layout>

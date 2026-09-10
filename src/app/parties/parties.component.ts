@@ -19,6 +19,7 @@ import {
 import { getUnionKey } from '@vality/ng-thrift';
 
 import { FetchFullDomainObjectsService } from '~/api/domain-config';
+import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 
 @Component({
@@ -31,6 +32,7 @@ import { PageLayoutModule } from '~/components/page-layout';
 export class PartiesComponent implements OnInit {
     private qp = inject<QueryParamsService<{ text: string }>>(QueryParamsService<{ text: string }>);
     private fetchFullDomainObjectsService = inject(FetchFullDomainObjectsService);
+    private thriftOrganizationManagementService = inject(ThriftOrganizationManagementService);
     private router = inject(Router);
 
     initSearchParams$ = this.qp.params$.pipe(map((p) => p?.text ?? ''));
@@ -60,6 +62,17 @@ export class PartiesComponent implements OnInit {
                     .filter(Boolean)
                     .join(', '),
             }),
+        },
+        {
+            field: 'organization',
+            lazyCell: (party) =>
+                this.thriftOrganizationManagementService.GetOrganizationByParty(party.ref.id).pipe(
+                    map((org) => ({
+                        value: org.name,
+                        description: org.id,
+                        link: () => `/parties/${party.ref.id}/members`,
+                    })),
+                ),
         },
         {
             field: 'blocking',

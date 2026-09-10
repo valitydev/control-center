@@ -66,6 +66,10 @@ export const routes: Routes = [
         loadComponent: () => import('./studio').then((m) => m.StudioComponent),
     },
     {
+        path: 'organizations',
+        loadChildren: () => import('./organizations').then((m) => m.ORGANIZATIONS_ROUTES),
+    },
+    {
         path: '404',
         loadChildren: () => import('./not-found').then((m) => m.NotFoundModule),
     },

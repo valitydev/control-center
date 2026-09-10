@@ -5,6 +5,8 @@ import { canActivateAuthRole } from '~/services';
 
 import { ROUTING_CONFIG as WALLETS_ROUTING_CONFIG } from '../../wallets/routing-config';
 
+import { ROUTING_CONFIG as INVITATIONS_ROUTING_CONFIG } from './invitations/routing-config';
+import { ROUTING_CONFIG as MEMBERS_ROUTING_CONFIG } from './members/routing-config';
 import { PartyComponent } from './party.component';
 import { ROUTING_CONFIG } from './routing-config';
 import { ROUTING_CONFIG as WALLET_WEBHOOKS_ROUTING_CONFIG } from './wallet-webhooks/routing-config';
@@ -19,6 +21,11 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                 canActivate: [canActivateAuthRole],
                 data: ROUTING_CONFIG,
                 children: [
+                    {
+                        path: 'details',
+                        loadComponent: () =>
+                            import('./party-details').then((m) => m.PartyDetailsComponent),
+                    },
                     {
                         path: 'shops',
                         loadChildren: () => import('./shops').then((m) => m.PartyShopsModule),
@@ -36,6 +43,19 @@ import { ROUTING_CONFIG as WEBHOOKS_ROUTING_CONFIG } from './webhooks/routing-co
                             ),
                         canActivate: [canActivateAuthRole],
                         data: WALLETS_ROUTING_CONFIG,
+                    },
+                    {
+                        path: 'members',
+                        loadComponent: () => import('./members').then((m) => m.MembersComponent),
+                        canActivate: [canActivateAuthRole],
+                        data: MEMBERS_ROUTING_CONFIG,
+                    },
+                    {
+                        path: 'invitations',
+                        loadComponent: () =>
+                            import('./invitations').then((m) => m.InvitationsComponent),
+                        canActivate: [canActivateAuthRole],
+                        data: INVITATIONS_ROUTING_CONFIG,
                     },
                     {
                         path: 'shop-webhooks',

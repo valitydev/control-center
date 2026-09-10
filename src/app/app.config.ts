@@ -1,4 +1,9 @@
-import { provideKeycloak } from 'keycloak-angular';
+import {
+    AutoRefreshTokenService,
+    UserActivityService,
+    provideKeycloak,
+    withAutoRefreshToken,
+} from 'keycloak-angular';
 import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
 import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
@@ -55,6 +60,13 @@ export const appConfig: ApplicationConfig = {
         provideKeycloak({
             config: './assets/authConfig.json' as never,
             initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
+            features: [
+                withAutoRefreshToken({
+                    onInactivityTimeout: 'login',
+                    sessionTimeout: 4 * 60 * 60_000,
+                }),
+            ],
+            providers: [AutoRefreshTokenService, UserActivityService],
         }),
         provideHttpClient(withXhr(), withInterceptorsFromDi()),
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },

@@ -59,6 +59,7 @@ export class TableResourceComponent<T extends object, C extends object> {
 
     update(options: UpdateOptions) {
         const res = this.resource();
-        if ('setOptions' in res) res.setOptions(options);
+        if (res && 'setOptions' in res) res.setOptions(options);
+        else if (res && 'reload' in res) res.reload();
     }
 }

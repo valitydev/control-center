@@ -7,6 +7,7 @@ import { metadata$ as fistfulMetadata$ } from '@vality/fistful-proto';
 import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
 import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
+import { metadata$ as orgManagementMetadata$ } from '@vality/org-management-proto';
 import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
 import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
 
@@ -186,6 +187,17 @@ export const services = [
         service: 'Management',
         public: 'DestinationManagement',
     },
+
+    // Organization Management
+    {
+        name: Service.OrganizationManagement,
+        loader: () =>
+            import('@vality/org-management-proto/admin_management').then((m) => m.AdminManagement),
+        metadata$: orgManagementMetadata$,
+        namespace: 'admin_management',
+        service: 'AdminManagement',
+        public: 'OrganizationManagement',
+    },
 ] as const;
 
 export const { services: injectableServices, provideThriftServices } =
@@ -210,4 +222,5 @@ export const {
     Accounter: ThriftAccountManagementService,
     InvoiceTemplating: ThriftInvoiceTemplatingService,
     DestinationManagement: ThriftDestinationManagementService,
+    OrgManager: ThriftOrganizationManagementService,
 } = injectableServices;
