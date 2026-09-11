@@ -15,7 +15,6 @@ import {
     ErrorHandler,
     LOCALE_ID,
     inject,
-    isDevMode,
     provideAppInitializer,
     provideBrowserGlobalErrorListeners,
     provideZoneChangeDetection,
@@ -59,7 +58,10 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),
         provideKeycloak({
             config: './assets/authConfig.json' as never,
-            initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
+            initOptions: {
+                adapter: 'default',
+                onLoad: 'login-required',
+            },
             features: [
                 withAutoRefreshToken({
                     onInactivityTimeout: 'login',
