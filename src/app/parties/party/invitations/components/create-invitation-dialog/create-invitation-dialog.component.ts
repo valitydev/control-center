@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import {
 } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
+import { ROLES } from '~/api/org-management';
 import { ThriftOrganizationManagementService } from '~/api/services';
 
 export interface CreateInvitationDialogData {
@@ -63,12 +64,10 @@ export class CreateInvitationDialogComponent extends DialogSuperclass<
             this.thriftOrgManagementService.ListOrganizationRoles(this.dialogData.organizationId),
     });
 
-    rolesOptions = computed<Option<domain.RoleID>[]>(() =>
-        (this.roles.value() || []).map((r) => ({
-            label: r.name || r.id,
-            value: r.id,
-        })),
-    );
+    rolesOptions: Option<domain.RoleID>[] = Object.keys(ROLES).map((key) => ({
+        label: key,
+        value: key,
+    }));
 
     progress = signal(0);
 

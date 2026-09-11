@@ -3,7 +3,7 @@
         <v-input-field [formField]="control.email" label="Email" required />
         <v-select-field
             [formField]="control.roles"
-            [options]="rolesOptions()"
+            [options]="rolesOptions"
             [progress]="roles.isLoading()"
             label="Roles"
             multiple
