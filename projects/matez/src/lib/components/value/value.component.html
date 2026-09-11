@@ -67,7 +67,11 @@
                                     ></span>
                                 } @else if (v.error) {
                                     <mat-icon
-                                        [matTooltip]="v.error?.['message'] || (v.error | json)"
+                                        [matTooltip]="
+                                            v.error?.['error']?.['message'] ||
+                                            v.error?.['message'] ||
+                                            (v.error | json)
+                                        "
                                         >error</mat-icon
                                     >
                                 } @else if (emptySymbol) {
