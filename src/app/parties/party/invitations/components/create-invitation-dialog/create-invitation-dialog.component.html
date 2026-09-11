@@ -1,0 +1,18 @@
+<v-dialog [progress]="progress()" title="Create invitation">
+    <div class="flex flex-col gap-4">
+        <v-input-field [formField]="control.email" label="Email" required />
+        <v-select-field
+            [formField]="control.roles"
+            [options]="rolesOptions()"
+            [progress]="roles.isLoading()"
+            label="Roles"
+            multiple
+        />
+    </div>
+
+    <v-dialog-actions>
+        <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="create()">
+            Create
+        </button>
+    </v-dialog-actions>
+</v-dialog>
