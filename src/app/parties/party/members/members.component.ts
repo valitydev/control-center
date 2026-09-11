@@ -56,11 +56,11 @@ export class MembersComponent {
         {
             field: 'id',
             header: 'User ID',
-            cell: (m) => ({ value: m.id }),
+            cell: (m) => ({ value: m.user.id }),
         },
         {
             field: 'email',
-            cell: (m) => ({ value: m.email || '—' }),
+            cell: (m) => ({ value: m.user.email }),
         },
         {
             field: 'roles',
