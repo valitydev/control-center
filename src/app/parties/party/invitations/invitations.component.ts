@@ -45,6 +45,7 @@ import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
 
 import { PartyStoreService } from '../party-store.service';
+
 import { CreateInvitationDialogComponent } from './components/create-invitation-dialog';
 
 export interface InvitationsFilters {
@@ -162,7 +163,18 @@ export class InvitationsComponent {
         {
             field: 'roles',
             cell: (inv) => ({
-                value: (inv.roles || []).map((r) => r.role_id).join(', ') || '—',
+                value:
+                    (inv.roles || [])
+                        .map((r) => {
+                            if (!r.scope) {
+                                return r.role_id;
+                            }
+                            const scopeDesc = r.scope.resource_id
+                                ? `${r.scope.scope_id}: ${r.scope.resource_id}`
+                                : r.scope.scope_id;
+                            return `${r.role_id} (${scopeDesc})`;
+                        })
+                        .join(', ') || '—',
             }),
         },
         {
@@ -193,10 +205,13 @@ export class InvitationsComponent {
     }
 
     create(): void {
-        const orgId = this.organization.value()?.id;
-        if (!orgId) return;
+        const org = this.organization.value();
+        if (!org?.id) return;
         this.dialogService
-            .open(CreateInvitationDialogComponent, { organizationId: orgId })
+            .open(CreateInvitationDialogComponent, {
+                organizationId: org.id,
+                partyId: org.party_id,
+            })
             .afterClosed()
             .pipe(filter((res) => res?.status === DialogResponseStatus.Success))
             .subscribe(() => {

@@ -9,23 +9,22 @@ import {
     DialogSuperclass,
     InputFieldModule,
     NotifyLogService,
-    Option,
-    SelectFieldModule,
-    observableResource,
     progressTo,
 } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
-import { ROLES } from '~/api/org-management';
 import { ThriftOrganizationManagementService } from '~/api/services';
+
+import { RoleAssignmentsFieldComponent } from '../role-assignments-field';
 
 export interface CreateInvitationDialogData {
     organizationId: domain.OrganizationID;
+    partyId?: domain.PartyID;
 }
 
 interface CreateInvitationModel {
     email: string;
-    roles: domain.RoleID[];
+    roles: domain.RoleAssignment[];
 }
 
 @Component({
@@ -36,8 +35,8 @@ interface CreateInvitationModel {
         ReactiveFormsModule,
         MatButtonModule,
         InputFieldModule,
-        SelectFieldModule,
         FormField,
+        RoleAssignmentsFieldComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './create-invitation-dialog.component.html',
@@ -59,24 +58,15 @@ export class CreateInvitationDialogComponent extends DialogSuperclass<
         email(schemaPath.email);
     });
 
-    roles = observableResource<domain.OrganizationRole[]>({
-        loader: () =>
-            this.thriftOrgManagementService.ListOrganizationRoles(this.dialogData.organizationId),
-    });
-
-    rolesOptions: Option<domain.RoleID>[] = Object.keys(ROLES).map((key) => ({
-        label: key,
-        value: key,
-    }));
-
     progress = signal(0);
 
     create() {
         const { email: invitationEmail, roles } = this.controlModel();
+
         this.thriftOrgManagementService
             .CreateInvitation(this.dialogData.organizationId, {
                 email: invitationEmail,
-                roles: roles.map((role_id) => ({ role_id })),
+                roles,
             })
             .pipe(progressTo(this.progress))
             .subscribe({

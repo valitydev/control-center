@@ -38,6 +38,7 @@ export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]>
     @Input() size?: SelectFieldComponent['size'];
     @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;
+    @Input() placeholder?: string;
     multiple = input(false, { transform: booleanAttribute });
     partyId = input<PartyConfigRef['id']>();
 

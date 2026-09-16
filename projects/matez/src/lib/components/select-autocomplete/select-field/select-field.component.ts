@@ -35,6 +35,7 @@ export class SelectFieldComponent<T = unknown>
 
     @Input() label?: string;
     @Input() hint?: string;
+    @Input() placeholder?: string;
     @Input() error?: string;
     @Input() progress = false;
 

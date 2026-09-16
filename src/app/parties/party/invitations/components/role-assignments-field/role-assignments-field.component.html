@@ -1,0 +1,58 @@
+<div class="flex flex-col gap-3">
+    <div class="flex items-center justify-between">
+        <span class="mat-title-small font-medium">Roles</span>
+        <button mat-button type="button" (click)="addRole()">
+            <mat-icon>add</mat-icon>
+            Add role
+        </button>
+    </div>
+
+    @if (formValue().length === 0) {
+        <div class="text-sm text-[var(--mat-sys-outline)]">
+            No roles assigned (user will become a member without roles)
+        </div>
+    } @else {
+        <mat-accordion
+            class="flex flex-col overflow-hidden rounded-xl border border-solid border-[var(--mat-sys-outline-variant)]"
+            multi
+        >
+            @for (roleItem of formValue(); track $index) {
+                <mat-expansion-panel
+                    [expanded]="true"
+                    class="!m-0 !rounded-none !border-0 !shadow-none [&:not(:first-child)]:!border-t [&:not(:first-child)]:!border-solid [&:not(:first-child)]:!border-[var(--mat-sys-outline-variant)]"
+                >
+                    <mat-expansion-panel-header class="flex gap-2">
+                        <mat-panel-title>
+                            {{ roleItem.roleId || 'Role #' + ($index + 1) }}
+                        </mat-panel-title>
+                        <button
+                            aria-label="Delete Role"
+                            mat-icon-button
+                            type="button"
+                            (click)="$event.stopPropagation(); removeRole($index)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-expansion-panel-header>
+
+                    <div class="flex flex-col gap-4 pt-2">
+                        <v-select-field
+                            [formField]="control[$index].roleId"
+                            [options]="rolesOptions"
+                            label="Role"
+                            required
+                        />
+
+                        <cc-shop-field
+                            [formField]="control[$index].shopId"
+                            [partyId]="partyId()"
+                            hint="Leave empty for entire organization"
+                            label="Shop"
+                            placeholder="Entire organization"
+                        />
+                    </div>
+                </mat-expansion-panel>
+            }
+        </mat-accordion>
+    }
+</div>
