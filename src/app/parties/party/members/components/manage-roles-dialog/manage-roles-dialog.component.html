@@ -1,0 +1,19 @@
+<v-dialog
+    [progress]="member.isLoading() || progress()"
+    [title]="'Manage roles: ' + (dialogData.userEmail || dialogData.userId)"
+>
+    @if (!member.isLoading()) {
+        <cc-role-assignments-field [formField]="control" [partyId]="dialogData.partyId" />
+    }
+
+    <v-dialog-actions>
+        <button mat-button (click)="closeWithCancellation()">Cancel</button>
+        <button
+            [disabled]="member.isLoading() || progress() || control().invalid()"
+            mat-flat-button
+            (click)="save()"
+        >
+            Save
+        </button>
+    </v-dialog-actions>
+</v-dialog>

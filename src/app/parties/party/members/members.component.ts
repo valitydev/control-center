@@ -22,7 +22,7 @@ import { PageLayoutModule } from '~/components/page-layout';
 import { PartyStoreService } from '../party-store.service';
 
 import { AddMemberDialogComponent } from './components/add-member-dialog';
-import { MemberRolesDialogComponent } from './components/member-roles-dialog';
+import { ManageRolesDialogComponent } from './components/manage-roles-dialog';
 
 @Component({
     selector: 'cc-members',
@@ -109,11 +109,12 @@ export class MembersComponent {
         const org = this.organization.value();
         if (!org?.id) return;
         this.dialogService
-            .open(MemberRolesDialogComponent, {
+            .open(ManageRolesDialogComponent, {
                 organizationId: org.id,
                 userId: member.user.id,
                 userEmail: member.user.email,
                 partyId: org.party_id,
+                roles: member.roles,
             })
             .afterClosed()
             .pipe(filter((res) => res?.status === DialogResponseStatus.Success))
