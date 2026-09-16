@@ -1,0 +1,8 @@
+{
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "tsconfig.json": "tsconfig.*.json",
+        "package.json": "package-lock.json, node_modules, LICENSE, skills-lock.json, .*, *.json, Dockerfile, *.conf, *.config.js",
+        "README.md": "*.md"
+    },
+}
