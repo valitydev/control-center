@@ -37,19 +37,35 @@
 
                     <div class="flex flex-col gap-4 pt-2">
                         <v-select-field
+                            [clearable]="false"
                             [formField]="control[$index].roleId"
                             [options]="rolesOptions"
                             label="Role"
-                            required
                         />
 
-                        <cc-shop-field
-                            [formField]="control[$index].shopId"
-                            [partyId]="partyId()"
-                            hint="Leave empty for entire organization"
-                            label="Shop"
-                            placeholder="Entire organization"
+                        <v-select-field
+                            [clearable]="false"
+                            [formField]="control[$index].scopeId"
+                            [options]="scopeOptions"
+                            label="Scope"
+                            (valueChange)="changeScope($index)"
                         />
+
+                        @if (roleItem.scopeId === 'Wallet') {
+                            <cc-wallet-field
+                                [formField]="control[$index].resourceId"
+                                [partyId]="partyId()"
+                                hint="Leave empty for entire organization"
+                                placeholder="Entire organization"
+                            />
+                        } @else {
+                            <cc-shop-field
+                                [formField]="control[$index].resourceId"
+                                [partyId]="partyId()"
+                                hint="Leave empty for entire organization"
+                                placeholder="Entire organization"
+                            />
+                        }
                     </div>
                 </mat-expansion-panel>
             }

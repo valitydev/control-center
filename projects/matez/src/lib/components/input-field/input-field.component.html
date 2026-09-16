@@ -13,19 +13,21 @@
     }
     <mat-label>{{ label }}</mat-label>
     <input
-        [formControl]="control"
+        [formField]="control"
         [placeholder]="placeholder"
         [type]="type"
         autocomplete="false"
         matInput
+        (blur)="touch.emit()"
     />
     <div class="postfix" matSuffix>
         @if (cleanButton()) {
             <button
-                [disabled]="!control.value"
-                [style.visibility]="control.value ? '' : 'hidden'"
+                [disabled]="!value()"
+                [style.visibility]="value() ? '' : 'hidden'"
                 mat-icon-button
-                (click)="control.reset()"
+                type="button"
+                (click)="control().reset(); value.set(undefined)"
             >
                 <mat-icon>clear</mat-icon>
             </button>

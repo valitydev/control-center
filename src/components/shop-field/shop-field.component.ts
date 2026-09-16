@@ -8,33 +8,35 @@ import {
     booleanAttribute,
     inject,
     input,
+    model,
+    output,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { FormValueControl, disabled, form, required } from '@angular/forms/signals';
 
 import { DomainObjectType, PartyConfigRef, ShopID } from '@vality/domain-proto/domain';
-import {
-    FormControlSuperclass,
-    Option,
-    SelectFieldComponent,
-    createControlProviders,
-    observableResource,
-} from '@vality/matez';
+import { Option, SelectFieldComponent, observableResource } from '@vality/matez';
 
-import { FetchDomainObjectsService } from '~/api/domain-config';
 import { ThriftRepositoryService } from '~/api/services';
 
 @Component({
     selector: 'cc-shop-field',
     templateUrl: './shop-field.component.html',
-    providers: [...createControlProviders(() => ShopFieldComponent), FetchDomainObjectsService],
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
-export class ShopFieldComponent extends FormControlSuperclass<ShopID | ShopID[]> {
+export class ShopFieldComponent implements FormValueControl<ShopID | ShopID[]> {
     private repositoryService = inject(ThriftRepositoryService);
 
     @Input() label: string;
-    @Input({ transform: booleanAttribute }) required: boolean;
+    required = input(false, { transform: booleanAttribute });
+    disabled = input(false);
+    touch = output<void>();
+    value = model<ShopID | ShopID[]>('');
+    control = form(this.value, (path) => {
+        required(path, { when: () => this.required() });
+        disabled(path, () => this.disabled());
+    });
     @Input() size?: SelectFieldComponent['size'];
     @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;

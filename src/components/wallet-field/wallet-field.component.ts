@@ -8,35 +8,39 @@ import {
     booleanAttribute,
     inject,
     input,
+    model,
+    output,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { FormValueControl, disabled, form, required } from '@angular/forms/signals';
 
 import { DomainObjectType, PartyConfigRef, WalletID } from '@vality/domain-proto/domain';
-import {
-    FormControlSuperclass,
-    Option,
-    SelectFieldComponent,
-    createControlProviders,
-    observableResource,
-} from '@vality/matez';
+import { Option, SelectFieldComponent, observableResource } from '@vality/matez';
 
 import { ThriftRepositoryService } from '~/api/services';
 
 @Component({
     selector: 'cc-wallet-field',
     templateUrl: 'wallet-field.component.html',
-    providers: [...createControlProviders(() => WalletFieldComponent)],
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
-export class WalletFieldComponent extends FormControlSuperclass<WalletID | WalletID[]> {
+export class WalletFieldComponent implements FormValueControl<WalletID | WalletID[]> {
     private repositoryService = inject(ThriftRepositoryService);
 
     @Input() label: string;
-    @Input({ transform: booleanAttribute }) required: boolean;
+    required = input(false, { transform: booleanAttribute });
+    disabled = input(false);
+    touch = output<void>();
+    value = model<WalletID | WalletID[]>('');
+    control = form(this.value, (path) => {
+        required(path, { when: () => this.required() });
+        disabled(path, () => this.disabled());
+    });
     @Input() size?: SelectFieldComponent['size'];
     @Input() appearance?: SelectFieldComponent['appearance'];
     @Input() hint?: string;
+    @Input() placeholder?: string;
     multiple = input(false, { transform: booleanAttribute });
     partyId = input<PartyConfigRef['id']>();
 

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import {
     FormField,
     FormValueControl,
@@ -18,10 +17,12 @@ import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ROLES } from '~/api/org-management';
 import { ShopFieldModule } from '~/components/shop-field';
+import { WalletFieldModule } from '~/components/wallet-field';
 
 export interface RoleAssignmentModel {
     roleId: domain.RoleID;
-    shopId: string;
+    scopeId: 'Shop' | 'Wallet';
+    resourceId: string;
 }
 
 @Component({
@@ -30,12 +31,12 @@ export interface RoleAssignmentModel {
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule,
-        ReactiveFormsModule,
         MatButtonModule,
         MatIconModule,
         MatExpansionModule,
         SelectFieldModule,
         ShopFieldModule,
+        WalletFieldModule,
         FormField,
     ],
 })
@@ -48,18 +49,16 @@ export class RoleAssignmentsFieldComponent implements FormValueControl<domain.Ro
         parse: (roles) => ({
             value: (roles || []).map((r) => ({
                 role_id: r.roleId,
-                scope: r.shopId
-                    ? {
-                          scope_id: 'Shop',
-                          resource_id: r.shopId,
-                      }
-                    : undefined,
+                ...(r.resourceId
+                    ? { scope: { scope_id: r.scopeId, resource_id: r.resourceId } }
+                    : {}),
             })),
         }),
         format: (roles) =>
             (roles || []).map((r) => ({
                 roleId: r.role_id,
-                shopId: r.scope?.scope_id === 'Shop' ? r.scope.resource_id || '' : '',
+                scopeId: r.scope?.scope_id === 'Wallet' ? 'Wallet' : 'Shop',
+                resourceId: r.scope?.resource_id || '',
             })),
     });
 
@@ -74,9 +73,21 @@ export class RoleAssignmentsFieldComponent implements FormValueControl<domain.Ro
         value: key,
     }));
 
+    scopeOptions: Option<RoleAssignmentModel['scopeId']>[] = [
+        { label: 'Shop', value: 'Shop' },
+        { label: 'Wallet', value: 'Wallet' },
+    ];
+
+    changeScope(index: number) {
+        this.control[index].resourceId().value.set('');
+    }
+
     addRole() {
         const firstRole = this.rolesOptions[0]?.value || '';
-        this.formValue.update((roles) => [...(roles || []), { roleId: firstRole, shopId: '' }]);
+        this.formValue.update((roles) => [
+            ...(roles || []),
+            { roleId: firstRole, scopeId: 'Shop', resourceId: '' },
+        ]);
     }
 
     removeRole(index: number) {

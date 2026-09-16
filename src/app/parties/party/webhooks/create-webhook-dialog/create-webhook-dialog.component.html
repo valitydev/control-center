@@ -1,7 +1,7 @@
 <v-dialog [progress]="progress()" title="Create shop webhook">
     <div class="flex flex-col gap-4">
         <cc-shop-merchant-field [formField]="control.partyShop" />
-        <v-input-field [formField]="control.url" label="URL" required />
+        <v-input-field [formField]="control.url" label="URL" />
         <div class="flex flex-col gap-1.5">
             <div class="font-medium text-sm text-neutral-600 dark:text-neutral-300">
                 Invoice Event Types

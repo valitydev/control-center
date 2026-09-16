@@ -1,6 +1,6 @@
 <v-dialog [progress]="progress()" title="Create invitation">
     <div class="flex flex-col gap-4">
-        <v-input-field [formField]="control.email" label="Email" required />
+        <v-input-field [formField]="control.email" label="Email" />
         <cc-role-assignments-field [formField]="control.roles" [partyId]="dialogData.partyId" />
     </div>
 

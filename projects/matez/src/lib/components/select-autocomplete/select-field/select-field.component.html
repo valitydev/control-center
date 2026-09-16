@@ -3,19 +3,18 @@
 
     <mtx-select
         #select
+        [clearable]="clearable"
         [closeOnSelect]="!multiple"
-        [formControl]="control"
+        [formField]="control"
         [items]="
-            options?.length || !control?.value
-                ? options
-                : [{ value: control.value, label: control.value }]
+            options?.length || !selection() ? options : [{ value: selection(), label: selection() }]
         "
         [loading]="progress"
         [markFirst]="true"
         [multiple]="multiple"
         [notFoundText]="externalSearch && !search() ? 'Enter your search term' : 'No items found'"
         [placeholder]="placeholder"
-        [required]="required"
+        [required]="required()"
         [searchable]="true"
         [searchFn]="searchFn"
         [selectableGroup]="true"
@@ -23,6 +22,7 @@
         bindLabel="label"
         bindValue="value"
         groupBy="type"
+        (blur)="touch.emit()"
         (change)="close(select)"
         (clear)="search.set('')"
         (search)="search.set($event.term)"
