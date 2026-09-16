@@ -1,8 +1,10 @@
-<cc-page-layout
-    [progress]="organization.isLoading() || members.isLoading()"
-    fullHeight
-    title="Members"
->
+<cc-page-layout [progress]="organization.isLoading()" fullHeight title="Members">
+    <cc-page-layout-actions>
+        @if (organization.value()) {
+            <button mat-flat-button (click)="addMember()">Add member</button>
+        }
+    </cc-page-layout-actions>
+
     @if (organization.value()) {
         <v-table-resource [columns]="columns" [resource]="members" standaloneFilter />
     } @else if (!organization.isLoading()) {

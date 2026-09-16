@@ -7,7 +7,7 @@
         </button>
     </div>
 
-    @if (formValue().length === 0) {
+    @if ((value() || []).length === 0) {
         <div class="text-sm text-[var(--mat-sys-outline)]">
             No roles assigned (user will become a member without roles)
         </div>
@@ -16,14 +16,14 @@
             class="flex flex-col overflow-hidden rounded-xl border border-solid border-[var(--mat-sys-outline-variant)]"
             multi
         >
-            @for (roleItem of formValue(); track $index) {
+            @for (roleItem of value(); track $index) {
                 <mat-expansion-panel
                     [expanded]="true"
                     class="!m-0 !rounded-none !border-0 !shadow-none [&:not(:first-child)]:!border-t [&:not(:first-child)]:!border-solid [&:not(:first-child)]:!border-[var(--mat-sys-outline-variant)]"
                 >
                     <mat-expansion-panel-header class="flex gap-2">
                         <mat-panel-title>
-                            {{ roleItem.roleId || 'Role #' + ($index + 1) }}
+                            {{ roleItem.role_id || 'Role #' + ($index + 1) }}
                         </mat-panel-title>
                         <button
                             aria-label="Delete Role"
@@ -35,37 +35,11 @@
                         </button>
                     </mat-expansion-panel-header>
 
-                    <div class="flex flex-col gap-4 pt-2">
-                        <v-select-field
-                            [clearable]="false"
-                            [formField]="control[$index].roleId"
-                            [options]="rolesOptions"
-                            label="Role"
+                    <div class="pt-2">
+                        <cc-role-assignment-field
+                            [formField]="control[$index]"
+                            [partyId]="partyId()"
                         />
-
-                        <v-select-field
-                            [clearable]="false"
-                            [formField]="control[$index].scopeId"
-                            [options]="scopeOptions"
-                            label="Scope"
-                            (valueChange)="changeScope($index)"
-                        />
-
-                        @if (roleItem.scopeId === 'Wallet') {
-                            <cc-wallet-field
-                                [formField]="control[$index].resourceId"
-                                [partyId]="partyId()"
-                                hint="Leave empty for entire organization"
-                                placeholder="Entire organization"
-                            />
-                        } @else {
-                            <cc-shop-field
-                                [formField]="control[$index].resourceId"
-                                [partyId]="partyId()"
-                                hint="Leave empty for entire organization"
-                                placeholder="Entire organization"
-                            />
-                        }
                     </div>
                 </mat-expansion-panel>
             }

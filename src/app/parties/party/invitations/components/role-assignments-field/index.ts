@@ -1,1 +1,1 @@
-export * from './role-assignments-field.component';
+export * from '~/components/role-assignment-field';

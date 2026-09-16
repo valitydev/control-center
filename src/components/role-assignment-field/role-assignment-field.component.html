@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-4">
+    <v-select-field
+        [clearable]="false"
+        [formField]="control.roleId"
+        [options]="rolesOptions"
+        label="Role"
+    />
+
+    <v-select-field
+        [clearable]="false"
+        [formField]="control.scopeId"
+        [options]="scopeOptions"
+        label="Scope"
+        (valueChange)="changeScope()"
+    />
+
+    @if (formValue().scopeId === 'Wallet') {
+        <cc-wallet-field
+            [formField]="control.resourceId"
+            [partyId]="partyId()"
+            hint="Leave empty for entire organization"
+            placeholder="Entire organization"
+        />
+    } @else {
+        <cc-shop-field
+            [formField]="control.resourceId"
+            [partyId]="partyId()"
+            hint="Leave empty for entire organization"
+            placeholder="Entire organization"
+        />
+    }
+</div>

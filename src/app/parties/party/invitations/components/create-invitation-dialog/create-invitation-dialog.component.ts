@@ -14,8 +14,7 @@ import {
 import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
-
-import { RoleAssignmentsFieldComponent } from '../role-assignments-field';
+import { RoleAssignmentsFieldComponent } from '~/components/role-assignment-field';
 
 export interface CreateInvitationDialogData {
     organizationId: domain.OrganizationID;
