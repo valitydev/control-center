@@ -2,6 +2,11 @@
     <div class="dialog-title">
         <div>
             <h2 class="font-normal text-2xl">{{ title }}</h2>
+            @if (description) {
+                <div class="text-sm text-[var(--mat-sys-outline)] font-normal mt-0.5">
+                    {{ description }}
+                </div>
+            }
         </div>
         @if (!noCloseButton) {
             <mat-icon

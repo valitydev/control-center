@@ -1,6 +1,7 @@
 <v-dialog
+    [description]="dialogData.userEmail || dialogData.userId"
     [progress]="member.isLoading() || progress()"
-    [title]="'Manage roles: ' + (dialogData.userEmail || dialogData.userId)"
+    title="Manage roles"
 >
     @if (!member.isLoading()) {
         <cc-role-assignments-field [formField]="control" [partyId]="dialogData.partyId" />

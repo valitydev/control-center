@@ -23,6 +23,7 @@ export class DialogComponent implements Progressable {
     @HostBinding('class.v-dialog') hostClass: boolean = true;
 
     @Input() title!: string;
+    @Input() description?: string;
 
     @Input({ transform: booleanAttribute }) disabled: boolean = false;
     @Input() progress?: Progressable['progress'];
