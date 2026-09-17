@@ -111,10 +111,8 @@ export class MembersComponent {
         this.dialogService
             .open(ManageRolesDialogComponent, {
                 organizationId: org.id,
-                userId: member.user.id,
-                userEmail: member.user.email,
+                member,
                 partyId: org.party_id,
-                roles: member.roles,
             })
             .afterClosed()
             .pipe(filter((res) => res?.status === DialogResponseStatus.Success))

@@ -1,19 +1,17 @@
 <v-dialog
-    [description]="dialogData.userEmail || dialogData.userId"
-    [progress]="member.isLoading() || progress()"
+    [description]="
+        dialogData.member.user.email
+            ? dialogData.member.user.email + ' (' + dialogData.member.user.id + ')'
+            : dialogData.member.user.id
+    "
+    [progress]="progress()"
     title="Manage roles"
 >
-    @if (!member.isLoading()) {
-        <cc-role-assignments-field [formField]="control" [partyId]="dialogData.partyId" />
-    }
+    <cc-role-assignments-field [formField]="control" [partyId]="dialogData.partyId" />
 
     <v-dialog-actions>
         <button mat-button (click)="closeWithCancellation()">Cancel</button>
-        <button
-            [disabled]="member.isLoading() || progress() || control().invalid()"
-            mat-flat-button
-            (click)="save()"
-        >
+        <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="save()">
             Save
         </button>
     </v-dialog-actions>
