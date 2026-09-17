@@ -14,11 +14,17 @@ describe('RoleAssignmentsFieldComponent', () => {
     const repository = {
         GetRelatedGraph: vi.fn(({ type }) =>
             of({
-                nodes: new Set([
+                nodes: new Set(
                     type === DomainObjectType.wallet_config
-                        ? { ref: { wallet_config: { id: 'wallet-1' } }, name: 'Test wallet' }
-                        : { ref: { shop_config: { id: 'shop-1' } }, name: 'Test shop' },
-                ]),
+                        ? [
+                              { ref: { wallet_config: { id: 'wallet-1' } }, name: 'Test wallet 1' },
+                              { ref: { wallet_config: { id: 'wallet-2' } }, name: 'Test wallet 2' },
+                          ]
+                        : [
+                              { ref: { shop_config: { id: 'shop-1' } }, name: 'Test shop 1' },
+                              { ref: { shop_config: { id: 'shop-2' } }, name: 'Test shop 2' },
+                          ],
+                ),
             }),
         ),
     };
@@ -61,46 +67,63 @@ describe('RoleAssignmentsFieldComponent', () => {
         expect(Object.hasOwn(fixture.componentInstance.value()[0], 'scope')).toBe(false);
     });
 
-    it('selects shops and wallets, clearing the resource when switching scope', async () => {
+    it('selects multiple shops and creates multiple role assignments', async () => {
         fixture.componentInstance.addRole();
         await fixture.whenStable();
-        await selectOption('cc-shop-field', 'Test shop');
-        expect(fixture.componentInstance.value()[0].scope).toEqual({
-            scope_id: 'Shop',
-            resource_id: 'shop-1',
-        });
 
-        await selectOption('mat-expansion-panel > div v-select-field:nth-child(2)', 'Wallet');
+        await selectOption('cc-shop-field', 'Test shop 1');
+        expect(fixture.componentInstance.value()).toEqual([
+            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+        ]);
+
+        await selectOption('cc-shop-field', 'Test shop 2');
+        expect(fixture.componentInstance.value()).toEqual([
+            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-2' } },
+        ]);
+    });
+
+    it('clears resources when switching scope and selects multiple wallets', async () => {
+        fixture.componentInstance.addRole();
+        await fixture.whenStable();
+
+        await selectOption('cc-shop-field', 'Test shop 1');
+        expect(fixture.componentInstance.value()).toEqual([
+            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+        ]);
+
+        await selectOption('cc-role-assignment-field v-select-field:nth-of-type(2)', 'Wallet');
         expect(fixture.nativeElement.querySelector('cc-shop-field')).toBeNull();
         expect(
             fixture.nativeElement.querySelector('cc-wallet-field .ng-select-has-value'),
         ).toBeNull();
-        expect(fixture.componentInstance.value()[0]).not.toHaveProperty('scope');
+        expect(fixture.componentInstance.value()).toEqual([{ role_id: 'Integrator' }]);
 
-        await selectOption('cc-wallet-field', 'Test wallet');
-        expect(fixture.componentInstance.value()[0].scope).toEqual({
-            scope_id: 'Wallet',
-            resource_id: 'wallet-1',
-        });
-
-        fixture.nativeElement
-            .querySelector('cc-wallet-field .ng-select-clear')
-            .dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-        await fixture.whenStable();
-        expect(fixture.componentInstance.value()[0]).not.toHaveProperty('scope');
-        expect(
-            fixture.nativeElement.querySelector('cc-wallet-field .ng-select-has-value'),
-        ).toBeNull();
-    });
-
-    it('restores an existing wallet scope', async () => {
-        fixture.componentRef.setInput('value', [
+        await selectOption('cc-wallet-field', 'Test wallet 1');
+        expect(fixture.componentInstance.value()).toEqual([
             { role_id: 'Integrator', scope: { scope_id: 'Wallet', resource_id: 'wallet-1' } },
         ]);
+    });
+
+    it('restores and groups existing roles for the same role and scope', async () => {
+        fixture.componentRef.setInput('value', [
+            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-2' } },
+        ]);
         await fixture.whenStable();
-        expect(fixture.nativeElement.querySelector('cc-wallet-field').textContent).toContain(
-            'Test wallet',
+
+        expect(fixture.componentInstance.groups()).toMatchObject([
+            {
+                roleId: 'Integrator',
+                scopeId: 'Shop',
+                resourceIds: ['shop-1', 'shop-2'],
+            },
+        ]);
+        expect(fixture.nativeElement.querySelector('cc-shop-field').textContent).toContain(
+            'Test shop 1',
         );
-        expect(fixture.componentInstance.value()[0].scope.resource_id).toBe('wallet-1');
+        expect(fixture.nativeElement.querySelector('cc-shop-field').textContent).toContain(
+            'Test shop 2',
+        );
     });
 });

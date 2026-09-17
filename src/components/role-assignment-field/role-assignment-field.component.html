@@ -14,18 +14,20 @@
         (valueChange)="changeScope()"
     />
 
-    @if (formValue().scopeId === 'Wallet') {
+    @if (value().scopeId === 'Wallet') {
         <cc-wallet-field
-            [formField]="control.resourceId"
+            [formField]="control.resourceIds"
             [partyId]="partyId()"
             hint="Leave empty for entire organization"
+            multiple
             placeholder="Entire organization"
         />
     } @else {
         <cc-shop-field
-            [formField]="control.resourceId"
+            [formField]="control.resourceIds"
             [partyId]="partyId()"
             hint="Leave empty for entire organization"
+            multiple
             placeholder="Entire organization"
         />
     }

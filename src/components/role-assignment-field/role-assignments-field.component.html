@@ -7,23 +7,32 @@
         </button>
     </div>
 
-    @if ((value() || []).length === 0) {
+    @if ((groups() || []).length === 0) {
         <div class="text-sm text-[var(--mat-sys-outline)]">
             No roles assigned (user will become a member without roles)
         </div>
     } @else {
         <mat-accordion
             class="flex flex-col overflow-hidden rounded-xl border border-solid border-[var(--mat-sys-outline-variant)]"
-            multi
         >
-            @for (roleItem of value(); track $index) {
+            @for (roleItem of groups(); track $index) {
                 <mat-expansion-panel
                     [expanded]="true"
                     class="!m-0 !rounded-none !border-0 !shadow-none [&:not(:first-child)]:!border-t [&:not(:first-child)]:!border-solid [&:not(:first-child)]:!border-[var(--mat-sys-outline-variant)]"
                 >
                     <mat-expansion-panel-header class="flex gap-2">
                         <mat-panel-title>
-                            {{ roleItem.role_id || 'Role #' + ($index + 1) }}
+                            {{ roleItem.roleId || 'Role #' + ($index + 1) }}&nbsp;
+                            <span class="text-[var(--mat-sys-outline)]">
+                                for
+                                {{
+                                    roleItem.resourceIds?.length
+                                        ? roleItem.resourceIds.length +
+                                          ' ' +
+                                          (roleItem.scopeId | lowercase)
+                                        : 'entire organization'
+                                }}</span
+                            >
                         </mat-panel-title>
                         <button
                             aria-label="Delete Role"
