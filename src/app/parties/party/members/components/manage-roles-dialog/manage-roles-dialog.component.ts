@@ -1,4 +1,3 @@
-import isEqual from 'lodash-es/isEqual';
 import { Observable, forkJoin } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
@@ -12,19 +11,12 @@ import { domain } from '@vality/org-management-proto/admin_management';
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { RoleAssignmentsFieldComponent } from '~/components/role-assignment-field';
 
+import { diffMemberRoles } from './utils';
+
 export interface ManageRolesDialogData {
     organizationId: domain.OrganizationID;
     member: domain.Member;
     partyId?: domain.PartyID;
-}
-
-function toRoleAssignment(role: domain.RoleAssignment): domain.RoleAssignment {
-    return {
-        role_id: role.role_id,
-        ...(role.scope?.resource_id
-            ? { scope: { scope_id: role.scope.scope_id, resource_id: role.scope.resource_id } }
-            : {}),
-    };
 }
 
 @Component({
@@ -64,21 +56,7 @@ export class ManageRolesDialogComponent extends DialogSuperclass<
     });
 
     save(): void {
-        const currentAssignments = this.roles();
-        const remainingInitial = [...this.initialMemberRoles];
-        const toAdd: domain.RoleAssignment[] = [];
-
-        for (const curr of currentAssignments) {
-            const idx = remainingInitial.findIndex((init) =>
-                isEqual(toRoleAssignment(init), toRoleAssignment(curr)),
-            );
-            if (idx !== -1) {
-                remainingInitial.splice(idx, 1);
-            } else {
-                toAdd.push(curr);
-            }
-        }
-        const toRemove = remainingInitial;
+        const { toAdd, toRemove } = diffMemberRoles(this.initialMemberRoles, this.roles());
 
         const calls: Observable<unknown>[] = [
             ...toRemove.map((r) =>
