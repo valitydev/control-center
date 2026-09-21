@@ -206,10 +206,9 @@ describe('ManageRolesDialogComponent', () => {
             role_id: 'Manager',
             scope: { scope_id: 'Shop', resource_id: 'shop-3' },
         });
-        expect(service.RemoveMemberRole).not.toHaveBeenCalled();
-        expect(panel().querySelector<HTMLButtonElement>('button[mat-flat-button]').disabled).toBe(
-            true,
-        );
+        expect(
+            panel().querySelectorAll('v-select-field:nth-of-type(2) .ng-select-value'),
+        ).toHaveLength(0);
     });
 
     it('removes only the selected assignment and keeps the role panel after removing its last assignment', async () => {

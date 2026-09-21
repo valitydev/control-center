@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    input,
+    output,
+    signal,
+} from '@angular/core';
 import { FormField, disabled, form } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -25,6 +33,22 @@ export class MemberRolePanelComponent {
     disabled = input(false);
     assign = output<domain.RoleAssignment>();
     remove = output<domain.MemberRole>();
+
+    constructor() {
+        effect(() => {
+            const currentResourceId = this.newRole().resourceId;
+            if (
+                currentResourceId &&
+                this.roles().some(
+                    (role) =>
+                        role.scope?.scope_id === this.newRole().scopeId &&
+                        role.scope?.resource_id === currentResourceId,
+                )
+            ) {
+                this.newRole.update((role) => ({ ...role, resourceId: '' }));
+            }
+        });
+    }
 
     newRole = signal({ scopeId: SCOPES[0] as ScopeId, resourceId: '' });
     control = form(this.newRole, (path) => disabled(path, () => this.disabled()));

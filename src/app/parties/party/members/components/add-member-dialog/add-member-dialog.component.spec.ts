@@ -140,6 +140,9 @@ describe('AddMemberDialogComponent', () => {
             scope: { scope_id: 'Shop', resource_id: 'shop-1' },
         });
         expect(panel().textContent).toContain('Test shop-1');
+        expect(
+            panel().querySelectorAll('v-select-field:nth-of-type(2) .ng-select-value'),
+        ).toHaveLength(0);
 
         panel().querySelector<HTMLElement>('button[aria-label^="Remove"]').click();
         await fixture.whenStable();
