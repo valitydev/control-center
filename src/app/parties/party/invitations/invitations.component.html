@@ -1,7 +1,7 @@
 <cc-page-layout [progress]="organization.isLoading()" fullHeight title="Invitations">
     <cc-page-layout-actions>
         @if (organization.value()) {
-            <button mat-flat-button (click)="create()">Create</button>
+            <button mat-flat-button (click)="create()">Send invitation</button>
             @if (filtersComponent(); as filters) {
                 <v-more-filters-button [filters]="filters"></v-more-filters-button>
             }

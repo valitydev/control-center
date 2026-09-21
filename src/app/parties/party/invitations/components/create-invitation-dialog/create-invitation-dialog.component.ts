@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -14,7 +13,7 @@ import {
 import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
-import { RoleAssignmentsFieldComponent } from '~/components/role-assignment-field';
+import { MemberRolesManagerComponent } from '~/components/member-roles-manager';
 
 export interface CreateInvitationDialogData {
     organizationId: domain.OrganizationID;
@@ -23,7 +22,6 @@ export interface CreateInvitationDialogData {
 
 interface CreateInvitationModel {
     email: string;
-    roles: domain.RoleAssignment[];
 }
 
 @Component({
@@ -31,11 +29,10 @@ interface CreateInvitationModel {
     imports: [
         CommonModule,
         DialogModule,
-        ReactiveFormsModule,
         MatButtonModule,
         InputFieldModule,
         FormField,
-        RoleAssignmentsFieldComponent,
+        MemberRolesManagerComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './create-invitation-dialog.component.html',
@@ -49,7 +46,6 @@ export class CreateInvitationDialogComponent extends DialogSuperclass<
 
     controlModel = signal<CreateInvitationModel>({
         email: '',
-        roles: [],
     });
 
     control = form(this.controlModel, (schemaPath) => {
@@ -57,10 +53,33 @@ export class CreateInvitationDialogComponent extends DialogSuperclass<
         email(schemaPath.email);
     });
 
+    roles = signal<domain.MemberRole[]>([]);
     progress = signal(0);
 
-    create() {
-        const { email: invitationEmail, roles } = this.controlModel();
+    assignRole(assignment: domain.RoleAssignment): void {
+        if (
+            this.roles().some(
+                (role) =>
+                    role.role_id === assignment.role_id &&
+                    role.scope?.scope_id === assignment.scope?.scope_id &&
+                    role.scope?.resource_id === assignment.scope?.resource_id,
+            )
+        ) {
+            return;
+        }
+        this.roles.update((roles) => [...roles, { id: crypto.randomUUID(), ...assignment }]);
+    }
+
+    removeRole(role: domain.MemberRole): void {
+        this.roles.update((roles) => roles.filter((assigned) => assigned.id !== role.id));
+    }
+
+    create(): void {
+        const { email: invitationEmail } = this.controlModel();
+        const roles: domain.RoleAssignment[] = this.roles().map((role) => ({
+            role_id: role.role_id,
+            ...(role.scope ? { scope: role.scope } : {}),
+        }));
 
         this.thriftOrgManagementService
             .CreateInvitation(this.dialogData.organizationId, {
@@ -70,7 +89,7 @@ export class CreateInvitationDialogComponent extends DialogSuperclass<
             .pipe(progressTo(this.progress))
             .subscribe({
                 next: () => {
-                    this.log.success('Invitation created');
+                    this.log.success('Invitation sent');
                     this.closeWithSuccess();
                 },
                 error: (err) => {

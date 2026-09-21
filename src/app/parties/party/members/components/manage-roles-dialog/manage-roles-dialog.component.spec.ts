@@ -116,7 +116,12 @@ describe('ManageRolesDialogComponent', () => {
         await openRole('Accountant');
         expect(panel().textContent).toContain('No assignments');
         expect(panel().querySelectorAll('[data-assignment-form]')).toHaveLength(1);
-        expect(panel().querySelectorAll('v-select-field')).toHaveLength(2);
+        expect(panel().querySelector('mat-panel-description').textContent.trim()).toBe('no roles');
+        expect(
+            fixture.nativeElement
+                .querySelector('[data-role="Manager"] mat-panel-description')
+                .textContent.trim(),
+        ).toBe('2 shops');
         expect(
             fixture.nativeElement.querySelectorAll('v-dialog > [data-assignment-form]'),
         ).toHaveLength(0);

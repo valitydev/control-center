@@ -1,12 +1,21 @@
-<v-dialog [progress]="progress()" title="Create invitation">
+<v-dialog [progress]="progress()" title="Send invitation">
     <div class="flex flex-col gap-4">
         <v-input-field [formField]="control.email" label="Email" />
-        <cc-role-assignments-field [formField]="control.roles" [partyId]="dialogData.partyId" />
+        <div class="flex flex-col gap-2">
+            <span class="mat-title-small font-medium">Roles</span>
+            <cc-member-roles-manager
+                [disabled]="progress() > 0"
+                [partyId]="dialogData.partyId"
+                [roles]="roles()"
+                (assign)="assignRole($event)"
+                (remove)="removeRole($event)"
+            />
+        </div>
     </div>
 
     <v-dialog-actions>
         <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="create()">
-            Create
+            Send
         </button>
     </v-dialog-actions>
 </v-dialog>

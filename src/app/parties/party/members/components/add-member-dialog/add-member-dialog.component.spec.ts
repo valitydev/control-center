@@ -143,12 +143,14 @@ describe('AddMemberDialogComponent', () => {
         expect(
             panel().querySelectorAll('v-select-field:nth-of-type(2) .ng-select-value'),
         ).toHaveLength(0);
+        expect(panel().querySelector('mat-panel-description').textContent.trim()).toBe('1 shop');
 
         panel().querySelector<HTMLElement>('button[aria-label^="Remove"]').click();
         await fixture.whenStable();
 
         expect(fixture.componentInstance.roles()).toHaveLength(0);
         expect(panel().textContent).toContain('No assignments');
+        expect(panel().querySelector('mat-panel-description').textContent.trim()).toBe('no roles');
         expect(service.AssignMemberRole).not.toHaveBeenCalled();
     });
 

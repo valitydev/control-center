@@ -11,7 +11,9 @@
         >
             <mat-expansion-panel-header>
                 <mat-panel-title>{{ group.roleId }}</mat-panel-title>
-                <mat-panel-description>({{ group.roles.length }})</mat-panel-description>
+                <mat-panel-description class="!text-[var(--mat-sys-outline)]">
+                    {{ group.description }}
+                </mat-panel-description>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
                 <cc-member-role-panel

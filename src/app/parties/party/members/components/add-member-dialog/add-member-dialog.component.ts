@@ -16,9 +16,8 @@ import {
 import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
+import { MemberRolesManagerComponent } from '~/components/member-roles-manager';
 import { UserFieldComponent } from '~/components/user-field';
-
-import { MemberRolesManagerComponent } from '../member-roles-manager';
 
 export interface AddMemberDialogData {
     organizationId: domain.OrganizationID;
