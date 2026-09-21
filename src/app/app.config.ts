@@ -27,7 +27,7 @@ import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectHistoryCardComponent } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
-import { provideAppAuth } from '~/services/app-auth-guard/provide-app-auth';
+import { provideAppAuth } from '~/services';
 import { parseThriftError } from '~/utils';
 
 import { routes } from './app.routes';
