@@ -19,59 +19,67 @@
                             }}</span>
                         }
                     </span>
-                    <button
-                        [attr.aria-label]="'Remove ' + role.role_id + ' for ' + resourceName(role)"
-                        [disabled]="disabled()"
-                        mat-icon-button
-                        type="button"
-                        (click)="remove.emit(role)"
-                    >
-                        <mat-icon>delete</mat-icon>
-                    </button>
+                    @if (!readonly()) {
+                        <button
+                            [attr.aria-label]="
+                                'Remove ' + role.role_id + ' for ' + resourceName(role)
+                            "
+                            [disabled]="disabled()"
+                            mat-icon-button
+                            type="button"
+                            (click)="remove.emit(role)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    }
                 </div>
             }
         </section>
     } @empty {
         <p class="text-sm text-[var(--mat-sys-outline)]">No assignments</p>
     }
-    <mat-divider />
-    <div class="flex flex-col gap-4" data-assignment-form>
-        <h4 class="mat-title-small">Assign role</h4>
-        @if (hasEntireOrg()) {
-            <p class="text-sm text-[var(--mat-sys-outline)]">
-                This role is already assigned to the entire organization.
-            </p>
-        } @else {
-            <v-select-field
-                [clearable]="false"
-                [formField]="control.scopeId"
-                [options]="scopeOptions"
-                label="Scope"
-                (valueChange)="changeScope()"
-            />
-            <v-select-field
-                [formField]="control.resourceId"
-                [label]="newRole().scopeId"
-                [options]="newRole().scopeId === 'Wallet' ? availableWallets() : availableShops()"
-                [progress]="newRole().scopeId === 'Wallet' ? walletsLoading() : shopsLoading()"
-                hint="Leave empty for entire organization"
-                placeholder="Entire organization"
-            />
-            @if (alreadyAssigned()) {
+    @if (!readonly()) {
+        <mat-divider />
+        <div class="flex flex-col gap-4" data-assignment-form>
+            <h4 class="mat-title-small">Assign role</h4>
+            @if (hasEntireOrg()) {
                 <p class="text-sm text-[var(--mat-sys-outline)]">
-                    This role is already assigned to the selected scope.
+                    This role is already assigned to the entire organization.
                 </p>
+            } @else {
+                <v-select-field
+                    [clearable]="false"
+                    [formField]="control.scopeId"
+                    [options]="scopeOptions"
+                    label="Scope"
+                    (valueChange)="changeScope()"
+                />
+                <v-select-field
+                    [formField]="control.resourceId"
+                    [label]="newRole().scopeId"
+                    [options]="
+                        newRole().scopeId === 'Wallet' ? availableWallets() : availableShops()
+                    "
+                    [progress]="newRole().scopeId === 'Wallet' ? walletsLoading() : shopsLoading()"
+                    hint="Leave empty for entire organization"
+                    placeholder="Entire organization"
+                />
+                @if (alreadyAssigned()) {
+                    <p class="text-sm text-[var(--mat-sys-outline)]">
+                        This role is already assigned to the selected scope.
+                    </p>
+                }
+                <div class="flex justify-end">
+                    <button
+                        [disabled]="disabled() || alreadyAssigned()"
+                        mat-flat-button
+                        type="button"
+                        (click)="submitAssignment()"
+                    >
+                        Assign
+                    </button>
+                </div>
             }
-            <div class="flex justify-end">
-                <button
-                    [disabled]="disabled() || alreadyAssigned()"
-                    mat-flat-button
-                    type="button"
-                    (click)="submitAssignment()"
-                >
-                    Assign
-                </button>
-            </div>
-        }
-    </div>
+        </div>
+    }
 </div>

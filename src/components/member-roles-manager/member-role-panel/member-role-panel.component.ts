@@ -31,6 +31,7 @@ export class MemberRolePanelComponent {
     shopsLoading = input(false);
     walletsLoading = input(false);
     disabled = input(false);
+    readonly = input(false);
     assign = output<domain.RoleAssignment>();
     remove = output<domain.MemberRole>();
 

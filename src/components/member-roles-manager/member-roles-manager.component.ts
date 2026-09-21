@@ -31,16 +31,25 @@ export class MemberRolesManagerComponent {
     private repositoryService = inject(ThriftRepositoryService);
     private log = inject(NotifyLogService);
 
-    roles = input.required<domain.MemberRole[]>();
+    roles = input.required<(domain.MemberRole | domain.RoleAssignment)[]>();
     partyId = input<domain.PartyID>();
     disabled = input(false);
+    readonly = input(false);
 
     expandedRole = model<string | null>(null);
 
     assign = output<domain.RoleAssignment>();
     remove = output<domain.MemberRole>();
 
-    groups = computed(() => groupMemberRoles(this.roles()));
+    normalizedRoles = computed<domain.MemberRole[]>(() =>
+        this.roles().map((r, index) => ({
+            id: (r as domain.MemberRole).id || `role-${index}-${r.role_id}`,
+            role_id: r.role_id,
+            ...(r.scope ? { scope: r.scope } : {}),
+        })),
+    );
+
+    groups = computed(() => groupMemberRoles(this.normalizedRoles()));
 
     shops = observableResource<Option<string>[], domain.PartyID | undefined>({
         params: this.partyId,

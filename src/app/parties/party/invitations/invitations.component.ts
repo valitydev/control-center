@@ -43,10 +43,12 @@ import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
+import { createRolesColumn, createWalletRolesColumn } from '~/utils';
 
 import { PartyStoreService } from '../party-store.service';
 
 import { CreateInvitationDialogComponent } from './components/create-invitation-dialog';
+import { ViewRolesDialogComponent } from './components/view-roles-dialog';
 
 export interface InvitationsFilters {
     status: domain.InvitationStatus | null;
@@ -161,23 +163,14 @@ export class InvitationsComponent {
                 };
             },
         },
-        {
-            field: 'roles',
-            cell: (inv) => ({
-                value:
-                    (inv.roles || [])
-                        .map((r) => {
-                            if (!r.scope) {
-                                return r.role_id;
-                            }
-                            const scopeDesc = r.scope.resource_id
-                                ? `${r.scope.scope_id}: ${r.scope.resource_id}`
-                                : r.scope.scope_id;
-                            return `${r.role_id} (${scopeDesc})`;
-                        })
-                        .join(', ') || '—',
-            }),
-        },
+        createRolesColumn((inv) => ({
+            roles: inv.roles,
+            click: () => this.viewRoles(inv),
+        })),
+        createWalletRolesColumn((inv) => ({
+            roles: inv.roles,
+            click: () => this.viewRoles(inv),
+        })),
         {
             field: 'created_at',
             header: 'Created at',
@@ -190,6 +183,10 @@ export class InvitationsComponent {
         },
         createMenuColumn((inv) => ({
             items: [
+                {
+                    label: 'View roles',
+                    click: () => this.viewRoles(inv),
+                },
                 {
                     label: 'Revoke',
                     disabled: inv.status !== domain.InvitationStatus.pending,
@@ -218,6 +215,15 @@ export class InvitationsComponent {
             .subscribe(() => {
                 this.invitations.reload();
             });
+    }
+
+    viewRoles(inv: domain.Invitation): void {
+        const org = this.organization.value();
+        this.dialogService.open(ViewRolesDialogComponent, {
+            email: inv.email,
+            roles: inv.roles || [],
+            partyId: org?.party_id,
+        });
     }
 
     revoke(inv: domain.Invitation): void {

@@ -18,12 +18,12 @@ import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
+import { createRolesColumn, createWalletRolesColumn } from '~/utils';
 
 import { PartyStoreService } from '../party-store.service';
 
 import { AddMemberDialogComponent } from './components/add-member-dialog';
 import { ManageRolesDialogComponent } from './components/manage-roles-dialog';
-import { getGeneralRoleIds, getWalletRoleIds } from './utils';
 
 @Component({
     selector: 'cc-members',
@@ -72,31 +72,14 @@ export class MembersComponent {
             field: 'email',
             cell: (m) => ({ value: m.user.email }),
         },
-        {
-            field: 'roles',
-            cell: (m) => {
-                const roles = getGeneralRoleIds(m.roles);
-                const str = roles.join(', ') || '—';
-                return {
-                    value: str,
-                    tooltip: str,
-                    click: () => this.manageRoles(m),
-                };
-            },
-        },
-        {
-            field: 'wallet_roles',
-            header: 'Wallet roles',
-            cell: (m) => {
-                const roles = getWalletRoleIds(m.roles);
-                const str = roles.join(', ') || '—';
-                return {
-                    value: str,
-                    tooltip: str,
-                    click: () => this.manageRoles(m),
-                };
-            },
-        },
+        createRolesColumn((m) => ({
+            roles: m.roles,
+            click: () => this.manageRoles(m),
+        })),
+        createWalletRolesColumn((m) => ({
+            roles: m.roles,
+            click: () => this.manageRoles(m),
+        })),
 
         createMenuColumn((m) => ({
             items: [

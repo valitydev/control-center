@@ -18,6 +18,7 @@
             <ng-template matExpansionPanelContent>
                 <cc-member-role-panel
                     [disabled]="disabled()"
+                    [readonly]="readonly()"
                     [roleId]="group.roleId"
                     [roles]="group.roles"
                     [shops]="shops.value() || []"
