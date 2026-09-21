@@ -1,25 +1,21 @@
 import { of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 
-import { DomainObjectType } from '@vality/domain-proto/domain';
 import {
     DialogModule,
     DialogSuperclass,
     NotifyLogService,
-    Option,
     observableResource,
     progressTo,
 } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
-import { ThriftOrganizationManagementService, ThriftRepositoryService } from '~/api/services';
+import { ThriftOrganizationManagementService } from '~/api/services';
 
-import { MemberRolePanelComponent } from './member-role-panel/member-role-panel.component';
-import { groupMemberRoles } from './utils/group-member-roles';
+import { MemberRolesManagerComponent } from '../member-roles-manager';
 
 export interface ManageRolesDialogData {
     organizationId: domain.OrganizationID;
@@ -31,18 +27,16 @@ export interface ManageRolesDialogData {
     selector: 'cc-manage-roles-dialog',
     templateUrl: './manage-roles-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [DialogModule, MatButtonModule, MatExpansionModule, MemberRolePanelComponent],
+    imports: [DialogModule, MatButtonModule, MemberRolesManagerComponent],
 })
 export class ManageRolesDialogComponent extends DialogSuperclass<
     ManageRolesDialogComponent,
     ManageRolesDialogData
 > {
     private thriftOrgManagementService = inject(ThriftOrganizationManagementService);
-    private repositoryService = inject(ThriftRepositoryService);
     private log = inject(NotifyLogService);
 
     roles = signal(this.dialogData.member.roles || []);
-    groups = computed(() => groupMemberRoles(this.roles()));
     expandedGroup = signal<string | null>(null);
     hasChanges = signal(false);
     actionProgress = signal(0);
@@ -58,10 +52,6 @@ export class ManageRolesDialogComponent extends DialogSuperclass<
                     }),
                     tap((member) => this.roles.set(member.roles || [])),
                 ),
-    });
-    shops = observableResource({ loader: () => this.loadResources(DomainObjectType.shop_config) });
-    wallets = observableResource({
-        loader: () => this.loadResources(DomainObjectType.wallet_config),
     });
     busy = computed(() => this.member.isLoading() || !!this.actionProgress());
 
@@ -127,32 +117,5 @@ export class ManageRolesDialogComponent extends DialogSuperclass<
         } else {
             this.closeWithCancellation();
         }
-    }
-
-    private loadResources(type: DomainObjectType.shop_config | DomainObjectType.wallet_config) {
-        if (!this.dialogData.partyId) {
-            return of<Option<string>[]>([]);
-        }
-        return this.repositoryService
-            .GetRelatedGraph({ ref: { party_config: { id: this.dialogData.partyId } }, type })
-            .pipe(
-                map(({ nodes }): Option<string>[] =>
-                    Array.from(nodes, (node) => ({
-                        value:
-                            type === DomainObjectType.shop_config
-                                ? node.ref.shop_config.id
-                                : node.ref.wallet_config.id,
-                        label: node.name,
-                        description: node.description,
-                    })),
-                ),
-                map((options) =>
-                    options.map((option) => ({ ...option, label: option.label || option.value })),
-                ),
-                catchError((err) => {
-                    this.log.error(err);
-                    return of<Option<string>[]>([]);
-                }),
-            );
     }
 }

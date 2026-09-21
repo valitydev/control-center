@@ -2,7 +2,7 @@ import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ROLES, sortRoleIds } from '~/api/org-management';
 
-interface MemberRoleGroup {
+export interface MemberRoleGroup {
     roleId: domain.RoleID;
     roles: domain.MemberRole[];
 }

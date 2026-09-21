@@ -37,7 +37,7 @@ describe('ManageRolesDialogComponent', () => {
                 nodes: new Set([
                     ...(type === DomainObjectType.wallet_config
                         ? [{ ref: { wallet_config: { id: 'wallet-1' } }, name: 'Wallet 1' }]
-                        : ['shop-1', 'shop-2', 'shop-3'].map((id) => ({
+                        : ['shop-1', 'shop-2', 'shop-3', 'shop-4'].map((id) => ({
                               ref: { shop_config: { id } },
                               name: `Test ${id}`,
                           }))),
@@ -195,7 +195,7 @@ describe('ManageRolesDialogComponent', () => {
 
     it('allows only one shop and does not mutate roles until Assign is clicked', async () => {
         await openRole('Manager');
-        await selectOption('resource', 'Test shop-1');
+        await selectOption('resource', 'Test shop-4');
         await selectOption('resource', 'Test shop-3');
         expect(
             panel().querySelectorAll('v-select-field:nth-of-type(2) .ng-select-value'),
@@ -270,17 +270,36 @@ describe('ManageRolesDialogComponent', () => {
         );
     });
 
-    it('prevents duplicate assignments in the panel and API handler', async () => {
+    it('prevents duplicate assignments in the panel and API handler and hides selectors when entire org is assigned', async () => {
         await openRole('Manager');
-        await selectOption('resource', 'Test shop-1');
-        expect(panel().querySelector<HTMLButtonElement>('button[mat-flat-button]').disabled).toBe(
-            true,
+        panel()
+            .querySelector<HTMLElement>(
+                '[data-assignment-form] v-select-field:nth-of-type(2) .ng-select-control',
+            )
+            .click();
+        await fixture.whenStable();
+        const options = Array.from(document.querySelectorAll<HTMLElement>('.ng-select-option')).map(
+            (item) => item.textContent.trim(),
         );
+        expect(options).not.toContain('Test shop-1');
+        expect(options).not.toContain('Test shop-2');
+        expect(options).toContain('Test shop-3');
+        expect(options).toContain('Test shop-4');
+        document.body.click();
+        await fixture.whenStable();
+
         fixture.componentInstance.assignRole({
             role_id: 'Manager',
             scope: { scope_id: 'Shop', resource_id: 'shop-1' },
         });
         expect(service.AssignMemberRole).not.toHaveBeenCalled();
+
+        await openRole('Administrator');
+        await assign();
+        expect(panel().querySelectorAll('v-select-field')).toHaveLength(0);
+        expect(panel().textContent).toContain(
+            'This role is already assigned to the entire organization.',
+        );
     });
 
     it('keeps the form selection and current assignments when adding fails', async () => {

@@ -36,11 +36,28 @@ export class MemberRolePanelComponent {
             ...(resourceId ? { scope: { scope_id: scopeId, resource_id: resourceId } } : {}),
         };
     });
+    hasEntireOrg = computed(() => this.roles().some((role) => !role.scope?.scope_id));
+    availableShops = computed(() => {
+        const assignedShopIds = new Set(
+            this.roles()
+                .filter((role) => role.scope?.scope_id === 'Shop' && role.scope?.resource_id)
+                .map((role) => role.scope.resource_id),
+        );
+        return this.shops().filter((option) => !assignedShopIds.has(option.value));
+    });
+    availableWallets = computed(() => {
+        const assignedWalletIds = new Set(
+            this.roles()
+                .filter((role) => role.scope?.scope_id === 'Wallet' && role.scope?.resource_id)
+                .map((role) => role.scope.resource_id),
+        );
+        return this.wallets().filter((option) => !assignedWalletIds.has(option.value));
+    });
     alreadyAssigned = computed(() =>
         this.roles().some(
             (role) =>
-                role.scope?.scope_id === this.request().scope?.scope_id &&
-                role.scope?.resource_id === this.request().scope?.resource_id,
+                (role.scope?.scope_id || '') === (this.request().scope?.scope_id || '') &&
+                (role.scope?.resource_id || '') === (this.request().scope?.resource_id || ''),
         ),
     );
     sections = computed(() => {
