@@ -1,0 +1,22 @@
+<v-dialog [progress]="progress()" title="Add member">
+    <div class="flex flex-col gap-4">
+        <cc-user-field [formField]="control.user_id" (userSelected)="onUserSelected($event)" />
+        <v-input-field [formField]="control.email" label="Email" />
+        <div class="flex flex-col gap-2">
+            <span class="mat-title-small font-medium">Roles</span>
+            <cc-member-roles-manager
+                [disabled]="progress() > 0"
+                [partyId]="dialogData.partyId"
+                [roles]="roles()"
+                (assign)="assignRole($event)"
+                (remove)="removeRole($event)"
+            />
+        </div>
+    </div>
+
+    <v-dialog-actions>
+        <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="add()">
+            Add
+        </button>
+    </v-dialog-actions>
+</v-dialog>

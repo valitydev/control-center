@@ -1,0 +1,46 @@
+<mat-form-field class="w-full">
+    <mat-label>{{ label() }}</mat-label>
+    <input
+        #userInput="matAutocompleteTrigger"
+        [formField]="control"
+        [matAutocomplete]="auto"
+        matInput
+        type="text"
+        (blur)="touch.emit()"
+    />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+        @for (user of filteredUsers(); track user.id) {
+            <mat-option [value]="user.id">
+                <div class="flex flex-col py-1">
+                    <span class="font-medium text-sm leading-tight">{{
+                        user.email || user.id
+                    }}</span>
+                    @if (user.email) {
+                        <span class="text-xs text-[var(--mat-sys-outline)] leading-tight">{{
+                            user.id
+                        }}</span>
+                    }
+                </div>
+            </mat-option>
+        }
+    </mat-autocomplete>
+    <div class="flex gap-1 items-center" matSuffix>
+        @if (value()) {
+            <button mat-icon-button type="button" (click)="clear(); $event.stopPropagation()">
+                <mat-icon>clear</mat-icon>
+            </button>
+        }
+        @if (users.value()?.length) {
+            <button
+                mat-icon-button
+                type="button"
+                (click)="
+                    auto.isOpen ? userInput.closePanel() : userInput.openPanel();
+                    $event.stopPropagation()
+                "
+            >
+                <mat-icon>{{ auto.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+        }
+    </div>
+</mat-form-field>

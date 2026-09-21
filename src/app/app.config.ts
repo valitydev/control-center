@@ -1,9 +1,3 @@
-import {
-    AutoRefreshTokenService,
-    UserActivityService,
-    provideKeycloak,
-    withAutoRefreshToken,
-} from 'keycloak-angular';
 import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
 import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
@@ -15,7 +9,6 @@ import {
     ErrorHandler,
     LOCALE_ID,
     inject,
-    isDevMode,
     provideAppInitializer,
     provideBrowserGlobalErrorListeners,
     provideZoneChangeDetection,
@@ -34,6 +27,7 @@ import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectHistoryCardComponent } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
+import { provideAppAuth } from '~/services';
 import { parseThriftError } from '~/utils';
 
 import { routes } from './app.routes';
@@ -57,17 +51,7 @@ export const appConfig: ApplicationConfig = {
         provideBrowserGlobalErrorListeners(),
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),
-        provideKeycloak({
-            config: './assets/authConfig.json' as never,
-            initOptions: { onLoad: 'login-required', checkLoginIframe: !isDevMode() },
-            features: [
-                withAutoRefreshToken({
-                    onInactivityTimeout: 'login',
-                    sessionTimeout: 4 * 60 * 60_000,
-                }),
-            ],
-            providers: [AutoRefreshTokenService, UserActivityService],
-        }),
+        provideAppAuth(),
         provideHttpClient(withXhr(), withInterceptorsFromDi()),
         { provide: MAT_DATE_FORMATS, useValue: DEFAULT_MAT_DATE_FORMATS },
         { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },

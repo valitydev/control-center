@@ -1,21 +1,29 @@
-import { of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { EMPTY, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import {
     Column,
+    ConfirmDialogComponent,
+    DialogResponseStatus,
+    DialogService,
     NotifyLogService,
     TableResourceComponent,
+    createMenuColumn,
     pagedObservableResource,
 } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
+import { createRolesColumn, createWalletRolesColumn } from '~/utils';
 
 import { PartyStoreService } from '../party-store.service';
+
+import { AddMemberDialogComponent } from './components/add-member-dialog';
+import { ManageRolesDialogComponent } from './components/manage-roles-dialog';
 
 @Component({
     selector: 'cc-members',
@@ -25,10 +33,12 @@ import { PartyStoreService } from '../party-store.service';
 })
 export class MembersComponent {
     private thriftOrgManagementService = inject(ThriftOrganizationManagementService);
+    private dialogService = inject(DialogService);
     private log = inject(NotifyLogService);
     private partyStoreService = inject(PartyStoreService);
 
     organization = this.partyStoreService.organization;
+    organizationNotFound = this.partyStoreService.organizationNotFound;
 
     members = pagedObservableResource<domain.Member, string>({
         params: computed(() => this.organization.value()?.id),
@@ -56,19 +66,90 @@ export class MembersComponent {
         {
             field: 'id',
             header: 'User ID',
-            cell: (m) => ({ value: m.id }),
+            cell: (m) => ({ value: m.user.id }),
         },
         {
             field: 'email',
-            cell: (m) => ({ value: m.email || '—' }),
+            cell: (m) => ({ value: m.user.email }),
         },
-        {
-            field: 'roles',
-            cell: (m) => ({
-                value: (m.roles || []).map((r) => r.role_id).join(', ') || '—',
-            }),
-        },
+        createRolesColumn((m) => ({
+            roles: m.roles,
+            click: () => this.manageRoles(m),
+        })),
+        createWalletRolesColumn((m) => ({
+            roles: m.roles,
+            click: () => this.manageRoles(m),
+        })),
+
+        createMenuColumn((m) => ({
+            items: [
+                {
+                    label: 'Manage roles',
+                    click: () => this.manageRoles(m),
+                },
+                {
+                    label: 'Remove member',
+                    click: () => this.removeMember(m),
+                },
+            ],
+        })),
     ];
+
+    addMember(): void {
+        const org = this.organization.value();
+        if (!org?.id) return;
+        this.dialogService
+            .open(AddMemberDialogComponent, {
+                organizationId: org.id,
+                partyId: org.party_id,
+            })
+            .afterClosed()
+            .pipe(filter((res) => res?.status === DialogResponseStatus.Success))
+            .subscribe(() => {
+                this.members.reload();
+            });
+    }
+
+    manageRoles(member: domain.Member): void {
+        const org = this.organization.value();
+        if (!org?.id) return;
+        this.dialogService
+            .open(ManageRolesDialogComponent, {
+                organizationId: org.id,
+                member,
+                partyId: org.party_id,
+            })
+            .afterClosed()
+            .subscribe(() => {
+                this.members.reload();
+            });
+    }
+
+    removeMember(member: domain.Member): void {
+        const orgId = this.organization.value()?.id;
+        if (!orgId) return;
+        this.dialogService
+            .open(ConfirmDialogComponent, {
+                title: `Remove member ${member.user.email || member.user.id}`,
+                confirmLabel: 'Remove',
+            })
+            .afterClosed()
+            .pipe(
+                filter((res) => res?.status === DialogResponseStatus.Success),
+                switchMap(() =>
+                    this.thriftOrgManagementService.RemoveMember(orgId, member.user.id).pipe(
+                        catchError((err) => {
+                            this.log.error(err);
+                            return EMPTY;
+                        }),
+                    ),
+                ),
+            )
+            .subscribe(() => {
+                this.log.success('Member removed');
+                this.members.reload();
+            });
+    }
 
     createOrganization(): void {
         this.partyStoreService.createOrganization();

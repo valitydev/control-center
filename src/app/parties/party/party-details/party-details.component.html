@@ -44,7 +44,7 @@
                         namespace="domain"
                         type="Organization"
                     ></v-thrift-viewer>
-                } @else {
+                } @else if (organizationNotFound()) {
                     <div class="flex items-center justify-between">
                         <p class="text-[var(--mat-sys-on-surface-variant)]">Not created</p>
                         <button mat-flat-button (click)="createOrganization()">Create</button>

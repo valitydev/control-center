@@ -1,0 +1,34 @@
+<mat-accordion
+    class="flex flex-col overflow-hidden rounded-xl border border-solid border-[var(--mat-sys-outline-variant)]"
+>
+    @for (group of groups(); track group.roleId) {
+        <mat-expansion-panel
+            [attr.data-role]="group.roleId"
+            [expanded]="expandedRole() === group.roleId"
+            class="!m-0 !rounded-none !shadow-none"
+            (closed)="expandedRole() === group.roleId && expandedRole.set(null)"
+            (opened)="expandedRole.set(group.roleId)"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title>{{ group.roleId }}</mat-panel-title>
+                <mat-panel-description class="!text-[var(--mat-sys-outline)]">
+                    {{ group.description }}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <cc-member-role-panel
+                    [disabled]="disabled()"
+                    [readonly]="readonly()"
+                    [roleId]="group.roleId"
+                    [roles]="group.roles"
+                    [shops]="shops.value() || []"
+                    [shopsLoading]="shops.isLoading()"
+                    [wallets]="wallets.value() || []"
+                    [walletsLoading]="wallets.isLoading()"
+                    (assign)="assign.emit($event)"
+                    (remove)="remove.emit($event)"
+                />
+            </ng-template>
+        </mat-expansion-panel>
+    }
+</mat-accordion>

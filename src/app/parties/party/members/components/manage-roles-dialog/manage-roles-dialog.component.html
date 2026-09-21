@@ -1,0 +1,24 @@
+<v-dialog
+    [description]="
+        dialogData.member.user.email
+            ? dialogData.member.user.email + ' (' + dialogData.member.user.id + ')'
+            : dialogData.member.user.id
+    "
+    [noCloseButton]="busy()"
+    [progress]="busy()"
+    title="Manage roles"
+>
+    <div [inert]="busy()">
+        <cc-member-roles-manager
+            [(expandedRole)]="expandedGroup"
+            [disabled]="busy()"
+            [partyId]="dialogData.partyId"
+            [roles]="roles()"
+            (assign)="assignRole($event)"
+            (remove)="removeRole($event)"
+        />
+    </div>
+    <v-dialog-actions>
+        <button [disabled]="busy()" mat-button (click)="closeDialog()">Close</button>
+    </v-dialog-actions>
+</v-dialog>

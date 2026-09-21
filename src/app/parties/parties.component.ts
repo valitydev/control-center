@@ -102,7 +102,7 @@ export class PartiesComponent implements OnInit {
             items: [
                 {
                     label: 'Details',
-                    click: () => this.router.navigate([`/parties/${party.ref.id}`]),
+                    click: () => this.router.navigate([`/parties/${party.ref.id}/details`]),
                 },
             ],
         })),

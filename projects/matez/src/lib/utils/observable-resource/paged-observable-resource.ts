@@ -69,7 +69,7 @@ export class PagedObservableResource<TItem, TParams = void> extends ObservableRe
         size,
         ...options
     }: PagedObservableResourceOptions<TItem, TParams>) {
-        this.pagedOptions = { size: size || 20 };
+        this.pagedOptions = { size: size || 25 };
         // TODO: fix types
         super.init({
             params: EMPTY,

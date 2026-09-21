@@ -9,3 +9,4 @@ export * from './create-predicate-column';
 export * from './create-shop-column';
 export * from './create-wallet-column';
 export * from './create-party-column';
+export * from './create-roles-column';

@@ -1,13 +1,14 @@
 <v-select-field
     [appearance]="appearance"
     [externalSearch]="!partyId()"
-    [formControl]="control"
+    [formField]="control"
     [hint]="hint"
     [label]="label || (multiple() ? 'Shops' : 'Shop')"
     [multiple]="multiple()"
     [options]="shops.value()"
+    [placeholder]="placeholder"
     [progress]="shops.isLoading()"
-    [required]="required"
     [size]="size"
     (searchChange)="shops.setParams((p) => ({ ...p, query: $event }))"
+    (touch)="touch.emit()"
 ></v-select-field>

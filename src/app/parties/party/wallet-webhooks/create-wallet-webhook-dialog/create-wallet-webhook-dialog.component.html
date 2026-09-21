@@ -1,7 +1,7 @@
 <v-dialog [progress]="progress()" title="Create wallet webhook">
     <div class="flex flex-col gap-4">
         <cc-wallet-merchant-field [formField]="control.partyWallet" />
-        <v-input-field [formField]="control.url" label="URL" required />
+        <v-input-field [formField]="control.url" label="URL" />
         <div class="flex flex-col gap-1.5">
             <div class="font-medium text-sm text-neutral-600 dark:text-neutral-300">
                 Wallet Event Types

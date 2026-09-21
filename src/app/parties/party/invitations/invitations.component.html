@@ -1,11 +1,25 @@
-<cc-page-layout
-    [progress]="organization.isLoading() || invitations.isLoading()"
-    fullHeight
-    title="Invitations"
->
+<cc-page-layout [progress]="organization.isLoading()" fullHeight title="Invitations">
+    <cc-page-layout-actions>
+        @if (organization.value()) {
+            <button mat-flat-button (click)="create()">Send invitation</button>
+            @if (filtersComponent(); as filters) {
+                <v-more-filters-button [filters]="filters"></v-more-filters-button>
+            }
+        }
+    </cc-page-layout-actions>
+
     @if (organization.value()) {
+        <v-filters [active]="active()" merge (clear)="resetFilters()">
+            <ng-template>
+                <v-select-field
+                    [formField]="filtersControl.status"
+                    [options]="statusOptions"
+                    label="Status"
+                ></v-select-field>
+            </ng-template>
+        </v-filters>
         <v-table-resource [columns]="columns" [resource]="invitations" />
-    } @else if (!organization.isLoading()) {
+    } @else if (organizationNotFound()) {
         <div class="flex flex-col items-center justify-center gap-4 h-full pb-24">
             <p class="mat-body-large text-[var(--mat-sys-on-surface-variant)]">
                 Organization not created

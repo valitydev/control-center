@@ -9,7 +9,7 @@ import {
     switchMap,
 } from 'rxjs/operators';
 
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DialogService, NotifyLogService, observableResource } from '@vality/matez';
@@ -19,6 +19,8 @@ import { PartiesStoreService } from '~/api/payment-processing';
 import { ThriftOrganizationManagementService } from '~/api/services';
 
 import { CreateOrganizationDialogComponent } from '../../organizations';
+
+import { isOrganizationNotFoundError } from './utils';
 
 @Injectable()
 export class PartyStoreService {
@@ -49,16 +51,26 @@ export class PartyStoreService {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
+    organizationNotFound = signal<boolean>(false);
+
     organization = observableResource<domain.Organization, string>({
         params: this.id$,
-        loader: (partyId) =>
-            partyId
-                ? this.thriftOrgManagementService.GetOrganizationByParty(partyId).pipe(
-                      catchError(() => {
-                          return of(null);
-                      }),
-                  )
-                : of(null),
+        loader: (partyId) => {
+            this.organizationNotFound.set(false);
+            if (!partyId) {
+                return of(null);
+            }
+            return this.thriftOrgManagementService.GetOrganizationByParty(partyId).pipe(
+                catchError((err) => {
+                    if (isOrganizationNotFoundError(err)) {
+                        this.organizationNotFound.set(true);
+                    } else {
+                        this.log.error(err);
+                    }
+                    return of(null);
+                }),
+            );
+        },
     });
 
     createOrganization(): void {

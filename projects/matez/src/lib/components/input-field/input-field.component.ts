@@ -1,17 +1,33 @@
-import { ChangeDetectionStrategy, Component, Input, booleanAttribute, input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    Input,
+    booleanAttribute,
+    input,
+    model,
+    output,
+} from '@angular/core';
+import { FormValueControl, disabled, form, required } from '@angular/forms/signals';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
-
-import { FormControlSuperclass, createControlProviders } from '../../utils';
 
 @Component({
     selector: 'v-input-field',
     templateUrl: './input-field.component.html',
-    providers: createControlProviders(() => InputFieldComponent),
     styleUrl: 'input-field.component.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false,
 })
-export class InputFieldComponent<T> extends FormControlSuperclass<T> {
+export class InputFieldComponent<
+    T extends string | number = string,
+> implements FormValueControl<T> {
+    value = model<T>();
+    disabled = input(false);
+    required = input(false, { transform: booleanAttribute });
+    touch = output<void>();
+    control = form<string | number>(this.value, (path) => {
+        required(path, { when: () => this.required() });
+        disabled(path, () => this.disabled());
+    });
     @Input() label?: string;
     @Input() placeholder: string = '';
     @Input() type: 'string' | 'number' = 'string';

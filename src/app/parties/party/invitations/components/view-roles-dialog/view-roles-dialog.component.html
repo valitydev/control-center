@@ -1,0 +1,11 @@
+<v-dialog [description]="dialogData.email" title="Roles">
+    <cc-member-roles-manager
+        [(expandedRole)]="expandedRole"
+        [partyId]="dialogData.partyId"
+        [readonly]="true"
+        [roles]="roles()"
+    />
+    <v-dialog-actions>
+        <button mat-button (click)="closeDialog()">Close</button>
+    </v-dialog-actions>
+</v-dialog>
