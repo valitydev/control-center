@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    inject,
+    input,
+    model,
+} from '@angular/core';
 import { FormField, FormValueControl, form, required } from '@angular/forms/signals';
 
 import { Option, SelectFieldModule } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
-import { ROLES, SCOPES, ScopeId } from '~/api/org-management';
+import { ROLES, SCOPES, ScopeId, sortRoleIds } from '~/api/org-management';
 import { ShopFieldModule } from '~/components/shop-field';
 import { WalletFieldModule } from '~/components/wallet-field';
 
@@ -18,10 +25,12 @@ import { RoleAssignmentGroup } from './utils';
     imports: [CommonModule, SelectFieldModule, ShopFieldModule, WalletFieldModule, FormField],
 })
 export class RoleAssignmentFieldComponent implements FormValueControl<RoleAssignmentGroup> {
+    private elementRef = inject(ElementRef);
+
     partyId = input<domain.PartyID>();
 
     value = model<RoleAssignmentGroup>({
-        roleId: Object.keys(ROLES)[0] || '',
+        roleId: sortRoleIds(Object.keys(ROLES))[0] || '',
         scopeId: SCOPES[0],
         resourceIds: [],
     });
@@ -30,7 +39,7 @@ export class RoleAssignmentFieldComponent implements FormValueControl<RoleAssign
         required(schemaPath.roleId);
     });
 
-    rolesOptions: Option<domain.RoleID>[] = Object.keys(ROLES).map((key) => ({
+    rolesOptions: Option<domain.RoleID>[] = sortRoleIds(Object.keys(ROLES)).map((key) => ({
         label: key,
         value: key,
     }));
@@ -42,5 +51,12 @@ export class RoleAssignmentFieldComponent implements FormValueControl<RoleAssign
 
     changeScope(): void {
         this.control.resourceIds().value.set([]);
+    }
+
+    focus(): void {
+        const focusable = this.elementRef.nativeElement.querySelector(
+            'input, [tabindex="0"], select, button',
+        ) as HTMLElement | null;
+        focusable?.focus();
     }
 }

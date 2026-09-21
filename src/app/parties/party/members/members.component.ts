@@ -23,6 +23,7 @@ import { PartyStoreService } from '../party-store.service';
 
 import { AddMemberDialogComponent } from './components/add-member-dialog';
 import { ManageRolesDialogComponent } from './components/manage-roles-dialog';
+import { getGeneralRoleIds, getWalletRoleIds } from './utils';
 
 @Component({
     selector: 'cc-members',
@@ -37,6 +38,7 @@ export class MembersComponent {
     private partyStoreService = inject(PartyStoreService);
 
     organization = this.partyStoreService.organization;
+    organizationNotFound = this.partyStoreService.organizationNotFound;
 
     members = pagedObservableResource<domain.Member, string>({
         params: computed(() => this.organization.value()?.id),
@@ -72,10 +74,30 @@ export class MembersComponent {
         },
         {
             field: 'roles',
-            cell: (m) => ({
-                value: (m.roles || []).map((r) => r.role_id).join(', ') || '—',
-            }),
+            cell: (m) => {
+                const roles = getGeneralRoleIds(m.roles);
+                const str = roles.join(', ') || '—';
+                return {
+                    value: str,
+                    tooltip: str,
+                    click: () => this.manageRoles(m),
+                };
+            },
         },
+        {
+            field: 'wallet_roles',
+            header: 'Wallet roles',
+            cell: (m) => {
+                const roles = getWalletRoleIds(m.roles);
+                const str = roles.join(', ') || '—';
+                return {
+                    value: str,
+                    tooltip: str,
+                    click: () => this.manageRoles(m),
+                };
+            },
+        },
+
         createMenuColumn((m) => ({
             items: [
                 {
@@ -115,7 +137,6 @@ export class MembersComponent {
                 partyId: org.party_id,
             })
             .afterClosed()
-            .pipe(filter((res) => res?.status === DialogResponseStatus.Success))
             .subscribe(() => {
                 this.members.reload();
             });

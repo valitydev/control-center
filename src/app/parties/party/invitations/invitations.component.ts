@@ -87,6 +87,7 @@ export class InvitationsComponent {
     private dialogService = inject(DialogService);
 
     organization = this.partyStoreService.organization;
+    organizationNotFound = this.partyStoreService.organizationNotFound;
 
     filtersComponent = viewChild(FiltersComponent);
 

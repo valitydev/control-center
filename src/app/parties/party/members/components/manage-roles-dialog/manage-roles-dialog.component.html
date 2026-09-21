@@ -4,15 +4,44 @@
             ? dialogData.member.user.email + ' (' + dialogData.member.user.id + ')'
             : dialogData.member.user.id
     "
-    [progress]="progress()"
+    [noCloseButton]="busy()"
+    [progress]="busy()"
     title="Manage roles"
 >
-    <cc-role-assignments-field [formField]="control" [partyId]="dialogData.partyId" />
-
+    <div [inert]="busy()">
+        <mat-accordion
+            class="flex flex-col overflow-hidden rounded-xl border border-solid border-[var(--mat-sys-outline-variant)]"
+        >
+            @for (group of groups(); track group.roleId) {
+                <mat-expansion-panel
+                    [attr.data-role]="group.roleId"
+                    [expanded]="expandedGroup() === group.roleId"
+                    class="!m-0 !rounded-none !shadow-none"
+                    (closed)="expandedGroup() === group.roleId && expandedGroup.set(null)"
+                    (opened)="expandedGroup.set(group.roleId)"
+                >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{ group.roleId }}</mat-panel-title>
+                        <mat-panel-description>({{ group.roles.length }})</mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <ng-template matExpansionPanelContent>
+                        <cc-member-role-panel
+                            [disabled]="busy()"
+                            [roleId]="group.roleId"
+                            [roles]="group.roles"
+                            [shops]="shops.value() || []"
+                            [shopsLoading]="shops.isLoading()"
+                            [wallets]="wallets.value() || []"
+                            [walletsLoading]="wallets.isLoading()"
+                            (assign)="assignRole($event)"
+                            (remove)="removeRole($event)"
+                        />
+                    </ng-template>
+                </mat-expansion-panel>
+            }
+        </mat-accordion>
+    </div>
     <v-dialog-actions>
-        <button mat-button (click)="closeWithCancellation()">Cancel</button>
-        <button [disabled]="progress() || control().invalid()" mat-flat-button (click)="save()">
-            Save
-        </button>
+        <button [disabled]="busy()" mat-button (click)="closeDialog()">Close</button>
     </v-dialog-actions>
 </v-dialog>

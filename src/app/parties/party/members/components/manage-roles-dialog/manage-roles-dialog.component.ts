@@ -1,17 +1,25 @@
-import { Observable, forkJoin } from 'rxjs';
+import { of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormField, applyEach, form, required } from '@angular/forms/signals';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule } from '@angular/material/expansion';
 
-import { DialogModule, DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
+import { DomainObjectType } from '@vality/domain-proto/domain';
+import {
+    DialogModule,
+    DialogSuperclass,
+    NotifyLogService,
+    Option,
+    observableResource,
+    progressTo,
+} from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
-import { ThriftOrganizationManagementService } from '~/api/services';
-import { RoleAssignmentsFieldComponent } from '~/components/role-assignment-field';
+import { ThriftOrganizationManagementService, ThriftRepositoryService } from '~/api/services';
 
-import { diffMemberRoles } from './utils';
+import { MemberRolePanelComponent } from './member-role-panel/member-role-panel.component';
+import { groupMemberRoles } from './utils/group-member-roles';
 
 export interface ManageRolesDialogData {
     organizationId: domain.OrganizationID;
@@ -23,73 +31,128 @@ export interface ManageRolesDialogData {
     selector: 'cc-manage-roles-dialog',
     templateUrl: './manage-roles-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        DialogModule,
-        MatButtonModule,
-        RoleAssignmentsFieldComponent,
-        FormField,
-    ],
+    imports: [DialogModule, MatButtonModule, MatExpansionModule, MemberRolePanelComponent],
 })
 export class ManageRolesDialogComponent extends DialogSuperclass<
     ManageRolesDialogComponent,
     ManageRolesDialogData
 > {
     private thriftOrgManagementService = inject(ThriftOrganizationManagementService);
+    private repositoryService = inject(ThriftRepositoryService);
     private log = inject(NotifyLogService);
 
-    private initialMemberRoles = this.dialogData.member.roles || [];
+    roles = signal(this.dialogData.member.roles || []);
+    groups = computed(() => groupMemberRoles(this.roles()));
+    expandedGroup = signal<string | null>(null);
+    hasChanges = signal(false);
+    actionProgress = signal(0);
 
-    progress = signal(0);
-
-    roles = signal<domain.RoleAssignment[]>(
-        this.initialMemberRoles.map((r) => ({
-            role_id: r.role_id,
-            scope: r.scope,
-        })),
-    );
-
-    control = form(this.roles, (schemaPath) => {
-        applyEach(schemaPath, (rolePath) => {
-            required(rolePath.role_id);
-        });
+    member = observableResource({
+        loader: () =>
+            this.thriftOrgManagementService
+                .GetMember(this.dialogData.organizationId, this.dialogData.member.user.id)
+                .pipe(
+                    catchError((err) => {
+                        this.log.error(err);
+                        return of({ ...this.dialogData.member, roles: this.roles() });
+                    }),
+                    tap((member) => this.roles.set(member.roles || [])),
+                ),
     });
+    shops = observableResource({ loader: () => this.loadResources(DomainObjectType.shop_config) });
+    wallets = observableResource({
+        loader: () => this.loadResources(DomainObjectType.wallet_config),
+    });
+    busy = computed(() => this.member.isLoading() || !!this.actionProgress());
 
-    save(): void {
-        const { toAdd, toRemove } = diffMemberRoles(this.initialMemberRoles, this.roles());
-
-        const calls: Observable<unknown>[] = [
-            ...toRemove.map((r) =>
-                this.thriftOrgManagementService.RemoveMemberRole(
-                    this.dialogData.organizationId,
-                    this.dialogData.member.user.id,
-                    r.id,
-                ),
-            ),
-            ...toAdd.map((r) =>
-                this.thriftOrgManagementService.AssignMemberRole(
-                    this.dialogData.organizationId,
-                    this.dialogData.member.user.id,
-                    r,
-                ),
-            ),
-        ];
-
-        if (calls.length === 0) {
-            this.closeWithSuccess();
+    assignRole(assignment: domain.RoleAssignment): void {
+        if (
+            this.busy() ||
+            this.roles().some(
+                (role) =>
+                    role.role_id === assignment.role_id &&
+                    role.scope?.scope_id === assignment.scope?.scope_id &&
+                    role.scope?.resource_id === assignment.scope?.resource_id,
+            )
+        ) {
             return;
         }
+        this.thriftOrgManagementService
+            .AssignMemberRole(
+                this.dialogData.organizationId,
+                this.dialogData.member.user.id,
+                assignment,
+            )
+            .pipe(progressTo(this.actionProgress))
+            .subscribe({
+                next: (role) => {
+                    this.roles.update((roles) => [...roles, role]);
+                    this.expandedGroup.set(role.role_id);
+                    this.hasChanges.set(true);
+                    this.log.success('Role assigned');
+                },
+                error: (err) => this.log.error(err),
+            });
+    }
 
-        forkJoin(calls)
-            .pipe(progressTo(this.progress))
+    removeRole(role: domain.MemberRole): void {
+        if (this.busy() || !this.roles().some((assigned) => assigned.id === role.id)) {
+            return;
+        }
+        this.thriftOrgManagementService
+            .RemoveMemberRole(
+                this.dialogData.organizationId,
+                this.dialogData.member.user.id,
+                role.id,
+            )
+            .pipe(progressTo(this.actionProgress))
             .subscribe({
                 next: () => {
-                    this.log.success('Roles updated');
-                    this.closeWithSuccess();
+                    this.roles.update((roles) =>
+                        roles.filter((assigned) => assigned.id !== role.id),
+                    );
+                    this.hasChanges.set(true);
+                    this.log.success('Role removed');
                 },
-                error: (err) => {
-                    this.log.error(err);
-                },
+                error: (err) => this.log.error(err),
             });
+    }
+
+    closeDialog(): void {
+        if (this.busy()) {
+            return;
+        }
+        if (this.hasChanges()) {
+            this.closeWithSuccess();
+        } else {
+            this.closeWithCancellation();
+        }
+    }
+
+    private loadResources(type: DomainObjectType.shop_config | DomainObjectType.wallet_config) {
+        if (!this.dialogData.partyId) {
+            return of<Option<string>[]>([]);
+        }
+        return this.repositoryService
+            .GetRelatedGraph({ ref: { party_config: { id: this.dialogData.partyId } }, type })
+            .pipe(
+                map(({ nodes }): Option<string>[] =>
+                    Array.from(nodes, (node) => ({
+                        value:
+                            type === DomainObjectType.shop_config
+                                ? node.ref.shop_config.id
+                                : node.ref.wallet_config.id,
+                        label: node.name,
+                        description: node.description,
+                    })),
+                ),
+                map((options) =>
+                    options.map((option) => ({ ...option, label: option.label || option.value })),
+                ),
+                catchError((err) => {
+                    this.log.error(err);
+                    return of<Option<string>[]>([]);
+                }),
+            );
     }
 }

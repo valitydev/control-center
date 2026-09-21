@@ -79,6 +79,18 @@ describe('role-assignment-groups', () => {
             ]);
         });
 
+        it('preserves organization-wide and scoped assignments for the same role', () => {
+            const assignments: domain.RoleAssignment[] = [
+                { role_id: 'Manager' },
+                { role_id: 'Manager', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+            ];
+
+            const groups = toRoleAssignmentGroups(assignments);
+
+            expect(groups).toHaveLength(2);
+            expect(fromRoleAssignmentGroups(groups)).toEqual(assignments);
+        });
+
         it('falls back to default scope when unknown scope_id is provided', () => {
             const assignments: domain.RoleAssignment[] = [
                 { role_id: 'Manager', scope: { scope_id: 'Unknown', resource_id: 'res-1' } },

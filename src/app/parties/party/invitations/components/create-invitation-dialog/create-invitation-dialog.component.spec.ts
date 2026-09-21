@@ -54,7 +54,7 @@ describe('CreateInvitationDialogComponent', () => {
 
         expect(createInvitation).toHaveBeenCalledWith('org-1', {
             email: 'member@example.com',
-            roles: [expect.objectContaining({ role_id: 'Integrator' })],
+            roles: [expect.objectContaining({ role_id: 'Administrator' })],
         });
         expect(Object.hasOwn(createInvitation.mock.calls[0][1].roles[0], 'scope')).toBe(false);
         expect(close).toHaveBeenCalled();

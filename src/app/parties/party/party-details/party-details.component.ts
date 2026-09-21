@@ -55,6 +55,7 @@ export class PartyDetailsComponent {
     });
 
     organization = this.partyStoreService.organization;
+    organizationNotFound = this.partyStoreService.organizationNotFound;
 
     createOrganization(): void {
         this.partyStoreService.createOrganization();

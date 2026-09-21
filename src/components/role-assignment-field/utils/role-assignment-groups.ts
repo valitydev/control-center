@@ -1,6 +1,6 @@
 import { domain } from '@vality/org-management-proto/admin_management';
 
-import { ROLES, SCOPES, ScopeId } from '~/api/org-management';
+import { ROLES, SCOPES, ScopeId, sortRoleIds } from '~/api/org-management';
 
 export interface RoleAssignmentGroup {
     roleId: domain.RoleID;
@@ -18,13 +18,13 @@ export function toRoleAssignmentGroups(
     const groupsMap = new Map<string, RoleAssignmentGroup>();
 
     for (const assignment of assignments) {
-        const roleId = assignment.role_id || Object.keys(ROLES)[0] || '';
+        const roleId = assignment.role_id || sortRoleIds(Object.keys(ROLES))[0] || '';
         const rawScopeId = assignment.scope?.scope_id;
         const scopeId: ScopeId = (SCOPES as readonly string[]).includes(rawScopeId as string)
             ? (rawScopeId as ScopeId)
             : SCOPES[0];
         const resourceId = assignment.scope?.resource_id;
-        const key = `${roleId}:${scopeId}`;
+        const key = JSON.stringify([roleId, scopeId, !!resourceId]);
 
         const existing = groupsMap.get(key);
         if (existing) {

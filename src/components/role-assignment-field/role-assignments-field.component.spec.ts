@@ -63,7 +63,7 @@ describe('RoleAssignmentsFieldComponent', () => {
         expect(shop.querySelector('.ng-select-placeholder').textContent).toContain(
             'Entire organization',
         );
-        expect(fixture.componentInstance.value()).toEqual([{ role_id: 'Integrator' }]);
+        expect(fixture.componentInstance.value()).toEqual([{ role_id: 'Administrator' }]);
         expect(Object.hasOwn(fixture.componentInstance.value()[0], 'scope')).toBe(false);
     });
 
@@ -73,13 +73,13 @@ describe('RoleAssignmentsFieldComponent', () => {
 
         await selectOption('cc-shop-field', 'Test shop 1');
         expect(fixture.componentInstance.value()).toEqual([
-            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+            { role_id: 'Administrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
         ]);
 
         await selectOption('cc-shop-field', 'Test shop 2');
         expect(fixture.componentInstance.value()).toEqual([
-            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
-            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-2' } },
+            { role_id: 'Administrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+            { role_id: 'Administrator', scope: { scope_id: 'Shop', resource_id: 'shop-2' } },
         ]);
     });
 
@@ -89,7 +89,7 @@ describe('RoleAssignmentsFieldComponent', () => {
 
         await selectOption('cc-shop-field', 'Test shop 1');
         expect(fixture.componentInstance.value()).toEqual([
-            { role_id: 'Integrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
+            { role_id: 'Administrator', scope: { scope_id: 'Shop', resource_id: 'shop-1' } },
         ]);
 
         await selectOption('cc-role-assignment-field v-select-field:nth-of-type(2)', 'Wallet');
@@ -97,11 +97,11 @@ describe('RoleAssignmentsFieldComponent', () => {
         expect(
             fixture.nativeElement.querySelector('cc-wallet-field .ng-select-has-value'),
         ).toBeNull();
-        expect(fixture.componentInstance.value()).toEqual([{ role_id: 'Integrator' }]);
+        expect(fixture.componentInstance.value()).toEqual([{ role_id: 'Administrator' }]);
 
         await selectOption('cc-wallet-field', 'Test wallet 1');
         expect(fixture.componentInstance.value()).toEqual([
-            { role_id: 'Integrator', scope: { scope_id: 'Wallet', resource_id: 'wallet-1' } },
+            { role_id: 'Administrator', scope: { scope_id: 'Wallet', resource_id: 'wallet-1' } },
         ]);
     });
 
@@ -125,5 +125,29 @@ describe('RoleAssignmentsFieldComponent', () => {
         expect(fixture.nativeElement.querySelector('cc-shop-field').textContent).toContain(
             'Test shop 2',
         );
+    });
+
+    it('expands newly added role panel', async () => {
+        fixture.componentRef.setInput('value', [{ role_id: 'Administrator' }]);
+        await fixture.whenStable();
+
+        expect(fixture.componentInstance.expandedIndex()).toBeNull();
+
+        fixture.componentInstance.addRole();
+        await fixture.whenStable();
+
+        expect(fixture.componentInstance.expandedIndex()).toBe(1);
+        const panels = fixture.nativeElement.querySelectorAll('mat-expansion-panel');
+        expect(panels.length).toBe(2);
+        expect(
+            panels[1].querySelector('mat-expansion-panel-header').getAttribute('aria-expanded'),
+        ).toBe('true');
+        await vi.waitFor(() => {
+            expect(
+                panels[1]
+                    .querySelector('cc-role-assignment-field')
+                    .contains(document.activeElement),
+            ).toBe(true);
+        });
     });
 });
