@@ -4,7 +4,7 @@
         @if (!partyId) {
             <cc-merchant-field [formField]="control.party_id" label="Party" required />
         }
-        <v-input-field [formField]="control.owner_id" label="Owner ID" />
+        <cc-user-field [formField]="control.owner_id" label="Owner ID" required />
     </div>
 
     <v-dialog-actions>

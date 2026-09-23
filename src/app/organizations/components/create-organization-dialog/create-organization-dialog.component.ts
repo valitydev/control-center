@@ -15,6 +15,7 @@ import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { MerchantFieldModule } from '~/components/merchant-field';
+import { UserFieldComponent } from '~/components/user-field';
 
 export interface CreateOrganizationDialogData {
     partyId?: domain.PartyID;
@@ -36,6 +37,7 @@ interface CreateOrganizationModel {
         MerchantFieldModule,
         InputFieldModule,
         FormField,
+        UserFieldComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './create-organization-dialog.component.html',
