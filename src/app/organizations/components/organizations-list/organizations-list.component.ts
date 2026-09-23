@@ -119,7 +119,18 @@ export class OrganizationsListComponent {
         {
             field: 'owner_id',
             header: 'Owner',
-            cell: (org) => ({ value: org.owner_id }),
+            cell: (org) => ({ value: '', description: org.owner_id }),
+            lazyCell: (org) =>
+                this.organizationsService.GetUser(org.owner_id).pipe(
+                    map((res) => ({
+                        value: res.email,
+                        description: org.owner_id,
+                    })),
+                    catchError((err) => {
+                        this.log.error(err);
+                        return of({ value: '', description: org.owner_id, error: err });
+                    }),
+                ),
         },
         {
             field: 'status',

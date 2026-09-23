@@ -1,10 +1,25 @@
-@if (!value() && lazyValue() && !lazyVisible()) {
-    <button class="button" mat-icon-button (click)="lazyVisible.set(true)">
-        <mat-icon>sync</mat-icon>
-    </button>
+@if (!value() && lazyValue()) {
+    <ng-container *ngTemplateOutlet="lazyTemplate"></ng-container>
 } @else {
     @if (value$ | async; as v) {
         <div class="flex gap-1 items-center">
+            @if (lazyValue() && !lazyVisible()) {
+                <button
+                    class="button ml-[-8px] mr-[-8px]"
+                    mat-icon-button
+                    (click)="lazyVisible.set(true)"
+                >
+                    <mat-icon>sync</mat-icon>
+                </button>
+            }
+            @if (v.error) {
+                <mat-icon
+                    [matTooltip]="
+                        v.error?.['error']?.['message'] || v.error?.['message'] || (v.error | json)
+                    "
+                    >error</mat-icon
+                >
+            }
             @if (v.prefix) {
                 <button
                     class="action ml-[-16px]"
@@ -65,15 +80,6 @@
                                         [vHighlightText]="valueText"
                                         vHighlight
                                     ></span>
-                                } @else if (v.error) {
-                                    <mat-icon
-                                        [matTooltip]="
-                                            v.error?.['error']?.['message'] ||
-                                            v.error?.['message'] ||
-                                            (v.error | json)
-                                        "
-                                        >error</mat-icon
-                                    >
                                 } @else if (emptySymbol) {
                                     <span class="text-[var(--mat-sys-outline)]">{{
                                         emptySymbol
@@ -108,3 +114,11 @@
         <v-content-loading></v-content-loading>
     }
 }
+
+<ng-template #lazyTemplate>
+    @if (lazyValue() && !lazyVisible()) {
+        <button class="button" mat-icon-button (click)="lazyVisible.set(true)">
+            <mat-icon>sync</mat-icon>
+        </button>
+    }
+</ng-template>
