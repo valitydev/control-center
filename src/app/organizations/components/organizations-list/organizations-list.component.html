@@ -5,11 +5,7 @@
     </cc-page-layout-actions>
     <v-filters #filtersComponent [active]="active()" merge (clear)="resetFilters()">
         <ng-template>
-            <v-input-field
-                [formField]="filtersControl.owner_id"
-                cleanButton
-                label="Owner ID"
-            ></v-input-field>
+            <cc-user-field [formField]="filtersControl.owner_id" label="Owner ID"></cc-user-field>
             <v-select-field
                 [formField]="filtersControl.status"
                 [options]="statusOptions"

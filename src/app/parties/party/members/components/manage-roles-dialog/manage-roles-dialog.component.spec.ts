@@ -259,6 +259,42 @@ describe('ManageRolesDialogComponent', () => {
         expect(service.RemoveMemberRole).not.toHaveBeenCalled();
     });
 
+    it('restricts WalletManager scope to only Wallet and displays wallets in catalog', async () => {
+        await openRole('WalletManager');
+        panel()
+            .querySelector<HTMLElement>(
+                '[data-assignment-form] v-select-field:nth-of-type(1) .ng-select-control',
+            )
+            .click();
+        await fixture.whenStable();
+        const scopeOptions = Array.from(
+            document.querySelectorAll<HTMLElement>('.ng-select-option'),
+        ).map((item) => item.textContent.trim());
+        expect(scopeOptions).toEqual(['Wallet']);
+        document.body.click();
+        await fixture.whenStable();
+
+        panel()
+            .querySelector<HTMLElement>(
+                '[data-assignment-form] v-select-field:nth-of-type(2) .ng-select-control',
+            )
+            .click();
+        await fixture.whenStable();
+        const resourceOptions = Array.from(
+            document.querySelectorAll<HTMLElement>('.ng-select-option'),
+        ).map((item) => item.textContent.trim());
+        expect(resourceOptions).toEqual(['Wallet 1']);
+        document.body.click();
+        await fixture.whenStable();
+
+        await selectOption('resource', 'Wallet 1');
+        await assign();
+        expect(service.AssignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
+            role_id: 'WalletManager',
+            scope: { scope_id: 'Wallet', resource_id: 'wallet-1' },
+        });
+    });
+
     it('omits scope for organization-wide access and uses the returned ID for removal', async () => {
         await openRole('Administrator');
         await assign();

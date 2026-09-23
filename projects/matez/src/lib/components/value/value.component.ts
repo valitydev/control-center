@@ -65,8 +65,17 @@ export class ValueComponent {
 
     @Input() highlight?: string | null;
 
-    value$ = combineLatest([toObservable(this.value), toObservable(this.lazyValue)]).pipe(
-        switchMap(([value, lazyValue]) => (isObservable(lazyValue) ? lazyValue : of(value))),
+    value$ = combineLatest([
+        toObservable(this.value),
+        toObservable(this.lazyValue),
+        toObservable(this.lazyVisible),
+    ]).pipe(
+        switchMap(([value, lazyValue, lazyVisible]) => {
+            if (lazyVisible && isObservable(lazyValue)) {
+                return lazyValue;
+            }
+            return of(value);
+        }),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     valueText$ = this.value$.pipe(

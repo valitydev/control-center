@@ -3,12 +3,17 @@ import uniq from 'lodash-es/uniq';
 import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ROLE_PRIORITY, sortRoleIds } from '../constants';
+import { SCOPES, ScopeId } from '../types';
 
 export { ROLE_PRIORITY, sortRoleIds };
 
 export interface RoleLike {
     role_id?: string;
     scope?: domain.RoleScope;
+}
+
+export function getRoleScopes(roleId?: string): readonly ScopeId[] {
+    return roleId === 'WalletManager' ? ['Wallet'] : SCOPES;
 }
 
 export function isWalletRole(role: RoleLike): boolean {

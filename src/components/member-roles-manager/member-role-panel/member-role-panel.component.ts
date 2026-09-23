@@ -4,8 +4,8 @@ import {
     computed,
     effect,
     input,
+    linkedSignal,
     output,
-    signal,
 } from '@angular/core';
 import { FormField, disabled, form } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Option, SelectFieldModule } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
-import { SCOPES, ScopeId } from '~/api/org-management';
+import { SCOPES, ScopeId, getRoleScopes } from '~/api/org-management';
 
 @Component({
     selector: 'cc-member-role-panel',
@@ -51,9 +51,15 @@ export class MemberRolePanelComponent {
         });
     }
 
-    newRole = signal({ scopeId: SCOPES[0] as ScopeId, resourceId: '' });
+    scopes = computed(() => getRoleScopes(this.roleId()));
+    scopeOptions = computed(() =>
+        this.scopes().map((scopeId) => ({ label: scopeId, value: scopeId })),
+    );
+    newRole = linkedSignal(() => ({
+        scopeId: this.scopes()[0] as ScopeId,
+        resourceId: '',
+    }));
     control = form(this.newRole, (path) => disabled(path, () => this.disabled()));
-    scopeOptions = SCOPES.map((scopeId) => ({ label: scopeId, value: scopeId }));
     request = computed<domain.RoleAssignment>(() => {
         const { scopeId, resourceId } = this.newRole();
         return {

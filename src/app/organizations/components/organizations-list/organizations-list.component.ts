@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import {
     Column,
     FiltersModule,
-    InputFieldModule,
     NotifyLogService,
     Option,
     QueryParamsService,
@@ -27,6 +26,7 @@ import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
+import { UserFieldComponent } from '~/components/user-field';
 import { createPartyColumn } from '~/utils';
 
 import { OrganizationActionsService } from '../../services';
@@ -50,9 +50,9 @@ const DEFAULT_FILTERS: OrganizationsFilters = {
         PageLayoutModule,
         TableResourceComponent,
         FiltersModule,
-        InputFieldModule,
         SelectFieldModule,
         FormField,
+        UserFieldComponent,
     ],
 })
 export class OrganizationsListComponent {
@@ -119,7 +119,18 @@ export class OrganizationsListComponent {
         {
             field: 'owner_id',
             header: 'Owner',
-            cell: (org) => ({ value: org.owner_id }),
+            cell: (org) => ({ value: '', description: org.owner_id }),
+            lazyCell: (org) =>
+                this.organizationsService.GetUser(org.owner_id).pipe(
+                    map((res) => ({
+                        value: res.email,
+                        description: org.owner_id,
+                    })),
+                    catchError((err) => {
+                        this.log.error(err);
+                        return of({ value: '', description: org.owner_id, error: err });
+                    }),
+                ),
         },
         {
             field: 'status',

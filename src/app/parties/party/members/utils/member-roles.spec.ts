@@ -3,6 +3,7 @@ import { domain } from '@vality/org-management-proto/admin_management';
 import {
     getGeneralRoleIds,
     getRoleIds,
+    getRoleScopes,
     getWalletRoleIds,
     isWalletRole,
     sortRoleIds,
@@ -128,6 +129,18 @@ describe('member-roles utils', () => {
             expect(getRoleIds(roles, (r) => r.role_id === 'Administrator')).toEqual([
                 'Administrator',
             ]);
+        });
+    });
+
+    describe('getRoleScopes', () => {
+        it('should return only Wallet scope for WalletManager', () => {
+            expect(getRoleScopes('WalletManager')).toEqual(['Wallet']);
+        });
+
+        it('should return all scopes for other roles or undefined', () => {
+            expect(getRoleScopes('Manager')).toEqual(['Shop', 'Wallet']);
+            expect(getRoleScopes('Administrator')).toEqual(['Shop', 'Wallet']);
+            expect(getRoleScopes()).toEqual(['Shop', 'Wallet']);
         });
     });
 });
