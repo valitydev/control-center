@@ -116,7 +116,7 @@ export class StructFormComponent<T extends Record<string, unknown>>
 
     handleIncomingValue(value: T) {
         this.control.patchValue(value as never, { emitEvent: false });
-        this.setLabelControl(!!(value && Object.keys(value).length));
+        this.setLabelControl(!isNil(value));
     }
 
     override validate(_control: AbstractControl): ValidationErrors | null {
