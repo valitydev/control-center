@@ -7,7 +7,13 @@ import {
     model,
     output,
 } from '@angular/core';
-import { FormValueControl, disabled, form, required } from '@angular/forms/signals';
+import {
+    FormValueControl,
+    disabled,
+    form,
+    required,
+    transformedValue,
+} from '@angular/forms/signals';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 @Component({
@@ -24,16 +30,31 @@ export class InputFieldComponent<
     disabled = input(false);
     required = input(false, { transform: booleanAttribute });
     touch = output<void>();
-    control = form<string | number>(this.value, (path) => {
-        required(path, { when: () => this.required() });
-        disabled(path, () => this.disabled());
-    });
+
     @Input() label?: string;
     @Input() placeholder: string = '';
-    @Input() type: 'string' | 'number' = 'string';
+    @Input({ transform: (v: string) => (v === 'string' ? 'text' : v) })
+    type: 'text' | 'number' | 'string' = 'text';
     @Input() appearance!: MatFormFieldAppearance;
     @Input() size?: 'small' | '';
     cleanButton = input(false, { transform: booleanAttribute });
     icon = input<string>();
     hintText = input<string>();
+
+    private formValue = transformedValue<T, string | number>(this.value, {
+        parse: (rawValue) => ({
+            value: rawValue as T,
+        }),
+        format: (value) => {
+            if (this.type === 'number') {
+                return value ?? null;
+            }
+            return value ?? '';
+        },
+    });
+
+    control = form<string | number>(this.formValue, (path) => {
+        required(path, { when: () => this.required() });
+        disabled(path, () => this.disabled());
+    });
 }
