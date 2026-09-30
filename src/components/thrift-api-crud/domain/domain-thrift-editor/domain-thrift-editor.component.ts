@@ -1,7 +1,8 @@
-import { map, of, shareReplay } from 'rxjs';
+import { filter, map, of, shareReplay } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TemplateRef, inject, viewChild } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import {
@@ -18,7 +19,7 @@ import {
     isTypeWithAliases,
 } from '@vality/ng-thrift';
 
-import { getDomainMetadata } from '~/api/services';
+import { DOMAIN_METADATA_RESOURCE } from '~/api/services';
 import { AccountFieldComponent, CurrencyAccount } from '~/components/account-field';
 import { SystemAccountsFieldComponent } from '~/components/system-accounts-field';
 
@@ -51,7 +52,7 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
         'providerAccountsFieldTemplate',
     );
 
-    metadata$ = getDomainMetadata();
+    metadata$ = toObservable(inject(DOMAIN_METADATA_RESOURCE).value).pipe(filter(Boolean));
     override internalExtensions$ = this.domainMetadataFormExtensionsService.extensions$.pipe(
         map((extensions): ThriftFormExtension[] => [
             ...extensions,

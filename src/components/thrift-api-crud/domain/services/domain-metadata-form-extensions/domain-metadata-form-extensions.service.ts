@@ -1,12 +1,18 @@
-import { Observable, combineLatest, of } from 'rxjs';
+import { Observable, combineLatest, filter, from, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { generate } from 'short-uuid';
 import { v4 } from 'uuid';
 
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Validators } from '@angular/forms';
 
-import { DomainObject, DomainObjectType, ObjectID } from '@vality/domain-proto/domain';
+import {
+    DomainObject,
+    DomainObjectType,
+    ObjectID,
+    loadThriftMetadata,
+} from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
 import {
@@ -18,7 +24,7 @@ import {
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
-import { ThriftRepositoryService, getDomainMetadata } from '~/api/services';
+import { DOMAIN_METADATA_RESOURCE, ThriftRepositoryService } from '~/api/services';
 import { createNextId } from '~/utils';
 
 import { getReferenceId } from '../../utils';
@@ -39,7 +45,10 @@ export class DomainMetadataFormExtensionsService {
     private repositoryService = inject(ThriftRepositoryService);
     private injector = inject(Injector);
 
-    extensions$: Observable<ThriftFormExtension[]> = getDomainMetadata().pipe(
+    extensions$: Observable<ThriftFormExtension[]> = toObservable(
+        inject(DOMAIN_METADATA_RESOURCE).value,
+    ).pipe(
+        filter(Boolean),
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
             {
@@ -134,7 +143,7 @@ export class DomainMetadataFormExtensionsService {
         filterFn$: PossiblyAsync<Parameters<VersionedObject[]['filter']>[0]>,
         determinant?: ThriftFormExtension['determinant'],
     ): Observable<ThriftFormExtension[]> {
-        return getDomainMetadata().pipe(
+        return from(loadThriftMetadata()).pipe(
             map((metadata) => {
                 const objectFields = new ThriftData<string, 'struct'>(
                     metadata,

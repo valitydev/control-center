@@ -94,10 +94,11 @@ export const appConfig: ApplicationConfig = {
 
             return {
                 endpoint: () =>
-                    firstValueFrom(configService.config.value$).then(
-                        (config) =>
-                            `${config.api?.wachter?.https ? 'https' : 'http'}://${config.api?.wachter?.hostname}${config.api?.wachter?.path}${config.api?.wachter?.port ? `:${config.api?.wachter?.port}` : ''}`,
-                    ),
+                    firstValueFrom(configService.config.value$).then(({ api: { wachter } }) => {
+                        const protocol = wachter.https === false ? 'http' : 'https';
+                        const port = wachter.port ? `:${wachter.port}` : '';
+                        return `${protocol}://${wachter.hostname}${port}${wachter.path ?? ''}`;
+                    }),
                 woody: {
                     meta: () =>
                         firstValueFrom(keycloakUserService.user.value$).then((user) => ({

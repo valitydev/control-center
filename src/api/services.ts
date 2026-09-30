@@ -1,12 +1,14 @@
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 
+import { InjectionToken, resource } from '@angular/core';
+
+import { loadThriftMetadataByNamespaces } from '@vality/domain-proto';
 import { Accounter } from '@vality/domain-proto/accounter';
 import { InvoiceTemplating } from '@vality/domain-proto/api_extensions';
 import {
     AuthorManagement,
     Repository,
     RepositoryClient,
-    loadThriftMetadata,
 } from '@vality/domain-proto/domain_config_v2';
 import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
 import { WebhookManager } from '@vality/domain-proto/webhooker';
@@ -47,8 +49,20 @@ export const ThriftInvoiceTemplatingService = createObservableService(InvoiceTem
     headers: (b) => ({ ...b, service: Service.InvoiceTemplating }),
 });
 
-/** @deprecated Use the loadThriftMetadata of each namespace instead */
-export const getDomainMetadata = () => from(loadThriftMetadata());
+export const DOMAIN_METADATA_RESOURCE = new InjectionToken('DOMAIN_METADATA_RESOURCE', {
+    providedIn: 'root',
+    factory: () =>
+        resource({
+            loader: () =>
+                loadThriftMetadataByNamespaces([
+                    'domain_config_v2',
+                    'payment_processing',
+                    'webhooker',
+                    'accounter',
+                    'api_extensions',
+                ]),
+        }),
+});
 
 export interface MetadataThriftService extends ThriftService {
     metadata$: Observable<ThriftAstMetadata[]>;

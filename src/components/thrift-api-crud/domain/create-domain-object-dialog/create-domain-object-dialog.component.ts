@@ -1,5 +1,5 @@
 import { startCase } from 'lodash-es';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, shareReplay } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,7 @@ import {
     DomainObjectType,
     Reference,
     ReflessDomainObject,
+    loadThriftMetadata,
 } from '@vality/domain-proto/domain';
 import { InsertOp } from '@vality/domain-proto/domain_config_v2';
 import {
@@ -32,7 +33,6 @@ import { ThriftAstMetadata, ThriftData, ThriftPipesModule, getUnionKey } from '@
 import { Field } from '@vality/thrift-ts';
 
 import { DomainService } from '~/api/domain-config';
-import { getDomainMetadata } from '~/api/services';
 import { NavigateService } from '~/services';
 
 import { getValueChanges } from '../../../../../projects/matez/src/lib/utils/form/get-value-changes';
@@ -115,7 +115,7 @@ export class CreateDomainObjectDialogComponent<
     );
     type$ = combineLatest([
         getValueChanges(this.typeControl),
-        getDomainMetadata(),
+        from(loadThriftMetadata()),
         getValueChanges(this.forceRefControl),
     ]).pipe(
         map(

@@ -1,12 +1,15 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, resource } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
+import {
+    InvoicePaymentAdjustmentParams,
+    loadThriftMetadata,
+} from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogModule,
@@ -18,7 +21,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule } from '@vality/ng-thrift';
 
-import { ThriftInvoicingService, getDomainMetadata } from '~/api/services';
+import { ThriftInvoicingService } from '~/api/services';
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 
 @Component({
@@ -38,7 +41,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     private destroyRef = inject(DestroyRef);
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
-    metadata$ = getDomainMetadata();
+    paymentProcessingMetadata = resource({ loader: () => loadThriftMetadata() });
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 

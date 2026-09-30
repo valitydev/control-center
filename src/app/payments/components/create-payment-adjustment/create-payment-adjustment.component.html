@@ -5,7 +5,7 @@
     <v-thrift-form
         [extensions]="extensions$ | async"
         [formControl]="control"
-        [metadata]="metadata$ | async"
+        [metadata]="paymentProcessingMetadata.value()"
         namespace="payment_processing"
         type="InvoicePaymentAdjustmentParams"
     ></v-thrift-form>
