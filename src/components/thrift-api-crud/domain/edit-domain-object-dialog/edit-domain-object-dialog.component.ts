@@ -15,7 +15,6 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import {
@@ -45,6 +44,7 @@ import {
     DomainServiceObsoleteCommitVersionError,
     getDomainObjectReference,
 } from '~/api/domain-config';
+import { getDomainMetadata } from '~/api/services';
 import { NavigateService } from '~/services';
 
 import { APP_ROUTES } from '../../../../app/app-routes';
@@ -101,7 +101,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     get type() {
         return getUnionKey(this.sourceObject);
     }
-    dataType$ = metadata$.pipe(
+    dataType$ = getDomainMetadata().pipe(
         map((metadata) =>
             getThriftObjectFieldType<string>(
                 metadata,

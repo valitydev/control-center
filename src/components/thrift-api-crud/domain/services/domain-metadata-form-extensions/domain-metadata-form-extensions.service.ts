@@ -6,15 +6,19 @@ import { v4 } from 'uuid';
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
 import { Validators } from '@angular/forms';
 
-import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import { DomainObject, DomainObjectType, ObjectID } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
-import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import {
+    ThriftAstMetadata,
+    ThriftData,
+    ThriftFormExtension,
+    isTypeWithAliases,
+} from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
-import { ThriftRepositoryService } from '~/api/services';
+import { ThriftRepositoryService, getDomainMetadata } from '~/api/services';
 import { createNextId } from '~/utils';
 
 import { getReferenceId } from '../../utils';
@@ -35,7 +39,7 @@ export class DomainMetadataFormExtensionsService {
     private repositoryService = inject(ThriftRepositoryService);
     private injector = inject(Injector);
 
-    extensions$: Observable<ThriftFormExtension[]> = metadata$.pipe(
+    extensions$: Observable<ThriftFormExtension[]> = getDomainMetadata().pipe(
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
             {
@@ -130,7 +134,7 @@ export class DomainMetadataFormExtensionsService {
         filterFn$: PossiblyAsync<Parameters<VersionedObject[]['filter']>[0]>,
         determinant?: ThriftFormExtension['determinant'],
     ): Observable<ThriftFormExtension[]> {
-        return metadata$.pipe(
+        return getDomainMetadata().pipe(
             map((metadata) => {
                 const objectFields = new ThriftData<string, 'struct'>(
                     metadata,

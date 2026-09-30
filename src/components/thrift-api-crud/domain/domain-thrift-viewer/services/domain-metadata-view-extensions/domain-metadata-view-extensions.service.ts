@@ -8,12 +8,17 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
-import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import { PartyConfigRef, Reference, base } from '@vality/domain-proto/domain';
-import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import {
+    ThriftAstMetadata,
+    ThriftData,
+    ThriftViewExtension,
+    isTypeWithAliases,
+} from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
+import { getDomainMetadata } from '~/api/services';
 
 import { SidenavInfoService } from '../../../../../sidenav-info';
 
@@ -28,7 +33,7 @@ export class DomainMetadataViewExtensionsService {
     private destroyRef = inject(DestroyRef);
     private partiesStoreService = inject(PartiesStoreService);
 
-    extensions$: Observable<ThriftViewExtension[]> = metadata$.pipe(
+    extensions$: Observable<ThriftViewExtension[]> = getDomainMetadata().pipe(
         map((metadata): ThriftViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
             {

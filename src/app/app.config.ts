@@ -1,4 +1,6 @@
+import Keycloak from 'keycloak-js';
 import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
+import { firstValueFrom } from 'rxjs';
 
 import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
@@ -20,14 +22,15 @@ import { provideRouter, withRouterConfig } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
 import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import { provideThriftConfig } from '@vality/tsthrift-angular';
 
-import { provideThriftServices } from '~/api/services';
+import { provideThriftServices as provideThriftServicesOld } from '~/api/services';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
 import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
 import { DomainObjectHistoryCardComponent } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
-import { provideAppAuth } from '~/services';
+import { ConfigService, KeycloakUserService, provideAppAuth } from '~/services';
 import { parseThriftError } from '~/utils';
 
 import { routes } from './app.routes';
@@ -78,11 +81,33 @@ export const appConfig: ApplicationConfig = {
         },
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
         { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
-        provideThriftServices(),
+        provideThriftServicesOld(),
         provideMonacoEditor(),
         provideAppInitializer(() => {
             const iconRegistry = inject(MatIconRegistry);
             iconRegistry.setDefaultFontSetClass('material-symbols-outlined');
+        }),
+        provideThriftConfig(() => {
+            const configService = inject(ConfigService);
+            const keycloakUserService = inject(KeycloakUserService);
+            const keycloak = inject(Keycloak);
+
+            return {
+                endpoint: `https://${configService.config.value()?.api?.wachter?.hostname}${configService.config.value()?.api?.wachter?.path}`,
+                woody: {
+                    meta: () =>
+                        firstValueFrom(keycloakUserService.user.value$).then((user) => ({
+                            'identity-email': user.email,
+                            'user-identity-id': user.id,
+                            'user-identity-realm': 'internal',
+                            'user-identity-username': user.username,
+                        })),
+                },
+                headers: () => ({
+                    service: 'DMT',
+                    authorization: `Bearer ${keycloak?.token ?? ''}`,
+                }),
+            };
         }),
     ],
 };

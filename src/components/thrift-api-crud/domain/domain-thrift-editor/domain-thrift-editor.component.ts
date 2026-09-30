@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TemplateRef, inject, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { metadata$ } from '@vality/domain-proto';
 import {
     ProviderAccountSet,
     ShopAccount,
@@ -19,6 +18,7 @@ import {
     isTypeWithAliases,
 } from '@vality/ng-thrift';
 
+import { getDomainMetadata } from '~/api/services';
 import { AccountFieldComponent, CurrencyAccount } from '~/components/account-field';
 import { SystemAccountsFieldComponent } from '~/components/system-accounts-field';
 
@@ -51,7 +51,7 @@ export class DomainThriftFormComponent extends BaseThriftFormSuperclass {
         'providerAccountsFieldTemplate',
     );
 
-    metadata$ = metadata$;
+    metadata$ = getDomainMetadata();
     override internalExtensions$ = this.domainMetadataFormExtensionsService.extensions$.pipe(
         map((extensions): ThriftFormExtension[] => [
             ...extensions,

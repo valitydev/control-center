@@ -8,10 +8,11 @@ import {
     model,
 } from '@angular/core';
 
-import { metadata$ } from '@vality/domain-proto';
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
+
+import { getDomainMetadata } from '~/api/services';
 
 import { DomainMetadataViewExtensionsService } from './services/domain-metadata-view-extensions';
 
@@ -31,6 +32,6 @@ export class DomainThriftViewerComponent<T> {
     @Input() namespace = 'domain';
     // @Input() extensions?: MetadataViewExtension[];
 
-    metadata$ = metadata$;
+    metadata$ = getDomainMetadata();
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 }

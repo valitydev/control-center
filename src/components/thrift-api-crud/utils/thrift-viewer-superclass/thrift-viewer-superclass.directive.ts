@@ -12,8 +12,7 @@ import {
     signal,
 } from '@angular/core';
 
-import { ThriftAstMetadata } from '@vality/domain-proto';
-import { ThriftViewExtension, ViewerKind } from '@vality/ng-thrift';
+import { ThriftAstMetadata, ThriftViewExtension, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 
 interface Data<T> {

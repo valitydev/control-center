@@ -1,8 +1,15 @@
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
-import { inject } from '@angular/core';
-
-import { metadata$ as domainMetadata$ } from '@vality/domain-proto';
+import { Accounter } from '@vality/domain-proto/accounter';
+import { InvoiceTemplating } from '@vality/domain-proto/api_extensions';
+import {
+    AuthorManagement,
+    Repository,
+    RepositoryClient,
+    loadThriftMetadata,
+} from '@vality/domain-proto/domain_config_v2';
+import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
+import { WebhookManager } from '@vality/domain-proto/webhooker';
 import { metadata$ as fistfulMetadata$ } from '@vality/fistful-proto';
 import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
@@ -10,11 +17,38 @@ import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@va
 import { metadata$ as orgManagementMetadata$ } from '@vality/org-management-proto';
 import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
 import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
+import { createObservableService } from '@vality/tsthrift-angular';
 
-import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
-import { DomainMetadataViewExtensionsService } from '~/components/thrift-api-crud/domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
 import { Service } from '~/services';
 import { ThriftService, createThriftServices } from '~/utils';
+
+export const ThriftRepositoryService = createObservableService(Repository, {
+    headers: (b) => ({ ...b, service: Service.DMT }),
+});
+export const ThriftRepositoryClientService = createObservableService(RepositoryClient, {
+    headers: (b) => ({ ...b, service: Service.DMTClient }),
+});
+export const ThriftAuthorManagementService = createObservableService(AuthorManagement, {
+    headers: (b) => ({ ...b, service: Service.DMTAuthor }),
+});
+export const ThriftInvoicingService = createObservableService(Invoicing, {
+    headers: (b) => ({ ...b, service: Service.Invoicing }),
+});
+export const ThriftPartyManagementService = createObservableService(PartyManagement, {
+    headers: (b) => ({ ...b, service: Service.PartyManagement }),
+});
+export const ThriftShopWebhooksManagementService = createObservableService(WebhookManager, {
+    headers: (b) => ({ ...b, service: Service.WebhookManager }),
+});
+export const ThriftAccountManagementService = createObservableService(Accounter, {
+    headers: (b) => ({ ...b, service: Service.Accounter }),
+});
+export const ThriftInvoiceTemplatingService = createObservableService(InvoiceTemplating, {
+    headers: (b) => ({ ...b, service: Service.InvoiceTemplating }),
+});
+
+/** @deprecated Use the loadThriftMetadata of each namespace instead */
+export const getDomainMetadata = () => from(loadThriftMetadata());
 
 export interface MetadataThriftService extends ThriftService {
     metadata$: Observable<ThriftAstMetadata[]>;
@@ -24,83 +58,7 @@ export interface MetadataThriftService extends ThriftService {
     getViewExtensions?: () => Observable<ThriftViewExtension[]>;
 }
 
-// TODO
-const domainData = {
-    metadata$: domainMetadata$,
-    getFormExtensions: () => inject(DomainMetadataFormExtensionsService).extensions$,
-    getViewExtensions: () => inject(DomainMetadataViewExtensionsService).extensions$,
-} as const;
-
 export const services = [
-    // Domain
-    {
-        ...domainData,
-        name: Service.DMT,
-        loader: () => import('@vality/domain-proto/domain_config_v2').then((m) => m.Repository),
-        namespace: 'domain_config_v2',
-        service: 'Repository',
-        public: 'Repository',
-    },
-    {
-        ...domainData,
-        name: Service.DMTClient,
-        loader: () =>
-            import('@vality/domain-proto/domain_config_v2').then((m) => m.RepositoryClient),
-        namespace: 'domain_config_v2',
-        service: 'RepositoryClient',
-        public: 'RepositoryClient',
-    },
-    {
-        ...domainData,
-        name: Service.DMTAuthor,
-        loader: () =>
-            import('@vality/domain-proto/domain_config_v2').then((m) => m.AuthorManagement),
-        namespace: 'domain_config_v2',
-        service: 'AuthorManagement',
-        public: 'AuthorManagement',
-    },
-    {
-        ...domainData,
-        name: Service.Invoicing,
-        loader: () => import('@vality/domain-proto/payment_processing').then((m) => m.Invoicing),
-        namespace: 'payment_processing',
-        service: 'Invoicing',
-        public: 'Invoicing',
-    },
-    {
-        ...domainData,
-        name: Service.PartyManagement,
-        loader: () =>
-            import('@vality/domain-proto/payment_processing').then((m) => m.PartyManagement),
-        namespace: 'payment_processing',
-        service: 'PartyManagement',
-        public: 'PartyManagement',
-    },
-    {
-        ...domainData,
-        name: Service.WebhookManager,
-        loader: () => import('@vality/domain-proto/webhooker').then((m) => m.WebhookManager),
-        namespace: 'webhooker',
-        service: 'WebhookManager',
-        public: 'WebhookManager',
-    },
-    {
-        ...domainData,
-        name: Service.Accounter,
-        loader: () => import('@vality/domain-proto/accounter').then((m) => m.Accounter),
-        namespace: 'accounter',
-        service: 'Accounter',
-        public: 'Accounter',
-    },
-    {
-        ...domainData,
-        name: Service.InvoiceTemplating,
-        loader: () =>
-            import('@vality/domain-proto/api_extensions').then((m) => m.InvoiceTemplating),
-        namespace: 'api_extensions',
-        service: 'InvoiceTemplating',
-        public: 'InvoiceTemplating',
-    },
     // Repairer
     {
         name: Service.RepairManagement,
@@ -204,23 +162,15 @@ export const { services: injectableServices, provideThriftServices } =
     createThriftServices(services);
 
 export const {
-    DMT: ThriftRepositoryService,
-    DMTClient: ThriftRepositoryClientService,
-    DMTAuthor: ThriftAuthorManagementService,
     RepairManagement: ThriftRepairManagementService,
     Scrooge: ThriftAccountService,
     MerchantStatistics: ThriftMerchantStatisticsService,
     Automaton: ThriftAutomatonService,
-    Invoicing: ThriftInvoicingService,
-    PartyManagement: ThriftPartyManagementService,
     DepositManagement: ThriftDepositManagementService,
     FistfulStatistics: ThriftFistfulStatisticsService,
     WithdrawalManagement: ThriftWithdrawalManagementService,
     SourceManagement: ThriftSourceManagementService,
-    WebhookManager: ThriftShopWebhooksManagementService,
     WalletsWebhookManager: ThriftWalletWebhooksManagementService,
-    Accounter: ThriftAccountManagementService,
-    InvoiceTemplating: ThriftInvoiceTemplatingService,
     DestinationManagement: ThriftDestinationManagementService,
     OrgManager: ThriftOrganizationManagementService,
 } = injectableServices;

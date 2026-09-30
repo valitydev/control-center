@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 
-import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import {
     DomainObject,
     DomainObjectType,
@@ -29,10 +28,11 @@ import {
     getEnumKeys,
     progressTo,
 } from '@vality/matez';
-import { ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
+import { ThriftAstMetadata, ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 
 import { DomainService } from '~/api/domain-config';
+import { getDomainMetadata } from '~/api/services';
 import { NavigateService } from '~/services';
 
 import { getValueChanges } from '../../../../../projects/matez/src/lib/utils/form/get-value-changes';
@@ -115,7 +115,7 @@ export class CreateDomainObjectDialogComponent<
     );
     type$ = combineLatest([
         getValueChanges(this.typeControl),
-        metadata$,
+        getDomainMetadata(),
         getValueChanges(this.forceRefControl),
     ]).pipe(
         map(

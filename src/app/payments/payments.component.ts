@@ -11,7 +11,6 @@ import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angul
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 
-import { metadata$ } from '@vality/domain-proto';
 import { DomainObject } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
@@ -36,6 +35,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormExtension, ThriftFormModule, isTypeWithAliases } from '@vality/ng-thrift';
 
+import { getDomainMetadata } from '~/api/services';
 import { CreateInvoiceTemplateDialogComponent } from '~/components/create-invoice-template-dialog';
 import { FailMachinesDialogComponent, Type } from '~/components/fail-machines-dialog';
 import { MerchantFieldModule } from '~/components/merchant-field/merchant-field.module';
@@ -258,7 +258,7 @@ export class PaymentsComponent implements OnInit {
         return {
             determinant,
             extension: (...args) =>
-                metadata$.pipe(
+                getDomainMetadata().pipe(
                     switchMap((metadata) =>
                         this.domainMetadataFormExtensionsService
                             .createDomainObjectsOptionsByType(metadata, objectType, objectKey)[0]

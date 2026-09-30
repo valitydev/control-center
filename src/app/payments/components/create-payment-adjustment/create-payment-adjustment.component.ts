@@ -6,7 +6,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
@@ -19,7 +18,7 @@ import {
 } from '@vality/matez';
 import { ThriftFormModule } from '@vality/ng-thrift';
 
-import { ThriftInvoicingService } from '~/api/services';
+import { ThriftInvoicingService, getDomainMetadata } from '~/api/services';
 import { DomainMetadataFormExtensionsService } from '~/components/thrift-api-crud';
 
 @Component({
@@ -39,7 +38,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     private destroyRef = inject(DestroyRef);
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
-    metadata$ = metadata$;
+    metadata$ = getDomainMetadata();
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 
