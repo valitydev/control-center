@@ -93,7 +93,11 @@ export const appConfig: ApplicationConfig = {
             const keycloak = inject(Keycloak);
 
             return {
-                endpoint: `https://${configService.config.value()?.api?.wachter?.hostname}${configService.config.value()?.api?.wachter?.path}`,
+                endpoint: () =>
+                    firstValueFrom(configService.config.value$).then(
+                        (config) =>
+                            `${config.api?.wachter?.https ? 'https' : 'http'}://${config.api?.wachter?.hostname}${config.api?.wachter?.path}${config.api?.wachter?.port ? `:${config.api?.wachter?.port}` : ''}`,
+                    ),
                 woody: {
                     meta: () =>
                         firstValueFrom(keycloakUserService.user.value$).then((user) => ({
