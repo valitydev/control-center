@@ -268,7 +268,7 @@ export class AppComponent implements OnInit {
         debounceTime(300),
         switchMap((searchStr) =>
             searchStr
-                ? this.repositoryService.SearchObjects({ query: searchStr, limit: 25 }).pipe(
+                ? this.repositoryService.searchObjects({ query: searchStr, limit: 25 }).pipe(
                       map((objects): CmdkOption[] =>
                           objects.result.map((obj) => {
                               const details = getLimitedDomainObjectDetails(obj);

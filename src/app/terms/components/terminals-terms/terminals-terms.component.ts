@@ -51,7 +51,7 @@ export class TerminalsTermsComponent {
         params: null,
         loader: (_, { continuationToken, size }) =>
             this.repositoryService
-                .SearchFullObjects({
+                .searchFullObjects({
                     query: '*',
                     type: DomainObjectType.terminal,
                     continuation_token: continuationToken,

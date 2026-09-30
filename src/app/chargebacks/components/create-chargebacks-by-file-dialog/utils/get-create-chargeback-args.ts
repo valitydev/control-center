@@ -8,7 +8,7 @@ import { CsvChargeback } from '../types/csv-chargeback';
 
 export function getCreateChargebackArgs(
     c: CsvChargeback,
-): Parameters<Invoicing['CreateChargeback']> {
+): Parameters<Invoicing['createChargeback']> {
     return [
         c.invoice_id,
         c.payment_id,

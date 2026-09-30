@@ -25,7 +25,7 @@ export function getDomainObjectsTerms(
         params: null,
         loader: (_, { continuationToken, size }) =>
             repositoryService
-                .SearchFullObjects({
+                .searchFullObjects({
                     query: '*',
                     type,
                     continuation_token: continuationToken,
@@ -48,7 +48,7 @@ export function getDomainObjectsTerms(
                         ).map((ref) => ({ term_set_hierarchy: ref }));
                         return [
                             termsObjectRefs.length
-                                ? repositoryClientService.CheckoutObjects(
+                                ? repositoryClientService.checkoutObjects(
                                       { head: {} },
                                       termsObjectRefs,
                                   )

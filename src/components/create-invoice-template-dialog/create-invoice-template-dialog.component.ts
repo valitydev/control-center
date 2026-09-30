@@ -110,7 +110,7 @@ export class CreateInvoiceTemplateDialogComponent
         params: EMPTY,
         loader: ({ partyShop, details, lifetime, ...params }: PaymentLinkParams) =>
             this.invoiceTemplatingService
-                .Create({
+                .create({
                     shop_id: { id: partyShop.shop_id },
                     party_id: { id: partyShop.party_id },
                     details,

@@ -187,7 +187,7 @@ export class DomainMetadataFormExtensionsService {
                     of({
                         search: (searchStr) =>
                             this.repositoryService
-                                .SearchObjects({
+                                .searchObjects({
                                     type: DomainObjectType[objectKey],
                                     query: searchStr || '*',
                                     limit: 100,

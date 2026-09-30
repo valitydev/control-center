@@ -40,7 +40,7 @@ export class PaymentEventsComponent {
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
     events$ = this.payment$.pipe(
-        switchMap((payment) => this.invoicingService.GetEvents(payment.invoice_id, {})),
+        switchMap((payment) => this.invoicingService.getEvents(payment.invoice_id, {})),
         map((events) =>
             events.flatMap((e) =>
                 (e.payload.invoice_changes || []).map((change) => getInvoiceChangeInfo(e, change)),

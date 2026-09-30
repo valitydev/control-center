@@ -86,7 +86,7 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
         const value = this.control.value;
         combineLatest([
             this.fetchSourcesService.sources$.pipe(first()),
-            this.thriftRepositoryClientService.CheckoutObject(
+            this.thriftRepositoryClientService.checkoutObject(
                 { head: {} },
                 { wallet_config: { id: value.wallet_id } },
             ),

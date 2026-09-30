@@ -44,7 +44,7 @@ export class WebhooksComponent {
     webhooks = observableResource({
         params: this.partyStoreService.party$,
         loader: (party) =>
-            this.webhooksManagementService.GetList(party.ref).pipe(
+            this.webhooksManagementService.getList(party.ref).pipe(
                 catchError((err) => {
                     this.log.error(err);
                     return of([] as Webhook[]);
@@ -120,7 +120,7 @@ export class WebhooksComponent {
             .afterClosed()
             .pipe(
                 filter((r) => r.status === DialogResponseStatus.Success),
-                switchMap(() => this.webhooksManagementService.Delete(id)),
+                switchMap(() => this.webhooksManagementService.delete(id)),
             )
             .subscribe({
                 next: () => {

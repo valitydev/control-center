@@ -24,7 +24,7 @@ export class FetchDomainObjectsService extends PagedObservableResourceSuperclass
 
     loader(params: FetchParams, options: PagedObservableResourceLoaderOptions) {
         return this.repositoryService
-            .SearchObjects(
+            .searchObjects(
                 clean({
                     ...params,
                     query: params.query || '*',

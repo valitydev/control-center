@@ -5,7 +5,7 @@ import { CsvPaymentAdjustment } from '../types/csv-payment-adjustment';
 
 export function getCreatePaymentAdjustmentsArgs(
     c: CsvPaymentAdjustment,
-): Parameters<Invoicing['CreatePaymentAdjustment']> {
+): Parameters<Invoicing['createPaymentAdjustment']> {
     return [
         c.invoice_id,
         c.payment_id,

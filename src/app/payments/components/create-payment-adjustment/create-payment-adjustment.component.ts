@@ -49,7 +49,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
         this.errors = [];
         forkJoinToResult(
             payments.map((p) =>
-                this.invoicingService.CreatePaymentAdjustment(
+                this.invoicingService.createPaymentAdjustment(
                     p.invoice_id,
                     p.id,
                     this.control.value,

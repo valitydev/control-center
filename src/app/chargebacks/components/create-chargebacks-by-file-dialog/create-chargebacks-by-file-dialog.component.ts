@@ -42,7 +42,7 @@ export class CreateChargebacksByFileDialogComponent extends DialogSuperclass<
         const selected = this.selected;
         forkJoinToResult(
             selected.map((c) =>
-                this.invoicingService.CreateChargeback(...getCreateChargebackArgs(c)),
+                this.invoicingService.createChargeback(...getCreateChargebackArgs(c)),
             ),
             this.progress$,
         )

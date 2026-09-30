@@ -51,7 +51,7 @@ export class DomainObjectsStoreService {
                     observableResource({
                         loader: (_, objects) =>
                             fetchAll((continuationToken) =>
-                                this.repositoryService.SearchObjects({
+                                this.repositoryService.searchObjects({
                                     type: DomainObjectType[type],
                                     query: '*',
                                     limit: 1_000_000,
@@ -81,7 +81,7 @@ export class DomainObjectsStoreService {
                     observableResource({
                         loader: (_, objects) =>
                             fetchAll((continuationToken) =>
-                                this.repositoryService.SearchFullObjects({
+                                this.repositoryService.searchFullObjects({
                                     type: DomainObjectType[type],
                                     query: '*',
                                     limit: 1_000_000,

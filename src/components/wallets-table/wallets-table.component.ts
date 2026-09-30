@@ -218,7 +218,7 @@ export class WalletsTableComponent {
     @MemoizeExpiring(5 * 60_000)
     getAccountState(wallet: VersionedObject) {
         return this.partyManagementService
-            .GetAccountState(
+            .getAccountState(
                 wallet.object.wallet_config.data.party_ref,
                 wallet.object.wallet_config.data.account.settlement,
                 wallet.info.version,

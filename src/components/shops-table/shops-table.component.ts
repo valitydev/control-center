@@ -321,14 +321,14 @@ export class ShopsTableComponent {
     @MemoizeExpiring(5 * 60_000)
     getSettlementAccountState(shop: ShopWithInfo) {
         return this.partyManagementService
-            .GetAccountState(shop.data.party_ref, shop.data.account.settlement, shop.info.version)
+            .getAccountState(shop.data.party_ref, shop.data.account.settlement, shop.info.version)
             .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     }
 
     @MemoizeExpiring(5 * 60_000)
     getGuaranteeAccountState(shop: ShopWithInfo) {
         return this.partyManagementService
-            .GetAccountState(shop.data.party_ref, shop.data.account.guarantee, shop.info.version)
+            .getAccountState(shop.data.party_ref, shop.data.account.guarantee, shop.info.version)
             .pipe(shareReplay({ refCount: true, bufferSize: 1 }));
     }
 }

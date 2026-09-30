@@ -35,14 +35,14 @@ export class DomainService {
     private repositoryClientService = inject(ThriftRepositoryClientService);
 
     version = observableResource({
-        loader: () => this.repositoryService.GetLatestVersion(),
+        loader: () => this.repositoryService.getLatestVersion(),
     });
 
     get(ref: Reference, version?: Version): Observable<VersionedObject>;
     get(refs: Reference[], version?: Version): Observable<VersionedObject[]>;
     get(refs: Reference | Reference[], version?: Version) {
         return this.repositoryClientService
-            .CheckoutObjects(
+            .checkoutObjects(
                 version ? { version } : { head: {} },
                 Array.isArray(refs) ? refs : [refs],
             )
@@ -54,7 +54,7 @@ export class DomainService {
             iif(() => !!version, of(version), this.version.getFirstValue()),
             this.authorStoreService.author.getFirstValue(),
         ]).pipe(
-            switchMap(([ver, author]) => this.repositoryService.Commit(ver, ops, author.id)),
+            switchMap(([ver, author]) => this.repositoryService.commit(ver, ops, author.id)),
             catchError((err) => {
                 if (err?.error?.name === 'ObsoleteCommitVersion') {
                     if (
@@ -115,6 +115,6 @@ export class DomainService {
     }
 
     getHistory(ref: Reference, params: RequestParams) {
-        return this.repositoryService.GetObjectHistory(ref, params);
+        return this.repositoryService.getObjectHistory(ref, params);
     }
 }

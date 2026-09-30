@@ -32,7 +32,7 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
 
     create() {
         this.invoicingService
-            .CreateChargeback(
+            .createChargeback(
                 this.dialogData.invoiceID,
                 this.dialogData.paymentID,
                 this.form.value as InvoicePaymentChargebackParams,

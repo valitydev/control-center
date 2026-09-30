@@ -191,7 +191,7 @@ export class AccountFieldComponent implements FormValueControl<CurrencyAccount> 
         return combineLatest(
             new Array(newAccountsCount).fill(null).map((_, idx) =>
                 this.accountManagementService
-                    .CreateAccount({
+                    .createAccount({
                         currency_sym_code: currency,
                     })
                     .pipe(
