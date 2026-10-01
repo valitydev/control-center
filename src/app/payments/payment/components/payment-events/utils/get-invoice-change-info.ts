@@ -35,7 +35,7 @@ export function getInvoiceChangeInfo(
         case 'invoice_created': {
             return {
                 change: change.invoice_created.invoice,
-                type: `Invoice ${change.invoice_created.invoice.id}`,
+                type: 'Invoice',
                 namespace: 'domain',
                 title: 'Invoice created',
                 expansionTitle: 'Invoice',
