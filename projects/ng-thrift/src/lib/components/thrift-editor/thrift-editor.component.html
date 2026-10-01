@@ -38,22 +38,24 @@
 }
 
 <ng-template #editorForm>
-    @switch (kind()) {
-        @case ('editor') {
-            <v-thrift-monaco
-                [value]="control.value"
-                (parseError)="setError($event)"
-                (valueChange)="setEditorValue($event)"
-            ></v-thrift-monaco>
-        }
-        @case ('form') {
-            <v-thrift-form
-                [extensions]="extensions"
-                [formControl]="control"
-                [metadata]="metadata"
-                [namespace]="namespace"
-                [type]="type"
-            ></v-thrift-form>
+    @if (metadata) {
+        @switch (kind()) {
+            @case ('editor') {
+                <v-thrift-monaco
+                    [value]="control.value"
+                    (parseError)="setError($event)"
+                    (valueChange)="setEditorValue($event)"
+                ></v-thrift-monaco>
+            }
+            @case ('form') {
+                <v-thrift-form
+                    [extensions]="extensions"
+                    [formControl]="control"
+                    [metadata]="metadata"
+                    [namespace]="namespace"
+                    [type]="type"
+                ></v-thrift-form>
+            }
         }
     }
 </ng-template>
