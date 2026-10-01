@@ -1,11 +1,11 @@
 import round from 'lodash-es/round';
-import { Observable, filter, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
 import { formatDate } from '@angular/common';
 import { DestroyRef, Injectable, inject } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 import { PartyConfigRef, Reference, base } from '@vality/domain-proto/domain';
@@ -18,7 +18,7 @@ import {
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
-import { DOMAIN_METADATA_RESOURCE } from '~/api/services';
+import { loadDomainMetadata } from '~/api/services';
 
 import { SidenavInfoService } from '../../../../../sidenav-info';
 
@@ -33,10 +33,7 @@ export class DomainMetadataViewExtensionsService {
     private destroyRef = inject(DestroyRef);
     private partiesStoreService = inject(PartiesStoreService);
 
-    extensions$: Observable<ThriftViewExtension[]> = toObservable(
-        inject(DOMAIN_METADATA_RESOURCE).value,
-    ).pipe(
-        filter(Boolean),
+    extensions$: Observable<ThriftViewExtension[]> = from(loadDomainMetadata()).pipe(
         map((metadata): ThriftViewExtension[] => [
             ...this.createDomainObjectExtensions(metadata),
             {

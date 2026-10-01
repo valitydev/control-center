@@ -11,6 +11,7 @@ import {
     ErrorHandler,
     LOCALE_ID,
     inject,
+    isDevMode,
     provideAppInitializer,
     provideBrowserGlobalErrorListeners,
     provideZoneChangeDetection,
@@ -22,6 +23,8 @@ import { provideRouter, withRouterConfig } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
 import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import { combineLoggers, createWachterHeaders, createWoodyHeaders } from '@vality/tsthrift';
+import { createConsoleLogger } from '@vality/tsthrift/devtools';
 import { provideThriftConfig } from '@vality/tsthrift-angular';
 
 import { provideThriftServices as provideThriftServicesOld } from '~/api/services';
@@ -31,7 +34,7 @@ import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-
 import { DomainObjectHistoryCardComponent } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
 import { ConfigService, KeycloakUserService, provideAppAuth } from '~/services';
-import { parseThriftError } from '~/utils';
+import { createSentryThriftLogger, parseThriftError } from '~/utils';
 
 import { routes } from './app.routes';
 import {
@@ -99,19 +102,25 @@ export const appConfig: ApplicationConfig = {
                         const port = wachter.port ? `:${wachter.port}` : '';
                         return `${protocol}://${wachter.hostname}${port}${wachter.path ?? ''}`;
                     }),
-                woody: {
-                    meta: () =>
-                        firstValueFrom(keycloakUserService.user.value$).then((user) => ({
-                            'identity-email': user.email,
-                            'user-identity-id': user.id,
-                            'user-identity-realm': 'internal',
-                            'user-identity-username': user.username,
-                        })),
+                logPayloads: isDevMode(),
+                loggingFn: combineLoggers(
+                    isDevMode() && createConsoleLogger(),
+                    createSentryThriftLogger(),
+                ),
+                headers: async () => {
+                    const user = await firstValueFrom(keycloakUserService.user.value$);
+                    return {
+                        ...createWoodyHeaders(),
+                        ...createWachterHeaders({
+                            token: keycloak?.token ?? '',
+                            user: {
+                                id: user.id,
+                                email: user.email,
+                                username: user.username,
+                            },
+                        }),
+                    };
                 },
-                headers: () => ({
-                    service: 'DMT',
-                    authorization: `Bearer ${keycloak?.token ?? ''}`,
-                }),
             };
         }),
     ],

@@ -1,10 +1,9 @@
-import { Observable, combineLatest, filter, from, of } from 'rxjs';
+import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { generate } from 'short-uuid';
 import { v4 } from 'uuid';
 
 import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { Validators } from '@angular/forms';
 
 import {
@@ -24,7 +23,7 @@ import {
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
-import { DOMAIN_METADATA_RESOURCE, ThriftRepositoryService } from '~/api/services';
+import { ThriftRepositoryService, loadDomainMetadata } from '~/api/services';
 import { createNextId } from '~/utils';
 
 import { getReferenceId } from '../../utils';
@@ -45,10 +44,7 @@ export class DomainMetadataFormExtensionsService {
     private repositoryService = inject(ThriftRepositoryService);
     private injector = inject(Injector);
 
-    extensions$: Observable<ThriftFormExtension[]> = toObservable(
-        inject(DOMAIN_METADATA_RESOURCE).value,
-    ).pipe(
-        filter(Boolean),
+    extensions$: Observable<ThriftFormExtension[]> = from(loadDomainMetadata()).pipe(
         map((metadata): ThriftFormExtension[] => [
             ...this.createDomainObjectsOptions(metadata),
             {

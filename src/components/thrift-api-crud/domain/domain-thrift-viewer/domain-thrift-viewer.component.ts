@@ -1,4 +1,4 @@
-import { filter } from 'rxjs';
+import { from } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import {
@@ -9,13 +9,12 @@ import {
     inject,
     model,
 } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
 
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
 
-import { DOMAIN_METADATA_RESOURCE } from '~/api/services';
+import { loadDomainMetadata } from '~/api/services';
 
 import { DomainMetadataViewExtensionsService } from './services/domain-metadata-view-extensions';
 
@@ -35,6 +34,6 @@ export class DomainThriftViewerComponent<T> {
     @Input() namespace = 'domain';
     // @Input() extensions?: MetadataViewExtension[];
 
-    metadata$ = toObservable(inject(DOMAIN_METADATA_RESOURCE).value).pipe(filter(Boolean));
+    metadata$ = from(loadDomainMetadata());
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 }

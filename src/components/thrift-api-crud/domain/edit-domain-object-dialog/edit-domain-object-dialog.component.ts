@@ -1,4 +1,4 @@
-import { combineLatest, filter } from 'rxjs';
+import { combineLatest, from } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { ValuesType } from 'utility-types';
 
@@ -44,7 +44,7 @@ import {
     DomainServiceObsoleteCommitVersionError,
     getDomainObjectReference,
 } from '~/api/domain-config';
-import { DOMAIN_METADATA_RESOURCE } from '~/api/services';
+import { loadDomainMetadata } from '~/api/services';
 import { NavigateService } from '~/services';
 
 import { APP_ROUTES } from '../../../../app/app-routes';
@@ -101,8 +101,7 @@ export class EditDomainObjectDialogComponent extends DialogSuperclass<
     get type() {
         return getUnionKey(this.sourceObject);
     }
-    dataType$ = toObservable(inject(DOMAIN_METADATA_RESOURCE).value).pipe(
-        filter(Boolean),
+    dataType$ = from(loadDomainMetadata()).pipe(
         map((metadata) =>
             getThriftObjectFieldType<string>(
                 metadata,
