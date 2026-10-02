@@ -21,13 +21,24 @@ describe('Binary string viewer', () => {
         TestBed.configureTestingModule({ providers: [provideZonelessChangeDetection()] });
     });
 
-    it.each(['AP8=', ''])('renders the string as-is, including empty bytes (%s)', async (value) => {
+    async function render(value: string) {
         const fixture = TestBed.createComponent(BinaryViewerHost);
         const view = new ThriftViewData(value, undefined, new ThriftData([], 'test', 'binary'));
         fixture.componentInstance.view = view;
         await fixture.whenStable();
-        expect(await firstValueFrom(view.renderValue$)).toBe(value);
-        expect(fixture.nativeElement.textContent.trim()).toBe(value);
+        return { fixture, view };
+    }
+
+    it('renders the base64 string as-is', async () => {
+        const { fixture, view } = await render('AP8=');
+        expect(await firstValueFrom(view.renderValue$)).toBe('AP8=');
+        expect(fixture.nativeElement.textContent.trim()).toBe('AP8=');
         expect(fixture.nativeElement.querySelectorAll('v-thrift-tree-value')).toHaveLength(1);
+    });
+
+    it('renders empty bytes as an empty value', async () => {
+        const { fixture, view } = await render('');
+        expect(await firstValueFrom(view.renderValue$)).toBeNull();
+        expect(fixture.nativeElement.textContent.trim()).toBe('―');
     });
 });
