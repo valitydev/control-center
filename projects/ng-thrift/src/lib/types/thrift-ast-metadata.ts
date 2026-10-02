@@ -4,8 +4,8 @@ import type { ThriftAst } from '@vality/tsthrift';
 /**
  * @deprecated Use `Metadata` type instead
  */
-export type ThriftAstMetadata = {
+export interface ThriftAstMetadata {
     path: string;
     name: string;
     ast: JsonAST | ThriftAst;
-};
+}
