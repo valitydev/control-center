@@ -68,7 +68,7 @@ export class MemberRolesManagerComponent {
             return of<Option<string>[]>([]);
         }
         return this.repositoryService
-            .GetRelatedGraph({ ref: { party_config: { id: partyId } }, type })
+            .getRelatedGraph({ ref: { party_config: { id: partyId } }, type })
             .pipe(
                 map(({ nodes }): Option<string>[] =>
                     Array.from(nodes, (node) => ({

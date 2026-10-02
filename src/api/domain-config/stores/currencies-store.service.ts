@@ -16,7 +16,7 @@ export class CurrenciesStoreService {
     resource = observableResource({
         loader: () =>
             fetchAll((continuationToken) =>
-                this.repositoryService.SearchFullObjects({
+                this.repositoryService.searchFullObjects({
                     type: DomainObjectType.currency,
                     query: '*',
                     limit: 1_000_000,

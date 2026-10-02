@@ -59,7 +59,7 @@ export class DomainObjectHistoryCardComponent {
     fullObjectsResource = this.resource.map((objs) =>
         combineLatest(
             objs.map((obj) =>
-                this.repositoryClientService.CheckoutObject({ version: obj.info.version }, obj.ref),
+                this.repositoryClientService.checkoutObject({ version: obj.info.version }, obj.ref),
             ),
         ),
     );

@@ -51,13 +51,13 @@ export class WalletFieldComponent implements FormValueControl<WalletID | WalletI
                 ? of([])
                 : (partyId
                       ? this.repositoryService
-                            .GetRelatedGraph({
+                            .getRelatedGraph({
                                 ref: { party_config: { id: partyId } },
                                 type: DomainObjectType.wallet_config,
                             })
                             .pipe(map(({ nodes }) => Array.from(nodes)))
                       : this.repositoryService
-                            .SearchObjects({
+                            .searchObjects({
                                 type: DomainObjectType.wallet_config,
                                 query: query || '*',
                                 limit: 1000,

@@ -46,7 +46,7 @@ export class CreatePaymentAdjustmentsByFileDialogComponent extends DialogSupercl
         const selected = this.selected;
         forkJoinToResult(
             selected.map((c) =>
-                this.invoicingService.CreatePaymentAdjustment(
+                this.invoicingService.createPaymentAdjustment(
                     ...getCreatePaymentAdjustmentsArgs(c),
                 ),
             ),

@@ -16,7 +16,7 @@ export class FetchFullDomainObjectsService extends FetchSuperclass<VersionedObje
 
     fetch(params: FetchParams, options: FetchOptions) {
         return this.repositoryService
-            .SearchFullObjects(
+            .searchFullObjects(
                 clean({
                     ...params,
                     query: params.query || '*',

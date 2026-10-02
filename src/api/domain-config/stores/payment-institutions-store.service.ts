@@ -16,7 +16,7 @@ export class PaymentInstitutionsStoreService {
     resource = observableResource({
         loader: () =>
             fetchAll((continuationToken) =>
-                this.repositoryService.SearchFullObjects({
+                this.repositoryService.searchFullObjects({
                     type: DomainObjectType.payment_institution,
                     query: '*',
                     limit: 1_000_000,

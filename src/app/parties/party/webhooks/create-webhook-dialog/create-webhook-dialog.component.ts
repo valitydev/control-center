@@ -78,7 +78,7 @@ export class CreateWebhookDialogComponent extends DialogSuperclass<
         };
 
         this.webhooksManagementService
-            .Create(params)
+            .create(params)
             .pipe(progressTo(this.progress))
             .subscribe(() => {
                 this.log.success('Webhook created');

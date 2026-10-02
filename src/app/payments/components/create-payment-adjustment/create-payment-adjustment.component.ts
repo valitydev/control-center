@@ -1,13 +1,15 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, resource } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
-import { metadata$ } from '@vality/domain-proto';
-import { InvoicePaymentAdjustmentParams } from '@vality/domain-proto/payment_processing';
+import {
+    InvoicePaymentAdjustmentParams,
+    loadThriftMetadata,
+} from '@vality/domain-proto/payment_processing';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DialogModule,
@@ -39,7 +41,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
     private destroyRef = inject(DestroyRef);
     control = new FormControl<InvoicePaymentAdjustmentParams>(null);
     progress$ = new BehaviorSubject(0);
-    metadata$ = metadata$;
+    paymentProcessingMetadata = resource({ loader: () => loadThriftMetadata() });
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     errors: ForkJoinErrorResult<StatPayment>[] = [];
 
@@ -50,7 +52,7 @@ export class CreatePaymentAdjustmentComponent extends DialogSuperclass<
         this.errors = [];
         forkJoinToResult(
             payments.map((p) =>
-                this.invoicingService.CreatePaymentAdjustment(
+                this.invoicingService.createPaymentAdjustment(
                     p.invoice_id,
                     p.id,
                     this.control.value,

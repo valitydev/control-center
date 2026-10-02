@@ -51,13 +51,13 @@ export class ShopFieldComponent implements FormValueControl<ShopID | ShopID[]> {
                 ? of([])
                 : (partyId
                       ? this.repositoryService
-                            .GetRelatedGraph({
+                            .getRelatedGraph({
                                 ref: { party_config: { id: partyId } },
                                 type: DomainObjectType.shop_config,
                             })
                             .pipe(map(({ nodes }) => Array.from(nodes)))
                       : this.repositoryService
-                            .SearchObjects({
+                            .searchObjects({
                                 type: DomainObjectType.shop_config,
                                 query: query || '*',
                                 limit: 1000,

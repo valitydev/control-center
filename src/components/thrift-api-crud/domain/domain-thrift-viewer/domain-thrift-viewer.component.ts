@@ -1,3 +1,5 @@
+import { from } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
@@ -8,10 +10,11 @@ import {
     model,
 } from '@angular/core';
 
-import { metadata$ } from '@vality/domain-proto';
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
+
+import { loadDomainMetadata } from '~/api/services';
 
 import { DomainMetadataViewExtensionsService } from './services/domain-metadata-view-extensions';
 
@@ -31,6 +34,6 @@ export class DomainThriftViewerComponent<T> {
     @Input() namespace = 'domain';
     // @Input() extensions?: MetadataViewExtension[];
 
-    metadata$ = metadata$;
+    metadata$ = from(loadDomainMetadata());
     extensions$ = this.domainMetadataViewExtensionsService.extensions$;
 }

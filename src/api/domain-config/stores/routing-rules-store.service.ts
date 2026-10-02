@@ -19,7 +19,7 @@ export class RoutingRulesStoreService {
     resource = observableResource({
         loader: () =>
             fetchAll((continuationToken) =>
-                this.repositoryService.SearchFullObjects({
+                this.repositoryService.searchFullObjects({
                     type: DomainObjectType.routing_rules,
                     query: '*',
                     limit: 1_000_000,

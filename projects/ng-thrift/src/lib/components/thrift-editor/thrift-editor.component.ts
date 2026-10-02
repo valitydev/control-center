@@ -49,7 +49,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
 
     @Input() defaultValue?: T;
 
-    @Input() metadata!: ThriftAstMetadata[];
+    @Input() metadata!: ThriftAstMetadata[] | null;
     @Input() namespace!: string;
     @Input() type!: ValueType;
     @Input() extensions?: ThriftFormExtension[];

@@ -1,7 +1,7 @@
 import { endOfDay } from 'date-fns';
 import { uniq } from 'lodash-es';
 import isEqual from 'lodash-es/isEqual';
-import { BehaviorSubject, merge, of } from 'rxjs';
+import { BehaviorSubject, from, merge, of } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
@@ -11,8 +11,7 @@ import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angul
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 
-import { metadata$ } from '@vality/domain-proto';
-import { DomainObject } from '@vality/domain-proto/domain';
+import { DomainObject, loadThriftMetadata } from '@vality/domain-proto/domain';
 import { StatPayment } from '@vality/magista-proto/magista';
 import {
     DateRange,
@@ -258,7 +257,7 @@ export class PaymentsComponent implements OnInit {
         return {
             determinant,
             extension: (...args) =>
-                metadata$.pipe(
+                from(loadThriftMetadata()).pipe(
                     switchMap((metadata) =>
                         this.domainMetadataFormExtensionsService
                             .createDomainObjectsOptionsByType(metadata, objectType, objectKey)[0]

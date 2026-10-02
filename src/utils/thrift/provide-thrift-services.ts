@@ -6,7 +6,7 @@ import { UnionToIntersection } from 'utility-types';
 import { Type, inject, isDevMode, makeEnvironmentProviders } from '@angular/core';
 import * as Sentry from '@sentry/angular';
 
-import { ConnectOptions } from '@vality/domain-proto';
+import { ConnectOptions } from '@vality/fistful-proto';
 
 import { ConfigService, KeycloakUserService } from '~/services';
 

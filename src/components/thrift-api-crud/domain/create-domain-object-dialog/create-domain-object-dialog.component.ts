@@ -1,5 +1,5 @@
 import { startCase } from 'lodash-es';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, from, map, shareReplay } from 'rxjs';
 import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
@@ -10,12 +10,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 
-import { ThriftAstMetadata, metadata$ } from '@vality/domain-proto';
 import {
     DomainObject,
     DomainObjectType,
     Reference,
     ReflessDomainObject,
+    loadThriftMetadata,
 } from '@vality/domain-proto/domain';
 import { InsertOp } from '@vality/domain-proto/domain_config_v2';
 import {
@@ -29,7 +29,7 @@ import {
     getEnumKeys,
     progressTo,
 } from '@vality/matez';
-import { ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
+import { ThriftAstMetadata, ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
 import { Field } from '@vality/thrift-ts';
 
 import { DomainService } from '~/api/domain-config';
@@ -115,7 +115,7 @@ export class CreateDomainObjectDialogComponent<
     );
     type$ = combineLatest([
         getValueChanges(this.typeControl),
-        metadata$,
+        from(loadThriftMetadata()),
         getValueChanges(this.forceRefControl),
     ]).pipe(
         map(

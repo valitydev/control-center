@@ -28,7 +28,7 @@ describe('AddMemberDialogComponent', () => {
     };
 
     const repository = {
-        GetRelatedGraph: vi.fn(({ type }: { type: DomainObjectType }) =>
+        getRelatedGraph: vi.fn(({ type }: { type: DomainObjectType }) =>
             of({
                 nodes: new Set([
                     ...(type === DomainObjectType.wallet_config

@@ -31,10 +31,10 @@ enum Action {
 }
 
 const CHANGE_STATUS_METHODS = {
-    [Action.Accept]: 'AcceptChargeback',
-    [Action.Reject]: 'RejectChargeback',
-    [Action.Reopen]: 'ReopenChargeback',
-    [Action.Cancel]: 'CancelChargeback',
+    [Action.Accept]: 'acceptChargeback',
+    [Action.Reject]: 'rejectChargeback',
+    [Action.Reopen]: 'reopenChargeback',
+    [Action.Cancel]: 'cancelChargeback',
 } satisfies Record<Action, keyof Invoicing>;
 
 @Component({

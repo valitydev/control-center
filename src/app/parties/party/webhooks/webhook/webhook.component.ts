@@ -22,6 +22,6 @@ export class WebhookComponent {
 
     webhook = observableResource({
         params: this.route.params.pipe(map((p) => Number(p['webhookID']))),
-        loader: (id) => this.webhooksManagementService.Get(id),
+        loader: (id) => this.webhooksManagementService.get(id),
     });
 }

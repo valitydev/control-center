@@ -32,7 +32,7 @@ describe('ManageRolesDialogComponent', () => {
         RemoveMemberRole: vi.fn(() => of(undefined)),
     };
     const repository = {
-        GetRelatedGraph: vi.fn(({ type }: { type: DomainObjectType }) =>
+        getRelatedGraph: vi.fn(({ type }: { type: DomainObjectType }) =>
             of({
                 nodes: new Set([
                     ...(type === DomainObjectType.wallet_config
@@ -195,7 +195,7 @@ describe('ManageRolesDialogComponent', () => {
             scope: { scope_id: 'Wallet', resource_id: 'wallet-1' },
         });
         expect(service.AssignMemberRole).toHaveBeenCalledTimes(2);
-        expect(repository.GetRelatedGraph).toHaveBeenCalledTimes(2);
+        expect(repository.getRelatedGraph).toHaveBeenCalledTimes(2);
     });
 
     it('allows only one shop and does not mutate roles until Assign is clicked', async () => {

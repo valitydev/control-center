@@ -18,10 +18,10 @@ export class AuthorStoreService {
     author = observableResource({
         params: this.keycloakUserService.user.value$,
         loader: (user) =>
-            this.authorManagementService.GetByEmail(user.email).pipe(
+            this.authorManagementService.getByEmail(user.email).pipe(
                 catchError(() =>
                     this.authorManagementService
-                        .Create({
+                        .create({
                             email: user.email,
                             name: user.username,
                         })

@@ -1,12 +1,14 @@
 import { generate } from 'short-uuid';
 
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, resource } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl } from '@angular/forms';
 
-import { metadata$ } from '@vality/domain-proto';
 import { InvoicePaymentChargeback } from '@vality/domain-proto/domain';
-import { InvoicePaymentChargebackParams } from '@vality/domain-proto/payment_processing';
+import {
+    InvoicePaymentChargebackParams,
+    loadThriftMetadata,
+} from '@vality/domain-proto/payment_processing';
 import { DialogSuperclass, NotifyLogService } from '@vality/matez';
 
 import { ThriftInvoicingService } from '~/api/services';
@@ -28,12 +30,12 @@ export class CreateChargebackDialogComponent extends DialogSuperclass<
     private log = inject(NotifyLogService);
     private destroyRef = inject(DestroyRef);
     form = new FormControl<Partial<InvoicePaymentChargebackParams>>({ id: generate() });
-    metadata$ = metadata$;
+    paymentProcessingMetadata = resource({ loader: () => loadThriftMetadata() });
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
 
     create() {
         this.invoicingService
-            .CreateChargeback(
+            .createChargeback(
                 this.dialogData.invoiceID,
                 this.dialogData.paymentID,
                 this.form.value as InvoicePaymentChargebackParams,

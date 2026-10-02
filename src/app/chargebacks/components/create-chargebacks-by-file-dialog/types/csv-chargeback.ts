@@ -20,9 +20,6 @@ export const CSV_CHARGEBACK_PROPS = {
         'external_id',
         'occurred_at',
 
-        'context.type',
-        'context.data',
-
         'transaction_info.id',
         'transaction_info.timestamp',
         'transaction_info.extra',

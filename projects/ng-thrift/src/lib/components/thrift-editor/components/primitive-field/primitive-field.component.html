@@ -34,6 +34,28 @@
                 }
             </div>
         </div>
+    } @else if (data().type === 'binary') {
+        <div style="display: flex; gap: 4px">
+            @let extensionResult = extensionResult$ | async;
+            <mat-form-field style="flex: 1">
+                <mat-label>{{
+                    extensionResult?.label ?? (data().type | fieldLabel: data().field)
+                }}</mat-label>
+                <input [formControl]="control" [required]="data().isRequired" matInput />
+            </mat-form-field>
+            @if (!data().isRequired) {
+                <button
+                    [disabled]="
+                        control.disabled || control.value === null || control.value === undefined
+                    "
+                    mat-icon-button
+                    type="button"
+                    (click)="clear($event)"
+                >
+                    <mat-icon>clear</mat-icon>
+                </button>
+            }
+        </div>
     } @else {
         <div style="display: flex; gap: 4px">
             @let extensionResult = extensionResult$ | async;

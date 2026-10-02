@@ -33,6 +33,7 @@
         "termset",
         "timespan",
         "titlecase",
+        "tsthrift",
         "unparse",
         "vality",
         "valitydev",

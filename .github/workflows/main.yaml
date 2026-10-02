@@ -13,8 +13,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: valitydev/action-frontend/setup-install@v3
+      - uses: actions/checkout@v7
+      - uses: valitydev/action-frontend/setup-install@v4
         with:
           release: true
       - name: Build
@@ -42,7 +42,7 @@ jobs:
       - name: Build MatEz Library
         run: npm run build -- matez
       - name: Publish MatEz Library
-        uses: valitydev/action-frontend/publish@v3
+        uses: valitydev/action-frontend/publish@v4
         with:
           directory: ./dist/matez
       # - name: Notify Mattermost
