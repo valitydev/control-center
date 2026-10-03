@@ -66,7 +66,7 @@ export class PartiesComponent implements OnInit {
         {
             field: 'organization',
             lazyCell: (party) =>
-                this.thriftOrganizationManagementService.GetOrganizationByParty(party.ref.id).pipe(
+                this.thriftOrganizationManagementService.getOrganizationByParty(party.ref.id).pipe(
                     map((org) => ({
                         value: org.name,
                         description: org.id,

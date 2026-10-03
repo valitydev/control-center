@@ -85,7 +85,7 @@ export class OrganizationsListComponent {
         params: this.filters$,
         loader: (filters, options) =>
             this.organizationsService
-                .ListOrganizations({
+                .listOrganizations({
                     limit: options.size,
                     continuation_token: options.continuationToken,
                     status: filters?.status ?? undefined,
@@ -121,7 +121,7 @@ export class OrganizationsListComponent {
             header: 'Owner',
             cell: (org) => ({ value: '', description: org.owner_id }),
             lazyCell: (org) =>
-                this.organizationsService.GetUser(org.owner_id).pipe(
+                this.organizationsService.getUser(org.owner_id).pipe(
                     map((res) => ({
                         value: res.email,
                         description: org.owner_id,
