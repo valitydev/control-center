@@ -116,7 +116,7 @@ export class CreateInvoiceTemplateDialogComponent
                     details,
                     invoice_lifetime: { [lifetime.unit]: lifetime.amount },
                     url_params: new Map(Object.entries(params)),
-                    context: { type: 'application/json', data: '' },
+                    context: { type: 'application/json', data: btoa('{}') },
                 })
                 .pipe(
                     catchError((err) => {
