@@ -22,7 +22,7 @@ import {
     debounceTimeWithFirst,
     pagedObservableResource,
 } from '@vality/matez';
-import { domain } from '@vality/org-management-proto/admin_management';
+import { Organization, OrganizationStatus, UserID } from '@vality/org-management-proto/domain';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -32,8 +32,8 @@ import { createPartyColumn } from '~/utils';
 import { OrganizationActionsService } from '../../services';
 
 export interface OrganizationsFilters {
-    status: domain.OrganizationStatus | null;
-    owner_id: domain.UserID;
+    status: OrganizationStatus | null;
+    owner_id: UserID;
 }
 
 const DEFAULT_FILTERS: OrganizationsFilters = {
@@ -62,9 +62,9 @@ export class OrganizationsListComponent {
     private qp = inject<QueryParamsService<Partial<OrganizationsFilters>>>(QueryParamsService);
     private organizationActions = inject(OrganizationActionsService);
 
-    statusOptions: Option<domain.OrganizationStatus>[] = [
-        { label: 'Active', value: domain.OrganizationStatus.active },
-        { label: 'Deactivated', value: domain.OrganizationStatus.deactivated },
+    statusOptions: Option<OrganizationStatus>[] = [
+        { label: 'Active', value: OrganizationStatus.active },
+        { label: 'Deactivated', value: OrganizationStatus.deactivated },
     ];
 
     filters = signal<OrganizationsFilters>({
@@ -81,7 +81,7 @@ export class OrganizationsListComponent {
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
 
-    organizations = pagedObservableResource<domain.Organization, OrganizationsFilters>({
+    organizations = pagedObservableResource<Organization, OrganizationsFilters>({
         params: this.filters$,
         loader: (filters, options) =>
             this.organizationsService
@@ -103,7 +103,7 @@ export class OrganizationsListComponent {
                 ),
     });
 
-    columns: Column<domain.Organization>[] = [
+    columns: Column<Organization>[] = [
         {
             field: 'id',
             cell: (org) => ({ value: org.id }),
@@ -125,12 +125,12 @@ export class OrganizationsListComponent {
             field: 'status',
             cell: (org) => ({
                 value:
-                    org.status === domain.OrganizationStatus.active
+                    org.status === OrganizationStatus.active
                         ? 'Active'
-                        : org.status === domain.OrganizationStatus.deactivated
+                        : org.status === OrganizationStatus.deactivated
                           ? 'Deactivated'
                           : String(org.status),
-                color: org.status === domain.OrganizationStatus.active ? 'success' : 'warn',
+                color: org.status === OrganizationStatus.active ? 'success' : 'warn',
             }),
         },
         {
@@ -156,7 +156,7 @@ export class OrganizationsListComponent {
                     label: 'Edit',
                     click: () => this.modify(org),
                 },
-                org.status === domain.OrganizationStatus.active
+                org.status === OrganizationStatus.active
                     ? {
                           label: 'Deactivate',
                           click: () => this.deactivate(org),
@@ -181,19 +181,19 @@ export class OrganizationsListComponent {
         });
     }
 
-    modify(org: domain.Organization): void {
+    modify(org: Organization): void {
         this.organizationActions.modify(org).subscribe(() => {
             this.organizations.reload();
         });
     }
 
-    deactivate(org: domain.Organization): void {
+    deactivate(org: Organization): void {
         this.organizationActions.deactivate(org).subscribe(() => {
             this.organizations.reload();
         });
     }
 
-    activate(org: domain.Organization): void {
+    activate(org: Organization): void {
         this.organizationActions.activate(org).subscribe(() => {
             this.organizations.reload();
         });
