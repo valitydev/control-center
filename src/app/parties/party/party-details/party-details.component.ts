@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
@@ -9,8 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { NotifyLogService, observableResource } from '@vality/matez';
 import { ThriftViewerModule } from '@vality/ng-thrift';
-import { metadata$ as orgManagementMetadata$ } from '@vality/org-management-proto';
-import { domain } from '@vality/org-management-proto/admin_management';
+import { loadThriftMetadata } from '@vality/org-management-proto/admin_management';
+import { Organization, OrganizationStatus } from '@vality/org-management-proto/domain';
 
 import { DomainService } from '~/api/domain-config';
 import { PageLayoutModule } from '~/components/page-layout';
@@ -38,8 +38,8 @@ export class PartyDetailsComponent {
     private log = inject(NotifyLogService);
     private organizationActions = inject(OrganizationActionsService);
 
-    orgStatus = domain.OrganizationStatus;
-    orgMetadata$ = orgManagementMetadata$;
+    orgStatus = OrganizationStatus;
+    orgMetadata$ = from(loadThriftMetadata());
 
     party = observableResource<VersionedObject, string>({
         params: this.partyStoreService.id$,
@@ -61,19 +61,19 @@ export class PartyDetailsComponent {
         this.partyStoreService.createOrganization();
     }
 
-    modifyOrganization(org: domain.Organization): void {
+    modifyOrganization(org: Organization): void {
         this.organizationActions.modify(org).subscribe(() => {
             this.organization.reload();
         });
     }
 
-    deactivateOrganization(org: domain.Organization): void {
+    deactivateOrganization(org: Organization): void {
         this.organizationActions.deactivate(org).subscribe(() => {
             this.organization.reload();
         });
     }
 
-    activateOrganization(org: domain.Organization): void {
+    activateOrganization(org: Organization): void {
         this.organizationActions.activate(org).subscribe(() => {
             this.organization.reload();
         });

@@ -46,7 +46,7 @@ export class MembersComponent {
             !orgId
                 ? of({ result: [] })
                 : this.thriftOrgManagementService
-                      .ListMembers(orgId, {
+                      .listMembers(orgId, {
                           limit: options.size,
                           continuation_token: options.continuationToken,
                       })
@@ -137,7 +137,7 @@ export class MembersComponent {
             .pipe(
                 filter((res) => res?.status === DialogResponseStatus.Success),
                 switchMap(() =>
-                    this.thriftOrgManagementService.RemoveMember(orgId, member.user.id).pipe(
+                    this.thriftOrgManagementService.removeMember(orgId, member.user.id).pipe(
                         catchError((err) => {
                             this.log.error(err);
                             return EMPTY;

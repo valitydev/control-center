@@ -45,7 +45,7 @@ export class OrganizationFieldComponent implements FormValueControl<string> {
 
     options = observableResource({
         loader: () =>
-            this.thriftOrgManagementService.ListOrganizations({ limit: 100 }).pipe(
+            this.thriftOrgManagementService.listOrganizations({ limit: 100 }).pipe(
                 catchError((err) => {
                     this.log.error(err);
                     return of({ organizations: [] });

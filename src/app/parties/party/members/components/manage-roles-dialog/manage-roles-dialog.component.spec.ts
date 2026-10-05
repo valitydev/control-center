@@ -25,11 +25,11 @@ describe('ManageRolesDialogComponent', () => {
         roles: [shopRole('shop-1'), shopRole('shop-2')],
     };
     const service = {
-        GetMember: vi.fn(() => of(member)),
-        AssignMemberRole: vi.fn((_org: string, _user: string, role: domain.RoleAssignment) =>
+        getMember: vi.fn(() => of(member)),
+        assignMemberRole: vi.fn((_org: string, _user: string, role: domain.RoleAssignment) =>
             of({ id: 'assigned-role-id', ...role }),
         ),
-        RemoveMemberRole: vi.fn(() => of(undefined)),
+        removeMemberRole: vi.fn(() => of(undefined)),
     };
     const repository = {
         getRelatedGraph: vi.fn(({ type }: { type: DomainObjectType }) =>
@@ -125,11 +125,11 @@ describe('ManageRolesDialogComponent', () => {
         expect(
             fixture.nativeElement.querySelectorAll('v-dialog > [data-assignment-form]'),
         ).toHaveLength(0);
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
     });
 
     it('orders organization, shops and wallets with separators and displays both resource names and IDs', async () => {
-        service.GetMember.mockReturnValueOnce(
+        service.getMember.mockReturnValueOnce(
             of({
                 ...member,
                 roles: [
@@ -163,7 +163,7 @@ describe('ManageRolesDialogComponent', () => {
         expect(sections[2].textContent).toContain('wallet-1');
         panel().querySelector<HTMLElement>('[data-role-id="organization-role"] button').click();
         await fixture.whenStable();
-        expect(service.RemoveMemberRole).toHaveBeenCalledExactlyOnceWith(
+        expect(service.removeMemberRole).toHaveBeenCalledExactlyOnceWith(
             'org-1',
             'user-1',
             'organization-role',
@@ -183,18 +183,18 @@ describe('ManageRolesDialogComponent', () => {
             'Test shop-3',
         );
         await assign();
-        expect(service.AssignMemberRole).toHaveBeenLastCalledWith('org-1', 'user-1', {
+        expect(service.assignMemberRole).toHaveBeenLastCalledWith('org-1', 'user-1', {
             role_id: 'Manager',
             scope: { scope_id: 'Shop', resource_id: 'shop-3' },
         });
         await openRole('Accountant');
         expect(panel().querySelector('[data-assignment-form]').textContent).toContain('Wallet 1');
         await assign();
-        expect(service.AssignMemberRole).toHaveBeenLastCalledWith('org-1', 'user-1', {
+        expect(service.assignMemberRole).toHaveBeenLastCalledWith('org-1', 'user-1', {
             role_id: 'Accountant',
             scope: { scope_id: 'Wallet', resource_id: 'wallet-1' },
         });
-        expect(service.AssignMemberRole).toHaveBeenCalledTimes(2);
+        expect(service.assignMemberRole).toHaveBeenCalledTimes(2);
         expect(repository.getRelatedGraph).toHaveBeenCalledTimes(2);
     });
 
@@ -205,9 +205,9 @@ describe('ManageRolesDialogComponent', () => {
         expect(
             panel().querySelectorAll('v-select-field:nth-of-type(2) .ng-select-value'),
         ).toHaveLength(1);
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
         await assign();
-        expect(service.AssignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
+        expect(service.assignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
             role_id: 'Manager',
             scope: { scope_id: 'Shop', resource_id: 'shop-3' },
         });
@@ -222,14 +222,14 @@ describe('ManageRolesDialogComponent', () => {
             panel().querySelector<HTMLElement>(`[data-role-id="${role.id}"] button`).click();
             await fixture.whenStable();
         }
-        expect(service.RemoveMemberRole).toHaveBeenCalledTimes(2);
-        expect(service.RemoveMemberRole).toHaveBeenNthCalledWith(
+        expect(service.removeMemberRole).toHaveBeenCalledTimes(2);
+        expect(service.removeMemberRole).toHaveBeenNthCalledWith(
             1,
             'org-1',
             'user-1',
             'role-shop-1',
         );
-        expect(service.RemoveMemberRole).toHaveBeenNthCalledWith(
+        expect(service.removeMemberRole).toHaveBeenNthCalledWith(
             2,
             'org-1',
             'user-1',
@@ -250,13 +250,13 @@ describe('ManageRolesDialogComponent', () => {
         await selectOption('scope', 'Wallet');
         expect(panel().querySelectorAll('.ng-select-has-value')).toHaveLength(1);
         await selectOption('resource', 'Wallet 1');
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
         await assign();
-        expect(service.AssignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
+        expect(service.assignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
             role_id: 'Manager',
             scope: { scope_id: 'Wallet', resource_id: 'wallet-1' },
         });
-        expect(service.RemoveMemberRole).not.toHaveBeenCalled();
+        expect(service.removeMemberRole).not.toHaveBeenCalled();
     });
 
     it('restricts WalletManager scope to only Wallet and displays wallets in catalog', async () => {
@@ -289,7 +289,7 @@ describe('ManageRolesDialogComponent', () => {
 
         await selectOption('resource', 'Wallet 1');
         await assign();
-        expect(service.AssignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
+        expect(service.assignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
             role_id: 'WalletManager',
             scope: { scope_id: 'Wallet', resource_id: 'wallet-1' },
         });
@@ -298,12 +298,12 @@ describe('ManageRolesDialogComponent', () => {
     it('omits scope for organization-wide access and uses the returned ID for removal', async () => {
         await openRole('Administrator');
         await assign();
-        expect(service.AssignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
+        expect(service.assignMemberRole).toHaveBeenCalledExactlyOnceWith('org-1', 'user-1', {
             role_id: 'Administrator',
         });
         panel().querySelector<HTMLElement>('[data-role-id="assigned-role-id"] button').click();
         await fixture.whenStable();
-        expect(service.RemoveMemberRole).toHaveBeenCalledExactlyOnceWith(
+        expect(service.removeMemberRole).toHaveBeenCalledExactlyOnceWith(
             'org-1',
             'user-1',
             'assigned-role-id',
@@ -332,7 +332,7 @@ describe('ManageRolesDialogComponent', () => {
             role_id: 'Manager',
             scope: { scope_id: 'Shop', resource_id: 'shop-1' },
         });
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
 
         await openRole('Administrator');
         await assign();
@@ -344,7 +344,7 @@ describe('ManageRolesDialogComponent', () => {
 
     it('keeps the form selection and current assignments when adding fails', async () => {
         const error = new Error('Assignment failed');
-        service.AssignMemberRole.mockReturnValueOnce(throwError(() => error));
+        service.assignMemberRole.mockReturnValueOnce(throwError(() => error));
         await openRole('Manager');
         await selectOption('resource', 'Test shop-3');
         await assign();
@@ -353,29 +353,29 @@ describe('ManageRolesDialogComponent', () => {
             'Test shop-3',
         );
         expect(log.error).toHaveBeenCalledWith(error);
-        expect(service.RemoveMemberRole).not.toHaveBeenCalled();
+        expect(service.removeMemberRole).not.toHaveBeenCalled();
     });
 
     it('keeps an assignment when deletion fails', async () => {
         const error = new Error('Removal failed');
-        service.RemoveMemberRole.mockReturnValueOnce(throwError(() => error));
+        service.removeMemberRole.mockReturnValueOnce(throwError(() => error));
         fixture.componentInstance.removeRole(member.roles[0]);
         await fixture.whenStable();
-        expect(service.RemoveMemberRole).toHaveBeenCalledTimes(1);
+        expect(service.removeMemberRole).toHaveBeenCalledTimes(1);
         expect(fixture.componentInstance.roles()).toEqual(member.roles);
         expect(log.error).toHaveBeenCalledWith(error);
     });
 
     it('blocks further mutations and closing while one request is pending', async () => {
         const pending = new Subject<domain.MemberRole>();
-        service.AssignMemberRole.mockReturnValue(pending);
+        service.assignMemberRole.mockReturnValue(pending);
         await openRole('Administrator');
         await assign();
         fixture.componentInstance.assignRole({ role_id: 'Accountant' });
         fixture.componentInstance.removeRole(member.roles[0]);
         fixture.componentInstance.closeDialog();
-        expect(service.AssignMemberRole).toHaveBeenCalledTimes(1);
-        expect(service.RemoveMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).toHaveBeenCalledTimes(1);
+        expect(service.removeMemberRole).not.toHaveBeenCalled();
         expect(fixture.componentInstance.roles()).toEqual(member.roles);
         expect(close).not.toHaveBeenCalled();
         expect(fixture.nativeElement.querySelector('.dialog-title-close')).toBeNull();
@@ -389,14 +389,14 @@ describe('ManageRolesDialogComponent', () => {
     it('preserves confirmed changes when reloading fails and displays IDs for missing catalog entries', async () => {
         await openRole('Administrator');
         await assign();
-        service.GetMember.mockReturnValueOnce(throwError(() => new Error('Refresh failed')));
+        service.getMember.mockReturnValueOnce(throwError(() => new Error('Refresh failed')));
         fixture.componentInstance.member.reload();
         await fixture.whenStable();
         expect(fixture.componentInstance.roles()).toContainEqual({
             id: 'assigned-role-id',
             role_id: 'Administrator',
         });
-        service.GetMember.mockReturnValueOnce(of({ ...member, roles: [shopRole('unknown-shop')] }));
+        service.getMember.mockReturnValueOnce(of({ ...member, roles: [shopRole('unknown-shop')] }));
         fixture.componentInstance.member.reload();
         await fixture.whenStable();
         await openRole('Manager');

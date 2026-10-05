@@ -127,7 +127,7 @@ export class InvitationsComponent {
             !params?.orgId
                 ? of({ result: [] })
                 : this.thriftOrgManagementService
-                      .ListInvitations(params.orgId, {
+                      .listInvitations(params.orgId, {
                           limit: options.size,
                           continuation_token: options.continuationToken,
                           status: params.filters.status ?? undefined,
@@ -240,7 +240,7 @@ export class InvitationsComponent {
                 filter((res) => res?.status === DialogResponseStatus.Success),
                 switchMap((res) =>
                     this.thriftOrgManagementService
-                        .RevokeInvitation(orgId, inv.id, {
+                        .revokeInvitation(orgId, inv.id, {
                             reason: res.data?.reason || '',
                         })
                         .pipe(

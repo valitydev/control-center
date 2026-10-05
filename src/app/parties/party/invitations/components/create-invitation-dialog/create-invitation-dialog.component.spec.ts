@@ -55,7 +55,7 @@ describe('CreateInvitationDialogComponent', () => {
                 { provide: NotifyLogService, useValue: log },
                 {
                     provide: ThriftOrganizationManagementService,
-                    useValue: { CreateInvitation: createInvitation },
+                    useValue: { createInvitation: createInvitation },
                 },
                 { provide: ThriftRepositoryService, useValue: repository },
             ],

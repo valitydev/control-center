@@ -82,7 +82,7 @@ export class CreateInvitationDialogComponent extends DialogSuperclass<
         }));
 
         this.thriftOrgManagementService
-            .CreateInvitation(this.dialogData.organizationId, {
+            .createInvitation(this.dialogData.organizationId, {
                 email: invitationEmail,
                 roles,
             })

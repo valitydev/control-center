@@ -14,7 +14,7 @@ import { metadata$ as fistfulMetadata$ } from '@vality/fistful-proto';
 import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
 import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
-import { metadata$ as orgManagementMetadata$ } from '@vality/org-management-proto';
+import { AdminManagement } from '@vality/org-management-proto/admin_management';
 import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
 import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
 import { createObservableService } from '@vality/tsthrift-angular';
@@ -56,6 +56,10 @@ export function loadDomainMetadata() {
         'api_extensions',
     ]);
 }
+
+export const ThriftOrganizationManagementService = createObservableService(AdminManagement, {
+    headers: (h) => ({ ...h, service: Service.OrganizationManagement }),
+});
 
 export interface MetadataThriftService extends ThriftService {
     metadata$: Observable<ThriftAstMetadata[]>;
@@ -152,17 +156,6 @@ export const services = [
         service: 'Management',
         public: 'DestinationManagement',
     },
-
-    // Organization Management
-    {
-        name: Service.OrganizationManagement,
-        loader: () =>
-            import('@vality/org-management-proto/admin_management').then((m) => m.AdminManagement),
-        metadata$: orgManagementMetadata$,
-        namespace: 'admin_management',
-        service: 'AdminManagement',
-        public: 'OrganizationManagement',
-    },
 ] as const;
 
 export const { services: injectableServices, provideThriftServices } =
@@ -179,5 +172,4 @@ export const {
     SourceManagement: ThriftSourceManagementService,
     WalletsWebhookManager: ThriftWalletWebhooksManagementService,
     DestinationManagement: ThriftDestinationManagementService,
-    OrgManager: ThriftOrganizationManagementService,
 } = injectableServices;

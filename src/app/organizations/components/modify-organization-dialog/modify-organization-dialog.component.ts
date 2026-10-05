@@ -48,7 +48,7 @@ export class ModifyOrganizationDialogComponent extends DialogSuperclass<
     modify() {
         const { name } = this.controlModel();
         this.organizationsService
-            .ModifyOrganization(this.dialogData.organization.id, {
+            .modifyOrganization(this.dialogData.organization.id, {
                 name,
             })
             .pipe(progressTo(this.progress))

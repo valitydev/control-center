@@ -95,7 +95,7 @@ export class AddMemberDialogComponent extends DialogSuperclass<
         const { user_id, email: memberEmail } = this.controlModel();
         const roles = this.roles();
         this.thriftOrgManagementService
-            .AddMember(this.dialogData.organizationId, {
+            .addMember(this.dialogData.organizationId, {
                 user_id,
                 email: memberEmail,
             })
@@ -104,7 +104,7 @@ export class AddMemberDialogComponent extends DialogSuperclass<
                     roles.length
                         ? forkJoin(
                               roles.map((r) =>
-                                  this.thriftOrgManagementService.AssignMemberRole(
+                                  this.thriftOrgManagementService.assignMemberRole(
                                       this.dialogData.organizationId,
                                       user_id,
                                       {

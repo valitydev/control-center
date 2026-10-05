@@ -18,11 +18,11 @@ describe('AddMemberDialogComponent', () => {
     let activeRole: string;
 
     const service = {
-        ListUsers: vi.fn(() => of({ users: [] })),
-        AddMember: vi.fn((_org: string, member: { user_id: string; email?: string }) =>
+        listUsers: vi.fn(() => of({ users: [] })),
+        addMember: vi.fn((_org: string, member: { user_id: string; email?: string }) =>
             of({ user: { id: member.user_id, email: member.email }, roles: [] }),
         ),
-        AssignMemberRole: vi.fn((_org: string, _user: string, role: domain.RoleAssignment) =>
+        assignMemberRole: vi.fn((_org: string, _user: string, role: domain.RoleAssignment) =>
             of({ id: 'assigned-role-id', ...role }),
         ),
     };
@@ -133,7 +133,7 @@ describe('AddMemberDialogComponent', () => {
         await selectOption('resource', 'Test shop-1');
         await assign();
 
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
         expect(fixture.componentInstance.roles()).toHaveLength(1);
         expect(fixture.componentInstance.roles()[0]).toMatchObject({
             role_id: 'Manager',
@@ -151,7 +151,7 @@ describe('AddMemberDialogComponent', () => {
         expect(fixture.componentInstance.roles()).toHaveLength(0);
         expect(panel().textContent).toContain('No assignments');
         expect(panel().querySelector('mat-panel-description').textContent.trim()).toBe('no roles');
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
     });
 
     it('adds a member without roles', async () => {
@@ -165,11 +165,11 @@ describe('AddMemberDialogComponent', () => {
         addButton.click();
         await fixture.whenStable();
 
-        expect(service.AddMember).toHaveBeenCalledExactlyOnceWith('org-1', {
+        expect(service.addMember).toHaveBeenCalledExactlyOnceWith('org-1', {
             user_id: 'user-123',
             email: 'user@example.com',
         });
-        expect(service.AssignMemberRole).not.toHaveBeenCalled();
+        expect(service.assignMemberRole).not.toHaveBeenCalled();
         expect(log.success).toHaveBeenCalledWith('Member added');
         expect(close).toHaveBeenCalledWith({ status: DialogResponseStatus.Success });
     });
@@ -191,15 +191,15 @@ describe('AddMemberDialogComponent', () => {
         addButton.click();
         await fixture.whenStable();
 
-        expect(service.AddMember).toHaveBeenCalledExactlyOnceWith('org-1', {
+        expect(service.addMember).toHaveBeenCalledExactlyOnceWith('org-1', {
             user_id: 'user-456',
             email: 'manager@example.com',
         });
-        expect(service.AssignMemberRole).toHaveBeenCalledTimes(2);
-        expect(service.AssignMemberRole).toHaveBeenNthCalledWith(1, 'org-1', 'user-456', {
+        expect(service.assignMemberRole).toHaveBeenCalledTimes(2);
+        expect(service.assignMemberRole).toHaveBeenNthCalledWith(1, 'org-1', 'user-456', {
             role_id: 'Administrator',
         });
-        expect(service.AssignMemberRole).toHaveBeenNthCalledWith(2, 'org-1', 'user-456', {
+        expect(service.assignMemberRole).toHaveBeenNthCalledWith(2, 'org-1', 'user-456', {
             role_id: 'Manager',
             scope: { scope_id: 'Shop', resource_id: 'shop-2' },
         });
@@ -236,7 +236,7 @@ describe('AddMemberDialogComponent', () => {
 
     it('handles error when AddMember fails', async () => {
         const error = new Error('AddMember failed');
-        service.AddMember.mockReturnValueOnce(throwError(() => error));
+        service.addMember.mockReturnValueOnce(throwError(() => error));
 
         fillUser('user-fail', 'fail@example.com');
         await fixture.whenStable();

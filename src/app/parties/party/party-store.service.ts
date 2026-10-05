@@ -60,7 +60,7 @@ export class PartyStoreService {
             if (!partyId) {
                 return of(null);
             }
-            return this.thriftOrgManagementService.GetOrganizationByParty(partyId).pipe(
+            return this.thriftOrgManagementService.getOrganizationByParty(partyId).pipe(
                 catchError((err) => {
                     if (isOrganizationNotFoundError(err)) {
                         this.organizationNotFound.set(true);

@@ -61,7 +61,7 @@ export class UserFieldComponent implements FormValueControl<string> {
     users = observableResource({
         loader: () =>
             this.thriftOrgManagementService
-                .ListUsers({
+                .listUsers({
                     limit: 100,
                 })
                 .pipe(

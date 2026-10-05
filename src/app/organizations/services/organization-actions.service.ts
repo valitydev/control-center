@@ -51,7 +51,7 @@ export class OrganizationActionsService {
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
-                    this.organizationsService.DeactivateOrganization(org.id).pipe(
+                    this.organizationsService.deactivateOrganization(org.id).pipe(
                         catchError((err) => {
                             this.log.error(err);
                             return EMPTY;
@@ -74,7 +74,7 @@ export class OrganizationActionsService {
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
-                    this.organizationsService.ActivateOrganization(org.id).pipe(
+                    this.organizationsService.activateOrganization(org.id).pipe(
                         catchError((err) => {
                             this.log.error(err);
                             return EMPTY;

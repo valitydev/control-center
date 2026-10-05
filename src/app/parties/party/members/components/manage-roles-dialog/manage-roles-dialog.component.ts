@@ -43,7 +43,7 @@ export class ManageRolesDialogComponent extends DialogSuperclass<
     member = observableResource({
         loader: () =>
             this.thriftOrgManagementService
-                .GetMember(this.dialogData.organizationId, this.dialogData.member.user.id)
+                .getMember(this.dialogData.organizationId, this.dialogData.member.user.id)
                 .pipe(
                     catchError((err) => {
                         this.log.error(err);
@@ -67,7 +67,7 @@ export class ManageRolesDialogComponent extends DialogSuperclass<
             return;
         }
         this.thriftOrgManagementService
-            .AssignMemberRole(
+            .assignMemberRole(
                 this.dialogData.organizationId,
                 this.dialogData.member.user.id,
                 assignment,
@@ -89,7 +89,7 @@ export class ManageRolesDialogComponent extends DialogSuperclass<
             return;
         }
         this.thriftOrgManagementService
-            .RemoveMemberRole(
+            .removeMemberRole(
                 this.dialogData.organizationId,
                 this.dialogData.member.user.id,
                 role.id,

@@ -68,7 +68,7 @@ export class CreateOrganizationDialogComponent extends DialogSuperclass<
     create() {
         const { name, party_id, owner_id } = this.controlModel();
         this.organizationsService
-            .CreateOrganization({
+            .createOrganization({
                 name,
                 party_id,
                 owner_id,
