@@ -16,7 +16,7 @@ export class ReceiveDepositService {
     deposit$ = defer(() => this.receiveDeposit$).pipe(
         switchMap((depositId) =>
             this.fistfulStatisticsService
-                .GetDeposits({ dsl: createDsl({ deposits: { deposit_id: depositId, size: 1 } }) })
+                .getDeposits({ dsl: createDsl({ deposits: { deposit_id: depositId, size: 1 } }) })
                 .pipe(
                     catchError((err) => {
                         this.error$.next(true);

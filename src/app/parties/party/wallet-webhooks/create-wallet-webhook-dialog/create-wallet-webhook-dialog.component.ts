@@ -76,7 +76,7 @@ export class CreateWalletWebhookDialogComponent extends DialogSuperclass<
         };
 
         this.walletWebhooksManagementService
-            .Create(params)
+            .create(params)
             .pipe(progressTo(this.progress))
             .subscribe(() => {
                 this.log.success('Webhook created');

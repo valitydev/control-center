@@ -22,7 +22,7 @@ export class FetchDepositsService extends FetchSuperclass<
         options: FetchOptions,
     ): Observable<FetchResult<StatDeposit>> {
         return this.fistfulStatisticsService
-            .GetDeposits({
+            .getDeposits({
                 dsl: createDsl({
                     deposits: {
                         ...params,

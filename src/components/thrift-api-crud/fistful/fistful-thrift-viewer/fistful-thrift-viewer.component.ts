@@ -1,12 +1,13 @@
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, booleanAttribute, model } from '@angular/core';
 
-import { metadata$ } from '@vality/fistful-proto';
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewExtension, ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
 import { ValueType } from '@vality/thrift-ts';
+
+import { loadFistfulMetadata } from '~/api/services';
 
 @Component({
     selector: 'cc-fistful-thrift-viewer',
@@ -23,6 +24,6 @@ export class FistfulThriftViewerComponent<T> {
     @Input() namespace = 'domain';
     // @Input() extensions?: MetadataViewExtension[];
 
-    metadata$ = metadata$;
+    metadata$ = from(loadFistfulMetadata());
     extensions$: Observable<ThriftViewExtension[]> = of([]); // TODO
 }

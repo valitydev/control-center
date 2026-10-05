@@ -7,6 +7,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder } from '@angular/forms';
 
 import { PartyConfigRef } from '@vality/domain-proto/domain';
+import { Realm } from '@vality/fistful-proto/base';
 import { StatWithdrawal } from '@vality/fistful-proto/fistful_stat';
 import {
     Column,
@@ -100,10 +101,10 @@ export class WithdrawalsComponent implements OnInit {
         {
             field: 'destination',
             lazyCell: (d) =>
-                this.destinationManagementService.Get(d.destination_id, {}).pipe(
+                this.destinationManagementService.get(d.destination_id, {}).pipe(
                     map((d) => ({
                         value: d.name,
-                        description: d.realm === 0 ? 'test' : 'live',
+                        description: d.realm === Realm.test ? 'test' : 'live',
                     })),
                 ),
         },

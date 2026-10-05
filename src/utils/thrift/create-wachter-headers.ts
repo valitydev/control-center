@@ -1,4 +1,4 @@
-import { generateId } from '@vality/fistful-proto';
+import { generateId } from '@vality/magista-proto';
 
 export const createWachterHeaders = (
     service: string,

@@ -44,7 +44,7 @@ export class WalletWebhooksComponent {
     webhooks = observableResource({
         params: this.partyStoreService.party$,
         loader: (party) =>
-            this.walletWebhooksManagementService.GetList(party.ref.id).pipe(
+            this.walletWebhooksManagementService.getList(party.ref.id).pipe(
                 catchError((err) => {
                     this.log.error(err);
                     return of([] as Webhook[]);
@@ -117,7 +117,7 @@ export class WalletWebhooksComponent {
             .afterClosed()
             .pipe(
                 filter((r) => r.status === DialogResponseStatus.Success),
-                switchMap(() => this.walletWebhooksManagementService.Delete(id)),
+                switchMap(() => this.walletWebhooksManagementService.delete(id)),
             )
             .subscribe({
                 next: () => {
