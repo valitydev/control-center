@@ -15,12 +15,13 @@ export function parseNamespaceObjectType(
     include?: JsonAST['include'],
 ): NamespaceObjectType {
     // metadata reverse find - search for the last matching protocol if the names match (files are overwritten in the same order)
+    const reversedMetadata = [...metadata].reverse();
     let namespaceMetadata: ThriftAstMetadata | undefined;
     if (include) {
-        namespaceMetadata = metadata.reverse().find((m) => m.path === include[namespace].path);
+        namespaceMetadata = reversedMetadata.find((m) => m.path === include[namespace]?.path);
     }
     if (!namespaceMetadata) {
-        namespaceMetadata = metadata.reverse().find((m) => m.name === namespace);
+        namespaceMetadata = reversedMetadata.find((m) => m.name === namespace);
     }
     const objectType = Object.keys((namespaceMetadata as ThriftAstMetadata)?.ast ?? {}).find(
         (t) => (namespaceMetadata as ThriftAstMetadata)?.ast?.[t as keyof JsonAST]?.[type],

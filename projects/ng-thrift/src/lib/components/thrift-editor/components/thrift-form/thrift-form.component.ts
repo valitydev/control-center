@@ -1,4 +1,4 @@
-import { combineLatest, switchMap } from 'rxjs';
+import { combineLatest, of, switchMap } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
@@ -11,7 +11,11 @@ import { Field, ValueType } from '@vality/thrift-ts';
 
 import { ThriftData } from '../../../../models';
 import { ThriftAstMetadata } from '../../../../types';
-import { ThriftFormExtension, getExtensionsResult } from '../../types/thrift-form-extension';
+import {
+    ThriftFormExtension,
+    ThriftFormExtensionResult,
+    getExtensionsResult,
+} from '../../types/thrift-form-extension';
 import { ComplexFormComponent } from '../complex-form/complex-form.component';
 import { EnumFieldComponent } from '../enum-field/enum-field.component';
 import { ExtensionFieldComponent } from '../extension-field/extension-field.component';
@@ -39,28 +43,27 @@ import { UnionFieldComponent } from '../union-field/union-field.component';
     ],
 })
 export class ThriftFormComponent<T> extends FormControlSuperclass<T> implements Validator {
-    metadata = input.required<ThriftAstMetadata[]>();
+    metadata = input.required<ThriftAstMetadata[] | null | undefined>();
     namespace = input.required<string>();
     type = input.required<ValueType>();
     field = input<Field>();
     parent = input<ThriftData>();
     extensions = input<ThriftFormExtension[]>();
 
-    data = computed(
-        () =>
-            new ThriftData(
-                this.metadata(),
-                this.namespace(),
-                this.type(),
-                this.field(),
-                this.parent(),
-            ),
-    );
+    data = computed(() => {
+        const metadata = this.metadata();
+        if (!metadata) {
+            return undefined;
+        }
+        return new ThriftData(metadata, this.namespace(), this.type(), this.field(), this.parent());
+    });
     private extensionResult$ = combineLatest([
         toObservable(this.extensions),
         toObservable(this.data),
     ]).pipe(
-        switchMap(([extensions, data]) => getExtensionsResult(extensions, data)),
+        switchMap(([extensions, data]) =>
+            data ? getExtensionsResult(extensions, data) : of<ThriftFormExtensionResult>({}),
+        ),
         shareReplay({ refCount: true, bufferSize: 1 }),
     );
     extensionResult = toSignal(this.extensionResult$);
