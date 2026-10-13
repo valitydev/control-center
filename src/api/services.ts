@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
+import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
 import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
 import { AdminManagement } from '@vality/org-management-proto/admin_management';
@@ -16,6 +16,10 @@ export * from './fistful-services';
 
 export const ThriftOrganizationManagementService = createObservableService(AdminManagement, {
     headers: (h) => ({ ...h, service: Service.OrganizationManagement }),
+});
+
+export const ThriftAutomatonService = createObservableService(Automaton, {
+    headers: (h) => ({ ...h, service: Service.Automaton }),
 });
 
 export interface MetadataThriftService extends ThriftService {
@@ -55,15 +59,6 @@ export const services = [
         service: 'MerchantStatisticsService',
         public: 'MerchantStatistics',
     },
-    // Machinegun
-    {
-        name: Service.Automaton,
-        loader: () => import('@vality/machinegun-proto/state_processing').then((m) => m.Automaton),
-        metadata$: machinegunMetadata$,
-        namespace: 'state_processing',
-        service: 'Automaton',
-        public: 'Automaton',
-    },
 ] as const;
 
 export const { services: injectableServices, provideThriftServices } =
@@ -73,5 +68,4 @@ export const {
     RepairManagement: ThriftRepairManagementService,
     Scrooge: ThriftAccountService,
     MerchantStatistics: ThriftMerchantStatisticsService,
-    Automaton: ThriftAutomatonService,
 } = injectableServices;
