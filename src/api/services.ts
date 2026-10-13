@@ -4,7 +4,7 @@ import { Automaton } from '@vality/machinegun-proto/state_processing';
 import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
 import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
 import { AdminManagement } from '@vality/org-management-proto/admin_management';
-import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
+import { RepairManagement } from '@vality/repairer-proto';
 import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { createObservableService } from '@vality/tsthrift-angular';
 
@@ -26,6 +26,9 @@ export const ThriftAccountService = createObservableService(AccountService, {
     headers: (h) => ({ ...h, service: Service.Scrooge }),
 });
 
+export const ThriftRepairManagementService = createObservableService(RepairManagement, {
+    headers: (h) => ({ ...h, service: Service.RepairManagement }),
+});
 export interface MetadataThriftService extends ThriftService {
     metadata$: Observable<ThriftAstMetadata[]>;
     namespace: string;
@@ -35,15 +38,6 @@ export interface MetadataThriftService extends ThriftService {
 }
 
 export const services = [
-    // Repairer
-    {
-        name: Service.RepairManagement,
-        loader: () => import('@vality/repairer-proto/repairer').then((m) => m.RepairManagement),
-        metadata$: repairerMetadata$,
-        namespace: 'repairer',
-        service: 'RepairManagement',
-        public: 'RepairManagement',
-    },
     // Magista
     {
         name: Service.MerchantStatistics,
@@ -59,7 +53,4 @@ export const services = [
 export const { services: injectableServices, provideThriftServices } =
     createThriftServices(services);
 
-export const {
-    RepairManagement: ThriftRepairManagementService,
-    MerchantStatistics: ThriftMerchantStatisticsService,
-} = injectableServices;
+export const { MerchantStatistics: ThriftMerchantStatisticsService } = injectableServices;
