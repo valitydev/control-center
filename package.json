@@ -44,7 +44,7 @@
     "@vality/magista-proto": "^2.0.2-bd58cea.0",
     "@vality/org-management-proto": "^0.1.1-d1499ca.0",
     "@vality/repairer-proto": "^2.0.2-07b2a51.0",
-    "@vality/scrooge-proto": "^0.1.1-eec9e06.0",
+    "@vality/scrooge-proto": "^0.1.1-aae6268.0",
     "@vality/thrift-ts": "^2.5.1-2b658f2.0",
     "@vality/tsthrift": "^0.2.0",
     "@vality/tsthrift-angular": "^0.1.1",

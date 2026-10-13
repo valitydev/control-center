@@ -5,7 +5,7 @@ import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
 import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
 import { AdminManagement } from '@vality/org-management-proto/admin_management';
 import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
-import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
+import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { createObservableService } from '@vality/tsthrift-angular';
 
 import { Service } from '~/services';
@@ -20,6 +20,10 @@ export const ThriftOrganizationManagementService = createObservableService(Admin
 
 export const ThriftAutomatonService = createObservableService(Automaton, {
     headers: (h) => ({ ...h, service: Service.Automaton }),
+});
+
+export const ThriftAccountService = createObservableService(AccountService, {
+    headers: (h) => ({ ...h, service: Service.Scrooge }),
 });
 
 export interface MetadataThriftService extends ThriftService {
@@ -40,15 +44,6 @@ export const services = [
         service: 'RepairManagement',
         public: 'RepairManagement',
     },
-    // Scrooge
-    {
-        name: Service.Scrooge,
-        loader: () => import('@vality/scrooge-proto/account_balance').then((m) => m.AccountService),
-        metadata$: scroogeMetadata$,
-        namespace: 'account_balance',
-        service: 'AccountService',
-        public: 'AccountManagement',
-    },
     // Magista
     {
         name: Service.MerchantStatistics,
@@ -66,6 +61,5 @@ export const { services: injectableServices, provideThriftServices } =
 
 export const {
     RepairManagement: ThriftRepairManagementService,
-    Scrooge: ThriftAccountService,
     MerchantStatistics: ThriftMerchantStatisticsService,
 } = injectableServices;
