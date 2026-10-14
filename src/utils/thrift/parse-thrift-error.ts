@@ -63,4 +63,3 @@ export function parseThriftError(error: unknown): LogError {
         noConsole: isThriftError(error),
     };
 }
-
