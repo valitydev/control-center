@@ -21,7 +21,7 @@ export function inlineJson(
     readableKeys = false,
     level = 0,
 ): string {
-    const isRoot = (level = 0);
+    const isRoot = level === 0;
     if (isPrimitive(value)) {
         return String(value);
     }
