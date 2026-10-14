@@ -1,7 +1,10 @@
 ## 1. Thrift API
 
-- Services are created with `createObservableService` from `@vality/tsthrift-angular` in `src/api/services.ts`, `src/api/domain-services.ts`, and `src/api/fistful-services.ts`.
-- Shared transport configuration is provided with `provideThriftConfig` in `src/app/app.config.ts`.
+- Services are created with `createObservableService` from
+  `@vality/tsthrift-angular` in `src/api/services.ts`,
+  `src/api/domain-services.ts`, and `src/api/fistful-services.ts`.
+- Shared transport configuration is provided with `provideThriftConfig` in
+  `src/app/app.config.ts`.
 - Use metadata types from `@vality/tsthrift` for Thrift editors and viewers.
 - Inject `Thrift...Service` directly via `inject(Thrift...Service)`. Do not create intermediate wrapper services.
 
