@@ -122,11 +122,12 @@ export class CreateShopDialogComponent extends DialogSuperclass<
     }
 
     editFull() {
+        const initValue = this.getShopConfig();
         this.closeWithCancellation();
         this.dialogService.open(CreateDomainObjectDialogComponent, {
             objectType: 'shop_config',
             noType: true,
-            initValue: this.getShopConfig(),
+            initValue,
             noNavigate: true,
         });
     }
@@ -139,11 +140,13 @@ export class CreateShopDialogComponent extends DialogSuperclass<
             description: value.description,
             party_ref: { id: value.partyId },
             terms: { id: value.termsetId },
-            account: {
-                currency: { symbolic_code: value.account.currency },
-                settlement: value.account.accounts[0],
-                guarantee: value.account.accounts[1],
-            },
+            account: value.account
+                ? {
+                      currency: { symbolic_code: value.account.currency },
+                      settlement: value.account.accounts[0],
+                      guarantee: value.account.accounts[1],
+                  }
+                : undefined,
 
             block: {
                 unblocked: {

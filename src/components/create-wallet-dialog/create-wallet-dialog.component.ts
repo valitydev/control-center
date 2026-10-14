@@ -121,11 +121,12 @@ export class CreateWalletDialogComponent extends DialogSuperclass<
     }
 
     editFull() {
+        const initValue = this.getWalletConfig();
         this.closeWithCancellation();
         this.dialogService.open(CreateDomainObjectDialogComponent, {
             objectType: 'wallet_config',
             noType: true,
-            initValue: this.getWalletConfig(),
+            initValue,
             noNavigate: true,
         });
     }
@@ -138,10 +139,12 @@ export class CreateWalletDialogComponent extends DialogSuperclass<
             description: value.description,
             party_ref: { id: value.partyId },
             terms: { id: value.termsetId },
-            account: {
-                currency: { symbolic_code: value.account.currency },
-                settlement: value.account.accounts[0],
-            },
+            account: value.account
+                ? {
+                      currency: { symbolic_code: value.account.currency },
+                      settlement: value.account.accounts[0],
+                  }
+                : undefined,
 
             block: {
                 unblocked: {
