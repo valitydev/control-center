@@ -119,22 +119,16 @@ export class NotifyLogService {
     ) {
         this.subscribeWithTimeout(message, {
             next: (msg) => {
-                if (error?.trace) {
-                    this.snackBar.openFromComponent<NotifySnackBarComponent, NotifySnackBarData>(
-                        NotifySnackBarComponent,
-                        {
-                            duration,
-                            data: {
-                                message: msg,
-                                trace: error.trace,
-                            },
-                        },
-                    );
-                } else {
-                    this.snackBar.open(msg, 'OK', {
+                this.snackBar.openFromComponent<NotifySnackBarComponent, NotifySnackBarData>(
+                    NotifySnackBarComponent,
+                    {
                         duration,
-                    });
-                }
+                        data: {
+                            message: msg,
+                            trace: error?.trace,
+                        },
+                    },
+                );
             },
             error: () => {
                 // TODO: Default message
