@@ -1,8 +1,10 @@
+import { from } from 'rxjs';
+
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { metadata$ } from '@vality/magista-proto';
+import { loadThriftMetadata } from '@vality/magista-proto/magista';
 import { createControlProviders } from '@vality/matez';
 import { ThriftEditorModule, ThriftFormModule } from '@vality/ng-thrift';
 
@@ -16,6 +18,6 @@ import { BaseThriftFormSuperclass } from '../../thrift-forms/utils/thrift-form-s
     imports: [CommonModule, ReactiveFormsModule, ThriftFormModule, ThriftEditorModule],
 })
 export class MagistaThriftFormComponent extends BaseThriftFormSuperclass {
-    metadata$ = metadata$;
+    metadata$ = from(loadThriftMetadata());
     defaultNamespace = 'magista';
 }
