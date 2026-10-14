@@ -1,5 +1,5 @@
-import type { ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
-export function isComplexType(type: ValueType): type is SetType | ListType | MapType {
+export function isComplexType(type: ValueType): type is Exclude<ValueType, string> {
     return typeof type === 'object';
 }

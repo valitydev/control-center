@@ -32,7 +32,7 @@ import {
     getErrorsTree,
     getValueChanges,
 } from '@vality/matez';
-import { Field } from '@vality/thrift-ts';
+import type { Field } from '@vality/tsthrift';
 
 import { ThriftData } from '../../../../models';
 import { isRequiredField } from '../../../../utils';

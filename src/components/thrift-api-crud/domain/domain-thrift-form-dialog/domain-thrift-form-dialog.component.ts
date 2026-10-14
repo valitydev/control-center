@@ -7,7 +7,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
 import { DEFAULT_DIALOG_CONFIG, DialogModule, DialogSuperclass } from '@vality/matez';
-import { ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { DomainThriftFormComponent } from '../domain-thrift-editor';
 

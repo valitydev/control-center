@@ -29,8 +29,8 @@ import {
     getEnumKeys,
     progressTo,
 } from '@vality/matez';
-import { ThriftAstMetadata, ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
-import { Field } from '@vality/thrift-ts';
+import { ThriftData, ThriftPipesModule, getUnionKey } from '@vality/ng-thrift';
+import type { Field, Metadata } from '@vality/tsthrift';
 
 import { DomainService } from '~/api/domain-config';
 import { NavigateService } from '~/services';
@@ -174,7 +174,7 @@ export class CreateDomainObjectDialogComponent<
     }
 
     private getType(
-        metadata: ThriftAstMetadata[],
+        metadata: Metadata[],
         fieldName: keyof ReflessDomainObject,
         type: string,
         namespace: string = 'domain',

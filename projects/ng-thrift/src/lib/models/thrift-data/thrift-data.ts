@@ -1,9 +1,8 @@
 import { ValuesType } from 'utility-types';
 
-import { Field, JsonAST, ValueType } from '@vality/thrift-ts';
-import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
+import type { Field, Metadata, ThriftAst, ValueType } from '@vality/tsthrift';
 
-import { StructureType, ThriftAstMetadata } from '../../types';
+import { StructureType } from '../../types';
 import {
     isComplexType,
     isPrimitiveType,
@@ -21,9 +20,9 @@ export class ThriftData<T extends ValueType = ValueType, S extends StructureType
     type!: T;
 
     objectType?: S;
-    ast?: ValuesType<NonNullable<JsonAST[S]>>;
+    ast?: ValuesType<NonNullable<ThriftAst[S]>>;
 
-    include?: JsonAST['include'];
+    include?: ThriftAst['include'];
 
     /**
      * Parent who is not typedef
@@ -45,10 +44,7 @@ export class ThriftData<T extends ValueType = ValueType, S extends StructureType
         while (currentData.objectType === 'typedef') {
             typedefs.push(currentData as never);
             currentData = currentData.create({
-                type: (
-                    (currentData as ThriftData<ValueType, 'typedef'>)
-                        ?.ast as never as ValuesType<TypeDefs>
-                )?.type,
+                type: (currentData as ThriftData<ValueType, 'typedef'>).ast?.type,
             });
         }
         return { data: currentData, typedefs };
@@ -59,7 +55,7 @@ export class ThriftData<T extends ValueType = ValueType, S extends StructureType
     }
 
     constructor(
-        public metadata: ThriftAstMetadata[],
+        public metadata: Metadata[],
         namespace: string,
         type: T,
         public field?: Field,

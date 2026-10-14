@@ -16,15 +16,22 @@ export interface LogError {
     noConsole?: boolean;
 }
 
-type ErrorParser = (error: unknown) => LogError;
+export type ErrorParser = (error: unknown) => LogError;
 
 export const ERROR_PARSER = new InjectionToken<ErrorParser>('ErrorParser');
 
 const DEFAULT_DURATION_MS = 3_000;
 const DEFAULT_ERROR_DURATION_MS = 10_000;
 const DEFAULT_TIMEOUT_MS = 10_000;
-const DEFAULT_ERROR_PARSER: ErrorParser = (error: unknown) =>
-    ({ ...(isObject(error) ? error : new Error(String(error))), error }) as LogError;
+export const DEFAULT_ERROR_PARSER: ErrorParser = (error: unknown) => {
+    const err = error instanceof Error ? error : isObject(error) ? error : new Error(String(error));
+    return {
+        ...err,
+        name: 'name' in err ? String(err.name) : undefined,
+        message: 'message' in err ? String(err.message) : undefined,
+        error,
+    };
+};
 
 @Injectable({ providedIn: 'root' })
 export class NotifyLogService {

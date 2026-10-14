@@ -14,12 +14,8 @@ import {
 } from '@vality/domain-proto/domain';
 import { VersionedObject } from '@vality/domain-proto/domain_config_v2';
 import { PossiblyAsync, getNoTimeZoneIsoString, getPossiblyAsyncObservable } from '@vality/matez';
-import {
-    ThriftAstMetadata,
-    ThriftData,
-    ThriftFormExtension,
-    isTypeWithAliases,
-} from '@vality/ng-thrift';
+import { ThriftData, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import type { Metadata } from '@vality/tsthrift';
 
 import { DomainObjectsStoreService, DomainService } from '~/api/domain-config';
 import { AuthorStoreService } from '~/api/domain-config/stores/author-store.service';
@@ -166,7 +162,7 @@ export class DomainMetadataFormExtensionsService {
         );
     }
 
-    private createDomainObjectsOptions(metadata: ThriftAstMetadata[]): ThriftFormExtension[] {
+    private createDomainObjectsOptions(metadata: Metadata[]): ThriftFormExtension[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;
         return domainFields.flatMap((f) =>
@@ -179,7 +175,7 @@ export class DomainMetadataFormExtensionsService {
     }
 
     createDomainObjectsOptionsByType(
-        metadata: ThriftAstMetadata[],
+        metadata: Metadata[],
         objectType: string,
         objectKey: keyof DomainObject,
     ): ThriftFormExtension[] {

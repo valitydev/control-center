@@ -5,8 +5,8 @@ import { Directive, Input, booleanAttribute, input, model } from '@angular/core'
 import { toObservable } from '@angular/core/rxjs-interop';
 
 import { FormControlSuperclass, UnionEnum } from '@vality/matez';
-import { EditorKind, ThriftAstMetadata, ThriftFormExtension } from '@vality/ng-thrift';
-import { ValueType } from '@vality/thrift-ts';
+import { EditorKind, ThriftFormExtension } from '@vality/ng-thrift';
+import type { Metadata, ValueType } from '@vality/tsthrift';
 
 @Directive()
 export abstract class BaseThriftFormSuperclass<T = unknown> extends FormControlSuperclass<T> {
@@ -19,7 +19,7 @@ export abstract class BaseThriftFormSuperclass<T = unknown> extends FormControlS
     kind = model<UnionEnum<EditorKind>>(EditorKind.Form);
 
     protected abstract defaultNamespace: string;
-    protected abstract metadata$: Observable<ThriftAstMetadata[]>;
+    protected abstract metadata$: Observable<Metadata[]>;
 
     protected internalExtensions$: Observable<ThriftFormExtension[]> = of([]);
     protected extensions$ = combineLatest([

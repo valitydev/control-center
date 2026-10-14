@@ -2,8 +2,9 @@ import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
+import type { Metadata } from '@vality/tsthrift';
+
 import { ThriftData } from '../../../../models';
-import { ThriftAstMetadata } from '../../../../types';
 
 import { StructFormComponent } from './struct-form.component';
 
@@ -13,7 +14,7 @@ import { StructFormComponent } from './struct-form.component';
 })
 class StructFormHost {
     control = new FormControl<Record<string, unknown>>({});
-    metadata: ThriftAstMetadata[] = [
+    metadata: Metadata[] = [
         { name: 'test', path: 'test.thrift', ast: { struct: { Parent: [], Empty: [] } } },
     ];
     data = new ThriftData<string, 'struct'>(

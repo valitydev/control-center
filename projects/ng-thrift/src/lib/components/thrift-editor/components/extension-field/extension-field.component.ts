@@ -28,7 +28,8 @@ import {
     FormComponentSuperclass,
     createControlProviders,
 } from '@vality/matez';
-import { ThriftType } from '@vality/thrift-ts';
+
+import type { PrimitiveType } from '../../../../types';
 
 import { ThriftData, getAliases } from '../../../../models';
 import { getValueTypeTitle } from '../../../../utils';
@@ -59,7 +60,7 @@ export class ExtensionFieldComponent<T>
     implements Validator, OnChanges, OnInit
 {
     private destroyRef = inject(DestroyRef);
-    @Input() data!: ThriftData<ThriftType>;
+    @Input() data!: ThriftData<PrimitiveType>;
     @Input() extensions?: ThriftFormExtension[];
 
     control = new FormControl<T>(null as T);

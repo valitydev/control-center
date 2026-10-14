@@ -12,8 +12,8 @@ import {
     signal,
 } from '@angular/core';
 
-import { ThriftAstMetadata, ThriftViewExtension, ViewerKind } from '@vality/ng-thrift';
-import { ValueType } from '@vality/thrift-ts';
+import { ThriftViewExtension, ViewerKind } from '@vality/ng-thrift';
+import type { Metadata, ValueType } from '@vality/tsthrift';
 
 interface Data<T> {
     kind: ViewerKind;
@@ -22,7 +22,7 @@ interface Data<T> {
     type: ValueType;
     progress: boolean;
     namespace: string;
-    metadata$: Observable<ThriftAstMetadata[]>;
+    metadata$: Observable<Metadata[]>;
     extensions$: Observable<ThriftViewExtension[]>;
 }
 
@@ -47,7 +47,7 @@ export abstract class ThriftViewerSuperclass<T> implements OnChanges {
     @Input() namespace?: string;
 
     abstract defaultNamespace: string;
-    abstract metadata$: Observable<ThriftAstMetadata[]>;
+    abstract metadata$: Observable<Metadata[]>;
     extensions$: Observable<ThriftViewExtension[]> = of([]);
 
     data = signal<Data<T>>(this.createData());

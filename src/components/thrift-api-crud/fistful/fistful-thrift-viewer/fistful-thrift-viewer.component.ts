@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, Input, booleanAttribute, model } fr
 
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewExtension, ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
-import { ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { loadFistfulMetadata } from '~/api/services';
 

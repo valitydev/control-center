@@ -21,10 +21,9 @@ import {
     createControlProviders,
     getValueChanges,
 } from '@vality/matez';
-import { ValueType } from '@vality/thrift-ts';
+import type { Metadata, ValueType } from '@vality/tsthrift';
 
 import { ThriftData } from '../../models';
-import { ThriftAstMetadata } from '../../types';
 import { fromJson } from '../../utils/thrift-type/from-json';
 
 import { ThriftFormExtension } from './types/thrift-form-extension';
@@ -49,7 +48,7 @@ export class ThriftEditorComponent<T> extends FormControlSuperclass<T> {
 
     @Input() defaultValue?: T;
 
-    @Input() metadata!: ThriftAstMetadata[] | null;
+    @Input() metadata!: Metadata[] | null;
     @Input() namespace!: string;
     @Input() type!: ValueType;
     @Input() extensions?: ThriftFormExtension[];

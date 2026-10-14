@@ -22,7 +22,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
-import { QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import { ERROR_PARSER, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { combineLoggers, createWachterHeaders, createWoodyHeaders } from '@vality/tsthrift';
 import { createConsoleLogger } from '@vality/tsthrift/devtools';
 import { provideThriftConfig } from '@vality/tsthrift-angular';
@@ -33,7 +33,7 @@ import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-
 import { DomainObjectHistoryCardComponent } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain/domain-object-card/domain-object-card.component';
 import { ConfigService, KeycloakUserService, provideAppAuth } from '~/services';
-import { createSentryThriftLogger } from '~/utils';
+import { createSentryThriftLogger, parseThriftError } from '~/utils';
 
 import { routes } from './app.routes';
 import {
@@ -64,6 +64,7 @@ export const appConfig: ApplicationConfig = {
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
         { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },
+        { provide: ERROR_PARSER, useValue: parseThriftError },
         {
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {

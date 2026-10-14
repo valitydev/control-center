@@ -3,6 +3,9 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "paths": {
+            "@vality/matez": ["../../dist/matez"]
+        },
         "outDir": "../../out-tsc/lib",
         "declaration": true,
         "declarationMap": true,

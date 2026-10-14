@@ -1,25 +1,25 @@
 import { isObject } from 'lodash-es';
 
-import { JsonAST, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+import type { ThriftAst, ValueType } from '@vality/tsthrift';
 
 import { ThriftData } from '../../../../models';
-import { getThriftEntries } from '../../../../utils';
+import { getThriftEntries, isComplexType } from '../../../../utils';
 import { ThriftViewExtension } from '../../utils/thrift-view-extension';
 import { ThriftViewData } from '../thrift-view-data';
 
 import { getChildrenTypes } from './get-children-types';
 
 export function getThriftViewDataItems(
-    data: ThriftData<ValueType, keyof JsonAST> | null | undefined,
+    data: ThriftData<ValueType, keyof ThriftAst> | null | undefined,
     value: unknown,
     extensions?: ThriftViewExtension[],
 ): ThriftViewData[] {
     if (data) {
-        const trueData = data?.trueTypeNode.data as ThriftData<ValueType, keyof JsonAST>;
+        const trueData = data?.trueTypeNode.data as ThriftData<ValueType, keyof ThriftAst>;
         if (
             trueData.objectType === 'struct' ||
             trueData.objectType === 'union' ||
-            (trueData as ThriftData<SetType | ListType | MapType>).type?.name
+            isComplexType(trueData.type)
         ) {
             const types = getChildrenTypes(trueData);
             return getThriftEntries(value).map(([itemKey, itemValue]) => {

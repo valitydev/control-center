@@ -1,4 +1,4 @@
-import { ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { isComplexType } from '../thrift-type/is-complex-type';
 
