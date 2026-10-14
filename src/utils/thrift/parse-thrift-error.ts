@@ -8,7 +8,7 @@ export function parseThriftError(error: unknown): LogError {
         isThriftError(error) && error.context
             ? [
                   error.context.traceId,
-                  `${error.context.namespace}.${error.context.serviceName}.${error.context.method}`,
+                  `(${error.context.namespace}.${error.context.serviceName}.${error.context.method})`,
               ]
                   .filter(Boolean)
                   .join(' ')

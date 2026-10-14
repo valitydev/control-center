@@ -9,6 +9,7 @@ import {
     MatSnackBarLabel,
     MatSnackBarRef,
 } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface NotifySnackBarData {
     message: string;
@@ -21,6 +22,7 @@ export interface NotifySnackBarData {
     imports: [
         MatButtonModule,
         MatIconModule,
+        MatTooltipModule,
         MatSnackBarLabel,
         MatSnackBarActions,
         MatSnackBarAction,
@@ -29,11 +31,22 @@ export interface NotifySnackBarData {
         <div matSnackBarLabel>{{ data.message }}</div>
         <div matSnackBarActions>
             @if (data.trace) {
-                <button mat-icon-button matSnackBarAction (click)="copyTrace()">
+                <button
+                    mat-icon-button
+                    matSnackBarAction
+                    matTooltip="Copy trace"
+                    (click)="copyTrace()"
+                >
                     <mat-icon>{{ copied() ? 'check' : 'content_copy' }}</mat-icon>
                 </button>
             }
-            <button mat-icon-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">
+            <button
+                class="close"
+                mat-icon-button
+                matSnackBarAction
+                matTooltip="Close"
+                (click)="snackBarRef.dismissWithAction()"
+            >
                 <mat-icon>close</mat-icon>
             </button>
         </div>
@@ -46,6 +59,19 @@ export interface NotifySnackBarData {
                 --mat-snack-bar-supporting-text-color,
                 var(--mat-sys-inverse-on-surface)
             );
+            --mat-icon-button-state-layer-color: var(
+                --mat-snack-bar-supporting-text-color,
+                var(--mat-sys-inverse-on-surface)
+            );
+            --mat-icon-button-ripple-color: color-mix(
+                in srgb,
+                var(--mat-snack-bar-supporting-text-color, var(--mat-sys-inverse-on-surface)) 12%,
+                transparent
+            );
+        }
+
+        .close {
+            --mat-icon-button-icon-color: var(--mat-sys-outline);
         }
     `,
 })
