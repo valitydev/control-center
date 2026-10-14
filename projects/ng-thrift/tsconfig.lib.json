@@ -3,12 +3,14 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "paths": {
             "@vality/matez": ["../../dist/matez"]
         },
         "outDir": "../../out-tsc/lib",
         "declaration": true,
         "declarationMap": true,
+        "sourceMap": true,
         "inlineSources": true,
         "types": []
     },
