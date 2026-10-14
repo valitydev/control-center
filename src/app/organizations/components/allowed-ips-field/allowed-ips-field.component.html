@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-2">
+    @for (address of control; track $index; let last = $last) {
+        <div class="flex items-start gap-2">
+            <v-input-field
+                [class.opacity-60]="last"
+                [formField]="address"
+                [label]="last ? 'Add IP address' : 'IP address'"
+                class="min-w-0 flex-1"
+                placeholder="IPv4 or IPv6"
+                (touch)="touch.emit()"
+            />
+            <div
+                class="flex h-[var(--mat-form-field-container-height,56px)] w-12 shrink-0 items-center justify-center"
+            >
+                @if (!last) {
+                    <button
+                        [attr.aria-label]="'Remove IP address ' + ($index + 1)"
+                        [disabled]="disabled()"
+                        mat-icon-button
+                        type="button"
+                        (click)="remove($index)"
+                    >
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>

@@ -36,7 +36,7 @@ export class OrganizationActionsService {
 
     modify(org: domain.Organization) {
         return this.dialogService
-            .open(ModifyOrganizationDialogComponent, { organization: org })
+            .open(ModifyOrganizationDialogComponent, org)
             .afterClosed()
             .pipe(filter((res) => res?.status === 'success'));
     }

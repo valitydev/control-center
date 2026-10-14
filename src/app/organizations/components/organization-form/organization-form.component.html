@@ -1,0 +1,11 @@
+<div class="flex flex-col gap-4">
+    <v-input-field [formField]="control().name" label="Name" />
+    @if (create()) {
+        @if (!fixedParty()) {
+            <cc-merchant-field [formField]="control().party_id" label="Party" required />
+        }
+        <cc-user-field [formField]="control().owner_id" label="Owner ID" />
+    }
+    <v-input-field [formField]="control().metadata" label="Metadata" />
+    <cc-allowed-ips-field [formField]="control().allowed_ips" />
+</div>
