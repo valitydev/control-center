@@ -28,7 +28,7 @@ export class FetchPaymentsService extends FetchSuperclass<StatPayment, PaymentSe
         const invoicePaymentIds = (params.invoice_ids || []).map((id) => splitInvoicePaymentId(id));
         const invoiceIds = [...new Set(invoicePaymentIds.map(({ invoiceId }) => invoiceId))];
         return this.merchantStatisticsService
-            .SearchPayments({
+            .searchPayments({
                 payment_params: {},
                 ...params,
                 ...clean({ invoice_ids: invoiceIds }),

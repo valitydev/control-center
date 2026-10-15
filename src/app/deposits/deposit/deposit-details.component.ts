@@ -1,13 +1,12 @@
 import startCase from 'lodash-es/startCase';
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, LOCALE_ID, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { metadata$ } from '@vality/fistful-proto';
-import { DepositStatus } from '@vality/fistful-proto/fistful_stat';
+import { DepositStatus, loadThriftMetadata } from '@vality/fistful-proto/fistful_stat';
 import { formatCurrency } from '@vality/matez';
 import {
     ThriftViewExtension,
@@ -40,7 +39,7 @@ export class DepositDetailsComponent implements OnInit {
 
     deposit$ = this.fetchDepositService.deposit$;
     isLoading$ = this.fetchDepositService.isLoading$;
-    metadata$ = metadata$;
+    metadata$ = from(loadThriftMetadata());
     extensions$: Observable<ThriftViewExtension[]> = this.fetchDepositService.deposit$.pipe(
         map((deposit) => [
             {

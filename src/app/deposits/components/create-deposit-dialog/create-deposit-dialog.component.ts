@@ -101,7 +101,7 @@ export class CreateDepositDialogComponent extends DialogSuperclass<CreateDeposit
                         )?.id,
                     }),
                 ),
-                switchMap((params) => this.depositManagementService.Create(params, new Map())),
+                switchMap((params) => this.depositManagementService.create(params, new Map())),
                 progressTo(this.progress$),
                 takeUntilDestroyed(this.dr),
             )

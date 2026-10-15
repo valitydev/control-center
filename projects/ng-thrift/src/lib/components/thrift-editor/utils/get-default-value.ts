@@ -1,19 +1,15 @@
-import { ValuesType } from 'utility-types';
-
-import { ValueType } from '@vality/thrift-ts';
-import { TypeDefs } from '@vality/thrift-ts/src/thrift-parser';
+import type { Metadata, ValueType } from '@vality/tsthrift';
 
 import { ThriftData, TypeGroup } from '../../../models';
-import { ThriftAstMetadata } from '../../../types';
 
-export function getDefaultValue(metadata: ThriftAstMetadata[], namespace: string, type: ValueType) {
+export function getDefaultValue(metadata: Metadata[], namespace: string, type: ValueType) {
     if (!type) {
         return null;
     }
     let data: ThriftData;
     do {
         data = new ThriftData(metadata, namespace, type);
-        type = (data.ast as never as ValuesType<TypeDefs>)?.type;
+        type = (data as ThriftData<ValueType, 'typedef'>).ast?.type;
     } while (data.objectType === 'typedef');
     switch (data.typeGroup) {
         case TypeGroup.Complex: {

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { getValueTypeTitle } from '../utils';
 

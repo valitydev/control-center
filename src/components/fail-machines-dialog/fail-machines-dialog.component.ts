@@ -66,7 +66,7 @@ export class FailMachinesDialogComponent extends DialogSuperclass<
         forkJoinToResult(
             ids.map((id) =>
                 this.automatonService
-                    .Call(
+                    .call(
                         {
                             ns: this.nsControl.value,
                             ref: { id },

@@ -1,6 +1,8 @@
-import { Field, ListType, MapType, SetType } from '@vality/thrift-ts';
+import type { Field } from '@vality/tsthrift';
 
 import { ThriftData } from '../../models';
+
+import { isComplexType } from './is-complex-type';
 
 export function fromJson(value: unknown, data: ThriftData): unknown {
     if (value == null) {
@@ -8,34 +10,28 @@ export function fromJson(value: unknown, data: ThriftData): unknown {
     }
 
     const trueData = data.trueTypeNode.data;
-    if (trueData.typeGroup === 'complex') {
-        switch ((trueData.type as ListType | MapType | SetType).name) {
+    const type = trueData.type;
+    if (isComplexType(type)) {
+        switch (type.name) {
             case 'list':
                 return Array.from(value as unknown[]).map((item) =>
-                    fromJson(
-                        item,
-                        trueData.create({ type: (trueData.type as ListType).valueType }),
-                    ),
+                    fromJson(item, trueData.create({ type: type.valueType })),
                 );
             case 'set':
                 return new Set(
                     Array.from(value as Set<unknown> | unknown[]).map((item) =>
-                        fromJson(
-                            item,
-                            trueData.create({ type: (trueData.type as SetType).valueType }),
-                        ),
+                        fromJson(item, trueData.create({ type: type.valueType })),
                     ),
                 );
             case 'map': {
-                const mapType = trueData.type as MapType;
                 const entries =
                     value instanceof Map
                         ? Array.from(value.entries())
                         : (value as [unknown, unknown][]);
                 return new Map(
                     entries.map(([key, item]): [unknown, unknown] => [
-                        fromJson(key, trueData.create({ type: mapType.keyType })),
-                        fromJson(item, trueData.create({ type: mapType.valueType })),
+                        fromJson(key, trueData.create({ type: type.keyType })),
+                        fromJson(item, trueData.create({ type: type.valueType })),
                     ]),
                 );
             }

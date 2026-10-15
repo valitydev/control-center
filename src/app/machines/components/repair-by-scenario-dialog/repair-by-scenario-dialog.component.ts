@@ -1,5 +1,5 @@
 import isNil from 'lodash-es/isNil';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
@@ -13,11 +13,11 @@ import {
     getValue,
     progressTo,
 } from '@vality/matez';
-import { metadata$ } from '@vality/repairer-proto';
 import {
     Machine,
     RepairInvoicesRequest,
     RepairWithdrawalsRequest,
+    loadThriftMetadata,
 } from '@vality/repairer-proto/repairer';
 
 import { ThriftRepairManagementService } from '~/api/services';
@@ -56,7 +56,7 @@ export class RepairByScenarioDialogComponent
         null,
         Validators.required,
     );
-    metadata$ = metadata$;
+    metadata$ = from(loadThriftMetadata());
     extensions$ = this.domainMetadataFormExtensionsService.extensions$;
     progress$ = new BehaviorSubject(0);
 
@@ -86,8 +86,8 @@ export class RepairByScenarioDialogComponent
                 ? this.form.value
                 : this.dialogData.machines.map(({ id }) => ({ id, scenario: this.sameForm.value }));
         (this.nsControl.value === Namespace.Invoice
-            ? this.repairManagementService.RepairInvoices(value as RepairInvoicesRequest)
-            : this.repairManagementService.RepairWithdrawals(value as RepairWithdrawalsRequest)
+            ? this.repairManagementService.repairInvoices(value as RepairInvoicesRequest)
+            : this.repairManagementService.repairWithdrawals(value as RepairWithdrawalsRequest)
         )
             .pipe(progressTo(this.progress$), takeUntilDestroyed(this.destroyRef))
             .subscribe({

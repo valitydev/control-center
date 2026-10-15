@@ -46,7 +46,7 @@ export class CreateAdjustmentDialogComponent extends DialogSuperclass<
     createAdjustment() {
         forkJoinToResult(
             this.dialogData.withdrawals.map((w) =>
-                this.withdrawalManagementService.CreateAdjustment(w.id, {
+                this.withdrawalManagementService.createAdjustment(w.id, {
                     ...this.control.value,
                     id: v4(),
                 } as AdjustmentParams),

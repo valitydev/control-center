@@ -19,7 +19,7 @@ export class FetchWithdrawalsService extends FetchSuperclass<StatWithdrawal, Wit
         options: FetchOptions,
     ): Observable<FetchResult<StatWithdrawal>> {
         return this.fistfulStatisticsService
-            .GetWithdrawals({
+            .getWithdrawals({
                 dsl: createDsl({
                     withdrawals: { ...params, size: options.size },
                 }),

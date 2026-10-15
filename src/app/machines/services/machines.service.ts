@@ -15,7 +15,7 @@ export class MachinesService extends FetchSuperclass<Machine, SearchRequest> {
 
     protected fetch(params: SearchRequest, options: FetchOptions) {
         return this.repairManagementService
-            .Search({
+            .search({
                 limit: options.size,
                 continuation_token: options.continuationToken,
                 ...params,

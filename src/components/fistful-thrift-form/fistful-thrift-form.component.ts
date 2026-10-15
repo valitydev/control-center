@@ -1,4 +1,4 @@
-import { map, of } from 'rxjs';
+import { from, map, of } from 'rxjs';
 import { v4 } from 'uuid';
 
 import { CommonModule } from '@angular/common';
@@ -6,11 +6,11 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { Reference } from '@vality/domain-proto/domain';
-import { metadata$ } from '@vality/fistful-proto';
 import { createControlProviders } from '@vality/matez';
 import { ThriftEditorModule, ThriftFormExtension, isTypeWithAliases } from '@vality/ng-thrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
+import { loadFistfulMetadata } from '~/api/services';
 
 import { getLimitedDomainObjectDetails } from '../thrift-api-crud';
 import { BaseThriftFormSuperclass } from '../thrift-api-crud/thrift-forms/utils/thrift-form-superclass';
@@ -25,7 +25,7 @@ import { BaseThriftFormSuperclass } from '../thrift-api-crud/thrift-forms/utils/
 export class FistfulThriftFormComponent extends BaseThriftFormSuperclass {
     private domainStoreService = inject(DomainObjectsStoreService);
 
-    metadata$ = metadata$;
+    metadata$ = from(loadFistfulMetadata());
 
     override internalExtensions$ = of<ThriftFormExtension[]>([
         {

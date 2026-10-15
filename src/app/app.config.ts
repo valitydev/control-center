@@ -22,12 +22,11 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter, withRouterConfig } from '@angular/router';
 import * as Sentry from '@sentry/angular';
 
-import { ERROR_PARSER, LogError, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
+import { ERROR_PARSER, QUERY_PARAMS_SERIALIZERS } from '@vality/matez';
 import { combineLoggers, createWachterHeaders, createWoodyHeaders } from '@vality/tsthrift';
 import { createConsoleLogger } from '@vality/tsthrift/devtools';
 import { provideThriftConfig } from '@vality/tsthrift-angular';
 
-import { provideThriftServices as provideThriftServicesOld } from '~/api/services';
 import { CandidateCardComponent } from '~/components/candidate-card/candidate-card.component';
 import { SIDENAV_INFO_COMPONENTS } from '~/components/sidenav-info';
 import { TerminalDelegatesCardComponent } from '~/components/terminal-delegates-card/terminal-delegates-card.component';
@@ -65,14 +64,7 @@ export const appConfig: ApplicationConfig = {
         { provide: QUERY_PARAMS_SERIALIZERS, useValue: DEFAULT_QUERY_PARAMS_SERIALIZERS },
         { provide: DATE_RANGE_DAYS, useValue: DEFAULT_DATE_RANGE_DAYS },
         { provide: DEBOUNCE_TIME_MS, useValue: DEFAULT_DEBOUNCE_TIME_MS },
-        {
-            provide: ERROR_PARSER,
-            useValue: (err) => {
-                const parsedError = parseThriftError(err) as LogError;
-                parsedError.noConsole = parsedError.name !== 'UnknownError';
-                return parsedError;
-            },
-        },
+        { provide: ERROR_PARSER, useValue: parseThriftError },
         {
             provide: SIDENAV_INFO_COMPONENTS,
             useValue: {
@@ -84,7 +76,6 @@ export const appConfig: ApplicationConfig = {
         },
         { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
         { provide: OVERLAY_DEFAULT_CONFIG, useValue: { usePopover: false } },
-        provideThriftServicesOld(),
         provideMonacoEditor(),
         provideAppInitializer(() => {
             const iconRegistry = inject(MatIconRegistry);

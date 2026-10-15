@@ -1,6 +1,5 @@
 import { ReplaySubject, defer, merge } from 'rxjs';
 import { delay, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { ValuesType } from 'utility-types';
 
 import { CommonModule } from '@angular/common';
 import {
@@ -26,7 +25,7 @@ import {
     createControlProviders,
     getErrorsTree,
 } from '@vality/matez';
-import { Field, Unions } from '@vality/thrift-ts';
+import type { Field } from '@vality/tsthrift';
 
 import { ThriftData } from '../../../../models';
 import { getFieldLabel } from '../../../../utils';
@@ -65,7 +64,7 @@ export class UnionFieldComponent<T extends Record<string, unknown>>
     protected options$ = defer(() => this.data$).pipe(
         map((data) =>
             data.ast
-                ? (data.ast as ValuesType<Unions>)
+                ? data.ast
                       .map((field) => ({ label: getFieldLabel(field.type, field), value: field }))
                       .sort((a, b) => a.label.localeCompare(b.label))
                 : [],
@@ -112,7 +111,7 @@ export class UnionFieldComponent<T extends Record<string, unknown>>
             const name: keyof T = Object.keys(value)[0];
             this.fieldControl.setValue(
                 this.data.ast
-                    ? ((this.data.ast as ValuesType<Unions>).find((f) => f.name === name) as Field)
+                    ? (this.data.ast.find((f) => f.name === name) as Field)
                     : (undefined as never),
                 { emitEvent: false },
             );

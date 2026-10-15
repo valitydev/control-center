@@ -12,7 +12,7 @@ import {
 
 import { UnionEnum } from '@vality/matez';
 import { ThriftViewerModule, ViewerKind } from '@vality/ng-thrift';
-import { ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { loadDomainMetadata } from '~/api/services';
 

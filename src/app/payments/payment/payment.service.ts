@@ -20,7 +20,7 @@ export class PaymentDetailsService {
         }),
         switchMap(({ paymentId, invoiceId }) =>
             this.merchantStatisticsService
-                .SearchPayments(
+                .searchPayments(
                     cleanPrimitiveProps({
                         common_search_query_params: {
                             from_time: new Date('2020-01-01').toISOString(), // TODO

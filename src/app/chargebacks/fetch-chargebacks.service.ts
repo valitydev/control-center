@@ -18,7 +18,7 @@ export class FetchChargebacksService extends FetchSuperclass<
 
     protected fetch(params: ChargebackSearchQuery, options: FetchOptions) {
         return this.merchantStatisticsService
-            .SearchChargebacks({
+            .searchChargebacks({
                 ...params,
                 common_search_query_params: {
                     continuation_token: options.continuationToken,

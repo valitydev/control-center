@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { metadata$ } from '@vality/magista-proto';
+import { loadThriftMetadata } from '@vality/magista-proto/magista';
 import { ThriftViewExtension } from '@vality/ng-thrift';
 
 import { DomainMetadataViewExtensionsService } from '../domain/domain-thrift-viewer/services/domain-metadata-view-extensions';
@@ -18,7 +18,7 @@ export class MagistaThriftViewerComponent<T> extends ThriftViewerSuperclass<T> {
     domainMetadataViewExtensionsService = inject(DomainMetadataViewExtensionsService);
 
     defaultNamespace = 'magista';
-    metadata$ = metadata$;
+    metadata$ = from(loadThriftMetadata());
     override extensions$: Observable<ThriftViewExtension[]> =
         this.domainMetadataViewExtensionsService.extensions$;
 }

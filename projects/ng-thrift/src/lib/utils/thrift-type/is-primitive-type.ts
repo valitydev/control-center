@@ -1,7 +1,7 @@
-import type { ThriftType, ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
-import { PRIMITIVE_TYPES } from '../../types';
+import { PRIMITIVE_TYPES, type PrimitiveType } from '../../types';
 
-export function isPrimitiveType(type: ValueType): type is ThriftType {
+export function isPrimitiveType(type: ValueType): type is PrimitiveType {
     return PRIMITIVE_TYPES.includes(type as never);
 }

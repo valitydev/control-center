@@ -9,12 +9,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
 import { PartyConfigRef, Reference, base } from '@vality/domain-proto/domain';
-import {
-    ThriftAstMetadata,
-    ThriftData,
-    ThriftViewExtension,
-    isTypeWithAliases,
-} from '@vality/ng-thrift';
+import { ThriftData, ThriftViewExtension, isTypeWithAliases } from '@vality/ng-thrift';
+import type { Metadata } from '@vality/tsthrift';
 
 import { DomainObjectsStoreService } from '~/api/domain-config';
 import { PartiesStoreService } from '~/api/payment-processing';
@@ -78,7 +74,7 @@ export class DomainMetadataViewExtensionsService {
     );
 
     createDomainObjectExtensions(
-        metadata: ThriftAstMetadata[],
+        metadata: Metadata[],
     ): ThriftViewExtension<ValuesType<Reference>>[] {
         const domainFields = new ThriftData<string, 'struct'>(metadata, 'domain', 'DomainObject')
             .ast;

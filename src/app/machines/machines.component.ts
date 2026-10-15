@@ -168,7 +168,7 @@ export class MachinesComponent implements OnInit {
             .pipe(
                 filter(({ status }) => status === DialogResponseStatus.Success),
                 switchMap(() =>
-                    this.repairManagementService.SimpleRepairAll(
+                    this.repairManagementService.simpleRepairAll(
                         this.selected$.value.map(({ id, ns }) => ({ id, ns })),
                     ),
                 ),

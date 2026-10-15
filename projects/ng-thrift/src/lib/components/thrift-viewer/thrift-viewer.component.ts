@@ -8,10 +8,9 @@ import {
 } from '@angular/core';
 
 import { UnionEnum } from '@vality/matez';
-import { ValueType } from '@vality/thrift-ts';
+import type { Metadata, ValueType } from '@vality/tsthrift';
 
 import { ThriftData } from '../../models';
-import { ThriftAstMetadata } from '../../types';
 
 import { ThriftViewData } from './models/thrift-view-data';
 import { ThriftViewExtension } from './utils/thrift-view-extension';
@@ -33,7 +32,7 @@ export class ThriftViewerComponent {
     readonly value = input.required();
     readonly compared = input();
     readonly progress = input<boolean, unknown>(false, { transform: booleanAttribute });
-    readonly metadata = input<ThriftAstMetadata[]>();
+    readonly metadata = input<Metadata[]>();
     readonly namespace = input<string>();
     readonly type = input<ValueType>();
     readonly extensions = input<ThriftViewExtension[]>();

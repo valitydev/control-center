@@ -1,40 +1,40 @@
-import { JsonAST } from '@vality/thrift-ts';
+import type { Metadata, ThriftAst } from '@vality/tsthrift';
 
-import { STRUCTURE_TYPES, StructureType, ThriftAstMetadata } from '../../types';
+import { STRUCTURE_TYPES, StructureType } from '../../types';
 
 export interface NamespaceObjectType {
-    namespaceMetadata: ThriftAstMetadata;
+    namespaceMetadata: Metadata;
     objectType: StructureType;
-    include: JsonAST['include'];
+    include: ThriftAst['include'];
 }
 
 export function parseNamespaceObjectType(
-    metadata: ThriftAstMetadata[],
+    metadata: Metadata[],
     namespace: string,
     type: string,
-    include?: JsonAST['include'],
+    include?: ThriftAst['include'],
 ): NamespaceObjectType {
     // metadata reverse find - search for the last matching protocol if the names match (files are overwritten in the same order)
     const reversedMetadata = [...metadata].reverse();
-    let namespaceMetadata: ThriftAstMetadata | undefined;
+    let namespaceMetadata: Metadata | undefined;
     if (include) {
         namespaceMetadata = reversedMetadata.find((m) => m.path === include[namespace]?.path);
     }
     if (!namespaceMetadata) {
         namespaceMetadata = reversedMetadata.find((m) => m.name === namespace);
     }
-    const objectType = Object.keys((namespaceMetadata as ThriftAstMetadata)?.ast ?? {}).find(
-        (t) => (namespaceMetadata as ThriftAstMetadata)?.ast?.[t as keyof JsonAST]?.[type],
+    const objectType = Object.keys((namespaceMetadata as Metadata)?.ast ?? {}).find(
+        (t) => (namespaceMetadata as Metadata)?.ast?.[t as keyof ThriftAst]?.[type],
     ) as StructureType;
     if (!objectType || !STRUCTURE_TYPES.includes(objectType)) {
         throw new Error(`Unknown thrift structure type: ${objectType}`);
     }
     return {
-        namespaceMetadata: namespaceMetadata as ThriftAstMetadata,
+        namespaceMetadata: namespaceMetadata as Metadata,
         objectType,
         include: {
-            ...(namespaceMetadata as ThriftAstMetadata).ast.include,
-            ...{ [namespace]: { path: (namespaceMetadata as ThriftAstMetadata).path } },
+            ...(namespaceMetadata as Metadata).ast.include,
+            ...{ [namespace]: { path: (namespaceMetadata as Metadata).path } },
         },
     };
 }

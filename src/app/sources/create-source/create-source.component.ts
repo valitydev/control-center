@@ -17,7 +17,7 @@ export class CreateSourceComponent extends DialogSuperclass<void> {
     control = new FormControl();
 
     create() {
-        this.sourceManagementService.Create(this.control.value, new Map()).subscribe({
+        this.sourceManagementService.create(this.control.value, new Map()).subscribe({
             next: () => {
                 this.closeWithSuccess();
                 this.log.success('Source created successfully!');

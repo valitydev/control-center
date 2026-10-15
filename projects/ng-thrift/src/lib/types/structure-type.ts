@@ -1,5 +1,5 @@
-import { JsonAST } from '@vality/thrift-ts';
+import type { ThriftAst } from '@vality/tsthrift';
 
-export type StructureType = keyof JsonAST;
+export type StructureType = keyof ThriftAst;
 
 export const STRUCTURE_TYPES: StructureType[] = ['typedef', 'struct', 'union', 'exception', 'enum'];

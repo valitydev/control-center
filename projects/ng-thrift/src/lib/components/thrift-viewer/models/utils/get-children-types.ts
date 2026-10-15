@@ -1,6 +1,7 @@
-import { Field, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+import type { Field, ValueType } from '@vality/tsthrift';
 
 import { ThriftData, TypeGroup } from '../../../../models';
+import { isComplexType } from '../../../../utils';
 
 interface ChildrenTypes {
     keyType?: ValueType;
@@ -21,14 +22,18 @@ export function getChildrenTypes(sourceData: ThriftData): ChildrenTypes | undefi
             return undefined;
         }
         case TypeGroup.Complex: {
-            if ((data as ThriftData<SetType | MapType | ListType>).type.name === 'map') {
+            const type = data.type;
+            if (!isComplexType(type)) {
+                return undefined;
+            }
+            if (type.name === 'map') {
                 return {
-                    keyType: (data as ThriftData<MapType>).type.keyType,
-                    valueType: (data as ThriftData<MapType>).type.valueType,
+                    keyType: type.keyType,
+                    valueType: type.valueType,
                 };
             }
             return {
-                valueType: (data as ThriftData<SetType | ListType>).type.valueType,
+                valueType: type.valueType,
             };
         }
     }

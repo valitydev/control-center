@@ -24,7 +24,7 @@ export class FetchRefundsService extends FetchSuperclass<
 
     protected fetch(params: DeepPartial<RefundSearchQuery>, options: FetchOptions) {
         return this.merchantStatisticsService
-            .SearchRefunds(
+            .searchRefunds(
                 cleanPrimitiveProps({
                     ...params,
                     common_search_query_params: Object.assign(

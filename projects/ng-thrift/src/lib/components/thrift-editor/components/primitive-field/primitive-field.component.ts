@@ -33,7 +33,8 @@ import {
     getPossiblyAsyncValue,
     getValueChanges,
 } from '@vality/matez';
-import { ThriftType } from '@vality/thrift-ts';
+
+import type { PrimitiveType } from '../../../../types';
 
 import { ThriftData, getAliases } from '../../../../models';
 import { getValueTypeTitle } from '../../../../utils';
@@ -70,7 +71,7 @@ export class PrimitiveFieldComponent<T> extends FormControlSuperclass<T> impleme
     private destroyRef = inject(DestroyRef);
     private injector = inject(Injector);
 
-    data = input.required<ThriftData<ThriftType>>();
+    data = input.required<ThriftData<PrimitiveType>>();
     extensions = input<ThriftFormExtension[]>();
 
     extensionResult$: Observable<ThriftFormExtensionResult> = combineLatest([

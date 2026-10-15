@@ -34,7 +34,7 @@ export class FetchSourcesService {
         continuationToken?: string,
     ): Observable<StatSource[]> {
         return this.fistfulStatisticsService
-            .GetSources({
+            .getSources({
                 dsl: createDsl({ sources: {} }),
                 ...(continuationToken ? { continuation_token: continuationToken } : {}),
             })

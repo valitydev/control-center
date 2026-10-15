@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Field, ValueType } from '@vality/thrift-ts';
+import type { Field, ValueType } from '@vality/tsthrift';
 
 import { getFieldLabel } from '../../../utils';
 

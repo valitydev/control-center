@@ -62,10 +62,6 @@ export const routes: Routes = [
         loadChildren: () => import('./terms').then((m) => m.Terms),
     },
     {
-        path: 'studio',
-        loadComponent: () => import('./studio').then((m) => m.StudioComponent),
-    },
-    {
         path: 'organizations',
         loadChildren: () => import('./organizations').then((m) => m.ORGANIZATIONS_ROUTES),
     },

@@ -1,11 +1,11 @@
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, LOCALE_ID, inject } from '@angular/core';
 import { MatCard, MatCardContent } from '@angular/material/card';
 
-import { metadata$ } from '@vality/magista-proto';
+import { loadThriftMetadata } from '@vality/magista-proto/magista';
 import { formatCurrency } from '@vality/matez';
 import { ThriftViewExtension, getUnionValue, isTypeWithAliases } from '@vality/ng-thrift';
 
@@ -30,7 +30,7 @@ export class PaymentDetailsComponent {
     private _locale = inject<string>(LOCALE_ID);
     payment$ = this.paymentDetailsService.payment$;
     isLoading$ = this.paymentDetailsService.isLoading$;
-    metadata$ = metadata$;
+    metadata$ = from(loadThriftMetadata());
     extensions$: Observable<ThriftViewExtension[]> = this.payment$.pipe(
         map((payment): ThriftViewExtension[] => [
             {

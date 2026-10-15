@@ -30,7 +30,7 @@ import {
     getErrorsTree,
     getValueChanges,
 } from '@vality/matez';
-import { ListType, MapType, SetType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { ThriftData } from '../../../../models';
 import { ThriftPipesModule } from '../../../../pipes';
@@ -71,7 +71,7 @@ export class ComplexFormComponent<V, K = never>
     implements AfterViewInit, Validator
 {
     private destroyRef = inject(DestroyRef);
-    @Input() data!: ThriftData<SetType | MapType | ListType>;
+    @Input() data!: ThriftData<Exclude<ValueType, string>>;
     @Input() extensions?: ThriftFormExtension[];
 
     valueControls = new FormArray<AbstractControl<V>>([]);

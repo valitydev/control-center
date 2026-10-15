@@ -1,44 +1,24 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormField, form, required } from '@angular/forms/signals';
+import { disabled, form, required } from '@angular/forms/signals';
 import { MatButtonModule } from '@angular/material/button';
 
-import {
-    DialogModule,
-    DialogSuperclass,
-    InputFieldModule,
-    NotifyLogService,
-    progressTo,
-} from '@vality/matez';
+import { DialogModule, DialogSuperclass, NotifyLogService, progressTo } from '@vality/matez';
 import { domain } from '@vality/org-management-proto/admin_management';
 
 import { ThriftOrganizationManagementService } from '~/api/services';
-import { MerchantFieldModule } from '~/components/merchant-field';
-import { UserFieldComponent } from '~/components/user-field';
+
+import {
+    OrganizationFormComponent,
+    OrganizationFormValue,
+} from '../organization-form/organization-form.component';
 
 export interface CreateOrganizationDialogData {
     partyId?: domain.PartyID;
 }
 
-interface CreateOrganizationModel {
-    name: string;
-    party_id: domain.PartyID;
-    owner_id: domain.UserID;
-}
-
 @Component({
     selector: 'cc-create-organization-dialog',
-    imports: [
-        CommonModule,
-        DialogModule,
-        ReactiveFormsModule,
-        MatButtonModule,
-        MerchantFieldModule,
-        InputFieldModule,
-        FormField,
-        UserFieldComponent,
-    ],
+    imports: [DialogModule, MatButtonModule, OrganizationFormComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './create-organization-dialog.component.html',
 })
@@ -51,27 +31,34 @@ export class CreateOrganizationDialogComponent extends DialogSuperclass<
 
     partyId = (this.dialogData as CreateOrganizationDialogData)?.partyId;
 
-    controlModel = signal<CreateOrganizationModel>({
+    controlModel = signal<OrganizationFormValue>({
         name: '',
-        party_id: this.partyId || '',
+        party_id: this.partyId ?? '',
         owner_id: '',
+        metadata: '',
+        allowed_ips: [],
     });
+
+    progress = signal(0);
 
     control = form(this.controlModel, (schemaPath) => {
         required(schemaPath.name);
         required(schemaPath.party_id);
         required(schemaPath.owner_id);
+        disabled(schemaPath, () => this.progress() > 0);
     });
 
-    progress = signal(0);
-
     create() {
-        const { name, party_id, owner_id } = this.controlModel();
+        if (this.progress() || this.control().invalid()) {
+            return;
+        }
+        const { allowed_ips, metadata, ...request } = this.controlModel();
+        const allowedIps = new Set(allowed_ips.map((ip) => ip.trim()).filter(Boolean));
         this.organizationsService
             .createOrganization({
-                name,
-                party_id,
-                owner_id,
+                ...request,
+                ...(metadata ? { metadata } : {}),
+                ...(allowedIps.size ? { allowed_ips: allowedIps } : {}),
             })
             .pipe(progressTo(this.progress))
             .subscribe({

@@ -13,7 +13,7 @@ import { ThriftAccountService } from '~/api/services';
 })
 export class AccountBalancesStoreService {
     private terminalBalanceService = inject(ThriftAccountService);
-    balances$: Observable<AccountBalance[]> = this.terminalBalanceService.GetAccountBalances().pipe(
+    balances$: Observable<AccountBalance[]> = this.terminalBalanceService.getAccountBalances().pipe(
         map((b) => b.balances),
         startWith([]),
         catchError(() => {

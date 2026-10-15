@@ -1,175 +1,31 @@
-import { Observable } from 'rxjs';
-
-import { loadThriftMetadataByNamespaces } from '@vality/domain-proto';
-import { Accounter } from '@vality/domain-proto/accounter';
-import { InvoiceTemplating } from '@vality/domain-proto/api_extensions';
-import {
-    AuthorManagement,
-    Repository,
-    RepositoryClient,
-} from '@vality/domain-proto/domain_config_v2';
-import { Invoicing, PartyManagement } from '@vality/domain-proto/payment_processing';
-import { WebhookManager } from '@vality/domain-proto/webhooker';
-import { metadata$ as fistfulMetadata$ } from '@vality/fistful-proto';
-import { metadata$ as machinegunMetadata$ } from '@vality/machinegun-proto';
-import { metadata$ as magistaMetadata$ } from '@vality/magista-proto';
-import { ThriftAstMetadata, ThriftFormExtension, ThriftViewExtension } from '@vality/ng-thrift';
+import { Automaton } from '@vality/machinegun-proto/state_processing';
+import { MerchantStatisticsService } from '@vality/magista-proto';
 import { AdminManagement } from '@vality/org-management-proto/admin_management';
-import { metadata$ as repairerMetadata$ } from '@vality/repairer-proto';
-import { metadata$ as scroogeMetadata$ } from '@vality/scrooge-proto';
+import { RepairManagement } from '@vality/repairer-proto';
+import { AccountService } from '@vality/scrooge-proto/account_balance';
 import { createObservableService } from '@vality/tsthrift-angular';
 
 import { Service } from '~/services';
-import { ThriftService, createThriftServices } from '~/utils';
 
-export const ThriftRepositoryService = createObservableService(Repository, {
-    headers: (h) => ({ ...h, service: Service.DMT }),
-});
-export const ThriftRepositoryClientService = createObservableService(RepositoryClient, {
-    headers: (h) => ({ ...h, service: Service.DMTClient }),
-});
-export const ThriftAuthorManagementService = createObservableService(AuthorManagement, {
-    headers: (h) => ({ ...h, service: Service.DMTAuthor }),
-});
-export const ThriftInvoicingService = createObservableService(Invoicing, {
-    headers: (h) => ({ ...h, service: Service.Invoicing }),
-});
-export const ThriftPartyManagementService = createObservableService(PartyManagement, {
-    headers: (h) => ({ ...h, service: Service.PartyManagement }),
-});
-export const ThriftShopWebhooksManagementService = createObservableService(WebhookManager, {
-    headers: (h) => ({ ...h, service: Service.WebhookManager }),
-});
-export const ThriftAccountManagementService = createObservableService(Accounter, {
-    headers: (h) => ({ ...h, service: Service.Accounter }),
-});
-export const ThriftInvoiceTemplatingService = createObservableService(InvoiceTemplating, {
-    headers: (h) => ({ ...h, service: Service.InvoiceTemplating }),
-});
-
-export function loadDomainMetadata() {
-    return loadThriftMetadataByNamespaces([
-        'domain_config_v2',
-        'payment_processing',
-        'webhooker',
-        'accounter',
-        'api_extensions',
-    ]);
-}
+export * from './domain-services';
+export * from './fistful-services';
 
 export const ThriftOrganizationManagementService = createObservableService(AdminManagement, {
     headers: (h) => ({ ...h, service: Service.OrganizationManagement }),
 });
 
-export interface MetadataThriftService extends ThriftService {
-    metadata$: Observable<ThriftAstMetadata[]>;
-    namespace: string;
-    service: string;
-    getFormExtensions?: () => Observable<ThriftFormExtension[]>;
-    getViewExtensions?: () => Observable<ThriftViewExtension[]>;
-}
+export const ThriftAutomatonService = createObservableService(Automaton, {
+    headers: (h) => ({ ...h, service: Service.Automaton }),
+});
 
-export const services = [
-    // Repairer
-    {
-        name: Service.RepairManagement,
-        loader: () => import('@vality/repairer-proto/repairer').then((m) => m.RepairManagement),
-        metadata$: repairerMetadata$,
-        namespace: 'repairer',
-        service: 'RepairManagement',
-        public: 'RepairManagement',
-    },
-    // Scrooge
-    {
-        name: Service.Scrooge,
-        loader: () => import('@vality/scrooge-proto/account_balance').then((m) => m.AccountService),
-        metadata$: scroogeMetadata$,
-        namespace: 'account_balance',
-        service: 'AccountService',
-        public: 'AccountManagement',
-    },
-    // Magista
-    {
-        name: Service.MerchantStatistics,
-        loader: () =>
-            import('@vality/magista-proto/magista').then((m) => m.MerchantStatisticsService),
-        metadata$: magistaMetadata$,
-        namespace: 'magista',
-        service: 'MerchantStatisticsService',
-        public: 'MerchantStatistics',
-    },
-    // Machinegun
-    {
-        name: Service.Automaton,
-        loader: () => import('@vality/machinegun-proto/state_processing').then((m) => m.Automaton),
-        metadata$: machinegunMetadata$,
-        namespace: 'state_processing',
-        service: 'Automaton',
-        public: 'Automaton',
-    },
-    // Fistful
-    {
-        name: Service.DepositManagement,
-        loader: () => import('@vality/fistful-proto/deposit').then((m) => m.Management),
-        metadata$: fistfulMetadata$,
-        namespace: 'deposit',
-        service: 'Management',
-        public: 'DepositManagement',
-    },
-    {
-        name: Service.FistfulStatistics,
-        loader: () => import('@vality/fistful-proto/fistful_stat').then((m) => m.FistfulStatistics),
-        metadata$: fistfulMetadata$,
-        namespace: 'fistful_stat',
-        service: 'FistfulStatistics',
-        public: 'FistfulStatistics',
-    },
-    {
-        name: Service.WithdrawalManagement,
-        loader: () => import('@vality/fistful-proto/withdrawal').then((m) => m.Management),
-        metadata$: fistfulMetadata$,
-        namespace: 'withdrawal',
-        service: 'Management',
-        public: 'WithdrawalManagement',
-    },
-    {
-        name: Service.SourceManagement,
-        loader: () => import('@vality/fistful-proto/source').then((m) => m.Management),
-        metadata$: fistfulMetadata$,
-        namespace: 'source',
-        service: 'Management',
-        public: 'SourceManagement',
-    },
-    {
-        name: Service.WalletsWebhookManager,
-        loader: () => import('@vality/fistful-proto/webhooker').then((m) => m.WebhookManager),
-        metadata$: fistfulMetadata$,
-        namespace: 'webhooker',
-        service: 'WebhookManager',
-        public: 'WalletsWebhookManager',
-    },
-    {
-        name: Service.DestinationManagement,
-        loader: () => import('@vality/fistful-proto/destination').then((m) => m.Management),
-        metadata$: fistfulMetadata$,
-        namespace: 'destination',
-        service: 'Management',
-        public: 'DestinationManagement',
-    },
-] as const;
+export const ThriftAccountService = createObservableService(AccountService, {
+    headers: (h) => ({ ...h, service: Service.Scrooge }),
+});
 
-export const { services: injectableServices, provideThriftServices } =
-    createThriftServices(services);
+export const ThriftRepairManagementService = createObservableService(RepairManagement, {
+    headers: (h) => ({ ...h, service: Service.RepairManagement }),
+});
 
-export const {
-    RepairManagement: ThriftRepairManagementService,
-    Scrooge: ThriftAccountService,
-    MerchantStatistics: ThriftMerchantStatisticsService,
-    Automaton: ThriftAutomatonService,
-    DepositManagement: ThriftDepositManagementService,
-    FistfulStatistics: ThriftFistfulStatisticsService,
-    WithdrawalManagement: ThriftWithdrawalManagementService,
-    SourceManagement: ThriftSourceManagementService,
-    WalletsWebhookManager: ThriftWalletWebhooksManagementService,
-    DestinationManagement: ThriftDestinationManagementService,
-} = injectableServices;
+export const ThriftMerchantStatisticsService = createObservableService(MerchantStatisticsService, {
+    headers: (h) => ({ ...h, service: Service.MerchantStatistics }),
+});

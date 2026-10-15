@@ -36,7 +36,6 @@ import { SidenavInfoModule, SidenavInfoService } from '~/components/sidenav-info
 import { getLimitedDomainObjectDetails } from '~/components/thrift-api-crud';
 import { DomainObjectCardComponent } from '~/components/thrift-api-crud/domain';
 import { ConfigService, KeycloakUserService, Service } from '~/services';
-import { LOGGING } from '~/utils';
 
 import { APP_ROUTES } from './app-routes';
 import { ROUTING_CONFIG as DEPOSITS_ROUTING_CONFIG } from './deposits/routing-config';
@@ -219,14 +218,6 @@ const createNavLinks = (): Link[] => [
             },
         ],
     },
-    {
-        children: [
-            {
-                label: 'Studio',
-                url: '/studio',
-            },
-        ],
-    },
 ];
 
 @Component({
@@ -331,10 +322,11 @@ export class AppComponent implements OnInit {
 
     private registerConsoleUtils() {
         Object.assign(window as never as object, {
-            ccSwitchLogging: () => {
-                LOGGING.fullLogging = !LOGGING.fullLogging;
-                console.log(`Logging ${LOGGING.fullLogging ? 'enabled' : 'disabled'}`);
-            },
+            // TODO
+            // ccSwitchLogging: () => {
+            //     LOGGING.fullLogging = !LOGGING.fullLogging;
+            //     console.log(`Logging ${LOGGING.fullLogging ? 'enabled' : 'disabled'}`);
+            // },
             ccGetMyRoles: () => {
                 console.log(this.keycloakUserService.roles.sort().join('\n'));
             },

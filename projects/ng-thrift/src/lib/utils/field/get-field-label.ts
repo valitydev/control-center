@@ -1,6 +1,6 @@
 import startCase from 'lodash-es/startCase';
 
-import { Field, ValueType } from '@vality/thrift-ts';
+import type { Field, ValueType } from '@vality/tsthrift';
 
 import { getValueTypeTitle } from '../value-type/get-value-type-title';
 

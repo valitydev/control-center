@@ -2,15 +2,21 @@ import { combineLatest, of, switchMap } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, computed, input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    HostBinding,
+    computed,
+    forwardRef,
+    input,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, Validator } from '@angular/forms';
 
 import { FormControlSuperclass, createControlProviders } from '@vality/matez';
-import { Field, ValueType } from '@vality/thrift-ts';
+import type { Field, Metadata, ValueType } from '@vality/tsthrift';
 
 import { ThriftData } from '../../../../models';
-import { ThriftAstMetadata } from '../../../../types';
 import {
     ThriftFormExtension,
     ThriftFormExtensionResult,
@@ -33,17 +39,17 @@ import { UnionFieldComponent } from '../union-field/union-field.component';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        ComplexFormComponent,
-        StructFormComponent,
-        UnionFieldComponent,
-        TypedefFormComponent,
+        forwardRef(() => ComplexFormComponent),
+        forwardRef(() => StructFormComponent),
+        forwardRef(() => UnionFieldComponent),
+        forwardRef(() => TypedefFormComponent),
         EnumFieldComponent,
         ExtensionFieldComponent,
         PrimitiveFieldComponent,
     ],
 })
 export class ThriftFormComponent<T> extends FormControlSuperclass<T> implements Validator {
-    metadata = input.required<ThriftAstMetadata[] | null | undefined>();
+    metadata = input.required<Metadata[] | null | undefined>();
     namespace = input.required<string>();
     type = input.required<ValueType>();
     field = input<Field>();

@@ -4,10 +4,10 @@ import { Observable, combineLatest, defer, of, switchMap } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay, startWith } from 'rxjs/operators';
 
 import { isEmpty } from '@vality/matez';
-import { Enum, ListType, MapType, SetType, ValueType } from '@vality/thrift-ts';
+import type { ValueType } from '@vality/tsthrift';
 
 import { ThriftData } from '../../../models';
-import { getThriftEntries } from '../../../utils';
+import { getThriftEntries, isComplexType } from '../../../utils';
 import { getFirstDeterminedThriftViewExtensionResult } from '../utils/get-first-determined-thrift-view-extension-result';
 import { ThriftViewExtension } from '../utils/thrift-view-extension';
 import { ThriftViewExtensionResult } from '../utils/thrift-view-extension-result';
@@ -64,7 +64,7 @@ export class ThriftViewData {
                 items.length > 1 ||
                 isObject(keyValue) ||
                 key?.data ||
-                (data?.trueTypeNode?.data as ThriftData<SetType | ListType | MapType>)?.type?.name
+                isComplexType(data?.trueTypeNode?.data.type)
             ) {
                 return of([]);
             }
@@ -148,16 +148,14 @@ export class ThriftViewData {
     private getRenderValue(value: unknown, data?: ThriftData | null) {
         if (data?.trueTypeNode?.data?.objectType === 'enum') {
             return (
-                (
-                    ((data.trueTypeNode.data as ThriftData<ValueType, 'enum'>).ast?.['items'] as
-                        | Enum[]
-                        | undefined) ?? []
-                ).find((i, idx) => {
-                    if ('value' in i) {
-                        return i.value === value;
-                    }
-                    return idx === value;
-                })?.name ?? value
+                ((data.trueTypeNode.data as ThriftData<ValueType, 'enum'>).ast?.items ?? []).find(
+                    (i, idx) => {
+                        if ('value' in i) {
+                            return i.value === value;
+                        }
+                        return idx === value;
+                    },
+                )?.name ?? value
             );
         }
         if (data?.objectType === 'union' && isEmpty(getThriftEntries(value)?.[0]?.[1])) {
